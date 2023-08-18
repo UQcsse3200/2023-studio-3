@@ -10,6 +10,10 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 
 
 public class TowerFactory {
+   /**
+      private static final baseTowerConfigs configs =
+            FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
+    */
 
     public static Entity createBaseTower() {
         // we're going to add more components later on
