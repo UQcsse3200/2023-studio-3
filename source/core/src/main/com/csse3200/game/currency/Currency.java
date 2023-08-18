@@ -1,6 +1,12 @@
 package com.csse3200.game.currency;
 
+import com.csse3200.game.entities.Entity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public abstract class Currency {
+
+    private static final Logger logger = LoggerFactory.getLogger(Currency.class);
 
     // The logo of the currency
     private final String logoFilePath;
@@ -8,12 +14,27 @@ public abstract class Currency {
     // Stores the amount of currency there is
     private int amount;
 
+    private final String name;
+
     /**
      * Constructor for the currency object.
-     * @param logoFilePath
+     * @param logoFilePath the file path of the logo
      */
-    public Currency(String logoFilePath) {
+    public Currency(String logoFilePath, String name) {
         this.logoFilePath = logoFilePath;
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public int getAmount() {
+        return this.amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
     /**
@@ -33,6 +54,7 @@ public abstract class Currency {
      * @param addedAmount The amount the currency will be incremented by.
      */
     public void modify(int addedAmount) {
+        logger.debug("Modifying " + this.getClass().getSimpleName() + "by " + addedAmount);
         this.amount += addedAmount;
     }
 
@@ -43,6 +65,11 @@ public abstract class Currency {
      * @return boolean representing if you can buy that object or not.
      */
     public boolean canBuy(int cost) {
-        return this.amount >= cost;
+        return this.getAmount() >= cost;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + ": " + this.getAmount();
     }
 }
