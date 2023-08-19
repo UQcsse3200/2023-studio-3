@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(GameExtension.class)
-class AnimationRenderComponentTest {
+class TowerAnimationRenderComponentTest {
   @Test
   void shouldAddRemoveAnimation() {
     TextureAtlas atlas = createMockAtlas("test_name", 1);
