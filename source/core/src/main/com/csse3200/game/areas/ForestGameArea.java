@@ -17,6 +17,8 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.csse3200.game.entities.factories.ProjectileFactory;
+
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
@@ -24,7 +26,12 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 2;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
+
+  private static final GridPoint2 PROJECTILE_SPAWN = new GridPoint2(20, 20);
+
+  // Required to load assets before using them
   private static final String[] forestTextures = {
+    "images/projectile.png",
     "images/box_boy_leaf.png",
     "images/tree.png",
     "images/ghost_king.png",
@@ -50,6 +57,9 @@ public class ForestGameArea extends GameArea {
 
   private Entity player;
 
+  // New code
+  private Entity projectile;
+
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
    * @param terrainFactory TerrainFactory used to create the terrain for the GameArea.
@@ -74,6 +84,8 @@ public class ForestGameArea extends GameArea {
     spawnGhostKing();
 
     playMusic();
+
+    projectile = spawnProjectile();
   }
 
   private void displayUI() {
@@ -127,6 +139,17 @@ public class ForestGameArea extends GameArea {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
     return newPlayer;
+  }
+
+  /**
+   * Spawns a projectile currently just in the center of the game
+   * 
+   * @return a new projectile
+   */
+  private Entity spawnProjectile() {
+    Entity newProjectile = ProjectileFactory.createProjectile();
+    spawnEntityAt(newProjectile, PROJECTILE_SPAWN, false, false);
+    return newProjectile;
   }
 
   private void spawnGhosts() {
