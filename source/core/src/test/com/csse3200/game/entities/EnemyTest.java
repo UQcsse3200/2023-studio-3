@@ -16,7 +16,10 @@ import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -26,6 +29,7 @@ public class EnemyTest {
     private String configString = "Enemy: %s Abilities: %s Drops: %s Views: %s State: %s Speed: %s Full Health: %s Current Health: %s Base Attack: %s";
     private String baseConfigString = "Enemy: %s Abilities: %s Drops: %s Views: %s State: %s Speed: 1 Full Health: 1 Current Health: 1 Base Attack: 0";
 
+    // Check that both constructors create an enemy with the correct values
     @Test
     void shouldCreateEnemy() {
         List<Integer> drops = List.of(1, 2);
@@ -40,13 +44,16 @@ public class EnemyTest {
         assertEquals(enemy2.toString(), String.format(configString, id + 2, "c", drops, views, "a", "4", "5", "5", "6"));
     }
 
+    // Check the generated ids are unique
     @Test
     void idGeneration() {
         List<Integer> drops = List.of(1, 2);
         List<String> views = List.of("a", "b", "c");
         BaseEnemyConfig enemy1 = new BaseEnemyConfig(drops, views, "c");
+
         BaseEnemyConfig enemy2 = new BaseEnemyConfig(drops, views, "c");
         assertNotEquals(enemy1.getId(), enemy2.getId());
+        assertEquals(enemy1.getId() + 1 ,enemy2.getId());
     }
 
     @Test
@@ -74,8 +81,6 @@ public class EnemyTest {
         assertEquals(beforeDamage, enemy.getHealth() + 1);
     }
 
-    @Test
-    void takeDamageToDie() {}
 
     @Test
     void testDamageStateChange() {
@@ -92,14 +97,30 @@ public class EnemyTest {
     }
 
     @Test
-    void testDrop() {}
+    void testDrop() {
+        List<Integer> drops = List.of(1, 2);
+        List<String> views = List.of("a", "b", "c");
+        BaseEnemyConfig enemy = new BaseEnemyConfig(drops, views, "c");
+        assertTrue(drops.contains(enemy.drop()));
+    }
 
     @Test
-    void dropRandom() {}
+    void dropRandom() {
+        List<Integer> drops = List.of(1, 2);
+        List<String> views = List.of("a", "b", "c");
+        BaseEnemyConfig enemy = new BaseEnemyConfig(drops, views, "c");
+        List<Integer> dropped = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            dropped.add(enemy.drop());
+        }
+        System.out.println(dropped);
+        assertFalse(Arrays.stream(drops.toArray()).allMatch(t -> t == dropped.get(0)));
+    }
 
     @Test
     void testDie() {}
 
-
+    @Test
+    void takeDamageToDie() {}
 
 }
