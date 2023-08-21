@@ -101,6 +101,10 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         return this.speed;
     }
 
+    public String getState() {
+        return this.state;
+    }
+
     //TODO: change to take class Ability
     /**
      * Process the damage taken by the enemy. Will decrease the health by the
@@ -117,10 +121,10 @@ public class BaseEnemyConfig extends BaseEntityConfig {
             return;
         }
 
-        if (this.health <= (this.fullHeath * 0.66)) {
-            this.state = this.views.get(1);
-        } else if (this.health <= (this.fullHeath * 0.33)) {
+        if (this.health <= (this.fullHeath * 0.33)) {
             this.state = this.views.get(2);
+        } else if (this.health <= (this.fullHeath * 0.66)) {
+            this.state = this.views.get(1);
         }
     }
 

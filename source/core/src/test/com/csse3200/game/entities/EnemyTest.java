@@ -62,14 +62,34 @@ public class EnemyTest {
 
     }
 
+    /* Check takeDamage will reduce the health of an enemy */
     @Test
-    void testTakeDamage() {}
+    void testTakeDamage() {
+        List<Integer> drops = List.of(1, 2);
+        List<String> views = List.of("a", "b", "c");
+        BaseEnemyConfig enemy = new BaseEnemyConfig(drops, views, "c");
+        int beforeDamage = enemy.getHealth();
+        enemy.takeDamage(1);
+
+        assertEquals(beforeDamage, enemy.getHealth() + 1);
+    }
 
     @Test
     void takeDamageToDie() {}
 
     @Test
-    void testDamageStateChange() {}
+    void testDamageStateChange() {
+        List<Integer> drops = List.of(1, 2);
+        List<String> views = List.of("a", "b", "c");
+        BaseEnemyConfig enemy = new BaseEnemyConfig(1, 10, drops, views, "c", 1);
+        assertEquals("a", enemy.getState());
+
+        enemy.takeDamage(4);
+        assertEquals("b", enemy.getState());
+
+        enemy.takeDamage(4);
+        assertEquals("c", enemy.getState());
+    }
 
     @Test
     void testDrop() {}
