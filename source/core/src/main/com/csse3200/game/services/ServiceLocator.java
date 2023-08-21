@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
  */
 public class ServiceLocator {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
+
+  private static CurrencyService currencyService;
   private static EntityService entityService;
   private static RenderService renderService;
   private static PhysicsService physicsService;
@@ -24,6 +26,9 @@ public class ServiceLocator {
   private static InputService inputService;
   private static ResourceService resourceService;
 
+  public static CurrencyService getCurrencyService() {
+      return currencyService;
+  }
 
   public static EntityService getEntityService() {
     return entityService;
@@ -47,6 +52,11 @@ public class ServiceLocator {
 
   public static ResourceService getResourceService() {
     return resourceService;
+  }
+
+  public static void registerCurrencyService(CurrencyService service) {
+    logger.debug("Registering currency service {}", service);
+    currencyService = service;
   }
 
   public static void registerEntityService(EntityService service) {
