@@ -42,7 +42,6 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * Creates a new enemy config with default values.
      */
     public BaseEnemyConfig(List<Integer> drops, List<String> views, String abilities) {
-        this.id = generateId();
         this.speed = 1;
         this.drops = drops;
         if (views.size() < 3) {
@@ -52,6 +51,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         this.state = views.get(0);
         this.fullHeath = this.health;
         this.abilities = abilities;
+        this.id = generateId();
     }
 
     /**
@@ -69,7 +69,6 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
-        this.id = generateId();
         this.drops = drops;
         if (views.size() < 3) {
             throw new IllegalArgumentException("Enemy must have at least 3 views");
@@ -78,13 +77,15 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         this.state = views.get(0);
         this.abilities = abilities;
         this.baseAttack = baseAttack;
+        this.id = generateId();
     }
 
     public int generateId() {
         if (idCounter == 0) {
-            return this.toString().hashCode();
+            idCounter = this.hashCode();
+            return idCounter;
         }
-        return idCounter++;
+        return ++idCounter;
     }
 
     /* return the unique id of the enemy */
