@@ -1,29 +1,27 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.currency.Currency;
+import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 
-/**
- * Factory to create a drop entity.
- *
- */
 public class DropFactory {
-    public static Entity createDrop(int x, int y, int value){
-        Entity drop =
-                new Entity().addComponent(new TextureRenderComponent("PLACEHOLDER"));
-        // This will be, Currency.getTexturePath(), once the ServiceLocator is implemented
-        drop.scaleHeight(0.5f);
-        drop.scaleWidth(0.5f);
-        drop.setPosition(x, y); //Position called by Mob class
-        //some sort of function call that sets value of drop.
+
+    /**
+     * Creates a drop entity.
+     * @return entity
+     */
+
+    // We can make different drops for different currencies
+    public static Entity createScrapDrop(int x, int y) {
+        Scrap scrap = new Scrap();
+        Entity drop = new Entity()
+            .addComponent(new TextureRenderComponent(scrap.getTexture()))
+            .addComponent(new DropComponent(1, scrap));
+        drop.setPosition(x, y); // Set the position of the drop to the position of the enemy
         drop.getComponent(TextureRenderComponent.class).scaleEntity();
+        drop.scaleHeight(2.5f);
         return drop;
     }
-    private DropFactory() {
-        throw new IllegalStateException("Instantiating static util class");
-    }
 }
-
-
-
