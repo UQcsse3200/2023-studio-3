@@ -1,13 +1,13 @@
 
 turret_firing_long.png
-size: 512, 64
+size: 256, 16
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 turret-sprites-head-shot-idle
   rotate: false
   xy: 2, 2
-  size: 270, 47
+  size: 240, 8
   orig: 270, 47
-  offset: 0, 0
+  offset: 15, 32
   index: -1
