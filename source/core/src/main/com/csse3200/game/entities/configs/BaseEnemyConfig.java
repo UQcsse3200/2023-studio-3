@@ -31,17 +31,17 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     private final int id;
 
     //TODO: change to item class
-    private final List<Integer> drops;
-    private final List<String> views;
+    private final ArrayList<Integer> drops;
+    private final ArrayList<String> views;
     private String state;
 
     //TODO: change to class Ability
-    private final List<String> abilities;
+    private final ArrayList<String> abilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(List<Integer> drops, List<String> views, List<String> abilities) {
+    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views, ArrayList<String> abilities) {
         this.speed = 1;
         this.drops = drops;
         if (views.size() < 3) {
@@ -64,8 +64,8 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param abilities the abilities of the enemy
      * @param baseAttack the base damage to the target
      */
-    public BaseEnemyConfig(int speed, int health, List<Integer> drops, List<String> views,
-                           List<String> abilities, int baseAttack) {
+    public BaseEnemyConfig(int speed, int health, ArrayList<Integer> drops, ArrayList<String> views,
+                           ArrayList<String> abilities, int baseAttack) {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
@@ -134,9 +134,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @return the item dropped
      */
     public Integer drop() {
-        Random rand = new Random();
-        int index = rand.nextInt(this.drops.size());
-        return this.drops.get(index);
+        return this.drops.get(pickRandom(this.drops));
     }
 
     //TODO: Implement this by processing drops, removing from game, etc.
@@ -151,7 +149,17 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     /**
      * Process an attack by triggering projectiles or attacking a tower.
      */
-    public void attack() {}
+    public void attack() {
+        String ability = this.abilities.get(pickRandom(this.abilities));
+    }
+
+    /**
+     * pick a random number from range 0 to the size of the list provided
+     * */
+    public int pickRandom(ArrayList pickFrom) {
+        Random rand = new Random();
+        return rand.nextInt(pickFrom.size());
+    }
 
     public String toString() {
         return "Enemy: " + this.id + " Abilities: " + this.abilities + " Drops: "
