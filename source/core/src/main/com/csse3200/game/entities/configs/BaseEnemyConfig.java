@@ -128,7 +128,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         }
     }
 
-    //TODO change the return type to the drop type
+    //TODO change the return type to the drop type and process to player
     /**
      * Drop a random item from the list of drops.
      * @return the item dropped
