@@ -36,12 +36,12 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     private String state;
 
     //TODO: change to class Ability
-    private final String abilities;
+    private final List<String> abilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(List<Integer> drops, List<String> views, String abilities) {
+    public BaseEnemyConfig(List<Integer> drops, List<String> views, List<String> abilities) {
         this.speed = 1;
         this.drops = drops;
         if (views.size() < 3) {
@@ -65,7 +65,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param baseAttack the base damage to the target
      */
     public BaseEnemyConfig(int speed, int health, List<Integer> drops, List<String> views,
-                           String abilities, int baseAttack) {
+                           List<String> abilities, int baseAttack) {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
