@@ -4,7 +4,6 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
-import com.csse3200.game.entities.configs.ProjectileConfig;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
@@ -36,7 +35,8 @@ public class ProjectileFactory {
 
     projectile.getComponent(TextureRenderComponent.class).scaleEntity();
 
-    PhysicsUtils.setScaledCollider(projectile, 0.9f, 0.4f);
+    // Able to alter the collider component's size in proportion to the Entity's size.
+    // PhysicsUtils.setScaledCollider(projectile, 0.9f, 0.4f);
     return projectile;
   }
 
