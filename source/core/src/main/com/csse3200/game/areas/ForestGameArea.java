@@ -27,8 +27,6 @@ public class ForestGameArea extends GameArea {
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
 
-  private static final GridPoint2 PROJECTILE_SPAWN = new GridPoint2(20, 20);
-
   // Required to load assets before using them
   private static final String[] forestTextures = {
     "images/projectile.png",
@@ -156,11 +154,11 @@ public class ForestGameArea extends GameArea {
   private Entity spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos /* = RandomUtils.random(minPos, maxPos);*/
-    = new GridPoint2(10, 10);
+    GridPoint2 randomPos 
+    = RandomUtils.random(minPos, maxPos);
+    // = new GridPoint2(26, 26);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
-
     return ghostKing;
   }
 
@@ -173,10 +171,6 @@ public class ForestGameArea extends GameArea {
     Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player);
     newProjectile.setPosition(ghostking.getPosition());
     spawnEntity(newProjectile);
-    // int x = Math. round(ghostking.getPosition().x);
-    // int y = Math. round(ghostking.getPosition().y);
-    // GridPoint2 ghostKingPosition = new GridPoint2(x, y);
-    // spawnEntityAt(newProjectile, ghostKingPosition, true, true);
     return newProjectile;
   }
 

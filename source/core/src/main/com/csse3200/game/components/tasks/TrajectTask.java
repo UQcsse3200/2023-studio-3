@@ -12,11 +12,9 @@ import com.csse3200.game.services.ServiceLocator;
 
 /** Chases a target entity until they get too far away or line of sight is lost */
 public class TrajectTask extends DefaultTask implements PriorityTask {
-  private final Entity shooter;
   private final Entity target;
   private final int priority;
   private final float viewDistance;
-  private final float maxChaseDistance;
   private final PhysicsEngine physics;
   private final DebugRenderer debugRenderer;
   private final RaycastHit hit = new RaycastHit();
@@ -29,12 +27,10 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
    * @param viewDistance Maximum distance from the entity at which chasing can start.
    * @param maxChaseDistance Maximum distance from the entity while chasing before giving up.
    */
-  public TrajectTask(Entity shooter, Entity target, int priority, float viewDistance, float maxChaseDistance) {
-    this.shooter = shooter;
+  public TrajectTask(Entity shooter, Entity target, int priority, float viewDistance) {
     this.target = target;
     this.priority = priority;
     this.viewDistance = viewDistance;
-    this.maxChaseDistance = maxChaseDistance;
     position = new Vector2(100, shooter.getPosition().x);
     physics = ServiceLocator.getPhysicsService().getPhysics();
     debugRenderer = ServiceLocator.getRenderService().getDebug();
@@ -75,14 +71,10 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   }
 
   private float getDistanceToTarget() {
-    return owner.getEntity().getPosition().dst(target.getPosition());
+    return owner.getEntity().getPosition().dst(position);
   }
 
   private int getActivePriority() {
-    // float dst = getDistanceToTarget();
-    // // if (dst > maxChaseDistance || !isTargetVisible()) {
-    // //   return -1; // Too far, stop chasing
-    // }
     return priority;
   }
 
@@ -99,10 +91,10 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
     Vector2 to = target.getCenterPosition();
 
     // If there is an obstacle in the path to the player, not visible.
-    if (physics.raycast(from, to, PhysicsLayer.OBSTACLE, hit)) {
-      debugRenderer.drawLine(from, hit.point);
-      return false;
-    }
+    // if (physics.raycast(from, to, PhysicsLayer.OBSTACLE, hit)) {
+    //   debugRenderer.drawLine(from, hit.point);
+    //   return false;
+    // }
     debugRenderer.drawLine(from, to);
     return true;
   }

@@ -1,10 +1,7 @@
 package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.tasks.ChaseTask;
 import com.csse3200.game.components.tasks.TrajectTask;
-import com.csse3200.game.components.tasks.WanderTask;
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
@@ -13,7 +10,6 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -31,7 +27,7 @@ public class ProjectileFactory {
 
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new TrajectTask(shooter, target,10,100f, 100f));
+            .addTask(new TrajectTask(shooter, target, 10, 100f));
 
     Entity projectile = new Entity()
         .addComponent(new TextureRenderComponent("images/projectile.png"))
