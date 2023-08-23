@@ -14,6 +14,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * Responsible for creating projectiles within the game
@@ -22,12 +23,12 @@ public class ProjectileFactory {
 
   private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
 
-  public static Entity createProjectile(Entity shooter, Entity target) {
+  public static Entity createProjectile(Entity shooter, Entity target, Vector2 destination) {
     BaseEntityConfig config = configs.projectile;
 
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new TrajectTask(shooter, target, 10, 100f));
+            .addTask(new TrajectTask(shooter, target, 10, 100f, destination));
 
     Entity projectile = new Entity()
         .addComponent(new TextureRenderComponent("images/projectile.png"))

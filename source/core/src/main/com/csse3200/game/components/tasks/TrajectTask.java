@@ -19,7 +19,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   private final DebugRenderer debugRenderer;
   private final RaycastHit hit = new RaycastHit();
   private MovementTask movementTask;
-  private Vector2 position;
+  private Vector2 destination;
 
   /**
    * @param target The entity to chase.
@@ -27,11 +27,11 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
    * @param viewDistance Maximum distance from the entity at which chasing can start.
    * @param maxChaseDistance Maximum distance from the entity while chasing before giving up.
    */
-  public TrajectTask(Entity shooter, Entity target, int priority, float viewDistance) {
+  public TrajectTask(Entity shooter, Entity target, int priority, float viewDistance, Vector2 destination) {
     this.target = target;
     this.priority = priority;
     this.viewDistance = viewDistance;
-    position = new Vector2(100, shooter.getPosition().x);
+    this.destination = destination;
     physics = ServiceLocator.getPhysicsService().getPhysics();
     debugRenderer = ServiceLocator.getRenderService().getDebug();
   }
@@ -39,7 +39,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   @Override
   public void start() {
     super.start();
-    movementTask = new MovementTask(position);
+    movementTask = new MovementTask(destination);
     movementTask.create(owner);
     movementTask.start();
     
@@ -48,7 +48,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
 
   @Override
   public void update() {
-    movementTask.setTarget(position);
+    movementTask.setTarget(destination);
     movementTask.update();
     if (movementTask.getStatus() != Status.ACTIVE) {
       movementTask.start();
@@ -71,7 +71,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   }
 
   private float getDistanceToTarget() {
-    return owner.getEntity().getPosition().dst(position);
+    return owner.getEntity().getPosition().dst(destination);
   }
 
   private int getActivePriority() {

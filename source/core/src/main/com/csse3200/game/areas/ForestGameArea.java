@@ -56,9 +56,6 @@ public class ForestGameArea extends GameArea {
   private Entity player;
   private Entity ghostking;
 
-  // New code
-  private Entity projectile;
-
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
    * @param terrainFactory TerrainFactory used to create the terrain for the GameArea.
@@ -85,6 +82,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     spawnProjectile();
+    spawnMultiProjectile();
   }
 
   private void displayUI() {
@@ -168,10 +166,23 @@ public class ForestGameArea extends GameArea {
    * @return a new projectile
    */
   private void spawnProjectile() {
-    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player);
+    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, ghostking.getPosition().x));
     newProjectile.setPosition(ghostking.getPosition());
     spawnEntity(newProjectile);
+  }
+
+  private void spawnMultiProjectile() {
+    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x + 30));
+    newTopProjectile.setPosition(player.getPosition());
+    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x));
+    newMiddleProjectile.setPosition(player.getPosition());
+    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x - 30));
+    newBottomProjectile.setPosition(player.getPosition());
     
+
+    spawnEntity(newTopProjectile);
+    spawnEntity(newMiddleProjectile);
+    spawnEntity(newBottomProjectile);
   }
 
 
