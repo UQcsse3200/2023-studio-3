@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
+import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.ChaseTask;
 import com.csse3200.game.components.tasks.WanderTask;
@@ -90,6 +91,31 @@ public class NPCFactory {
   }
 
   /**
+   * Creates a xeno grunt entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createXenoGrunt(Entity target) {
+    Entity xenoGrunt = createBaseNPC(target);
+    BaseEntityConfig config = configs.xenoGrunt;
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/xenoGruntRunning.atlas", TextureAtlas.class));
+    animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
+
+    xenoGrunt
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(animator)
+            .addComponent(new XenoAnimationController());
+
+    xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return xenoGrunt;
+  }
+
+  /**
    * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
    *
    * @return entity
@@ -116,3 +142,5 @@ public class NPCFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 }
+
+
