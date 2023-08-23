@@ -56,6 +56,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
 
   private Entity player;
+  private Entity ghostking;
 
   // New code
   private Entity projectile;
@@ -81,7 +82,7 @@ public class ForestGameArea extends GameArea {
     spawnTrees();
     player = spawnPlayer();
     // spawnGhosts();
-    spawnGhostKing();
+    ghostking = spawnGhostKing();
 
     playMusic();
 
@@ -141,17 +142,6 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
-  /**
-   * Spawns a projectile currently just in the center of the game
-   * 
-   * @return a new projectile
-   */
-  private Entity spawnProjectile() {
-    Entity newProjectile = ProjectileFactory.createProjectile();
-    spawnEntityAt(newProjectile, PROJECTILE_SPAWN, false, false);
-    return newProjectile;
-  }
-
   private void spawnGhosts() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -163,13 +153,31 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private void spawnGhostKing() {
+  private Entity spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    GridPoint2 randomPos /* = RandomUtils.random(minPos, maxPos);*/
+    = new GridPoint2(10, 10);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
+
+    return ghostKing;
+  }
+
+    /**
+   * Spawns a projectile currently just in the center of the game
+   * 
+   * @return a new projectile
+   */
+  private Entity spawnProjectile() {
+    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player);
+    newProjectile.setPosition(ghostking.getPosition());
+    spawnEntity(newProjectile);
+    // int x = Math. round(ghostking.getPosition().x);
+    // int y = Math. round(ghostking.getPosition().y);
+    // GridPoint2 ghostKingPosition = new GridPoint2(x, y);
+    // spawnEntityAt(newProjectile, ghostKingPosition, true, true);
+    return newProjectile;
   }
 
   private void playMusic() {

@@ -1,6 +1,11 @@
 package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.tasks.ChaseTask;
+import com.csse3200.game.components.tasks.TrajectTask;
+import com.csse3200.game.components.tasks.WanderTask;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -21,8 +26,12 @@ public class ProjectileFactory {
 
   private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
 
-  public static Entity createProjectile() {
+  public static Entity createProjectile(Entity shooter, Entity target) {
     BaseEntityConfig config = configs.projectile;
+
+    AITaskComponent aiComponent =
+        new AITaskComponent()
+            .addTask(new TrajectTask(shooter, target,10,100f, 100f));
 
     Entity projectile = new Entity()
         .addComponent(new TextureRenderComponent("images/projectile.png"))
@@ -31,7 +40,8 @@ public class ProjectileFactory {
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
         .addComponent(new ColliderComponent())
         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(aiComponent);
 
     projectile.getComponent(TextureRenderComponent.class).scaleEntity();
     projectile.getComponent(PhysicsMovementComponent.class);
