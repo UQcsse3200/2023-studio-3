@@ -84,7 +84,7 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    projectile = spawnProjectile();
+    spawnProjectile();
   }
 
   private void displayUI() {
@@ -167,12 +167,13 @@ public class ForestGameArea extends GameArea {
    * 
    * @return a new projectile
    */
-  private Entity spawnProjectile() {
+  private void spawnProjectile() {
     Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player);
     newProjectile.setPosition(ghostking.getPosition());
     spawnEntity(newProjectile);
-    return newProjectile;
+    
   }
+
 
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
