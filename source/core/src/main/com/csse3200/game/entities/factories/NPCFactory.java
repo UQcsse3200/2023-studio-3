@@ -50,8 +50,8 @@ public class NPCFactory {
     AnimationRenderComponent animator =
         new AnimationRenderComponent(
             ServiceLocator.getResourceService().getAsset("images/turret_body_idle.atlas", TextureAtlas.class));
-    animator.addAnimation("angry", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("idle", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("angry", 0.1f, Animation.PlayMode.LOOP);
 
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -76,9 +76,9 @@ public class NPCFactory {
     AnimationRenderComponent animator =
         new AnimationRenderComponent(
             ServiceLocator.getResourceService()
-                .getAsset("images/turret.atlas", TextureAtlas.class));
+                .getAsset("images/turret_deploy.atlas", TextureAtlas.class));
     animator.addAnimation("idle", 0.2f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("angry", 0.2f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("angry", 0.2f, Animation.PlayMode.REVERSED);
 
     ghostKing
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))

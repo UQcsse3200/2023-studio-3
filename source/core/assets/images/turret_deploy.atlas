@@ -1,0 +1,125 @@
+
+turret_deploy.png
+size: 512, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: xy
+angry
+  rotate: false
+  xy: 80, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 380, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 200, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 20, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 320, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 140, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 440, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+angry
+  rotate: false
+  xy: 260, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 260, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 80, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 380, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 200, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 20, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 320, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 140, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 440, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 260, 20
+  size: 40, 37
+  orig: 40, 37
+  offset: 0, 0
+  index: -1
