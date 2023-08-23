@@ -1,5 +1,11 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.configs.BaseEntityConfig;
+import com.csse3200.game.entities.configs.NPCConfigs;
+import com.csse3200.game.entities.configs.ProjectileConfig;
+import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -13,13 +19,20 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
  * Responsible for creating projectiles within the game
  */
 public class ProjectileFactory {
+
+  private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
+
   public static Entity createProjectile() {
+    BaseEntityConfig config = configs.projectile;
+
     Entity projectile = new Entity()
         .addComponent(new TextureRenderComponent("images/projectile.png"))
         .addComponent(new PhysicsComponent())
         .addComponent(new PhysicsMovementComponent())
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
-        .addComponent(new ColliderComponent());
+        .addComponent(new ColliderComponent())
+        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
     projectile.getComponent(TextureRenderComponent.class).scaleEntity();
 
