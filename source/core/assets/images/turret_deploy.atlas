@@ -1,125 +1,83 @@
 
 turret_deploy.png
-size: 512, 128
+size: 256, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: xy
-angry
+1
   rotate: false
-  xy: 80, 20
+  xy: 20, 134
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-angry
-  rotate: false
-  xy: 380, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-angry
-  rotate: false
-  xy: 200, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-angry
+2
   rotate: false
   xy: 20, 20
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-angry
+3
   rotate: false
-  xy: 320, 20
+  xy: 20, 77
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-angry
+4
   rotate: false
-  xy: 140, 20
+  xy: 20, 191
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-angry
+5
   rotate: false
-  xy: 440, 20
+  xy: 140, 191
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-angry
+6
   rotate: false
-  xy: 260, 20
+  xy: 80, 191
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-default
+7
   rotate: false
-  xy: 260, 20
+  xy: 80, 77
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-idle
+8
   rotate: false
-  xy: 80, 20
+  xy: 80, 134
   size: 40, 37
   orig: 40, 37
   offset: 0, 0
   index: -1
-idle
+fire1
   rotate: false
-  xy: 380, 20
-  size: 40, 37
-  orig: 40, 37
+  xy: 140, 138
+  size: 35, 33
+  orig: 35, 33
   offset: 0, 0
   index: -1
-idle
+fire2
   rotate: false
-  xy: 200, 20
-  size: 40, 37
-  orig: 40, 37
+  xy: 80, 24
+  size: 35, 33
+  orig: 35, 33
   offset: 0, 0
   index: -1
-idle
+fire3
   rotate: false
-  xy: 20, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-idle
-  rotate: false
-  xy: 320, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-idle
-  rotate: false
-  xy: 140, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-idle
-  rotate: false
-  xy: 440, 20
-  size: 40, 37
-  orig: 40, 37
-  offset: 0, 0
-  index: -1
-idle
-  rotate: false
-  xy: 260, 20
-  size: 40, 37
-  orig: 40, 37
+  xy: 200, 195
+  size: 35, 33
+  orig: 35, 33
   offset: 0, 0
   index: -1
