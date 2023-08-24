@@ -1,6 +1,7 @@
 package com.csse3200.game.entities.factories;
 
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -10,6 +11,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tasks.TowerIdleTask;
+import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.WallTowerConfig;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -33,7 +35,7 @@ public class TowerFactory {
 
     private static final int WEAPON_SCAN_INTERVAL = 1;
     private static final int COMBAT_TASK_PRIORITY = 2;
-    public static final int WEAPON_TOWER_MAX_RANGE = 500;
+    public static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
 
@@ -48,7 +50,6 @@ public class TowerFactory {
                 .addComponent(new CostComponent(config.cost));
 
         return wall;
-
     }
 
     /**
@@ -60,26 +61,30 @@ public class TowerFactory {
         Entity weapon = createBaseTower();
         WeaponTowerConfig config = configs.weapon;
 
-////         TODO: uncomment once tasks are finalised - will break build if included before
+//         TODO: uncomment once tasks are finalised - will break build if included before
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TowerIdleTask(WEAPON_SCAN_INTERVAL))
-                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
-//
-//        // TODO: uncomment once animations are finalised - will break build if included before
+                .addTask(new TowerIdleTask(WEAPON_SCAN_INTERVAL));
+//                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        // TODO: uncomment once animations are finalised - will break build if included before
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/turret.atlas", TextureAtlas.class));
-        animator.addAnimation("idle", 0.5f, Animation.PlayMode.LOOP);
-        animator.addAnimation("stow", 0.3f, Animation.PlayMode.NORMAL);
+                                .getAsset("images/turret01.atlas", TextureAtlas.class));
+        animator.addAnimation("idle", 0.3f, Animation.PlayMode.LOOP);
+        animator.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
-        animator.addAnimation("firing", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
-                .addComponent(animator);
+                .addComponent(animator)
+                .addComponent(new TowerAnimationController());
+
+//        weapon.getComponent(AnimationRenderComponent.class).scaleEntity();
+
         return weapon;
 
     }

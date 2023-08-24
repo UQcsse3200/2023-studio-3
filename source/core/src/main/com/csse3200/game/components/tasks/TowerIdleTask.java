@@ -21,9 +21,9 @@ import org.slf4j.LoggerFactory;
  */
 public class TowerIdleTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
-    private static final float SCAN_RANGE = 500;
-    private static final int ACTIVE_PRIORITY = 0;
-    private static final int INACTIVE_PRIORITY = -1;
+    private static final float SCAN_RANGE = 50;
+    private static final int ACTIVE_PRIORITY = 1;
+    private static final int INACTIVE_PRIORITY = 0;
     private final GameTime timeSource;
     private final float interval;
     private long endTime;
@@ -48,6 +48,7 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
+        owner.getEntity().getEvents().trigger("idleStart");
         endTime = timeSource.getTime() + (int)(this.interval * 1000);
     }
 
@@ -55,10 +56,12 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             if (isTargetVisible()) {
-                owner.getEntity().getEvents().trigger("deployStart");
+//                owner.getEntity().getEvents().trigger("deployStart");
+                TowerCombatTask combatTask = new TowerCombatTask(ACTIVE_PRIORITY + 2, SCAN_RANGE - 10);
+                combatTask.create(owner);
                 logger.debug("Idle Task update function: Detected a target!");
             }
-            status = Status.FINISHED;
+//            status = Status.INACTIVE;
         }
     }
 
@@ -71,7 +74,8 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
 
         // If there is an obstacle in the path to the end of the tower scan range
         // must be mobs present.
-        if (physics.raycast(from, to, PhysicsLayer.NPC, hit)) {
+        // TODO change layer to detect
+        if (physics.raycast(from, to, PhysicsLayer.PLAYER, hit)) {
             debugRenderer.drawLine(from, hit.point);
             return true;
         }
@@ -81,11 +85,10 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
 
     @Override
     public int getPriority() {
-        if (status == Status.ACTIVE) {
-            return getActivePriority();
-        }
-
-        return getInactivePriority();
+//        if (status == Status.ACTIVE) {
+//            return getActivePriority();
+//        }
+        return getActivePriority();
     }
 
     public int getActivePriority() {

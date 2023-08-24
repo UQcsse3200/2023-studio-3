@@ -15,8 +15,8 @@ public class TowerAnimationController extends Component {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener("idleStart", this::animateIdle);
-        entity.getEvents().addListener("deployStart", this::animateDeploy);
         entity.getEvents().addListener("stowStart", this::animateStow);
+        entity.getEvents().addListener("deployStart", this::animateDeploy);
         entity.getEvents().addListener("firingStart", this::animateFiring);
 
     }

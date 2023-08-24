@@ -30,7 +30,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public TowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
-//        this.towerPosition = this.owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         physics = ServiceLocator.getPhysicsService().getPhysics();
         debugRenderer = ServiceLocator.getRenderService().getDebug();
@@ -41,7 +40,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         this.towerPosition = owner.getEntity().getCenterPosition();
-        owner.getEntity().getEvents().trigger("firingStart");
+        owner.getEntity().getEvents().trigger("deployStart");
     }
 
     @Override
@@ -66,11 +65,13 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         if (isTargetVisible()) {
             return getActivePriority();
         }
+        status = Status.FINISHED;
         return getInactivePriority();
     }
 
     private float getDistanceToTarget() {
-        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.OBSTACLE, hit)) {
+        // TODO change layer to detect
+        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.PLAYER, hit)) {
             return towerPosition.dst(hit.point.x, hit.point.y);
         };
         return -1;
@@ -95,7 +96,8 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private boolean isTargetVisible() {
 
         // If there is an obstacle in the path to the max range point, mobs visible.
-        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.NPC, hit)) {
+        // TODO change layer to detect
+        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.PLAYER, hit)) {
             debugRenderer.drawLine(towerPosition, hit.point);
             return true;
         }
