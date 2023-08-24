@@ -19,10 +19,10 @@ public class GhostAnimationController extends Component {
   }
 
   void animateWander() {
-    animator.startAnimation("idle");
+    animator.startAnimation("float");
   }
 
   void animateChase() {
-    animator.startAnimation("angry");
+    animator.startAnimation("angry_float");
   }
 }
