@@ -67,21 +67,21 @@ default
   orig: 40, 37
   offset: 0, 0
   index: -1
-fire
+firing
   rotate: false
   xy: 200, 195
   size: 35, 33
   orig: 35, 33
   offset: 0, 0
   index: -1
-fire
+firing
   rotate: false
   xy: 140, 81
   size: 35, 33
   orig: 35, 33
   offset: 0, 0
   index: -1
-fire
+firing
   rotate: false
   xy: 80, 24
   size: 35, 33
