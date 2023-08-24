@@ -84,8 +84,8 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    spawnProjectile(new Vector2(3f, 3f));
-    spawnMultiProjectile(new Vector2(3f, 3f));
+    spawnProjectile(ghostking, player, new Vector2(3f, 3f));
+    spawnMultiProjectile(player, ghostking, new Vector2(3f, 3f));
   }
 
   private void displayUI() {
@@ -165,29 +165,35 @@ public class ForestGameArea extends GameArea {
 
     /**
    * Spawns a projectile currently just in the center of the game
+   * @param shooter The entity that's shooting the projectile.
    * 
-   * @return a new projectile
    */
-  private void spawnProjectile(Vector2 speed) {
-    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, ghostking.getPosition().y), speed);
-    spawnEntity(newProjectile);
+  private void spawnProjectile(Entity shooter, Entity target, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, ghostking.getPosition().y), speed);
+    Projectile.setPosition(shooter.getPosition());
+    spawnEntity(Projectile);
   }
 
-  /**
-   * Returns three projectiles that travel simultaneous.
-   * @param speed Speed of the projectiles
-   */
-  private void spawnMultiProjectile(Vector2 speed) {
-    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y + 30), speed);
-    newTopProjectile.setPosition(player.getPosition());
-    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y), speed);
-    newMiddleProjectile.setPosition(player.getPosition());
-    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y - 30), speed);
-    newBottomProjectile.setPosition(player.getPosition());
-
-    spawnEntity(newTopProjectile);
-    spawnEntity(newMiddleProjectile);
-    spawnEntity(newBottomProjectile);
+   /**
+    * Returns three projectiles that travel simultaneous.
+    * 
+    * @param shooter The entity that's shooting the projectile.
+    * @param target The enemy entities of the "shooter".
+    * @param speed Speed of the projectiles
+    */
+  private void spawnMultiProjectile(Entity shooter, Entity target, Vector2 speed) {
+    Vector2 position = shooter.getPosition();
+    Entity TopProjectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, position.y + 30), speed);
+    Entity MiddleProjectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, position.y), speed);
+    Entity BottomProjectile = ProjectileFactory.createProjectile(ghostking, target, new Vector2(towardsMobs, position.y - 30), speed);
+    
+    TopProjectile.setPosition(position);
+    MiddleProjectile.setPosition(position);
+    BottomProjectile.setPosition(position);
+    
+    spawnEntity(TopProjectile);
+    spawnEntity(MiddleProjectile);
+    spawnEntity(BottomProjectile);
   }
 
   private void playMusic() {
