@@ -77,15 +77,15 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-    spawnTrees();
+    // spawnTrees();
     player = spawnPlayer();
     // spawnGhosts();
     ghostking = spawnGhostKing();
 
     playMusic();
 
-    spawnProjectile(ghostking, player, new Vector2(3f, 3f));
-    spawnMultiProjectile(player, ghostking, new Vector2(3f, 3f));
+    spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
+    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 30, new Vector2(3f, 3f));
   }
 
   private void displayUI() {
@@ -164,35 +164,38 @@ public class ForestGameArea extends GameArea {
   }
 
     /**
-   * Spawns a projectile currently just in the center of the game
-   * @param shooter The entity that's shooting the projectile.
+    * Spawns a projectile currently just in the center of the game
+    * 
+    * @param position Position of the Entity that's shooting the projectile.
+    * @param target The enemy entities of the "shooter".
+    * @param direction The direction the projectile should head towards.
+    * @param speed Speed of the projectiles
    * 
    */
-  private void spawnProjectile(Entity shooter, Entity target, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, ghostking.getPosition().y), speed);
-    Projectile.setPosition(shooter.getPosition());
+  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y), speed);
+    Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
 
    /**
     * Returns three projectiles that travel simultaneous.
     * 
-    * @param shooter The entity that's shooting the projectile.
+    * @param position Position of the Entity that's shooting the projectile.
     * @param target The enemy entities of the "shooter".
+    * @param direction The direction the projectile should head towards.
+    * @param space Space between the projectiles.
     * @param speed Speed of the projectiles
     */
-  private void spawnMultiProjectile(Entity shooter, Entity target, Vector2 speed) {
-    Vector2 position = shooter.getPosition();
-    Entity TopProjectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, position.y + 30), speed);
-    Entity MiddleProjectile = ProjectileFactory.createProjectile(shooter, target, new Vector2(towardsMobs, position.y), speed);
-    Entity BottomProjectile = ProjectileFactory.createProjectile(ghostking, target, new Vector2(towardsMobs, position.y - 30), speed);
+  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed) {
+    Entity TopProjectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y + space), speed);
+    Entity BottomProjectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y - space), speed);
     
     TopProjectile.setPosition(position);
-    MiddleProjectile.setPosition(position);
     BottomProjectile.setPosition(position);
-    
+
     spawnEntity(TopProjectile);
-    spawnEntity(MiddleProjectile);
+    spawnProjectile(position, target, direction, speed);
     spawnEntity(BottomProjectile);
   }
 

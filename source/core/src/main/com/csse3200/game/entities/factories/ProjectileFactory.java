@@ -25,13 +25,12 @@ public class ProjectileFactory {
 
   /**
    * Creates a projectile Entity.
-   * @param shooter The entity that's shooting projectiles.
    * @param target The enemy entities that the projectile collides with.
    * @param destination Direction the projectile needs to go towards.
    * @param speed Speed of the projectile.
    * @return Returns the new projectile entity.
    */
-  public static Entity createProjectile(Entity shooter, Entity target, Vector2 destination, Vector2 speed) {
+  public static Entity createProjectile(Entity target, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.projectile;
 
     AITaskComponent aiComponent =
