@@ -17,6 +17,8 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.csse3200.game.entities.factories.ProjectileFactory;
+
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
@@ -24,7 +26,10 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 2;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
+
+  // Required to load assets before using them
   private static final String[] forestTextures = {
+    "images/projectile.png",
     "images/box_boy_leaf.png",
     "images/tree.png",
     "images/ghost_king.png",
@@ -49,6 +54,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
 
   private Entity player;
+  private Entity ghostking;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
@@ -70,10 +76,13 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
     spawnTrees();
     player = spawnPlayer();
-    spawnGhosts();
-    spawnGhostKing();
+    // spawnGhosts();
+    ghostking = spawnGhostKing();
 
     playMusic();
+
+    spawnProjectile(new Vector2(3f, 3f));
+    spawnMultiProjectile(new Vector2(3f, 3f));
   }
 
   private void displayUI() {
@@ -140,13 +149,39 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private void spawnGhostKing() {
+  private Entity spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    GridPoint2 randomPos 
+    = RandomUtils.random(minPos, maxPos);
+    // = new GridPoint2(26, 26);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
+    return ghostKing;
+  }
+
+    /**
+   * Spawns a projectile currently just in the center of the game
+   * 
+   * @return a new projectile
+   */
+  private void spawnProjectile(Vector2 speed) {
+    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, ghostking.getPosition().x), speed);
+    newProjectile.setPosition(ghostking.getPosition());
+    spawnEntity(newProjectile);
+  }
+
+  private void spawnMultiProjectile(Vector2 speed) {
+    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x + 30), speed);
+    newTopProjectile.setPosition(player.getPosition());
+    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x), speed);
+    newMiddleProjectile.setPosition(player.getPosition());
+    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x - 30), speed);
+    newBottomProjectile.setPosition(player.getPosition());
+
+    spawnEntity(newTopProjectile);
+    spawnEntity(newMiddleProjectile);
+    spawnEntity(newBottomProjectile);
   }
 
   private void playMusic() {
