@@ -20,12 +20,24 @@ public class PopupMenuInputComponent extends InputComponent{
     // Note: will need to change constructor's priority when merging with other
     // branches that add other input components.
     /**
+     * Triggers "popupEvent" when the mouse is clicked.
      *
      * @return whether the input was processed
-     * @see InputProcessor#keyDown(int)
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        System.out.println(9);
+        entity.getEvents().trigger("popupEvent");
+        return true;
+    }
+
+    /**
+     * Triggers "popupEvent" when the mouse is clicked.
+     *
+     * @return whether the input was processed
+     */
+    @Override
+    public boolean touchDown(float screenX, float screenY, int pointer, int button) {
         System.out.println(9);
         entity.getEvents().trigger("popupEvent");
         return true;

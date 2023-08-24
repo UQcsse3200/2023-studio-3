@@ -15,27 +15,17 @@ import static org.mockito.Mockito.*;
 class PopupMenuInputComponentTest {
 
     @Test
-    void handlesTouchDownNoEntity(){
-        EventHandler handler = new EventHandler();
-        EventListener0 listener = mock(EventListener0.class);
-        handler.addListener("popupEvent", listener);
-        PopupMenuInputComponent popupMenuInputComponent = spy(PopupMenuInputComponent.class);
-        assertFalse(popupMenuInputComponent.touchDown(5f, 6f, 7, 8));
-        verify(listener, times(0)).handle();
-    }
-
-    @Test
     void handlesTouchDownEntityIncluded(){
-//        EventListener0 listener = mock(EventListener0.class);
-//        Entity entity = new Entity();
-//        InputService inputService = new InputService();
-//        ServiceLocator.registerInputService(inputService);
+        EventListener0 listener = mock(EventListener0.class);
+        Entity entity = new Entity();
+        InputService inputService = new InputService();
+        ServiceLocator.registerInputService(inputService);
         PopupMenuInputComponent popupMenuInputComponent = new PopupMenuInputComponent();//spy(PopupMenuInputComponent.class);
-//        entity.addComponent(popupMenuInputComponent);
-//        inputService.register(popupMenuInputComponent);
-//        entity.getEvents().addListener("popupEvent", listener);
-//        entity.create();
-        assertTrue(popupMenuInputComponent.touchDown(5f, 6f, 7, 8));
-//        verify(listener).handle();
+        entity.addComponent(popupMenuInputComponent);
+        inputService.register(popupMenuInputComponent);
+        entity.getEvents().addListener("popupEvent", listener);
+        entity.create();
+        assertTrue(popupMenuInputComponent.touchDown(5, 6, 7, 8));
+        verify(listener).handle();
     }
 }
