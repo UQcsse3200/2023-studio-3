@@ -16,6 +16,8 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.io.*;
+import java.util.*;
 
 import com.csse3200.game.entities.factories.ProjectileFactory;
 
@@ -24,7 +26,7 @@ public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_TREES = 7;
   private static final int NUM_GHOSTS = 2;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 20);
   private static final float WALL_WIDTH = 0.1f;
 
   // Required to load assets before using them
@@ -85,7 +87,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
-    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 30, new Vector2(3f, 3f));
+    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 5);
   }
 
   private void displayUI() {
@@ -156,15 +158,15 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     GridPoint2 randomPos 
-    = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
+    // = RandomUtils.random(minPos, maxPos);
+     = new GridPoint2(0, 0);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
     return ghostKing;
   }
 
     /**
-    * Spawns a projectile currently just in the center of the game
+    * Spawns a projectile that only heads towards the enemies in its lane.
     * 
     * @param position Position of the Entity that's shooting the projectile.
     * @param target The enemy entities of the "shooter".
@@ -178,6 +180,21 @@ public class ForestGameArea extends GameArea {
     spawnEntity(Projectile);
   }
 
+  /**
+    * Spawns a projectile to be used for multiple projectile function.
+    * 
+    * @param position Position of the Entity that's shooting the projectile.
+    * @param target The enemy entities of the "shooter".
+    * @param direction The direction the projectile should head towards.
+    * @param speed Speed of the projectiles
+   * 
+   */
+  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y + space), speed);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+
    /**
     * Returns three projectiles that travel simultaneous.
     * 
@@ -186,17 +203,20 @@ public class ForestGameArea extends GameArea {
     * @param direction The direction the projectile should head towards.
     * @param space Space between the projectiles.
     * @param speed Speed of the projectiles
+    * @param amount The amount of projectiles to spawn.
     */
-  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed) {
-    Entity TopProjectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y + space), speed);
-    Entity BottomProjectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y - space), speed);
-    
-    TopProjectile.setPosition(position);
-    BottomProjectile.setPosition(position);
-
-    spawnEntity(TopProjectile);
+  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int amount) {
+    int hmm = amount / 2;
+    for (int i = 0; i < amount/2; i++) {
+        spawnProjectile(position, target, space * hmm, direction, speed);
+        --hmm;
+    }
     spawnProjectile(position, target, direction, speed);
-    spawnEntity(BottomProjectile);
+    hmm = 1;
+    for (int i = 0; i < amount / 2; i++) {
+        spawnProjectile(position, target, space * hmm * (-1), direction, speed);
+        ++hmm;
+    }
   }
 
   private void playMusic() {
