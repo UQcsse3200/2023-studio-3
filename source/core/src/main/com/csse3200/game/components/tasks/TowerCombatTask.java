@@ -9,16 +9,19 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TowerCombatTask extends DefaultTask implements PriorityTask {
+    private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
     private final int priority;
     private final float maxRange;
-    private final Vector2 towerPosition = owner.getEntity().getCenterPosition();
+    private Vector2 towerPosition = new Vector2(10,10);
     private final Vector2 maxRangePosition = new Vector2();
     private final PhysicsEngine physics;
     private final DebugRenderer debugRenderer;
     private final RaycastHit hit = new RaycastHit();
-//    private DeployTask deployTask;
+
 
     /**
      * @param priority Task priority when chasing (0 when not chasing).
@@ -27,41 +30,42 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public TowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+//        this.towerPosition = this.owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         physics = ServiceLocator.getPhysicsService().getPhysics();
         debugRenderer = ServiceLocator.getRenderService().getDebug();
+        logger.debug("TowerCombatTask started");
     }
 
     @Override
     public void start() {
         super.start();
-
-//        deployTask.create(owner);
-//        deployTask.start();
-
-        this.owner.getEntity().getEvents().trigger("towerDeployStart");
+        this.towerPosition = owner.getEntity().getCenterPosition();
+        owner.getEntity().getEvents().trigger("firingStart");
     }
 
     @Override
     public void update() {
-//        deployTask.update();
-//        if (deployTaskTask.getStatus() != Status.ACTIVE) {
-//            deployTask.start();
-//        }
+        if (status == Status.ACTIVE) {
+            owner.getEntity().getEvents().trigger("firingStart");
+            logger.debug("firing start event should have been triggered");
+        } else {
+            owner.getEntity().getEvents().trigger("stowStart");
+            logger.debug("stow start event should have been triggered");
+        }
     }
 
     @Override
     public void stop() {
         super.stop();
-//        deployTask.stop();
+        owner.getEntity().getEvents().trigger("stowStart");
     }
 
     @Override
     public int getPriority() {
-        if (status == Status.ACTIVE) {
+        if (isTargetVisible()) {
             return getActivePriority();
         }
-
         return getInactivePriority();
     }
 
@@ -75,7 +79,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private int getActivePriority() {
         float dst = getDistanceToTarget();
         if (dst > maxRange || !isTargetVisible()) {
-            return -1; // Too far, stop chasing
+            return -1; // Too far, stop firing
         }
         return priority;
     }
@@ -90,8 +94,8 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
 
     private boolean isTargetVisible() {
 
-        // If there is an obstacle in the path to the player, not visible.
-        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.OBSTACLE, hit)) {
+        // If there is an obstacle in the path to the max range point, mobs visible.
+        if (physics.raycast(towerPosition, maxRangePosition, PhysicsLayer.NPC, hit)) {
             debugRenderer.drawLine(towerPosition, hit.point);
             return true;
         }

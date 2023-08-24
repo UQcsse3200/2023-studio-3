@@ -1,6 +1,7 @@
 package com.csse3200.game.components.tasks;
 
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
@@ -10,6 +11,8 @@ import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Task for the Tower Idle State - specifically for the
@@ -17,9 +20,9 @@ import com.csse3200.game.services.ServiceLocator;
  * idle states. Scans for enemy mobs but does nothing else.
  */
 public class TowerIdleTask extends DefaultTask implements PriorityTask {
-
+    private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
     private static final float SCAN_RANGE = 500;
-    private static final int ACTIVE_PRIORITY = 1;
+    private static final int ACTIVE_PRIORITY = 0;
     private static final int INACTIVE_PRIORITY = -1;
     private final GameTime timeSource;
     private final float interval;
@@ -36,6 +39,7 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
         physics = ServiceLocator.getPhysicsService().getPhysics();
         this.interval = interval;
         debugRenderer = ServiceLocator.getRenderService().getDebug();
+        logger.debug("Weapon Tower idleTask started");
     }
 
     /**
@@ -51,7 +55,8 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             if (isTargetVisible()) {
-                owner.getEntity().getEvents().trigger("mobsVisible");
+                owner.getEntity().getEvents().trigger("deployStart");
+                logger.debug("Idle Task update function: Detected a target!");
             }
             status = Status.FINISHED;
         }
@@ -66,7 +71,7 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
 
         // If there is an obstacle in the path to the end of the tower scan range
         // must be mobs present.
-        if (physics.raycast(from, to, PhysicsLayer.OBSTACLE, hit)) {
+        if (physics.raycast(from, to, PhysicsLayer.NPC, hit)) {
             debugRenderer.drawLine(from, hit.point);
             return true;
         }
