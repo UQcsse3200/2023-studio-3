@@ -16,8 +16,6 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.io.*;
-import java.util.*;
 
 import com.csse3200.game.entities.factories.ProjectileFactory;
 
@@ -26,7 +24,7 @@ public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_TREES = 7;
   private static final int NUM_GHOSTS = 2;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 20);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
   private static final float WALL_WIDTH = 0.1f;
 
   // Required to load assets before using them
@@ -87,7 +85,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
-    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 5);
+    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
   }
 
   private void displayUI() {
@@ -196,7 +194,7 @@ public class ForestGameArea extends GameArea {
   }
 
    /**
-    * Returns three projectiles that travel simultaneous.
+    * Returns multiple projectiles that travel simultaneous.
     * 
     * @param position Position of the Entity that's shooting the projectile.
     * @param target The enemy entities of the "shooter".
@@ -206,16 +204,10 @@ public class ForestGameArea extends GameArea {
     * @param amount The amount of projectiles to spawn.
     */
   private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int amount) {
-    int hmm = amount / 2;
-    for (int i = 0; i < amount/2; i++) {
-        spawnProjectile(position, target, space * hmm, direction, speed);
-        --hmm;
-    }
-    spawnProjectile(position, target, direction, speed);
-    hmm = 1;
-    for (int i = 0; i < amount / 2; i++) {
-        spawnProjectile(position, target, space * hmm * (-1), direction, speed);
-        ++hmm;
+    int half = amount / 2;
+    for (int i = 0; i < amount; i++) {
+        spawnProjectile(position, target, space * half, direction, speed);
+        --half;
     }
   }
 
