@@ -30,8 +30,10 @@ import com.csse3200.game.services.ServiceLocator;
  * the properties stores in 'baseTowerConfigs'.
  */
 public class TowerFactory {
+
     private static final int WEAPON_SCAN_INTERVAL = 1;
     private static final int COMBAT_TASK_PRIORITY = 2;
+    public static final int WEAPON_TOWER_MAX_RANGE = 500;
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
 
@@ -58,25 +60,26 @@ public class TowerFactory {
         Entity weapon = createBaseTower();
         WeaponTowerConfig config = configs.weapon;
 
-        // TODO: uncomment once tasks are finalised - will break build if included before
-//        AITaskComponent aiTaskComponent = new AITaskComponent()
-//                .addTask(new TowerIdleTask(WEAPON_SCAN_INTERVAL))
-//                .addTask(new TowerCombatTask());
-
-        // TODO: uncomment once animations are finalised - will break build if included before
-//        AnimationRenderComponent animator =
-//                new AnimationRenderComponent(
-//                        ServiceLocator.getResourceService()
-//                                .getAsset("images/turret.atlas", TextureAtlas.class));
-//        animator.addAnimation("idle", 0.5f, Animation.PlayMode.LOOP);
-//        animator.addAnimation("stow", 0.3f, Animation.PlayMode.NORMAL);
-//        animator.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
-//        animator.addAnimation("firing", 0.2f, Animation.PlayMode.LOOP);
+////         TODO: uncomment once tasks are finalised - will break build if included before
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new TowerIdleTask(WEAPON_SCAN_INTERVAL))
+                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+//
+//        // TODO: uncomment once animations are finalised - will break build if included before
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset("images/turret.atlas", TextureAtlas.class));
+        animator.addAnimation("idle", 0.5f, Animation.PlayMode.LOOP);
+        animator.addAnimation("stow", 0.3f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
+        animator.addAnimation("firing", 0.2f, Animation.PlayMode.LOOP);
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new CostComponent(config.cost));
-
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator);
         return weapon;
 
     }
