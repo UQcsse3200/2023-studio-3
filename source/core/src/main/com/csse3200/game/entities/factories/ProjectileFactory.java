@@ -23,7 +23,7 @@ public class ProjectileFactory {
 
   private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
 
-  public static Entity createProjectile(Entity shooter, Entity target, Vector2 destination) {
+  public static Entity createProjectile(Entity shooter, Entity target, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.projectile;
 
     AITaskComponent aiComponent =
@@ -41,7 +41,8 @@ public class ProjectileFactory {
         .addComponent(aiComponent);
 
     projectile.getComponent(TextureRenderComponent.class).scaleEntity();
-    projectile.getComponent(PhysicsMovementComponent.class);
+    projectile.getComponent(PhysicsMovementComponent.class).setSpeed(speed);
+
 
     // Able to alter the collider component's size in proportion to the Entity's size.
     // PhysicsUtils.setScaledCollider(projectile, 0.9f, 0.4f);
