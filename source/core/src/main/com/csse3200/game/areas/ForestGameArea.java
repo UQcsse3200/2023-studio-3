@@ -81,8 +81,8 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    spawnProjectile();
-    spawnMultiProjectile();
+    spawnProjectile(new Vector2(3f, 3f));
+    spawnMultiProjectile(new Vector2(3f, 3f));
   }
 
   private void displayUI() {
@@ -165,26 +165,24 @@ public class ForestGameArea extends GameArea {
    * 
    * @return a new projectile
    */
-  private void spawnProjectile() {
-    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, ghostking.getPosition().x));
+  private void spawnProjectile(Vector2 speed) {
+    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, ghostking.getPosition().x), speed);
     newProjectile.setPosition(ghostking.getPosition());
     spawnEntity(newProjectile);
   }
 
-  private void spawnMultiProjectile() {
-    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x + 30));
+  private void spawnMultiProjectile(Vector2 speed) {
+    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x + 30), speed);
     newTopProjectile.setPosition(player.getPosition());
-    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x));
+    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x), speed);
     newMiddleProjectile.setPosition(player.getPosition());
-    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x - 30));
+    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x - 30), speed);
     newBottomProjectile.setPosition(player.getPosition());
-    
 
     spawnEntity(newTopProjectile);
     spawnEntity(newMiddleProjectile);
     spawnEntity(newBottomProjectile);
   }
-
 
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
