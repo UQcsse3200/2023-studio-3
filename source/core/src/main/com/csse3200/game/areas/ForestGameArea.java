@@ -56,6 +56,9 @@ public class ForestGameArea extends GameArea {
   private Entity player;
   private Entity ghostking;
 
+  private static final int towardsTowers = 0;
+  private static final int towardsMobs = 100;
+
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
    * @param terrainFactory TerrainFactory used to create the terrain for the GameArea.
@@ -166,17 +169,20 @@ public class ForestGameArea extends GameArea {
    * @return a new projectile
    */
   private void spawnProjectile(Vector2 speed) {
-    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, ghostking.getPosition().x), speed);
-    newProjectile.setPosition(ghostking.getPosition());
+    Entity newProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, ghostking.getPosition().y), speed);
     spawnEntity(newProjectile);
   }
 
+  /**
+   * Returns three projectiles that travel simultaneous.
+   * @param speed Speed of the projectiles
+   */
   private void spawnMultiProjectile(Vector2 speed) {
-    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x + 30), speed);
+    Entity newTopProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y + 30), speed);
     newTopProjectile.setPosition(player.getPosition());
-    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x), speed);
+    Entity newMiddleProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y), speed);
     newMiddleProjectile.setPosition(player.getPosition());
-    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(100, player.getPosition().x - 30), speed);
+    Entity newBottomProjectile = ProjectileFactory.createProjectile(ghostking, player, new Vector2(towardsMobs, player.getPosition().y - 30), speed);
     newBottomProjectile.setPosition(player.getPosition());
 
     spawnEntity(newTopProjectile);
