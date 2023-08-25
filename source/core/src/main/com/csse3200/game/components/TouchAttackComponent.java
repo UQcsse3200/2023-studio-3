@@ -20,6 +20,7 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 public class TouchAttackComponent extends Component {
   private short targetLayer;
   private float knockbackForce = 0f;
+  private boolean disposeOnHit = false;
   private CombatStatsComponent combatStats;
   private HitboxComponent hitboxComponent;
 
@@ -41,9 +42,22 @@ public class TouchAttackComponent extends Component {
     this.knockbackForce = knockback;
   }
 
+  /**
+   * Create a component which attacks entities on collision, with knockback and self-dispose.
+   * @param targetLayer The physics layer of the target's collider.
+   * @param knockback The magnitude of the knockback applied to the entity.
+   * @param disposeOnHit Whether this entity should be disposed on hit.
+   */
+  public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit) {
+    this.targetLayer = targetLayer;
+    this.knockbackForce = knockback;
+    this.disposeOnHit = disposeOnHit;
+  }
+
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::onCollisionStart);
+    entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
     combatStats = entity.getComponent(CombatStatsComponent.class);
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
@@ -65,7 +79,6 @@ public class TouchAttackComponent extends Component {
     if (targetStats != null) {
       targetStats.hit(combatStats);
     }
-
     // Apply knockback
     PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);
     if (physicsComponent != null && knockbackForce > 0f) {
@@ -74,5 +87,15 @@ public class TouchAttackComponent extends Component {
       Vector2 impulse = direction.setLength(knockbackForce);
       targetBody.applyLinearImpulse(impulse, targetBody.getWorldCenter(), true);
     }
+
+    if (disposeOnHit) {
+      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+      projectile.setFlagForDelete(true);
+    }
+  }
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
   }
 }
+

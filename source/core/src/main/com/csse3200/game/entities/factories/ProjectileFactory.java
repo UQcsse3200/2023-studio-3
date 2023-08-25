@@ -21,7 +21,8 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ProjectileFactory {
 
-  private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
+  private static final NPCConfigs configs = 
+      FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
 
   /**
    * Creates a projectile Entity.
@@ -43,7 +44,7 @@ public class ProjectileFactory {
         .addComponent(new PhysicsMovementComponent())
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
         .addComponent(new ColliderComponent())
-        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
+        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         .addComponent(aiComponent);
 
