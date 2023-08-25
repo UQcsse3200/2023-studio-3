@@ -25,6 +25,8 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_TREES = 7;
   private static final int NUM_GHOSTS = 2;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
+  // Temporary spawn point for testing
+  private static final GridPoint2 PLAYER_SPAWN2 = new GridPoint2(15, 15);
   private static final float WALL_WIDTH = 0.1f;
 
   // Required to load assets before using them
@@ -78,14 +80,18 @@ public class ForestGameArea extends GameArea {
 
     spawnTerrain();
     // spawnTrees();
-    player = spawnPlayer();
+    player = spawnPlayer(PLAYER_SPAWN2);
     // spawnGhosts();
     ghostking = spawnGhostKing();
 
     playMusic();
 
-    spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
-    spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
+    // spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
+    // spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
+
+    // For testing purposes:
+    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+    spawnMultiProjectile(new Vector2(0, 10), ghostking, towardsMobs, 20, new Vector2(2f, 2f), 7);
   }
 
   private void displayUI() {
@@ -138,6 +144,13 @@ public class ForestGameArea extends GameArea {
   private Entity spawnPlayer() {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
+    return newPlayer;
+  }
+
+  // Spawn player at a specific position
+  private Entity spawnPlayer(GridPoint2 position) {
+    Entity newPlayer = PlayerFactory.createPlayer();
+    spawnEntityAt(newPlayer, position, true, true);
     return newPlayer;
   }
 
