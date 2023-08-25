@@ -22,7 +22,7 @@ public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_TREES = 7;
   private static final int NUM_GHOSTS = 2;
-  private static final int NUM_GRUNTS = 5;
+  private static final int NUM_GRUNTS = 1;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
   private static final String[] forestTextures = {
@@ -71,8 +71,8 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
     spawnTrees();
     player = spawnPlayer();
+
     spawnGhosts();
-    spawnGhostKing();
     spawnXenoGrunts();
 
     playMusic();
@@ -143,11 +143,10 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnXenoGrunts() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
+    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
     for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
       spawnEntityAt(xenoGrunt, randomPos, true, true);
     }
