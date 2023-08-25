@@ -18,6 +18,10 @@ import org.slf4j.LoggerFactory;
  * Task for the Tower Idle State - specifically for the
  * Weapon Tower Entity that can move between combat and
  * idle states. Scans for enemy mobs but does nothing else.
+ *
+ * ====================== CURRENTLY NOT IN USE ==================================
+ * This task may be modified for use in future features but is not required
+ * for current functionality
  */
 public class TowerIdleTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
@@ -34,6 +38,8 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     private final short TARGET = PhysicsLayer.NPC;
 
     /**
+     * Instantiates a TowerIdleTask which scans for mobs at a certain
+     * time interval.
      * @param interval time between scanning for mobs, in seconds.
      */
     public TowerIdleTask(float interval) {
@@ -45,11 +51,12 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Start waiting from now until interval has passed.
+     * Start the Idle task - waiting from current game time until interval has passed.
      */
     @Override
     public void start() {
         super.start();
+        // Trigger the idle event
         owner.getEntity().getEvents().trigger("idleStart");
         endTime = timeSource.getTime() + (int)(this.interval * 1000);
     }
