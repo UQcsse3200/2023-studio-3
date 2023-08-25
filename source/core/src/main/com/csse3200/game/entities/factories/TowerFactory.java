@@ -61,12 +61,11 @@ public class TowerFactory {
         Entity weapon = createBaseTower();
         WeaponTowerConfig config = configs.weapon;
 
-//         TODO: uncomment once tasks are finalised - will break build if included before
+        // AiTaskComponent will run the tower task which carries out detection of targets and trigger events
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TowerIdleTask(WEAPON_SCAN_INTERVAL));
-//                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
-        // TODO: uncomment once animations are finalised - will break build if included before
+        // Contains all the animations that the tower will have
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
