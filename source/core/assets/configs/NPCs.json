@@ -8,7 +8,7 @@
     "baseAttack": 25,
     "spookyFactor": 7
   },
-  "fireBall": {
+  "projectile": {
     "health": 100,
     "baseAttack": 10
   }
