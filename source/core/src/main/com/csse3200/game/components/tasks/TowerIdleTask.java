@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TowerIdleTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
-    private static final float SCAN_RANGE = 50;
+    private static final float SCAN_RANGE = 100;
     private static final int ACTIVE_PRIORITY = 1;
     private static final int INACTIVE_PRIORITY = 0;
     private final GameTime timeSource;
@@ -30,6 +30,8 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
     private final PhysicsEngine physics;
     private final DebugRenderer debugRenderer;
     private final RaycastHit hit = new RaycastHit();
+
+    private final short TARGET = PhysicsLayer.NPC;
 
     /**
      * @param interval time between scanning for mobs, in seconds.
@@ -61,7 +63,6 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
                 combatTask.create(owner);
                 logger.debug("Idle Task update function: Detected a target!");
             }
-//            status = Status.INACTIVE;
         }
     }
 
@@ -75,11 +76,11 @@ public class TowerIdleTask extends DefaultTask implements PriorityTask {
         // If there is an obstacle in the path to the end of the tower scan range
         // must be mobs present.
         // TODO change layer to detect
-        if (physics.raycast(from, to, PhysicsLayer.PLAYER, hit)) {
-            debugRenderer.drawLine(from, hit.point);
+        if (physics.raycast(from, to, TARGET, hit)) {
+//            debugRenderer.drawLine(from, hit.point);
             return true;
         }
-        debugRenderer.drawLine(from, to);
+//        debugRenderer.drawLine(from, to);
         return false;
     }
 
