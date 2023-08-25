@@ -43,7 +43,7 @@ public class ProjectileFactory {
         .addComponent(new PhysicsComponent())
         .addComponent(new PhysicsMovementComponent())
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
-        .addComponent(new ColliderComponent())
+        .addComponent(new ColliderComponent().setSensor(true))
         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         .addComponent(aiComponent);

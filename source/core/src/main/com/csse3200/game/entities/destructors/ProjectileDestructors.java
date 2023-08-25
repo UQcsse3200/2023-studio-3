@@ -17,4 +17,10 @@ public class ProjectileDestructors {
     projectile.dispose();
     return projectile;
   }
+  /**
+   * Prevents the creation of a ProjectileDestructor class from being instantiated.
+   */
+  private ProjectileDestructors() {
+    throw new IllegalStateException("Instantiating static util class");
+  }
 }
