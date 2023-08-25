@@ -4,8 +4,8 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
 /**
- * This class listens to events relevant to a weapon tower state and plays the animation when one
- * of the events is triggered.
+ * Listens for events relevant to a weapon tower state.
+ * Each event will trigger a certain animation
  */
 public class TowerAnimationController extends Component {
     AnimationRenderComponent animator;
