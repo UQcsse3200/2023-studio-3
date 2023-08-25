@@ -15,6 +15,7 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.compression.lzma.Base;
 
 /**
  * Responsible for creating projectiles within the game
@@ -49,6 +50,23 @@ public class ProjectileFactory {
     
     projectile
         .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
+
+    return projectile;
+  }
+
+  /**
+   * Creates a AOE fireball Entity.
+   * @param target The enemy entities that the projectile collides with.
+   * @param destination Direction the projectile needs to go towards.
+   * @param speed Speed of the projectile.
+   * @return Returns the new projectile entity.
+   */
+  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed) {
+    // TODO: Implement AOE fireball
+
+    BaseEntityConfig config = configs.fireBall;
+
+    Entity projectile = createFireBall(target, destination, speed);
 
     return projectile;
   }
