@@ -25,31 +25,50 @@ public class ProjectileFactory {
       FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
 
   /**
-   * Creates a projectile Entity.
+   * Creates a fireball Entity.
    * @param target The enemy entities that the projectile collides with.
    * @param destination Direction the projectile needs to go towards.
    * @param speed Speed of the projectile.
    * @return Returns the new projectile entity.
    */
-  public static Entity createProjectile(Entity target, Vector2 destination, Vector2 speed) {
-    BaseEntityConfig config = configs.projectile;
+  public static Entity createFireBall(Entity target, Vector2 destination, Vector2 speed) {
+    BaseEntityConfig config = configs.fireBall;
 
+    Entity projectile = createBaseProjectile(target, destination);
+
+    projectile
+        .addComponent(new TextureRenderComponent("images/projectile.png"))
+        .addComponent(new ColliderComponent().setSensor(true))
+
+        // * This is the component that allows the projectile to damage a specified target.
+        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+
+    projectile
+        .getComponent(TextureRenderComponent.class).scaleEntity();
+    
+    projectile
+        .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
+
+    return projectile;
+  }
+
+  /**
+   * Creates a generic projectile entity that can be used for multiple types of projectiles.
+   * @param target The enemy entities that the projectile collides with.
+   * @param destination Direction the projectile needs to go towards.
+   * @return
+   */
+  private static Entity createBaseProjectile(Entity target, Vector2 destination) {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new TrajectTask(destination));
-
+    
     Entity projectile = new Entity()
-        .addComponent(new TextureRenderComponent("images/projectile.png"))
         .addComponent(new PhysicsComponent())
         .addComponent(new PhysicsMovementComponent())
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
-        .addComponent(new ColliderComponent().setSensor(true))
-        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         .addComponent(aiComponent);
-
-    projectile.getComponent(TextureRenderComponent.class).scaleEntity();
-    projectile.getComponent(PhysicsMovementComponent.class).setSpeed(speed);
 
 
     // Able to alter the collider component's size in proportion to the Entity's size.

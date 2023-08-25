@@ -188,7 +188,7 @@ public class ForestGameArea extends GameArea {
    * 
    */
   private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y), speed);
+    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -203,7 +203,7 @@ public class ForestGameArea extends GameArea {
    * 
    */
   private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createProjectile(target, new Vector2(direction, position.y + space), speed);
+    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
