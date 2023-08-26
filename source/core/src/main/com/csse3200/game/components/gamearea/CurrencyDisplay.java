@@ -15,23 +15,32 @@ import com.badlogic.gdx.utils.Align;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 
-
+/**
+ * A UI component for displaying the currency owned
+ */
 public class CurrencyDisplay extends UIComponent {
     Table table;
     private TextButton scrapsTb;
 
+    /**
+     * Adds actors to stage
+     */
     @Override
     public void create() {
         super.create();
         addActors();
+        entity.getEvents().addListener("updateCurrency", this::updateScrapsStats);
     }
 
+    /**
+     * Initialises the currency label
+     * Positions it on the stage using a table
+     */
     private void addActors() {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
         table.padTop(50f).padLeft(20f);
-        //currencyImage = new Image(ServiceLocator.getResourceService().getAsset("images/scrapsUI.png", Texture.class));
 
         // create text button style
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/scrapsUI.png")));
@@ -39,13 +48,15 @@ public class CurrencyDisplay extends UIComponent {
                 drawable, drawable, drawable, new BitmapFont());
 
         // create scraps button
-        scrapsTb = new TextButton("0", textButtonStyle);
+        int value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+        String text = String.format("%d", value);
+        scrapsTb = new TextButton(text, textButtonStyle);
+        scrapsTb.setDisabled(true);
         scrapsTb.getLabel().setAlignment(Align.right);
-        scrapsTb.getLabel().setFontScale(2, 2);
+        scrapsTb.getLabel().setFontScale(2, 2); // font size
         scrapsTb.pad(0, 0, 0, 70);
         scrapsTb.setTransform(true);
-        scrapsTb.setScale(0.5f);
-        scrapsTb.setDisabled(true);
+        scrapsTb.setScale(0.5f); // button size
 
         table.add(scrapsTb);
         stage.addActor(table);
@@ -53,10 +64,14 @@ public class CurrencyDisplay extends UIComponent {
 
     @Override
     public void draw(SpriteBatch batch) {
-        //
+        // handled by stage
     }
 
-    public void updateScrapsStats(int value) {
+    /**
+     * Updates the currency (Scraps) value on the UI component
+     */
+    public void updateScrapsStats() {
+        int value = ServiceLocator.getCurrencyService().getScrap().getAmount();
         CharSequence text = String.format("%d", value);
         scrapsTb.getLabel().setText(text);
     }
