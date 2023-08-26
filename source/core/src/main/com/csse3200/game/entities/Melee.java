@@ -2,18 +2,18 @@ package com.csse3200.game.entities;
 
 import java.util.ArrayList;
 
-public class Melee {
-    private int damage;
+public class Melee implements Weapon {
+    private final int damage;
 
-    private int attackRange;
+    private final int attackRange;
 
-    private String Element;
+    private final String Element;
 
-    private int castTime;
+    private final int castTime;
 
-    private int cooldown;
+    private final int cooldown;
 
-    private ArrayList<String> views;
+    private final ArrayList<String> views;
 
     public Melee(int damage, int attackRange, String Element, int castTime, int cooldown, ArrayList<String> views) {
         this.damage = damage;
