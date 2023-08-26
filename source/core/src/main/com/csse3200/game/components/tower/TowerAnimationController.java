@@ -1,7 +1,9 @@
 package com.csse3200.game.components.tower;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Listens for events relevant to a weapon tower state.
@@ -18,7 +20,6 @@ public class TowerAnimationController extends Component {
         entity.getEvents().addListener("stowStart", this::animateStow);
         entity.getEvents().addListener("deployStart", this::animateDeploy);
         entity.getEvents().addListener("firingStart", this::animateFiring);
-
     }
 
     void animateIdle() {
@@ -35,5 +36,7 @@ public class TowerAnimationController extends Component {
 
     void animateFiring() {
         animator.startAnimation("firing");
+        Sound attackSound = ServiceLocator.getResourceService().getAsset("sounds/gun_shot_trimmed.mp3", Sound.class);
+        attackSound.play();
     }
 }

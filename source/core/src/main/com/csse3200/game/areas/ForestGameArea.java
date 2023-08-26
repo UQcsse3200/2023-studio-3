@@ -58,8 +58,11 @@ public class ForestGameArea extends GameArea {
     "images/turret.atlas",
     "images/turret01.atlas"
   };
-  private static final String[] forestSounds = {"sounds/Impact4.ogg"};
-  private static final String backgroundMusic = "sounds/BGM_03_mp3.mp3";
+  private static final String[] forestSounds = {
+          "sounds/Impact4.ogg",
+          "sounds/gun_shot_trimmed.mp3"
+  };
+  private static final String backgroundMusic = "sounds/Sci-Fi 1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
 
   private final TerrainFactory terrainFactory;
