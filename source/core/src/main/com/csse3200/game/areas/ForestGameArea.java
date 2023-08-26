@@ -48,7 +48,8 @@ public class ForestGameArea extends GameArea {
     "images/iso_grass_3.png",
     "images/turret.png",
     "images/turret01.png",
-    "images/turret_deployed.png"
+    "images/turret_deployed.png",
+    "images/wall.png"
   };
   private static final String[] forestTextureAtlases = {
     "images/terrain_iso_grass.atlas",
@@ -205,7 +206,9 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createWeaponTower();
+      Entity wallTower = TowerFactory.createWallTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
+      spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
   }
 
