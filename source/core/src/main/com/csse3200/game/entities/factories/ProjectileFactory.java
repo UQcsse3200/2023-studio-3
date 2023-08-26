@@ -100,7 +100,6 @@ public class ProjectileFactory {
 
 
     // Able to alter the collider component's size in proportion to the Entity's size.
-    // PhysicsUtils.setScaledCollider(projectile, 0.9f, 0.4f);
     return projectile;
   }
 

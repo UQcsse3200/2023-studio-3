@@ -85,6 +85,6 @@ public class PhysicsMovementComponent extends Component implements MovementContr
   }
 
   public void setSpeed(Vector2 speed) {
-    this.maxSpeed = speed;
+    PhysicsMovementComponent.maxSpeed = speed;
   }
 }

@@ -180,7 +180,6 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     GridPoint2 randomPos 
-    // = RandomUtils.random(minPos, maxPos);
      = new GridPoint2(0, 0);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
