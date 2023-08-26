@@ -21,6 +21,7 @@ public class TouchAttackComponent extends Component {
   private short targetLayer;
   private float knockbackForce = 0f;
   private boolean disposeOnHit = false;
+  private int aoeSize = 0;
   private CombatStatsComponent combatStats;
   private HitboxComponent hitboxComponent;
 
@@ -52,6 +53,18 @@ public class TouchAttackComponent extends Component {
     this.targetLayer = targetLayer;
     this.knockbackForce = knockback;
     this.disposeOnHit = disposeOnHit;
+  }
+
+  /**
+   * Create a component which attacks entities and entities around them on collision,
+   * with knockback and self-dispose
+   */
+  public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit,
+                              int aoeSize) {
+    this.targetLayer = targetLayer;
+    this.knockbackForce = knockback;
+    this.disposeOnHit = disposeOnHit;
+    this.aoeSize = aoeSize;
   }
 
   @Override

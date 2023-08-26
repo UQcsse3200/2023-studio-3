@@ -61,12 +61,22 @@ public class ProjectileFactory {
    * @param speed Speed of the projectile.
    * @return Returns the new projectile entity.
    */
-  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed) {
-    // TODO: Implement AOE fireball
-
+  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
     BaseEntityConfig config = configs.fireBall;
-
     Entity projectile = createFireBall(target, destination, speed);
+    projectile
+            .addComponent(new TextureRenderComponent("images/projectile.png"))
+            .addComponent(new ColliderComponent().setSensor(true))
+
+            // * This is the component that allows the projectile to damage a specified target.
+            .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true, aoeSize))
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+
+    projectile
+            .getComponent(TextureRenderComponent.class).scaleEntity();
+
+    projectile
+            .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
 
     return projectile;
   }
