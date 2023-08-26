@@ -89,32 +89,33 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger("deployStart");
                     towerState = STATE.DEPLOY;
                 }
-                break;
             }
             case DEPLOY -> {
                 // currently deploying,
-//                if (owner.getEntity().getComponent(AnimationRenderComponent.class)
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger("firingStart");
                     towerState = STATE.FIRING;
-                }
-                break;
-            }
-            case FIRING -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger("firingStart");
                 } else {
+                    owner.getEntity().getEvents().trigger("stowStart");
                     towerState = STATE.STOW;
                 }
-                break;
+            }
+            case FIRING -> {
+                // targets gone - stop firing
+                if (!isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger("stowStart");
+                    towerState = STATE.STOW;
+                }
             }
             case STOW -> {
+                // currently stowing
                 if (isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger("deployStart");
                     towerState = STATE.DEPLOY;
                 } else {
                     owner.getEntity().getEvents().trigger("idleStart");
+                    towerState = STATE.IDLE;
                 }
-                break;
             }
         }
     }
