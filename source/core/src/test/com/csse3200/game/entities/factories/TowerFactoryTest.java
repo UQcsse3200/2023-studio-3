@@ -34,8 +34,9 @@ public class TowerFactoryTest {
     private Entity baseTower;
     private Entity weaponTower;
     private Entity wallTower;
-    private String[] texture = {"images/turret_deployed.png", "images/turret01.png"};
+    private String[] texture = {"images/turret_deployed.png", "images/turret01.png", "images/wall.png"};
     private String[] atlas = {"images/turret01.atlas"};
+    private static final String[] forestSounds = {"sounds/gun_shot_trimmed.mp3"};
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
