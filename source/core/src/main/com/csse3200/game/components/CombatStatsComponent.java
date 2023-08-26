@@ -38,6 +38,7 @@ public class CombatStatsComponent extends Component {
     setHealth(health);
     setBaseAttack(baseAttack);
     this.fullHealth = health;
+    this.state = "fullHealth";
   }
 
   public CombatStatsComponent(int health, int baseAttack,

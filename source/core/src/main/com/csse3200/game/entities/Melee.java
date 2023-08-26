@@ -22,15 +22,13 @@ public class Melee implements Weapon {
 
     private final int cooldown;
 
-    private final ArrayList<String> views;
 
-    public Melee(int damage, int attackRange, String Element, int castTime, int cooldown, ArrayList<String> views) {
+    public Melee(int damage, int attackRange, String Element, int castTime, int cooldown) {
         this.damage = damage;
         this.attackRange = attackRange;
         this.element = Element;
         this.castTime = castTime;
         this.cooldown = cooldown;
-        this.views = views;
     }
 
     public int getDamage() {
@@ -53,7 +51,7 @@ public class Melee implements Weapon {
         return cooldown;
     }
 
-    public ArrayList<String> getViews() {
-        return views;
+    public String toString() {
+        return "Melee: " + damage + " " + attackRange + " " + element;
     }
 }

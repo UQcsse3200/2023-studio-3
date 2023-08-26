@@ -41,7 +41,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views,
+    public BaseEnemyConfig(ArrayList<Integer> drops,
                            ArrayList<Melee> closeRangeAbilities,
                            ArrayList<Weapon> longRangeAbilities) {
         this.speed = 1;
@@ -91,7 +91,8 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     }
 
     public String toString() {
-        return "Enemy: " + this.id + " Drops: " + this.drops
+        return "Enemy: " + this.id + " Drops: " + this.drops + " Close Range: "
+                + this.closeRangeAbilities + " Long Range: " + this.longRangeAbilities
                 + " Speed: " + this.speed + " Full Health: " + this.fullHeath
                 + " Current Health: " + this.health + " Base Attack: " + this.baseAttack;
     }
