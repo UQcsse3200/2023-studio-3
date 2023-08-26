@@ -1,6 +1,8 @@
 package com.csse3200.game.components;
 
+import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.Weapon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +25,7 @@ public class CombatStatsComponent extends Component {
   private ArrayList<String> views;
   private ArrayList<Integer> drops;
   private ArrayList<Melee> closeRangeAbilities;
-  private ArrayList<String> longRangeAbilities; //TODO change String to Projectiles
+  private ArrayList<Weapon> longRangeAbilities; //TODO change String to Projectiles
 
   public CombatStatsComponent(int health, int baseAttack) {
     setHealth(health);
@@ -31,7 +33,7 @@ public class CombatStatsComponent extends Component {
     this.fullHealth = health;
   }
 
-  public CombatStatsComponent(int health, int baseAttack, int speed, ArrayList<String> views, ArrayList<Integer> drops, ArrayList<Melee> closeRangeAbilities, ArrayList<String> longRangeAbilities) {
+  public CombatStatsComponent(int health, int baseAttack, int speed, ArrayList<String> views, ArrayList<Integer> drops, ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities) {
     setHealth(health);
     this.fullHealth = health;
     setBaseAttack(baseAttack);
@@ -44,6 +46,7 @@ public class CombatStatsComponent extends Component {
     this.drops = drops;
     this.closeRangeAbilities = closeRangeAbilities;
     this.longRangeAbilities = longRangeAbilities;
+    this.state = "fullHealth";
   }
 
   /**
@@ -76,8 +79,6 @@ public class CombatStatsComponent extends Component {
       this.health = 0;
     }
 
-    processState();
-
     if (entity != null) {
       entity.getEvents().trigger("updateHealth", this.health);
     }
@@ -90,7 +91,7 @@ public class CombatStatsComponent extends Component {
    */
   public void addHealth(int health) {
       setHealth(this.health + health);
-      processState();
+      changeState();
   }
 
   /**
@@ -118,6 +119,7 @@ public class CombatStatsComponent extends Component {
   public void hit(CombatStatsComponent attacker) {
     int newHealth = getHealth() - attacker.getBaseAttack();
     setHealth(newHealth);
+    changeState();
   }
 
   /**
@@ -128,21 +130,41 @@ public class CombatStatsComponent extends Component {
       return rand.nextInt(pickFrom.size());
   }
 
+  //TODO: this will be changed to drop an item and load it to the screen
   public Integer drop() {
       return this.drops.get(pickRandom(this.drops));
   }
 
-  //TODO change to detect if it is close range or long range
-  public void attack() {
-
-//      String ability = this.abilities.get(pickRandom(this.abilities));
+    public Weapon longRangeAttack() {
+        return this.longRangeAbilities.get(pickRandom(this.longRangeAbilities));
     }
 
-    public void processState() {
+    public ArrayList<Melee> withinRange(Entity target) {
+        float distance = this.entity.getPosition().dst(target.getPosition());
+        ArrayList<Melee> withinRange = new ArrayList<>();
+
+        for (Melee melee : this.closeRangeAbilities) {
+            if (distance <= melee.getAttackRange()) {
+                withinRange.add(melee);
+            }
+        }
+        return withinRange;
+    }
+
+    public Weapon getWeapon(Entity target) {
+      ArrayList<Melee> withinRange = withinRange(target);
+      if (withinRange.size() > 0) {
+          return withinRange.get(pickRandom(withinRange));
+      }
+
+      return longRangeAttack();
+    }
+
+    public void changeState() {
         if (this.health <= (this.fullHealth * 0.33)) {
-            this.state = this.views.get(2);
+            this.state = "lowHealth";
         } else if (this.health <= (this.fullHealth * 0.66)) {
-            this.state = this.views.get(1);
+            this.state = "midHealth";
         }
     }
 }
