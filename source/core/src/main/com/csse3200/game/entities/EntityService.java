@@ -54,4 +54,25 @@ public class EntityService {
       entity.dispose();
     }
   }
+
+  /**
+   * Get all entities
+   */
+  public Array<Entity> getEntities() {
+    return entities;
+  }
+
+  /**
+   * Get a specific entity. If it doesn't exist, returns null.
+   * @param id The id of the entity to get.
+   * @return The entity with the given id, or null if it doesn't exist.
+   */
+  public Entity getEntity(int id) {
+    for (Entity entity : entities) {
+      if (entity.getId() == id) {
+        return entity;
+      }
+    }
+    return null;
+  }
 }

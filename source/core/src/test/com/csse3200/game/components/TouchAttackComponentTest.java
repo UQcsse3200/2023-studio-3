@@ -2,14 +2,20 @@ package com.csse3200.game.components;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.Ignore;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -62,13 +68,48 @@ class TouchAttackComponentTest {
     Fixture targetFixture = target.getComponent(HitboxComponent.class).getFixture();
 
     // This should not cause an exception, but the attack should be ignored
-    entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);
+    entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);   
+  }
+
+  // TODO: Implement test for selfDipose on collision with target layer
+  // @Test
+  @Ignore
+  void shouldDisappearAfterAttackTargetLayer() {
+    ServiceLocator.registerTimeSource(new GameTime());
+    ServiceLocator.registerEntityService(new EntityService());
+    short targetLayer = (1 << 3);
+    Entity entity = createAttacker(targetLayer, true);
+    int id = entity.getId();
+    Entity target = createTarget(targetLayer);
+
+    Fixture entityFixture = entity.getComponent(HitboxComponent.class).getFixture();
+    Fixture targetFixture = target.getComponent(HitboxComponent.class).getFixture();
+    // entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+    boolean entityExists = ServiceLocator.getEntityService().getEntity(id) != null;
+    
+    assertEquals(false, entityExists);
+    assertNull(entityExists, "Base entity should be destroyed after hit");
   }
 
   Entity createAttacker(short targetLayer) {
     Entity entity =
         new Entity()
             .addComponent(new TouchAttackComponent(targetLayer))
+            .addComponent(new CombatStatsComponent(0, 10))
+            .addComponent(new PhysicsComponent())
+            .addComponent(new HitboxComponent());
+    entity.create();
+    return entity;
+  }
+
+  // Create attacker that self disposes itself on hit
+  Entity createAttacker(short targetLayer, boolean disposeOnHit) {
+    Entity entity = 
+        new Entity()
+            .addComponent(new TouchAttackComponent(targetLayer, 0, disposeOnHit))
             .addComponent(new CombatStatsComponent(0, 10))
             .addComponent(new PhysicsComponent())
             .addComponent(new HitboxComponent());
