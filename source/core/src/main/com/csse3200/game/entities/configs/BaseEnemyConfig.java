@@ -1,5 +1,8 @@
 package com.csse3200.game.entities.configs;
 
+import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.Weapon;
+
 import java.util.*;
 
 /**
@@ -36,12 +39,14 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     private String state;
 
     //TODO: change to class Ability
-    private final ArrayList<String> abilities;
+//    private final ArrayList<String> abilities;
+    private ArrayList<Melee> closeRangeAbilities;
+    private ArrayList<Weapon> longRangeAbilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views, ArrayList<String> abilities) {
+    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views, ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities) {
         this.speed = 1;
         this.drops = drops;
         if (views.size() < 3) {
@@ -50,8 +55,13 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         this.views = views;
         this.state = views.get(0);
         this.fullHeath = this.health;
-        this.abilities = abilities;
+//        this.abilities = abilities;
+
+        this.closeRangeAbilities = closeRangeAbilities;
+        this.longRangeAbilities = longRangeAbilities;
+
         this.id = generateId();
+
     }
 
     /**
@@ -61,11 +71,10 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param health the full of the enemy
      * @param drops the drops of the enemy
      * @param views the views of the enemy
-     * @param abilities the abilities of the enemy
      * @param baseAttack the base damage to the target
      */
     public BaseEnemyConfig(int speed, int health, ArrayList<Integer> drops, ArrayList<String> views,
-                           ArrayList<String> abilities, int baseAttack) {
+                           ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities, int baseAttack) {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
@@ -75,7 +84,8 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         }
         this.views = views;
         this.state = views.get(0);
-        this.abilities = abilities;
+        this.closeRangeAbilities = closeRangeAbilities;
+        this.longRangeAbilities = longRangeAbilities;
         this.baseAttack = baseAttack;
         this.id = generateId();
     }
@@ -105,64 +115,8 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         return this.state;
     }
 
-    //TODO: change to take class Ability
-    /**
-     * Process the damage taken by the enemy. Will decrease the health by the
-     * damage of the Ability. If the health is less than or equal to 0, the enemy
-     * will die. If the enemy is not dead, the state will be changed based on the
-     * current health.
-     * @param damage the damage taken
-     *               //TODO: the ability that is attacking
-     */
-    public void takeDamage(int damage) {
-        this.health -= damage;
-        if (this.health <= 0) {
-            die();
-            return;
-        }
-
-        if (this.health <= (this.fullHeath * 0.33)) {
-            this.state = this.views.get(2);
-        } else if (this.health <= (this.fullHeath * 0.66)) {
-            this.state = this.views.get(1);
-        }
-    }
-
-    //TODO change the return type to the drop type and process to player
-    /**
-     * Drop a random item from the list of drops.
-     * @return the item dropped
-     */
-    public Integer drop() {
-        return this.drops.get(pickRandom(this.drops));
-    }
-
-    //TODO: Implement this by processing drops, removing from game, etc.
-    /**
-     * Process the death of an enemy. This function should handle the removal of the
-     * enemy from the game and the dropping of resources.
-     */
-    public void die() {
-        drop();
-    }
-
-    /**
-     * Process an attack by triggering projectiles or attacking a tower.
-     */
-    public void attack() {
-        String ability = this.abilities.get(pickRandom(this.abilities));
-    }
-
-    /**
-     * pick a random number from range 0 to the size of the list provided
-     * */
-    public int pickRandom(ArrayList pickFrom) {
-        Random rand = new Random();
-        return rand.nextInt(pickFrom.size());
-    }
-
     public String toString() {
-        return "Enemy: " + this.id + " Abilities: " + this.abilities + " Drops: "
+        return "Enemy: " + this.id + " Drops: "
                 + this.drops + " Views: " + this.views + " State: " + this.state
                 + " Speed: " + this.speed + " Full Health: " + this.fullHeath
                 + " Current Health: " + this.health + " Base Attack: " + this.baseAttack;

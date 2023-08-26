@@ -116,8 +116,9 @@ public class CombatStatsComponent extends Component {
     }
   }
 
-  public void hit(CombatStatsComponent attacker) {
-    int newHealth = getHealth() - attacker.getBaseAttack();
+//  public void hit(CombatStatsComponent attacker) {
+  public void hit(Integer damage) {
+    int newHealth = getHealth() - damage;
     setHealth(newHealth);
     changeState();
   }
@@ -136,6 +137,9 @@ public class CombatStatsComponent extends Component {
   }
 
     public Weapon longRangeAttack() {
+      if (this.longRangeAbilities == null) {
+          return null;
+      }
         return this.longRangeAbilities.get(pickRandom(this.longRangeAbilities));
     }
 
@@ -143,6 +147,9 @@ public class CombatStatsComponent extends Component {
         float distance = this.entity.getPosition().dst(target.getPosition());
         ArrayList<Melee> withinRange = new ArrayList<>();
 
+        if (this.closeRangeAbilities == null) {
+            return withinRange;
+        }
         for (Melee melee : this.closeRangeAbilities) {
             if (distance <= melee.getAttackRange()) {
                 withinRange.add(melee);
