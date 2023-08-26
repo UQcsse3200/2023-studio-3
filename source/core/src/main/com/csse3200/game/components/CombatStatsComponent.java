@@ -13,16 +13,23 @@ import java.util.Random;
  * Component used to store information related to combat such as health, attack, etc. Any entities
  * which engage it combat should have an instance of this class registered. This class can be
  * extended for more specific combat needs.
+ *
+ * health: the current health of the entity
+ * baseAttack: the base attack of the entity
+ * fullHealth: the full health of the entity
+ * state: the current state of the entity (full health above 66%, half health above 33%, low health below 33%)
+ * drops: the items that the entity drops when it dies
+ * closeRangeAbilities: the Melee abilities (close range) of the entity
+ * longRangeAbilities: the Projectile abilities (long range) of the entity
+ *
  */
 public class CombatStatsComponent extends Component {
 
   private static final Logger logger = LoggerFactory.getLogger(CombatStatsComponent.class);
   private int health;
   private int baseAttack;
-  private int speed;
   private final int fullHealth;
   private String state;
-  private ArrayList<String> views;
   private ArrayList<Integer> drops;
   private ArrayList<Melee> closeRangeAbilities;
   private ArrayList<Weapon> longRangeAbilities; //TODO change String to Projectiles
@@ -33,16 +40,13 @@ public class CombatStatsComponent extends Component {
     this.fullHealth = health;
   }
 
-  public CombatStatsComponent(int health, int baseAttack, int speed, ArrayList<String> views, ArrayList<Integer> drops, ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities) {
+  public CombatStatsComponent(int health, int baseAttack,
+                              ArrayList<Integer> drops,
+                              ArrayList<Melee> closeRangeAbilities,
+                              ArrayList<Weapon> longRangeAbilities) {
     setHealth(health);
     this.fullHealth = health;
     setBaseAttack(baseAttack);
-    this.speed = speed;
-    if (views.size() < 3) {
-        throw new IllegalArgumentException("Enemy must have at least 3 views");
-    }
-    this.views = views;
-    this.state = views.get(0);
     this.drops = drops;
     this.closeRangeAbilities = closeRangeAbilities;
     this.longRangeAbilities = longRangeAbilities;
@@ -116,7 +120,9 @@ public class CombatStatsComponent extends Component {
     }
   }
 
-//  public void hit(CombatStatsComponent attacker) {
+  /**
+   * Decrease the health of the entity based on the damage provided.
+   * */
   public void hit(Integer damage) {
     int newHealth = getHealth() - damage;
     setHealth(newHealth);
@@ -136,6 +142,10 @@ public class CombatStatsComponent extends Component {
       return this.drops.get(pickRandom(this.drops));
   }
 
+  /**
+   * If there are long range attacks provided, return a random one, else
+   * return null
+   * */
     public Weapon longRangeAttack() {
       if (this.longRangeAbilities == null) {
           return null;
@@ -143,6 +153,10 @@ public class CombatStatsComponent extends Component {
         return this.longRangeAbilities.get(pickRandom(this.longRangeAbilities));
     }
 
+    /**
+     * Check if the target is within range of any of the close range attacks.
+     * Return a list of close range attacks which can be used
+     * */
     public ArrayList<Melee> withinRange(Entity target) {
         float distance = this.entity.getPosition().dst(target.getPosition());
         ArrayList<Melee> withinRange = new ArrayList<>();
@@ -158,6 +172,10 @@ public class CombatStatsComponent extends Component {
         return withinRange;
     }
 
+    /**
+     * Return a close range attack if the target is within range, else
+     * return a long range attack
+     * */
     public Weapon getWeapon(Entity target) {
       ArrayList<Melee> withinRange = withinRange(target);
       if (withinRange.size() > 0) {
@@ -167,11 +185,26 @@ public class CombatStatsComponent extends Component {
       return longRangeAttack();
     }
 
+    /**
+     * Change the state of the enemy based on the health
+     * */
     public void changeState() {
         if (this.health <= (this.fullHealth * 0.33)) {
             this.state = "lowHealth";
         } else if (this.health <= (this.fullHealth * 0.66)) {
             this.state = "midHealth";
+        } else {
+            this.state = "fullHealth";
         }
+    }
+
+    /**
+     * Return the state of the enemy
+     * fullHealth: above 66% of full health
+     * midHealth: above 33% of full health
+     * lowHealth: below 33% of full health
+     * */
+    public String getState() {
+        return this.state;
     }
 }

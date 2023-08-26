@@ -27,36 +27,26 @@ public class BaseEnemyConfig extends BaseEntityConfig {
 
     private static int idCounter = 0;
 
-    private final int speed;
+    public final int speed;
 
-    private final int fullHeath;
+    public final int fullHeath;
 
     private final int id;
 
     //TODO: change to item class
     private final ArrayList<Integer> drops;
-    private final ArrayList<String> views;
-    private String state;
-
-    //TODO: change to class Ability
-//    private final ArrayList<String> abilities;
     private ArrayList<Melee> closeRangeAbilities;
     private ArrayList<Weapon> longRangeAbilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views, ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities) {
+    public BaseEnemyConfig(ArrayList<Integer> drops, ArrayList<String> views,
+                           ArrayList<Melee> closeRangeAbilities,
+                           ArrayList<Weapon> longRangeAbilities) {
         this.speed = 1;
         this.drops = drops;
-        if (views.size() < 3) {
-            throw new IllegalArgumentException("Enemy must have at least 3 views");
-        }
-        this.views = views;
-        this.state = views.get(0);
         this.fullHeath = this.health;
-//        this.abilities = abilities;
-
         this.closeRangeAbilities = closeRangeAbilities;
         this.longRangeAbilities = longRangeAbilities;
 
@@ -70,26 +60,23 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param speed the speed of the enemy
      * @param health the full of the enemy
      * @param drops the drops of the enemy
-     * @param views the views of the enemy
      * @param baseAttack the base damage to the target
      */
-    public BaseEnemyConfig(int speed, int health, ArrayList<Integer> drops, ArrayList<String> views,
+    public BaseEnemyConfig(int speed, int health, ArrayList<Integer> drops,
                            ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities, int baseAttack) {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
         this.drops = drops;
-        if (views.size() < 3) {
-            throw new IllegalArgumentException("Enemy must have at least 3 views");
-        }
-        this.views = views;
-        this.state = views.get(0);
         this.closeRangeAbilities = closeRangeAbilities;
         this.longRangeAbilities = longRangeAbilities;
         this.baseAttack = baseAttack;
         this.id = generateId();
     }
 
+    /**
+     * Generate a unique id based on the previous enemy id
+     * */
     public int generateId() {
         if (idCounter == 0) {
             idCounter = this.hashCode();
@@ -98,26 +85,13 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         return ++idCounter;
     }
 
-    /* return the unique id of the enemy */
+    /** return the unique id of the enemy */
     public int getId() {
         return this.id;
     }
 
-    public int getHealth() {
-        return this.health;
-    }
-
-    public int getSpeed() {
-        return this.speed;
-    }
-
-    public String getState() {
-        return this.state;
-    }
-
     public String toString() {
-        return "Enemy: " + this.id + " Drops: "
-                + this.drops + " Views: " + this.views + " State: " + this.state
+        return "Enemy: " + this.id + " Drops: " + this.drops
                 + " Speed: " + this.speed + " Full Health: " + this.fullHeath
                 + " Current Health: " + this.health + " Base Attack: " + this.baseAttack;
     }

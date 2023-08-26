@@ -63,6 +63,7 @@ public class TouchAttackComponent extends Component {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
+        // If entity has abilities, pick one at random and apply it else use baseAttack damage
         if (combatStats.getWeapon(target) != null) {
             targetStats.hit(combatStats.getWeapon(target).getDamage());
         } else {
