@@ -1,0 +1,68 @@
+xeno-grunt-run.png
+size: 2560, 320
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+xeno_run
+  rotate: false
+  xy: 150, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 0
+xeno_run
+  rotate: false
+  xy: 470, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 1
+xeno_run
+  rotate: false
+  xy: 790, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 2
+xeno_run
+  rotate: false
+  xy: 1100, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 3
+xeno_run
+  rotate: false
+  xy: 1420, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 4
+xeno_run
+  rotate: false
+  xy: 1740, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 5
+xeno_run
+  rotate: false
+  xy: 2070, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 6
+xeno_run
+  rotate: false
+  xy: 2390, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 7
+default
+  rotate: false
+  xy: 2390, 220
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: 0

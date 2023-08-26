@@ -44,11 +44,14 @@ public class WanderTask extends DefaultTask implements PriorityTask {
 
     waitTask = new WaitTask(waitTime);
     waitTask.create(owner);
-    movementTask = new MovementTask(getRandomPosInRange());
+
+    movementTask = new MovementTask(getDirection());
     movementTask.create(owner);
 
     movementTask.start();
+
     currentTask = movementTask;
+
 
     this.owner.getEntity().getEvents().trigger("wanderStart");
   }
@@ -72,7 +75,7 @@ public class WanderTask extends DefaultTask implements PriorityTask {
 
   private void startMoving() {
     logger.debug("Starting moving");
-    movementTask.setTarget(getRandomPosInRange());
+    movementTask.setTarget(getDirection());
     swapTask(movementTask);
   }
 
@@ -84,10 +87,8 @@ public class WanderTask extends DefaultTask implements PriorityTask {
     currentTask.start();
   }
 
-  private Vector2 getRandomPosInRange() {
-    Vector2 halfRange = wanderRange.cpy().scl(0.5f);
-    Vector2 min = startPos.cpy().sub(halfRange);
-    Vector2 max = startPos.cpy().add(halfRange);
-    return RandomUtils.random(min, max);
+  private Vector2 getDirection() {
+    float y = startPos.y;
+    return new Vector2(0, y);
   }
 }
