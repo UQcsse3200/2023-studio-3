@@ -12,6 +12,7 @@ import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.FirstBossConfig;
+import com.csse3200.game.entities.configs.SecondBossConfig;
 import com.csse3200.game.entities.configs.GhostKingConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -108,6 +109,26 @@ public class NPCFactory {
 
     FirstBoss.getComponent(AnimationRenderComponent.class).scaleEntity();
     return FirstBoss;
+  }
+
+  public static Entity createSecondBoss(Entity target) {
+    Entity SecondBoss = createBaseNPC(target);
+    SecondBossConfig config = configs.secondBoss;
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/ghostKing.atlas", TextureAtlas.class));
+    animator.addAnimation("float", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("angry_float", 0.1f, Animation.PlayMode.LOOP);
+
+    SecondBoss
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(animator)
+            .addComponent(new GhostAnimationController());
+
+    SecondBoss.getComponent(AnimationRenderComponent.class).scaleEntity();
+    return SecondBoss;
   }
 
   /**

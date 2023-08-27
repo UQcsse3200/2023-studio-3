@@ -7,4 +7,5 @@ public class NPCConfigs {
   public BaseEntityConfig ghost = new BaseEntityConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
   public FirstBossConfig firstBoss = new FirstBossConfig();
+  public SecondBossConfig secondBoss = new SecondBossConfig();
 }
