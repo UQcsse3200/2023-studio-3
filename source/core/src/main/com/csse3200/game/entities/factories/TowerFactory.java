@@ -1,4 +1,4 @@
-package com.csse3200.game.factories;
+package com.csse3200.game.entities.factories;
 
 
 import com.badlogic.gdx.graphics.Texture;

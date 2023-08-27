@@ -6,5 +6,7 @@ package com.csse3200.game.entities.configs;
 public class NPCConfigs {
   public BaseEntityConfig ghost = new BaseEntityConfig();
   public BaseEntityConfig projectile = new ProjectileConfig();
-  public GhostKingConfig ghostKing = new GhostKingConfig();
+
+  public BossKingConfigs BossKing = new BossKingConfigs();
+
 }

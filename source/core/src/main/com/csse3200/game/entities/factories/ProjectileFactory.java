@@ -1,4 +1,4 @@
-package com.csse3200.game.factories;
+package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
