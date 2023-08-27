@@ -44,7 +44,7 @@ public class ForestGameArea extends GameArea {
           "images/projectile.png",
           "images/box_boy_leaf.png",
           "images/building1.png",
-          "images/ghost.png",
+          "images/ghost_1.png",
           "images/grass_1.png",
           "images/grass_2.png",
           "images/grass_3.png",

@@ -48,10 +48,10 @@ public class BossKingFactory {
                 new Vector2(middleX, middleY), // Target position (middle-right of screen)
                 1f // Speed
         );
-        AITaskComponent aiTaskComponent = new AITaskComponent()
+        AITaskComponent aiTaskComponent1 = new AITaskComponent()
                 .addTask(moveToMiddleTask1);
 // animation section
- **/
+
             AnimationRenderComponent animator1 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -60,13 +60,14 @@ public class BossKingFactory {
         animator1.addAnimation("Idle", 0.2f, Animation.PlayMode.NORMAL);
         animator1.addAnimation("Walk", 0.2f, Animation.PlayMode.REVERSED);
         animator1.addAnimation("Attack", 0.1f, Animation.PlayMode.LOOP);
-
+ **/
         bossKing1
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator1)
-                //.addComponent(new TextureRenderComponent("images/ghost.png"));
-                .addComponent(new BossAnimationController());
-
+                //.addComponent(aiTaskComponent1)
+                //.addComponent(animator1)
+                .addComponent(new TextureRenderComponent("images/ghost_1.png"));
+                //.addComponent(new BossAnimationController());
+        bossKing1.getComponent(TextureRenderComponent.class).scaleEntity();
         return bossKing1;
     }
 
@@ -77,14 +78,14 @@ public class BossKingFactory {
         float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
         float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
 /**
-        MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
+        MoveToMiddleTask moveToMiddleTask2 = new MoveToMiddleTask(
                 bossKing2, // Pass the owner entity
                 new Vector2(middleX, middleY), // Target position (middle-right of screen)
                 1f // Speed
         );
-        AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(moveToMiddleTask1);
-**/
+        AITaskComponent aiTaskComponent2 = new AITaskComponent()
+                .addTask(moveToMiddleTask2);
+
         AnimationRenderComponent animator2 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -93,14 +94,15 @@ public class BossKingFactory {
         animator2.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
         animator2.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
         animator2.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
-
+ **/
         bossKing2
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator2)
-                //.addComponent(new TextureRenderComponent("images/ghost.png"));
-                .addComponent(new BossAnimationController());
+                //.addComponent(aiTaskComponent2)
+                //.addComponent(animator2)
+                .addComponent(new TextureRenderComponent("images/Enabling-5.png"));
+                //.addComponent(new BossAnimationController());
 
-        //bossKing2.getComponent(TextureRenderComponent.class).scaleEntity();
+        bossKing2.getComponent(TextureRenderComponent.class).scaleEntity();
         return bossKing2;
     }
 
