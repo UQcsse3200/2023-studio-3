@@ -32,20 +32,28 @@ public class BossKingFactory {
 
         private static final int PRIORITY = 1;
         private static final int BOSS_MOB_AGRO_RANGE = 10;
+
+        //Boss mob 1 starts here
     public static Entity createBossKing1(Entity target) {
-        BossKingConfigs config = configs.BossKing;
+        BossKingConfigs config = configs.BossKing; //has its own json file
         Entity bossKing1 = createBaseNPC(target);
+
+        // task section for movement by AI component
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new TowerCombatTask(PRIORITY, BOSS_MOB_AGRO_RANGE));
-        /**
-         AnimationRenderComponent animator =
-         new AnimationRenderComponent(
-         ServiceLocator.getResourceService()
-         .getAsset("images/ghostKing.atlas", TextureAtlas.class));
-         animator.addAnimation("float", 0.05f, Animation.PlayMode.LOOP);
-         animator.addAnimation("angry_float", 0.05f, Animation.PlayMode.LOOP);
-        **/
+
+        // animation section
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset("images/robot.atlas", TextureAtlas.class));
+        animator.addAnimation("Enabling", 0.05f, Animation.PlayMode.LOOP);
+        animator.addAnimation("Walk", 0.05f, Animation.PlayMode.LOOP);
+        animator.addAnimation("Attack", 0.05f, Animation.PlayMode.LOOP);
+
+        //components section
         PhysicsMovementComponent physicsMovementComponent = bossKing1.getComponent(PhysicsMovementComponent.class);
         ColliderComponent colliderComponent = bossKing1.getComponent(ColliderComponent.class);
         HitboxComponent hitboxComponent = bossKing1.getComponent(HitboxComponent.class);
@@ -63,30 +71,35 @@ public class BossKingFactory {
         if (hitboxComponent == null){
             bossKing1.addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE));
         }
-        bossKing1
-                .addComponent(new TextureRenderComponent("images/mud.png"))
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        if(true) {
+            bossKing1
+                    .addComponent(new BossAnimationController())
+                    .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
-        //.addComponent(new BossAnimationController());
+        }
+
 
         return bossKing1;
     }
 
-
+    // boss mob 2 starts here
     public static Entity createBossKing2(Entity target) {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing2 = createBaseNPC(target);
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new RangeBossMovementTask(new Vector2(1,2), 5));
-        /**
+
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/ghostKing.atlas", TextureAtlas.class));
-        animator.addAnimation("float", 0.05f, Animation.PlayMode.LOOP);
-        animator.addAnimation("angry_float", 0.05f, Animation.PlayMode.LOOP);
-        **/
+                                .getAsset("images/robot.atlas", TextureAtlas.class));
+        animator.addAnimation("Enabling", 0.05f, Animation.PlayMode.LOOP);
+        animator.addAnimation("Walk", 0.05f, Animation.PlayMode.LOOP);
+        animator.addAnimation("Attack", 0.05f, Animation.PlayMode.LOOP);
+
+
+
         PhysicsMovementComponent physicsMovementComponent = bossKing2.getComponent(PhysicsMovementComponent.class);
         ColliderComponent colliderComponent = bossKing2.getComponent(ColliderComponent.class);
         HitboxComponent hitboxComponent = bossKing2.getComponent(HitboxComponent.class);
@@ -104,12 +117,12 @@ public class BossKingFactory {
         if (hitboxComponent == null){
             bossKing2.addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE));
         }
+        if(true) {
+            bossKing2
+                    .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                    .addComponent(new BossAnimationController());
+        }
 
-        bossKing2
-                .addComponent(new TextureRenderComponent("images/mud.png"))
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
-
-        //.addComponent(new BossAnimationController());
         return bossKing2;
     }
 

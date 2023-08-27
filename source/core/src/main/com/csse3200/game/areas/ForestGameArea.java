@@ -57,7 +57,20 @@ public class ForestGameArea extends GameArea {
           "images/turret_deployed.png",
           "images/building2.png",
           "images/wall.png",
-          "images/mud.png"
+          "images/mud.png",
+          "images/robot.png",
+          "images/Attack_1.png",
+          "images/Attack_2.png",
+          "images/Charge_1.png",
+          "images/Charge_2.png",
+          "images/Dead.png",
+          "images/Enabling.png",
+          "images/Hurt.png",
+          "images/Idle.png",
+          "images/Shot_1.png",
+          "images/Shot_2.png",
+          "images/Shutdown.png",
+          "images/Walk.png",
 
   };
   private static final String[] forestTextureAtlases = {
@@ -65,7 +78,8 @@ public class ForestGameArea extends GameArea {
           "images/ghost.atlas",
           "images/ghostKing.atlas",
           "images/turret.atlas",
-          "images/turret01.atlas"
+          "images/turret01.atlas",
+          "images/robot.atlas"
   };
   private static final String[] forestSounds = {"sounds/Impact4.ogg"};
   private static final String backgroundMusic = "sounds/BGM_03_mp3.mp3";
