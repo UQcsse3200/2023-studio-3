@@ -14,6 +14,9 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
@@ -24,6 +27,9 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_BUILDINGS = 4;
   private static final int NUM_GHOSTS = 2;
   private static final int NUM_WALLS = 7;
+  private Timer bossSpawnTimer;
+  private int bossSpawnInterval = 10000; // 1 minute in milliseconds
+
 
 
   private static final int NUM_WEAPON_TOWERS = 3;
@@ -96,13 +102,13 @@ public class ForestGameArea extends GameArea {
 
     spawnGhosts();
     spawnWeaponTower();
-//    spawnWall();
-
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
+    startBossSpawnTimer();
+//    spawnWall();
 
-    playMusic();
+    //playMusic();
 
     spawnProjectile(new Vector2(3f, 3f));
     spawnMultiProjectile(new Vector2(3f, 3f));
@@ -144,6 +150,24 @@ public class ForestGameArea extends GameArea {
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
 
+  private void startBossSpawnTimer() {
+    bossSpawnTimer = new Timer();
+
+    // Schedule the boss spawning task to run every minute
+    bossSpawnTimer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        spawnBosses(); // Call the method to spawn bosses here
+      }
+    }, 0, bossSpawnInterval);
+  }
+
+  private void spawnBosses() {
+    // Modify this logic as needed to spawn bosses
+    spawnBossKing1();
+    spawnBossKing2();
+  }
+
   private void spawnBuilding1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -183,24 +207,16 @@ public class ForestGameArea extends GameArea {
   }
 
   private Entity spawnBossKing1() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos
-            = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
+    GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
     bossKing1 = BossKingFactory.createBossKing1(player);
-    spawnEntityAt(bossKing1, randomPos, true, true);
+    spawnEntityAt(bossKing1, bottomRight, true, true);
     return bossKing1;
   }
 
   private Entity spawnBossKing2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos
-            = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
+    GridPoint2 bottomLeft = new GridPoint2(0, terrain.getMapBounds(0).y - 1);  // Subtract 1 to stay within map bounds
     bossKing2 = BossKingFactory.createBossKing2(player);
-    spawnEntityAt(bossKing2, randomPos, true, true);
+    spawnEntityAt(bossKing2, bottomLeft, true, true);
     return bossKing2;
   }
 
