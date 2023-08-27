@@ -11,5 +11,8 @@ import java.util.ArrayList;
 public class NPCConfigs {
   public BaseEntityConfig ghost = new BaseEntityConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
-  public BaseEnemyConfig xenoGrunt = new BaseEnemyConfig(new ArrayList<Integer>(), new ArrayList<Melee>(), new ArrayList<Weapon>());
+  public BaseEnemyConfig xenoGrunt = new BaseEnemyConfig(
+          new ArrayList<Integer>(),
+          new ArrayList<Melee>(),
+          new ArrayList<Weapon>());
 }

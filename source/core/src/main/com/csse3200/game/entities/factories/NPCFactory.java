@@ -105,9 +105,12 @@ public class NPCFactory {
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService().getAsset("images/xenoGruntRunning.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
 
     xenoGrunt
-            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(new CombatStatsComponent(config.speed, config.fullHeath))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
@@ -124,8 +127,8 @@ public class NPCFactory {
   private static Entity createBaseNPC(Entity target) {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new ChaseTask(target, 10, 3f, 4f));
+            .addTask(new WanderTask(new Vector2(2f, 2f), 2f));
+            //.addTask(new ChaseTask(target, 10, 3f, 4f));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
