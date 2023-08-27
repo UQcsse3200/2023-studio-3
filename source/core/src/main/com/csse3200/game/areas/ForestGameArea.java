@@ -24,7 +24,7 @@ import java.util.ArrayList;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_TREES = 7;
-  private static final int NUM_GHOSTS = 2;
+  private static final int NUM_GHOSTS = 0;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
 
@@ -78,7 +78,7 @@ public class ForestGameArea extends GameArea {
     spawnTrees();
     player = spawnPlayer();
     // spawnGhosts();
-    ghostking = spawnGhostKing();
+     ghostking = spawnGhostKing();
 
     playMusic();
 
@@ -154,7 +154,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnGhosts() {
     GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 2);
 
     for (int i = 0; i < NUM_GHOSTS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
@@ -165,7 +165,7 @@ public class ForestGameArea extends GameArea {
 
   private Entity spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
     GridPoint2 randomPos 
     = RandomUtils.random(minPos, maxPos);
     // = new GridPoint2(26, 26);
@@ -234,4 +234,5 @@ public class ForestGameArea extends GameArea {
     ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
   }
+
 }
