@@ -26,7 +26,7 @@ import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_BUILDINGS = 4;
-  private static final int NUM_GHOSTS = 2;
+  private static final int NUM_GHOSTS = 4;
   private static final int NUM_WALLS = 7;
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
@@ -37,13 +37,14 @@ public class ForestGameArea extends GameArea {
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
 
+  private static final GridPoint2 BOSS_SPAWN = new GridPoint2(5, 5);
+
   // Required to load assets before using them
   private static final String[] forestTextures = {
           "images/projectile.png",
           "images/box_boy_leaf.png",
           "images/building1.png",
-          "images/ghost_king.png",
-          "images/ghost_1.png",
+          "images/ghost.png",
           "images/grass_1.png",
           "images/grass_2.png",
           "images/grass_3.png",
@@ -58,14 +59,14 @@ public class ForestGameArea extends GameArea {
           "images/turret_deployed.png",
           "images/building2.png",
           "images/wall.png",
-          "images/mud.png",
           "images/robot.png",
           "images/Attack_1.png",
           "images/Attack_2.png",
           "images/Charge_1.png",
           "images/Charge_2.png",
           "images/Dead.png",
-          "images/Enabling.png",
+          "images/Enabling-5.png",
+          "images/satyr.png",
           "images/Hurt.png",
           "images/Idle.png",
 
@@ -117,7 +118,6 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-    startBossSpawnTimer();
 //    spawnWall();
 
     //playMusic();
@@ -162,6 +162,7 @@ public class ForestGameArea extends GameArea {
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
 
+  /**
   private void startBossSpawnTimer() {
     bossSpawnTimer = new Timer();
 
@@ -179,7 +180,7 @@ public class ForestGameArea extends GameArea {
     spawnBossKing1();
     spawnBossKing2();
   }
-
+**/
   private void spawnBuilding1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -218,20 +219,32 @@ public class ForestGameArea extends GameArea {
     }
   }
   private Entity spawnBossKing1() {
-    float middleX = Gdx.graphics.getWidth()/2f;
-    float middleY = Gdx.graphics.getHeight()/2f;
-    //GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
-    bossKing1 = BossKingFactory.createBossKing1(player);
-    bossKing1.setPosition(middleX,middleY);
-    return bossKing1;
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_BUILDINGS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      bossKing1 = BossKingFactory.createBossKing1(player);
+      spawnEntityAt(bossKing1,
+              randomPos,
+              true,
+              false);
+    }
+      return bossKing1;
   }
 
   private Entity spawnBossKing2() {
-    float middleX = Gdx.graphics.getWidth()/2f;
-    float middleY = Gdx.graphics.getHeight()/2f;
-    //GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
-    bossKing1 = BossKingFactory.createBossKing1(player);
-    bossKing1.setPosition(middleX,middleY);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_BUILDINGS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      bossKing2 = BossKingFactory.createBossKing2(player);
+      spawnEntityAt(bossKing2,
+              randomPos,
+              true,
+              false);
+    }
     return bossKing2;
   }
 

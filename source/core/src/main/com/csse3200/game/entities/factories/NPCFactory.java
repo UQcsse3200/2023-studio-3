@@ -57,7 +57,7 @@ public class NPCFactory {
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
      //   .addComponent(animator)
-             .addComponent(new TextureRenderComponent("images/mud.png"));
+             .addComponent(new TextureRenderComponent("images/satyr.png"));
      //   .addComponent(new GhostAnimationController());
 
     ghost.getComponent(TextureRenderComponent.class).scaleEntity();

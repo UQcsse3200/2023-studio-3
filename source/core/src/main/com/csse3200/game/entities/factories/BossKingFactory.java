@@ -24,6 +24,7 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 
@@ -41,7 +42,7 @@ public class BossKingFactory {
         Entity bossKing1 = createBaseBoss(target);
         float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
         float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
-
+/**
         MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
                 bossKing1, // Pass the owner entity
                 new Vector2(middleX, middleY), // Target position (middle-right of screen)
@@ -50,22 +51,21 @@ public class BossKingFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(moveToMiddleTask1);
 // animation section
-        AnimationRenderComponent animator1 =
+ **/
+            AnimationRenderComponent animator1 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/turret01.atlas", TextureAtlas.class));
-        animator1.addAnimation("idle", 0.3f, Animation.PlayMode.LOOP);
-        animator1.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
-        animator1.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
-        animator1.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
+                                .getAsset("images/robot.atlas", TextureAtlas.class));
+        animator1.addAnimation("Enabling", 0.3f, Animation.PlayMode.LOOP);
+        animator1.addAnimation("Idle", 0.2f, Animation.PlayMode.NORMAL);
+        animator1.addAnimation("Walk", 0.2f, Animation.PlayMode.REVERSED);
+        animator1.addAnimation("Attack", 0.1f, Animation.PlayMode.LOOP);
 
         bossKing1
-                    .addComponent(new TowerAnimationController())
-                    .addComponent(animator1)
-                    .addComponent(aiTaskComponent)
-                    .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
-                    //.addComponent(new BossStatsDisplay());
-
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(animator1)
+                //.addComponent(new TextureRenderComponent("images/ghost.png"));
+                .addComponent(new BossAnimationController());
 
         return bossKing1;
     }
@@ -76,7 +76,7 @@ public class BossKingFactory {
         Entity bossKing2 = createBaseBoss(target);
         float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
         float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
-
+/**
         MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
                 bossKing2, // Pass the owner entity
                 new Vector2(middleX, middleY), // Target position (middle-right of screen)
@@ -84,7 +84,7 @@ public class BossKingFactory {
         );
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(moveToMiddleTask1);
-
+**/
         AnimationRenderComponent animator2 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -94,12 +94,13 @@ public class BossKingFactory {
         animator2.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
         animator2.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
 
-            bossKing2
-                    .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                    .addComponent(new TowerAnimationController())
-                    .addComponent(aiTaskComponent)
-                    //.addComponent(new BossStatsDisplay())
-                    .addComponent(animator2);
+        bossKing2
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(animator2)
+                //.addComponent(new TextureRenderComponent("images/ghost.png"));
+                .addComponent(new BossAnimationController());
+
+        //bossKing2.getComponent(TextureRenderComponent.class).scaleEntity();
         return bossKing2;
     }
 
@@ -109,7 +110,7 @@ public class BossKingFactory {
                 new Entity()
                         .addComponent(new PhysicsComponent())
                         .addComponent(new ColliderComponent())
-                        //.addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC)
+                        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 4f));
                         //.addComponent(new TouchAttackComponent(PhysicsLayer.OBSTACLE, 2f));
 
