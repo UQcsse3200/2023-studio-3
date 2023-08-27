@@ -1,4 +1,5 @@
 package com.csse3200.game.screens;
+import com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -20,6 +21,7 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.input.InputDecorator;
@@ -53,22 +55,37 @@ public class MainGameScreen extends ScreenAdapter {
   private final PhysicsEngine physicsEngine;
 
   private final Stage stage;
-  public int viewportWidth = 100000;
-  public int viewportHeight=80000;
+  static int screenWidth = Gdx.graphics.getWidth();
+  static int screenHeight = Gdx.graphics.getHeight();
+
+  public static int viewportWidth = screenWidth;
+  public static int viewportHeight= screenHeight;
+  public static final int NUM_LANES = 8;
+  public static final float LANE_HEIGHT = viewportHeight / NUM_LANES;
+
+  private OrthographicCamera camera;
+  private SpriteBatch batch;
+  private Texture whiteTexture;
+
   public MainGameScreen(GdxGame game) {
     this.game = game;
-    OrthographicCamera camera = new OrthographicCamera();
+    batch = new SpriteBatch();
+    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+    pixmap.setColor(1, 1, 1, 1);
+    pixmap.fill();
+    whiteTexture = new Texture(pixmap);
+    pixmap.dispose();
 
+    camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
-    camera.translate(10, 8);
-
+    camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
 
 
     BitmapFont font = new BitmapFont();
     TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-    textButtonStyle.font = font; // Set the font you want to use
+    textButtonStyle.font = font;
     textButtonStyle.fontColor = Color.WHITE;
     for (int y = 0; y < 8; y++) {
       for (int x = 0; x < 20; x++) {
@@ -105,15 +122,23 @@ public class MainGameScreen extends ScreenAdapter {
   }
 
   @Override
-  public void render(float delta)  {
+  public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+    batch.begin();
+    for (int i = 0; i < NUM_LANES; i++) {
+    float yPosition = i * LANE_HEIGHT;
+    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 2);
+  }
+    batch.end();
+
     renderer.render();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
     stage.draw();
-      }
+  }
 
 
 
@@ -144,7 +169,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getEntityService().dispose();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getResourceService().dispose();
-
+    whiteTexture.dispose();
     ServiceLocator.clear();
   }
 
