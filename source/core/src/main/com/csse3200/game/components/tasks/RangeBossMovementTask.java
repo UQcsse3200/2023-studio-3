@@ -23,8 +23,8 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
 
     /**
      * @param wanderRange Distance in X and Y the entity can move from its position when start() is
-     *     called.
-     * @param waitTime How long in seconds to wait between wandering.
+     *                    called.
+     * @param waitTime    How long in seconds to wait between wandering.
      */
     public RangeBossMovementTask(Vector2 wanderRange, float waitTime) {
         this.wanderRange = wanderRange;

@@ -1,5 +1,6 @@
 package com.csse3200.game.areas;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
@@ -67,10 +68,7 @@ public class ForestGameArea extends GameArea {
           "images/Enabling.png",
           "images/Hurt.png",
           "images/Idle.png",
-          "images/Shot_1.png",
-          "images/Shot_2.png",
-          "images/Shutdown.png",
-          "images/Walk.png",
+
 
   };
   private static final String[] forestTextureAtlases = {
@@ -219,18 +217,21 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(ghost, randomPos, true, true);
     }
   }
-
   private Entity spawnBossKing1() {
-    GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
+    float middleX = Gdx.graphics.getWidth()/2f;
+    float middleY = Gdx.graphics.getHeight()/2f;
+    //GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
     bossKing1 = BossKingFactory.createBossKing1(player);
-    spawnEntityAt(bossKing1, bottomRight, true, true);
+    bossKing1.setPosition(middleX,middleY);
     return bossKing1;
   }
 
   private Entity spawnBossKing2() {
-    GridPoint2 bottomLeft = new GridPoint2(0, terrain.getMapBounds(0).y - 1);  // Subtract 1 to stay within map bounds
-    bossKing2 = BossKingFactory.createBossKing2(player);
-    spawnEntityAt(bossKing2, bottomLeft, true, true);
+    float middleX = Gdx.graphics.getWidth()/2f;
+    float middleY = Gdx.graphics.getHeight()/2f;
+    //GridPoint2 bottomRight = terrain.getMapBounds(0).sub(1, 1);  // Subtract 1 to stay within map bounds
+    bossKing1 = BossKingFactory.createBossKing1(player);
+    bossKing1.setPosition(middleX,middleY);
     return bossKing2;
   }
 

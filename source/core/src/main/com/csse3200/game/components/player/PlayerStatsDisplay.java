@@ -66,6 +66,7 @@ public class PlayerStatsDisplay extends UIComponent {
     healthLabel.setText(text);
   }
 
+
   @Override
   public void dispose() {
     super.dispose();

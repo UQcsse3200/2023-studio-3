@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -7,22 +8,23 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.BossAnimationController;
+import com.csse3200.game.components.npc.BossStatsDisplay;
+import com.csse3200.game.components.tasks.MoveToMiddleTask;
 import com.csse3200.game.components.tasks.RangeBossMovementTask;
 import com.csse3200.game.components.tasks.TowerCombatTask;
+import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.BossKingConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
-import static com.csse3200.game.entities.factories.NPCFactory.createBaseNPC;
 
 
 public class BossKingFactory {
@@ -36,47 +38,33 @@ public class BossKingFactory {
         //Boss mob 1 starts here
     public static Entity createBossKing1(Entity target) {
         BossKingConfigs config = configs.BossKing; //has its own json file
-        Entity bossKing1 = createBaseNPC(target);
+        Entity bossKing1 = createBaseBoss(target);
+        float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
+        float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
 
-        // task section for movement by AI component
-
+        MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
+                bossKing1, // Pass the owner entity
+                new Vector2(middleX, middleY), // Target position (middle-right of screen)
+                1f // Speed
+        );
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TowerCombatTask(PRIORITY, BOSS_MOB_AGRO_RANGE));
-
-        // animation section
-
-        AnimationRenderComponent animator =
+                .addTask(moveToMiddleTask1);
+// animation section
+        AnimationRenderComponent animator1 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/robot.atlas", TextureAtlas.class));
-        animator.addAnimation("Enabling", 0.05f, Animation.PlayMode.LOOP);
-        animator.addAnimation("Walk", 0.05f, Animation.PlayMode.LOOP);
-        animator.addAnimation("Attack", 0.05f, Animation.PlayMode.LOOP);
+                                .getAsset("images/turret01.atlas", TextureAtlas.class));
+        animator1.addAnimation("idle", 0.3f, Animation.PlayMode.LOOP);
+        animator1.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
+        animator1.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
+        animator1.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
 
-        //components section
-        PhysicsMovementComponent physicsMovementComponent = bossKing1.getComponent(PhysicsMovementComponent.class);
-        ColliderComponent colliderComponent = bossKing1.getComponent(ColliderComponent.class);
-        HitboxComponent hitboxComponent = bossKing1.getComponent(HitboxComponent.class);
-        TouchAttackComponent touchAttackComponent = bossKing1.getComponent(TouchAttackComponent.class);
-
-        if (physicsMovementComponent == null) {
-            bossKing1.addComponent(new PhysicsMovementComponent());
-        }
-        if (colliderComponent == null) {
-            bossKing1.addComponent(new ColliderComponent());
-        }
-        if (touchAttackComponent == null){
-            bossKing1.addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f));
-        }
-        if (hitboxComponent == null){
-            bossKing1.addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE));
-        }
-        if(true) {
-            bossKing1
-                    .addComponent(new BossAnimationController())
+        bossKing1
+                    .addComponent(new TowerAnimationController())
+                    .addComponent(animator1)
+                    .addComponent(aiTaskComponent)
                     .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
-
-        }
+                    //.addComponent(new BossStatsDisplay());
 
 
         return bossKing1;
@@ -85,45 +73,49 @@ public class BossKingFactory {
     // boss mob 2 starts here
     public static Entity createBossKing2(Entity target) {
         BossKingConfigs config = configs.BossKing;
-        Entity bossKing2 = createBaseNPC(target);
+        Entity bossKing2 = createBaseBoss(target);
+        float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
+        float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
 
+        MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
+                bossKing2, // Pass the owner entity
+                new Vector2(middleX, middleY), // Target position (middle-right of screen)
+                1f // Speed
+        );
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new RangeBossMovementTask(new Vector2(1,2), 5));
+                .addTask(moveToMiddleTask1);
 
-        AnimationRenderComponent animator =
+        AnimationRenderComponent animator2 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/robot.atlas", TextureAtlas.class));
-        animator.addAnimation("Enabling", 0.05f, Animation.PlayMode.LOOP);
-        animator.addAnimation("Walk", 0.05f, Animation.PlayMode.LOOP);
-        animator.addAnimation("Attack", 0.05f, Animation.PlayMode.LOOP);
+                                .getAsset("images/turret01.atlas", TextureAtlas.class));
+        animator2.addAnimation("idle", 0.3f, Animation.PlayMode.LOOP);
+        animator2.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
+        animator2.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
+        animator2.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
 
-
-
-        PhysicsMovementComponent physicsMovementComponent = bossKing2.getComponent(PhysicsMovementComponent.class);
-        ColliderComponent colliderComponent = bossKing2.getComponent(ColliderComponent.class);
-        HitboxComponent hitboxComponent = bossKing2.getComponent(HitboxComponent.class);
-        TouchAttackComponent touchAttackComponent = bossKing2.getComponent(TouchAttackComponent.class);
-
-        if (physicsMovementComponent == null) {
-            bossKing2.addComponent(new PhysicsMovementComponent());
-        }
-        if (colliderComponent == null) {
-            bossKing2.addComponent(new ColliderComponent());
-        }
-        if (touchAttackComponent == null){
-            bossKing2.addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f));
-        }
-        if (hitboxComponent == null){
-            bossKing2.addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE));
-        }
-        if(true) {
             bossKing2
                     .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                    .addComponent(new BossAnimationController());
-        }
-
+                    .addComponent(new TowerAnimationController())
+                    .addComponent(aiTaskComponent)
+                    //.addComponent(new BossStatsDisplay())
+                    .addComponent(animator2);
         return bossKing2;
+    }
+
+    public static Entity createBaseBoss(Entity target) {
+
+        Entity boss =
+                new Entity()
+                        .addComponent(new PhysicsComponent())
+                        .addComponent(new ColliderComponent())
+                        //.addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC)
+                        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 4f));
+                        //.addComponent(new TouchAttackComponent(PhysicsLayer.OBSTACLE, 2f));
+
+
+        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
+        return boss;
     }
 
     private BossKingFactory() {
