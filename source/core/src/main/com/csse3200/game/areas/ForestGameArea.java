@@ -69,7 +69,6 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-    spawnTrees();
     player = spawnPlayer();
 
     spawnXenoGrunts();
