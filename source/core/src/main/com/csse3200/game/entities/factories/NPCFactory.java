@@ -11,6 +11,7 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.ChaseTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.configs.BaseEnemyConfig;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.GhostKingConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -98,7 +99,7 @@ public class NPCFactory {
    */
   public static Entity createXenoGrunt(Entity target) {
     Entity xenoGrunt = createBaseNPC(target);
-    BaseEntityConfig config = configs.xenoGrunt;
+    BaseEnemyConfig config = configs.xenoGrunt;
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
