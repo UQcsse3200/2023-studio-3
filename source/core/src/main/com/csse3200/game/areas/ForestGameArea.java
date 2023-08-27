@@ -7,6 +7,7 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.gamearea.CurrencyDisplay;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.entities.factories.ObstacleFactory;
 import com.csse3200.game.entities.factories.PlayerFactory;
@@ -54,7 +55,8 @@ public class ForestGameArea extends GameArea {
     "images/turret_deployed.png",
     "images/wallTower.png",
     "images/building2.png",
-    "images/wall.png"
+    "images/wall.png",
+          "images/scrap.png"
   };
 
   private static final String[] forestTextureAtlases = {
@@ -94,7 +96,6 @@ public class ForestGameArea extends GameArea {
     loadAssets();
 
     displayUI();
-
     spawnTerrain();
     spawnBuilding1();
     spawnBuilding2();
@@ -116,7 +117,7 @@ public class ForestGameArea extends GameArea {
 
   private void displayUI() {
     Entity ui = new Entity();
-    //ui.addComponent(new GameAreaDisplay("Box Forest"));
+    ui.addComponent(new GameAreaDisplay("Box Forest"));
     ui.addComponent(new CurrencyDisplay());
     spawnEntity(ui);
   }
