@@ -66,7 +66,7 @@ public class ProjectileFactory {
     BaseEntityConfig config = configs.fireBall;
     Entity projectile = createFireBall(target, destination, speed);
     projectile
-            .addComponent(new TextureRenderComponent("images/aoe_projectile.png"))
+            //.addComponent(new TextureRenderComponent("images/aoe_projectile.png"))
 
             // * This is the component that allows the projectile to damage a specified target.
             .addComponent(new AoeComponent(aoeSize));
