@@ -1,6 +1,8 @@
 package com.csse3200.game.entities;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,5 +76,28 @@ public class EntityService {
       }
     }
     return null;
+  }
+
+  /**
+   * Get entities within a certain radius of a given entity.
+   *
+   * @param source The reference entity to check distance from.
+   * @param radius The radius within which to fetch entities.
+   * @return An Array<Entity> containing entities within the given radius.
+   */
+  public Array<Entity> getNearbyEntities(Entity source, float radius) {
+    Array<Entity> nearbyEntities = new Array<Entity>();
+    Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
+    for (Entity otherEntity : allEntities) {
+      if (source == otherEntity) continue; // Skip the source entity
+
+      Vector2 positionSource = source.getPosition();
+      Vector2 positionOther = otherEntity.getPosition();
+
+      if (positionSource.dst(positionOther) <= radius) {
+        nearbyEntities.add(otherEntity);
+      }
+    }
+    return nearbyEntities;
   }
 }
