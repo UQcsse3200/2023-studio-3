@@ -14,14 +14,13 @@ public class DropFactory {
      */
 
     // We can make different drops for different currencies
-    public static Entity createScrapDrop(int x, int y) {
+    public static Entity createScrapDrop() {
         Scrap scrap = new Scrap();
         Entity drop = new Entity()
             .addComponent(new TextureRenderComponent(scrap.getTexture()))
             .addComponent(new DropComponent(1, scrap));
-        drop.setPosition(x, y); // Set the position of the drop to the position of the enemy
         drop.getComponent(TextureRenderComponent.class).scaleEntity();
-        drop.scaleHeight(2.5f);
+        drop.scaleHeight(0.5f);
         return drop;
     }
 }
