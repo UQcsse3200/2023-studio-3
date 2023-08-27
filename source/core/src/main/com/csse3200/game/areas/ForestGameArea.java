@@ -7,10 +7,13 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.gamearea.CurrencyDisplay;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.entities.factories.ObstacleFactory;
 import com.csse3200.game.entities.factories.PlayerFactory;
+import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.utils.math.GridPoint2Utils;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
@@ -67,6 +70,10 @@ public class ForestGameArea extends GameArea {
   /** Create the game area, including terrain, static entities (trees), dynamic entities (player) */
   @Override
   public void create() {
+    EntityService entityManager = ServiceLocator.getEntityService();
+
+    InputComponent inputHandler = new DropInputComponent(entityManager);
+    ServiceLocator.getInputService().register(inputHandler);
     loadAssets();
 
     displayUI();
@@ -74,6 +81,7 @@ public class ForestGameArea extends GameArea {
     spawnTrees();
     player = spawnPlayer();
     spawnGhosts();
+    //spawnDrop();
     spawnGhostKing();
 
     playMusic();
@@ -141,6 +149,17 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity ghost = NPCFactory.createGhost(player);
       spawnEntityAt(ghost, randomPos, true, true);
+    }
+  }
+
+  private void spawnDrop() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < 50; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity drop = DropFactory.createScrapDrop();
+      spawnEntityAt(drop, randomPos, true, true);
     }
   }
 

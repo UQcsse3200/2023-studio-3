@@ -17,6 +17,10 @@ public class EntityService {
 
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
 
+  public static void removeEntity(Entity clickedEntity) {
+    clickedEntity.dispose();
+  }
+
   /**
    * Register a new entity with the entity service. The entity will be created and start updating.
    * @param entity new entity.
@@ -54,4 +58,22 @@ public class EntityService {
       entity.dispose();
     }
   }
+
+  public Entity getEntityAtPosition(float x, float y) {
+    for (Entity entity : entities) {
+      if (entityContainsPosition(entity, x, y)) {
+        return entity;
+      }
+    }
+    return null;
+  }
+
+  private boolean entityContainsPosition(Entity entity, float x, float y) {
+    float entityX = entity.getPosition().x;
+    float entityY = entity.getPosition().y;
+    float entityWidth = entity.getScale().x;
+    float entityHeight = entity.getScale().y;
+    return x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight;
+  }
+
 }
