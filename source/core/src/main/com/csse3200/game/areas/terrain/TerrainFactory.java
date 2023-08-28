@@ -74,6 +74,7 @@ public class TerrainFactory {
             new TextureRegion(resourceService.getAsset("images/iso_grass_3.png", Texture.class));
         return createForestDemoTerrain(1f, isoGrass, isoTuft, isoRocks );
       case FOREST_DEMO_HEX:
+
         TextureRegion hexGrass =
             new TextureRegion(resourceService.getAsset("images/terrain 2 hex.png", Texture.class));
         TextureRegion hexTuft =
