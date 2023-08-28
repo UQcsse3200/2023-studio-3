@@ -25,8 +25,6 @@ public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_BUILDINGS = 4;
   private static final int NUM_GHOSTS = 2;
-  private static final int NUM_WALLS = 7;
-
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
@@ -53,6 +51,7 @@ public class ForestGameArea extends GameArea {
     "images/turret_deployed.png",
     "images/wallTower.png",
     "images/building2.png",
+    "images/wallTower.png",
     "images/wall.png"
   };
   private static final String[] forestTextureAtlases = {
@@ -68,9 +67,9 @@ public class ForestGameArea extends GameArea {
           "sounds/deploy.mp3",
           "sounds/stow.mp3"
   };
-  private static final String backgroundMusic = "sounds/Sci-Fi 1.ogg";
-  private static final String[] forestMusic = {backgroundMusic};
+  private static final String backgroundMusic = "sounds/Sci-Fi1.ogg";
 
+  private static final String[] forestMusic = {backgroundMusic};
   private final TerrainFactory terrainFactory;
 
   private Entity player;
