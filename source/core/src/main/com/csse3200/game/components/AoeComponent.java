@@ -1,6 +1,8 @@
 package com.csse3200.game.components;
 
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.services.ServiceLocator;
 
 import com.badlogic.gdx.utils.Array;
@@ -17,10 +19,23 @@ public class AoeComponent extends Component {
         this.radius = radius;
     }
 
+    @Override
+    public void create() {
+        entity.getEvents().addListener("collisionStart", this::onCollisionStart);
+        entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
+    }
+
+    private void onCollisionStart(Fixture me, Fixture other) {
+        // Nothing to do on collision start
+    }
+
+    private void onCollisionEnd(Fixture me, Fixture other) {
+        applyAoeDamage();
+    }
     /**
      * Apply damage to all entities within the area of effect (radius).
      */
-    public void applyDamage() {
+    public void applyAoeDamage() {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
