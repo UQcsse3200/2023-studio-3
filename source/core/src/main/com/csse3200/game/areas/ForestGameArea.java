@@ -115,8 +115,6 @@ public class ForestGameArea extends GameArea {
 //    spawnWall();
 
 
-    ghostking = spawnGhostKing();
-
     playMusic();
 
     spawnProjectile(new Vector2(3f, 3f));
@@ -198,17 +196,6 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private Entity spawnGhostKing() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos 
-    = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
-    Entity ghostKing = NPCFactory.createGhostKing(player);
-    spawnEntityAt(ghostKing, randomPos, true, true);
-    return ghostKing;
-  }
-
     /**
    * Spawns a projectile currently just in the center of the game
    * 
@@ -236,7 +223,6 @@ public class ForestGameArea extends GameArea {
   private void spawnWeaponTower() {
 
   }
-
   private void spawnDrop() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -246,7 +232,7 @@ public class ForestGameArea extends GameArea {
       Entity drop = DropFactory.createScrapDrop();
       spawnEntityAt(drop, randomPos, true, true);
     }
-
+  }
   private void spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
