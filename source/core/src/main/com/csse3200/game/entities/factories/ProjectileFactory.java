@@ -37,6 +37,7 @@ public class ProjectileFactory {
 
     Entity projectile = createBaseProjectile(target, destination);
 
+
     projectile
         .addComponent(new TextureRenderComponent("images/projectile.png"))
         .addComponent(new ColliderComponent().setSensor(true))
@@ -87,7 +88,7 @@ public class ProjectileFactory {
    * @param destination Direction the projectile needs to go towards.
    * @return
    */
-  private static Entity createBaseProjectile(Entity target, Vector2 destination) {
+  public static Entity createBaseProjectile(Entity target, Vector2 destination) {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new TrajectTask(destination));
