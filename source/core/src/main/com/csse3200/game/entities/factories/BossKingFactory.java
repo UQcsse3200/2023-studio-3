@@ -46,7 +46,7 @@ public class BossKingFactory {
 
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
-                .addTask(new RangeBossMovementTask(new Vector2(2f,2f),2f));
+                .addTask(new RangeBossMovementTask(2f));
 // animation section
 
         AnimationRenderComponent animator1 =
@@ -60,8 +60,8 @@ public class BossKingFactory {
                 .addComponent(new TextureRenderComponent("images/RangeBoss.png"))
                 .addComponent(new PhysicsMovementComponent())
                 .addComponent(animator1)
-                .addComponent(aiTaskComponent1);
-               // .addComponent(new BossAnimationController());
+                .addComponent(aiTaskComponent1)
+                .addComponent(new BossAnimationController());
         //bossKing1.getComponent(TextureRenderComponent.class).scaleEntity();
         return bossKing1;
     }
@@ -74,7 +74,7 @@ public class BossKingFactory {
         float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
-                .addTask(new RangeBossMovementTask(new Vector2(2f,2f),2f));
+                .addTask(new RangeBossMovementTask(2f));
 // animation section
 
         AnimationRenderComponent animator2 =

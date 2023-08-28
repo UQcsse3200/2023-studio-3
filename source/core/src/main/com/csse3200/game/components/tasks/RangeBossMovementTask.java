@@ -12,9 +12,8 @@ import org.slf4j.LoggerFactory;
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
 public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(WanderTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(RangeBossMovementTask.class);
 
-    private final Vector2 wanderRange;
     private final float waitTime;
     private Vector2 startPos;
     private MovementTask movementTask;
@@ -22,12 +21,10 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     private Task currentTask;
 
     /**
-     * @param wanderRange Distance in X and Y the entity can move from its position when start() is
-     *                    called.
      * @param waitTime    How long in seconds to wait between wandering.
      */
-    public RangeBossMovementTask(Vector2 wanderRange, float waitTime) {
-        this.wanderRange = wanderRange;
+    public RangeBossMovementTask(float waitTime) {
+
         this.waitTime = waitTime;
     }
 
@@ -49,7 +46,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         movementTask.start();
         currentTask = movementTask;
 
-        this.owner.getEntity().getEvents().trigger("wanderStart");
+        this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
     }
 
     @Override
