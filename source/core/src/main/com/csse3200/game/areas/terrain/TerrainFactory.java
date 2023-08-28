@@ -58,7 +58,7 @@ public class TerrainFactory {
     switch (terrainType) {
       case FOREST_DEMO:
         TextureRegion orthoGrass =
-            new TextureRegion(resourceService.getAsset("images/grass_1.png", Texture.class));
+            new TextureRegion(resourceService.getAsset("images/terrain 2 normal.png", Texture.class));
         TextureRegion orthoTuft =
             new TextureRegion(resourceService.getAsset("images/grass_2.png", Texture.class));
         TextureRegion orthoRocks =
@@ -76,7 +76,7 @@ public class TerrainFactory {
       case FOREST_DEMO_HEX:
 
         TextureRegion hexGrass =
-            new TextureRegion(resourceService.getAsset("images/hex_grass_1.png", Texture.class));
+            new TextureRegion(resourceService.getAsset("images/terrain 2 hex.png", Texture.class));
         TextureRegion hexTuft =
             new TextureRegion(resourceService.getAsset("images/hex_grass_2.png", Texture.class));
         TextureRegion hexRocks =
