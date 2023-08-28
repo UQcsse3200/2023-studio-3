@@ -25,6 +25,9 @@ class CurrencyTest {
         currency.setAmount(value);
         currency.modify(value);
         assertEquals(200, currency.getAmount());
+
+        currency.modify(-100);
+        assertEquals(100, currency.getAmount());
     }
 
     @Test
