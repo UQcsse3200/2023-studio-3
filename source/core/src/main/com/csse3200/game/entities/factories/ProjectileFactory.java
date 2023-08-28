@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.AoeComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -56,28 +57,20 @@ public class ProjectileFactory {
   }
 
   /**
-   * Creates a AOE fireball Entity.
+   * Creates an AOE fireball Entity.
    * @param target The enemy entities that the projectile collides with.
    * @param destination Direction the projectile needs to go towards.
    * @param speed Speed of the projectile.
-   * @return Returns the new projectile entity.
+   * @return Returns the new aoe projectile entity.
    */
   public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
     BaseEntityConfig config = configs.fireBall;
     Entity projectile = createFireBall(target, destination, speed);
     projectile
-            .addComponent(new TextureRenderComponent("images/projectile.png"))
-            .addComponent(new ColliderComponent().setSensor(true))
+            //.addComponent(new TextureRenderComponent("images/aoe_projectile.png"))
 
             // * This is the component that allows the projectile to damage a specified target.
-            .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true, aoeSize))
-            .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
-
-    projectile
-            .getComponent(TextureRenderComponent.class).scaleEntity();
-
-    projectile
-            .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
+            .addComponent(new AoeComponent(aoeSize));
 
     return projectile;
   }

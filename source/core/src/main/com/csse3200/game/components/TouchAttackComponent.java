@@ -55,18 +55,6 @@ public class TouchAttackComponent extends Component {
     this.disposeOnHit = disposeOnHit;
   }
 
-  /**
-   * Create a component which attacks entities and entities around them on collision,
-   * with knockback and self-dispose
-   */
-  public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit,
-                              int aoeSize) {
-    this.targetLayer = targetLayer;
-    this.knockbackForce = knockback;
-    this.disposeOnHit = disposeOnHit;
-    this.aoeSize = aoeSize;
-  }
-
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::onCollisionStart);
