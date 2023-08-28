@@ -11,6 +11,12 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class TowerAnimationController extends Component {
     AnimationRenderComponent animator;
+    Sound deploySound = ServiceLocator.getResourceService().getAsset(
+            "sounds/deploy.mp3", Sound.class);
+    Sound attackSound = ServiceLocator.getResourceService().getAsset(
+            "sounds/gun_shot_trimmed.mp3", Sound.class);
+    Sound stowSound = ServiceLocator.getResourceService().getAsset(
+            "sounds/stow.mp3", Sound.class);
 
     @Override
     public void create() {
@@ -28,15 +34,16 @@ public class TowerAnimationController extends Component {
 
     void animateStow() {
         animator.startAnimation("stow");
+        stowSound.play();
     }
 
     void animateDeploy() {
         animator.startAnimation("deploy");
+        deploySound.play();
     }
 
     void animateFiring() {
         animator.startAnimation("firing");
-        Sound attackSound = ServiceLocator.getResourceService().getAsset("sounds/gun_shot_trimmed.mp3", Sound.class);
         attackSound.play();
     }
 }

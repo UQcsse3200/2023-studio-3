@@ -34,9 +34,17 @@ public class TowerFactoryTest {
     private Entity baseTower;
     private Entity weaponTower;
     private Entity wallTower;
-    private String[] texture = {"images/turret_deployed.png", "images/turret01.png", "images/wall.png"};
+    private String[] texture = {
+            "images/turret_deployed.png",
+            "images/turret01.png",
+            "images/wall.png"
+    };
     private String[] atlas = {"images/turret01.atlas"};
-    private static final String[] forestSounds = {"sounds/gun_shot_trimmed.mp3"};
+    private static final String[] sounds = {
+            "sounds/gun_shot_trimmed.mp3",
+            "sounds/deploy.mp3",
+            "sounds/stow.mp3"
+    };
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
@@ -50,6 +58,7 @@ public class TowerFactoryTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
         ServiceLocator.getResourceService()
                 .getAsset("images/turret01.atlas", TextureAtlas.class);
