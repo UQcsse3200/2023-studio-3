@@ -3,6 +3,7 @@ package com.csse3200.game.areas;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
+// import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
@@ -15,6 +16,14 @@ import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+// import com.badlogic.gdx.utils.Timer;
+// import com.badlogic.gdx.utils.Timer.Task;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,11 +35,15 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_TREES = 7;
   private static final int NUM_GHOSTS = 2;
 
-  private static final int NUM_WEAPON_TOWERS = 3;
+  private static final int NUM_WEAPON_TOWERS = 10;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
   // Temporary spawn point for testing
   private static final GridPoint2 PLAYER_SPAWN2 = new GridPoint2(15, 15);
   private static final float WALL_WIDTH = 0.1f;
+
+  // Keep track of the positions of the placed towers
+  private static final List<GridPoint2> towerPositions = new ArrayList<GridPoint2>();
+
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
@@ -91,9 +104,11 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
     spawnTrees();
     player = spawnPlayer();
-    // spawnWeaponTower();
+    spawnWeaponTower();
     // spawnGhosts();
     ghostking = spawnGhostKing();
+
+    spawnProjectiles();
 
     playMusic();
 
@@ -101,8 +116,8 @@ public class ForestGameArea extends GameArea {
     // spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
 
     // For testing purposes:
-    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), ghostking, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    // spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+    // spawnMultiProjectile(new Vector2(0, 10), ghostking, towardsMobs, 20, new Vector2(2f, 2f), 7);
   }
 
   private void displayUI() {
@@ -194,12 +209,14 @@ public class ForestGameArea extends GameArea {
     * @param target The enemy entities of the "shooter".
     * @param direction The direction the projectile should head towards.
     * @param speed Speed of the projectiles
+    * @param placedPos The position of the tower that's shooting the projectiles.
    * 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
+  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed, GridPoint2 placedPos) {
     Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
-    spawnEntity(Projectile);
+    // spawnEntity(Projectile);
+    spawnEntityAt(Projectile, placedPos, true, true);
   }
 
   /**
@@ -209,13 +226,20 @@ public class ForestGameArea extends GameArea {
     * @param target The enemy entities of the "shooter".
     * @param direction The direction the projectile should head towards.
     * @param speed Speed of the projectiles
-   * 
+    * @param placedPos The position of the tower that's shooting the projectiles. 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
+  
+  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed, GridPoint2 placedPos) {
     Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
-    Projectile.setPosition(position);
-    spawnEntity(Projectile);
+    spawnEntityAt(Projectile, placedPos, true, true);
   }
+
+  // ? JUST IN CASE: OLD CODE
+  // private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
+  //   Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+  //   Projectile.setPosition(position);
+  //   spawnEntity(Projectile);
+  // }
 
    /**
     * Returns multiple projectiles that travel simultaneous.
@@ -226,11 +250,12 @@ public class ForestGameArea extends GameArea {
     * @param space Space between the projectiles.
     * @param speed Speed of the projectiles
     * @param amount The amount of projectiles to spawn.
+    * @param placedPos The position of the tower that's shooting the projectiles.
     */
-  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int amount) {
+  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int amount, GridPoint2 placedPos) {
     int half = amount / 2;
     for (int i = 0; i < amount; i++) {
-        spawnProjectile(position, target, space * half, direction, speed);
+        spawnProjectile(position, target, space * half, direction, speed, placedPos);
         --half;
     }
   }
@@ -241,10 +266,48 @@ public class ForestGameArea extends GameArea {
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      towerPositions.add(randomPos);
       Entity weaponTower = TowerFactory.createWeaponTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
   }
+
+  /**
+   * Spawns projectile periodically based on the locations of the towers.
+   */
+  private void spawnProjectiles() {
+    // TODO: spawn it based on the event when mobs are detected in a specified range.
+    // ! Buggy!
+    // * WORKING VERSION
+    Timer projectileTimer = new Timer();
+    projectileTimer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+            for (GridPoint2 towerPosition : towerPositions) {
+                spawnProjectile(new Vector2(0f, 0f), player, towardsMobs, new Vector2(2f, 2f), towerPosition);
+                spawnMultiProjectile(new Vector2(0f, 0f), player, towardsMobs, 20, new Vector2(2f, 2f), 3, towerPosition);
+            }
+          }
+        }, 0, 2000); // delay 0ms, repeat every 2000ms (2 seconds)
+
+    // Need to clear tower positions when the user presses exits or the loop will keep spawning
+    // towerPositions.clear();
+}
+
+  /**
+   * WITHOUT TIMER spawn projectile based on the locations of the towers. 
+   */
+  // private void spawnProjectiles() {
+  //   for (GridPoint2 towerPosition : towerPositions) {
+  //     // * First param must be in new Vector(0f, 0f)
+  //     // * The first param is the x-offset in respect to the center of the tower and the second param is the y-offset in respect to the center of the tower
+  //     spawnMultiProjectile(new Vector2(3f, 3f), player, towardsMobs, 20, new Vector2(2f, 2f), 7, towerPosition);
+  //     spawnProjectile(new Vector2(0f, 0f), player, towardsMobs, new Vector2(2f, 2f), towerPosition);
+  //   }
+
+  //   // Conditions that clears the list of tower positions
+  //   towerPositions.clear();
+  // }
 
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
