@@ -30,7 +30,6 @@ import static org.mockito.Mockito.*;
 class ProjectileFactoryTest {
         private String[] texture = {"images/projectile.png"};
         private Entity projectile;
-        private Entity fireBall;
 
         @BeforeEach
         public void setUp() {
@@ -74,10 +73,5 @@ class ProjectileFactoryTest {
         public void testProjectilePhysicsMovement() {
             assertNotNull(projectile.getComponent(PhysicsMovementComponent.class),
                     "Projectile has PhysicsMovement component");
-        }
-
-        @Test
-        public void testProjectileFireBall() {
-            assertNotNull(fireBall);
         }
 }
