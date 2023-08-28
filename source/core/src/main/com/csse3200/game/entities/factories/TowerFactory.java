@@ -41,7 +41,7 @@ public class TowerFactory {
     private static final String STOW_ANIM = "stow";
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
-    private static final float FIRE_SPEED = 0.2f;
+    private static final float FIRE_SPEED = 0.25f;
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
 

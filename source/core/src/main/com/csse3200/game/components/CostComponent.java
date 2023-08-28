@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
  */
 public class CostComponent extends Component {
 
-    private static final Logger logger = LoggerFactory.getLogger(CostComponent.class);
+
     private int cost;
 
     public CostComponent(int cost) {

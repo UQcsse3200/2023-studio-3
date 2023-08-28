@@ -3,6 +3,8 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -109,6 +111,10 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                     towerState = STATE.STOW;
                 } else {
                     owner.getEntity().getEvents().trigger(FIRING);
+                    // this might be changed to an event which gets triggered everytime the tower enters the firing state
+                    Entity newProjectile = ProjectileFactory.createProjectile(null, owner.getEntity(), new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
+                    ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
             case STOW -> {
