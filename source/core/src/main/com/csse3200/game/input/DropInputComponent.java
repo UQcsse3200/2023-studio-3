@@ -44,11 +44,11 @@ public class DropInputComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
         if (clickedEntity != null && clickedEntity.getComponent(DropComponent.class) != null) {
-            ServiceLocator.getCurrencyService().getScrap().
-                    setAmount(ServiceLocator.getCurrencyService().getScrap()
-                            .getAmount() + clickedEntity.getComponent(DropComponent.class).getValue());
+            ServiceLocator.getCurrencyService().getScrap()
+                    .modify(clickedEntity.getComponent(DropComponent.class).getValue());
             EntityService.removeEntity(clickedEntity);
             //logger.info("Scrap amount: " + ServiceLocator.getCurrencyService().getScrap().getAmount());
+            ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
             return true;
         }
         return false;
