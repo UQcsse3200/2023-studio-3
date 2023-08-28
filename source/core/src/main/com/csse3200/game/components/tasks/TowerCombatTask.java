@@ -164,6 +164,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      */
     private boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, target, hit);
+        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
 }
