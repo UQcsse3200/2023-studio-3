@@ -51,7 +51,6 @@ class ProjectileFactoryTest {
             Vector2 speed = new Vector2(0.2f, 0.2f);
 
             projectile = ProjectileFactory.createBaseProjectile(new Entity(), destination);
-            fireBall = ProjectileFactory.createFireBall(new Entity(), destination, speed);
         }
 
         @Test
