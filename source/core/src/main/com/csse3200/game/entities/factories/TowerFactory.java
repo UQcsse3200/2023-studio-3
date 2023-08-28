@@ -48,7 +48,7 @@ public class TowerFactory {
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/wall.png"));
+                .addComponent(new TextureRenderComponent("images/wallTower.png"));
 
         return wall;
     }
