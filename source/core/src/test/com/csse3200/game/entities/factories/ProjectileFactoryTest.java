@@ -4,7 +4,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.areas.ForestGameArea;
@@ -30,6 +32,7 @@ import static org.mockito.Mockito.*;
 class ProjectileFactoryTest {
         private String[] texture = {"images/projectile.png"};
         private Entity projectile;
+        private Entity fireBall;
 
         @BeforeEach
         public void setUp() {
@@ -50,6 +53,7 @@ class ProjectileFactoryTest {
             Vector2 speed = new Vector2(0.2f, 0.2f);
 
             projectile = ProjectileFactory.createBaseProjectile(new Entity(), destination);
+            fireBall = ProjectileFactory.createFireBall(new Entity(), destination, speed);
         }
 
         @Test
@@ -58,20 +62,40 @@ class ProjectileFactoryTest {
         }
 
         @Test
-        public void testProjectileHitbox() {
+        public void testBaseProjectileHitbox() {
             assertNotNull(projectile.getComponent(HitboxComponent.class),
-                    "Projectile has Hotbox component");
+                    "Projectile does not contain Hotbox component");
         }
 
         @Test
-        public void testProjectilePhysics() {
+        public void testBaseProjectilePhysics() {
             assertNotNull(projectile.getComponent(PhysicsComponent.class),
-                    "Projectile has Physics component");
+                    "Projectile does not have Physics component");
         }
 
         @Test
-        public void testProjectilePhysicsMovement() {
+        public void testBaseProjectilePhysicsMovement() {
             assertNotNull(projectile.getComponent(PhysicsMovementComponent.class),
-                    "Projectile has PhysicsMovement component");
+                    "Projectile does not have PhysicsMovement component");
         }
+
+        @Test
+        public void testFireBall() {
+            assertNotNull(fireBall, "Fireball is null");
+        }
+
+        @Test
+        public void testFireBallTouchAttackComponent() {
+            assertNotNull(fireBall.getComponent(TouchAttackComponent.class), 
+            "Fireball does not have touchattackcomponent");
+        }
+
+        @Test
+        public void testFireBallCombatStatsComponent() {
+            assertNotNull(fireBall.getComponent(CombatStatsComponent.class),
+            "Fireball does not have CombatStatsComponent");
+        }
+
+
+
 }
