@@ -2,7 +2,9 @@ package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
@@ -70,12 +72,43 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
     spawnTrees();
     player = spawnPlayer();
-    spawnGhosts();
-    spawnGhostKing();
-    spawnFirstBoss();
-    spawnSecondBoss();
+    Timer.schedule(new Timer.Task() {
+      @Override
+      public void run() {
+        startWave(1); // Start with the first wave
+      }
+    }, 2);
 
     playMusic();
+  }
+
+  private void startWave(int waveNumber) {
+      switch(waveNumber) {
+          case 1 -> spawnGhosts();
+          case 2 -> {
+              spawnGhosts();
+              spawnGhostKing();
+          }
+          case 3 -> {
+              spawnGhosts();
+              spawnFirstBoss();
+          }
+          case 4 -> {
+            spawnGhosts();
+            spawnSecondBoss();
+          }
+          default -> {
+          }
+          // End the game or spawn default enemies
+      }
+
+    // Schedule the next wave with a delay
+    Timer.schedule(new Timer.Task() {
+      @Override
+      public void run() {
+        startWave(waveNumber + 1); // Start the next wave
+      }
+    }, 2);
   }
 
   private void displayUI() {
@@ -136,7 +169,10 @@ public class ForestGameArea extends GameArea {
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_GHOSTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+      int randomY = MathUtils.random(0, maxPos.y);
+
+      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
       Entity ghost = NPCFactory.createGhost(player);
       spawnEntityAt(ghost, randomPos, true, true);
     }
@@ -146,7 +182,10 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+    int randomY = MathUtils.random(0, maxPos.y);
+
+    GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
   }
@@ -155,7 +194,10 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+    int randomY = MathUtils.random(0, maxPos.y);
+
+    GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
     Entity firstBoss = NPCFactory.createFirstBoss(player);
     spawnEntityAt(firstBoss, randomPos, true, true);
   }
@@ -164,7 +206,10 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+    int randomY = MathUtils.random(0, maxPos.y);
+
+    GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
     Entity firstBoss = NPCFactory.createSecondBoss(player);
     spawnEntityAt(firstBoss, randomPos, true, true);
   }
