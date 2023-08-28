@@ -60,7 +60,9 @@ public class ForestGameArea extends GameArea {
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
-          "sounds/gun_shot_trimmed.mp3"
+          "sounds/gun_shot_trimmed.mp3",
+          "sounds/deploy.mp3",
+          "sounds/stow.mp3"
   };
   private static final String backgroundMusic = "sounds/Sci-Fi 1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
