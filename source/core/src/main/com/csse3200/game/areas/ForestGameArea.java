@@ -97,8 +97,8 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     player = spawnPlayer();
 
-    spawnGhosts();
-    spawnGhostKing();
+    //spawnGhosts();
+  //  spawnGhostKing();
     spawnWeaponTower();
 //    spawnWall();
 
@@ -107,8 +107,8 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    spawnProjectile(new Vector2(3f, 3f));
-    spawnMultiProjectile(new Vector2(3f, 3f));
+    //spawnProjectile(new Vector2(3f, 3f));
+   // spawnMultiProjectile(new Vector2(3f, 3f));
   }
 
   private void displayUI() {
