@@ -37,7 +37,7 @@ public class TowerFactoryTest {
     private String[] texture = {
             "images/turret_deployed.png",
             "images/turret01.png",
-            "images/wall.png"
+            "images/wallTower.png"
     };
     private String[] atlas = {"images/turret01.atlas"};
     private static final String[] sounds = {
