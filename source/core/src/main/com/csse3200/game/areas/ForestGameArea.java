@@ -51,7 +51,8 @@ public class ForestGameArea extends GameArea {
     "images/turret_deployed.png",
     "images/wallTower.png",
     "images/building2.png",
-    "images/wallTower.png"
+    "images/wallTower.png",
+    "images/wall.png"
   };
   private static final String[] forestTextureAtlases = {
     "images/terrain_iso_grass.atlas",
@@ -67,6 +68,7 @@ public class ForestGameArea extends GameArea {
           "sounds/stow.mp3"
   };
   private static final String backgroundMusic = "sounds/Sci-Fi1.ogg";
+
   private static final String[] forestMusic = {backgroundMusic};
   private final TerrainFactory terrainFactory;
 

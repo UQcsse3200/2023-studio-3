@@ -15,6 +15,7 @@ import com.csse3200.game.services.ServiceLocator;
  * position. This component should be added to an AiTaskComponent attached to the tower instance.
  */
 public class TowerCombatTask extends DefaultTask implements PriorityTask {
+
     // Constants
     private static final int INTERVAL = 1;  // time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
@@ -33,8 +34,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-
-
+  
     private enum STATE {
         IDLE, DEPLOY, FIRING, STOW
     }
@@ -48,7 +48,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         this.priority = priority;
         this.maxRange = maxRange;
         physics = ServiceLocator.getPhysicsService().getPhysics();
-        timeSource = ServiceLocator.getTimeSource();;
+        timeSource = ServiceLocator.getTimeSource();
     }
 
     /**
@@ -105,6 +105,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
             case FIRING -> {
                 // targets gone - stop firing
                 if (!isTargetVisible()) {
+
                     owner.getEntity().getEvents().trigger(STOW);
                     towerState = STATE.STOW;
                 } else {
@@ -114,6 +115,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
             case STOW -> {
                 // currently stowing
                 if (isTargetVisible()) {
+
                     owner.getEntity().getEvents().trigger(DEPLOY);
                     towerState = STATE.DEPLOY;
                 } else {
