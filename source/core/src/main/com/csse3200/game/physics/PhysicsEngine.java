@@ -18,7 +18,8 @@ import org.slf4j.LoggerFactory;
  * Process game physics using the Box2D library. See the Box2D documentation for examples or use
  * cases.
  */
-public class PhysicsEngine implements Disposable {
+public class
+PhysicsEngine implements Disposable {
   private static final Logger logger = LoggerFactory.getLogger(PhysicsEngine.class);
   private static final float MAX_UPDATE_TIME = 0.25f;
   private static final float PHYSICS_TIMESTEP = 0.016f;

@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.AoeComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -61,12 +62,14 @@ public class ProjectileFactory {
    * @param speed Speed of the projectile.
    * @return Returns the new projectile entity.
    */
-  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed) {
-    // TODO: Implement AOE fireball
-
+  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
     BaseEntityConfig config = configs.fireBall;
-
     Entity projectile = createFireBall(target, destination, speed);
+    projectile
+            //.addComponent(new TextureRenderComponent("images/aoe_projectile.png"))
+
+            // * This is the component that allows the projectile to damage a specified target.
+            .addComponent(new AoeComponent(aoeSize));
 
     return projectile;
   }
@@ -90,7 +93,6 @@ public class ProjectileFactory {
 
 
     // Able to alter the collider component's size in proportion to the Entity's size.
-    // PhysicsUtils.setScaledCollider(projectile, 0.9f, 0.4f);
     return projectile;
   }
 

@@ -47,6 +47,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
+    "images/aoe_projectile.png",
     "images/projectile.png",
     "images/box_boy_leaf.png",
     "images/tree.png",
@@ -116,6 +117,7 @@ public class ForestGameArea extends GameArea {
     // spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
 
     // For testing purposes:
+    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
     // spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
     // spawnMultiProjectile(new Vector2(0, 10), ghostking, towardsMobs, 20, new Vector2(2f, 2f), 7);
   }
@@ -195,7 +197,6 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     GridPoint2 randomPos 
-    // = RandomUtils.random(minPos, maxPos);
      = new GridPoint2(0, 0);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
@@ -258,6 +259,20 @@ public class ForestGameArea extends GameArea {
         spawnProjectile(position, target, space * half, direction, speed, placedPos);
         --half;
     }
+  }
+
+  /**
+   * Returns projectile that can do an area of effect damage
+   * @param position Position of the Entity that's shooting the projectile.
+   * @param target The enemy entities of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed Speed of the projectiles
+   * @param aoeSize Size of the area of effect
+   */
+  private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
+    Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
   }
 
   private void spawnWeaponTower() {
