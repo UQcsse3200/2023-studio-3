@@ -255,6 +255,13 @@ Hurt
   orig: 116, 128
   offset: 33, 0
   index: -1
+default
+  rotate: true
+  xy: 76, 704
+  size: 38, 73
+  orig: 128, 128
+  offset: 45, 0
+  index: -1
 Idle
   rotate: true
   xy: 76, 664
