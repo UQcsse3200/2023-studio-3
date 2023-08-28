@@ -90,6 +90,23 @@ public class BaseEnemyConfig extends BaseEntityConfig {
         return this.id;
     }
 
+    /** return the currency the enemy will drop when it dies */
+    //TODO change to Currency class
+    public String getDrops() {
+        return this.drops.toString();
+    }
+
+    /*** return the close range (Melee) attacks of the enemy */
+    public ArrayList<Melee> getCloseRangeAbilities() {
+        return this.closeRangeAbilities;
+    }
+
+    /** return the long range (Projectile) attacks of the enemy */
+    //TODO change to projectile
+    public ArrayList<Weapon> getLongRangeAbilities() {
+        return this.longRangeAbilities;
+    }
+
     public String toString() {
         return "Enemy: " + this.id + " Drops: " + this.drops + " Close Range: "
                 + this.closeRangeAbilities + " Long Range: " + this.longRangeAbilities
