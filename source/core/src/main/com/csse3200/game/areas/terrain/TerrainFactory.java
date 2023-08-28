@@ -58,35 +58,36 @@ public class TerrainFactory {
     switch (terrainType) {
       case FOREST_DEMO:
         TextureRegion orthoGrass =
-            new TextureRegion(resourceService.getAsset("images/grass_1.png", Texture.class));
+            new TextureRegion(resourceService.getAsset("images/terrain 2 normal.png", Texture.class));
         TextureRegion orthoTuft =
             new TextureRegion(resourceService.getAsset("images/grass_2.png", Texture.class));
         TextureRegion orthoRocks =
             new TextureRegion(resourceService.getAsset("images/grass_3.png", Texture.class));
         return createForestDemoTerrain(0.5f, orthoGrass, orthoTuft, orthoRocks);
       case FOREST_DEMO_ISO:
+
         TextureRegion isoGrass =
             new TextureRegion(resourceService.getAsset("images/iso_grass_1.png", Texture.class));
         TextureRegion isoTuft =
             new TextureRegion(resourceService.getAsset("images/iso_grass_2.png", Texture.class));
         TextureRegion isoRocks =
             new TextureRegion(resourceService.getAsset("images/iso_grass_3.png", Texture.class));
-        return createForestDemoTerrain(1f, isoGrass, isoTuft, isoRocks);
+        return createForestDemoTerrain(1f, isoGrass, isoTuft, isoRocks );
       case FOREST_DEMO_HEX:
         TextureRegion hexGrass =
-            new TextureRegion(resourceService.getAsset("images/hex_grass_1.png", Texture.class));
+            new TextureRegion(resourceService.getAsset("images/terrain 2 hex.png", Texture.class));
         TextureRegion hexTuft =
             new TextureRegion(resourceService.getAsset("images/hex_grass_2.png", Texture.class));
         TextureRegion hexRocks =
             new TextureRegion(resourceService.getAsset("images/hex_grass_3.png", Texture.class));
-        return createForestDemoTerrain(1f, hexGrass, hexTuft, hexRocks);
+        return createForestDemoTerrain(1f , hexGrass, hexTuft, hexRocks);
       default:
         return null;
     }
   }
 
   private TerrainComponent createForestDemoTerrain(
-      float tileWorldSize, TextureRegion grass, TextureRegion grassTuft, TextureRegion rocks) {
+          float tileWorldSize, TextureRegion grass, TextureRegion grassTuft, TextureRegion rocks) {
     GridPoint2 tilePixelSize = new GridPoint2(grass.getRegionWidth(), grass.getRegionHeight());
     TiledMap tiledMap = createForestDemoTiles(tilePixelSize, grass, grassTuft, rocks);
     TiledMapRenderer renderer = createRenderer(tiledMap, tileWorldSize / tilePixelSize.x);
