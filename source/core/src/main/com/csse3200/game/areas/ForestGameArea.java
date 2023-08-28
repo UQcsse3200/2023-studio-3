@@ -96,10 +96,6 @@ public class ForestGameArea extends GameArea {
   /** Create the game area, including terrain, static entities (trees), dynamic entities (player) */
   @Override
   public void create() {
-    EntityService entityManager = ServiceLocator.getEntityService();
-
-    InputComponent inputHandler = new DropInputComponent(entityManager);
-    ServiceLocator.getInputService().register(inputHandler);
     loadAssets();
 
     displayUI();
@@ -108,6 +104,7 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     player = spawnPlayer();
 
+    spawnScrap();
     spawnGhosts();
     ghostking = spawnGhostKing();
     //spawnDrop();
@@ -177,6 +174,17 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity building2 = ObstacleFactory.createBuilding2();
       spawnEntityAt(building2, randomPos, true, false);
+    }
+  }
+
+  private void spawnScrap() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < 50; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity scrap = DropFactory.createScrapDrop();
+      spawnEntityAt(scrap, randomPos, true, false);
     }
   }
 

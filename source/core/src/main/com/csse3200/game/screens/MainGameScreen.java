@@ -10,6 +10,7 @@ import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.input.InputDecorator;
 import com.csse3200.game.input.InputService;
@@ -63,6 +64,8 @@ public class MainGameScreen extends ScreenAdapter {
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
+    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(inputHandler);
 
     loadAssets();
     createUI();
