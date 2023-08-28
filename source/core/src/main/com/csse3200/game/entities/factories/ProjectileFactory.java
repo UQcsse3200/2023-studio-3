@@ -16,10 +16,9 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.compression.lzma.Base;
 
 /**
- * Responsible for creating projectiles within the game
+ * Responsible for creating projectiles within the game.
  */
 public class ProjectileFactory {
 
@@ -29,15 +28,14 @@ public class ProjectileFactory {
   /**
    * Creates a fireball Entity.
    * @param target The enemy entities that the projectile collides with.
-   * @param destination Direction the projectile needs to go towards.
-   * @param speed Speed of the projectile.
-   * @return Returns the new projectile entity.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
    */
   public static Entity createFireBall(Entity target, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.fireBall;
 
     Entity projectile = createBaseProjectile(target, destination);
-
 
     projectile
         .addComponent(new TextureRenderComponent("images/projectile.png"))
@@ -59,8 +57,9 @@ public class ProjectileFactory {
   /**
    * Creates an AOE fireball Entity.
    * @param target The enemy entities that the projectile collides with.
-   * @param destination Direction the projectile needs to go towards.
-   * @param speed Speed of the projectile.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @param aoeSize The size of the AOE fireball.
    * @return Returns the new aoe projectile entity.
    */
   public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
@@ -76,10 +75,10 @@ public class ProjectileFactory {
   }
 
   /**
-   * Creates a generic projectile entity that can be used for multiple types of projectiles.
+   * Creates a generic projectile entity that can be used for multiple types of * projectiles.
    * @param target The enemy entities that the projectile collides with.
-   * @param destination Direction the projectile needs to go towards.
-   * @return
+   * @param destination The destination the projectile heads towards.
+   * @return Returns a generic projectile entity.
    */
   public static Entity createBaseProjectile(Entity target, Vector2 destination) {
     AITaskComponent aiComponent =
@@ -91,7 +90,6 @@ public class ProjectileFactory {
         .addComponent(new PhysicsMovementComponent())
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
         .addComponent(aiComponent);
-
 
     // Able to alter the collider component's size in proportion to the Entity's size.
     return projectile;
