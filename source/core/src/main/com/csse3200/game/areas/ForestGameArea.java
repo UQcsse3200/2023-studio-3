@@ -35,37 +35,36 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
-    "images/projectile.png",
-    "images/box_boy_leaf.png",
-    "images/building1.png",
-    "images/mountain.png",
-    "images/ghost_king.png",
-    "images/ghost_1.png",
-    "images/terrain 2 normal.png",
-    "images/grass_2.png",
-    "images/grass_3.png",
-    "images/terrain 2 hex.png",
-    "images/hex_grass_2.png",
-    "images/hex_grass_3.png",
-    "images/iso_grass_1.png",
-    "images/iso_grass_2.png",
-    "images/iso_grass_3.png",
-    "images/turret.png",
-    "images/turret01.png",
-    "images/turret_deployed.png",
-    "images/wallTower.png",
-    "images/building2.png",
-    "images/wall.png"
-    "images/iso_grass_3.png",
-          "images/grid_lines.atlas"
+          "images/projectile.png",
+          "images/box_boy_leaf.png",
+          "images/building1.png",
+          "images/mountain.png",
+          "images/ghost_king.png",
+          "images/ghost_1.png",
+          "images/terrain 2 normal.png",
+          "images/grass_2.png",
+          "images/grass_3.png",
+          "images/terrain 2 hex.png",
+          "images/hex_grass_2.png",
+          "images/hex_grass_3.png",
+          "images/iso_grass_1.png",
+          "images/iso_grass_2.png",
+          "images/iso_grass_3.png",
+          "images/turret.png",
+          "images/turret01.png",
+          "images/turret_deployed.png",
+          "images/wallTower.png",
+          "images/building2.png",
+          "images/wall.png",
+          "images/iso_grass_3.png",
   };
   private static final String[] forestTextureAtlases = {
-    "images/terrain_iso_grass.atlas",
-    "images/ghost.atlas",
-    "images/ghostKing.atlas",
-    "images/turret.atlas",
-    "images/turret01.atlas"
-    "images/terrain_iso_grass.atlas", "images/ghost.atlas", "images/ghostKing.atlas", "images/grid_lines.atlas"
+          "images/terrain_iso_grass.atlas",
+          "images/ghost.atlas",
+          "images/ghostKing.atlas",
+          "images/turret.atlas",
+          "images/turret01.atlas",
+
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -136,22 +135,22 @@ public class ForestGameArea extends GameArea {
 
     // Left
     spawnEntityAt(
-        ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), GridPoint2Utils.ZERO, false, false);
+            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), GridPoint2Utils.ZERO, false, false);
     // Right
     spawnEntityAt(
-        ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
-        new GridPoint2(tileBounds.x, 0),
-        false,
-        false);
+            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
+            new GridPoint2(tileBounds.x, 0),
+            false,
+            false);
     // Top
     spawnEntityAt(
-        ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH),
-        new GridPoint2(0, tileBounds.y),
-        false,
-        false);
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH),
+            new GridPoint2(0, tileBounds.y),
+            false,
+            false);
     // Bottom
     spawnEntityAt(
-        ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
 
   private void spawnBuilding1() {
@@ -176,17 +175,17 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnMountains() {
-      ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
+    ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
 
-      fixedPositions.add(new GridPoint2(5, 8));
-      fixedPositions.add(new GridPoint2(12, 4));
-      fixedPositions.add(new GridPoint2(20, 10));
-      fixedPositions.add(new GridPoint2(33, 17));
+    fixedPositions.add(new GridPoint2(5, 8));
+    fixedPositions.add(new GridPoint2(12, 4));
+    fixedPositions.add(new GridPoint2(20, 10));
+    fixedPositions.add(new GridPoint2(33, 17));
 
-      for (GridPoint2 fixedPos : fixedPositions) {
-          Entity tree = ObstacleFactory.createMountain();
-          spawnEntityAt(tree, fixedPos, true, false);
-      }
+    for (GridPoint2 fixedPos : fixedPositions) {
+      Entity tree = ObstacleFactory.createMountain();
+      spawnEntityAt(tree, fixedPos, true, false);
+    }
   }
 
   private Entity spawnPlayer() {
@@ -209,17 +208,17 @@ public class ForestGameArea extends GameArea {
   private Entity spawnGhostKing() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
-    GridPoint2 randomPos 
-    = RandomUtils.random(minPos, maxPos);
+    GridPoint2 randomPos
+            = RandomUtils.random(minPos, maxPos);
     // = new GridPoint2(26, 26);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
     return ghostKing;
   }
 
-    /**
+  /**
    * Spawns a projectile currently just in the center of the game
-   * 
+   *
    * @return a new projectile
    */
   private void spawnProjectile(Vector2 speed) {
