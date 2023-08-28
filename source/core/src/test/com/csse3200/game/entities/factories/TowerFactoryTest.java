@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -37,11 +38,7 @@ public class TowerFactoryTest {
     private String[] texture = {
             "images/turret_deployed.png",
             "images/turret01.png",
-<<<<<<< HEAD
-            "images/wall.png"
-=======
             "images/wallTower.png"
->>>>>>> main
     };
     private String[] atlas = {"images/turret01.atlas"};
     private static final String[] sounds = {
