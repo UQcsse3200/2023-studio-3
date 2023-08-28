@@ -8,24 +8,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Wander around by moving a random position within a range of the starting position. Wait a little
- * bit between movements. Requires an entity with a PhysicsMovementComponent.
+ * Going forward with certain speed, and switching to another land
+ * Requires an entity with a PhysicsMovementComponent.
  */
-public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(RangeBossMovementTask.class);
+public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
+    private static final Logger logger = LoggerFactory.getLogger(FinalBossMovementTask.class);
 
-    private final float waitTime;
+    private final float switchTime;
     private Vector2 startPos;
-    private MovementTask movementTask;
-    private WaitTask waitTask;
+    //    private WaitTask waitTask;
+    private MovementTask moveForwardTask;
+    private MovementTask switchLaneTask;
     private Task currentTask;
 
     /**
-     * @param waitTime    How long in seconds to wait between wandering.
+     * @param switchTime How long in seconds to wait between switching land.
      */
-    public RangeBossMovementTask(float waitTime) {
-
-        this.waitTime = waitTime;
+    public FinalBossMovementTask(float switchTime) {
+        this.switchTime = switchTime;
     }
 
     @Override
@@ -38,38 +38,49 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         super.start();
         startPos = owner.getEntity().getPosition();
 
-        waitTask = new WaitTask(waitTime);
-        waitTask.create(owner);
-        movementTask = new MovementTask(startPos.sub(2,0));
-        movementTask.create(owner);
+//        waitTask = new WaitTask(switchTime);
+//        waitTask.create(owner);
 
-        movementTask.start();
-        currentTask = movementTask;
+        switchLaneTask = new MovementTask(startPos.sub(0, 2));
+        switchLaneTask.create(owner);
 
-        this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
+        moveForwardTask = new MovementTask(startPos.sub(2,0));
+        moveForwardTask.create(owner);
+
+        moveForwardTask.start();
+        currentTask = moveForwardTask;
+
+        this.owner.getEntity().getEvents().trigger("finalBossMovementStart");
     }
 
     @Override
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
-            if (currentTask == movementTask) {
-                startWaiting();
+            if (currentTask == moveForwardTask) {
+                startSwitchingLane();
             } else {
                 startMoving();
+//                startWaiting();;
             }
         }
         currentTask.update();
     }
 
-    private void startWaiting() {
-        logger.debug("Starting waiting");
-        swapTask(waitTask);
+//    private void startWaiting() {
+//        logger.debug("Starting waiting for switching lane");
+//        swapTask(waitTask);
+//    }
+
+    private void startSwitchingLane() {
+        logger.debug("Starting switching lane");
+        switchLaneTask.setTarget(startPos.sub(0, 2));
+        swapTask(switchLaneTask);
     }
 
     private void startMoving() {
-        logger.debug("Starting moving");
-        movementTask.setTarget(startPos.sub(2,0));
-        swapTask(movementTask);
+        logger.debug("Starting moving forward");
+        moveForwardTask.setTarget(startPos.sub(2,0));
+        swapTask(moveForwardTask);
     }
 
     private void swapTask(Task newTask) {
