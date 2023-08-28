@@ -68,7 +68,9 @@ public class ForestGameArea extends GameArea {
 
   private Entity player;
   private Entity ghostking;
-
+  
+  // Variables to be used with spawn projectile methods. This is the variable 
+  // that should occupy the direction param.
   private static final int towardsTowers = 0;
   private static final int towardsMobs = 100;
 
@@ -191,10 +193,10 @@ public class ForestGameArea extends GameArea {
     /**
     * Spawns a projectile that only heads towards the enemies in its lane.
     * 
-    * @param position Position of the Entity that's shooting the projectile.
+    * @param position The position of the Entity that's shooting the projectile.
     * @param target The enemy entities of the "shooter".
     * @param direction The direction the projectile should head towards.
-    * @param speed Speed of the projectiles
+    * @param speed The speed of the projectiles.
    * 
    */
   private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
@@ -206,10 +208,11 @@ public class ForestGameArea extends GameArea {
   /**
     * Spawns a projectile to be used for multiple projectile function.
     * 
-    * @param position Position of the Entity that's shooting the projectile.
+    * @param position The position of the Entity that's shooting the projectile.
     * @param target The enemy entities of the "shooter".
+    * @param space The space between the projectiles' destination.
     * @param direction The direction the projectile should head towards.
-    * @param speed Speed of the projectiles
+    * @param speed The speed of the projectiles.
    * 
    */
   private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
@@ -218,19 +221,20 @@ public class ForestGameArea extends GameArea {
     spawnEntity(Projectile);
   }
 
-   /**
-    * Returns multiple projectiles that travel simultaneous.
-    * 
-    * @param position Position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
-    * @param direction The direction the projectile should head towards.
-    * @param space Space between the projectiles.
-    * @param speed Speed of the projectiles
-    * @param amount The amount of projectiles to spawn.
-    */
-  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int amount) {
-    int half = amount / 2;
-    for (int i = 0; i < amount; i++) {
+  /**
+   * Creates multiple projectiles that travel simultaneous. They all have same 
+   * the starting point but different destinations.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param target The enemy entities of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param space The space between the projectiles' destination.
+   * @param speed The speed of the projectiles.
+   * @param quantity The amount of projectiles to spawn.
+   */
+  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int quantity) {
+    int half = quantity / 2;
+    for (int i = 0; i < quantity; i++) {
         spawnProjectile(position, target, space * half, direction, speed);
         --half;
     }
@@ -238,11 +242,12 @@ public class ForestGameArea extends GameArea {
 
   /**
    * Returns projectile that can do an area of effect damage
-   * @param position Position of the Entity that's shooting the projectile.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
    * @param target The enemy entities of the "shooter".
    * @param direction The direction the projectile should head towards.
-   * @param speed Speed of the projectiles
-   * @param aoeSize Size of the area of effect
+   * @param speed The speed of the projectiles.
+   * @param aoeSize The size of the area of effect.
    */
   private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
     Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);

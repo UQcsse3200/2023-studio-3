@@ -11,10 +11,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   private Vector2 destination;
 
   /**
-   * @param target The entity to chase.
-   * @param priority Task priority when chasing (0 when not chasing).
-   * @param viewDistance Maximum distance from the entity at which chasing can start.
-   * @param destination The destination that the projectile will follow
+   * @param destination The destination that the projectile will move towards.
    */
   public TrajectTask(Vector2 destination) {
     this.destination = destination;
