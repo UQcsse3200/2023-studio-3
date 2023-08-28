@@ -25,7 +25,10 @@ public class ShootTask extends DefaultTask implements PriorityTask {
   private final RaycastHit hit = new RaycastHit();
 
   /**
-   * @param target The entity to chase.
+   * @param target The entity to shoot at.
+   * @param priority Task priority when shooting (0 when not chasing).
+   * @param viewDistance Maximum distance from the entity at which shooting can start.
+   * @param maxChaseDistance Maximum distance from the entity while shooting before giving up.
    */
   public ShootTask(Entity target, int priority, float viewDistance, float maxChaseDistance) {
     this.target = target;
@@ -38,10 +41,6 @@ public class ShootTask extends DefaultTask implements PriorityTask {
 
   }
 
-  /**
-   * Print the message when the task is started.
-   * Will need to implement in here exactly how the shooting of the projectile occurs.
-   */
   @Override
   public void start() {
     super.start();
