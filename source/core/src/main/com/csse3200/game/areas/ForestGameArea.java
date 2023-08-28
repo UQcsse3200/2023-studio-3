@@ -3,6 +3,7 @@ package com.csse3200.game.areas;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
@@ -213,7 +214,9 @@ public class ForestGameArea extends GameArea {
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_GHOSTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+      int randomY = MathUtils.random(0, maxPos.y);
+      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
       Entity ghost = createGhost(player);
       spawnEntityAt(ghost, randomPos, true, true);
     }
@@ -223,7 +226,9 @@ public class ForestGameArea extends GameArea {
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_BUILDINGS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+      int randomY = MathUtils.random(0, maxPos.y);
+      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
       bossKing1 = BossKingFactory.createBossKing1(player);
       spawnEntityAt(bossKing1,
               randomPos,
@@ -238,7 +243,9 @@ public class ForestGameArea extends GameArea {
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_BUILDINGS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+      int randomY = MathUtils.random(0, maxPos.y);
+      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
       bossKing2 = BossKingFactory.createBossKing2(player);
       spawnEntityAt(bossKing2,
               randomPos,
