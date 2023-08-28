@@ -76,7 +76,7 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-    spawnTrees();
+    spawnMountains();
     player = spawnPlayer();
     // spawnGhosts();
      ghostking = spawnGhostKing();
@@ -123,16 +123,16 @@ public class ForestGameArea extends GameArea {
         ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
 
-  private void spawnTrees() {
+  private void spawnMountains() {
     ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
 
     fixedPositions.add(new GridPoint2(5, 8));
     fixedPositions.add(new GridPoint2(12, 4));
     fixedPositions.add(new GridPoint2(20, 10));
-    fixedPositions.add(new GridPoint2(25, 12));
+    fixedPositions.add(new GridPoint2(33, 17));
 
     for (GridPoint2 fixedPos : fixedPositions) {
-      Entity tree = ObstacleFactory.createTree();
+      Entity tree = ObstacleFactory.createMountain();
       spawnEntityAt(tree, fixedPos, true, false);
     }
 

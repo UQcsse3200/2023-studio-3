@@ -125,8 +125,6 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
-    Gdx.gl.glClearColor(0, 0, 0, 1);
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     batch.begin();
     for (int i = 0; i < NUM_LANES; i++) {

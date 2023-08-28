@@ -19,7 +19,7 @@ public class ObstacleFactory {
    * Creates a tree entity.
    * @return entity
    */
-  public static Entity createTree() {
+  public static Entity createMountain() {
     Entity tree =
         new Entity()
             .addComponent(new TextureRenderComponent("images/mountain.png"))
@@ -28,8 +28,8 @@ public class ObstacleFactory {
 
     tree.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
     tree.getComponent(TextureRenderComponent.class).scaleEntity();
-    tree.scaleHeight(2.5f);
-    PhysicsUtils.setScaledCollider(tree, 0.9f, 0.5f);
+    tree.scaleHeight(2.0f);
+    PhysicsUtils.setScaledCollider(tree, 0.6f, 0.4f);
     return tree;
   }
 
