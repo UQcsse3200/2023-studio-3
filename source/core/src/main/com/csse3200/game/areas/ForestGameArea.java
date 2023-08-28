@@ -125,7 +125,7 @@ public class ForestGameArea extends GameArea {
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
-    ui.addComponent(new CurrencyDisplay());
+    ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
   }
 

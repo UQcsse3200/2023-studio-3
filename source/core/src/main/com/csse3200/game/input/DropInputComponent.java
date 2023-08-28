@@ -18,7 +18,7 @@ public class DropInputComponent extends InputComponent {
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector2 worldCoordinates = new Vector2(screenX, screenY);
         Camera camera = ServiceLocator.getRenderService().getStage().getCamera();
 
