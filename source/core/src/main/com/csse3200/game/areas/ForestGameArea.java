@@ -70,6 +70,7 @@ public class ForestGameArea extends GameArea {
           "images/satyr.png",
           "images/Hurt.png",
           "images/Idle.png",
+          "images/RangeBoss.png"
 
 
   };
@@ -79,7 +80,8 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/turret.atlas",
           "images/turret01.atlas",
-          "images/robot.atlas"
+          "images/robot.atlas",
+          "images/rangeBossRight.atlas"
   };
   private static final String[] forestSounds = {"sounds/Impact4.ogg"};
   private static final String backgroundMusic = "sounds/BGM_03_mp3.mp3";

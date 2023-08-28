@@ -52,14 +52,14 @@ public class BossKingFactory {
         AnimationRenderComponent animator1 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/robot.atlas", TextureAtlas.class));
+                                .getAsset("images/rangeBossRight.atlas", TextureAtlas.class));
         animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
 
         bossKing1
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new TextureRenderComponent("images/turret_deployed.png"))
+                .addComponent(new TextureRenderComponent("images/RangeBoss.png"))
                 .addComponent(new PhysicsMovementComponent())
-               // .addComponent(animator1)
+                .addComponent(animator1)
                 .addComponent(aiTaskComponent1);
                // .addComponent(new BossAnimationController());
         //bossKing1.getComponent(TextureRenderComponent.class).scaleEntity();
