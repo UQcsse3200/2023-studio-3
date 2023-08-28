@@ -42,14 +42,10 @@ public class BossKingFactory {
         Entity bossKing1 = createBaseBoss(target);
         float middleX = Gdx.graphics.getWidth() / 2f; // Middle X position of the screen
         float middleY = Gdx.graphics.getHeight() / 2f; // Middle Y position of the screen
-/**
-        MoveToMiddleTask moveToMiddleTask1 = new MoveToMiddleTask(
-                bossKing1, // Pass the owner entity
-                new Vector2(middleX, middleY), // Target position (middle-right of screen)
-                1f // Speed
-        );
+
+
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
-                .addTask(moveToMiddleTask1);
+                .addTask(new RangeBossMovementTask(new Vector2(2f,2f),2f));
 // animation section
 
             AnimationRenderComponent animator1 =
@@ -60,13 +56,14 @@ public class BossKingFactory {
         animator1.addAnimation("Idle", 0.2f, Animation.PlayMode.NORMAL);
         animator1.addAnimation("Walk", 0.2f, Animation.PlayMode.REVERSED);
         animator1.addAnimation("Attack", 0.1f, Animation.PlayMode.LOOP);
- **/
+
         bossKing1
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                //.addComponent(aiTaskComponent1)
-                //.addComponent(animator1)
-                .addComponent(new TextureRenderComponent("images/ghost_1.png"));
-                //.addComponent(new BossAnimationController());
+                .addComponent(new PhysicsMovementComponent())
+                .addComponent(animator1)
+                .addComponent(new TextureRenderComponent("images/ghost_1.png"))
+                .addComponent(aiTaskComponent1)
+                .addComponent(new BossAnimationController());
         bossKing1.getComponent(TextureRenderComponent.class).scaleEntity();
         return bossKing1;
     }
