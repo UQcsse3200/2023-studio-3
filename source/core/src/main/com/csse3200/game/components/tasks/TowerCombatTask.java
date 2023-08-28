@@ -3,12 +3,9 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
-import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -20,19 +17,16 @@ import org.slf4j.LoggerFactory;
  * position. This component should be added to an AiTaskComponent attached to the tower instance.
  */
 public class TowerCombatTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
     private final int priority;  // The active priority this task will have
-    private final float maxRange;  // the maximum detection range of the tower
     private Vector2 towerPosition = new Vector2(10,10);
     private final Vector2 maxRangePosition = new Vector2();
     private final PhysicsEngine physics;
-    private final int SCAN_INTERVAL = 1;
+    private final static int INTERVAL = 1;  // time interval to scan for enemies in seconds
     private final GameTime timeSource;
     private long endTime;
-    private final DebugRenderer debugRenderer;
     private final RaycastHit hit = new RaycastHit();
 
-    private final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
+    private static final short target = PhysicsLayer.NPC;  // The type of targets that the tower will detect
 
     private  enum STATE {
         IDLE, DEPLOY, FIRING, STOW
@@ -45,12 +39,9 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public TowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
-        this.maxRange = maxRange;
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
-        debugRenderer = ServiceLocator.getRenderService().getDebug();
-        logger.debug("TowerCombatTask started");
     }
 
     /**
@@ -65,7 +56,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         // Default to idle mode
         owner.getEntity().getEvents().trigger("idleStart");
 
-        endTime = timeSource.getTime() + (int)(SCAN_INTERVAL * 500);
+        endTime = timeSource.getTime() + (INTERVAL * 500);
     }
 
     /**
@@ -76,10 +67,14 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (int)(SCAN_INTERVAL * 1000);
+            endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 
+    /**
+     * Weapon tower state machine. Updates tower state by scanning for mobs, and
+     * triggers the appropriate events corresponding to the STATE enum
+     */
     public void updateTowerState() {
         // configure tower state depending on target visibility
         switch (towerState) {
@@ -106,6 +101,8 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger("stowStart");
                     towerState = STATE.STOW;
                 }
+                // turret is already firing from DEPLOY
+                // no need to tell it to keep doing what it's already doing
             }
             case STOW -> {
                 // currently stowing
@@ -141,17 +138,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Finds the distance to the nearest target, if any in range.
-     * @return (float) distance to nearest target, otherwise 0 if nothing in range.
-     */
-    private float getDistanceToTarget() {
-        if (physics.raycast(towerPosition, maxRangePosition, TARGET, hit)) {
-            return towerPosition.dst(hit.point.x, hit.point.y);
-        };
-        return 0;
-    }
-
-    /**
      * Fetches the active priority of the Task if a target is visible.
      * @return (int) active priority if a target is visible, -1 otherwise
      */
@@ -180,9 +166,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private boolean isTargetVisible() {
 
         // If there is an obstacle in the path to the max range point, mobs visible.
-        if (physics.raycast(towerPosition, maxRangePosition, TARGET, hit)) {
-            return true;
-        }
-        return false;
+        return physics.raycast(towerPosition, maxRangePosition, target, hit);
     }
 }
