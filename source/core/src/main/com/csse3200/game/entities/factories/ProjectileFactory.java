@@ -27,6 +27,7 @@ public class ProjectileFactory {
 
   /**
    * Creates a fireball Entity.
+   * 
    * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
@@ -56,10 +57,11 @@ public class ProjectileFactory {
 
   /**
    * Creates an AOE fireball Entity.
+   * 
    * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
-   * @param aoeSize The size of the AOE fireball.
+   * @param aoeSize The size of the AOE.
    * @return Returns the new aoe projectile entity.
    */
   public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
@@ -76,6 +78,7 @@ public class ProjectileFactory {
 
   /**
    * Creates a generic projectile entity that can be used for multiple types of * projectiles.
+   * 
    * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @return Returns a generic projectile entity.

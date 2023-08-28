@@ -242,11 +242,12 @@ public class ForestGameArea extends GameArea {
 
   /**
    * Returns projectile that can do an area of effect damage
-   * @param position Position of the Entity that's shooting the projectile.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
    * @param target The enemy entities of the "shooter".
    * @param direction The direction the projectile should head towards.
-   * @param speed Speed of the projectiles
-   * @param aoeSize Size of the area of effect
+   * @param speed The speed of the projectiles.
+   * @param aoeSize The size of the area of effect.
    */
   private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
     Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
