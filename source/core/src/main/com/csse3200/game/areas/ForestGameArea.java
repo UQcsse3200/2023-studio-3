@@ -59,7 +59,8 @@ public class ForestGameArea extends GameArea {
     "images/wallTower.png",
     "images/building2.png",
     "images/wall.png",
-          "images/scrap.png"
+          "images/scrap.png",
+          "images/heart.png"
   };
 
   private static final String[] forestTextureAtlases = {
@@ -113,6 +114,7 @@ public class ForestGameArea extends GameArea {
     //spawnDrop();
     spawnGhostKing();
     spawnWeaponTower();
+    spawnIncome();
 //    spawnWall();
 
 
@@ -194,6 +196,17 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity ghost = NPCFactory.createGhost(player);
       spawnEntityAt(ghost, randomPos, true, true);
+    }
+  }
+
+  private void spawnIncome() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity towerfactory = TowerFactory.createEntityTower();
+      spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
 

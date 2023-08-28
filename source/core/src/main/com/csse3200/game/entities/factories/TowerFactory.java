@@ -1,6 +1,7 @@
 package com.csse3200.game.entities.factories;
 
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -19,6 +20,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.entities.configs.WeaponTowerConfig;
+import com.csse3200.game.entities.configs.IncomeTowerConfig;
 import com.csse3200.game.entities.configs.baseTowerConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
@@ -38,7 +40,19 @@ public class TowerFactory {
     public static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
+    
+    public static Entity createEntityTower() {
+        Entity income = createBaseTower();
+        IncomeTowerConfig config = configs.income;
 
+        income
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new TextureRenderComponent("images/heart.png"));
+
+
+        return income;
+    }
 
 
     public static Entity createWallTower() {
