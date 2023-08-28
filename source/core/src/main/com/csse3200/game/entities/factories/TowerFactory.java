@@ -47,7 +47,8 @@ public class TowerFactory {
 
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new CostComponent(config.cost));
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new TextureRenderComponent("images/wallTower.png"));
 
         return wall;
     }
@@ -81,8 +82,6 @@ public class TowerFactory {
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
-
-//        weapon.getComponent(AnimationRenderComponent.class).scaleEntity();
 
         return weapon;
 

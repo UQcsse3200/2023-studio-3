@@ -51,9 +51,9 @@ public class ForestGameArea extends GameArea {
     "images/turret.png",
     "images/turret01.png",
     "images/turret_deployed.png",
-          "images/building2.png",
-          "images/wall.png"
-
+    "images/wallTower.png",
+    "images/building2.png",
+    "images/wall.png"
   };
   private static final String[] forestTextureAtlases = {
     "images/terrain_iso_grass.atlas",
@@ -62,8 +62,13 @@ public class ForestGameArea extends GameArea {
     "images/turret.atlas",
     "images/turret01.atlas"
   };
-  private static final String[] forestSounds = {"sounds/Impact4.ogg"};
-  private static final String backgroundMusic = "sounds/BGM_03_mp3.mp3";
+  private static final String[] forestSounds = {
+          "sounds/Impact4.ogg",
+          "sounds/gun_shot_trimmed.mp3",
+          "sounds/deploy.mp3",
+          "sounds/stow.mp3"
+  };
+  private static final String backgroundMusic = "sounds/Sci-Fi 1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
 
   private final TerrainFactory terrainFactory;
@@ -223,7 +228,9 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createWeaponTower();
+      Entity wallTower = TowerFactory.createWallTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
+      spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
   }
 
