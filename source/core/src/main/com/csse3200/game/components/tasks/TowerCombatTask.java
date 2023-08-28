@@ -15,7 +15,6 @@ import com.csse3200.game.services.ServiceLocator;
  * position. This component should be added to an AiTaskComponent attached to the tower instance.
  */
 public class TowerCombatTask extends DefaultTask implements PriorityTask {
-
     // Constants
     private static final int INTERVAL = 1;  // time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
@@ -165,6 +164,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      */
     private boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit) ? true : false;
+        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
 }
