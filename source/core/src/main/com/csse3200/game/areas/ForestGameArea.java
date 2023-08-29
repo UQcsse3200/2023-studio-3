@@ -77,7 +77,7 @@ public class ForestGameArea extends GameArea {
           "images/satyr.png",
           "images/Hurt.png",
           "images/Idle.png",
-          "images/RangeBoss.png".
+          "images/RangeBoss.png",
           "images/wallTower.png",
           "images/building2.png",
           "images/iso_grass_3.png"
@@ -177,7 +177,7 @@ public class ForestGameArea extends GameArea {
     // Bottom
     spawnEntityAt(
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
-
+  }
 private void spawnBuilding1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -265,16 +265,6 @@ private void spawnBuilding1() {
     }
     return bossKing2;
 }
-
-  private Entity spawnGhostKing() {
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
-    GridPoint2 randomPos
-            = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
-    Entity ghostKing = NPCFactory.createGhostKing(player);
-    spawnEntityAt(ghostKing, randomPos, true, true);
-    return ghostKing;
-  }
 
   /**
    * Spawns a projectile currently just in the center of the game
