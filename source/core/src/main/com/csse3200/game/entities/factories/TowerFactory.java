@@ -62,7 +62,7 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/heart.png"))
+                .addComponent(new TextureRenderComponent("images/mine_tower.png"))
                 .addComponent(aiTaskComponent);
 
 

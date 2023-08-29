@@ -53,7 +53,6 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
 
             // Print the currency value to the console
             int currencyValue = 5; // Replace this with the actual currency value
-            logger.info("{}", currencyValue);
         }
     }
 
@@ -64,7 +63,6 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void updateCurrency() {
         // Update currency logic here
         currencyAmount += 50;  // Example: Add 10 currency units every interval
-        logger.info("Currency updated. Current amount: " + currencyAmount);
     }
 
     /**
