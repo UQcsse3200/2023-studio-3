@@ -6,4 +6,5 @@ package com.csse3200.game.entities.configs;
 public class baseTowerConfigs {
     public WeaponTowerConfig weapon = new WeaponTowerConfig();
     public WallTowerConfig wall = new WallTowerConfig();
+    public IncomeTowerConfig income = new IncomeTowerConfig();
 }
