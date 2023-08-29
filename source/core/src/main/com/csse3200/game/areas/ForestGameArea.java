@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
@@ -81,9 +80,7 @@ public class ForestGameArea extends GameArea {
           "images/rangeBossRight.png",
           "images/wallTower.png",
           "images/building2.png",
-          "images/iso_grass_3.png",
-          "images/scrap.png",
-          "images/mine_tower.png"
+          "images/iso_grass_3.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
@@ -135,8 +132,6 @@ public class ForestGameArea extends GameArea {
 
     spawnGhosts();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
@@ -151,7 +146,6 @@ public class ForestGameArea extends GameArea {
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
-    ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
   }
 
@@ -184,7 +178,7 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
-  private void spawnBuilding1() {
+private void spawnBuilding1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
@@ -237,7 +231,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(ghost, randomPos, true, true);
     }
   }
-
+  
   private Entity spawnBossKing1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -252,7 +246,7 @@ public class ForestGameArea extends GameArea {
               true,
               false);
     }
-    return bossKing1;
+      return bossKing1;
   }
 
   private Entity spawnBossKing2() {
@@ -270,7 +264,7 @@ public class ForestGameArea extends GameArea {
               false);
     }
     return bossKing2;
-  }
+}
 
   /**
    * Spawns a projectile currently just in the center of the game
@@ -345,28 +339,5 @@ public class ForestGameArea extends GameArea {
     ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
   }
-
-  private void spawnScrap() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < 50; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity scrap = DropFactory.createScrapDrop();
-      spawnEntityAt(scrap, randomPos, true, false);
-    }
-  }
-
-  private void spawnIncome() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < 5; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity towerfactory = TowerFactory.createIncomeTower();
-      spawnEntityAt(towerfactory, randomPos, true, true);
-    }
-  }
-
 
 }

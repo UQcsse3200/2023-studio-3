@@ -1,7 +1,6 @@
 package com.csse3200.game.entities.factories;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +12,6 @@ import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tasks.TowerIdleTask;
 import com.csse3200.game.components.tower.TowerAnimationController;
-import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.WallTowerConfig;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -21,7 +19,6 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.entities.configs.WeaponTowerConfig;
-import com.csse3200.game.entities.configs.IncomeTowerConfig;
 import com.csse3200.game.entities.configs.baseTowerConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
@@ -38,36 +35,10 @@ public class TowerFactory {
 
     private static final int WEAPON_SCAN_INTERVAL = 1;
     private static final int COMBAT_TASK_PRIORITY = 2;
-    private static final int INCOME_INTERVAL = 300;
-    private static final int INCOME_TASK_PRIORITY = 1;
     public static final int WEAPON_TOWER_MAX_RANGE = 40;
-
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
-    /**
-     * Creates an income tower that generates scrap
-     * @return income
-     */
-    public static Entity createIncomeTower() {
-        Entity income = createBaseTower();
-        IncomeTowerConfig config = configs.income;
 
-        // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, 3);
-
-        int updatedInterval = 1;
-        currencyTask.setInterval(updatedInterval);
-        AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
-
-        income
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/mine_tower.png"))
-                .addComponent(aiTaskComponent);
-
-
-        return income;
-    }
 
 
     public static Entity createWallTower() {
@@ -79,10 +50,8 @@ public class TowerFactory {
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TextureRenderComponent("images/wallTower.png"));
 
-
         return wall;
     }
-
 
     /**
      * Creates a weaponry tower that shoots at mobs - This will most likely need to be extended

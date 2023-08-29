@@ -8,10 +8,5 @@
     "health": 20,
     "baseAttack": 0,
     "cost": 5
-  },
-  "income": {
-    "health": 20,
-    "baseAttack": 0,
-    "cost": 1
   }
 }
