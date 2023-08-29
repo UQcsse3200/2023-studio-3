@@ -1,8 +1,16 @@
 package com.csse3200.game.entities;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.Provider;
 
 /**
  * Provides a global access point for entities to register themselves. This allows for iterating
@@ -14,7 +22,6 @@ import org.slf4j.LoggerFactory;
 public class EntityService {
   private static final Logger logger = LoggerFactory.getLogger(EntityService.class);
   private static final int INITIAL_CAPACITY = 16;
-
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
 
   public static void removeEntity(Entity clickedEntity) {
@@ -73,7 +80,7 @@ public class EntityService {
     float entityY = entity.getPosition().y;
     float entityWidth = entity.getScale().x;
     float entityHeight = entity.getScale().y;
-    return x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight;
+    return (x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight);
   }
 
 }

@@ -17,7 +17,6 @@ import org.slf4j.LoggerFactory;
  */
 public class ServiceLocator {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
-
   private static CurrencyService currencyService;
   private static EntityService entityService;
   private static RenderService renderService;
