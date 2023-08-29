@@ -29,8 +29,11 @@ import java.util.ArrayList;
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
-  private static final int NUM_BUILDINGS = 4;
+
+  private static final int NUM_TREES = 0;
   private static final int NUM_GHOSTS = 0;
+  private static final int NUM_GRUNTS = 5;
+  private static final int NUM_BUILDINGS = 4;
   private static final int NUM_BOSS=4;
   private static final int NUM_WALLS = 7;
   private Timer bossSpawnTimer;
@@ -86,11 +89,8 @@ public class ForestGameArea extends GameArea {
           "images/mine_tower.png"
   };
   private static final String[] forestTextureAtlases = {
-          "images/terrain_iso_grass.atlas",
-          "images/ghost.atlas",
-          "images/ghostKing.atlas",
-          "images/turret.atlas",
-          "images/turret01.atlas",
+    "images/terrain_iso_grass.atlas", "images/ghost.atlas", "images/ghostKing.atlas",  "images/turret.atlas",
+      "images/turret01.atlas", "images/xenoGruntRunning.atlas",
           "images/robot.atlas",
           "images/rangeBossRight.atlas"
   };
@@ -132,6 +132,8 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     spawnMountains();
     player = spawnPlayer();
+
+    spawnXenoGrunts();
 
     spawnGhosts();
     spawnWeaponTower();
@@ -248,11 +250,35 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
       bossKing1 = BossKingFactory.createBossKing1(player);
       spawnEntityAt(bossKing1,
-              randomPos,
-              true,
-              false);
+          randomPos,
+          true,
+          false);
     }
     return bossKing1;
+
+  }
+
+  private void spawnXenoGrunts() {
+    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
+      System.out.println(randomPos);
+      Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      spawnEntityAt(xenoGrunt, randomPos, true, true);
+    }
+  }
+
+  private Entity spawnGhostKing() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
+    GridPoint2 randomPos
+            = RandomUtils.random(minPos, maxPos);
+    // = new GridPoint2(26, 26);
+    Entity ghostKing = NPCFactory.createGhostKing(player);
+    spawnEntityAt(ghostKing, randomPos, true, true);
+    return ghostKing;
+
   }
 
   private Entity spawnBossKing2() {
@@ -308,6 +334,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
   }
+
 
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);

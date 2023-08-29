@@ -1,20 +1,21 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.entities.Entity;
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.services.ServiceLocator;
 
-/** Chases a target entity until they get too far away or line of sight is lost
- * Depreciated.
- * ChaseTask is no longer called in the NPCFactory - see ShootTask class.
- * Projectiles should be called from ShootTask. */
-public class ChaseTask extends DefaultTask implements PriorityTask {
+
+/**
+ * Task that prints a message to the terminal whenever it is called.
+ */
+public class ShootTask extends DefaultTask implements PriorityTask {
+  private String message;
   private final Entity target;
   private final int priority;
   private final float viewDistance;
@@ -22,53 +23,28 @@ public class ChaseTask extends DefaultTask implements PriorityTask {
   private final PhysicsEngine physics;
   private final DebugRenderer debugRenderer;
   private final RaycastHit hit = new RaycastHit();
-  private MovementTask movementTask;
 
   /**
-   * Depreciated
-   * ChaseTask is no longer called in the NPCFactory - see ShootTask class.
-   * Projectiles should be called from ShootTask.
-   *
-   * @param target The entity to chase.
-   * @param priority Task priority when chasing (0 when not chasing).
-   * @param viewDistance Maximum distance from the entity at which chasing can start.
-   * @param maxChaseDistance Maximum distance from the entity while chasing before giving up.
+   * @param target The entity to shoot at.
+   * @param priority Task priority when shooting (0 when not chasing).
+   * @param viewDistance Maximum distance from the entity at which shooting can start.
+   * @param maxChaseDistance Maximum distance from the entity while shooting before giving up.
    */
-  public ChaseTask(Entity target, int priority, float viewDistance, float maxChaseDistance) {
+  public ShootTask(Entity target, int priority, float viewDistance, float maxChaseDistance) {
     this.target = target;
     this.priority = priority;
     this.viewDistance = viewDistance;
     this.maxChaseDistance = maxChaseDistance;
+    this.message = "Shoot Task Activated " + target;
     physics = ServiceLocator.getPhysicsService().getPhysics();
     debugRenderer = ServiceLocator.getRenderService().getDebug();
+
   }
 
   @Override
   public void start() {
     super.start();
-    movementTask = new MovementTask(target.getPosition());
-    movementTask.create(owner);
-    movementTask.start();
-
-    // Shoot task
-//    shootTask = new ShootTask(target.getPosition());
-//    shootTask.start();
-//    this.owner.getEntity().getEvents().trigger("chaseStart");
-  }
-
-  @Override
-  public void update() {
-    movementTask.setTarget(target.getPosition());
-    movementTask.update();
-    if (movementTask.getStatus() != Status.ACTIVE) {
-      movementTask.start();
-    }
-  }
-
-  @Override
-  public void stop() {
-    super.stop();
-    movementTask.stop();
+    System.out.println(this.message);
   }
 
   @Override
