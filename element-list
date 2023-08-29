@@ -17,6 +17,7 @@ com.csse3200.game.concurrency
 com.csse3200.game.currency
 com.csse3200.game.entities
 com.csse3200.game.entities.configs
+com.csse3200.game.entities.destructors
 com.csse3200.game.entities.factories
 com.csse3200.game.events
 com.csse3200.game.events.listeners
