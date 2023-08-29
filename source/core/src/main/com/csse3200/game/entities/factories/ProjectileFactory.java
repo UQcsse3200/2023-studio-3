@@ -11,6 +11,7 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -42,7 +43,7 @@ public class ProjectileFactory {
         .addComponent(new TextureRenderComponent("images/projectile.png"))
         .addComponent(new ColliderComponent().setSensor(true))
 
-        // * This is the component that allows the projectile to damage a specified target.
+        // This is the component that allows the projectile to damage a specified target.
         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
@@ -68,9 +69,7 @@ public class ProjectileFactory {
     BaseEntityConfig config = configs.fireBall;
     Entity projectile = createFireBall(target, destination, speed);
     projectile
-            //.addComponent(new TextureRenderComponent("images/aoe_projectile.png"))
-
-            // * This is the component that allows the projectile to damage a specified target.
+            // This is the component that allows the projectile to damage a specified target.
             .addComponent(new AoeComponent(aoeSize));
 
     return projectile;
@@ -94,8 +93,17 @@ public class ProjectileFactory {
         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
         .addComponent(aiComponent);
 
-    // Able to alter the collider component's size in proportion to the Entity's size.
     return projectile;
+  }
+
+  /**
+   * Sets the projectile collider so that the collider size can be altered for flexibility.
+   * @param projectile Projectile's size collider to be scaled upon.
+   * @param x Horizontal scaling of the collider in respect ot the size of the entity
+   * @param y Veritcal scaling of the collider in respect to the size of the entity
+   */
+  public static void setColliderSize(Entity projectile, float x, float y) {
+    PhysicsUtils.setScaledCollider(projectile, x, y);
   }
 
   /**

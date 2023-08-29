@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.Ignore;
 
+import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(GameExtension.class)
@@ -71,27 +72,16 @@ class TouchAttackComponentTest {
     entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);   
   }
 
-  // TODO: Implement test for selfDipose on collision with target layer
-  // @Test
-  @Ignore
+  @Test
   void shouldDisappearAfterAttackTargetLayer() {
-    ServiceLocator.registerTimeSource(new GameTime());
-    ServiceLocator.registerEntityService(new EntityService());
     short targetLayer = (1 << 3);
     Entity entity = createAttacker(targetLayer, true);
-    int id = entity.getId();
     Entity target = createTarget(targetLayer);
 
     Fixture entityFixture = entity.getComponent(HitboxComponent.class).getFixture();
     Fixture targetFixture = target.getComponent(HitboxComponent.class).getFixture();
-    // entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);
-
-    ServiceLocator.getPhysicsService().getPhysics().update();
-    ServiceLocator.getEntityService().update();
-    boolean entityExists = ServiceLocator.getEntityService().getEntity(id) != null;
-    
-    assertEquals(false, entityExists);
-    assertNull(entityExists, "Base entity should be destroyed after hit");
+    entity.getEvents().trigger("collisionStart", entityFixture, targetFixture);
+    assertTrue("Delete flag is not set to null", entity.getFlagForDelete());
   }
 
   Entity createAttacker(short targetLayer) {
