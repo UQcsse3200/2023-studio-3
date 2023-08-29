@@ -1,13 +1,13 @@
 
-terrain_iso_grass.png
+grid_lines.png
 size: 256, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-grass
+grid
   rotate: false
   xy: 2, 2
-  size: 93, 70
-  orig: 93, 70
+  size: 132, 99
+  orig: 132, 99
   offset: 0, 0
-  index: 67
+  index: 999

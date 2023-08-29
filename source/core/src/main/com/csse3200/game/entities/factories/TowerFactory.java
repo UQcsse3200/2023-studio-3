@@ -47,7 +47,8 @@ public class TowerFactory {
 
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new CostComponent(config.cost));
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new TextureRenderComponent("images/wallTower.png"));
 
         return wall;
     }
@@ -82,8 +83,6 @@ public class TowerFactory {
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
 
-//        weapon.getComponent(AnimationRenderComponent.class).scaleEntity();
-
         return weapon;
 
     }
@@ -94,9 +93,9 @@ public class TowerFactory {
     public static Entity createBaseTower() {
         // we're going to add more components later on
         Entity tower = new Entity()
-            .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // we might have to change the names of the layers
-            .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
+                .addComponent(new ColliderComponent())
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // we might have to change the names of the layers
+                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
 
         //PhysicsUtils.setScaledCollider(tower, 0.5f, 0.2f); //values might vary according to entity scale value
 

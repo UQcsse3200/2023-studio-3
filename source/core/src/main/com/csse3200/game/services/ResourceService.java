@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.utils.Disposable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
  * methods when new types of resources are added to the game.
  */
 public class ResourceService implements Disposable {
+
 
   private static final Logger logger = LoggerFactory.getLogger(ResourceService.class);
   private final AssetManager assetManager;
