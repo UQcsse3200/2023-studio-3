@@ -29,7 +29,6 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
   // Temporary spawn point for testing
-  private static final GridPoint2 PLAYER_SPAWN2 = new GridPoint2(15, 15);
   private static final float WALL_WIDTH = 0.1f;
 
   // Required to load assets before using them
@@ -71,7 +70,6 @@ public class ForestGameArea extends GameArea {
   
   // Variables to be used with spawn projectile methods. This is the variable 
   // that should occupy the direction param.
-  private static final int towardsTowers = 0;
   private static final int towardsMobs = 100;
 
   /**
@@ -94,16 +92,11 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
     spawnTrees();
     player = spawnPlayer();
-    // spawnWeaponTower();
-    // spawnGhosts();
     ghostking = spawnGhostKing();
 
     playMusic();
 
-    // spawnProjectile(ghostking.getPosition(), player, towardsMobs, new Vector2(3f, 3f));
-    // spawnMultiProjectile(player.getPosition(), ghostking, towardsMobs, 20, new Vector2(3f, 3f), 7);
-
-    // For testing purposes:
+    // Types of projectile
     spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
     spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
     spawnMultiProjectile(new Vector2(0, 10), ghostking, towardsMobs, 20, new Vector2(2f, 2f), 7);
