@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -78,8 +82,9 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
-<div class="summary-table two-column-summary">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab1" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab1', 2)" class="table-tab">Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel">
+<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a></div>
@@ -89,6 +94,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="EntityService.html" title="class in com.csse3200.game.entities">EntityService</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Provides a global access point for entities to register themselves.</div>
+</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="Melee.html" title="class in com.csse3200.game.entities">Melee</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="block">Melee is a Weapon which has a minimum range to be used at
+
+ damage: the damage of the weapon
+ attackRange: the minimum range of the weapon (target must be less than or equal to this distance away)
+ element: the element of the weapon (fire, water, earth, air, etc)
+ castTime: the time it takes to cast the weapon
+ cooldown: the time it takes to be used again</div>
+</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="PredefinedWeapons.html" title="class in com.csse3200.game.entities">PredefinedWeapons</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab1"><a href="Weapon.html" title="interface in com.csse3200.game.entities">Weapon</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab1">
+<div class="block">Projectiles and Melee are to implement this interface to be used as weapons</div>
+</div>
 </div>
 </div>
 </div>
