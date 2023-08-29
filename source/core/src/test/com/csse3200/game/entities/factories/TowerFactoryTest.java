@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -35,8 +36,17 @@ public class TowerFactoryTest {
     private Entity baseTower;
     private Entity weaponTower;
     private Entity wallTower;
-    private String[] texture = {"images/turret_deployed.png", "images/turret01.png"};
+    private String[] texture = {
+            "images/turret_deployed.png",
+            "images/turret01.png",
+            "images/wallTower.png"
+    };
     private String[] atlas = {"images/turret01.atlas"};
+    private static final String[] sounds = {
+            "sounds/gun_shot_trimmed.mp3",
+            "sounds/deploy.mp3",
+            "sounds/stow.mp3"
+    };
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
@@ -50,6 +60,7 @@ public class TowerFactoryTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
         ServiceLocator.getResourceService()
                 .getAsset("images/turret01.atlas", TextureAtlas.class);
@@ -162,5 +173,4 @@ public class TowerFactoryTest {
         return entity;
     }
 }
-
 

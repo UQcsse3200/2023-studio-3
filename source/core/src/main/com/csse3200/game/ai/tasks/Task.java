@@ -32,6 +32,6 @@ public interface Task {
     FINISHED, // The task has completed succesfully
     FAILED, // The task has failed
     ACTIVE, // The task is currently running
-    INACTIVE // The task is currently not running
+      COMPLETED, INACTIVE // The task is currently not running
   }
 }

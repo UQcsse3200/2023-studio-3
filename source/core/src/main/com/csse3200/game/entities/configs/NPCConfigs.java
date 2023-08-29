@@ -7,4 +7,8 @@ public class NPCConfigs {
   public BaseEntityConfig ghost = new BaseEntityConfig();
   public BaseEntityConfig fireBall = new ProjectileConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
+  public BaseEntityConfig projectile = new ProjectileConfig();
+
+  public BossKingConfigs BossKing = new BossKingConfigs();
+
 }

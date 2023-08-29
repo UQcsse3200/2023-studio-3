@@ -19,19 +19,46 @@ public class ObstacleFactory {
    * Creates a tree entity.
    * @return entity
    */
-  public static Entity createTree() {
-    Entity tree =
+  public static Entity createBuilding1() {
+    Entity building1 =
         new Entity()
-            .addComponent(new TextureRenderComponent("images/tree.png"))
+            .addComponent(new TextureRenderComponent("images/building1.png"))
             .addComponent(new PhysicsComponent())
             .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
 
-    tree.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
-    tree.getComponent(TextureRenderComponent.class).scaleEntity();
-    tree.scaleHeight(1.5f);
-    PhysicsUtils.setScaledCollider(tree, 0.5f, 0.2f);
-    return tree;
+    building1.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
+    building1.getComponent(TextureRenderComponent.class).scaleEntity();
+    building1.scaleHeight(1.5f);
+    PhysicsUtils.setScaledCollider(building1, 0.5f, 0.2f);
+    return building1;
   }
+  public static Entity createBuilding2() {
+    Entity building2 =
+            new Entity()
+                    .addComponent(new TextureRenderComponent("images/building2.png"))
+                    .addComponent(new PhysicsComponent())
+                    .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
+
+    building2.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
+    building2.getComponent(TextureRenderComponent.class).scaleEntity();
+    building2.scaleHeight(1.5f);
+    PhysicsUtils.setScaledCollider(building2, 0.5f, 0.2f);
+    return building2;
+  }
+
+  public static Entity createMountain() {
+      Entity mountain =
+              new Entity()
+                      .addComponent(new TextureRenderComponent("images/mountain.png"))
+                      .addComponent(new PhysicsComponent())
+                      .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
+
+      mountain.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
+      mountain.getComponent(TextureRenderComponent.class).scaleEntity();
+      mountain.scaleHeight(2.0f);
+      PhysicsUtils.setScaledCollider(mountain, 0.6f, 0.4f);
+      return mountain;
+    }
 
   /**
    * Creates an invisible physics wall.
