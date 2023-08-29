@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 class ResourceServiceTest {
   @Test
   void loadAllShouldLoadUnloadAssets() {
-    String texture1 = "test/files/tree.png";
+    String texture1 = "test/files/mountain.png";
     String texture2 = "test/files/missing.png";
     String texture3 = "test/files/heart.png";
     String[] textures = {texture1, texture2, texture3};
@@ -48,7 +48,7 @@ class ResourceServiceTest {
 
   @Test
   void loadForMillisShouldLoadAssets() {
-    String texture1 = "test/files/tree.png";
+    String texture1 = "test/files/mountain.png";
     String texture2 = "test/files/missing.png";
     String texture3 = "test/files/heart.png";
     String[] textures = {texture1, texture2, texture3};
@@ -72,7 +72,7 @@ class ResourceServiceTest {
 
   @Test
   void shouldContainAndGetAssets() {
-    String texture1 = "test/files/tree.png";
+    String texture1 = "test/files/mountain.png";
     String texture2 = "test/files/missing.png";
     String[] textures = {texture1, texture2};
 
@@ -93,7 +93,7 @@ class ResourceServiceTest {
 
   @Test
   void shouldLoadTextures() {
-    String asset1 = "test/files/tree.png";
+    String asset1 = "test/files/mountain.png";
     String asset2 = "test/files/heart.png";
     String[] textures = {asset1, asset2};
 
