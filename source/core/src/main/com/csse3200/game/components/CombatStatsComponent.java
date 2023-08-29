@@ -130,6 +130,12 @@ public class CombatStatsComponent extends Component {
     changeState();
   }
 
+  // Default CombatStatsComponent that relies on the attacker's combatStatsComponent.
+  public void hit(CombatStatsComponent attacker) {
+    int newHealth = getHealth() - attacker.getBaseAttack();
+    setHealth(newHealth);
+  }
+
   /**
    * pick a random number from range 0 to the size of the list provided
    * */
