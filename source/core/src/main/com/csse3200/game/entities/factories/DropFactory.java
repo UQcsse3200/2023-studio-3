@@ -10,7 +10,7 @@ import com.csse3200.game.rendering.TextureRenderComponent;
 public class DropFactory {
 
     /**
-     * Creates a drop entity.
+     * Creates a drop entity. This entity will have a texture and a drop component.
      * @return entity
      */
 

@@ -11,18 +11,25 @@ public class CurrencyService {
     private ArrayList<Currency> currencies;
     private CurrencyDisplay display;
 
+    /**
+     * Constructor for the CurrencyService class
+     */
     public CurrencyService() {
-        this.currencies = new ArrayList<>();
-        this.currencies.add(new Scrap());
-        this.display = new CurrencyDisplay();
+        this.currencies = new ArrayList<>(); // Creates an array list of currencies
+        this.currencies.add(new Scrap()); // Adds a scrap currency to the array list
+        this.display = new CurrencyDisplay(); // Creates a new currency display
     }
 
     public ArrayList<Currency> getCurrencies() {
         return this.currencies;
     }
 
+    /**
+     * Returns the scrap currency
+     * @return Scrap object
+     */
     public Scrap getScrap() {
-        return (Scrap) this.currencies.get(0);
+        return (Scrap) this.currencies.get(0); // Returns the scrap currency
     }
 
     public CurrencyDisplay getDisplay() {
