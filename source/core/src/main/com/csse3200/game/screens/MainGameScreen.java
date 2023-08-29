@@ -68,6 +68,7 @@ public class MainGameScreen extends ScreenAdapter {
   private OrthographicCamera camera;
   private SpriteBatch batch;
   private Texture whiteTexture;
+  private Texture backgroundTexture;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -131,6 +132,9 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
+    batch.end();
 
     batch.begin();
     for (int i = 0; i < NUM_LANES; i++) {
@@ -181,6 +185,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
+    backgroundTexture = new Texture("images/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
