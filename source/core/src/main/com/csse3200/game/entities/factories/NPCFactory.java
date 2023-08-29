@@ -14,10 +14,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
 import com.csse3200.game.entities.Weapon;
-import com.csse3200.game.entities.configs.BaseEnemyConfig;
-import com.csse3200.game.entities.configs.BaseEntityConfig;
-import com.csse3200.game.entities.configs.BossKingConfigs;
-import com.csse3200.game.entities.configs.NPCConfigs;
+import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
@@ -72,6 +69,33 @@ public class NPCFactory {
 
     return ghost;
   }
+
+  /**
+
+   Creates a ghost king entity.*
+   @param target entity to chase
+   @return entity
+   */
+  public static Entity createGhostKing(Entity target) {
+    Entity ghostKing = createBaseNPC(target);
+    GhostKingConfig config = configs.ghostKing;
+
+    AnimationRenderComponent animator =
+        new AnimationRenderComponent(
+            ServiceLocator.getResourceService()
+                .getAsset("images/ghostKing.atlas", TextureAtlas.class));
+    animator.addAnimation("float", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("angry_float", 0.2f, Animation.PlayMode.LOOP);
+
+    ghostKing
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(animator)
+        .addComponent(new GhostAnimationController());
+
+    ghostKing.getComponent(AnimationRenderComponent.class).scaleEntity();
+    return ghostKing;
+  }
+
   /**
    * Creates a xeno grunt entity.
    *
