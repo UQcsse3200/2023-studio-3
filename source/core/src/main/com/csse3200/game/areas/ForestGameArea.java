@@ -205,7 +205,7 @@ public class ForestGameArea extends GameArea {
 
     for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity towerfactory = TowerFactory.createEntityTower();
+      Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }

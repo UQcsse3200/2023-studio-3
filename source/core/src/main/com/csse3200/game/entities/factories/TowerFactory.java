@@ -13,6 +13,7 @@ import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tasks.TowerIdleTask;
 import com.csse3200.game.components.tower.TowerAnimationController;
+import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.WallTowerConfig;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -37,18 +38,32 @@ public class TowerFactory {
 
     private static final int WEAPON_SCAN_INTERVAL = 1;
     private static final int COMBAT_TASK_PRIORITY = 2;
+    private static final int INCOME_INTERVAL = 300;
+    private static final int INCOME_TASK_PRIORITY = 1;
     public static final int WEAPON_TOWER_MAX_RANGE = 40;
+
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
-    
-    public static Entity createEntityTower() {
+    /**
+     * Creates an income tower that generates scrap
+     * @return income
+     */
+    public static Entity createIncomeTower() {
         Entity income = createBaseTower();
         IncomeTowerConfig config = configs.income;
+
+        // Create the CurrencyIncomeTask and add it to the AITaskComponent
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, 3);
+
+        int updatedInterval = 1;
+        currencyTask.setInterval(updatedInterval);
+        AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
 
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/heart.png"));
+                .addComponent(new TextureRenderComponent("images/heart.png"))
+                .addComponent(aiTaskComponent);
 
 
         return income;
@@ -59,13 +74,18 @@ public class TowerFactory {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
 
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TextureRenderComponent("images/wallTower.png"));
 
+
         return wall;
     }
+
 
     /**
      * Creates a weaponry tower that shoots at mobs - This will most likely need to be extended
