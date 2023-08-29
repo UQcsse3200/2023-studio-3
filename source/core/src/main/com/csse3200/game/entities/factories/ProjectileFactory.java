@@ -21,7 +21,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ProjectileFactory {
 
-  private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
+  private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
 
   public static Entity createProjectile(Entity shooter, Entity target, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.projectile;

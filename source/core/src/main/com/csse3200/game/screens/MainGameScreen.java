@@ -1,15 +1,29 @@
 package com.csse3200.game.screens;
+import com.badlogic.gdx.graphics.Pixmap;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.input.InputDecorator;
 import com.csse3200.game.input.InputService;
@@ -17,6 +31,7 @@ import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -35,14 +50,53 @@ import org.slf4j.LoggerFactory;
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
   private static final String[] mainGameTextures = {"images/heart.png"};
-  private static final Vector2 CAMERA_POSITION = new Vector2(7.5f, 7.5f);
+  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 7.5f);
 
   private final GdxGame game;
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
 
+  private final Stage stage;
+  static int screenWidth = Gdx.graphics.getWidth();
+  static int screenHeight = Gdx.graphics.getHeight();
+
+  public static int viewportWidth = screenWidth;
+  public static int viewportHeight= screenHeight;
+  public static final int NUM_LANES = 8;
+  public static final float LANE_HEIGHT = viewportHeight / NUM_LANES;
+
+  private OrthographicCamera camera;
+  private SpriteBatch batch;
+  private Texture whiteTexture;
+  private Texture backgroundTexture;
+
   public MainGameScreen(GdxGame game) {
     this.game = game;
+    batch = new SpriteBatch();
+    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+    pixmap.setColor(1, 1, 1, 1);
+    pixmap.fill();
+    whiteTexture = new Texture(pixmap);
+    pixmap.dispose();
+
+    camera = new OrthographicCamera();
+    camera.setToOrtho(false, viewportWidth, viewportHeight);
+    camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+    Viewport viewport = new ScreenViewport(camera);
+    stage = new Stage(viewport, new SpriteBatch());
+
+
+    BitmapFont font = new BitmapFont();
+    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
+    textButtonStyle.font = font;
+    textButtonStyle.fontColor = Color.WHITE;
+    for (int y = 0; y < 8; y++) {
+      for (int x = 0; x < 20; x++) {
+          TextButton button = new TextButton("" + x + y * 20, textButtonStyle);
+        stage.addActor(button);
+      }
+    }
+
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
@@ -54,12 +108,16 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.registerInputService(new InputService());
     ServiceLocator.registerResourceService(new ResourceService());
 
+    ServiceLocator.registerCurrencyService(new CurrencyService());
+
     ServiceLocator.registerEntityService(new EntityService());
     ServiceLocator.registerRenderService(new RenderService());
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
+    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(inputHandler);
 
     loadAssets();
     createUI();
@@ -74,8 +132,24 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
-    renderer.render();
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
+    batch.end();
+
+    batch.begin();
+    for (int i = 0; i < NUM_LANES; i++) {
+    float yPosition = i * LANE_HEIGHT;
+    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 2);
   }
+    batch.end();
+
+    renderer.render();
+    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+    stage.draw();
+  }
+
+
+
 
   @Override
   public void resize(int width, int height) {
@@ -103,7 +177,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getEntityService().dispose();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getResourceService().dispose();
-
+    whiteTexture.dispose();
     ServiceLocator.clear();
   }
 
@@ -111,6 +185,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
+    backgroundTexture = new Texture("images/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
