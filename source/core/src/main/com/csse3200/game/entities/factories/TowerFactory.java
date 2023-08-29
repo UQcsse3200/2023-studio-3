@@ -74,9 +74,6 @@ public class TowerFactory {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
 
-        AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
-
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
