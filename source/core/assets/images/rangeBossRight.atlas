@@ -1,83 +1,54 @@
-
 rangeBossRight.png
-size: 2048, 512
+size: 243, 62
 format: RGBA8888
-filter: Nearest, Nearest
+filter: Linear,Linear
 repeat: none
-Attack1
+Walk
   rotate: false
-  xy: 580, 308
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
-  index: -1
-Attack2
-  rotate: false
-  xy: 2, 308
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
-  index: -1
-Attack3
-  rotate: false
-  xy: 1158, 308
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
-  index: -1
-Attack4
-  rotate: false
-  xy: 2, 210
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
-  index: -1
-Death
-  rotate: false
-  xy: 2, 14
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
-  index: -1
-Default
-  rotate: false
-  xy: 1736, 308
-  size: 96, 96
-  orig: 96, 96
-  offset: 0, 0
-  index: -1
-Hurt
-  rotate: false
-  xy: 1158, 210
-  size: 192, 96
-  orig: 192, 96
-  offset: 0, 0
-  index: -1
-Idle
-  rotate: false
-  xy: 580, 112
-  size: 384, 96
-  orig: 384, 96
-  offset: 0, 0
-  index: -1
-Projectile
-  rotate: false
-  xy: 2, 2
-  size: 13, 10
-  orig: 13, 10
-  offset: 0, 0
-  index: -1
-Special
-  rotate: false
-  xy: 2, 112
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
+  xy: 205, 0
+  size: 38, 61
+  orig: 96, 114
+  offset: 15, 30
   index: -1
 Walk
   rotate: false
-  xy: 580, 210
-  size: 576, 96
-  orig: 576, 96
-  offset: 0, 0
+  xy: 123, 0
+  size: 35, 62
+  orig: 96, 114
+  offset: 15, 30
+  index: -1
+Walk
+  rotate: false
+  xy: 0, 0
+  size: 43, 62
+  orig: 96, 114
+  offset: 10, 30
+  index: -1
+Walk
+  rotate: false
+  xy: 158, 0
+  size: 47, 61
+  orig: 96, 114
+  offset: 8, 30
+  index: -1
+Walk
+  rotate: false
+  xy: 43, 0
+  size: 43, 62
+  orig: 96, 114
+  offset: 10, 30
+  index: -1
+Walk
+  rotate: false
+  xy: 86, 0
+  size: 37, 62
+  orig: 96, 114
+  offset: 15, 30
+  index: -1
+default
+  rotate: false
+  xy: 86, 0
+  size: 37, 62
+  orig: 96, 114
+  offset: 15, 30
   index: -1

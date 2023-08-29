@@ -44,6 +44,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         movementTask.create(owner);
 
         movementTask.start();
+        owner.getEntity().getEvents().trigger("walkStart");
         currentTask = movementTask;
 
         this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
