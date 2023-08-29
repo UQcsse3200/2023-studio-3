@@ -48,7 +48,7 @@ public class TowerFactory {
     private static final float FIRE_SPEED = 0.25f;
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
-    public static final int WEAPON_TOWER_MAX_RANGE = 40;
+
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
     /**
