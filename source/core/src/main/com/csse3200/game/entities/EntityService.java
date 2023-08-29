@@ -80,7 +80,7 @@ public class EntityService {
    *
    * @param source The reference entity to check distance from.
    * @param radius The radius within which to fetch entities.
-   * @return An Array<Entity> containing entities within the given radius.
+   * @return An array containing entities within the given radius.
    */
   public Array<Entity> getNearbyEntities(Entity source, float radius) {
     Array<Entity> nearbyEntities = new Array<Entity>();
