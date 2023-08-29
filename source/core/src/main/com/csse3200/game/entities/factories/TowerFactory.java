@@ -76,7 +76,6 @@ public class TowerFactory {
         return income;
     }
 
-
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
