@@ -19,7 +19,7 @@ public class DropFactory {
         Scrap scrap = new Scrap();
         Entity drop = new Entity()
             .addComponent(new TextureRenderComponent(scrap.getTexture()))
-            .addComponent(new DropComponent(1, scrap));
+            .addComponent(new DropComponent(scrap));
         drop.getComponent(TextureRenderComponent.class).scaleEntity();
         drop.scaleHeight(0.5f);
         drop.scaleWidth(0.5f);

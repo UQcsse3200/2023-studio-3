@@ -24,7 +24,7 @@ import java.security.Provider;
 public class DropInputComponent extends InputComponent {
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
     private final EntityService entityService;
-    private Camera camera;
+    private final Camera camera;
     int value;
 
     public DropInputComponent(Camera camera) {

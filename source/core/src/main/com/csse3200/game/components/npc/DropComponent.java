@@ -5,8 +5,8 @@ public class DropComponent extends Component {
     private int value = 0;
     protected Currency currency;
 
-    public DropComponent(int value, Currency currency) {
-        this.value = value;
+    public DropComponent(Currency currency) {
+        this.value = currency.getAmount();
         this.currency = currency;
     }
 
