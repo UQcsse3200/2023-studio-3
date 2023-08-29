@@ -66,6 +66,7 @@ loadScripts(document, 'script');</script>
 <li><a href="com/csse3200/game/components/tasks/package-tree.html">com.csse3200.game.components.tasks</a>, </li>
 <li><a href="com/csse3200/game/components/tower/package-tree.html">com.csse3200.game.components.tower</a>, </li>
 <li><a href="com/csse3200/game/concurrency/package-tree.html">com.csse3200.game.concurrency</a>, </li>
+<li><a href="com/csse3200/game/currency/package-tree.html">com.csse3200.game.currency</a>, </li>
 <li><a href="com/csse3200/game/entities/package-tree.html">com.csse3200.game.entities</a>, </li>
 <li><a href="com/csse3200/game/entities/configs/package-tree.html">com.csse3200.game.entities.configs</a>, </li>
 <li><a href="com/csse3200/game/entities/factories/package-tree.html">com.csse3200.game.entities.factories</a>, </li>
@@ -114,9 +115,11 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="circle">com.csse3200.game.components.<a href="com/csse3200/game/components/CombatStatsComponent.html" class="type-name-link" title="class in com.csse3200.game.components">CombatStatsComponent</a></li>
 <li class="circle">com.csse3200.game.components.<a href="com/csse3200/game/components/CostComponent.html" class="type-name-link" title="class in com.csse3200.game.components">CostComponent</a></li>
+<li class="circle">com.csse3200.game.components.npc.<a href="com/csse3200/game/components/npc/DropComponent.html" class="type-name-link" title="class in com.csse3200.game.components.npc">DropComponent</a></li>
 <li class="circle">com.csse3200.game.components.npc.<a href="com/csse3200/game/components/npc/GhostAnimationController.html" class="type-name-link" title="class in com.csse3200.game.components.npc">GhostAnimationController</a></li>
 <li class="circle">com.csse3200.game.input.<a href="com/csse3200/game/input/InputComponent.html" class="type-name-link" title="class in com.csse3200.game.input">InputComponent</a> (implements com.badlogic.gdx.input.GestureDetector.GestureListener, com.badlogic.gdx.InputProcessor)
 <ul>
+<li class="circle">com.csse3200.game.input.<a href="com/csse3200/game/input/DropInputComponent.html" class="type-name-link" title="class in com.csse3200.game.input">DropInputComponent</a></li>
 <li class="circle">com.csse3200.game.input.<a href="com/csse3200/game/input/InputDecorator.html" class="type-name-link" title="class in com.csse3200.game.input">InputDecorator</a></li>
 <li class="circle">com.csse3200.game.components.player.<a href="com/csse3200/game/components/player/KeyboardPlayerInputComponent.html" class="type-name-link" title="class in com.csse3200.game.components.player">KeyboardPlayerInputComponent</a></li>
 <li class="circle">com.csse3200.game.ui.terminal.<a href="com/csse3200/game/ui/terminal/KeyboardTerminalInputComponent.html" class="type-name-link" title="class in com.csse3200.game.ui.terminal">KeyboardTerminalInputComponent</a></li>
@@ -139,6 +142,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">com.csse3200.game.ui.<a href="com/csse3200/game/ui/UIComponent.html" class="type-name-link" title="class in com.csse3200.game.ui">UIComponent</a> (implements com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/Renderable.html" title="interface in com.csse3200.game.rendering">Renderable</a>)
 <ul>
 <li class="circle">com.csse3200.game.components.npc.<a href="com/csse3200/game/components/npc/BossStatsDisplay.html" class="type-name-link" title="class in com.csse3200.game.components.npc">BossStatsDisplay</a></li>
+<li class="circle">com.csse3200.game.components.gamearea.<a href="com/csse3200/game/components/gamearea/CurrencyDisplay.html" class="type-name-link" title="class in com.csse3200.game.components.gamearea">CurrencyDisplay</a></li>
 <li class="circle">com.csse3200.game.components.gamearea.<a href="com/csse3200/game/components/gamearea/GameAreaDisplay.html" class="type-name-link" title="class in com.csse3200.game.components.gamearea">GameAreaDisplay</a></li>
 <li class="circle">com.csse3200.game.components.maingame.<a href="com/csse3200/game/components/maingame/MainGameExitDisplay.html" class="type-name-link" title="class in com.csse3200.game.components.maingame">MainGameExitDisplay</a></li>
 <li class="circle">com.csse3200.game.components.mainmenu.<a href="com/csse3200/game/components/mainmenu/MainMenuDisplay.html" class="type-name-link" title="class in com.csse3200.game.components.mainmenu">MainMenuDisplay</a></li>
@@ -156,11 +160,18 @@ loadScripts(document, 'script');</script>
 </ul>
 </li>
 <li class="circle">com.csse3200.game.components.<a href="com/csse3200/game/components/ComponentType.html" class="type-name-link" title="class in com.csse3200.game.components">ComponentType</a></li>
+<li class="circle">com.csse3200.game.currency.<a href="com/csse3200/game/currency/Currency.html" class="type-name-link" title="class in com.csse3200.game.currency">Currency</a>
+<ul>
+<li class="circle">com.csse3200.game.currency.<a href="com/csse3200/game/currency/Scrap.html" class="type-name-link" title="class in com.csse3200.game.currency">Scrap</a></li>
+</ul>
+</li>
+<li class="circle">com.csse3200.game.services.<a href="com/csse3200/game/services/CurrencyService.html" class="type-name-link" title="class in com.csse3200.game.services">CurrencyService</a></li>
 <li class="circle">com.csse3200.game.ui.terminal.commands.<a href="com/csse3200/game/ui/terminal/commands/DebugCommand.html" class="type-name-link" title="class in com.csse3200.game.ui.terminal.commands">DebugCommand</a> (implements com.csse3200.game.ui.terminal.commands.<a href="com/csse3200/game/ui/terminal/commands/Command.html" title="interface in com.csse3200.game.ui.terminal.commands">Command</a>)</li>
 <li class="circle">com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/DebugRenderer.html" class="type-name-link" title="class in com.csse3200.game.rendering">DebugRenderer</a></li>
 <li class="circle">com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/DefaultTask.html" class="type-name-link" title="class in com.csse3200.game.ai.tasks">DefaultTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/Task.html" title="interface in com.csse3200.game.ai.tasks">Task</a>)
 <ul>
 <li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/ChaseTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">ChaseTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>)</li>
+<li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/CurrencyTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">CurrencyTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>)</li>
 <li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/FinalBossMovementTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">FinalBossMovementTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>)</li>
 <li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/MovementTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">MovementTask</a></li>
 <li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/MoveToMiddleTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">MoveToMiddleTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>)</li>
@@ -172,6 +183,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/WanderTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">WanderTask</a> (implements com.csse3200.game.ai.tasks.<a href="com/csse3200/game/ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>)</li>
 </ul>
 </li>
+<li class="circle">com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/DropFactory.html" class="type-name-link" title="class in com.csse3200.game.entities.factories">DropFactory</a></li>
 <li class="circle">com.csse3200.game.entities.<a href="com/csse3200/game/entities/Entity.html" class="type-name-link" title="class in com.csse3200.game.entities">Entity</a></li>
 <li class="circle">com.csse3200.game.entities.<a href="com/csse3200/game/entities/EntityService.html" class="type-name-link" title="class in com.csse3200.game.entities">EntityService</a></li>
 <li class="circle">com.csse3200.game.events.<a href="com/csse3200/game/events/EventHandler.html" class="type-name-link" title="class in com.csse3200.game.events">EventHandler</a></li>
@@ -188,6 +200,7 @@ loadScripts(document, 'script');</script>
 </li>
 <li class="circle">com.csse3200.game.services.<a href="com/csse3200/game/services/GameTime.html" class="type-name-link" title="class in com.csse3200.game.services">GameTime</a></li>
 <li class="circle">com.csse3200.game.utils.math.<a href="com/csse3200/game/utils/math/GridPoint2Utils.html" class="type-name-link" title="class in com.csse3200.game.utils.math">GridPoint2Utils</a></li>
+<li class="circle">com.csse3200.game.entities.configs.<a href="com/csse3200/game/entities/configs/IncomeTowerConfig.html" class="type-name-link" title="class in com.csse3200.game.entities.configs">IncomeTowerConfig</a></li>
 <li class="circle">com.csse3200.game.input.<a href="com/csse3200/game/input/InputFactory.html" class="type-name-link" title="class in com.csse3200.game.input">InputFactory</a>
 <ul>
 <li class="circle">com.csse3200.game.input.<a href="com/csse3200/game/input/KeyboardInputFactory.html" class="type-name-link" title="class in com.csse3200.game.input">KeyboardInputFactory</a></li>
