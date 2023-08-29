@@ -39,8 +39,6 @@ public class ForestGameArea extends GameArea {
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
 
-
-
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
   private static final float WALL_WIDTH = 0.1f;
@@ -101,8 +99,8 @@ public class ForestGameArea extends GameArea {
           "sounds/stow.mp3"
   };
   private static final String backgroundMusic = "sounds/Sci-Fi1.ogg";
-  private static final String[] forestMusic = {backgroundMusic};
 
+  private static final String[] forestMusic = {backgroundMusic};
   private final TerrainFactory terrainFactory;
 
   private Entity player;
@@ -142,12 +140,8 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-//    spawnWall();
 
-    //playMusic();
-
-    spawnProjectile(new Vector2(3f, 3f));
-    spawnMultiProjectile(new Vector2(3f, 3f));
+    playMusic();
   }
 
   private void displayUI() {
