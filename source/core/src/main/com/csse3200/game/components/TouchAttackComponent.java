@@ -78,7 +78,12 @@ public class TouchAttackComponent extends Component {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
-      targetStats.hit(combatStats);
+        // If entity has abilities, pick one at random and apply it else use baseAttack damage
+        if (combatStats.getWeapon(target) != null) {
+            targetStats.hit(combatStats.getWeapon(target).getDamage());
+        } else {
+            targetStats.hit(combatStats.getBaseAttack());
+        }
     }
     // Apply knockback
     PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);
