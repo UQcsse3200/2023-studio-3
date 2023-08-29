@@ -16,4 +16,7 @@ public class NPCConfigs {
           new ArrayList<Integer>(),
           new ArrayList<Melee>(),
           new ArrayList<Weapon>());
+
+  public BossKingConfigs BossKing = new BossKingConfigs();
+
 }
