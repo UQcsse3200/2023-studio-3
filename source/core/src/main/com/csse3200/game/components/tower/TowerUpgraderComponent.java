@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tower;
 
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
 
 /**
@@ -19,14 +20,25 @@ public class TowerUpgraderComponent extends Component {
 
     /**
      * Determines which type of upgrade to perform based on arguments provided by the event trigger.
+     *
      * @param upgradeType An enum indicating the type of upgrade to do
      * @param value How much the upgrade should change the tower's stats, where applicable
      */
     void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
-            case ATTACK -> {/*Not implemented yet*/}
+            case ATTACK -> {upgradeTowerAttack(value);}
             case MAXHP -> {/*Not implemented yet either*/}
             case FIRERATE -> {/*Not implemented at the present moment*/}
         }
+    }
+
+    /**
+     * Increases the tower's attack stat.
+     *
+     * @param increase The amount that the attack stat should increase by.
+     */
+    void upgradeTowerAttack(int increase) {
+        int oldAttack = getEntity().getComponent(CombatStatsComponent.class).getBaseAttack();
+        getEntity().getComponent(CombatStatsComponent.class).setBaseAttack(oldAttack + increase);
     }
 }
