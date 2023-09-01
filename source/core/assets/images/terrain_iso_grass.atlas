@@ -7,7 +7,7 @@ repeat: none
 grass
   rotate: false
   xy: 2, 2
-  size: 132, 99
-  orig: 132, 99
+  size: 93, 70
+  orig: 93, 70
   offset: 0, 0
   index: 67

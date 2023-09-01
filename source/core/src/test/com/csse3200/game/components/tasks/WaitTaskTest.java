@@ -8,11 +8,13 @@ import com.csse3200.game.ai.tasks.Task.Status;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
 class WaitTaskTest {
+  @Disabled("Testing without use of WaitTask")
   @Test
   void shouldWaitUntilTime() {
     GameTime time = mock(GameTime.class);

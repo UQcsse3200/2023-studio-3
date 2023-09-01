@@ -46,6 +46,20 @@ public class ObstacleFactory {
     return building2;
   }
 
+  public static Entity createMountain() {
+      Entity mountain =
+              new Entity()
+                      .addComponent(new TextureRenderComponent("images/mountain.png"))
+                      .addComponent(new PhysicsComponent())
+                      .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
+
+      mountain.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);
+      mountain.getComponent(TextureRenderComponent.class).scaleEntity();
+      mountain.scaleHeight(2.0f);
+      PhysicsUtils.setScaledCollider(mountain, 0.6f, 0.4f);
+      return mountain;
+    }
+
   /**
    * Creates an invisible physics wall.
    * @param width Wall width in world units

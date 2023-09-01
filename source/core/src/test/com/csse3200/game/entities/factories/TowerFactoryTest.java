@@ -5,6 +5,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -16,17 +18,20 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
 import java.security.Provider;
+import java.util.Arrays;
 
 @ExtendWith(GameExtension.class)
 public class TowerFactoryTest {
@@ -45,6 +50,7 @@ public class TowerFactoryTest {
             "sounds/deploy.mp3",
             "sounds/stow.mp3"
     };
+
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
@@ -141,6 +147,11 @@ public class TowerFactoryTest {
         assertTrue(wallTower.getComponent(CostComponent.class).getCost() == 5,
                 "Cost should be 5");
 
+    }
+
+    @Test
+    public void weaponTowerHasAnimationComponent() {
+        assertNotNull(weaponTower.getComponent(AnimationRenderComponent.class));
     }
 
     @Test

@@ -10,40 +10,55 @@ import com.csse3200.game.services.ServiceLocator;
  * Each event will trigger a certain animation
  */
 public class TowerAnimationController extends Component {
+    // Event name constants
+    private static final String IDLE = "idleStart";
+    private static final String DEPLOY = "deployStart";
+    private static final String FIRING = "firingStart";
+    private static final String STOW = "stowStart";
+    // Animation name constants
+    private static final String IDLE_ANIM = "idle";
+    private static final String DEPLOY_ANIM = "deploy";
+    private static final String FIRE_ANIM = "firing";
+    private static final String STOW_ANIM = "stow";
+    // Sound effects constants
+    private static final String DEPLOY_SFX = "sounds/deploy.mp3";
+    private static final String FIRE_SFX = "sounds/gun_shot_trimmed.mp3";
+    private static final String STOW_SFX = "sounds/stow.mp3";
+
     AnimationRenderComponent animator;
     Sound deploySound = ServiceLocator.getResourceService().getAsset(
-            "sounds/deploy.mp3", Sound.class);
+            DEPLOY_SFX, Sound.class);
     Sound attackSound = ServiceLocator.getResourceService().getAsset(
-            "sounds/gun_shot_trimmed.mp3", Sound.class);
+            FIRE_SFX, Sound.class);
     Sound stowSound = ServiceLocator.getResourceService().getAsset(
-            "sounds/stow.mp3", Sound.class);
+            STOW_SFX, Sound.class);
 
     @Override
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("idleStart", this::animateIdle);
-        entity.getEvents().addListener("stowStart", this::animateStow);
-        entity.getEvents().addListener("deployStart", this::animateDeploy);
-        entity.getEvents().addListener("firingStart", this::animateFiring);
+        entity.getEvents().addListener(IDLE, this::animateIdle);
+        entity.getEvents().addListener(STOW, this::animateStow);
+        entity.getEvents().addListener(DEPLOY, this::animateDeploy);
+        entity.getEvents().addListener(FIRING, this::animateFiring);
     }
 
     void animateIdle() {
-        animator.startAnimation("idle");
+        animator.startAnimation(IDLE_ANIM);
     }
 
     void animateStow() {
-        animator.startAnimation("stow");
+        animator.startAnimation(STOW_ANIM);
         stowSound.play();
     }
 
     void animateDeploy() {
-        animator.startAnimation("deploy");
+        animator.startAnimation(DEPLOY_ANIM);
         deploySound.play();
     }
 
     void animateFiring() {
-        animator.startAnimation("firing");
+        animator.startAnimation(FIRE_ANIM);
         attackSound.play();
     }
 }
