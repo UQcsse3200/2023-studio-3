@@ -24,7 +24,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ProjectileFactory {
 
   private static final NPCConfigs configs = 
-      FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
+      FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
 
   /**
    * Creates a fireball Entity.
