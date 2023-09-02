@@ -27,7 +27,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_BUILDINGS = 4;
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_WALLS = 7;
-
+  private static final GridPoint2 MAP_SIZE = new GridPoint2(16, 10);
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
@@ -57,6 +57,8 @@ public class ForestGameArea extends GameArea {
           "images/building2.png",
           "images/wall.png",
           "images/iso_grass_3.png",
+          "images/terrain_use.png",
+          "images/Dusty_MoonBG.png",
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
