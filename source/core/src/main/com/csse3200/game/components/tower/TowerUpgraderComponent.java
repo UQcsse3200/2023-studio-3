@@ -27,7 +27,7 @@ public class TowerUpgraderComponent extends Component {
     void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
             case ATTACK -> {upgradeTowerAttack(value);}
-            case MAXHP -> {/*Not implemented yet either*/}
+            case MAXHP -> {upgradeTowerMaxHealth(value);}
             case FIRERATE -> {/*Not implemented at the present moment*/}
         }
     }
@@ -40,5 +40,16 @@ public class TowerUpgraderComponent extends Component {
     void upgradeTowerAttack(int increase) {
         int oldAttack = getEntity().getComponent(CombatStatsComponent.class).getBaseAttack();
         getEntity().getComponent(CombatStatsComponent.class).setBaseAttack(oldAttack + increase);
+    }
+
+    /**
+     * Increases the tower's maximum health, and restores the tower's health to the new maximum.
+     *
+     * @param increase The amount that the max health stat should increase by.
+     */
+    void upgradeTowerMaxHealth(int increase) {
+        int oldMaxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();
+        getEntity().getComponent(CombatStatsComponent.class).setMaxHealth(oldMaxHealth + increase);
+        getEntity().getComponent(CombatStatsComponent.class).setHealth(oldMaxHealth + increase);
     }
 }

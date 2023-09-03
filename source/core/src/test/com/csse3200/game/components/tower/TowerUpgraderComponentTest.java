@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(GameExtension.class)
-class TowerUpgradeComponentTest {
+class TowerUpgraderComponentTest {
     Entity entity;
 
     @BeforeEach
@@ -26,5 +26,17 @@ class TowerUpgradeComponentTest {
         entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.ATTACK, 10);
         verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 10);
         assertEquals(20, combatStatsComponent.getBaseAttack());
+    }
+
+    @Test
+    void increaseMaxHealthStat() {
+        TowerUpgraderComponent towerUpgraderComponent = spy(TowerUpgraderComponent.class);
+        CombatStatsComponent combatStatsComponent = new CombatStatsComponent(100,10);
+        entity.addComponent(towerUpgraderComponent);
+        entity.addComponent(combatStatsComponent);
+        entity.create();
+        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.MAXHP, 50);
+        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, 50);
+        assertEquals(150, combatStatsComponent.getMaxHealth());
     }
 }
