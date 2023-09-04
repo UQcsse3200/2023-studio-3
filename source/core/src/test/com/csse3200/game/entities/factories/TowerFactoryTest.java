@@ -40,15 +40,15 @@ public class TowerFactoryTest {
     private Entity weaponTower;
     private Entity wallTower;
     private String[] texture = {
-            "images/turret_deployed.png",
-            "images/turret01.png",
-            "images/wallTower.png"
+            "images/towers/turret_deployed.png",
+            "images/towers/turret01.png",
+            "images/towers/wallTower.png"
     };
-    private String[] atlas = {"images/turret01.atlas"};
+    private String[] atlas = {"images/towers/turret01.atlas"};
     private static final String[] sounds = {
-            "sounds/gun_shot_trimmed.mp3",
-            "sounds/deploy.mp3",
-            "sounds/stow.mp3"
+            "sounds/towers/gun_shot_trimmed.mp3",
+            "sounds/towers/deploy.mp3",
+            "sounds/towers/stow.mp3"
     };
 
     @BeforeEach
@@ -67,7 +67,7 @@ public class TowerFactoryTest {
         resourceService.loadSounds(sounds);
         resourceService.loadAll();
         ServiceLocator.getResourceService()
-                .getAsset("images/turret01.atlas", TextureAtlas.class);
+                .getAsset("images/towers/turret01.atlas", TextureAtlas.class);
         baseTower = TowerFactory.createBaseTower();
         weaponTower = TowerFactory.createWeaponTower();
         wallTower = TowerFactory.createWallTower();

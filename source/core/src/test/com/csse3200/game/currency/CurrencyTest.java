@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(GameExtension.class)
 class CurrencyTest {
     private Entity scrap;
-    private String[] texture = {"images/scrap.png"};
+    private String[] texture = {"images/economy/scrap.png"};
 
     @BeforeEach
     public void setUp() {

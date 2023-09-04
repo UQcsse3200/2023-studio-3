@@ -43,7 +43,7 @@ public class CurrencyDisplay extends UIComponent {
         table.padTop(50f).padLeft(20f);
 
         // create text button style
-        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/scrapsUI.png")));
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrapsUI.png")));
         TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle(
                 drawable, drawable, drawable, new BitmapFont());
 

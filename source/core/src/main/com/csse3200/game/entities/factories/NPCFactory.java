@@ -62,7 +62,7 @@ public class NPCFactory {
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
      //   .addComponent(animator)
-             .addComponent(new TextureRenderComponent("images/satyr.png"));
+             .addComponent(new TextureRenderComponent("images/mobs/satyr.png"));
      //   .addComponent(new GhostAnimationController());
 
     ghost.getComponent(TextureRenderComponent.class).scaleEntity();
@@ -111,7 +111,7 @@ public class NPCFactory {
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/xenoGruntRunning.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGruntRunning.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
