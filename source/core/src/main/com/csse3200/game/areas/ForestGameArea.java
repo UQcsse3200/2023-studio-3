@@ -94,7 +94,8 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/turret.atlas",
           "images/turret01.atlas",
-          "images/xenoGrunt.atlas"
+          "images/xenoGrunt.atlas",
+          "images/robot.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",

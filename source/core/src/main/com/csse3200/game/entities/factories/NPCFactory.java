@@ -114,7 +114,8 @@ public class NPCFactory {
                     ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
 
     xenoGrunt

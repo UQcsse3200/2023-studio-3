@@ -34,6 +34,10 @@ public class XenoAnimationController extends Component {
         animator.startAnimation("xeno_melee_1");
     }
 
+    void animateMelee2() {
+        animator.startAnimation("xeno_melee_2");
+    }
+
     void animateDie() {
         animator.startAnimation("xeno_die");
     }
