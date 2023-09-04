@@ -1,0 +1,292 @@
+xeno-grunt.png
+size: 2880, 1920
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+xeno_run
+  rotate: false
+  xy: 0, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_run
+  rotate: false
+  xy: 320, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_run
+  rotate: false
+  xy: 640, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_run
+  rotate: false
+  xy: 960, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_run
+  rotate: false
+  xy: 1280, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_run
+  rotate: false
+  xy: 1600, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5
+xeno_run
+  rotate: false
+  xy: 1920, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 6
+xeno_run
+  rotate: false
+  xy: 2240, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 7
+xeno_hurt
+  rotate: false
+  xy: 0, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_hurt
+  rotate: false
+  xy: 320, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_hurt
+  rotate: false
+  xy: 640, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_hurt
+  rotate: false
+  xy: 960, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_hurt
+  rotate: false
+  xy: 1280, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_hurt
+  rotate: false
+  xy: 1600, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5
+xeno_hurt
+  rotate: false
+  xy: 1920, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 6
+xeno_hurt
+  rotate: false
+  xy: 2240, 320
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 7
+xeno_melee_1
+  rotate: false
+  xy: 0, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_melee_1
+  rotate: false
+  xy: 320, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_melee_1
+  rotate: false
+  xy: 640, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_melee_1
+  rotate: false
+  xy: 960, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_melee_1
+  rotate: false
+  xy: 1280, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_melee_1
+  rotate: false
+  xy: 1600, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5
+xeno_melee_1
+  rotate: false
+  xy: 1920, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 6
+xeno_melee_1
+  rotate: false
+  xy: 2240, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 7
+xeno_melee_1
+  rotate: false
+  xy: 2560, 640
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 8
+xeno_melee_2
+  rotate: false
+  xy: 0, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_melee_2
+  rotate: false
+  xy: 320, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_melee_2
+  rotate: false
+  xy: 640, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_melee_2
+  rotate: false
+  xy: 960, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_melee_2
+  rotate: false
+  xy: 1280, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_melee_2
+  rotate: false
+  xy: 1600, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5
+xeno_melee_2
+  rotate: false
+  xy: 1920, 960
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 6
+xeno_shoot
+  rotate: false
+  xy: 0, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_shoot
+  rotate: false
+  xy: 320, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_shoot
+  rotate: false
+  xy: 640, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_shoot
+  rotate: false
+  xy: 960, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_shoot
+  rotate: false
+  xy: 1280, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_shoot
+  rotate: false
+  xy: 1600, 1280
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5
+xeno_die
+  rotate: false
+  xy: 0, 1600
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_die
+  rotate: false
+  xy: 320, 1600
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+default
+  rotate: false
+  xy: 0, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0

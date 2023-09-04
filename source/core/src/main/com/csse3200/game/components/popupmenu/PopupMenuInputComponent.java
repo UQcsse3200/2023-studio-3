@@ -1,6 +1,5 @@
 package com.csse3200.game.components.popupmenu;
 
-import com.badlogic.gdx.InputProcessor;
 import com.csse3200.game.input.InputComponent;
 
 /**
@@ -26,7 +25,6 @@ public class PopupMenuInputComponent extends InputComponent{
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        System.out.println(9);
         entity.getEvents().trigger("popupEvent");
         return true;
     }
@@ -38,7 +36,6 @@ public class PopupMenuInputComponent extends InputComponent{
      */
     @Override
     public boolean touchDown(float screenX, float screenY, int pointer, int button) {
-        System.out.println(9);
         entity.getEvents().trigger("popupEvent");
         return true;
     }

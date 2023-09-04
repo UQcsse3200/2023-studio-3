@@ -39,10 +39,9 @@ public class ForestGameArea extends GameArea {
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
 
-
-
   private static final int NUM_WEAPON_TOWERS = 3;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(10, 10);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
+  // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
 
   private static final GridPoint2 BOSS_SPAWN = new GridPoint2(5, 5);
@@ -95,13 +94,7 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/turret.atlas",
           "images/turret01.atlas",
-          "images/xenoGruntRunning.atlas",
-          "images/robot.atlas",
-          "images/rangeBossRight.atlas",
-          "images/xenoGruntDeath.atlas",
-          "images/xenoGruntMeleeAttack.atlas",
-          "images/xenoGruntRangedAttack0",
-          "images/xenoGruntRunningDamaged"
+          "images/xenoGrunt.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -115,6 +108,10 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
 
   private Entity player;
+  
+  // Variables to be used with spawn projectile methods. This is the variable 
+  // that should occupy the direction param.
+  private static final int towardsMobs = 100;
   private Entity bossKing1;
   private Entity bossKing2;
 
@@ -142,6 +139,12 @@ public class ForestGameArea extends GameArea {
     spawnMountains();
     player = spawnPlayer();
 
+    playMusic();
+
+    // Types of projectile
+    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
+    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
 
     spawnGhosts();
@@ -151,12 +154,8 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-//    spawnWall();
 
-    //playMusic();
-
-    spawnProjectile(new Vector2(3f, 3f));
-    spawnMultiProjectile(new Vector2(3f, 3f));
+    playMusic();
   }
 
   private void displayUI() {
@@ -236,6 +235,13 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
+  // Spawn player at a specific position
+  private Entity spawnPlayer(GridPoint2 position) {
+    Entity newPlayer = PlayerFactory.createPlayer();
+    spawnEntityAt(newPlayer, position, true, true);
+    return newPlayer;
+  }
+
   private void spawnGhosts() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 2);
@@ -252,20 +258,58 @@ public class ForestGameArea extends GameArea {
   private Entity spawnBossKing1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_BOSS; i++) {
-      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-      int randomY = MathUtils.random(0, maxPos.y);
-      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-      bossKing1 = BossKingFactory.createBossKing1(player);
-      spawnEntityAt(bossKing1,
-          randomPos,
-          true,
-          false);
-    }
-    return bossKing1;
-
+    GridPoint2 randomPos 
+     = new GridPoint2(0, 0);
+    Entity ghostKing = NPCFactory.createGhostKing(player);
+    spawnEntityAt(ghostKing, randomPos, true, true);
+    return ghostKing;
   }
+
+    /**
+    * Spawns a projectile that only heads towards the enemies in its lane.
+    * 
+    * @param position The position of the Entity that's shooting the projectile.
+    * @param target The enemy entities of the "shooter".
+    * @param direction The direction the projectile should head towards.
+    * @param speed The speed of the projectiles.
+   * 
+   */
+  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+
+  /**
+    * Spawns a projectile to be used for multiple projectile function.
+    * 
+    * @param position The position of the Entity that's shooting the projectile.
+    * @param target The enemy entities of the "shooter".
+    * @param space The space between the projectiles' destination.
+    * @param direction The direction the projectile should head towards.
+    * @param speed The speed of the projectiles.
+   * 
+   */
+  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+
+  // private Entity spawnBossKing() {
+  //   for (int i = 0; i < NUM_BOSS; i++) {
+  //     int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+  //     int randomY = MathUtils.random(0, maxPos.y);
+  //     GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+  //     bossKing1 = BossKingFactory.createBossKing1(player);
+  //     spawnEntityAt(bossKing1,
+  //         randomPos,
+  //         true,
+  //         false);
+  //   }
+  //   return bossKing1;
+
+  // }
 
   private void spawnXenoGrunts() {
     GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
@@ -308,27 +352,37 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-   * Spawns a projectile currently just in the center of the game
-   *
-   * @return a new projectile
+   * Creates multiple projectiles that travel simultaneous. They all have same 
+   * the starting point but different destinations.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param target The enemy entities of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param space The space between the projectiles' destination.
+   * @param speed The speed of the projectiles.
+   * @param quantity The amount of projectiles to spawn.
    */
-  private void spawnProjectile(Vector2 speed) {
-    Entity newProjectile = ProjectileFactory.createProjectile(bossKing1, player, new Vector2(100, bossKing1.getPosition().x), speed);
-    newProjectile.setPosition(bossKing1.getPosition());
-    spawnEntity(newProjectile);
+  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int quantity) {
+    int half = quantity / 2;
+    for (int i = 0; i < quantity; i++) {
+        spawnProjectile(position, target, space * half, direction, speed);
+        --half;
+    }
   }
 
-  private void spawnMultiProjectile(Vector2 speed) {
-    Entity newTopProjectile = ProjectileFactory.createProjectile(bossKing1, player, new Vector2(100, player.getPosition().x + 30), speed);
-    newTopProjectile.setPosition(player.getPosition());
-    Entity newMiddleProjectile = ProjectileFactory.createProjectile(bossKing1, player, new Vector2(100, player.getPosition().x), speed);
-    newMiddleProjectile.setPosition(player.getPosition());
-    Entity newBottomProjectile = ProjectileFactory.createProjectile(bossKing1, player, new Vector2(100, player.getPosition().x - 30), speed);
-    newBottomProjectile.setPosition(player.getPosition());
-
-    spawnEntity(newTopProjectile);
-    spawnEntity(newMiddleProjectile);
-    spawnEntity(newBottomProjectile);
+  /**
+   * Returns projectile that can do an area of effect damage
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param target The enemy entities of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   * @param aoeSize The size of the area of effect.
+   */
+  private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
+    Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
   }
 
   private void spawnWeaponTower() {

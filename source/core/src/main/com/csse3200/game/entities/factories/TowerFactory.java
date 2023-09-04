@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tasks.TowerIdleTask;
 import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
@@ -36,11 +34,20 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class TowerFactory {
 
-    private static final int WEAPON_SCAN_INTERVAL = 1;
     private static final int COMBAT_TASK_PRIORITY = 2;
+    private static final int WEAPON_TOWER_MAX_RANGE = 40;
+    private static final String WALL_IMAGE = "images/wallTower.png";
+    private static final String TURRET_ATLAS = "images/turret01.atlas";
+    private static final String IDLE_ANIM = "idle";
+    private static final float IDLE_SPEED = 0.3f;
+    private static final String DEPLOY_ANIM = "deploy";
+    private static final float DEPLOY_SPEED = 0.2f;
+    private static final String STOW_ANIM = "stow";
+    private static final float STOW_SPEED = 0.2f;
+    private static final String FIRE_ANIM = "firing";
+    private static final float FIRE_SPEED = 0.25f;
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
-    public static final int WEAPON_TOWER_MAX_RANGE = 40;
 
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
@@ -69,7 +76,6 @@ public class TowerFactory {
         return income;
     }
 
-
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
@@ -77,9 +83,7 @@ public class TowerFactory {
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/wallTower.png"));
-
-
+                .addComponent(new TextureRenderComponent(WALL_IMAGE));
         return wall;
     }
 
@@ -101,11 +105,11 @@ public class TowerFactory {
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/turret01.atlas", TextureAtlas.class));
-        animator.addAnimation("idle", 0.3f, Animation.PlayMode.LOOP);
-        animator.addAnimation("stow", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("deploy", 0.2f, Animation.PlayMode.REVERSED);
-        animator.addAnimation("firing", 0.1f, Animation.PlayMode.LOOP);
+                                .getAsset(TURRET_ATLAS, TextureAtlas.class));
+        animator.addAnimation(IDLE_ANIM, IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STOW_ANIM, STOW_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(DEPLOY_ANIM, DEPLOY_SPEED, Animation.PlayMode.REVERSED);
+        animator.addAnimation(FIRE_ANIM, FIRE_SPEED, Animation.PlayMode.LOOP);
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -125,10 +129,8 @@ public class TowerFactory {
         // we're going to add more components later on
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // we might have to change the names of the layers
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
-
-        //PhysicsUtils.setScaledCollider(tower, 0.5f, 0.2f); //values might vary according to entity scale value
 
         return tower;
     }
