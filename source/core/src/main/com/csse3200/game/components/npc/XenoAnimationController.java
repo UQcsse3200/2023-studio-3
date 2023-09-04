@@ -14,19 +14,20 @@ public class XenoAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("wanderStart", this::animateWander);
-        entity.getEvents().addListener("chaseStart", this::animateChase);
+        entity.getEvents().addListener("wanderStart", this::animateRun);
+        entity.getEvents().addListener("runHurt", this::animateHurt);
+        entity.getEvents().addListener("meleeStart", this::animateMelee1);
         entity.getEvents().addListener("meleeStart", this::animateMelee2);
         entity.getEvents().addListener("shootStart", this::animateShoot);
         entity.getEvents().addListener("dieStart", this::animateDie);
     }
 
-    void animateWander() {
+    void animateRun() {
         animator.startAnimation("xeno_run");
     }
 
-    void animateChase() {
-        animator.startAnimation("xeno_run");
+    void animateHurt() {
+        animator.startAnimation("xeno_hurt");
     }
 
     void animateShoot() {
