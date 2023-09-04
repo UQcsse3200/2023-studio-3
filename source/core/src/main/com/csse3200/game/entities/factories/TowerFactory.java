@@ -1,5 +1,7 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.entities.configs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,14 +15,10 @@ import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.WallTowerConfig;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
-import com.csse3200.game.entities.configs.WeaponTowerConfig;
-import com.csse3200.game.entities.configs.IncomeTowerConfig;
-import com.csse3200.game.entities.configs.baseTowerConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
@@ -121,6 +119,29 @@ public class TowerFactory {
         return weapon;
 
     }
+
+    public static Entity createWeaponTower1() {
+        Entity weaponTower = createBaseTower();
+        Tower1Config config = configs.tower1;
+
+        weaponTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost));
+
+        return weaponTower;
+    }
+
+    public static Entity createWeaponTower2() {
+        Entity weaponTower = createBaseTower();
+        Tower2Config config = configs.tower2;
+
+        weaponTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)));
+
+        return weaponTower;
+    }
+
     /**
      * Creates a generic tower entity to be used as a base entity by more specific tower creation methods.
      * @return entity
