@@ -28,6 +28,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 /**
  * Factory to create non-playable character (NPC) entities with predefined components.
@@ -106,8 +107,10 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<Weapon> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
+//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
+//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
