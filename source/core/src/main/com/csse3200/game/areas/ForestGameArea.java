@@ -229,10 +229,6 @@ public class ForestGameArea extends GameArea {
   private void spawnMountains() {
     ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
 
-    fixedPositions.add(new GridPoint2(5, 8));
-    fixedPositions.add(new GridPoint2(12, 4));
-    fixedPositions.add(new GridPoint2(20, 10));
-    fixedPositions.add(new GridPoint2(33, 17));
 
     for (GridPoint2 fixedPos : fixedPositions) {
       Entity tree = ObstacleFactory.createMountain();

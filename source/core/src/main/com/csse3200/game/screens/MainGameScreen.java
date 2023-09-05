@@ -89,17 +89,6 @@ public class MainGameScreen extends ScreenAdapter {
     stage = new Stage(viewport, new SpriteBatch());
 
 
-    BitmapFont font = new BitmapFont();
-    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-    textButtonStyle.font = font;
-    textButtonStyle.fontColor = Color.WHITE;
-    for (int y = 0; y < 8; y++) {
-      for (int x = 0; x < 20; x++) {
-          TextButton button = new TextButton("" + x + y * 20, textButtonStyle);
-        stage.addActor(button);
-      }
-    }
-
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
