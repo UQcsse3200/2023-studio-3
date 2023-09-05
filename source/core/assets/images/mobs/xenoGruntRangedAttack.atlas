@@ -1,0 +1,47 @@
+xeno-grunt-range-attack.png
+size: 2240, 320
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+xeno_shoot
+  rotate: false
+  xy: 0, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 0
+xeno_shoot
+  rotate: false
+  xy: 320, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 1
+xeno_shoot
+  rotate: false
+  xy: 640, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 2
+xeno_shoot
+  rotate: false
+  xy: 960, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 3
+xeno_shoot
+  rotate: false
+  xy: 1280, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 4
+xeno_shoot
+  rotate: false
+  xy: 1600, 0
+  size: 320, 320
+  orig: 320, 320
+  offset: 0, 0
+  index: 5

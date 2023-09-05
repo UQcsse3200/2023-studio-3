@@ -38,6 +38,9 @@ public class Entity {
   private Vector2 scale = new Vector2(1, 1);
   private Array<Component> createdComponents;
 
+  // Check if the entity is flagged for deletion
+  private boolean isFlaggedForDelete = false;
+
   public Entity() {
     id = nextId;
     nextId++;
@@ -268,6 +271,17 @@ public class Entity {
    */
   public EventHandler getEvents() {
     return eventHandler;
+  }
+
+  public boolean getFlagForDelete() {
+    return isFlaggedForDelete;
+  }
+  /**
+   * Flag the entity for deletion. This will be deleted at the end of the frame.
+   * @param condition true to flag for deletion, false to unflag
+   */
+  public void setFlagForDelete(boolean condition) {
+    isFlaggedForDelete = condition;
   }
 
   @Override

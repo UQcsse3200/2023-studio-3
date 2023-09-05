@@ -24,6 +24,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.input.InputDecorator;
 import com.csse3200.game.input.InputService;
@@ -31,6 +32,7 @@ import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -69,6 +71,7 @@ public class MainGameScreen extends ScreenAdapter {
   private OrthographicCamera camera;
   private SpriteBatch batch;
   private Texture whiteTexture;
+  private Texture backgroundTexture;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -108,12 +111,16 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.registerInputService(new InputService());
     ServiceLocator.registerResourceService(new ResourceService());
 
+    ServiceLocator.registerCurrencyService(new CurrencyService());
+
     ServiceLocator.registerEntityService(new EntityService());
     ServiceLocator.registerRenderService(new RenderService());
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
+    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(inputHandler);
 
     loadAssets();
     createUI();
@@ -128,6 +135,9 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
+    batch.end();
 
     batch.begin();
     for (int i = 0; i < NUM_LANES; i++) {
@@ -178,6 +188,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
+    backgroundTexture = new Texture("images/background/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 

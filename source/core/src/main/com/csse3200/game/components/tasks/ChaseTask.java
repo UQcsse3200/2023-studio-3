@@ -10,7 +10,10 @@ import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.services.ServiceLocator;
 
-/** Chases a target entity until they get too far away or line of sight is lost */
+/** Chases a target entity until they get too far away or line of sight is lost
+ * Depreciated.
+ * ChaseTask is no longer called in the NPCFactory - see ShootTask class.
+ * Projectiles should be called from ShootTask. */
 public class ChaseTask extends DefaultTask implements PriorityTask {
   private final Entity target;
   private final int priority;
@@ -22,6 +25,10 @@ public class ChaseTask extends DefaultTask implements PriorityTask {
   private MovementTask movementTask;
 
   /**
+   * Depreciated
+   * ChaseTask is no longer called in the NPCFactory - see ShootTask class.
+   * Projectiles should be called from ShootTask.
+   *
    * @param target The entity to chase.
    * @param priority Task priority when chasing (0 when not chasing).
    * @param viewDistance Maximum distance from the entity at which chasing can start.
@@ -42,8 +49,11 @@ public class ChaseTask extends DefaultTask implements PriorityTask {
     movementTask = new MovementTask(target.getPosition());
     movementTask.create(owner);
     movementTask.start();
-    
-    this.owner.getEntity().getEvents().trigger("chaseStart");
+
+    // Shoot task
+//    shootTask = new ShootTask(target.getPosition());
+//    shootTask.start();
+//    this.owner.getEntity().getEvents().trigger("chaseStart");
   }
 
   @Override
