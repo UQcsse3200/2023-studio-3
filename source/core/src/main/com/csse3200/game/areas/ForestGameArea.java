@@ -139,6 +139,7 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     spawnMountains();
     player = spawnPlayer();
+    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
     playMusic();
 
@@ -311,6 +312,7 @@ public class ForestGameArea extends GameArea {
   //   return bossKing1;
 
   // }
+
 
   private void spawnXenoGrunts() {
     GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
