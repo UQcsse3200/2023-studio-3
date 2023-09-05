@@ -29,15 +29,18 @@ public class HumanAnimationController extends Component {
     private static final String DEATH_ANIM = "death";
     // Sound effects constants
 //    private static final String RUN_SFX = "run/todeploy.mp3";
-//    private static final String FIRE_SFX = "sounds/gun_shot_trimmed.mp3";
+    private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
+//    private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
 //    private static final String HIT_SFX = "sounds/stow.mp3";
 //    private static final String DEATH_SFX = "sounds/stow.mp3";
 
     AnimationRenderComponent animator;
 //    Sound runSound = ServiceLocator.getResourceService().getAsset(
 //            RUN_SFX, Sound.class);
-//    Sound attackSound = ServiceLocator.getResourceService().getAsset(
-//            FIRE_SFX, Sound.class);
+    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
+            FIRE_AUTO_SFX, Sound.class);
+//    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+//            FIRE_SINGLE_SFX, Sound.class);
 //    Sound hitSound = ServiceLocator.getResourceService().getAsset(
 //            HIT_SFX, Sound.class);
 //    Sound deathSound = ServiceLocator.getResourceService().getAsset(
@@ -74,7 +77,7 @@ public class HumanAnimationController extends Component {
 
     void animateFiring() {
         animator.startAnimation(FIRE_ANIM);
-//        attackSound.play();
+        fireAutoSound.play();
     }
 
     void animateHit() {
