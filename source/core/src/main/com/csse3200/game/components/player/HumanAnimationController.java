@@ -1,6 +1,7 @@
 package com.csse3200.game.components.player;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
@@ -11,14 +12,16 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class HumanAnimationController extends Component {
     // Event name constants
-    private static final String IDLE = "idleStart";
-    private static final String RUN = "runStart";
+    private static final String IDLE = "walkStop";
+    private static final String WALKL = "walkLeftStart";
+    private static final String WALKR = "walkRightStart";
     private static final String FIRING = "firingStart";
     private static final String HIT = "hitStart";
     private static final String DEATH = "deathStart";
     // Animation name constants
     private static final String IDLE_ANIM = "idle";
-    private static final String RUN_ANIM = "run";
+    private static final String WALKL_ANIM = "walk_left";
+    private static final String WALKR_ANIM = "walk_right";
     private static final String FIRE_ANIM = "firing";
     private static final String HIT_ANIM = "hit";
     private static final String DEATH_ANIM = "death";
@@ -43,7 +46,8 @@ public class HumanAnimationController extends Component {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener(IDLE, this::animateIdle);
-        entity.getEvents().addListener(RUN, this::animateRun);
+        entity.getEvents().addListener(WALKL, this::animateLeftWalk);
+        entity.getEvents().addListener(WALKR, this::animateRightWalk);
         entity.getEvents().addListener(FIRING, this::animateFiring);
         entity.getEvents().addListener(HIT, this::animateHit);
         entity.getEvents().addListener(DEATH, this::animateDeath);
@@ -53,8 +57,12 @@ public class HumanAnimationController extends Component {
         animator.startAnimation(IDLE_ANIM);
     }
 
-    void animateRun() {
-        animator.startAnimation(RUN_ANIM);
+    void animateLeftWalk() {
+        animator.startAnimation(WALKL_ANIM);
+//        runSound.play();
+    }
+    void animateRightWalk() {
+        animator.startAnimation(WALKR_ANIM);
 //        runSound.play();
     }
 
