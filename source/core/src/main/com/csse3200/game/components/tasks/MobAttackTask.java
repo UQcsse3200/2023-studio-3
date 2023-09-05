@@ -163,7 +163,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 //  }
 
   private int getActivePriority() {
-     if ((startTime + 2000) < timeSource.getTime()) {
+     if ((startTime + delay) < timeSource.getTime()) {
 //     if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
 //       System.out.println("ready to fire while active");
        return priority;
@@ -175,7 +175,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   private int getInactivePriority() {
 //    return isTargetVisible() ? priority : 0;
-    if ((startTime + 2000) < timeSource.getTime()) {
+    if ((startTime + delay) < timeSource.getTime()) {
 //    if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
 //      System.out.println("ready to fire while inactive");
       return priority;
