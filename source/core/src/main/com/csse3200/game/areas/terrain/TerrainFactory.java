@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
@@ -11,12 +12,18 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.areas.terrain.TerrainComponent.TerrainOrientation;
 import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+
+import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
+import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
 /** Factory for creating game terrains. */
 public class  TerrainFactory {
@@ -25,6 +32,10 @@ public class  TerrainFactory {
 
   private final OrthographicCamera camera;
   private final TerrainOrientation orientation;
+
+
+
+
 
   /**
    * Create a terrain factory with Orthogonal orientation
@@ -44,7 +55,9 @@ public class  TerrainFactory {
   public TerrainFactory(CameraComponent cameraComponent, TerrainOrientation orientation) {
     this.camera = (OrthographicCamera) cameraComponent.getCamera();
     this.orientation = orientation;
+
   }
+
 
   /**
    * Create a terrain of the given type, using the orientation of the factory. This can be extended
@@ -99,12 +112,18 @@ public class  TerrainFactory {
 
 
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
+   mapSize.x= 20;
+   mapSize.y= 8;
+
+
 
     for (int x = 0; x < mapSize.x; x++) {
       for (int y = 0; y < mapSize.y; y++) {
         Cell cell = new Cell();
         cell.setTile(tile);
         layer.setCell(x, y, cell);
+
+
       }
     }
   }
