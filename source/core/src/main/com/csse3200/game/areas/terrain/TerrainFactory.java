@@ -30,7 +30,7 @@ public class  TerrainFactory {
   private static final GridPoint2 MAP_SIZE = new GridPoint2(40, 21);
 
 
-  private final OrthographicCamera camera;
+  private static OrthographicCamera camera;
   private final TerrainOrientation orientation;
 
 
@@ -44,6 +44,10 @@ public class  TerrainFactory {
    */
   public TerrainFactory(CameraComponent cameraComponent) {
     this(cameraComponent, TerrainOrientation.ORTHOGONAL);
+    camera.position.set(viewportWidth / 2f, viewportHeight / 2f , 10);
+    Viewport viewport = new ScreenViewport(camera);
+    viewport.update(viewportWidth, viewportHeight, true);
+    camera.update();
   }
 
   /**
@@ -109,30 +113,17 @@ public class  TerrainFactory {
     return tiledMap;
   }
 
-
-
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
    mapSize.x= 20;
    mapSize.y= 8;
-
-
-
     for (int x = 0; x < mapSize.x; x++) {
       for (int y = 0; y < mapSize.y; y++) {
         Cell cell = new Cell();
         cell.setTile(tile);
         layer.setCell(x, y, cell);
-
-
       }
     }
   }
-
-  /**
-   * This enum should contain the different terrains in your game, e.g. forest, cave, home, all with
-   * the same oerientation. But for demonstration purposes, the base code has the same level in 3
-   * different orientations.
-   */
   public enum TerrainType {
     FOREST_DEMO
   }

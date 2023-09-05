@@ -51,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
   private static final String[] mainGameTextures = {"images/heart.png"};
-  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 7.5f);
+  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5f);
 
   private final GdxGame game;
   private final Renderer renderer;
@@ -188,7 +188,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
-    backgroundTexture = new Texture("images/background/background1.png"); // Load the background image
+    backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
