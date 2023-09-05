@@ -27,7 +27,7 @@ import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
 /** Factory for creating game terrains. */
 public class  TerrainFactory {
-  private static final GridPoint2 MAP_SIZE = new GridPoint2(40, 21);
+  public static final GridPoint2 MAP_SIZE = new GridPoint2(20, 8);
 
 
   private static OrthographicCamera camera;
@@ -76,7 +76,7 @@ public class  TerrainFactory {
       case FOREST_DEMO:
         TextureRegion orthoGrass =
             new TextureRegion(resourceService.getAsset("images/terrain_use.png", Texture.class));
-        return createForestDemoTerrain(0.5f, orthoGrass);
+        return createForestDemoTerrain(1f, orthoGrass);
 
       default:
         return null;
@@ -114,8 +114,6 @@ public class  TerrainFactory {
   }
 
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
-   mapSize.x= 20;
-   mapSize.y= 8;
     for (int x = 0; x < mapSize.x; x++) {
       for (int y = 0; y < mapSize.y; y++) {
         Cell cell = new Cell();

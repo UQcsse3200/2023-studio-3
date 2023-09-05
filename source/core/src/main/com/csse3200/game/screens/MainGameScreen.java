@@ -75,16 +75,18 @@ public class MainGameScreen extends ScreenAdapter {
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
+    camera = new OrthographicCamera();
+    camera.setToOrtho(false, viewportWidth, viewportHeight);
+    camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+
     batch = new SpriteBatch();
+
     Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
     pixmap.setColor(1, 1, 1, 1);
     pixmap.fill();
     whiteTexture = new Texture(pixmap);
     pixmap.dispose();
 
-    camera = new OrthographicCamera();
-    camera.setToOrtho(false, viewportWidth, viewportHeight);
-    camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
 
@@ -93,8 +95,8 @@ public class MainGameScreen extends ScreenAdapter {
     TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
     textButtonStyle.font = font;
     textButtonStyle.fontColor = Color.WHITE;
-    for (int y = 0; y < 8; y++) {
-      for (int x = 0; x < 20; x++) {
+    for (int y = 0; y < TerrainFactory.MAP_SIZE.y; y++) {
+      for (int x = 0; x < TerrainFactory.MAP_SIZE.x; x++) {
           TextButton button = new TextButton("" + x + y * 20, textButtonStyle);
         stage.addActor(button);
       }
@@ -135,14 +137,18 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+
+    batch.setProjectionMatrix(camera.combined);
     batch.begin();
     batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
     batch.end();
 
+
+    batch.setProjectionMatrix(camera.combined);
     batch.begin();
     for (int i = 0; i < NUM_LANES; i++) {
     float yPosition = i * LANE_HEIGHT;
-    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 2);
+    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 5);
   }
     batch.end();
 
