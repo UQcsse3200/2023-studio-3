@@ -36,6 +36,9 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private final RaycastHit hit = new RaycastHit();
 //  private final DebugRenderer debugRenderer;
 
+  private final long delay = 700; // delay between shots
+  private long startTime;
+
   private enum STATE {
     IDLE, DEPLOY, FIRING, STOW
   }
@@ -51,6 +54,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   public MobAttackTask(int priority, float maxRange) {
     this.priority = priority;
     this.maxRange = maxRange;
+    startTime = 0;
 
     physics = ServiceLocator.getPhysicsService().getPhysics();
 //    debugRenderer = ServiceLocator.getRenderService().getDebug();
@@ -60,7 +64,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   @Override
   public void start() {
     super.start();
-
+    startTime = timeSource.getTime();
+    System.out.println("started mob attack task for " + owner.getEntity());
     this.mobPosition = owner.getEntity().getCenterPosition();
     this.maxRangePosition.set(mobPosition.x + maxRange, mobPosition.y);
     owner.getEntity().getEvents().trigger(IDLE);
@@ -69,19 +74,30 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   @Override
   public void update() {
-    if (timeSource.getTime() >= endTime) {
-      updateMobState();
-      endTime = timeSource.getTime() + (INTERVAL * 1000);
+    System.out.println("mob attack is updating");
+    updateMobState();
+    if (mobState == STATE.STOW) {
+//      System.out.println("updated while STOW");
+      System.out.println("I'm stow in update");
+      status = Status.FINISHED;
     }
+//      owner.getEntity().getEvents().trigger("wanderStart");
+//    } else if (timeSource.getTime() >= endTime) {
+//      updateMobState();
+//      endTime = timeSource.getTime() + (INTERVAL * 1000);
+//      System.out.println("I just updated in state " + mobState);
+//    }
   }
 
   public void updateMobState() {
+    System.out.println("I'm updating my state");
     switch (mobState) {
 
       case IDLE -> {
         if (isTargetVisible()) {
           owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
+          System.out.println("I just idled and now I'm deploying");
         }
       }
 
@@ -89,9 +105,11 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         if (isTargetVisible()) {
           owner.getEntity().getEvents().trigger(FIRING);
           mobState = STATE.FIRING;
+          System.out.println("I just deployed and now I'm firing");
         } else {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
+          System.out.println("I just deployed and now I'm stowing");
         }
       }
 
@@ -99,11 +117,14 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         if (!isTargetVisible()) {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
+          System.out.println("I tried to fire but couldn't see my target");
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
           ServiceLocator.getEntityService().register(newProjectile);
+          mobState = STATE.STOW;
+          System.out.println("I just fired and now stowing");
         }
       }
 
@@ -111,9 +132,11 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         if (isTargetVisible()) {
           owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
+          System.out.println("I just stowed and now I'm deploying");
         } else {
           owner.getEntity().getEvents().trigger(IDLE);
           mobState = STATE.IDLE;
+          System.out.println("I just stowed and now I'm idling");
         }
       }
     }
@@ -127,7 +150,12 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   @Override
   public int getPriority() {
-    return isTargetVisible() ? getActivePriority() : getInactivePriority();
+//    return  -1;
+    if (status == Status.ACTIVE) {
+      return getActivePriority();
+    }
+    return getInactivePriority();
+//    return isTargetVisible() ? getActivePriority() : getInactivePriority();
   }
 
 //  private float getDistanceToTarget() {
@@ -135,11 +163,26 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 //  }
 
   private int getActivePriority() {
-    return !isTargetVisible() ? 0 : priority;
+     if ((startTime + 2000) < timeSource.getTime()) {
+//     if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
+//       System.out.println("ready to fire while active");
+       return priority;
+     }
+//     System.out.println("not ready to fire while active");
+//     return !isTargetVisible() ? -1 : priority;
+    return -1;
   }
 
   private int getInactivePriority() {
-    return isTargetVisible() ? priority : 0;
+//    return isTargetVisible() ? priority : 0;
+    if ((startTime + 2000) < timeSource.getTime()) {
+//    if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
+//      System.out.println("ready to fire while inactive");
+      return priority;
+    }
+    return -1;
+//    System.out.println("not ready to fire while inactive");
+//    return isTargetVisible() ? priority : -1;
   }
 
   private boolean isTargetVisible() {
