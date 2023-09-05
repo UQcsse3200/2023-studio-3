@@ -36,8 +36,8 @@ public class TowerFactory {
 
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
-    private static final String WALL_IMAGE = "images/wallTower.png";
-    private static final String TURRET_ATLAS = "images/turret01.atlas";
+    private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String IDLE_ANIM = "idle";
     private static final float IDLE_SPEED = 0.3f;
     private static final String DEPLOY_ANIM = "deploy";
@@ -69,7 +69,7 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/mine_tower.png"))
+                .addComponent(new TextureRenderComponent("images/towers/mine_tower.png"))
                 .addComponent(aiTaskComponent);
 
 

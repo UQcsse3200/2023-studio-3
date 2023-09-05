@@ -4,7 +4,7 @@ public class Scrap extends Currency {
 
     private static final int STARTING_CURRENCY = 100;
 
-    private static final String LOGO_FILE_PATH = "images/scrap.png"; // The file path of the logo
+    private static final String LOGO_FILE_PATH = "images/economy/scrap.png"; // The file path of the logo
 
     /**
      * Constructor for the scrap currency object.
