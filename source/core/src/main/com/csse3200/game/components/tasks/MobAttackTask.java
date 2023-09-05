@@ -120,8 +120,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           System.out.println("I tried to fire but couldn't see my target");
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
+          Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y + 1), new Vector2(2f,2f));
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x - 0.75), (float) (owner.getEntity().getPosition().y));
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
           System.out.println("I just fired and now stowing");
