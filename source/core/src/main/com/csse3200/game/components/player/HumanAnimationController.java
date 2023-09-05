@@ -37,8 +37,8 @@ public class HumanAnimationController extends Component {
     AnimationRenderComponent animator;
 //    Sound runSound = ServiceLocator.getResourceService().getAsset(
 //            RUN_SFX, Sound.class);
-    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
-            FIRE_AUTO_SFX, Sound.class);
+//    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
+//            FIRE_AUTO_SFX, Sound.class);
 //    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
 //            FIRE_SINGLE_SFX, Sound.class);
 //    Sound hitSound = ServiceLocator.getResourceService().getAsset(
@@ -77,7 +77,7 @@ public class HumanAnimationController extends Component {
 
     void animateFiring() {
         animator.startAnimation(FIRE_ANIM);
-        fireAutoSound.play();
+//        fireAutoSound.play();
     }
 
     void animateHit() {

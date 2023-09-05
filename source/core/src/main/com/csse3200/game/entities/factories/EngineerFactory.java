@@ -43,6 +43,9 @@ import java.util.Arrays;
  * similar characteristics.
  */
 public class EngineerFactory {
+  
+  private static final int COMBAT_TASK_PRIORITY = 2;
+  private static final int ENGINEER_RANGE = 40;
   private static final EngineerConfigs configs =
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
@@ -54,6 +57,9 @@ public class EngineerFactory {
   public static Entity createEngineer() {
     Entity engineer = createBaseHumanNPC();
     BaseEntityConfig config = configs.engineer;
+    AITaskComponent combatComponent =
+            new AITaskComponent()
+                    .addTask(new EngineerCombatTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
 
     AnimationRenderComponent animator = new AnimationRenderComponent(
             new TextureAtlas("images/engineers/engineer.atlas"));
@@ -66,9 +72,10 @@ public class EngineerFactory {
 
 
     engineer
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-        .addComponent(animator)
-        .addComponent(new HumanAnimationController());
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(animator)
+            .addComponent(new HumanAnimationController());
+            //.addComponent(combatComponent);
 
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
     engineer.setScale(1.5f, 1.2f);
@@ -83,7 +90,8 @@ public class EngineerFactory {
   public static Entity createBaseHumanNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new HumanWanderTask(new Vector2(0, 10f), 2f));
+                .addTask(new HumanWanderTask(new Vector2(0, 10f), 2f));
+    
 
     Entity human =
         new Entity()
