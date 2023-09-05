@@ -12,14 +12,16 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class HumanAnimationController extends Component {
     // Event name constants
-    private static final String IDLE = "walkStop";
+    private static final String IDLEL = "idleLeft";
+    private static final String IDLER = "idleRight";
     private static final String WALKL = "walkLeftStart";
     private static final String WALKR = "walkRightStart";
     private static final String FIRING = "firingStart";
     private static final String HIT = "hitStart";
     private static final String DEATH = "deathStart";
     // Animation name constants
-    private static final String IDLE_ANIM = "idle";
+    private static final String IDLEL_ANIM = "idle_left";
+    private static final String IDLER_ANIM = "idle_right";
     private static final String WALKL_ANIM = "walk_left";
     private static final String WALKR_ANIM = "walk_right";
     private static final String FIRE_ANIM = "firing";
@@ -45,7 +47,8 @@ public class HumanAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener(IDLE, this::animateIdle);
+        entity.getEvents().addListener(IDLEL, this::animateIdleLeft);
+        entity.getEvents().addListener(IDLER, this::animateIdleRight);
         entity.getEvents().addListener(WALKL, this::animateLeftWalk);
         entity.getEvents().addListener(WALKR, this::animateRightWalk);
         entity.getEvents().addListener(FIRING, this::animateFiring);
@@ -53,8 +56,11 @@ public class HumanAnimationController extends Component {
         entity.getEvents().addListener(DEATH, this::animateDeath);
     }
 
-    void animateIdle() {
-        animator.startAnimation(IDLE_ANIM);
+    void animateIdleLeft() {
+        animator.startAnimation(IDLEL_ANIM);
+    }
+    void animateIdleRight() {
+        animator.startAnimation(IDLER_ANIM);
     }
 
     void animateLeftWalk() {
