@@ -8,6 +8,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.player.HumanCombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.components.tasks.WaitTask;
+import com.csse3200.game.entities.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +19,7 @@ import org.slf4j.LoggerFactory;
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
 
-  private final Vector2 wanderRange;
+  private final Entity wanderRange;
   private final float waitTime;
   private Vector2 startPos;
   private HumanMovementTask movementTask;
@@ -32,8 +33,8 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public HumanWanderTask(Vector2 wanderRange, float waitTime) {
-    this.wanderRange = wanderRange;
+  public HumanWanderTask(Entity target, float waitTime) {
+    this.wanderRange = target;
     this.waitTime = waitTime;
   }
 
@@ -50,7 +51,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(getDirection());
+    movementTask = new HumanMovementTask(this.wanderRange);
     movementTask.create(owner);
 
     movementTask.start();
@@ -89,7 +90,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
 
   private void startMoving() {
     logger.debug("Starting moving");
-    movementTask.setTarget(getDirection());
+    movementTask.setTarget(this.wanderRange);
     swapTask(movementTask);
   }
 
@@ -102,7 +103,8 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   }
 
   private Vector2 getDirection() {
-    float y = startPos.y;
-    return new Vector2(0, y);
+//    float y = startPos.y;
+//    return new Vector2(0, y);
+    return this.wanderRange.getPosition();
   }
 }

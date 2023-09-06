@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.areas.GameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
@@ -57,8 +58,8 @@ public class EngineerFactory {
    *
    * @return entity
    */
-  public static Entity createEngineer() {
-    Entity engineer = createBaseHumanNPC();
+  public static Entity createEngineer(Entity target) {
+    Entity engineer = createBaseHumanNPC(target);
     BaseEntityConfig config = configs.engineer;
 
     AnimationRenderComponent animator = new AnimationRenderComponent(
@@ -86,10 +87,10 @@ public class EngineerFactory {
    *
    * @return entity
    */
-  public static Entity createBaseHumanNPC() {
+  public static Entity createBaseHumanNPC(Entity target) {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new HumanWanderTask(new Vector2(5, 10f), 2f));
+            .addTask(new HumanWanderTask(target, 2f));
 
     Entity human =
         new Entity()

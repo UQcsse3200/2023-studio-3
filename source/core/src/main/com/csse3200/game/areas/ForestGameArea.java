@@ -155,7 +155,7 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-    Entity engineer = EngineerFactory.createEngineer();
+    Entity engineer = EngineerFactory.createEngineer(player);
     spawnEntityAt(engineer, new GridPoint2(5, 20), true, true);
 
     playMusic();
