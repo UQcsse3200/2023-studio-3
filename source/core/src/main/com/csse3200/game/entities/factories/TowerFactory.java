@@ -1,10 +1,6 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -120,26 +116,25 @@ public class TowerFactory {
 
     }
 
-    public static Entity createWeaponTower1() {
-        Entity weaponTower = createBaseTower();
-        Tower1Config config = configs.tower1;
-
-        weaponTower
+    public static Entity createFireTower() {
+        Entity fireTower = createBaseTower();
+        FireTowerConfig config = configs.fireTower;
+        fireTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost));
 
-        return weaponTower;
+        return fireTower;
     }
 
-    public static Entity createWeaponTower2() {
-        Entity weaponTower = createBaseTower();
-        Tower2Config config = configs.tower2;
+    public static Entity createStunTower() {
+        Entity stunTower = createBaseTower();
+        StunTowerConfig config = configs.stunTower;
 
-        weaponTower
+        stunTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)));
 
-        return weaponTower;
+        return stunTower;
     }
 
     /**

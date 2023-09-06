@@ -7,6 +7,6 @@ public class baseTowerConfigs {
     public WeaponTowerConfig weapon = new WeaponTowerConfig();
     public WallTowerConfig wall = new WallTowerConfig();
     public IncomeTowerConfig income = new IncomeTowerConfig();
-    public Tower1Config tower1 = new Tower1Config();
-    public Tower2Config tower2 = new Tower2Config();
+    public FireTowerConfig fireTower = new FireTowerConfig();
+    public StunTowerConfig stunTower = new StunTowerConfig();
 }

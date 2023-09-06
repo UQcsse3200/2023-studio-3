@@ -14,12 +14,12 @@
     "baseAttack": 0,
     "cost": 1
   },
-  "tower1": {
+  "fireTower": {
     "health": 10,
     "baseAttack": 10,
     "cost": 10
   },
-  "tower2": {
+  "stunTower": {
     "health": 10,
     "baseAttack": 10,
     "cost": 10
