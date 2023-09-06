@@ -67,6 +67,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     this.maxRangePosition.set(mobPosition.x + maxRange, mobPosition.y);
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
+    owner.getEntity().getEvents().trigger("shootStart");
   }
 
   /**
@@ -115,10 +116,11 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y + 1), new Vector2(2f,2f));
+          Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x - 0.75), (float) (owner.getEntity().getPosition().y));
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
+          owner.getEntity().getEvents().trigger("shootStart");
         }
       }
 
