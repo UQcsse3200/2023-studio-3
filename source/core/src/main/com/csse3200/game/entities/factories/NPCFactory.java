@@ -9,6 +9,7 @@ import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.SpawnWaveTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
