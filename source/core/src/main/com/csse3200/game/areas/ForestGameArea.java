@@ -100,7 +100,8 @@ public class ForestGameArea extends GameArea {
           "sounds/Impact4.ogg",
           "sounds/towers/gun_shot_trimmed.mp3",
           "sounds/towers/deploy.mp3",
-          "sounds/towers/stow.mp3"
+          "sounds/towers/stow.mp3",
+          "sounds/engineers/firing_auto.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -134,9 +135,9 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-    spawnBuilding1();
-    spawnBuilding2();
-    spawnMountains();
+//    spawnBuilding1();
+//    spawnBuilding2();
+//    spawnMountains();
     player = spawnPlayer();
 
     playMusic();
@@ -154,6 +155,8 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
+    Entity engineer = EngineerFactory.createEngineer();
+    spawnEntityAt(engineer, new GridPoint2(5, 20), true, true);
 
     playMusic();
   }

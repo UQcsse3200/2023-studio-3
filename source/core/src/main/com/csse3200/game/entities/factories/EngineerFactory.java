@@ -9,6 +9,7 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.player.HumanCombatStatsComponent;
 import com.csse3200.game.components.tasks.ShootTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
@@ -71,7 +72,7 @@ public class EngineerFactory {
 
 
     engineer
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(new HumanCombatStatsComponent(config.health, config.baseAttack))
         .addComponent(animator)
         .addComponent(new HumanAnimationController());
 
