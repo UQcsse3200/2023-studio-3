@@ -56,6 +56,7 @@ public class HumanMovementTask extends DefaultTask {
   public void update() {
     if (isAtTarget()) {
       movementComponent.setMoving(false);
+      owner.getEntity().getEvents().trigger("idleStart");
       status = Status.FINISHED;
       logger.debug("Finished moving to {}", target);
     } else {

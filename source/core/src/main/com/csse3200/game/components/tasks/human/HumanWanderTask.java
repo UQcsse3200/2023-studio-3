@@ -5,10 +5,9 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.player.HumanCombatStatsComponent;
-import com.csse3200.game.components.tasks.MovementTask;
-import com.csse3200.game.components.tasks.WaitTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +24,12 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
   private Task currentTask;
+  private GameTime endTime;
 
   private boolean isDead = false;
 
   /**
-   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
+   * @param target Distance in X and Y the entity can move from its position when start() is
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
@@ -51,7 +51,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(this.wanderRange);
+    movementTask = new HumanMovementTask(this.wanderRange, 1f);
     movementTask.create(owner);
 
     movementTask.start();
@@ -59,20 +59,22 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     currentTask = movementTask;
 
 
-    owner.getEntity().getEvents().trigger("idleRight");
+//    owner.getEntity().getEvents().trigger("idleRight");
   }
 
   @Override
   public void update() {
+    if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+      owner.getEntity().setFlagForDelete(true);
+      // make the appropriate calls to decrement the human count.
+    }
+    if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
+      owner.getEntity().getEvents().trigger("deathStart");
+      // Add a time delay here to allow animation to play?
+      isDead = true;
+    }
     if (currentTask.getStatus() != Status.ACTIVE) {
-      if (isDead) {
-//        owner.getEntity().dispose();
-        // make the appropriate calls to decrement the human count.
-      }
-      if (!isDead && owner.getEntity().getComponent(HumanCombatStatsComponent.class).isDead()) {
-        owner.getEntity().getEvents().trigger("deathStart");
-        // Add a time delay here to allow animation to play?
-      }
+
       if (currentTask == movementTask) {
         startWaiting();
         owner.getEntity().getEvents().trigger("idleRight");
@@ -81,6 +83,10 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
       }
     }
     currentTask.update();
+  }
+
+  private void isHit() {
+
   }
 
   private void startWaiting() {

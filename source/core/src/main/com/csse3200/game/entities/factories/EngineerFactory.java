@@ -34,8 +34,8 @@ public class EngineerFactory {
   private static final EngineerConfigs configs =
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
-  private static final float HUMAN_SCALE_X = 1.5f;
-  private static final float HUMAN_SCALE_Y = 1.2f;
+  private static final float HUMAN_SCALE_X = 1f;
+  private static final float HUMAN_SCALE_Y = 0.8f;
 
   /**
    * Creates an Engineer entity, based on a base Human entity, with the appropriate components and animations
@@ -75,7 +75,7 @@ public class EngineerFactory {
   public static Entity createBaseHumanNPC(Entity target) {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new HumanWanderTask(target, 2f));
+            .addTask(new HumanWanderTask(target, 1f));
 
     Entity human =
         new Entity()

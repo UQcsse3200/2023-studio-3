@@ -113,9 +113,9 @@ public class NPCFactory {
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService().getAsset("images/mobs/xenoGruntRunning.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
+//    animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
+//    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
+//    animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
 
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
