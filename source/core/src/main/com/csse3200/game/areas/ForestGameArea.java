@@ -321,6 +321,7 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, true);
     }
   }
