@@ -10,9 +10,15 @@ import java.util.ArrayList;
  */
 public class NPCConfigs {
   public BaseEntityConfig ghost = new BaseEntityConfig();
+  public BaseEntityConfig fireBall = new ProjectileConfig();
+  // public GhostKingConfig ghostKing = new GhostKingConfig();
+  public BaseEntityConfig projectile = new ProjectileConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
   public BaseEnemyConfig xenoGrunt = new BaseEnemyConfig(
           new ArrayList<Integer>(),
           new ArrayList<Melee>(),
           new ArrayList<Weapon>());
+
+  public BossKingConfigs BossKing = new BossKingConfigs();
+
 }

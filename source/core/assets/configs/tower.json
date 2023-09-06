@@ -1,0 +1,17 @@
+{
+  "weapon": {
+    "health": 10,
+    "baseAttack": 10,
+    "cost": 10
+  },
+  "wall": {
+    "health": 20,
+    "baseAttack": 0,
+    "cost": 5
+  },
+  "income": {
+    "health": 20,
+    "baseAttack": 0,
+    "cost": 1
+  }
+}

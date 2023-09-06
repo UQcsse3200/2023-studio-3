@@ -8,13 +8,14 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.tasks.ShootTask;
+import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.BaseEnemyConfig;
-import com.csse3200.game.entities.configs.BaseEntityConfig;
-import com.csse3200.game.entities.configs.GhostKingConfig;
-import com.csse3200.game.entities.configs.NPCConfigs;
+import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.PredefinedWeapons;
+import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
@@ -23,7 +24,11 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Factory to create non-playable character (NPC) entities with predefined components.
@@ -48,28 +53,29 @@ public class NPCFactory {
   public static Entity createGhost(Entity target) {
     Entity ghost = createBaseNPC(target);
     BaseEntityConfig config = configs.ghost;
-
+    /**
     AnimationRenderComponent animator =
         new AnimationRenderComponent(
             ServiceLocator.getResourceService().getAsset("images/ghost.atlas", TextureAtlas.class));
     animator.addAnimation("angry_float", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("float", 0.1f, Animation.PlayMode.LOOP);
-
+  **/
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-        .addComponent(animator)
-        .addComponent(new GhostAnimationController());
+     //   .addComponent(animator)
+             .addComponent(new TextureRenderComponent("images/satyr.png"));
+     //   .addComponent(new GhostAnimationController());
 
-    ghost.getComponent(AnimationRenderComponent.class).scaleEntity();
+    ghost.getComponent(TextureRenderComponent.class).scaleEntity();
 
     return ghost;
   }
 
   /**
-   * Creates a ghost king entity.
-   *
-   * @param target entity to chase
-   * @return entity
+
+   Creates a ghost king entity.*
+   @param target entity to chase
+   @return entity
    */
   public static Entity createGhostKing(Entity target) {
     Entity ghostKing = createBaseNPC(target);
@@ -79,8 +85,8 @@ public class NPCFactory {
         new AnimationRenderComponent(
             ServiceLocator.getResourceService()
                 .getAsset("images/ghostKing.atlas", TextureAtlas.class));
-    animator.addAnimation("float", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("angry_float", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("float", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("angry_float", 0.2f, Animation.PlayMode.LOOP);
 
     ghostKing
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -100,17 +106,21 @@ public class NPCFactory {
   public static Entity createXenoGrunt(Entity target) {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    ArrayList<Weapon> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
+    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/xenoGruntRunning.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
 
     xenoGrunt
-            .addComponent(new CombatStatsComponent(config.speed, config.fullHeath))
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
@@ -124,11 +134,12 @@ public class NPCFactory {
    *
    * @return entity
    */
-  private static Entity createBaseNPC(Entity target) {
+  public static Entity createBaseNPC(Entity target) {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new WanderTask(new Vector2(2f, 2f), 2f));
-            //.addTask(new ShootTask(target, 10));
+            .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
+            .addTask(new MobAttackTask(2, 40))
+                .addTask(new MobDeathTask(2));
             //.addTask(new ChaseTask(target, 10, 3f, 4f));
     Entity npc =
         new Entity()

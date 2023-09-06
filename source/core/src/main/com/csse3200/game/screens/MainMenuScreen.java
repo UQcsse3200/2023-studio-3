@@ -1,6 +1,8 @@
 package com.csse3200.game.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.components.mainmenu.MainMenuActions;
@@ -16,6 +18,9 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 
 /**
  * The game screen containing the main menu.
@@ -24,7 +29,9 @@ public class MainMenuScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
   private final GdxGame game;
   private final Renderer renderer;
-  private static final String[] mainMenuTextures = {"images/box_boy_title.png"};
+  private Texture backgroundTexture;
+  private final SpriteBatch batch;
+  private static final String[] mainMenuTextures = {"images/Logo2.png"};
 
   public MainMenuScreen(GdxGame game) {
     this.game = game;
@@ -36,6 +43,9 @@ public class MainMenuScreen extends ScreenAdapter {
     ServiceLocator.registerRenderService(new RenderService());
 
     renderer = RenderFactory.createRenderer();
+    batch = new SpriteBatch();
+     Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);
+
 
     loadAssets();
     createUI();
@@ -43,7 +53,14 @@ public class MainMenuScreen extends ScreenAdapter {
 
   @Override
   public void render(float delta) {
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     ServiceLocator.getEntityService().update();
+
+    // Draw the background image
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    batch.end();
+
     renderer.render();
   }
 
@@ -71,6 +88,7 @@ public class MainMenuScreen extends ScreenAdapter {
     unloadAssets();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getEntityService().dispose();
+    batch.dispose();
 
     ServiceLocator.clear();
   }
@@ -79,6 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
+    backgroundTexture = new Texture("images/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
