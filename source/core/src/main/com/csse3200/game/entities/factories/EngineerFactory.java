@@ -2,22 +2,12 @@ package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.areas.GameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.npc.GhostAnimationController;
-import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.player.HumanAnimationController;
-import com.csse3200.game.components.player.HumanCombatStatsComponent;
-import com.csse3200.game.components.tasks.ShootTask;
-import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.Melee;
-import com.csse3200.game.entities.PredefinedWeapons;
-import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -27,11 +17,6 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.rendering.TextureRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Factory to create non-playable human character (NPC) entities with predefined components.
@@ -73,7 +58,7 @@ public class EngineerFactory {
 
 
     engineer
-        .addComponent(new HumanCombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         .addComponent(animator)
         .addComponent(new HumanAnimationController());
 
