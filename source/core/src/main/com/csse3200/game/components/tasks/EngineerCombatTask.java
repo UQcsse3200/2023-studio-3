@@ -24,9 +24,10 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // Animation event names for the Engineer's state machine.
     private static final String STOW = "";
     private static final String DEPLOY = "";
-    private static final String FIRING = "";
-    private static final String IDLE = "";
-    private static final String DYING = "";
+    private static final String FIRING = "firingStart";
+    private static final String IDLE_LEFT = "idleLeft";
+    private static final String IDLE_RIGHT = "idleRight";
+    private static final String DYING = "deathStart";
     
     // The Engineer's attributes.
     private final int priority;  // The priority of this task within the task list.
@@ -41,9 +42,9 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     
     /** The Engineer's states. */
     private enum STATE {
-        IDLE, DEPLOY, FIRING, STOW
+        IDLE_LEFT, IDLE_RIGHT, DEPLOY, FIRING, STOW
     }
-    private STATE engineerState = STATE.IDLE;
+    private STATE engineerState = STATE.IDLE_RIGHT;
     
     /**
      * @param priority The Engineer's combat task priority in the list of tasks.
@@ -57,7 +58,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     }
     
     /**
-     * Starts the Task running, triggers the initial "idleStart" event.
+     * Runs the task and triggers Engineer's idle animation.
      */
     @Override
     public void start() {
@@ -66,7 +67,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         this.engineerPosition = owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(engineerPosition.x + maxRange, engineerPosition.y);
         // Default to idle mode
-        owner.getEntity().getEvents().trigger(IDLE);
+        owner.getEntity().getEvents().trigger(IDLE_RIGHT);
         
         endTime = timeSource.getTime() + (INTERVAL * 500);
     }
@@ -89,11 +90,18 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     public void updateEngineerState() {
         // configure tower state depending on target visibility
         switch (engineerState) {
-            case IDLE -> {
+            case IDLE_LEFT -> {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    engineerState = STATE.DEPLOY;
+                    owner.getEntity().getEvents().trigger(FIRING);
+                    engineerState = STATE.FIRING;
+                }
+            }
+            case IDLE_RIGHT -> {
+                // targets detected in idle mode - start deployment
+                if (isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger(FIRING);
+                    engineerState = STATE.FIRING;
                 }
             }
             case DEPLOY -> {
@@ -110,8 +118,8 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                 // targets gone - stop firing
                 if (!isTargetVisible()) {
                     
-                    owner.getEntity().getEvents().trigger(STOW);
-                    engineerState = STATE.STOW;
+                    owner.getEntity().getEvents().trigger(IDLE_RIGHT);
+                    engineerState = STATE.IDLE_RIGHT;
                 } else {
                     owner.getEntity().getEvents().trigger(FIRING);
                     // this might be changed to an event which gets triggered everytime the tower enters the firing state
@@ -120,17 +128,17 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
-            case STOW -> {
-                // currently stowing
-                if (isTargetVisible()) {
-                    
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    engineerState = STATE.DEPLOY;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    engineerState = STATE.IDLE;
-                }
-            }
+//            case STOW -> {
+//                // currently stowing
+//                if (isTargetVisible()) {
+//
+//                    owner.getEntity().getEvents().trigger(DEPLOY);
+//                    engineerState = STATE.DEPLOY;
+//                } else {
+//                    owner.getEntity().getEvents().trigger(IDLE);
+//                    engineerState = STATE.IDLE;
+//                }
+//            }
         }
     }
     /**
@@ -139,7 +147,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     @Override
     public void stop() {
         super.stop();
-        owner.getEntity().getEvents().trigger(STOW);
+        owner.getEntity().getEvents().trigger(IDLE_RIGHT);
     }
     
     /**
@@ -173,6 +181,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
      */
     private boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(engineerPosition, maxRangePosition, TARGET, hit);
+        return physics.raycast(owner.getEntity().getCenterPosition(), maxRangePosition, TARGET, hit);
     }
 }

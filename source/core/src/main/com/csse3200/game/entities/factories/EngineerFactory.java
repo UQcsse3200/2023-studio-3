@@ -57,9 +57,6 @@ public class EngineerFactory {
   public static Entity createEngineer() {
     Entity engineer = createBaseHumanNPC();
     BaseEntityConfig config = configs.engineer;
-    AITaskComponent combatComponent =
-            new AITaskComponent()
-                    .addTask(new EngineerCombatTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
 
     AnimationRenderComponent animator = new AnimationRenderComponent(
             new TextureAtlas("images/engineers/engineer.atlas"));
@@ -75,9 +72,10 @@ public class EngineerFactory {
             .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
             .addComponent(animator)
             .addComponent(new HumanAnimationController());
-            //.addComponent(combatComponent);
 
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
+    engineer.getComponent(AITaskComponent.class)
+            .addTask(new EngineerCombatTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
     engineer.setScale(1.5f, 1.2f);
     return engineer;
   }
