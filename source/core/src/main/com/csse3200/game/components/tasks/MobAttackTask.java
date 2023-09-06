@@ -2,6 +2,8 @@ package com.csse3200.game.components.tasks;
 
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -66,7 +68,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     super.start();
     startTime = timeSource.getTime();
     this.mobPosition = owner.getEntity().getCenterPosition();
-    this.maxRangePosition.set(mobPosition.x + maxRange, mobPosition.y);
+    this.maxRangePosition.set(0, mobPosition.y);
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
   }
@@ -81,6 +83,14 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   }
 
   public void updateMobState() {
+//    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+    CombatStatsComponent statsComp = owner.getEntity().getComponent(CombatStatsComponent.class);
+//    if (statsComp != null) {
+//    System.out.println("is the target visible " + isTargetVisible());
+//    }
+    if (!isTargetVisible()) {
+      System.out.println("target is not visible for " + owner.getEntity().getId());
+    }
     switch (mobState) {
 
       case IDLE -> {
