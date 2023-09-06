@@ -61,8 +61,8 @@ public class BossKingFactory {
                 .addComponent(new BossAnimationController());
 
         bossKing1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing1.scaleHeight(0.5f);
-        bossKing1.scaleWidth(0.5f);
+        bossKing1.setScale(-1f,1f);
+
         return bossKing1;
     }
 
