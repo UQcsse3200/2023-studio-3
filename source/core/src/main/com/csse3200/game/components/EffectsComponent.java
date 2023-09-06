@@ -2,14 +2,16 @@ package com.csse3200.game.components;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 import com.badlogic.gdx.utils.Array;
 
-public class AoeComponent extends Component {
+public class EffectsComponent extends Component {
     private final float radius;
+    private final ProjectileFactory.ProjectileEffects effect;
+    private final boolean aoe;
     private HitboxComponent hitboxComponent;
 
     /**
@@ -17,8 +19,10 @@ public class AoeComponent extends Component {
      *
      * @param radius The radius of the area-of-effect.
      */
-    public AoeComponent(float radius) {
+    public EffectsComponent(float radius, ProjectileFactory.ProjectileEffects effect, boolean aoe) {
         this.radius = radius;
+        this.effect = effect;
+        this.aoe = aoe;
     }
 
     @Override
@@ -37,7 +41,14 @@ public class AoeComponent extends Component {
             // Not triggered by hitbox, ignore
             return;
         }
-        applyAoeDamage();
+        switch (effect) {
+            case FIREBALL -> {
+                applyAoeDamage();
+            }
+            case BURN -> {}
+            case SLOW -> {}
+            case STUN -> {}
+        }
     }
     /**
      * Apply damage to all entities within the area of effect (radius).

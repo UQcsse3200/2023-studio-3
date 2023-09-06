@@ -1,6 +1,6 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.components.AoeComponent;
+import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -23,8 +23,46 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class ProjectileFactory {
 
+  public enum ProjectileEffects {
+    FIREBALL, //fireball projectile - deals damage based on baseAttack
+    BURN, //burn projectile - does 5 extra ticks of damage over 5 seconds
+    SLOW, //slow projectile - slows entity by half for 5 seconds
+    STUN //stun projectile - stuns entity for 5 seconds
+  }
+
   private static final NPCConfigs configs = 
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
+
+  /**
+   * Creates a single-targeting projectile with specified effect
+   *
+   * @param target The enemy entities that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @param effect Specified effect from the ProjectileEffects enums
+   * @return Returns a new single-target projectile entity
+   */
+  public static Entity createEffectProjectile(Entity target, Vector2 destination, Vector2 speed,
+                                              ProjectileEffects effect, boolean aoe) {
+    BaseEntityConfig config = configs.fireBall;
+    Entity projectile = createFireBall(target, destination, speed);
+
+    switch(effect) {
+      case FIREBALL -> {
+        projectile.addComponent(new EffectsComponent(3, ProjectileEffects.FIREBALL, aoe));
+      }
+      case BURN -> {
+        projectile.addComponent(new EffectsComponent(3, ProjectileEffects.BURN, aoe));
+      }
+      case SLOW -> {
+        projectile.addComponent(new EffectsComponent(3, ProjectileEffects.SLOW, aoe));
+      }
+      case STUN -> {
+        projectile.addComponent(new EffectsComponent(3, ProjectileEffects.STUN, aoe));
+      }
+    }
+      return projectile;
+  }
 
   /**
    * Creates a fireball Entity.
@@ -56,24 +94,24 @@ public class ProjectileFactory {
     return projectile;
   }
 
-  /**
-   * Creates an AOE fireball Entity.
-   * 
-   * @param target The enemy entities that the projectile collides with.
-   * @param destination The destination the projectile heads towards.
-   * @param speed The speed of the projectile.
-   * @param aoeSize The size of the AOE.
-   * @return Returns the new aoe projectile entity.
-   */
-  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
-    BaseEntityConfig config = configs.fireBall;
-    Entity projectile = createFireBall(target, destination, speed);
-    projectile
-            // This is the component that allows the projectile to damage a specified target.
-            .addComponent(new AoeComponent(aoeSize));
-
-    return projectile;
-  }
+//  /**
+//   * Creates an AOE fireball Entity.
+//   *
+//   * @param target The enemy entities that the projectile collides with.
+//   * @param destination The destination the projectile heads towards.
+//   * @param speed The speed of the projectile.
+//   * @param aoeSize The size of the AOE.
+//   * @return Returns the new aoe projectile entity.
+//   */
+//  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
+//    BaseEntityConfig config = configs.fireBall;
+//    Entity projectile = createFireBall(target, destination, speed);
+//    projectile
+//            // This is the component that allows the projectile to damage a specified target.
+//            .addComponent(new EffectsComponent(aoeSize, ProjectileEffects.FIREBALL, true));
+//
+//    return projectile;
+//  }
 
   /**
    * Creates a generic projectile entity that can be used for multiple types of * projectiles.
