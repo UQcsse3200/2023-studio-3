@@ -9,6 +9,7 @@ import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
@@ -137,7 +138,8 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobAttackTask(2, 40));
+            .addTask(new MobAttackTask(2, 40))
+                .addTask(new MobDeathTask(2));
             //.addTask(new ChaseTask(target, 10, 3f, 4f));
     Entity npc =
         new Entity()
