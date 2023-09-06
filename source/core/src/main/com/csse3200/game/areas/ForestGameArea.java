@@ -142,7 +142,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     // Types of projectile
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
+    spawnEffectProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), ProjectileFactory.ProjectileEffects.FIREBALL, true);
     spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
     spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
@@ -377,10 +377,12 @@ public class ForestGameArea extends GameArea {
    * @param target The enemy entities of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param speed The speed of the projectiles.
-   * @param aoeSize The size of the area of effect.
+   * @param effect Type of effect.
+   * @param aoe Whether it is an aoe projectile.
    */
-  private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
-    Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
+  private void spawnEffectProjectile(Vector2 position, Entity target, int direction, Vector2 speed,
+                                     ProjectileFactory.ProjectileEffects effect, boolean aoe) {
+    Entity Projectile = ProjectileFactory.createEffectProjectile(target, new Vector2(direction, position.y), speed, effect, aoe);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }

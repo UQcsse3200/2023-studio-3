@@ -43,7 +43,9 @@ public class EffectsComponent extends Component {
         }
         switch (effect) {
             case FIREBALL -> {
-                applyAoeDamage();
+                if (aoe) {
+                    applyAoeDamage();
+                }
             }
             case BURN -> {}
             case SLOW -> {}
