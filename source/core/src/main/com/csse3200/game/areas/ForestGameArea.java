@@ -84,7 +84,8 @@ public class ForestGameArea extends GameArea {
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/economy/scrap.png",
-          "images/towers/mine_tower.png"
+          "images/towers/mine_tower.png",
+          "images/towers/TNTTower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
@@ -94,7 +95,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/turret01.atlas",
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas"
+          "images/mobs/rangeBossRight.atlas",
+          "images/towers/TNTTower.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -154,6 +156,8 @@ public class ForestGameArea extends GameArea {
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
+
+    spawnTNTTower();
 
     playMusic();
   }
@@ -396,6 +400,18 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, true);
       spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
+  }
+
+  private void spawnTNTTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createTNTTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
+
   }
 
 
