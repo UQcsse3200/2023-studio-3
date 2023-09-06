@@ -1,7 +1,6 @@
 package com.csse3200.game.components.player;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
@@ -28,11 +27,11 @@ public class HumanAnimationController extends Component {
     private static final String HIT_ANIM = "hit";
     private static final String DEATH_ANIM = "death";
     // Sound effects constants
-//    private static final String RUN_SFX = "run/todeploy.mp3";
+//    private static final String RUN_SFX = "";
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
 //    private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
-//    private static final String HIT_SFX = "sounds/stow.mp3";
-//    private static final String DEATH_SFX = "sounds/stow.mp3";
+//    private static final String HIT_SFX = "";
+//    private static final String DEATH_SFX = "";
 
     AnimationRenderComponent animator;
 //    Sound runSound = ServiceLocator.getResourceService().getAsset(

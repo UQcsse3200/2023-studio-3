@@ -46,7 +46,7 @@ public class EngineerFactory {
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
   /**
-   * Creates an Engineer entity.
+   * Creates an Engineer entity, based on a base Human entity.
    *
    * @return entity
    */
