@@ -22,7 +22,7 @@ public class ObstacleFactory {
   public static Entity createBuilding1() {
     Entity building1 =
         new Entity()
-            .addComponent(new TextureRenderComponent("images/building1.png"))
+            .addComponent(new TextureRenderComponent("images/background/building1.png"))
             .addComponent(new PhysicsComponent())
             .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
 
@@ -35,7 +35,7 @@ public class ObstacleFactory {
   public static Entity createBuilding2() {
     Entity building2 =
             new Entity()
-                    .addComponent(new TextureRenderComponent("images/building2.png"))
+                    .addComponent(new TextureRenderComponent("images/background/building2.png"))
                     .addComponent(new PhysicsComponent())
                     .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
 
@@ -49,7 +49,7 @@ public class ObstacleFactory {
   public static Entity createMountain() {
       Entity mountain =
               new Entity()
-                      .addComponent(new TextureRenderComponent("images/mountain.png"))
+                      .addComponent(new TextureRenderComponent("images/background/mountain.png"))
                       .addComponent(new PhysicsComponent())
                       .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
 
