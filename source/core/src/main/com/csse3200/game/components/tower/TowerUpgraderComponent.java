@@ -10,7 +10,7 @@ import static java.lang.Math.round;
  */
 public class TowerUpgraderComponent extends Component {
     public enum UPGRADE {
-        ATTACK, MAXHP, FIRERATE
+        ATTACK, MAXHP, FIRERATE, REPAIR
     }
 
     @Override
@@ -24,13 +24,14 @@ public class TowerUpgraderComponent extends Component {
      * Note: The fire rate upgrade is in shots per minute.
      *
      * @param upgradeType An enum indicating the type of upgrade to do
-     * @param value How much the upgrade should change the tower's stats
+     * @param value How much the upgrade should change the tower's stats, if applicable
      */
     void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
             case ATTACK -> {upgradeTowerAttack(value);}
             case MAXHP -> {upgradeTowerMaxHealth(value);}
             case FIRERATE -> {getEntity().getEvents().trigger("addFireRate", value);}
+            case REPAIR -> {repairTower();}
         }
     }
 
@@ -53,5 +54,13 @@ public class TowerUpgraderComponent extends Component {
         int oldMaxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();
         getEntity().getComponent(CombatStatsComponent.class).setMaxHealth(oldMaxHealth + increase);
         getEntity().getComponent(CombatStatsComponent.class).setHealth(oldMaxHealth + increase);
+    }
+
+    /**
+     * Restores the tower's health to its maximum health.
+     */
+    void repairTower() {
+        int maxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();
+        getEntity().getComponent(CombatStatsComponent.class).setHealth(maxHealth);
     }
 }
