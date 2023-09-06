@@ -11,42 +11,42 @@ move1
   orig: 28, 31
   offset: 0, 0
   index: -1
-move2
+move1
   rotate: false
   xy: 32, 2
   size: 28, 31
   orig: 28, 31
   offset: 0, 0
   index: -1
-move3
+move1
   rotate: false
   xy: 182, 2
   size: 28, 31
   orig: 28, 31
   offset: 0, 0
   index: -1
-move4
+move1
   rotate: false
   xy: 92, 2
   size: 28, 31
   orig: 28, 31
   offset: 0, 0
   index: -1
-move5
+move1
   rotate: false
   xy: 2, 2
   size: 28, 31
   orig: 28, 31
   offset: 0, 0
   index: -1
-move6
+move1
   rotate: false
   xy: 152, 2
   size: 28, 31
   orig: 28, 31
   offset: 0, 0
   index: -1
-move7
+move1
   rotate: false
   xy: 62, 2
   size: 28, 31

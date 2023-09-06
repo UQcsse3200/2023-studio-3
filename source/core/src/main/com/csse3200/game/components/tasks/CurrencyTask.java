@@ -20,6 +20,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     private int interval;
     private final Scrap scrap = new Scrap(); // currency to update
     private final int currencyAmount = scrap.getAmount(); // amount of currency to update
+    private static final String IDLE = "idleStart";
 
     /**
      * @param priority Task priority for currency updates. Must be a positive integer.
@@ -38,6 +39,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         endTime = timeSource.getTime() + (INTERVAL * 1000);
+        owner.getEntity().getEvents().trigger(IDLE);
     }
 
     /**

@@ -10,6 +10,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
+import com.csse3200.game.components.tower.EconTowerAnimationController;
 import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
@@ -49,6 +50,11 @@ public class TowerFactory {
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
 
+
+    private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
+    private static final String ECO_IDLE = "move1";
+    private static final float ECO_IDLE_SPEED = 0.3f;
+
     private static final baseTowerConfigs configs =
             FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
     /**
@@ -66,11 +72,22 @@ public class TowerFactory {
         currencyTask.setInterval(updatedInterval);
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
 
+
+        // Contains all the animations that the tower will have
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(ECO_ATLAS, TextureAtlas.class));
+        animator.addAnimation(ECO_IDLE, ECO_IDLE_SPEED, Animation.PlayMode.LOOP);
+
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/towers/mine_tower.png"))
-                .addComponent(aiTaskComponent);
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new EconTowerAnimationController());
+
+
 
 
         return income;
