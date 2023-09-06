@@ -24,7 +24,7 @@ import com.badlogic.gdx.math.Vector2;
 public class ProjectileFactory {
 
   private static final NPCConfigs configs = 
-      FileLoader.readClass(NPCConfigs.class, "configs/NPCS.json");
+      FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
 
   /**
    * Creates a fireball Entity.
@@ -40,7 +40,7 @@ public class ProjectileFactory {
     Entity projectile = createBaseProjectile(target, destination);
 
     projectile
-        .addComponent(new TextureRenderComponent("images/projectile.png"))
+        .addComponent(new TextureRenderComponent("images/projectiles/projectile.png"))
         .addComponent(new ColliderComponent().setSensor(true))
 
         // This is the component that allows the projectile to damage a specified target.

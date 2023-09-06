@@ -185,7 +185,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
-    backgroundTexture = new Texture("images/background1.png"); // Load the background image
+    backgroundTexture = new Texture("images/background/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
