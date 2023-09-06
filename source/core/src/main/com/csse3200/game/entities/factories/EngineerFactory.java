@@ -53,7 +53,7 @@ public class EngineerFactory {
     animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("idle_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("firing", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("hit", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
     animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
 
 

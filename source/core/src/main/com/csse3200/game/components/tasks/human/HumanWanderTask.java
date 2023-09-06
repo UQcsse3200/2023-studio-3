@@ -6,6 +6,9 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import org.slf4j.Logger;
@@ -57,36 +60,34 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     movementTask.start();
 
     currentTask = movementTask;
-
-
-//    owner.getEntity().getEvents().trigger("idleRight");
   }
 
   @Override
   public void update() {
-    if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-      owner.getEntity().setFlagForDelete(true);
-      // make the appropriate calls to decrement the human count.
-    }
     if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
       owner.getEntity().getEvents().trigger("deathStart");
+      owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
+      owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
+      currentTask.stop();
       // Add a time delay here to allow animation to play?
       isDead = true;
     }
-    if (currentTask.getStatus() != Status.ACTIVE) {
-
-      if (currentTask == movementTask) {
-        startWaiting();
-        owner.getEntity().getEvents().trigger("idleRight");
-      } else {
-        startMoving();
-      }
+    else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+      owner.getEntity().setFlagForDelete(true);
+      // make the appropriate calls to decrement the human count.
     }
-    currentTask.update();
-  }
+    else if (!isDead) {
+      if (currentTask.getStatus() != Status.ACTIVE) {
 
-  private void isHit() {
-
+        if (currentTask == movementTask) {
+          startWaiting();
+          owner.getEntity().getEvents().trigger("idleRight");
+        } else {
+          startMoving();
+        }
+      }
+      currentTask.update();
+    }
   }
 
   private void startWaiting() {

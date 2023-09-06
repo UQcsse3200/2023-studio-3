@@ -1,6 +1,6 @@
 {
   "engineer" : {
-  "health": 20,
+  "health": 100,
   "baseAttack": 5
 }
 }
