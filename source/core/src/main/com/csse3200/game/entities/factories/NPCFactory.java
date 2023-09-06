@@ -8,7 +8,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.tasks.ShootTask;
+import com.csse3200.game.components.tasks.MobAttackTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
@@ -28,6 +28,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 /**
  * Factory to create non-playable character (NPC) entities with predefined components.
@@ -106,8 +107,10 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<Weapon> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
+//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
+//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
@@ -138,7 +141,7 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new ShootTask(target, 10, 3f, 4f));
+            .addTask(new MobAttackTask(2, 40));
             //.addTask(new ChaseTask(target, 10, 3f, 4f));
     Entity npc =
         new Entity()

@@ -9,12 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 
 @ExtendWith(GameExtension.class)
 public class EnemyTest {
 
-    private ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1,2));
+    private ArrayList<Currency> drops = new ArrayList<>();
+//    private ArrayList<Currency> drops = new ArrayList<>(Arrays.asList(1,2));
 
     private ArrayList<String> views = new ArrayList<>(Arrays.asList("a", "b", "c"));
 
