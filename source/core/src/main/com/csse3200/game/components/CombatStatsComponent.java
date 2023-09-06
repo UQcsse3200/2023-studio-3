@@ -28,7 +28,7 @@ public class CombatStatsComponent extends Component {
   private static final Logger logger = LoggerFactory.getLogger(CombatStatsComponent.class);
   private int health;
   private int baseAttack;
-  private final int fullHealth;
+  private int fullHealth;
   private String state;
   private ArrayList<Integer> drops;
   private ArrayList<Melee> closeRangeAbilities;
@@ -100,6 +100,25 @@ public class CombatStatsComponent extends Component {
   }
 
   /**
+   * Returns the entity's fullHealth value (note that this does not influence the ability to set its actual health)
+   *
+   * @return The entity's fullHealth variable
+   */
+  public int getMaxHealth() {
+      return fullHealth;
+  }
+
+  /**
+   * Sets the entity's fullHealth variable.
+   * Intended for when the entity's maximum health must be changed after creation, like upgrading a turret's HP.
+   *
+   * @param newMaxHealth The new value fullHealth should be set to
+   */
+  public void setMaxHealth(int newMaxHealth) {
+      fullHealth = newMaxHealth;
+  }
+
+  /**
    * Returns the entity's base attack damage.
    *
    * @return base attack damage
@@ -128,6 +147,12 @@ public class CombatStatsComponent extends Component {
     int newHealth = getHealth() - damage;
     setHealth(newHealth);
     changeState();
+  }
+
+  // Default CombatStatsComponent that relies on the attacker's combatStatsComponent.
+  public void hit(CombatStatsComponent attacker) {
+    int newHealth = getHealth() - attacker.getBaseAttack();
+    setHealth(newHealth);
   }
 
   /**

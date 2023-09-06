@@ -1,4 +1,4 @@
-# UQ 2023 Studio 3
+# UQ 2023 Studio 3  
 
 ## Description
 
@@ -12,6 +12,7 @@ You are welcome to use the game engine for your own purposes. It is released und
 - [SonarCloud](https://sonarcloud.io/project/overview?id=UQcsse3200_2023-studio-3)
 
 
-## Team 2 - Tower Branch
+## Outworld Outposts - A tower defense game.
 
-Implements defense towers in the Outworld Outposts game. Any questions or discussion, please contact Team 2
+This is the main branch for Outworld Outposts, a game developed by Studio 3 of CSSE3200 (Semester 2 2023). 
+A game developed in the CSSE3200 adaptation of the LibGDX game engine. For details and documentation, refer to the [Wiki](https://github.com/UQcsse3200/2023-studio-3/wiki)

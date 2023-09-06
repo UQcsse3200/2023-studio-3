@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.badlogic.gdx.graphics.Texture;
@@ -84,7 +85,6 @@ public class TowerFactory {
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TextureRenderComponent(WALL_IMAGE));
-
         return wall;
     }
 
@@ -117,7 +117,8 @@ public class TowerFactory {
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
-                .addComponent(new TowerAnimationController());
+                .addComponent(new TowerAnimationController())
+                .addComponent(new TowerUpgraderComponent());
 
         return weapon;
 
