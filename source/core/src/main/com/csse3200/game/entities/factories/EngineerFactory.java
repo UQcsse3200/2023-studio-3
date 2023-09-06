@@ -32,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * Factory to create non-playable character (NPC) entities with predefined components.
+ * Factory to create non-playable human character (NPC) entities with predefined components.
+ *
+ * These may be modified to become controllable characters in future sprints.
  *
  * <p>Each NPC entity type should have a creation method that returns a corresponding entity.
  * Predefined entity properties can be loaded from configs stored as json files which are defined in
@@ -45,8 +47,12 @@ public class EngineerFactory {
   private static final EngineerConfigs configs =
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
+  private static final float HUMAN_SCALE_X = 1.5f;
+  private static final float HUMAN_SCALE_Y = 1.2f;
+
   /**
-   * Creates an Engineer entity, based on a base Human entity.
+   * Creates an Engineer entity, based on a base Human entity, with the appropriate components and animations
+   *
    *
    * @return entity
    */
@@ -70,7 +76,7 @@ public class EngineerFactory {
         .addComponent(new HumanAnimationController());
 
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
-    engineer.setScale(1.5f, 1.2f);
+    engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
     return engineer;
   }
 
@@ -82,7 +88,7 @@ public class EngineerFactory {
   public static Entity createBaseHumanNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new HumanWanderTask(new Vector2(0, 10f), 2f));
+            .addTask(new HumanWanderTask(new Vector2(5, 10f), 2f));
 
     Entity human =
         new Entity()
