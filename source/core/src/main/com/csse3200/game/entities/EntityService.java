@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.Provider;
+import java.util.Comparator;
 
 /**
  * Provides a global access point for entities to register themselves. This allows for iterating
@@ -99,6 +100,7 @@ public class EntityService {
   }
   
   public Entity getEntityAtPosition(float x, float y) {
+    entities.sort(Comparator.comparingInt(Entity::getLayer));
     for (Entity entity : entities) {
       if (entityContainsPosition(entity, x, y)) {
         return entity;

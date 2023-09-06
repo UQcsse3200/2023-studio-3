@@ -11,9 +11,11 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class EconTowerAnimationController extends Component {
     // Event name constants
-    private static final String IDLE = "idleStart";
+    private static final String IDLE = "idleStartEco";
+    private static final String MOVE = "move1StartEco";
     // Animation name constants
-    private static final String IDLE_ANIM = "move1";
+    private static final String ECO_MOVE = "move1";
+    private static final String ECO_IDLE = "idle";
 
     AnimationRenderComponent animator;
 
@@ -26,13 +28,17 @@ public class EconTowerAnimationController extends Component {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener(IDLE, this::animateIdle);
+        entity.getEvents().addListener(MOVE, this::animateMove);
     }
 
     /**
      * Starts the
      */
     void animateIdle() {
-        animator.startAnimation(IDLE_ANIM);
+        animator.startAnimation(ECO_IDLE);
     }
+
+    void animateMove() { animator.startAnimation(ECO_MOVE); }
+
 
 }

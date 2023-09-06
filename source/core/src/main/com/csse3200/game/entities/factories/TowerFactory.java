@@ -52,7 +52,8 @@ public class TowerFactory {
 
 
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
-    private static final String ECO_IDLE = "move1";
+    private static final String ECO_MOVE = "move1";
+    private static final String ECO_IDLE = "idle";
     private static final float ECO_IDLE_SPEED = 0.3f;
 
     private static final baseTowerConfigs configs =
@@ -66,7 +67,7 @@ public class TowerFactory {
         IncomeTowerConfig config = configs.income;
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, 3);
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, 30);
 
         int updatedInterval = 1;
         currencyTask.setInterval(updatedInterval);
@@ -79,6 +80,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(ECO_ATLAS, TextureAtlas.class));
         animator.addAnimation(ECO_IDLE, ECO_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(ECO_MOVE, ECO_IDLE_SPEED, Animation.PlayMode.NORMAL);
 
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -86,10 +88,6 @@ public class TowerFactory {
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new EconTowerAnimationController());
-
-
-
-
         return income;
     }
 

@@ -23,6 +23,7 @@ public class DropFactory {
         drop.getComponent(TextureRenderComponent.class).scaleEntity();
         drop.scaleHeight(0.5f);
         drop.scaleWidth(0.5f);
+        drop.setLayer(0);
         return drop;
     }
 }
