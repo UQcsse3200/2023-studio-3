@@ -1,8 +1,6 @@
 package com.csse3200.game.components.player;
 
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.Component;
-import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.Weapon;
 import org.slf4j.Logger;
@@ -26,14 +24,6 @@ import java.util.ArrayList;
  */
 public class HumanCombatStatsComponent extends CombatStatsComponent {
 
-  private static final Logger logger = LoggerFactory.getLogger(HumanCombatStatsComponent.class);
-  private int health;
-  private int baseAttack;
-  private String state;
-  private ArrayList<Integer> drops;
-  private ArrayList<Melee> closeRangeAbilities;
-  private ArrayList<Weapon> longRangeAbilities; //TODO change String to Projectiles
-
   public HumanCombatStatsComponent(int health, int baseAttack) {
     super(health, baseAttack);
   }
@@ -41,14 +31,11 @@ public class HumanCombatStatsComponent extends CombatStatsComponent {
   /**
    * Decrease the health of the entity based on the damage provided.
    * */
+  @Override
   public void hit(Integer damage) {
     int newHealth = getHealth() - damage;
     setHealth(newHealth);
     entity.getEvents().trigger("hitStart");
-
     changeState();
   }
-
-  //TODO: this will be changed to drop an item and load it to the screen
-
 }
