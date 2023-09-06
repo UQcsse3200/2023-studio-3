@@ -41,7 +41,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
      * @param waitTime    How long in seconds to wait between wandering.
      */
     public RangeBossMovementTask(float waitTime) {
-        physics = ServiceLocator.getPhysicsService().getPhysics();
+        //physics = ServiceLocator.getPhysicsService().getPhysics();
         this.waitTime = waitTime;
     }
 
@@ -117,6 +117,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
 
     private boolean towerAhead() {
         // use a raycast to find out if there is a tower on the lane
-        return physics.raycast(currentPos, maxBossRange, TARGET, hit);
+        //return physics.raycast(currentPos, maxBossRange, TARGET, hit);
+        return true;
     }
 }
