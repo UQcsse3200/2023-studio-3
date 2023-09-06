@@ -36,7 +36,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private long endTime;
   private final RaycastHit hit = new RaycastHit();
 
-  private final long delay = 700; // delay between shots
+  private final long delay = 1000; // delay between shots
   private long startTime;
 
   private enum STATE {
@@ -127,7 +127,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x - 0.75), (float) (owner.getEntity().getPosition().y));
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
           newProjectile.setScale(-1f, 0.5f);
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
@@ -149,7 +149,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   }
 
   /**
-   * For stopping the running task
+   * For stopping the attack task
    */
   @Override
   public void stop() {
