@@ -28,6 +28,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     private Vector2 currentPos;
     private MovementTask movementTask;
     private WaitTask waitTask;
+    private WaitTask rangeAttackTask;
     private Task currentTask;
 
     private enum STATE {
@@ -57,6 +58,10 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
 
         waitTask = new WaitTask(waitTime);
         waitTask.create(owner);
+
+        rangeAttackTask = new WaitTask(waitTime);
+        rangeAttackTask.create(owner);
+
         movementTask = new MovementTask(currentPos.sub(2,0));
         movementTask.create(owner);
 
@@ -73,7 +78,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
                 if (towerAhead()) {
-                    // fire projectile
+                    startRangeAttack();
                 } else {
                     startWaiting();
                 }
@@ -95,7 +100,12 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         swapTask(movementTask);
     }
 
-
+    private void startRangeAttack() {
+        logger.debug("Starting range attack");
+        // fire a projectile
+        Entity newProjectile;
+        swapTask(rangeAttackTask);
+    }
 
     private void swapTask(Task newTask) {
         if (currentTask != null) {
