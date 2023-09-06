@@ -2,6 +2,7 @@ package com.csse3200.game.components.tower;
 
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
+import static java.lang.Math.round;
 
 /**
  * Listens for an event from the popup menu to upgrade
@@ -20,15 +21,16 @@ public class TowerUpgraderComponent extends Component {
 
     /**
      * Determines which type of upgrade to perform based on arguments provided by the event trigger.
+     * Note: The fire rate upgrade is in shots per minute.
      *
      * @param upgradeType An enum indicating the type of upgrade to do
-     * @param value How much the upgrade should change the tower's stats, where applicable
+     * @param value How much the upgrade should change the tower's stats
      */
     void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
             case ATTACK -> {upgradeTowerAttack(value);}
             case MAXHP -> {upgradeTowerMaxHealth(value);}
-            case FIRERATE -> {/*Not implemented at the present moment*/}
+            case FIRERATE -> {getEntity().getEvents().trigger("addFireRate", value);}
         }
     }
 
