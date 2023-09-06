@@ -4,27 +4,43 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Wander around by moving a random position within a range of the starting position. Wait a little
- * bit between movements. Requires an entity with a PhysicsMovementComponent.
+ * Move towards the left side of the screen. Every few steps stop and make a ranged attack before
+ * progressing left again. Requires an entity with a PhysicsMovementComponent.
  */
 public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
+    private static final short TARGET = PhysicsLayer.OBSTACLE;
     private static final Logger logger = LoggerFactory.getLogger(RangeBossMovementTask.class);
 
+    private final Vector2 maxBossRange = new Vector2();
+    private PhysicsEngine physics;
+    private final RaycastHit hit = new RaycastHit();
     private final float waitTime;
-    private Vector2 startPos;
+    private Vector2 currentPos;
     private MovementTask movementTask;
     private WaitTask waitTask;
     private Task currentTask;
+
+    private enum STATE {
+        WALK, RANGE, MELEE, IDLE
+    }
+
+    private STATE rangeBossState;
 
     /**
      * @param waitTime    How long in seconds to wait between wandering.
      */
     public RangeBossMovementTask(float waitTime) {
-
+        physics = ServiceLocator.getPhysicsService().getPhysics();
         this.waitTime = waitTime;
     }
 
@@ -36,11 +52,12 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        startPos = owner.getEntity().getPosition();
+        currentPos = owner.getEntity().getPosition();
+        this.maxBossRange.set(0, currentPos.y);
 
         waitTask = new WaitTask(waitTime);
         waitTask.create(owner);
-        movementTask = new MovementTask(startPos.sub(2,0));
+        movementTask = new MovementTask(currentPos.sub(2,0));
         movementTask.create(owner);
 
         movementTask.start();
@@ -52,9 +69,14 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
 
     @Override
     public void update() {
+
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                startWaiting();
+                if (towerAhead()) {
+                    // fire projectile
+                } else {
+                    startWaiting();
+                }
             } else {
                 startMoving();
             }
@@ -69,9 +91,11 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
 
     private void startMoving() {
         logger.debug("Starting moving");
-        movementTask.setTarget(startPos.sub(2,0));
+        movementTask.setTarget(currentPos.sub(2,0));
         swapTask(movementTask);
     }
+
+
 
     private void swapTask(Task newTask) {
         if (currentTask != null) {
@@ -81,4 +105,8 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         currentTask.start();
     }
 
+    private boolean towerAhead() {
+        // use a raycast to find out if there is a tower on the lane
+        return physics.raycast(currentPos, maxBossRange, TARGET, hit);
+    }
 }
