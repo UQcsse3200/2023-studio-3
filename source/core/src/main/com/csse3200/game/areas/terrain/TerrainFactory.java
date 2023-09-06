@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -98,18 +99,33 @@ public class  TerrainFactory {
     }
   }
 
-  private TiledMap createForestDemoTiles(
-          GridPoint2 tileSize, TextureRegion grass) {
+  private TiledMap createForestDemoTiles(GridPoint2 tileSize, TextureRegion grass) {
     TiledMap tiledMap = new TiledMap();
+
+    // Create a background layer
+    TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
+    TextureRegion backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/ingamebg.png", Texture.class));
+
+    // Create a single cell for the entire background image
+    Cell cell = new Cell();
+    cell.setTile(new StaticTiledMapTile(backgroundTextureRegion));
+    backgroundLayer.setCell(0, 0, cell);
+
+    tiledMap.getLayers().add(backgroundLayer);
+
+    // Create a grass layer
     TerrainTile grassTile = new TerrainTile(grass);
-    TiledMapTileLayer layer = new TiledMapTileLayer(MAP_SIZE.x, MAP_SIZE.y, tileSize.x, tileSize.y);
+    TiledMapTileLayer grassLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
+    fillTiles(grassLayer, new GridPoint2(20, 8), grassTile);
+    tiledMap.getLayers().add(grassLayer);
 
-    // Create base grass
-    fillTiles(layer, MAP_SIZE, grassTile);
-
-    tiledMap.getLayers().add(layer);
     return tiledMap;
   }
+
+
+
+
+
 
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
     BitmapFont font = new BitmapFont();
