@@ -84,7 +84,8 @@ public class ForestGameArea extends GameArea {
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/economy/scrap.png",
-          "images/towers/mine_tower.png"
+          "images/towers/mine_tower.png",
+          "images/projectiles/basic_projectiles.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
@@ -94,7 +95,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/turret01.atlas",
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas"
+          "images/mobs/rangeBossRight.atlas",
+          "images/projectiles/basic_projectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -190,6 +192,7 @@ public class ForestGameArea extends GameArea {
             new GridPoint2(0, tileBounds.y),
             false,
             false);
+
     // Bottom
     spawnEntityAt(
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
@@ -204,6 +207,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(building1, randomPos, true, false);
     }
   }
+
   private void spawnBuilding2() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -308,7 +312,6 @@ public class ForestGameArea extends GameArea {
   //         false);
   //   }
   //   return bossKing1;
-
   // }
 
   private void spawnXenoGrunts() {
@@ -398,7 +401,6 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
     music.setLooping(true);
@@ -457,6 +459,5 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
-
 
 }

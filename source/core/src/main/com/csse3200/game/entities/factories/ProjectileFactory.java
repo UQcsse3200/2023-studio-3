@@ -1,5 +1,7 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.components.AoeComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
@@ -9,6 +11,7 @@ import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
@@ -17,11 +20,25 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Responsible for creating projectiles within the game.
  */
 public class ProjectileFactory {
+  /** Animation constants */
+  private static final String BASE_PROJECTILE_ATLAS = "images/projectiles/basic_projectile.atlas";
+  private static final String START_ANIM = "projectileStart1";
+  private static final String PHASE1_ANIM = "projectile2";
+  private static final String PHASE2_ANIM = "projectile3";
+  private static final String PHASE3_ANIM = "projectile4";
+  private static final String FINAL_ANIM = "projectileFinish5";
+  private static final float START_SPEED = 0.3f;
+  private static final float PHASE1_SPEED = 0.3f;
+  private static final float PHASE2_SPEED = 0.3f;
+  private static final float PHASE3_SPEED = 0.3f;
+  private static final float FINAL_SPEED = 0.3f;
 
   private static final NPCConfigs configs = 
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
@@ -40,18 +57,27 @@ public class ProjectileFactory {
     Entity projectile = createBaseProjectile(target, destination);
 
     projectile
-        .addComponent(new TextureRenderComponent("images/projectiles/projectile.png"))
+//        .addComponent(new TextureRenderComponent("images/projectiles/projectile.png"))
         .addComponent(new ColliderComponent().setSensor(true))
 
         // This is the component that allows the projectile to damage a specified target.
         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
-    projectile
-        .getComponent(TextureRenderComponent.class).scaleEntity();
+//    projectile
+//        .getComponent(TextureRenderComponent.class).scaleEntity();
     
     projectile
         .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
+
+    AnimationRenderComponent animator = new AnimationRenderComponent(
+            ServiceLocator.getResourceService()
+                    .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+    animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation(PHASE1_ANIM, PHASE1_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation(PHASE2_ANIM, PHASE2_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation(PHASE3_ANIM, PHASE3_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
 
     return projectile;
   }
