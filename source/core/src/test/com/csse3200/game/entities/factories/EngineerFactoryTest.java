@@ -2,6 +2,7 @@ package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
@@ -56,13 +57,16 @@ class EngineerFactoryTest {
 
     @Test
     void createEngineer() {
-        Entity engineer = EngineerFactory.createEngineer(target);
+        Entity engineer = EngineerFactory.createEngineer();
+        engineer.setPosition(10f, 10f);
         assertNotNull(engineer);
+        assert(!engineer.getFlagForDelete());
+        assert engineer.getPosition().x == 10f && engineer.getPosition().y == 10f;
     }
 
     @Test
     void createBaseHumanNPC() {
-        Entity human = EngineerFactory.createBaseHumanNPC(target);
+        Entity human = EngineerFactory.createBaseHumanNPC();
         assertNotNull(human);
     }
 }

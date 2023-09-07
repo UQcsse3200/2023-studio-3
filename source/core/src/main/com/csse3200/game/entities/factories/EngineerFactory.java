@@ -3,7 +3,6 @@ package com.csse3200.game.entities.factories;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.tasks.EngineerCombatTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
@@ -47,8 +46,8 @@ public class EngineerFactory {
    *
    * @return entity
    */
-  public static Entity createEngineer(Entity target) {
-    Entity engineer = createBaseHumanNPC(target);
+  public static Entity createEngineer() {
+    Entity engineer = createBaseHumanNPC();
     BaseEntityConfig config = configs.engineer;
 
     AnimationRenderComponent animator = new AnimationRenderComponent(
@@ -56,7 +55,7 @@ public class EngineerFactory {
     animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("idle_right", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("firing", 0.01f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("firing", 0.05f, Animation.PlayMode.NORMAL);
     animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
     animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
 
@@ -79,10 +78,8 @@ public class EngineerFactory {
    *
    * @return entity
    */
-  public static Entity createBaseHumanNPC(Entity target) {
-//    AITaskComponent aiComponent =
-//        new AITaskComponent()
-//            .addTask(new HumanWanderTask(target, 1f));
+  public static Entity createBaseHumanNPC() {
+
 
     Entity human =
         new Entity()
