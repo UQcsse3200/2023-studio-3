@@ -60,6 +60,16 @@ public class ProjectileFactory {
   }
 
   /**
+   * Create a pierce fireball.
+   * Pierce fireball is basically a fireball that does damage but won't self destruct on hit.
+   */
+  public static Entity createPierceFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+
+    return fireBall;
+  }
+  /**
    * Creates a fireball Entity.
    * 
    * @param targetLayer The enemy layer that the projectile collides with.
@@ -78,8 +88,8 @@ public class ProjectileFactory {
 
         // This is the component that allows the projectile to damage a specified target.
         .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f, true))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-        .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     projectile
         .getComponent(TextureRenderComponent.class).scaleEntity();

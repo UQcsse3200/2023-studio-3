@@ -69,6 +69,7 @@ public class ObstacleFactory {
   public static Entity createWall(float width, float height) {
     Entity wall = new Entity()
         .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
+        // * TMEPORARRYY WALLL
         .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));
     wall.setScale(width, height);
     return wall;

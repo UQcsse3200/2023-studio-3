@@ -100,6 +100,9 @@ public class TouchAttackComponent extends Component {
     }
   }
 
+  public void setDisposeOnHit(boolean disposeOnHit) {
+    this.disposeOnHit = disposeOnHit;
+  }
   private void onCollisionEnd(Fixture me, Fixture other) {
     // Nothing to do on collision end
   }
