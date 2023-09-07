@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
@@ -143,7 +144,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     // Types of projectile
-    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileFactory.ProjectileEffects.FIREBALL, true);
+    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.FIREBALL, true);
 //    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
 //    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
@@ -382,7 +383,7 @@ public class ForestGameArea extends GameArea {
    * @param aoe Whether it is an aoe projectile.
    */
   private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
-                                     ProjectileFactory.ProjectileEffects effect, boolean aoe) {
+                                     ProjectileEffects effect, boolean aoe) {
     Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
     Projectile.setPosition(position);
     spawnEntity(Projectile);

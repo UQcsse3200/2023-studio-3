@@ -1,6 +1,7 @@
 package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.EffectsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -22,13 +23,6 @@ import com.badlogic.gdx.math.Vector2;
  * Responsible for creating projectiles within the game.
  */
 public class ProjectileFactory {
-
-  public enum ProjectileEffects {
-    FIREBALL, //fireball projectile - deals damage based on baseAttack
-    BURN, //burn projectile - does 5 extra ticks of damage over 5 seconds
-    SLOW, //slow projectile - slows entity by half for 5 seconds
-    STUN //stun projectile - stuns entity for 5 seconds
-  }
 
   private static final NPCConfigs configs = 
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");

@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class EffectsComponent extends Component {
     private final float radius;
-    private final ProjectileFactory.ProjectileEffects effect;
+    private final ProjectileEffects effect;
     private final boolean aoe;
     private HitboxComponent hitboxComponent;
     private final short targetLayer;
@@ -21,7 +21,7 @@ public class EffectsComponent extends Component {
      *
      * @param radius The radius of the area-of-effect.
      */
-    public EffectsComponent(short targetLayer, float radius, ProjectileFactory.ProjectileEffects effect, boolean aoe) {
+    public EffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
         this.targetLayer = targetLayer;
         this.radius = radius;
         this.effect = effect;
@@ -53,7 +53,7 @@ public class EffectsComponent extends Component {
         switch (effect) {
             case FIREBALL -> {
                 if (aoe) {
-                    applyAoeDamage();
+                    applyAoeEffect(ProjectileEffects.FIREBALL);
                 }
             }
             case BURN -> {}
@@ -62,9 +62,9 @@ public class EffectsComponent extends Component {
         }
     }
     /**
-     * Apply damage to all entities within the area of effect (radius).
+     * Used for aoe fireball projectile to apply damage to all entities within the area of effect (radius).
      */
-    public void applyAoeDamage() {
+    public void applyAoeEffect(ProjectileEffects effect) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
