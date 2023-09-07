@@ -1,6 +1,7 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.components.AoeComponent;
+import com.csse3200.game.components.EffectsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -32,24 +33,55 @@ public class ProjectileFactory {
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
 
   /**
+   * Creates a single-targeting projectile with specified effect
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @param effect Specified effect from the ProjectileEffects enums
+   * @return Returns a new single-target projectile entity
+   */
+  public static Entity createEffectProjectile(short targetLayer, Vector2 destination, Vector2 speed,
+                                              ProjectileEffects effect, boolean aoe) {
+    BaseEntityConfig config = configs.fireBall;
+    Entity projectile = createFireBall(targetLayer, destination, speed);
+
+    switch(effect) {
+      case FIREBALL -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));
+      }
+      case BURN -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
+      }
+      case SLOW -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
+      }
+      case STUN -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
+      }
+    }
+      return projectile;
+  }
+
+  /**
    * Creates a fireball Entity.
    * 
-   * @param target The enemy entities that the projectile collides with.
+   * @param targetLayer The enemy layer that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
    * @return Returns a new fireball projectile entity.
    */
-  public static Entity createFireBall(Entity target, Vector2 destination, Vector2 speed) {
+  public static Entity createFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.fireBall;
 
-    Entity projectile = createBaseProjectile(target, destination);
+    Entity projectile = createBaseProjectile(destination);
 
     projectile
         .addComponent(new TextureRenderComponent("images/projectiles/projectile.png"))
         .addComponent(new ColliderComponent().setSensor(true))
 
         // This is the component that allows the projectile to damage a specified target.
-        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
+        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
     projectile
@@ -100,32 +132,12 @@ public class ProjectileFactory {
   }
 
   /**
-   * Creates an AOE fireball Entity.
-   * 
-   * @param target The enemy entities that the projectile collides with.
-   * @param destination The destination the projectile heads towards.
-   * @param speed The speed of the projectile.
-   * @param aoeSize The size of the AOE.
-   * @return Returns the new aoe projectile entity.
-   */
-  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
-    BaseEntityConfig config = configs.fireBall;
-    Entity projectile = createFireBall(target, destination, speed);
-    projectile
-            // This is the component that allows the projectile to damage a specified target.
-            .addComponent(new AoeComponent(aoeSize));
-
-    return projectile;
-  }
-
-  /**
    * Creates a generic projectile entity that can be used for multiple types of * projectiles.
    * 
-   * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @return Returns a generic projectile entity.
    */
-  public static Entity createBaseProjectile(Entity target, Vector2 destination) {
+  public static Entity createBaseProjectile(Vector2 destination) {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new TrajectTask(destination));

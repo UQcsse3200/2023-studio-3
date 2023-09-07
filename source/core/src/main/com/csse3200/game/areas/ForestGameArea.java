@@ -5,11 +5,13 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.utils.math.GridPoint2Utils;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
@@ -144,11 +146,11 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-
-    spawnMobBall(new Vector2(15, 10), player, towardsTowers, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20,  new Vector2(2f, 2f), 7);
+    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.FIREBALL, true);
+//    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+//
+    spawnMobBall(new Vector2(15, 10), PhysicsLayer.PLAYER, towardsTowers, new Vector2(2f, 2f));
+    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, 20,  new Vector2(2f, 2f), 7);
     
     spawnXenoGrunts();
 
@@ -274,13 +276,13 @@ public class ForestGameArea extends GameArea {
     * Spawns a projectile that only heads towards the enemies in its lane.
     * 
     * @param position The position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
+    * @param targetLayer The enemy layer of the "shooter".
     * @param direction The direction the projectile should head towards.
     * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
+  private void spawnProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -289,14 +291,14 @@ public class ForestGameArea extends GameArea {
     * Spawns a projectile to be used for multiple projectile function.
     * 
     * @param position The position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
+    * @param targetLayer The enemy layer of the "shooter".
     * @param space The space between the projectiles' destination.
     * @param direction The direction the projectile should head towards.
     * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+  private void spawnProjectile(Vector2 position, short targetLayer, int space,  int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -305,14 +307,14 @@ public class ForestGameArea extends GameArea {
     * Spawns a mob based projectile to be used for multiple projectile function.
     * 
     * @param position The position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
+    * @param targetLayer The enemy layer of the "shooter".
     * @param space The space between the projectiles' destination.
     * @param direction The direction the projectile should head towards.
     * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnMobBall(Vector2 position, Entity target,  int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createMobBall(target, new Vector2(direction, position.y), speed);
+  private void spawnMobBall(Vector2 position, short targetLayer,  int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createMobBall(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -377,16 +379,16 @@ public class ForestGameArea extends GameArea {
    * the starting point but different destinations.
    * 
    * @param position The position of the Entity that's shooting the projectile.
-   * @param target The enemy entities of the "shooter".
+   * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param space The space between the projectiles' destination.
    * @param speed The speed of the projectiles.
    * @param quantity The amount of projectiles to spawn.
    */
-  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int quantity) {
+  private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
     int half = quantity / 2;
     for (int i = 0; i < quantity; i++) {
-        spawnProjectile(position, target, space * half, direction, speed);
+        spawnProjectile(position, targetLayer, space * half, direction, speed);
         --half;
     }
   }
@@ -395,13 +397,15 @@ public class ForestGameArea extends GameArea {
    * Returns projectile that can do an area of effect damage
    * 
    * @param position The position of the Entity that's shooting the projectile.
-   * @param target The enemy entities of the "shooter".
+   * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param speed The speed of the projectiles.
-   * @param aoeSize The size of the area of effect.
+   * @param effect Type of effect.
+   * @param aoe Whether it is an aoe projectile.
    */
-  private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
-    Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
+  private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
+                                     ProjectileEffects effect, boolean aoe) {
+    Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
