@@ -3,6 +3,7 @@ package com.csse3200.game.entities.factories;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.tasks.EngineerCombatTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
@@ -31,6 +32,9 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
  * similar characteristics.
  */
 public class EngineerFactory {
+  
+  private static final int COMBAT_TASK_PRIORITY = 2;
+  private static final int ENGINEER_RANGE = 40;
   private static final EngineerConfigs configs =
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
@@ -58,12 +62,14 @@ public class EngineerFactory {
 
 
     engineer
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-        .addComponent(animator)
-        .addComponent(new HumanAnimationController());
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(animator)
+            .addComponent(new HumanAnimationController());
 
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
     engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
+    engineer.getComponent(AITaskComponent.class)
+            .addTask(new EngineerCombatTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
     return engineer;
   }
 
@@ -94,5 +100,3 @@ public class EngineerFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 }
-
-

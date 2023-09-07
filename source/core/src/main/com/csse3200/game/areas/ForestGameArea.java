@@ -131,35 +131,18 @@ public class ForestGameArea extends GameArea {
   /** Create the game area, including terrain, static entities (trees), dynamic entities (player) */
   @Override
   public void create() {
+    // Load game assets
     loadAssets();
-
     displayUI();
-
     spawnTerrain();
-//    spawnBuilding1();
-//    spawnBuilding2();
-//    spawnMountains();
-    player = spawnPlayer();
-
     playMusic();
-
-    // Types of projectile
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
-    spawnXenoGrunts();
-
-    spawnGhosts();
+    
+    // Spawn Entities
+    player = spawnPlayer();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
-
+    spawnEngineer(player);
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-    Entity engineer = EngineerFactory.createEngineer(player);
-    spawnEntityAt(engineer, new GridPoint2(5, 20), true, true);
-
-    playMusic();
   }
 
   private void displayUI() {
@@ -460,6 +443,15 @@ public class ForestGameArea extends GameArea {
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
+  }
+  
+  private void spawnEngineer(Entity target) {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+    
+    Entity engineer = EngineerFactory.createEngineer(target);
+    spawnEntityAt(engineer, randomPos, true, true);
   }
 
 
