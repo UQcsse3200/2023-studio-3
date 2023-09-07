@@ -18,5 +18,10 @@
     "health": 10,
     "baseAttack": 5,
     "cost": 1
+  },
+  "DroidTower": {
+    "health": 10,
+    "baseAttack": 5,
+    "cost": 1
   }
 }
