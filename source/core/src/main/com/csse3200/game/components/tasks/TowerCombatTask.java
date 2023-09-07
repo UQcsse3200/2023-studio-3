@@ -113,7 +113,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(FIRING);
                     // this might be changed to an event which gets triggered everytime the tower enters the firing state
                     Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
+                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }

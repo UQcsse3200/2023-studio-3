@@ -29,16 +29,10 @@ import com.csse3200.game.services.ServiceLocator;
 public class ProjectileFactory {
   /** Animation constants */
   private static final String BASE_PROJECTILE_ATLAS = "images/projectiles/basic_projectile.atlas";
-  private static final String START_ANIM = "projectileStart1";
-  private static final String PHASE1_ANIM = "projectile2";
-  private static final String PHASE2_ANIM = "projectile3";
-  private static final String PHASE3_ANIM = "projectile4";
-  private static final String FINAL_ANIM = "projectileFinish5";
-  private static final float START_SPEED = 0.3f;
-  private static final float PHASE1_SPEED = 0.3f;
-  private static final float PHASE2_SPEED = 0.3f;
-  private static final float PHASE3_SPEED = 0.3f;
-  private static final float FINAL_SPEED = 0.3f;
+  private static final String START_ANIM = "projectile";
+  private static final String FINAL_ANIM = "projectileFinal";
+  private static final float START_SPEED = 0.1f;
+  private static final float FINAL_SPEED = 0.1f;
 
   private static final NPCConfigs configs = 
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
@@ -56,9 +50,17 @@ public class ProjectileFactory {
 
     Entity projectile = createBaseProjectile(target, destination);
 
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+    animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+
     projectile
-//        .addComponent(new TextureRenderComponent("images/projectiles/projectile.png"))
+        .addComponent(new ProjectileAnimationController())
         .addComponent(new ColliderComponent().setSensor(true))
+            .addComponent(animator)
 
         // This is the component that allows the projectile to damage a specified target.
         .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
@@ -70,14 +72,6 @@ public class ProjectileFactory {
     projectile
         .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
 
-    AnimationRenderComponent animator = new AnimationRenderComponent(
-            ServiceLocator.getResourceService()
-                    .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
-    animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
-    animator.addAnimation(PHASE1_ANIM, PHASE1_SPEED, Animation.PlayMode.NORMAL);
-    animator.addAnimation(PHASE2_ANIM, PHASE2_SPEED, Animation.PlayMode.NORMAL);
-    animator.addAnimation(PHASE3_ANIM, PHASE3_SPEED, Animation.PlayMode.NORMAL);
-    animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
 
     return projectile;
   }

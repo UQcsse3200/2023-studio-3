@@ -48,7 +48,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
-          "images/projectiles/projectile.png",
+//          "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
           "images/ghost_1.png",
@@ -85,7 +85,7 @@ public class ForestGameArea extends GameArea {
           "images/iso_grass_3.png",
           "images/economy/scrap.png",
           "images/towers/mine_tower.png",
-          "images/projectiles/basic_projectiles.png"
+          "images/projectiles/basic_projectile.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
