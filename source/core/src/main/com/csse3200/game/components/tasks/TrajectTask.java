@@ -27,7 +27,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
     movementTask.create(owner);
     movementTask.start();
     
-    this.owner.getEntity().getEvents().trigger("trajectStart");
+    this.owner.getEntity().getEvents().trigger("rotate");
   }
 
   @Override

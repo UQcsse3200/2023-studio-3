@@ -84,7 +84,8 @@ public class ForestGameArea extends GameArea {
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/economy/scrap.png",
-          "images/towers/mine_tower.png"
+          "images/towers/mine_tower.png",
+          "images/projectiles/mobProjectile.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
@@ -94,7 +95,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/turret01.atlas",
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas"
+          "images/mobs/rangeBossRight.atlas",
+          "images/projectiles/mobProjectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -141,10 +143,10 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    // Types of projectile
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
+    // spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
     spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
     spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    
     spawnXenoGrunts();
 
     spawnGhosts();
@@ -274,8 +276,13 @@ public class ForestGameArea extends GameArea {
     * @param speed The speed of the projectiles.
    * 
    */
+  // private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
+  //   Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
+  //   Projectile.setPosition(position);
+  //   spawnEntity(Projectile);
+  // }
   private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
+    Entity Projectile = ProjectileFactory.createMobBall(target, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -290,8 +297,13 @@ public class ForestGameArea extends GameArea {
     * @param speed The speed of the projectiles.
    * 
    */
+  // private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
+  //   Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+  //   Projectile.setPosition(position);
+  //   spawnEntity(Projectile);
+  // }
   private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+    Entity Projectile = ProjectileFactory.createMobBall(target, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
