@@ -33,7 +33,6 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_BUILDINGS = 4;
 
   private static final int NUM_WALLS = 7;
-  private static final GridPoint2 MAP_SIZE = new GridPoint2(16, 10);
 
   private static final int NUM_TREES = 0;
   private static final int NUM_GHOSTS = 0;

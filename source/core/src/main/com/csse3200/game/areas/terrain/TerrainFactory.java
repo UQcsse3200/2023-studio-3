@@ -2,6 +2,7 @@ package com.csse3200.game.areas.terrain;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.areas.terrain.TerrainComponent.TerrainOrientation;
 import com.csse3200.game.components.CameraComponent;
-import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -27,12 +27,14 @@ import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
 import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
 /** Factory for creating game terrains. */
-public class  TerrainFactory {
+public class TerrainFactory {
   public static final GridPoint2 MAP_SIZE = new GridPoint2(20, 8);
 
   private static OrthographicCamera camera;
   private final TerrainOrientation orientation;
   private static Stage stage;
+  private Texture whiteTexture;
+
   /**
    * Create a terrain factory with Orthogonal orientation
    *
@@ -40,11 +42,18 @@ public class  TerrainFactory {
    */
   public TerrainFactory(CameraComponent cameraComponent) {
     this(cameraComponent, TerrainOrientation.ORTHOGONAL);
-    camera.position.set(viewportWidth / 2f, viewportHeight / 2f , 10);
+    camera.position.set(viewportWidth / 2f, (viewportHeight / 2f), 10);
     Viewport viewport = new ScreenViewport(camera);
     viewport.update(viewportWidth, viewportHeight, true);
     stage = new Stage(viewport, new SpriteBatch());
+
     camera.update();
+
+    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+    pixmap.setColor(1, 1, 1, 1);
+    pixmap.fill();
+    whiteTexture = new Texture(pixmap);
+    pixmap.dispose();
   }
 
   /**
@@ -56,11 +65,7 @@ public class  TerrainFactory {
   public TerrainFactory(CameraComponent cameraComponent, TerrainOrientation orientation) {
     this.camera = (OrthographicCamera) cameraComponent.getCamera();
     this.orientation = orientation;
-
-
-
   }
-
 
   /**
    * Create a terrain of the given type, using the orientation of the factory. This can be extended
@@ -74,7 +79,7 @@ public class  TerrainFactory {
     switch (terrainType) {
       case FOREST_DEMO:
         TextureRegion orthoGrass =
-            new TextureRegion(resourceService.getAsset("images/terrain_use.png", Texture.class));
+                new TextureRegion(resourceService.getAsset("images/terrain_use.png", Texture.class));
         return createForestDemoTerrain(1f, orthoGrass);
 
       default:
@@ -119,13 +124,33 @@ public class  TerrainFactory {
     fillTiles(grassLayer, new GridPoint2(20, 8), grassTile);
     tiledMap.getLayers().add(grassLayer);
 
+    // Create lanes (invisible)
+    int numberOfLanes = 8;
+    int laneHeight = 1; // Height of each lane in tiles
+    int mapWidth = 20;
+    int mapHeight = 8;
+    int laneTileHeight = mapHeight / numberOfLanes;
+
+    for (int i = 0; i < numberOfLanes; i++) {
+      TiledMapTileLayer laneLayer = new TiledMapTileLayer(mapWidth, laneHeight, tileSize.x, tileSize.y);
+      fillInvisibleTiles(laneLayer, new GridPoint2(mapWidth, laneHeight));
+      tiledMap.getLayers().add(laneLayer);
+    }
+
     return tiledMap;
   }
 
-
-
-
-
+  private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize) {
+    for (int x = 0; x < mapSize.x; x++) {
+      for (int y = 0; y < mapSize.y; y++) {
+        Cell cell = new Cell();
+        // Set an invisible tile (using a transparent texture)
+        StaticTiledMapTile invisibleTile = new StaticTiledMapTile(new TextureRegion(whiteTexture));
+        cell.setTile(invisibleTile);
+        layer.setCell(x, y, cell);
+      }
+    }
+  }
 
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
     BitmapFont font = new BitmapFont();
@@ -142,6 +167,7 @@ public class  TerrainFactory {
       }
     }
   }
+
   public enum TerrainType {
     FOREST_DEMO
   }

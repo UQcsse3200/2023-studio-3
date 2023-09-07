@@ -70,6 +70,7 @@ public class MainGameScreen extends ScreenAdapter {
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
+
   private Texture whiteTexture;
   private Texture backgroundTexture;
 
@@ -80,12 +81,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
 
     batch = new SpriteBatch();
-
-    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-    pixmap.setColor(1, 1, 1, 1);
-    pixmap.fill();
-    whiteTexture = new Texture(pixmap);
-    pixmap.dispose();
 
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
@@ -132,14 +127,6 @@ public class MainGameScreen extends ScreenAdapter {
     batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
     batch.end();
 
-
-    batch.setProjectionMatrix(camera.combined);
-    batch.begin();
-    for (int i = 0; i < NUM_LANES; i++) {
-    float yPosition = i * LANE_HEIGHT;
-    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 5);
-  }
-    batch.end();
 
     renderer.render();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
