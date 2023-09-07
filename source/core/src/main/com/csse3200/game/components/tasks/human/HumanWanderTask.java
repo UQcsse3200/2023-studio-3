@@ -10,7 +10,6 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.GameTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,6 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
   private Task currentTask;
-  private GameTime endTime;
 
   private boolean isDead = false;
 
