@@ -1,5 +1,7 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.tasks.FireTowerCombatTask;
+import com.csse3200.game.components.tower.FireTowerAnimationController;
 import com.csse3200.game.entities.configs.*;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -32,6 +34,7 @@ public class TowerFactory {
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
+    private static final String FIRE_TURRET_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String IDLE_ANIM = "idle";
     private static final float IDLE_SPEED = 0.3f;
     private static final String DEPLOY_ANIM = "deploy";
@@ -40,7 +43,13 @@ public class TowerFactory {
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
     private static final float FIRE_SPEED = 0.25f;
-    private static final int INCOME_INTERVAL = 300;
+    private static final String FIRE_TOWER_IDLE_ANIM = "idle";
+    private static final float FIRE_TOWER_IDLE_SPEED = 0.3f;
+    private static final String FIRE_TOWER_PREP_ATTACK_ANIM = "prepAttack";
+    private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
+    private static final String FIRE_TOWER_ATTACK_ANIM = "attack";
+    private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+        private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
 
     private static final baseTowerConfigs configs =
@@ -119,9 +128,24 @@ public class TowerFactory {
     public static Entity createFireTower() {
         Entity fireTower = createBaseTower();
         FireTowerConfig config = configs.fireTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new FireTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(FIRE_TURRET_ATLAS, TextureAtlas.class));
+        animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+
         fireTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new CostComponent(config.cost));
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new FireTowerAnimationController());
 
         return fireTower;
     }

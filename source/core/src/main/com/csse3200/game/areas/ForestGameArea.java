@@ -68,6 +68,7 @@ public class ForestGameArea extends GameArea {
           "images/towers/turret.png",
           "images/towers/turret01.png",
           "images/towers/turret_deployed.png",
+          "images/towers/fire_tower_atlas.png",
           "images/background/building2.png",
           "images/mobs/robot.png",
           "images/mobs/Attack_1.png",
@@ -92,6 +93,7 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
+          "images/towers/fire_tower_atlas.atlas",
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
           "images/mobs/rangeBossRight.atlas"
@@ -393,7 +395,9 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createWeaponTower();
       Entity wallTower = TowerFactory.createWallTower();
+      Entity fireTower = TowerFactory.createFireTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
+      spawnEntityAt(fireTower, randomPos, true, true);
       spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
   }

@@ -1,0 +1,83 @@
+
+fire_tower_atlas.png
+size: 2048, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+attac_prep
+  rotate: false
+  xy: 2, 2
+  size: 159, 150
+  orig: 159, 150
+  offset: 0, 0
+  index: 2
+attack
+  rotate: false
+  xy: 467, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+attack
+  rotate: false
+  xy: 923, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+attack
+  rotate: false
+  xy: 1075, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
+attack
+  rotate: false
+  xy: 1379, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+attack_prep
+  rotate: false
+  xy: 315, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
+idle
+  rotate: false
+  xy: 163, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+attack_prep
+  rotate: false
+  xy: 163, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+idle
+  rotate: false
+  xy: 619, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+idle
+  rotate: false
+  xy: 771, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 0
+idle
+  rotate: false
+  xy: 1227, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
