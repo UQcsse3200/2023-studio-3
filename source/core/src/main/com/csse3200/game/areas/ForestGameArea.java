@@ -25,7 +25,6 @@ import java.util.TimerTask;
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import java.util.ArrayList;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -108,7 +107,9 @@ public class ForestGameArea extends GameArea {
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
           "images/mobs/rangeBossRight.atlas",
-          "images/towers/TNTTower.atlas"
+          "images/towers/TNTTower.atlas",
+          "images/projectiles/basic_projectile.atlas",
+          "images/projectiles/mobProjectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",

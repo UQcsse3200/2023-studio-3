@@ -32,6 +32,12 @@ public class RicochetComponent extends Component {
     hitBoxComponent = entity.getComponent(HitboxComponent.class);
   }
   
+  /**
+   * After collision ends, make another fireball that spawns just before the original one. This assumes
+   * that the original fireball is already deleted. Set TouchAttackComponent disposeOnHit to true.
+   * @param me
+   * @param other
+   */
   private void onCollisionEnd(Fixture me, Fixture other) {
     if(hitBoxComponent.getFixture() != me) return;
     
