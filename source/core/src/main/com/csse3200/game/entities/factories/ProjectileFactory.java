@@ -101,10 +101,10 @@ public class ProjectileFactory {
    * @param speed The speed of the projectile.
    * @return Returns a new fireball projectile entity.
    */
-  public static Entity createMobBall(Entity target, Vector2 destination, Vector2 speed) {
+  public static Entity createMobBall(short targetLayer, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.fireBall;
 
-    Entity projectile = createBaseProjectile(target, destination);
+    Entity projectile = createBaseProjectile(destination);
 
     AnimationRenderComponent animator = 
       new AnimationRenderComponent(
