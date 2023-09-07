@@ -2,23 +2,28 @@ package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.csse3200.game.components.AoeComponent;
+import com.csse3200.game.components.EffectsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 import com.csse3200.game.services.ServiceLocator;
@@ -38,17 +43,48 @@ public class ProjectileFactory {
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
 
   /**
+   * Creates a single-targeting projectile with specified effect
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @param effect Specified effect from the ProjectileEffects enums
+   * @return Returns a new single-target projectile entity
+   */
+  public static Entity createEffectProjectile(short targetLayer, Vector2 destination, Vector2 speed,
+                                              ProjectileEffects effect, boolean aoe) {
+    BaseEntityConfig config = configs.fireBall;
+    Entity projectile = createFireBall(targetLayer, destination, speed);
+
+    switch(effect) {
+      case FIREBALL -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));
+      }
+      case BURN -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
+      }
+      case SLOW -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
+      }
+      case STUN -> {
+        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
+      }
+    }
+      return projectile;
+  }
+
+  /**
    * Creates a fireball Entity.
    * 
-   * @param target The enemy entities that the projectile collides with.
+   * @param targetLayer The enemy layer that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
    * @return Returns a new fireball projectile entity.
    */
-  public static Entity createFireBall(Entity target, Vector2 destination, Vector2 speed) {
+  public static Entity createFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.fireBall;
 
-    Entity projectile = createBaseProjectile(target, destination);
+    Entity projectile = createBaseProjectile(destination);
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
@@ -63,7 +99,7 @@ public class ProjectileFactory {
             .addComponent(animator)
 
         // This is the component that allows the projectile to damage a specified target.
-        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
+        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
 //    projectile
@@ -75,22 +111,41 @@ public class ProjectileFactory {
 
     return projectile;
   }
-
+  
   /**
-   * Creates an AOE fireball Entity.
+   * Creates a projectile specifically for mobs to shoot
    * 
-   * @param target The enemy entities that the projectile collides with.
+   * @param targetLayer The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
-   * @param aoeSize The size of the AOE.
-   * @return Returns the new aoe projectile entity.
+   * @return Returns a new fireball projectile entity.
    */
-  public static Entity createAOEFireBall(Entity target, Vector2 destination, Vector2 speed, int aoeSize) {
+  public static Entity createMobBall(short targetLayer, Vector2 destination, Vector2 speed) {
     BaseEntityConfig config = configs.fireBall;
-    Entity projectile = createFireBall(target, destination, speed);
+
+    Entity projectile = createBaseProjectile(destination);
+
+    AnimationRenderComponent animator = 
+      new AnimationRenderComponent(
+        ServiceLocator.getResourceService()
+          .getAsset("images/projectiles/mobProjectile.atlas", TextureAtlas.class));
+
+      animator.addAnimation("rotate", 0.15f, Animation.PlayMode.LOOP);
+
     projectile
-            // This is the component that allows the projectile to damage a specified target.
-            .addComponent(new AoeComponent(aoeSize));
+        .addComponent(new ColliderComponent().setSensor(true))
+        
+        // This is the component that allows the projectile to damage a specified target.
+        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f, true))
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(animator)
+        .addComponent(new MobProjectileAnimationController());
+
+    projectile
+        .getComponent(AnimationRenderComponent.class).scaleEntity();
+    
+    projectile
+        .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
 
     return projectile;
   }
@@ -98,11 +153,10 @@ public class ProjectileFactory {
   /**
    * Creates a generic projectile entity that can be used for multiple types of * projectiles.
    * 
-   * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @return Returns a generic projectile entity.
    */
-  public static Entity createBaseProjectile(Entity target, Vector2 destination) {
+  public static Entity createBaseProjectile(Vector2 destination) {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new TrajectTask(destination));

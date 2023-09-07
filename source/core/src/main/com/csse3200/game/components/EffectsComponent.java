@@ -2,29 +2,36 @@ package com.csse3200.game.components;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 import com.badlogic.gdx.utils.Array;
 
-public class AoeComponent extends Component {
+public class EffectsComponent extends Component {
     private final float radius;
+    private final ProjectileEffects effect;
+    private final boolean aoe;
     private HitboxComponent hitboxComponent;
+    private final short targetLayer;
 
     /**
      * Constructor for the AoEComponent.
      *
      * @param radius The radius of the area-of-effect.
      */
-    public AoeComponent(float radius) {
+    public EffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
+        this.targetLayer = targetLayer;
         this.radius = radius;
+        this.effect = effect;
+        this.aoe = aoe;
     }
 
     @Override
     public void create() {
-        entity.getEvents().addListener("collisionStart", this::onCollisionStart);
-        entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
+        entity.getEvents().addListener("projectileCollisionStart", this::onCollisionStart);
+        entity.getEvents().addListener("projectileCollisionEnd", this::onCollisionEnd);
         hitboxComponent = entity.getComponent(HitboxComponent.class);
     }
 
@@ -37,12 +44,27 @@ public class AoeComponent extends Component {
             // Not triggered by hitbox, ignore
             return;
         }
-        applyAoeDamage();
+
+        if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+            // Doesn't match our target layer, ignore
+            return;
+        }
+
+        switch (effect) {
+            case FIREBALL -> {
+                if (aoe) {
+                    applyAoeEffect(ProjectileEffects.FIREBALL);
+                }
+            }
+            case BURN -> {}
+            case SLOW -> {}
+            case STUN -> {}
+        }
     }
     /**
-     * Apply damage to all entities within the area of effect (radius).
+     * Used for aoe fireball projectile to apply damage to all entities within the area of effect (radius).
      */
-    public void applyAoeDamage() {
+    public void applyAoeEffect(ProjectileEffects effect) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
