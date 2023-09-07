@@ -4,6 +4,7 @@ import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.Weapon;
 
 import java.util.ArrayList;
+import java.util.Currency;
 
 /**
  * Defines all NPC configs to be loaded by the NPC Factory.
@@ -15,7 +16,7 @@ public class NPCConfigs {
   public BaseEntityConfig projectile = new ProjectileConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
   public BaseEnemyConfig xenoGrunt = new BaseEnemyConfig(
-          new ArrayList<Integer>(),
+          new ArrayList<Currency>(),
           new ArrayList<Melee>(),
           new ArrayList<Weapon>());
 

@@ -92,7 +92,7 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
-          "images/mobs/xenoGruntRunning.atlas",
+          "images/xenoGrunt.atlas",
           "images/mobs/robot.atlas",
           "images/mobs/rangeBossRight.atlas"
   };
@@ -138,6 +138,7 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     spawnMountains();
     player = spawnPlayer();
+    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
     playMusic();
 
@@ -311,6 +312,7 @@ public class ForestGameArea extends GameArea {
 
   // }
 
+
   private void spawnXenoGrunts() {
     GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
@@ -318,6 +320,7 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, true);
     }
   }
