@@ -38,7 +38,7 @@ public class TowerFactory {
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
-    private static final int TNT_TOWER_RANGE = 5;
+    private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
@@ -131,6 +131,27 @@ public class TowerFactory {
         TNTTower.getComponent(AnimationRenderComponent.class).scaleEntity();
 
         return TNTTower;
+    }
+
+    /**
+     * This robotic unit is programmed to detect mobs within its vicinity and fire projectiles at them.
+     * The droid has the capability to switch its aim from high to low positions, thereby providing a versatile attack strategy.
+     * When it detects a mob, the droid releases a projectile that inflicts both physical damage and a slow-down effect on the target.
+     * @return entity
+     */
+    public static Entity createDroidTower() {
+        Entity DroidTower = createBaseTower();
+        DroidTowerConfig config = configs.DroidTower;
+
+
+        DroidTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new TNTAnimationController());
+
+        DroidTower.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+        return DroidTower;
     }
 
 
