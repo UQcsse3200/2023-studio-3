@@ -62,7 +62,7 @@ public class ProjectileFactory {
   }
   
   /**
-   * Creates a fireball Entity.
+   * Creates a projectile specifically for mobs to shoot
    * 
    * @param target The enemy entities that the projectile collides with.
    * @param destination The destination the projectile heads towards.
