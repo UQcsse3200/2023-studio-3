@@ -141,7 +141,7 @@ public class ForestGameArea extends GameArea {
     // Spawn Entities
     player = spawnPlayer();
     spawnWeaponTower();
-    spawnEngineer();
+    spawnEngineer(player);
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
   }
@@ -446,12 +446,12 @@ public class ForestGameArea extends GameArea {
     }
   }
   
-  private void spawnEngineer() {
+  private void spawnEngineer(Entity target) {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
     
-    Entity engineer = EngineerFactory.createEngineer();
+    Entity engineer = EngineerFactory.createEngineer(target);
     spawnEntityAt(engineer, randomPos, true, true);
   }
 
