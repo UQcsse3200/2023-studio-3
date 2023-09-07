@@ -30,7 +30,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(GameExtension.class)
 class ProjectileFactoryTest {
-    private String[] texture = {"images/projectile.png"};
+    private String[] texture = {"images/projectiles/projectile.png"};
     private Entity projectile;
 
     @BeforeEach
@@ -47,7 +47,7 @@ class ProjectileFactoryTest {
         resourceService.loadTextures(texture);
         resourceService.loadAll();
         ServiceLocator.getResourceService()
-                .getAsset("images/projectile.png", Texture.class);
+                .getAsset("images/projectiles/projectile.png", Texture.class);
         Vector2 destination = new Vector2(0.1f, 0.1f);
         Vector2 speed = new Vector2(0.2f, 0.2f);
 

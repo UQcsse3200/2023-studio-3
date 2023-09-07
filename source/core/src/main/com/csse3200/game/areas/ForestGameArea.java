@@ -48,14 +48,14 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
-          "images/projectile.png",
+          "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
-          "images/building1.png",
+          "images/background/building1.png",
           "images/ghost_1.png",
           "images/grass_2.png",
           "images/grass_3.png",
           "images/hex_grass_1.png",
-          "images/mountain.png",
+          "images/background/mountain.png",
           "images/ghost_king.png",
           "images/ghost_1.png",
           "images/terrain 2 normal.png",
@@ -65,45 +65,44 @@ public class ForestGameArea extends GameArea {
           "images/iso_grass_1.png",
           "images/iso_grass_2.png",
           "images/iso_grass_3.png",
-          "images/turret.png",
-          "images/turret01.png",
-          "images/turret_deployed.png",
-          "images/building2.png",
-          "images/wall.png",
-          "images/robot.png",
-          "images/Attack_1.png",
-          "images/Attack_2.png",
-          "images/Charge_1.png",
-          "images/Charge_2.png",
-          "images/Dead.png",
-          "images/Enabling-5.png",
-          "images/satyr.png",
-          "images/Hurt.png",
-          "images/Idle.png",
-          "images/rangeBossRight.png",
-          "images/wallTower.png",
-          "images/building2.png",
+          "images/towers/turret.png",
+          "images/towers/turret01.png",
+          "images/towers/turret_deployed.png",
+          "images/background/building2.png",
+          "images/mobs/robot.png",
+          "images/mobs/Attack_1.png",
+          "images/mobs/Attack_2.png",
+          "images/mobs/Charge_1.png",
+          "images/mobs/Charge_2.png",
+          "images/mobs/Dead.png",
+          "images/mobs/Enabling-5.png",
+          "images/mobs/satyr.png",
+          "images/mobs/Hurt.png",
+          "images/mobs/Idle.png",
+          "images/mobs/rangeBossRight.png",
+          "images/towers/wallTower.png",
+          "images/background/building2.png",
           "images/iso_grass_3.png",
-          "images/scrap.png",
-          "images/mine_tower.png",
-
+          "images/economy/scrap.png",
+          "images/towers/mine_tower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
           "images/ghostKing.atlas",
-          "images/turret.atlas",
-          "images/turret01.atlas",
+          "images/towers/turret.atlas",
+          "images/towers/turret01.atlas",
           "images/xenoGrunt.atlas",
-          "images/robot.atlas"
+          "images/mobs/robot.atlas",
+          "images/mobs/rangeBossRight.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
-          "sounds/gun_shot_trimmed.mp3",
-          "sounds/deploy.mp3",
-          "sounds/stow.mp3"
+          "sounds/towers/gun_shot_trimmed.mp3",
+          "sounds/towers/deploy.mp3",
+          "sounds/towers/stow.mp3"
   };
-  private static final String backgroundMusic = "sounds/Sci-Fi1.ogg";
+  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
 
   private final TerrainFactory terrainFactory;
@@ -139,6 +138,7 @@ public class ForestGameArea extends GameArea {
     spawnBuilding2();
     spawnMountains();
     player = spawnPlayer();
+    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
     playMusic();
 
@@ -312,6 +312,7 @@ public class ForestGameArea extends GameArea {
 
   // }
 
+
   private void spawnXenoGrunts() {
     GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
@@ -319,6 +320,7 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, true);
     }
   }

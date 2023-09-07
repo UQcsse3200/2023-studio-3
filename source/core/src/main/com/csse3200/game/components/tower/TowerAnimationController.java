@@ -21,9 +21,9 @@ public class TowerAnimationController extends Component {
     private static final String FIRE_ANIM = "firing";
     private static final String STOW_ANIM = "stow";
     // Sound effects constants
-    private static final String DEPLOY_SFX = "sounds/deploy.mp3";
-    private static final String FIRE_SFX = "sounds/gun_shot_trimmed.mp3";
-    private static final String STOW_SFX = "sounds/stow.mp3";
+    private static final String DEPLOY_SFX = "sounds/towers/deploy.mp3";
+    private static final String FIRE_SFX = "sounds/towers/gun_shot_trimmed.mp3";
+    private static final String STOW_SFX = "sounds/towers/stow.mp3";
 
     AnimationRenderComponent animator;
     Sound deploySound = ServiceLocator.getResourceService().getAsset(
@@ -33,6 +33,10 @@ public class TowerAnimationController extends Component {
     Sound stowSound = ServiceLocator.getResourceService().getAsset(
             STOW_SFX, Sound.class);
 
+    /**
+     * Creation call for a TowerAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations and sounds.
+     */
     @Override
     public void create() {
         super.create();
@@ -43,6 +47,9 @@ public class TowerAnimationController extends Component {
         entity.getEvents().addListener(FIRING, this::animateFiring);
     }
 
+    /**
+     * Starts the
+     */
     void animateIdle() {
         animator.startAnimation(IDLE_ANIM);
     }

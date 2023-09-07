@@ -9,6 +9,7 @@ import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.SpawnWaveTask;
 import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
@@ -29,6 +30,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 /**
  * Factory to create non-playable character (NPC) entities with predefined components.
@@ -63,7 +65,7 @@ public class NPCFactory {
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
      //   .addComponent(animator)
-             .addComponent(new TextureRenderComponent("images/satyr.png"));
+             .addComponent(new TextureRenderComponent("images/mobs/satyr.png"));
      //   .addComponent(new GhostAnimationController());
 
     ghost.getComponent(TextureRenderComponent.class).scaleEntity();
@@ -107,8 +109,10 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<Weapon> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
+//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
+//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
