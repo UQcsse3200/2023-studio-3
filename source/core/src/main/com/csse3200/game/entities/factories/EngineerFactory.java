@@ -82,7 +82,7 @@ public class EngineerFactory {
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PLAYER))
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.ENGINEER))
             .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f))
             .addComponent(aiComponent);
 
