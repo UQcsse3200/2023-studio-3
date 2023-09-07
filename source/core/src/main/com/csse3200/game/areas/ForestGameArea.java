@@ -149,18 +149,17 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
 
-    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.FIREBALL, true);
+    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, false);
 //    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-//
     spawnMobBall(new Vector2(15, 10), PhysicsLayer.PLAYER, towardsTowers, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, 20,  new Vector2(2f, 2f), 7);
+    //spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, 20,  new Vector2(2f, 2f), 7);
     
-    spawnXenoGrunts();
-
-    spawnGhosts();
-    spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
+//    spawnXenoGrunts();
+//
+//    spawnGhosts();
+//    spawnWeaponTower();
+//    spawnIncome();
+//    spawnScrap();
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
