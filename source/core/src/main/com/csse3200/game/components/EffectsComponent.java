@@ -3,6 +3,7 @@ package com.csse3200.game.components;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -13,13 +14,15 @@ public class EffectsComponent extends Component {
     private final ProjectileFactory.ProjectileEffects effect;
     private final boolean aoe;
     private HitboxComponent hitboxComponent;
+    private final short targetLayer;
 
     /**
      * Constructor for the AoEComponent.
      *
      * @param radius The radius of the area-of-effect.
      */
-    public EffectsComponent(float radius, ProjectileFactory.ProjectileEffects effect, boolean aoe) {
+    public EffectsComponent(short targetLayer, float radius, ProjectileFactory.ProjectileEffects effect, boolean aoe) {
+        this.targetLayer = targetLayer;
         this.radius = radius;
         this.effect = effect;
         this.aoe = aoe;
@@ -27,8 +30,8 @@ public class EffectsComponent extends Component {
 
     @Override
     public void create() {
-        entity.getEvents().addListener("collisionStart", this::onCollisionStart);
-        entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
+        entity.getEvents().addListener("projectileCollisionStart", this::onCollisionStart);
+        entity.getEvents().addListener("projectileCollisionEnd", this::onCollisionEnd);
         hitboxComponent = entity.getComponent(HitboxComponent.class);
     }
 
@@ -41,6 +44,12 @@ public class EffectsComponent extends Component {
             // Not triggered by hitbox, ignore
             return;
         }
+
+        if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+            // Doesn't match our target layer, ignore
+            return;
+        }
+
         switch (effect) {
             case FIREBALL -> {
                 if (aoe) {

@@ -11,6 +11,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -51,7 +52,7 @@ class ProjectileFactoryTest {
         Vector2 destination = new Vector2(0.1f, 0.1f);
         Vector2 speed = new Vector2(0.2f, 0.2f);
 
-        projectile = ProjectileFactory.createBaseProjectile(new Entity(), destination);
+        projectile = ProjectileFactory.createBaseProjectile(destination);
     }
 
     @Test
