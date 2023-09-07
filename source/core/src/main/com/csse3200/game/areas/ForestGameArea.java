@@ -32,14 +32,19 @@ import java.util.ArrayList;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
 
+  private static final int NUM_BUILDINGS = 4;
+
+  private static final int NUM_WALLS = 7;
+
   private static final int NUM_TREES = 0;
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
-  private static final int NUM_BUILDINGS = 4;
+
   private static final int NUM_BOSS=4;
-  private static final int NUM_WALLS = 7;
+
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
+
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
@@ -50,6 +55,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
+          "images/ingamebg.png",
           "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
@@ -85,6 +91,10 @@ public class ForestGameArea extends GameArea {
           "images/towers/wallTower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
+
+          "images/terrain_use.png",
+          "images/Dusty_MoonBG.png",
+
           "images/economy/scrap.png",
           "images/towers/mine_tower.png",
           "images/towers/TNTTower.png"
@@ -224,10 +234,6 @@ public class ForestGameArea extends GameArea {
   private void spawnMountains() {
     ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
 
-    fixedPositions.add(new GridPoint2(5, 8));
-    fixedPositions.add(new GridPoint2(12, 4));
-    fixedPositions.add(new GridPoint2(20, 10));
-    fixedPositions.add(new GridPoint2(33, 17));
 
     for (GridPoint2 fixedPos : fixedPositions) {
       Entity tree = ObstacleFactory.createMountain();
