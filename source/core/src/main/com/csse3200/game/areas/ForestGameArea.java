@@ -136,9 +136,9 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-    spawnBuilding1();
-    spawnBuilding2();
-    spawnMountains();
+//    spawnBuilding1();
+//    spawnBuilding2();
+//    spawnMountains();
     player = spawnPlayer();
 
     playMusic();

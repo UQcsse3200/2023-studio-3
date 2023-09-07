@@ -8,7 +8,7 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
  * of the events is triggered.
  */
 public class TNTAnimationController extends Component {
-    AnimationRenderComponent animator;
+    private AnimationRenderComponent animator;
 
     /**
      * Creation call for a TNTAnimationController, fetches the animationRenderComponent that this controller will
