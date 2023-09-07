@@ -114,6 +114,7 @@ public class ForestGameArea extends GameArea {
   // Variables to be used with spawn projectile methods. This is the variable 
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
+  private static final int towardsTowers = 0;
   private Entity bossKing1;
   private Entity bossKing2;
 
@@ -145,7 +146,7 @@ public class ForestGameArea extends GameArea {
 
     // spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
     spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    spawnMultiProjectile(new Vector2(15, 10), player, towardsTowers, 20, new Vector2(2f, 2f), 7);
     
     spawnXenoGrunts();
 
