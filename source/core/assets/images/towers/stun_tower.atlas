@@ -1,0 +1,118 @@
+
+stun_tower.png
+size: 1024, 64
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+attack
+  rotate: false
+  xy: 2, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 4
+attack
+  rotate: false
+  xy: 136, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 9
+attack
+  rotate: false
+  xy: 203, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 1
+attack
+  rotate: false
+  xy: 270, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 6
+attack
+  rotate: false
+  xy: 404, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 3
+attack
+  rotate: false
+  xy: 538, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 8
+attack
+  rotate: false
+  xy: 672, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 0
+attack
+  rotate: false
+  xy: 739, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 5
+attack
+  rotate: false
+  xy: 873, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 2
+attack
+  rotate: false
+  xy: 940, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 7
+idle
+  rotate: false
+  xy: 69, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 1
+idle
+  rotate: false
+  xy: 337, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 3
+idle
+  rotate: false
+  xy: 471, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 0
+idle
+  rotate: false
+  xy: 605, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 5
+idle
+  rotate: false
+  xy: 605, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 4
+idle
+  rotate: false
+  xy: 806, 2
+  size: 65, 45
+  orig: 65, 45
+  offset: 0, 0
+  index: 2
