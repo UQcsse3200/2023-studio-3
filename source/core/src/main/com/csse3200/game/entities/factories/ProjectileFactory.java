@@ -3,6 +3,7 @@ package com.csse3200.game.entities.factories;
 import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.RicochetComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -69,6 +70,18 @@ public class ProjectileFactory {
 
     return fireBall;
   }
+
+  /**
+   * Create a ricochet fireball.
+   * Ricochet fireball bounces off specified targets while applying intended effects i.e. damage
+   */
+  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall.addComponent(new RicochetComponent(targetLayer));
+
+    return fireBall;
+  }
+
   /**
    * Creates a fireball Entity.
    * 
