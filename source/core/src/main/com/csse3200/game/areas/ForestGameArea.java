@@ -127,6 +127,7 @@ public class ForestGameArea extends GameArea {
   // Variables to be used with spawn projectile methods. This is the variable 
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
+  private static final int towardsTowers = 0;
   private Entity bossKing1;
   private Entity bossKing2;
 
@@ -158,6 +159,7 @@ public class ForestGameArea extends GameArea {
 
     // Types of projectile
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.FIREBALL, true);
+    spawnMobBall(new Vector2(15, 10), PhysicsLayer.PLAYER, towardsTowers, new Vector2(2f, 2f));
 //    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
 //    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
@@ -289,6 +291,20 @@ public class ForestGameArea extends GameArea {
    */
   private void spawnProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed) {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y), speed);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+ /**
+   * Spawns a projectile specifically for general mobs/xenohunters
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   * 
+   */
+  private void spawnMobBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createMobBall(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
