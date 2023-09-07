@@ -17,6 +17,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.components.SelfDestructOnHitComponent;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -77,7 +78,8 @@ public class ProjectileFactory {
 
         // This is the component that allows the projectile to damage a specified target.
         .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f, true))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     projectile
         .getComponent(TextureRenderComponent.class).scaleEntity();
