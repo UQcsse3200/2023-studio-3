@@ -76,7 +76,7 @@ public class ProjectileFactory {
         .addComponent(new ColliderComponent().setSensor(true))
 
         // This is the component that allows the projectile to damage a specified target.
-        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
+        .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
 
     projectile
