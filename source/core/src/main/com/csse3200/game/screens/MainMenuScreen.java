@@ -31,7 +31,7 @@ public class MainMenuScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
-  private static final String[] mainMenuTextures = {"images/Logo2.png"};
+  private static final String[] mainMenuTextures = {"images/background1.png"};
 
   public MainMenuScreen(GdxGame game) {
     this.game = game;
