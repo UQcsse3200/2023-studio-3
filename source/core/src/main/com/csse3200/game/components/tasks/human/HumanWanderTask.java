@@ -4,8 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
-import com.csse3200.game.components.tasks.MovementTask;
-import com.csse3200.game.components.tasks.WaitTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,20 +21,23 @@ import org.slf4j.LoggerFactory;
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
 
-  private final Vector2 wanderRange;
+  private final Entity wanderRange;
   private final float waitTime;
   private Vector2 startPos;
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
   private Task currentTask;
+  private GameTime endTime;
+
+  private boolean isDead = false;
 
   /**
-   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
+   * @param target Distance in X and Y the entity can move from its position when start() is
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public HumanWanderTask(Vector2 wanderRange, float waitTime) {
-    this.wanderRange = wanderRange;
+  public HumanWanderTask(Entity target, float waitTime) {
+    this.wanderRange = target;
     this.waitTime = waitTime;
   }
 
@@ -46,28 +54,40 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(getDirection());
+    movementTask = new HumanMovementTask(this.wanderRange, 1f);
     movementTask.create(owner);
 
     movementTask.start();
 
     currentTask = movementTask;
-
-
-    owner.getEntity().getEvents().trigger("idleRight");
   }
 
   @Override
   public void update() {
-    if (currentTask.getStatus() != Status.ACTIVE) {
-      if (currentTask == movementTask) {
-        startWaiting();
-        owner.getEntity().getEvents().trigger("idleRight");
-      } else {
-        startMoving();
-      }
+    if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
+      owner.getEntity().getEvents().trigger("deathStart");
+      owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
+      owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
+      currentTask.stop();
+      // Add a time delay here to allow animation to play?
+      isDead = true;
     }
-    currentTask.update();
+    else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+      owner.getEntity().setFlagForDelete(true);
+      // make the appropriate calls to decrement the human count.
+    }
+    else if (!isDead) {
+      if (currentTask.getStatus() != Status.ACTIVE) {
+
+        if (currentTask == movementTask) {
+          startWaiting();
+          owner.getEntity().getEvents().trigger("idleRight");
+        } else {
+          startMoving();
+        }
+      }
+      currentTask.update();
+    }
   }
 
   private void startWaiting() {
@@ -77,7 +97,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
 
   private void startMoving() {
     logger.debug("Starting moving");
-    movementTask.setTarget(getDirection());
+    movementTask.setTarget(this.wanderRange);
     swapTask(movementTask);
   }
 
@@ -90,7 +110,8 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   }
 
   private Vector2 getDirection() {
-    float y = startPos.y;
-    return new Vector2(0, y);
+//    float y = startPos.y;
+//    return new Vector2(0, y);
+    return this.wanderRange.getPosition();
   }
 }
