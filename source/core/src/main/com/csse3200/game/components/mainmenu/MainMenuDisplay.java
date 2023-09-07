@@ -1,5 +1,6 @@
 package com.csse3200.game.components.mainmenu;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
@@ -19,6 +21,7 @@ public class MainMenuDisplay extends UIComponent {
   private static final Logger logger = LoggerFactory.getLogger(MainMenuDisplay.class);
   private static final float Z_INDEX = 2f;
   private Table table;
+  private Table table1;
 
   @Override
   public void create() {
@@ -28,11 +31,16 @@ public class MainMenuDisplay extends UIComponent {
 
   private void addActors() {
     table = new Table();
+    table1=new Table();
     table.setFillParent(true);
+    table1.setFillParent(true);
     Image title =
         new Image(
             ServiceLocator.getResourceService()
-                .getAsset("images/ui/Logo2.png", Texture.class));
+                .getAsset("images/background1.png", Texture.class));
+    title.setWidth(Gdx.graphics.getWidth());
+    title.setHeight(Gdx.graphics.getHeight());
+    title.setPosition(0,0);
 
     TextButton startBtn = new TextButton("Start", skin);
     TextButton loadBtn = new TextButton("Help", skin);
@@ -78,16 +86,17 @@ public class MainMenuDisplay extends UIComponent {
         });
 
     table.add(title);
-    table.row();
-    table.add(startBtn).padTop(30f);
-    table.row();
-    table.add(loadBtn).padTop(15f);
-    table.row();
-    table.add(settingsBtn).padTop(15f);
-    table.row();
-    table.add(exitBtn).padTop(15f);
+    table1.row();
+    table1.add(startBtn).padTop(30f);
+    table1.row();
+    table1.add(loadBtn).padTop(15f);
+    table1.row();
+    table1.add(settingsBtn).padTop(15f);
+    table1.row();
+    table1.add(exitBtn).padTop(15f);
 
     stage.addActor(table);
+      stage.addActor(table1);
   }
 
   @Override
