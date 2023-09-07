@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.RicochetComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -22,8 +23,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.csse3200.game.components.SelfDestructOnHitComponent;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 import com.csse3200.game.services.ServiceLocator;
@@ -74,6 +74,28 @@ public class ProjectileFactory {
   }
 
   /**
+   * Create a pierce fireball.
+   * Pierce fireball is basically a fireball that does damage but won't self destruct on hit.
+   */
+  public static Entity createPierceFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+
+    return fireBall;
+  }
+
+  /**
+   * Create a ricochet fireball.
+   * Ricochet fireball bounces off specified targets while applying intended effects i.e. damage
+   */
+  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall.addComponent(new RicochetComponent(targetLayer));
+
+    return fireBall;
+  }
+
+  /**
    * Creates a fireball Entity.
    * 
    * @param targetLayer The enemy layer that the projectile collides with.
@@ -99,8 +121,9 @@ public class ProjectileFactory {
             .addComponent(animator)
 
         // This is the component that allows the projectile to damage a specified target.
-        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
+        .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
 //    projectile
 //        .getComponent(TextureRenderComponent.class).scaleEntity();
