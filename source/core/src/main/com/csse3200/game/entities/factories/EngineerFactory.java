@@ -34,7 +34,7 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 public class EngineerFactory {
   
   private static final int COMBAT_TASK_PRIORITY = 2;
-  private static final int ENGINEER_RANGE = 40;
+  private static final int ENGINEER_RANGE = 10;
   private static final EngineerConfigs configs =
       FileLoader.readClass(EngineerConfigs.class, "configs/Engineers.json");
 
@@ -56,20 +56,21 @@ public class EngineerFactory {
     animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("idle_right", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("firing", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("firing", 0.01f, Animation.PlayMode.NORMAL);
     animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
     animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
 
+    AITaskComponent aiComponent = new AITaskComponent();
 
     engineer
             .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
             .addComponent(animator)
-            .addComponent(new HumanAnimationController());
+            .addComponent(new HumanAnimationController())
+            .addComponent(aiComponent);
 
+    engineer.getComponent(AITaskComponent.class).addTask(new HumanWanderTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
     engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
-    engineer.getComponent(AITaskComponent.class)
-            .addTask(new EngineerCombatTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
     return engineer;
   }
 
@@ -79,9 +80,9 @@ public class EngineerFactory {
    * @return entity
    */
   public static Entity createBaseHumanNPC(Entity target) {
-    AITaskComponent aiComponent =
-        new AITaskComponent()
-            .addTask(new HumanWanderTask(target, 1f));
+//    AITaskComponent aiComponent =
+//        new AITaskComponent()
+//            .addTask(new HumanWanderTask(target, 1f));
 
     Entity human =
         new Entity()
@@ -89,8 +90,8 @@ public class EngineerFactory {
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.ENGINEER))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f))
-            .addComponent(aiComponent);
+            .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f));
+
 
     PhysicsUtils.setScaledCollider(human, 0.9f, 0.4f);
     return human;
