@@ -38,7 +38,6 @@ import java.util.Arrays;
 class ProjectileFactoryTest {
     private Entity projectile;
 
-    @Disabled
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
@@ -56,31 +55,27 @@ class ProjectileFactoryTest {
         // ServiceLocator.getResourceService()
         //         .getAsset("images/projectiles/basic_projectile.atlas", TextureAtlas.class);
         Vector2 destination = new Vector2(0.1f, 0.1f);
-        Vector2 speed = new Vector2(0.2f, 0.2f);
+        
         projectile = ProjectileFactory.createBaseProjectile(destination);
     }
 
-    @Disabled
     @Test
     public void testBaseProjectileNotNull() {
         assertNotNull(projectile, "Base projectile is null");
     }
 
-    @Disabled
     @Test
     public void testBaseProjectileHitbox() {
         assertNotNull(projectile.getComponent(HitboxComponent.class),
                 "Projectile does not contain Hotbox component");
     }
 
-    @Disabled
     @Test
     public void testBaseProjectilePhysics() {
         assertNotNull(projectile.getComponent(PhysicsComponent.class),
                 "Projectile does not have Physics component");
     }
 
-    @Disabled
     @Test
     public void testBaseProjectilePhysicsMovement() {
         assertNotNull(projectile.getComponent(PhysicsMovementComponent.class),
