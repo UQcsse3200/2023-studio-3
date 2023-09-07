@@ -93,31 +93,54 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createAOEFireBall(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createAOEFireBall</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createBaseProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createBaseProjectile</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed,
- int&nbsp;aoeSize)</code></div>
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates an AOE fireball Entity.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createBaseProjectile(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2)" class="member-name-link">createBaseProjectile</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
- com.badlogic.gdx.math.Vector2&nbsp;destination)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a generic projectile entity that can be used for multiple types of * projectiles.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEffectProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,com.csse3200.game.components.ProjectileEffects,boolean)" class="member-name-link">createEffectProjectile</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed,
+ <a href="../../components/ProjectileEffects.html" title="enum class in com.csse3200.game.components">ProjectileEffects</a>&nbsp;effect,
+ boolean&nbsp;aoe)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a single-targeting projectile with specified effect</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireBall(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireBall</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireBall</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a fireball Entity.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setColliderSize(com.csse3200.game.entities.Entity,float,float)" class="member-name-link">setColliderSize</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;projectile,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a projectile specifically for mobs to shoot</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceFireBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create a pierce fireball.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createRicochetFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createRicochetFireball</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create a ricochet fireball.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setColliderSize(com.csse3200.game.entities.Entity,float,float)" class="member-name-link">setColliderSize</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;projectile,
  float&nbsp;x,
  float&nbsp;y)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Sets the projectile collider so that the collider size can be altered for flexibility.</div>
 </div>
 </div>
@@ -138,15 +161,55 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="createFireBall(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<section class="detail" id="createEffectProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,com.csse3200.game.components.ProjectileEffects,boolean)">
+<h3>createEffectProjectile</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createEffectProjectile</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed,
+ <a href="../../components/ProjectileEffects.html" title="enum class in com.csse3200.game.components">ProjectileEffects</a>&nbsp;effect,
+ boolean&nbsp;aoe)</span></div>
+<div class="block">Creates a single-targeting projectile with specified effect</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>targetLayer</code> - The enemy layer that the projectile collides with.</dd>
+<dd><code>destination</code> - The destination the projectile heads towards.</dd>
+<dd><code>speed</code> - The speed of the projectile.</dd>
+<dd><code>effect</code> - Specified effect from the ProjectileEffects enums</dd>
+<dt>Returns:</dt>
+<dd>Returns a new single-target projectile entity</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createPierceFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createPierceFireBall</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createPierceFireBall</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
+<div class="block">Create a pierce fireball.
+ Pierce fireball is basically a fireball that does damage but won't self destruct on hit.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createRicochetFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createRicochetFireball</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createRicochetFireball</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
+<div class="block">Create a ricochet fireball.
+ Ricochet fireball bounces off specified targets while applying intended effects i.e. damage</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
 <h3>createFireBall</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createFireBall</span><wbr><span class="parameters">(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createFireBall</span><wbr><span class="parameters">(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
 <div class="block">Creates a fireball Entity.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>target</code> - The enemy entities that the projectile collides with.</dd>
+<dd><code>targetLayer</code> - The enemy layer that the projectile collides with.</dd>
 <dd><code>destination</code> - The destination the projectile heads towards.</dd>
 <dd><code>speed</code> - The speed of the projectile.</dd>
 <dt>Returns:</dt>
@@ -155,34 +218,34 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="createAOEFireBall(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)">
-<h3>createAOEFireBall</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createAOEFireBall</span><wbr><span class="parameters">(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
+<section class="detail" id="createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createMobBall</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createMobBall</span><wbr><span class="parameters">(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed,
- int&nbsp;aoeSize)</span></div>
-<div class="block">Creates an AOE fireball Entity.</div>
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
+<div class="block">Creates a projectile specifically for mobs to shoot</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>target</code> - The enemy entities that the projectile collides with.</dd>
+<dd><code>targetLayer</code> - The enemy layer that the projectile collides with.</dd>
 <dd><code>destination</code> - The destination the projectile heads towards.</dd>
 <dd><code>speed</code> - The speed of the projectile.</dd>
-<dd><code>aoeSize</code> - The size of the AOE.</dd>
 <dt>Returns:</dt>
-<dd>Returns the new aoe projectile entity.</dd>
+<dd>Returns a new fireball projectile entity.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="createBaseProjectile(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.Vector2)">
+<section class="detail" id="createBaseProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
 <h3>createBaseProjectile</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createBaseProjectile</span><wbr><span class="parameters">(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target,
- com.badlogic.gdx.math.Vector2&nbsp;destination)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createBaseProjectile</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
 <div class="block">Creates a generic projectile entity that can be used for multiple types of * projectiles.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>target</code> - The enemy entities that the projectile collides with.</dd>
+<dd><code>targetLayer</code> - The enemy layer that the projectile collides with.</dd>
 <dd><code>destination</code> - The destination the projectile heads towards.</dd>
+<dd><code>speed</code> - The speed of the projectile.</dd>
 <dt>Returns:</dt>
 <dd>Returns a generic projectile entity.</dd>
 </dl>
