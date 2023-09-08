@@ -8,7 +8,9 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.tasks.ShootTask;
+import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.SpawnWaveTask;
+import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
@@ -28,6 +30,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 /**
  * Factory to create non-playable character (NPC) entities with predefined components.
@@ -106,17 +109,19 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<Weapon> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
+//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
+//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGruntRunning.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
-
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
@@ -136,15 +141,15 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new ShootTask(target, 10, 3f, 4f));
-            //.addTask(new ChaseTask(target, 10, 3f, 4f));
+            .addTask(new MobAttackTask(2, 40))
+                .addTask(new MobDeathTask(2));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
             .addComponent(aiComponent);
 
     PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);
