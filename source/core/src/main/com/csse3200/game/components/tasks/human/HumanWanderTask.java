@@ -5,12 +5,12 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.EngineerCombatTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.GameTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,24 +21,24 @@ import org.slf4j.LoggerFactory;
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
 
-  private final Entity wanderRange;
+  private float maxRange;
+  private Vector2 wanderRange;
   private final float waitTime;
   private Vector2 startPos;
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
+
+  private EngineerCombatTask combatTask;
   private Task currentTask;
-  private GameTime endTime;
 
   private boolean isDead = false;
 
   /**
-   * @param target Distance in X and Y the entity can move from its position when start() is
-   *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public HumanWanderTask(Entity target, float waitTime) {
-    this.wanderRange = target;
+  public HumanWanderTask(float waitTime, float maxRange) {
     this.waitTime = waitTime;
+    this.maxRange = maxRange;
   }
 
   @Override
@@ -50,20 +50,24 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   public void start() {
     super.start();
     startPos = owner.getEntity().getPosition();
-
+    this.wanderRange = owner.getEntity().getCenterPosition();
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
     movementTask = new HumanMovementTask(this.wanderRange, 1f);
     movementTask.create(owner);
-
     movementTask.start();
+
+    combatTask = new EngineerCombatTask(maxRange);
+    combatTask.create(owner);
+    combatTask.start();
 
     currentTask = movementTask;
   }
 
   @Override
   public void update() {
+    // Check if engineer has died since last update
     if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
       owner.getEntity().getEvents().trigger("deathStart");
       owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
@@ -72,18 +76,25 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
       // Add a time delay here to allow animation to play?
       isDead = true;
     }
+    // Check if engineer has finished dying
     else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
       owner.getEntity().setFlagForDelete(true);
-      // make the appropriate calls to decrement the human count.
+      // TODO: make the appropriate calls to decrement the human count.
     }
+    // otherwise doing engineer things
     else if (!isDead) {
       if (currentTask.getStatus() != Status.ACTIVE) {
 
         if (currentTask == movementTask) {
           startWaiting();
           owner.getEntity().getEvents().trigger("idleRight");
-        } else {
-          startMoving();
+        } else if (combatTask.isTargetVisible()) {
+          if (combatTask.fetchTarget().y < owner.getEntity().getCenterPosition().y + 2 &&
+                  combatTask.fetchTarget().y > owner.getEntity().getCenterPosition().y - 2) {
+            startCombat();
+          } else {
+            startMoving(new Vector2(owner.getEntity().getCenterPosition().x, combatTask.fetchTarget().y));
+          }
         }
       }
       currentTask.update();
@@ -95,10 +106,15 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     swapTask(waitTask);
   }
 
-  private void startMoving() {
+  private void startMoving(Vector2 destination) {
     logger.debug("Starting moving");
-    movementTask.setTarget(this.wanderRange);
+    movementTask.setTarget(destination);
     swapTask(movementTask);
+  }
+
+  private void startCombat() {
+    logger.debug("Starting Combat");
+    swapTask(combatTask);
   }
 
   private void swapTask(Task newTask) {
@@ -112,6 +128,6 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private Vector2 getDirection() {
 //    float y = startPos.y;
 //    return new Vector2(0, y);
-    return this.wanderRange.getPosition();
+    return this.wanderRange;
   }
 }

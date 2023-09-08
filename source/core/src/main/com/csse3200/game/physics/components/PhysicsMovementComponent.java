@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class PhysicsMovementComponent extends Component implements MovementController {
   private static final Logger logger = LoggerFactory.getLogger(PhysicsMovementComponent.class);
   private Vector2 maxSpeed = Vector2Utils.ONE;
+  private float skipMovementTime = 0f;  // in seconds, for knockback
 
   private PhysicsComponent physicsComponent;
   private Vector2 targetPosition;
@@ -24,10 +25,22 @@ public class PhysicsMovementComponent extends Component implements MovementContr
 
   @Override
   public void update() {
+    if (skipMovementTime > 0) {
+      skipMovementTime -= 0.02f;
+      return;
+    }
     if (movementEnabled && targetPosition != null) {
       Body body = physicsComponent.getBody();
       updateDirection(body);
     }
+  }
+
+  /**
+   * Applies knock-back to the entity by disabling its movement for a specified duration.
+   * @param duration  The time (in seconds) for which the entity's movement will be disabled.
+   */
+  public void applyKnockback(float duration) {
+    this.skipMovementTime = duration;
   }
 
   /**
