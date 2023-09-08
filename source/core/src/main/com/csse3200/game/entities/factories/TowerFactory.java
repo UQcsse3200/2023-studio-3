@@ -41,6 +41,7 @@ public class TowerFactory {
     private static final int TNT_TOWER_RANGE = 5;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
     private static final String DEFAULT_ANIM = "default";
@@ -57,7 +58,7 @@ public class TowerFactory {
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
     private static final float FIRE_SPEED = 0.25f;
-    private static final int INCOME_INTERVAL = 300;
+    private static final int INCOME_INTERVAL = 3;
     private static final int INCOME_TASK_PRIORITY = 1;
 
     private static final baseTowerConfigs configs =
@@ -71,7 +72,7 @@ public class TowerFactory {
         IncomeTowerConfig config = configs.income;
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, 3);
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, INCOME_INTERVAL);
 
         int updatedInterval = 1;
         currencyTask.setInterval(updatedInterval);
@@ -80,7 +81,7 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/towers/mine_tower.png"))
+                .addComponent(new TextureRenderComponent(RESOURCE_TOWER))
                 .addComponent(aiTaskComponent);
 
 
@@ -175,7 +176,7 @@ public class TowerFactory {
         // we're going to add more components later on
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // TODO: we might have to change the names of the layers
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
 
         return tower;

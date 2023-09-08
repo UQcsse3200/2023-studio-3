@@ -122,7 +122,6 @@ public class NPCFactory {
     animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
-
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
@@ -144,14 +143,13 @@ public class NPCFactory {
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
             .addTask(new MobAttackTask(2, 40))
                 .addTask(new MobDeathTask(2));
-            //.addTask(new ChaseTask(target, 10, 3f, 4f));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
             .addComponent(aiComponent);
 
     PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);
