@@ -254,6 +254,10 @@ public class Entity {
     for (Component component : createdComponents) {
       component.triggerUpdate();
     }
+    if (isFlaggedForDelete) {
+      dispose();
+      return;
+    }
   }
 
   /**
@@ -283,7 +287,7 @@ public class Entity {
    * @param condition true to flag for deletion, false to unflag
    */
   public void setFlagForDelete(boolean condition) {
-    isFlaggedForDelete = condition;
+    this.isFlaggedForDelete = condition;
   }
 
   @Override

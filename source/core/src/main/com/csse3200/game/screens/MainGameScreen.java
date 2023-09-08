@@ -60,17 +60,17 @@ public class MainGameScreen extends ScreenAdapter {
   private final Stage stage;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
-  Viewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
 
 
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
-  public static final int NUM_LANES = 8;
-  public static final float LANE_HEIGHT = viewportHeight / NUM_LANES;
+
+
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
-  private Texture whiteTexture;
+
   private Texture backgroundTexture;
 
   public MainGameScreen(GdxGame game) {
@@ -80,12 +80,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
 
     batch = new SpriteBatch();
-
-    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-    pixmap.setColor(1, 1, 1, 1);
-    pixmap.fill();
-    whiteTexture = new Texture(pixmap);
-    pixmap.dispose();
 
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
@@ -133,14 +127,6 @@ public class MainGameScreen extends ScreenAdapter {
     batch.end();
 
 
-    batch.setProjectionMatrix(camera.combined);
-    batch.begin();
-    for (int i = 0; i < NUM_LANES; i++) {
-    float yPosition = i * LANE_HEIGHT;
-    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 5);
-  }
-    batch.end();
-
     renderer.render();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
     stage.draw();
@@ -175,7 +161,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getEntityService().dispose();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getResourceService().dispose();
-    whiteTexture.dispose();
+
     ServiceLocator.clear();
   }
 

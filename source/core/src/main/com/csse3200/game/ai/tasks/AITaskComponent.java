@@ -67,7 +67,7 @@ public class AITaskComponent extends Component implements TaskRunner {
     }
   }
 
-  private void changeTask(PriorityTask desiredTask) {
+  public void changeTask(PriorityTask desiredTask) {
     logger.debug("{} Changing to task {}", this, desiredTask);
     if (currentTask != null) {
       currentTask.stop();
