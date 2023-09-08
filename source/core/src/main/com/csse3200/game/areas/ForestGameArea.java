@@ -181,10 +181,11 @@ public class ForestGameArea extends GameArea {
 
     spawnDroidTower();
 
-    playMusic();
+
 
     spawnEngineer();
     bossKing1 = spawnBossKing1();
+    bossKing2 = spawnBossKing2();
 
     spawnTNTTower();
 
@@ -370,22 +371,22 @@ public class ForestGameArea extends GameArea {
 //
 //  }
 
-//  private Entity spawnBossKing2() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_BOSS; i++) {
-//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-//      int randomY = MathUtils.random(0, maxPos.y);
-//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-//      bossKing2 = BossKingFactory.createBossKing2(player);
-//      spawnEntityAt(bossKing2,
-//              randomPos,
-//              true,
-//              false);
-//    }
-//    return bossKing2;
-//  }
+  private Entity spawnBossKing2() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_BOSS; i++) {
+      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+      int randomY = MathUtils.random(0, maxPos.y);
+      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+      bossKing2 = BossKingFactory.createBossKing2(player);
+      spawnEntityAt(bossKing2,
+              randomPos,
+              true,
+              false);
+    }
+    return bossKing2;
+  }
 
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same 
