@@ -5,6 +5,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -67,12 +68,12 @@ public class EffectsComponent extends Component {
         switch (effect) {
             case FIREBALL -> {
                 if (aoe) {
-                    applyAoeEffect(ProjectileEffects.FIREBALL);
+                    applyAoeEffect(ProjectileEffects.FIREBALL, other);
                 }
             }
             case BURN -> {
                 if (aoe) {
-                    applyAoeEffect(ProjectileEffects.BURN);
+                    applyAoeEffect(ProjectileEffects.BURN, other);
                 } else {
                     applySingleEffect(ProjectileEffects.BURN, otherCombatStats);
                 }
@@ -108,7 +109,7 @@ public class EffectsComponent extends Component {
      * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
      * @param effect effect to be applied to entities within radius
      */
-    public void applyAoeEffect(ProjectileEffects effect) {
+    public void applyAoeEffect(ProjectileEffects effect, Fixture other) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
@@ -121,6 +122,12 @@ public class EffectsComponent extends Component {
 
         for (int i = 0; i < nearbyEntities.size; i++) {
             Entity targetEntity = nearbyEntities.get(i);
+
+            if (!PhysicsLayer.contains(targetLayer, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+                // Doesn't match our target layer, ignore
+                return;
+            }
+
             CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
             if (targetCombatStats != null) {
                 switch (effect) {

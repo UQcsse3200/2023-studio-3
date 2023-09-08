@@ -15,6 +15,7 @@ import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -55,8 +56,9 @@ class ProjectileFactoryTest {
         // ServiceLocator.getResourceService()
         //         .getAsset("images/projectiles/basic_projectile.atlas", TextureAtlas.class);
         Vector2 destination = new Vector2(0.1f, 0.1f);
-        
-        projectile = ProjectileFactory.createBaseProjectile(destination);
+        short targetLayer = PhysicsLayer.PLAYER;
+        Vector2 speed = new Vector2(2f, 2f);
+        projectile = ProjectileFactory.createBaseProjectile(targetLayer, destination, speed);
     }
 
     @Test
