@@ -40,7 +40,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        endTime = timeSource.getTime();
+        endTime = timeSource.getTime() + (30 * 1000);
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
