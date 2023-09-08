@@ -508,7 +508,7 @@ public class ForestGameArea extends GameArea {
 
     for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
       Entity engineer = EngineerFactory.createEngineer();
-      spawnEntityAt(engineer, new GridPoint2(2, i), true, true);
+      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
     }
 //    GridPoint2 minPos = new GridPoint2(0, 0);
 //    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
