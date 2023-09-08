@@ -203,7 +203,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private void changeFireRateInterval(int perMinute) {
         float oldFireSpeed = 1/fireRateInterval;
         float newFireSpeed = oldFireSpeed + perMinute/60f;
-        fireRateInterval = 1/newFireSpeed;
+        if (newFireSpeed == 0) {
+            fireRateInterval = 0;
+        } else {
+            fireRateInterval = 1 / newFireSpeed;
+        }
     }
 
     /**
