@@ -50,6 +50,9 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         timeSource = ServiceLocator.getTimeSource();
     }
 
+    /**
+     * starts this task and triggers the IDLE animation
+     */
     @Override
     public void start()  {
         super.start();
@@ -62,6 +65,9 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         endTime = timeSource.getTime() + (INTERVAL *  500);
     }
 
+    /**
+     * this method is called everytime state of the tower needs to be changed.
+     */
     @Override
     public void update()  {
         if  (timeSource.getTime() >= endTime) {
@@ -70,6 +76,9 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         }
     }
 
+    /**
+     * finite state machine for the FireTower. Detects mobs in a straight line and changes the state of the tower.
+     */
     public void updateTowerState()  {
         switch (towerState) {
             case IDLE -> {
@@ -103,23 +112,42 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         }
     }
 
+    /**
+     * stops the current animation.
+     */
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
+    /**
+     * gets the priority for the current task.
+     * @return (int) active priority if target is visible and inactive priority otherwise
+     */
     public int getPriority() {
         return !isTargetVisible() ? 0 : priority;
     }
 
+    /**
+     * not currently used.
+     * @return the priority for this task
+     */
     private int getActivePriority() {
         return !isTargetVisible() ? 0 : priority;
     }
 
+    /**
+     * not currently used.
+     * @return
+     */
     private int getInactivePriority() {
         return isTargetVisible() ? priority : 0;
     }
 
+    /**
+     * detects targets from the centre of the tower to maxRange in a straight line.
+     * @return true if mobs are present and false otherwise.
+     */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }

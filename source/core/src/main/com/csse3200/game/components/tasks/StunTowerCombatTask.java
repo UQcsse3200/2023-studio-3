@@ -12,6 +12,10 @@ import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
 
+/**
+ * The StunTowerCombatTask runs the AI for the StunTower class. The tower scans for mobs and targets in a straight line
+ * from its centre coordinate and executes the trigger phrases for animations depending on the current state of tower.
+ */
 public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     //constants
     private static final int INTERVAL = 1;
@@ -36,6 +40,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     }
     private STATE towerState = STATE.IDLE;
 
+    /**
+     * @param priority Task priority when targets are detected (0 when nothing is present)
+     * @param maxRange Maximum effective range of the StunTower.
+     */
     public StunTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
@@ -43,6 +51,9 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         timeSource = ServiceLocator.getTimeSource();
     }
 
+    /**
+     * Starts the task running and starts the Idle animation
+     */
     @Override
     public void start() {
         super.start();
@@ -55,6 +66,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         endTime = timeSource.getTime() + (INTERVAL * 5000);
     }
 
+    /**
+     * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
+     * state is activated and otherwise idle state remains.
+     */
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -62,6 +77,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * This method acts is the state machine for StunTower. Relevant animations are triggered based on relevant state
+     * of the game. If enemies are detected, state of the tower is changed to attack state.
+     */
     public void updateTowerState() {
         switch (towerState) {
             case IDLE -> {
@@ -86,11 +105,18 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * stops the current animation and switches back the state of the tower to IDLE.
+     */
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
+    /**
+     * returns the current priority of the task
+     * @return (int) active priority if target is visible and inactive priority otherwise
+     */
     public int getPriority() {
         return !isTargetVisible() ? 0 : priority;
     }
@@ -103,6 +129,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         return isTargetVisible() ? priority : 0;
     }
 
+    /**
+     * Searches for enemies/mobs in a straight line from the centre of the tower to maxRange in a straight line.
+     * @return true if targets are detected, false otherwise
+     */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }

@@ -5,6 +5,10 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
+/**
+ * Listens for events relevant to a weapon tower state.
+ * Each event will have a trigger phrase and have a certain animation attached.
+ */
 public class FireTowerAnimationController extends Component{
     //Event name constants
     private static final String IDLE = "startIdle";
@@ -19,6 +23,9 @@ public class FireTowerAnimationController extends Component{
 
     AnimationRenderComponent animator;
 
+    /**
+     * Create method for FireTowerAnimationController.
+     */
     @Override
     public void create() {
         super.create();
@@ -28,14 +35,23 @@ public class FireTowerAnimationController extends Component{
         entity.getEvents().addListener(ATTACK, this::animateAttack);
     }
 
+    /**
+     * Starts the idle animation
+     */
     void animateIdle() {
         animator.startAnimation(IDLE_ANIM);
     }
 
+    /**
+     * starts the prep_attack animation
+     */
     void animatePrepAttack() {
         animator.startAnimation(PREP_ATTACK_ANIM);
     }
 
+    /**
+     * starts the attack animation
+     */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);
     }

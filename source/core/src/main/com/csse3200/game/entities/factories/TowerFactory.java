@@ -136,10 +136,15 @@ public class TowerFactory {
 
     }
 
+    /**
+     * Creates the FireTower entity which shoots at mobs traversing in a straight line.
+     * @return FireTower entity with relevant components.
+     */
     public static Entity createFireTower() {
         Entity fireTower = createBaseTower();
         FireTowerConfig config = configs.fireTower;
 
+        //Component that handles triggering events and animations
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new FireTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
@@ -161,6 +166,10 @@ public class TowerFactory {
         return fireTower;
     }
 
+    /**
+     * Creates the StunTower entity which shoots at mobs traversing in a straight line.
+     * @return StunTower entity with relevant components.
+     */
     public static Entity createStunTower() {
         Entity stunTower = createBaseTower();
         StunTowerConfig config = configs.stunTower;

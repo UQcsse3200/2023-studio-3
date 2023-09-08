@@ -5,6 +5,9 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
+/**
+ * Listens to triggers phrases and executes the required animations.
+ */
 public class StunTowerAnimationController extends Component {
     //Event name constants
     private static final String IDLE = "startIdle";
@@ -17,6 +20,10 @@ public class StunTowerAnimationController extends Component {
 
     AnimationRenderComponent animator;
 
+    /**
+     * Creation method for StunTowerAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations.
+     */
     @Override
     public void create() {
         super.create();
@@ -25,10 +32,16 @@ public class StunTowerAnimationController extends Component {
         entity.getEvents().addListener(ATTACK, this::animateAttack);
     }
 
+    /**
+     * Starts the idle animation
+     */
     void animateIdle() {
         animator.startAnimation(IDLE_ANIM);
     }
 
+    /**
+     * starts the attack animation
+     */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);
     }
