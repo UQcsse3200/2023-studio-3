@@ -88,7 +88,9 @@ public class ForestGameArea extends GameArea {
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/economy/scrap.png",
-          "images/towers/mine_tower.png"
+          "images/towers/mine_tower.png",
+          "images/towers/TNTTower.png",
+          "images/towers/DroidTower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/terrain_iso_grass.atlas",
@@ -100,7 +102,9 @@ public class ForestGameArea extends GameArea {
           "images/towers/stun_tower.atlas",
           "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas"
+          "images/mobs/rangeBossRight.atlas",
+          "images/towers/TNTTower.atlas",
+          "images/towers/DroidTower.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -148,18 +152,26 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     // Types of projectile
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+
+//    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
+//    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
+
 //    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
 
     spawnGhosts();
     spawnWeaponTower();
+
+
     spawnIncome();
+
 //    spawnScrap();
 
     bossKing1 = spawnBossKing1();
 //    bossKing2 = spawnBossKing2();
+
+    spawnTNTTower();
+    spawnDroidTower();
 
     playMusic();
   }
@@ -407,6 +419,30 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(stunTower, randomPos2, true, true);
       //spawnEntityAt(wallTower, new GridPoint2(randomPos1.x + 3, randomPos1.y), true, true);
     }
+  }
+
+  private void spawnTNTTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createTNTTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
+
+  }
+
+  private void spawnDroidTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createDroidTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
+
   }
 
 
