@@ -117,8 +117,7 @@ public class TowerFactory {
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
-                .addComponent(new TowerAnimationController())
-                .addComponent(new TowerUpgraderComponent());
+                .addComponent(new TowerAnimationController());
 
         return weapon;
 
@@ -132,7 +131,8 @@ public class TowerFactory {
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // TODO: we might have to change the names of the layers
-                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
+                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
+                .addComponent(new TowerUpgraderComponent());
 
         return tower;
     }
