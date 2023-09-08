@@ -78,7 +78,7 @@ public class TNTDamageComponent extends Component {
             Vector2 positionSource = entity.getPosition();
             Vector2 positionOther = otherEntity.getPosition();
 
-            if (positionSource.dst(positionOther) <= radius && positionSource.y -3 <= positionOther.y && positionSource.y +3 >= positionOther.y) {
+            if (positionSource.dst(positionOther) <= radius && positionSource.y -1 <= positionOther.y && positionSource.y +1 >= positionOther.y) {
                 HitboxComponent sourceHitbox = entity.getComponent(HitboxComponent.class);
                 HitboxComponent otherHitbox = otherEntity.getComponent(HitboxComponent.class);
 
