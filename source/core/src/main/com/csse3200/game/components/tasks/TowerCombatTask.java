@@ -117,7 +117,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                     // * TEMPORARYYYYYYY
                     // Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
 
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
+                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
