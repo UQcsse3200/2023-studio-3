@@ -32,7 +32,7 @@ public class MainMenuDisplay extends UIComponent {
     Image title =
         new Image(
             ServiceLocator.getResourceService()
-                .getAsset("images/Logo2.png", Texture.class));
+                .getAsset("images/ui/Logo2.png", Texture.class));
 
     TextButton startBtn = new TextButton("Start", skin);
     TextButton loadBtn = new TextButton("Help", skin);

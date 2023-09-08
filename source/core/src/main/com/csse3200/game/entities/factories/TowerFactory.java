@@ -1,9 +1,11 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.tasks.FireTowerCombatTask;
+import com.csse3200.game.components.tasks.StunTowerCombatTask;
+import com.csse3200.game.components.tower.FireTowerAnimationController;
+import com.csse3200.game.components.tower.StunTowerAnimationController;
+import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -14,18 +16,17 @@ import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.WallTowerConfig;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
-import com.csse3200.game.entities.configs.WeaponTowerConfig;
-import com.csse3200.game.entities.configs.IncomeTowerConfig;
-import com.csse3200.game.entities.configs.baseTowerConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ServiceConfigurationError;
 
 /**
  * Factory to create a tower entity.
@@ -37,8 +38,10 @@ public class TowerFactory {
 
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
-    private static final String WALL_IMAGE = "images/wallTower.png";
-    private static final String TURRET_ATLAS = "images/turret01.atlas";
+    private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
+    private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
+    private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
     private static final String IDLE_ANIM = "idle";
     private static final float IDLE_SPEED = 0.3f;
     private static final String DEPLOY_ANIM = "deploy";
@@ -47,6 +50,16 @@ public class TowerFactory {
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
     private static final float FIRE_SPEED = 0.25f;
+    private static final String FIRE_TOWER_IDLE_ANIM = "idle";
+    private static final float FIRE_TOWER_IDLE_SPEED = 0.3f;
+    private static final String FIRE_TOWER_PREP_ATTACK_ANIM = "prepAttack";
+    private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
+    private static final String FIRE_TOWER_ATTACK_ANIM = "attack";
+    private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+    private static final String STUN_TOWER_IDLE_ANIM = "idle";
+    private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
+    private static final String STUN_TOWER_ATTACK_ANIM = "attack";
+    private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
 
@@ -70,7 +83,7 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent("images/mine_tower.png"))
+                .addComponent(new TextureRenderComponent("images/towers/mine_tower.png"))
                 .addComponent(aiTaskComponent);
 
 
@@ -122,6 +135,67 @@ public class TowerFactory {
         return weapon;
 
     }
+
+    /**
+     * Creates the FireTower entity which shoots at mobs traversing in a straight line.
+     * @return FireTower entity with relevant components.
+     */
+    public static Entity createFireTower() {
+        Entity fireTower = createBaseTower();
+        FireTowerConfig config = configs.fireTower;
+
+        //Component that handles triggering events and animations
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new FireTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+
+        fireTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new FireTowerAnimationController());
+        fireTower.setScale(1.25f, 1.25f);
+        return fireTower;
+    }
+
+    /**
+     * Creates the StunTower entity which shoots at mobs traversing in a straight line.
+     * @return StunTower entity with relevant components.
+     */
+    public static Entity createStunTower() {
+        Entity stunTower = createBaseTower();
+        StunTowerConfig config = configs.stunTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new StunTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+
+        stunTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new StunTowerAnimationController());
+
+        stunTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);
+        return stunTower;
+    }
+
     /**
      * Creates a generic tower entity to be used as a base entity by more specific tower creation methods.
      * @return entity
