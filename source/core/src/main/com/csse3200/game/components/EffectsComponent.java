@@ -131,7 +131,9 @@ public class EffectsComponent extends Component {
         for (int i = 0; i < nearbyEntities.size; i++) {
             Entity targetEntity = nearbyEntities.get(i);
 
-            if (!PhysicsLayer.contains(targetLayer, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+            if (targetHitbox == null) { return; }
+            if (!PhysicsLayer.contains(targetLayer, targetHitbox.getLayer())) {
                 // Doesn't match our target layer, ignore
                 return;
             }
