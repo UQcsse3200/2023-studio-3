@@ -21,9 +21,11 @@ import com.csse3200.game.services.ServiceLocator;
 public class RicochetComponent extends Component {
   private short targetLayer;
   private HitboxComponent hitBoxComponent;
+  private int bounceCount;
 
-  public RicochetComponent(short targetLayer) {
+  public RicochetComponent(short targetLayer, int bounceCount) {
     this.targetLayer = targetLayer;
+    this.bounceCount = bounceCount;
   }
 
   @Override
@@ -42,10 +44,12 @@ public class RicochetComponent extends Component {
     if(hitBoxComponent.getFixture() != me) return;
     
     if(!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) return;
+
+    if(bounceCount >= 2) return;
     
     Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
 
-    Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, projectile.getPosition().y + getRandomNumFrom(-250, 250)), new Vector2(2f, 2f));
+    Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, projectile.getPosition().y + getRandomNumFrom(-250, 250)), new Vector2(2f, 2f), ++bounceCount);
     newProjectile.setPosition((float) (projectile.getPosition().x -1.5), (float) (projectile.getPosition().y));
 
     // projectile.getComponent(AITaskComponent.class).addTask(new TrajectTask(new Vector2(100, projectile.getPosition().y + 50)));

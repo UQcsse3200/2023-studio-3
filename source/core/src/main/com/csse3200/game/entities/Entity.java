@@ -249,9 +249,16 @@ public class Entity {
     if (!enabled) {
       return;
     }
-    for (Component component : createdComponents) {
-      component.triggerUpdate();
-    }
+
+    // ! ITERATOR CAUSES PROBLEMS
+    // for (Component component : createdComponents) {
+    //   component.triggerUpdate();
+    // }
+    
+    for (int i = 0; i < createdComponents.size; i++) {
+      createdComponents.get(i).triggerUpdate();
+    } 
+
     if (isFlaggedForDelete) {
       dispose();
       return;
