@@ -19,13 +19,11 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Timer;
-import java.util.TimerTask;
+
+import java.util.*;
 
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
-
-import java.util.ArrayList;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
@@ -343,14 +341,14 @@ public class ForestGameArea extends GameArea {
 
 
   private void spawnXenoGrunts() {
-    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
+    int[] pickedLanes = new Random().ints(0, 8)
+            .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
       xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, true);
+      spawnEntityAt(xenoGrunt, randomPos, true, false);
     }
   }
 

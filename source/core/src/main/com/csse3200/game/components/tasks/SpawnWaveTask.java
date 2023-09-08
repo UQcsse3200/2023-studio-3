@@ -1,21 +1,21 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * A task which spawns a new wave of mobs at a set spawning interval
+ *
+ */
 public class SpawnWaveTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(SpawnWaveTask.class);
     private final GameTime globalTime;
     private long endTime;
-
     private final int SPAWNING_INTERVAL = 10;
-
     public SpawnWaveTask() {
         this.globalTime = ServiceLocator.getTimeSource();
     }
