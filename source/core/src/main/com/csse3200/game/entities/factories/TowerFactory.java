@@ -1,7 +1,9 @@
 package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
+import com.csse3200.game.components.tower.DroidAnimationController;
 import com.csse3200.game.components.tower.TNTAnimationController;
 import com.csse3200.game.components.tower.TNTDamageComponent;
 import com.csse3200.game.entities.configs.*;
@@ -43,7 +45,15 @@ public class TowerFactory {
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
+    private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
+    private static final float DROID_SPEED = 0.25f;
     private static final String DEFAULT_ANIM = "default";
+    private static final String WALK_ANIM = "walk";
+    private static final String DEATH_ANIM = "death";
+    private static final String GO_UP = "goUp";
+    private static final String GO_DOWN = "goDown";
+    private static final String SHOOT_UP = "attackUp";
+    private static final String SHOOT_DOWN = "attackDown";
     private static final float DEFAULT_SPEED= 0.2f;
     private static final String DIG_ANIM = "dig";
     private static final float DIG_SPEED = 0.2f;
@@ -143,13 +153,30 @@ public class TowerFactory {
         Entity DroidTower = createBaseTower();
         DroidTowerConfig config = configs.DroidTower;
 
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new DroidCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(DROID_ATLAS, TextureAtlas.class));
+
+        animator.addAnimation(IDLE_ANIM, DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(SHOOT_UP,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(SHOOT_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(WALK_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(DEATH_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(GO_UP,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(GO_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
+
+
 
         DroidTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TNTAnimationController());
-
-        DroidTower.getComponent(AnimationRenderComponent.class).scaleEntity();
+                .addComponent(new DroidAnimationController())
+                .addComponent(animator)
+                .addComponent(aiTaskComponent);
 
         return DroidTower;
     }
