@@ -5,6 +5,7 @@ import com.csse3200.game.components.tasks.StunTowerCombatTask;
 import com.csse3200.game.components.tower.FireTowerAnimationController;
 import com.csse3200.game.components.tower.StunTowerAnimationController;
 import com.csse3200.game.entities.configs.*;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -195,7 +196,8 @@ public class TowerFactory {
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.OBSTACLE)) // TODO: we might have to change the names of the layers
-                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
+                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
+                .addComponent(new TowerUpgraderComponent());
 
         return tower;
     }
