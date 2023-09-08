@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     
     private static final int INTERVAL = 1; // The time interval for each target scan from the Engineer.
+    private static final int PRIORITY = 3; // Default priority of the combat task when mobs are in range.
     private static final short TARGET = PhysicsLayer.NPC; // The type of targets that the Engineer will detect.
     
     // Animation event names for the Engineer's state machine.
@@ -150,6 +151,9 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Puts the engineerCombatTask state into combat mode
+     */
     private void combatState() {
         owner.getEntity().getEvents().trigger(FIRING);
         engineerState = STATE.FIRING;
@@ -162,14 +166,20 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         super.stop();
     }
 
+    /**
+     * Simplified getPriority function, returns the priority of the task
+     * @return priority as an integer value. If mobs are visible, return the current priority, otherwise return 0.
+     */
     @Override
     public int getPriority() {
-        return isTargetVisible() ? 3 : 0;
+        return isTargetVisible() ? PRIORITY : 0;
     }
 
     /**
-     * Uses a raycast to determine whether there are any targets in detection range
-     * @return true if a target is visible, false otherwise
+     * Uses a raycast to determine whether there are any targets in detection range. Performs multiple raycasts
+     * to a range of points at x = engineer.x + maxRange, and a range of y values above and below current y position.
+     * Allows the engineer entity to detect mobs in adjacent lanes.
+     * @return true if a target is detected, false otherwise
      */
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
@@ -184,10 +194,19 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         return !hits.isEmpty();
     }
 
+    /**
+     * Fetches the nearest target from the array of detected target positions created during the last call of
+     * isTargetVisible
+     * @return a Vector2 position of the nearest mob detected.
+     */
     public Vector2 fetchTarget() {
+        // Initial nearest position for comparison
         int lowest = 10;
+
         Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
                 owner.getEntity().getCenterPosition().y);
+
+        // Find the nearest target from the array of targets
         for (Vector2 tgt : targets){
             if (Math.abs(tgt.y - nearest.y) < lowest) {
                 lowest = (int)Math.abs(tgt.y - nearest.y);
