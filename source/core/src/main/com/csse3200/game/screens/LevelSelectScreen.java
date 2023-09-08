@@ -28,6 +28,8 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     private Sprite background;
 
+    // Stores a time to determine the frame of the planet
+    // TODO: Account for integer overflow
     float timeCounter = 0;
 
     private static final String BG_PATH = "planets/background.png";
@@ -94,10 +96,8 @@ public class LevelSelectScreen extends ScreenAdapter {
 
         // Draws the background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        // Draws the planets on top of the background
+        // Draws the planets on top of the background.
         spawnPlanets();
-
-
         batch.end();
     }
 
