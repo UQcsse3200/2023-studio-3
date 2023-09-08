@@ -36,14 +36,19 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     private void spawnPlanets() {
         // Spawn desert planet
-        spawnPlanet(150, 150, "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 6.0f), (int) (Gdx.graphics.getHeight() / 2.3f),"Desert", 1, (int) (timeCounter * 60) % 60 + 1);
+        // Spawn ice planet
+        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 3.0f), (int) (Gdx.graphics.getHeight() / 1.4f),"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
+        // Spawn lava planet
+        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 2.2f), (int) (Gdx.graphics.getHeight() / 7f),"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
+
     }
 
-    private void spawnPlanet(int width, int height, String planetName, int version, int planetNumber) {
+    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int planetNumber) {
         Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, planetNumber));
         Sprite planetSprite = new Sprite(planet);
         planetSprite.setSize(width, height);
-        batch.draw(planetSprite, Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 2, width, height);
+        batch.draw(planetSprite, posx, posy, width, height);
     }
 
     @Override
