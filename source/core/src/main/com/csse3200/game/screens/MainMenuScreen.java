@@ -31,7 +31,7 @@ public class MainMenuScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
-  private static final String[] mainMenuTextures = {"images/Logo2.png"};
+  private static final String[] mainMenuTextures = {"images/ui/Logo2.png"};
 
   public MainMenuScreen(GdxGame game) {
     this.game = game;
@@ -44,7 +44,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
     renderer = RenderFactory.createRenderer();
     batch = new SpriteBatch();
-     Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);
+    Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);
 
 
     loadAssets();
@@ -97,7 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
-    backgroundTexture = new Texture("images/background1.png"); // Load the background image
+    backgroundTexture = new Texture("images/background/background1.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 

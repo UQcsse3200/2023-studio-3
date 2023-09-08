@@ -13,5 +13,10 @@
     "health": 20,
     "baseAttack": 0,
     "cost": 1
+  },
+  "TNTTower": {
+    "health": 10,
+    "baseAttack": 5,
+    "cost": 1
   }
 }

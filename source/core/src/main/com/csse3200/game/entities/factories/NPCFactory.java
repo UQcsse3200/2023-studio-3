@@ -9,6 +9,8 @@ import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.SpawnWaveTask;
+import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
@@ -63,7 +65,7 @@ public class NPCFactory {
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
      //   .addComponent(animator)
-             .addComponent(new TextureRenderComponent("images/satyr.png"));
+             .addComponent(new TextureRenderComponent("images/mobs/satyr.png"));
      //   .addComponent(new GhostAnimationController());
 
     ghost.getComponent(TextureRenderComponent.class).scaleEntity();
@@ -121,7 +123,6 @@ public class NPCFactory {
     animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
-
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
@@ -141,15 +142,15 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobAttackTask(2, 40));
-            //.addTask(new ChaseTask(target, 10, 3f, 4f));
+            .addTask(new MobAttackTask(2, 40))
+                .addTask(new MobDeathTask(2));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
             .addComponent(aiComponent);
 
     PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);

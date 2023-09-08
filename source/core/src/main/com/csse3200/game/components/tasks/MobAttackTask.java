@@ -2,6 +2,8 @@ package com.csse3200.game.components.tasks;
 
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -34,7 +36,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private long endTime;
   private final RaycastHit hit = new RaycastHit();
 
-  private final long delay = 700; // delay between shots
+  private final long delay = 1000; // delay between shots
   private long startTime;
 
   private enum STATE {
@@ -64,9 +66,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     super.start();
     startTime = timeSource.getTime();
     this.mobPosition = owner.getEntity().getCenterPosition();
-    this.maxRangePosition.set(mobPosition.x + maxRange, mobPosition.y);
+    this.maxRangePosition.set(0, mobPosition.y);
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
+    owner.getEntity().getEvents().trigger("shootStart");
   }
 
   /**
@@ -87,6 +90,14 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * triggers the appropriate events corresponding to the STATE enum.
    */
   public void updateMobState() {
+//    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+    CombatStatsComponent statsComp = owner.getEntity().getComponent(CombatStatsComponent.class);
+//    if (statsComp != null) {
+//    System.out.println("is the target visible " + isTargetVisible());
+//    }
+    if (!isTargetVisible()) {
+      System.out.println("target is not visible for " + owner.getEntity().getId());
+    }
     switch (mobState) {
 
       case IDLE -> {
@@ -115,10 +126,12 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y + 1), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x - 0.75), (float) (owner.getEntity().getPosition().y));
+          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+          newProjectile.setScale(-1f, 0.5f);
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
+          owner.getEntity().getEvents().trigger("shootStart");
         }
       }
 
@@ -136,7 +149,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   }
 
   /**
-   * For stopping the running task
+   * For stopping the attack task
    */
   @Override
   public void stop() {

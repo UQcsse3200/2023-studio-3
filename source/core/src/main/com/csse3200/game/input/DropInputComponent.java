@@ -9,6 +9,7 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainComponent;
 import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.Provider;
+import java.util.Objects;
 
 public class DropInputComponent extends InputComponent {
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
@@ -63,13 +65,27 @@ public class DropInputComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
         //logger.info("Clicked entity: " + clickedEntity);
+
         if (clickedEntity != null && clickedEntity.getComponent(DropComponent.class) != null) {
-            ServiceLocator.getCurrencyService().getScrap()
-                    .modify(clickedEntity.getComponent(DropComponent.class).getValue());
-            // add the value of the drop to the scrap
-            EntityService.removeEntity(clickedEntity); // remove the entity from the game
+            int value = clickedEntity.getComponent(DropComponent.class).getValue();
+            if (Objects.equals(clickedEntity.getComponent(DropComponent.class).getCurrency().getName(), "Scrap")) {
+                // add the value of the drop to the scrap
+                ServiceLocator.getCurrencyService().getScrap().modify(value);
+                ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+            }
+
+            if (Objects.equals(clickedEntity.getComponent(DropComponent.class).getCurrency().getName(), "Crystal")) {
+                // add the value of the drop to the crystal
+                ServiceLocator.getCurrencyService().getCrystal().modify(value);
+                ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
+            }
+
+            // remove the entity from the game
+            EntityService.removeEntity(clickedEntity);
+            // display a visual indication that currency has been picked up
+            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(screenX, screenY, value);
+
             //logger.info("Scrap amount: " + ServiceLocator.getCurrencyService().getScrap().getAmount());
-            ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats(); // update the display
             return true;
         }
         return false;

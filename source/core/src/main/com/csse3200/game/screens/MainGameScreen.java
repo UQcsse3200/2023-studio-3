@@ -1,5 +1,5 @@
 package com.csse3200.game.screens;
-import com.badlogic.gdx.graphics.Pixmap;
+import  com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
@@ -50,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
   private static final String[] mainGameTextures = {"images/heart.png"};
-  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 7.5f);
+  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
   private final Renderer renderer;
@@ -60,42 +61,29 @@ public class MainGameScreen extends ScreenAdapter {
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
 
+
+
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
-  public static final int NUM_LANES = 8;
-  public static final float LANE_HEIGHT = viewportHeight / NUM_LANES;
+
+
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
-  private Texture whiteTexture;
+
   private Texture backgroundTexture;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
-    batch = new SpriteBatch();
-    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-    pixmap.setColor(1, 1, 1, 1);
-    pixmap.fill();
-    whiteTexture = new Texture(pixmap);
-    pixmap.dispose();
-
     camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
     camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+
+    batch = new SpriteBatch();
+
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
 
-
-    BitmapFont font = new BitmapFont();
-    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-    textButtonStyle.font = font;
-    textButtonStyle.fontColor = Color.WHITE;
-    for (int y = 0; y < 8; y++) {
-      for (int x = 0; x < 20; x++) {
-          TextButton button = new TextButton("" + x + y * 20, textButtonStyle);
-        stage.addActor(button);
-      }
-    }
 
 
     logger.debug("Initialising main game screen services");
@@ -132,16 +120,12 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+
+    batch.setProjectionMatrix(camera.combined);
     batch.begin();
     batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
     batch.end();
 
-    batch.begin();
-    for (int i = 0; i < NUM_LANES; i++) {
-    float yPosition = i * LANE_HEIGHT;
-    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 2);
-  }
-    batch.end();
 
     renderer.render();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -177,7 +161,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getEntityService().dispose();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getResourceService().dispose();
-    whiteTexture.dispose();
+
     ServiceLocator.clear();
   }
 
@@ -185,7 +169,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
-    backgroundTexture = new Texture("images/background1.png"); // Load the background image
+    backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 

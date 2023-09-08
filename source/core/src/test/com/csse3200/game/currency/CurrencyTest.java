@@ -21,7 +21,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(GameExtension.class)
 class CurrencyTest {
     private Entity scrap;
-    private String[] texture = {"images/scrap.png"};
+    private String[] texture = {"images/economy/scrap.png"};
 
     @BeforeEach
     public void setUp() {
@@ -38,7 +38,6 @@ class CurrencyTest {
         resourceService.loadAll();
         scrap = DropFactory.createScrapDrop();
     }
-
     @Test
     void shouldCreateCurrency() {
         Currency currency = mock(Currency.class, CALLS_REAL_METHODS);
