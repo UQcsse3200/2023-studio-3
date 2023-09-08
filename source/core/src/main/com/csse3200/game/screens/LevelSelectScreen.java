@@ -67,6 +67,16 @@ public class LevelSelectScreen extends ScreenAdapter {
         spawnPlanetBorders();
     }
 
+    /**
+     * Spawns a planet on the screen.
+     * @param width The width of the planet
+     * @param height The height of the planet
+     * @param posx The x position of the planet
+     * @param posy The y position of the planet
+     * @param planetName The name of the planet
+     * @param version The different type of planet
+     * @param frame The frame of the planet
+     */
     private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame) {
         Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
         Sprite planetSprite = new Sprite(planet);
@@ -74,6 +84,11 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch.draw(planetSprite, posx, posy, width, height);
     }
 
+    /**
+     * Spawns the borders of the planets. If a planet is clicked it will load the level
+     * based on the planet. If a planet is hovered over it will display a border around
+     * the planet.
+     */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         // Iterates through the planets checking for the bounding box
@@ -83,6 +98,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 // If a planet is clicked it will load the level based on the planet
                 if (Gdx.input.justTouched()) {
                     dispose();
+                    logger.info("Loading level {}", planet[4]);
                     game.setScreen(new MainGameScreen(game));
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
@@ -92,6 +108,7 @@ public class LevelSelectScreen extends ScreenAdapter {
         }
     }
 
+    // TODO: Make it display information about the planet
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -100,7 +117,6 @@ public class LevelSelectScreen extends ScreenAdapter {
 
         // Gets position of cursor
         batch.begin();
-
         // Draws the background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Draws the planets on top of the background.
