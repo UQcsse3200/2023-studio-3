@@ -159,7 +159,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     // Types of projectile
-    spawnEffectProjectile(new Vector2(0, 3), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+    spawnEffectProjectile(new Vector2(5, 8), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
 //    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
 //    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
@@ -195,23 +195,29 @@ public class ForestGameArea extends GameArea {
     Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);
 
     // Left
+    // ! THIS ONE DOESNT WORK. GRIDPOINTS2UTIL.ZERO is (0, 4), not (0, 0)
+    // spawnEntityAt(
+    //         ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), GridPoint2Utils.ZERO, false, false);
     spawnEntityAt(
-            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), GridPoint2Utils.ZERO, false, false);
+            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), new GridPoint2(1, 0), false, false);
     // Right
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
-            new GridPoint2(tileBounds.x, 0),
+            new GridPoint2(tileBounds.x -1, 0),
             false,
             false);
     // Top
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH),
-            new GridPoint2(0, tileBounds.y),
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7),
+            new GridPoint2(0, tileBounds.y - 1),
             false,
             false);
     // Bottom
+    // spawnEntityAt(
+    //         ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
+    // * TMPORARY
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7), new GridPoint2(0, 0), false, false);
   }
   private void spawnBuilding1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
