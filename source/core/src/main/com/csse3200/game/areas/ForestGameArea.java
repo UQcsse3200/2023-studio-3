@@ -92,10 +92,15 @@ public class ForestGameArea extends GameArea {
           "images/Dusty_MoonBG.png",
 
           "images/economy/scrap.png",
+          "images/economy/crystal.png",
+          "images/economy/econ-tower.png",
+
+
           "images/towers/mine_tower.png",
           "images/towers/TNTTower.png"
   };
   private static final String[] forestTextureAtlases = {
+          "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
           "images/ghostKing.atlas",
@@ -474,10 +479,16 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity crystal = DropFactory.createCrystalDrop();
+      spawnEntityAt(crystal, randomPos, true, false);
     }
   }
 
@@ -485,7 +496,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 50; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);

@@ -38,6 +38,8 @@ public class Entity {
   private Vector2 scale = new Vector2(1, 1);
   private Array<Component> createdComponents;
 
+  private int layer = 2;
+
   // Check if the entity is flagged for deletion
   private boolean isFlaggedForDelete = false;
 
@@ -302,4 +304,14 @@ public class Entity {
   public String toString() {
     return String.format("Entity{id=%d}", id);
   }
+
+  public int getLayer() {
+    return layer;
+  }
+
+  public int setLayer(int layer) {
+    this.layer = layer;
+    return layer;
+  }
+
 }
