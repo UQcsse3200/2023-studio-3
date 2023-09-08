@@ -15,7 +15,10 @@ public class HumanAnimationController extends Component {
     private static final String IDLER = "idleRight";
     private static final String WALKL = "walkLeftStart";
     private static final String WALKR = "walkRightStart";
-    private static final String FIRING = "firingStart";
+    private static final String WALK_PREP = "walkPrepStart";
+    private static final String PREP = "prepStart";
+    private static final String FIRING_AUTO = "firingAutoStart";
+    private static final String FIRING_SINGLE = "firingSingleStart";
     private static final String HIT = "hitStart";
     private static final String DEATH = "deathStart";
     // Animation name constants
@@ -23,23 +26,25 @@ public class HumanAnimationController extends Component {
     private static final String IDLER_ANIM = "idle_right";
     private static final String WALKL_ANIM = "walk_left";
     private static final String WALKR_ANIM = "walk_right";
-    private static final String FIRE_ANIM = "firing";
+    private static final String WALK_PREP_ANIM = "walk_prep";
+    private static final String FIRE_AUTO_ANIM = "firing_auto";
+    private static final String FIRE_SINGLE_ANIM = "firing_single";
     private static final String HIT_ANIM = "hit";
     private static final String DEATH_ANIM = "death";
     // Sound effects constants
 //    private static final String RUN_SFX = "";
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
-//    private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
+    private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
 //    private static final String HIT_SFX = "";
 //    private static final String DEATH_SFX = "";
 
     AnimationRenderComponent animator;
 //    Sound runSound = ServiceLocator.getResourceService().getAsset(
 //            RUN_SFX, Sound.class);
-//    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
-//            FIRE_AUTO_SFX, Sound.class);
-//    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
-//            FIRE_SINGLE_SFX, Sound.class);
+    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
+            FIRE_AUTO_SFX, Sound.class);
+    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+            FIRE_SINGLE_SFX, Sound.class);
 //    Sound hitSound = ServiceLocator.getResourceService().getAsset(
 //            HIT_SFX, Sound.class);
 //    Sound deathSound = ServiceLocator.getResourceService().getAsset(
@@ -53,7 +58,10 @@ public class HumanAnimationController extends Component {
         entity.getEvents().addListener(IDLER, this::animateIdleRight);
         entity.getEvents().addListener(WALKL, this::animateLeftWalk);
         entity.getEvents().addListener(WALKR, this::animateRightWalk);
-        entity.getEvents().addListener(FIRING, this::animateFiring);
+        entity.getEvents().addListener(PREP, this::animatePrep);
+        entity.getEvents().addListener(WALK_PREP, this::animatePrepWalk);
+        entity.getEvents().addListener(FIRING_SINGLE, this::animateSingleFiring);
+        entity.getEvents().addListener(FIRING_AUTO, this::animateFiring);
         entity.getEvents().addListener(HIT, this::animateHit);
         entity.getEvents().addListener(DEATH, this::animateDeath);
     }
@@ -74,9 +82,21 @@ public class HumanAnimationController extends Component {
 //        runSound.play();
     }
 
+    void animatePrepWalk() {
+        animator.startAnimation(WALK_PREP_ANIM);
+    }
+
+    void animateSingleFiring() {
+        animator.startAnimation(FIRE_SINGLE_ANIM);
+        fireSingleSound.play();
+    }
     void animateFiring() {
-        animator.startAnimation(FIRE_ANIM);
-//        fireAutoSound.play();
+        animator.startAnimation(FIRE_AUTO_ANIM);
+        fireAutoSound.play();
+    }
+
+    void animatePrep() {
+        animator.startAnimation(PREP);
     }
 
     void animateHit() {

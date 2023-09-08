@@ -85,7 +85,9 @@ public class EntityService {
   public Array<Entity> getNearbyEntities(Entity source, float radius) {
     Array<Entity> nearbyEntities = new Array<Entity>();
     Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
-    for (Entity otherEntity : allEntities) {
+    for (int i = 0; i < allEntities.size; i++) {
+      Entity otherEntity = allEntities.get(i);
+
       if (source == otherEntity) continue; // Skip the source entity
 
       Vector2 positionSource = source.getPosition();

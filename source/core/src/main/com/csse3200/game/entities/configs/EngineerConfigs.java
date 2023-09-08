@@ -5,9 +5,6 @@ package com.csse3200.game.entities.configs;
  */
 public class EngineerConfigs extends BaseEntityConfig  {
   public BaseEntityConfig engineer = new BaseEntityConfig();
-
   public int health = 10;
   public int baseAttack = 1;
-
-
 }

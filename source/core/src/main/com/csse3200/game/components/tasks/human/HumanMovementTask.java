@@ -17,18 +17,18 @@ public class HumanMovementTask extends DefaultTask {
   private static final Logger logger = LoggerFactory.getLogger(HumanMovementTask.class);
 
   private final GameTime gameTime;
-  private Entity target;
+  private Vector2 target;
   private float stopDistance = 0.01f;
   private long lastTimeMoved;
   private Vector2 lastPos;
   private PhysicsMovementComponent movementComponent;
 
-  public HumanMovementTask(Entity target) {
+  public HumanMovementTask(Vector2 target) {
     this.target = target;
     this.gameTime = ServiceLocator.getTimeSource();
   }
 
-  public HumanMovementTask(Entity target, float stopDistance) {
+  public HumanMovementTask(Vector2 target, float stopDistance) {
     this(target);
     this.stopDistance = stopDistance;
   }
@@ -37,11 +37,11 @@ public class HumanMovementTask extends DefaultTask {
   public void start() {
     super.start();
     this.movementComponent = owner.getEntity().getComponent(PhysicsMovementComponent.class);
-    movementComponent.setTarget(target.getPosition());
+    movementComponent.setTarget(target);
     movementComponent.setMoving(true);
 
     // Trigger the correct walk animation depending on the target location.
-    if (target.getPosition().x < owner.getEntity().getPosition().x) {
+    if (target.x < owner.getEntity().getPosition().x) {
       owner.getEntity().getEvents().trigger("walkLeftStart");
     } else {
       owner.getEntity().getEvents().trigger("walkRightStart");
@@ -64,9 +64,9 @@ public class HumanMovementTask extends DefaultTask {
     }
   }
 
-  public void setTarget(Entity target) {
+  public void setTarget(Vector2 target) {
     this.target = target;
-    movementComponent.setTarget(target.getPosition());
+    movementComponent.setTarget(target);
   }
 
   @Override
@@ -77,7 +77,7 @@ public class HumanMovementTask extends DefaultTask {
   }
 
   private boolean isAtTarget() {
-    return owner.getEntity().getPosition().dst(target.getPosition()) <= stopDistance;
+    return owner.getEntity().getPosition().dst(target) <= stopDistance;
   }
 
   private void checkIfStuck() {

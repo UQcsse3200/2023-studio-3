@@ -3,6 +3,7 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -10,6 +11,8 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ArrayList;
 
 /**
  * The AI Task for the Engineer entity. The Engineer will scan for targets within its detection range
@@ -24,21 +27,27 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // Animation event names for the Engineer's state machine.
     private static final String STOW = "";
     private static final String DEPLOY = "";
-    private static final String FIRING = "firingStart";
+    private static final String FIRING = "firingSingleStart";
     private static final String IDLE_LEFT = "idleLeft";
     private static final String IDLE_RIGHT = "idleRight";
     private static final String DYING = "deathStart";
     
     // The Engineer's attributes.
-    private final int priority;  // The priority of this task within the task list.
     private final float maxRange; // The maximum range of the Engineer's weapon.
+    // weaponCapacity is the number of shots fired before the engineer has to reload
+    private static final int weaponCapacity = 10;
+    private int shotsFired = 0;  // Tracks the number of shots fired in the current cycle
     
     private Vector2 engineerPosition = new Vector2(10, 50); // Placeholder value for the Engineer's position.
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
+    private long reloadTime;
+
+    private ArrayList<RaycastHit> hits = new ArrayList<>();
     private final RaycastHit hit = new RaycastHit();
+    private ArrayList<Vector2> targets = new ArrayList<>();
     
     /** The Engineer's states. */
     private enum STATE {
@@ -47,11 +56,9 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     private STATE engineerState = STATE.IDLE_RIGHT;
     
     /**
-     * @param priority The Engineer's combat task priority in the list of tasks.
      * @param maxRange The maximum range of the Engineer's weapon.
      */
-    public EngineerCombatTask(int priority, float maxRange) {
-        this.priority = priority;
+    public EngineerCombatTask(float maxRange) {
         this.maxRange = maxRange;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
@@ -95,20 +102,20 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(FIRING);
                     engineerState = STATE.FIRING;
+                } else {
+
                 }
             }
             case IDLE_RIGHT -> {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
+                    combatState();
                 }
             }
             case DEPLOY -> {
                 // currently deploying,
                 if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
+                    combatState();
                 } else {
                     owner.getEntity().getEvents().trigger(STOW);
                     engineerState = STATE.STOW;
@@ -117,29 +124,35 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
             case FIRING -> {
                 // targets gone - stop firing
                 if (!isTargetVisible()) {
-                    
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    // this might be changed to an event which gets triggered everytime the tower enters the firing state
-                    Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.75));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                    if (shotsFired <= 10) {
+                        owner.getEntity().getEvents().trigger(FIRING);
+                        // this might be changed to an event which gets triggered everytime the tower enters the firing state
+                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y),
+                                new Vector2(4f, 4f));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                        shotsFired += 1;
+                        reloadTime = timeSource.getTime();
+                    } else {
+                        // engineer needs to reload
+                        if (reloadTime < timeSource.getTime()) {
+                            // engineer has reloaded
+                            shotsFired = 0;
+                            reloadTime = timeSource.getTime();
+                        }
+                    }
                 }
             }
-//            case STOW -> {
-//                // currently stowing
-//                if (isTargetVisible()) {
-//
-//                    owner.getEntity().getEvents().trigger(DEPLOY);
-//                    engineerState = STATE.DEPLOY;
-//                } else {
-//                    owner.getEntity().getEvents().trigger(IDLE);
-//                    engineerState = STATE.IDLE;
-//                }
-//            }
         }
+    }
+
+    private void combatState() {
+        owner.getEntity().getEvents().trigger(FIRING);
+        engineerState = STATE.FIRING;
     }
     /**
      * For stopping the running task
@@ -147,40 +160,40 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     @Override
     public void stop() {
         super.stop();
-        owner.getEntity().getEvents().trigger(IDLE_RIGHT);
     }
-    
-    /**
-     * Returns the current priority of the task.
-     * @return active priority value if targets detected, inactive priority otherwise
-     */
+
     @Override
     public int getPriority() {
-        return isTargetVisible() ? getActivePriority() : getInactivePriority();
+        return isTargetVisible() ? 3 : 0;
     }
-    
-    /**
-     * Fetches the active priority of the Task if a target is visible.
-     * @return (int) active priority if a target is visible, -1 otherwise
-     */
-    private int getActivePriority() {
-        return !isTargetVisible() ? 0 : priority;
-    }
-    
-    /**
-     * Fetches the inactive priority of the Task if a target is not visible.
-     * @return (int) -1 if a target is not visible, active priority otherwise
-     */
-    private int getInactivePriority() {
-        return isTargetVisible() ? priority : 0;
-    }
-    
+
     /**
      * Uses a raycast to determine whether there are any targets in detection range
      * @return true if a target is visible, false otherwise
      */
-    private boolean isTargetVisible() {
+    public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(owner.getEntity().getCenterPosition(), maxRangePosition, TARGET, hit);
+        Vector2 position = owner.getEntity().getCenterPosition();
+
+        for (int i = 5; i > -5; i--) {
+            if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {
+                hits.add(hit);
+                targets.add(new Vector2(position.x + maxRange, position.y + i));
+            }
+        }
+        return !hits.isEmpty();
+    }
+
+    public Vector2 fetchTarget() {
+        int lowest = 10;
+        Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
+                owner.getEntity().getCenterPosition().y);
+        for (Vector2 tgt : targets){
+            if (Math.abs(tgt.y - nearest.y) < lowest) {
+                lowest = (int)Math.abs(tgt.y - nearest.y);
+                nearest = tgt;
+            }
+        }
+        return nearest;
     }
 }
