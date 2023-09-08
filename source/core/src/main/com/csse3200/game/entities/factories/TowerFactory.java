@@ -16,6 +16,7 @@ import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -155,8 +156,7 @@ public class TowerFactory {
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireTowerAnimationController());
-
-        fireTower.setScale(3, 3);
+        fireTower.setScale(1.25f, 1.25f);
         return fireTower;
     }
 
@@ -182,6 +182,7 @@ public class TowerFactory {
                 .addComponent(new StunTowerAnimationController());
 
         stunTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);
         return stunTower;
     }
 

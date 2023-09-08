@@ -17,6 +17,8 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -394,15 +396,16 @@ public class ForestGameArea extends GameArea {
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
+      GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       //Entity weaponTower = TowerFactory.createWeaponTower();
       Entity wallTower = TowerFactory.createWallTower();
       Entity fireTower = TowerFactory.createFireTower();
       Entity stunTower = TowerFactory.createStunTower();
       //spawnEntityAt(weaponTower, randomPos, true, true);
-      spawnEntityAt(fireTower, randomPos, true, true);
-      spawnEntityAt(stunTower, randomPos, true, true);
-      spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
+      spawnEntityAt(fireTower, randomPos1, true, true);
+      spawnEntityAt(stunTower, randomPos2, true, true);
+      //spawnEntityAt(wallTower, new GridPoint2(randomPos1.x + 3, randomPos1.y), true, true);
     }
   }
 
