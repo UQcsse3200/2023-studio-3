@@ -7,9 +7,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
 
 public class StoryScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -17,7 +25,7 @@ public class StoryScreen extends ScreenAdapter {
     private Texture introImage;
     private Sprite introSprite;
 
-    private static final String TEXTURE = "images/ingamebg.png";
+    private static final String TEXTURE = "planets/background.png";
     private static final String INTRO_TEXT = """
             More than 100 years ago, the world was at peace.\s
             The people lived in harmony with nature, and the\s
@@ -33,6 +41,8 @@ public class StoryScreen extends ScreenAdapter {
 
     private BitmapFont font;
     private AnimatedText text;
+    private Stage stage;
+    private TextButton continueButton;
     public StoryScreen(GdxGame game) {
         this.game = game;
         font = new BitmapFont();
@@ -45,6 +55,24 @@ public class StoryScreen extends ScreenAdapter {
         introImage = new Texture(TEXTURE);
         introSprite = new Sprite(introImage);
         introSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        stage = new Stage(new ScreenViewport());
+        Gdx.input.setInputProcessor(stage);
+
+        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+            }
+
+        });
+
+        Table table = new Table();
+        table.setFillParent(true);
+        table.add(continueButton).padBottom(-400).row();
+        stage.addActor(table);
     }
 
     @Override
@@ -55,19 +83,16 @@ public class StoryScreen extends ScreenAdapter {
         batch.begin();
         introSprite.draw(batch);
         text.update();
-        text.draw(batch, 100, 700); // Adjust the position
+        text.draw(batch, 400, 500); // Adjust the position
         batch.end();
 
-
-        if (text.isFinished()) {
-            // Intro duration has passed, switch to the MainGameScreen
-            game.setScreen(new MainGameScreen(game));
-        }
+        stage.draw();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         introImage.dispose();
+        stage.dispose();
     }
 }
