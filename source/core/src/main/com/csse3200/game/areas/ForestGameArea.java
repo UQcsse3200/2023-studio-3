@@ -5,7 +5,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.gamearea.TowerPlacementDisplay;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
@@ -96,6 +95,7 @@ public class ForestGameArea extends GameArea {
           "images/Dusty_MoonBG.png",
 
           "images/economy/scrap.png",
+          "images/economy/crystal.png",
           "images/economy/econ-tower.png"
 
 
@@ -177,7 +177,6 @@ public class ForestGameArea extends GameArea {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
-    ui.addComponent(new TowerPlacementDisplay());
     spawnEntity(ui);
   }
 
@@ -452,10 +451,16 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity crystal = DropFactory.createCrystalDrop();
+      spawnEntityAt(crystal, randomPos, true, false);
     }
   }
 

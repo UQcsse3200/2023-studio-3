@@ -55,13 +55,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
             owner.getEntity().getEvents().trigger(MOVE);
             updateCurrency(); // update currency
             endTime = timeSource.getTime() + (30 * 1000); // reset end time
-            restartAnimation();
 
         }
-    }
-
-    private void restartAnimation() {
-        owner.getEntity().getEvents().trigger(IDLE);
     }
 
     /**

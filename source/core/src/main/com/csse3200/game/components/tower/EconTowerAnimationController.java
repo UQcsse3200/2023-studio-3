@@ -12,7 +12,7 @@ import com.csse3200.game.services.ServiceLocator;
 public class EconTowerAnimationController extends Component {
     // Event name constants
     private static final String IDLE = "idleStartEco";
-    private static final String MOVE = "move1StartEco";
+    private static final String MOVE = "moveStartEco";
     // Animation name constants
     private static final String ECO_MOVE = "move1";
     private static final String ECO_IDLE = "idle";
