@@ -26,6 +26,11 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
 
+    private static final String INTRO_TEXT = "Select a Planet for Conquest";
+
+    private AnimatedText text;
+    private BitmapFont font;
+
     private Sprite background;
 
     // Stores a time to determine the frame of the planet
@@ -35,6 +40,8 @@ public class LevelSelectScreen extends ScreenAdapter {
     private static final String BG_PATH = "planets/background.png";
 
     public LevelSelectScreen(GdxGame game) {
+        font = new BitmapFont();
+        text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         this.game = game;
     }
 
@@ -98,6 +105,8 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Draws the planets on top of the background.
         spawnPlanets();
+        text.update();
+        text.draw(batch, 100, 700); // Adjust the position
         batch.end();
     }
 
