@@ -49,7 +49,10 @@ class EngineerFactoryTest {
             "idle_right",
             "walk_left",
             "walk_right",
-            "firing",
+            "walk_prep",
+            "prep",
+            "firing_auto",
+            "firing_single",
             "hit",
             "death"
     };;

@@ -27,7 +27,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // Animation event names for the Engineer's state machine.
     private static final String STOW = "";
     private static final String DEPLOY = "";
-    private static final String FIRING = "firingStart";
+    private static final String FIRING = "firingSingleStart";
     private static final String IDLE_LEFT = "idleLeft";
     private static final String IDLE_RIGHT = "idleRight";
     private static final String DYING = "deathStart";
@@ -109,15 +109,13 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
             case IDLE_RIGHT -> {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
+                    combatState();
                 }
             }
             case DEPLOY -> {
                 // currently deploying,
                 if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
+                    combatState();
                 } else {
                     owner.getEntity().getEvents().trigger(STOW);
                     engineerState = STATE.STOW;
@@ -126,7 +124,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
             case FIRING -> {
                 // targets gone - stop firing
                 if (!isTargetVisible()) {
-
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
@@ -135,7 +132,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
                         Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y),
-//                                fetchTarget(),
                                 new Vector2(4f, 4f));
                         newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
                         ServiceLocator.getEntityService().register(newProjectile);
@@ -152,6 +148,11 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
         }
+    }
+
+    private void combatState() {
+        owner.getEntity().getEvents().trigger(FIRING);
+        engineerState = STATE.FIRING;
     }
     /**
      * For stopping the running task
