@@ -55,7 +55,7 @@ public class StoryScreen extends ScreenAdapter {
         batch.begin();
         introSprite.draw(batch);
         text.update();
-        text.draw(batch, 400, 500); // Adjust the position
+        text.draw(batch, 100, 700); // Adjust the position
         batch.end();
 
 
