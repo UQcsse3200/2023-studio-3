@@ -1,11 +1,19 @@
 package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.player.HumanAnimationController;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
@@ -13,11 +21,16 @@ import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+
+import java.util.ArrayList;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -25,14 +38,20 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(GameExtension.class)
 class EngineerFactoryTest {
-    Entity target = new Entity();
-    private String[] texture = {
-            "images/engineers/engineer.png"
-    };
+
     private String[] atlas = {"images/engineers/engineer.atlas"};
     private static final String[] sounds = {
             "sounds/engineers/firing_auto.mp3"
     };
+
+    private String[] animations = {
+            "idle_right",
+            "walk_left",
+            "walk_right",
+            "firing",
+            "hit",
+            "death"
+    };;
 
     @BeforeEach
     void setUp() {
@@ -50,23 +69,114 @@ class EngineerFactoryTest {
         resourceService.loadAll();
     }
 
-    @AfterEach
-    void tearDown() {
-
-    }
-
-    @Test
-    void createEngineer() {
-        Entity engineer = EngineerFactory.createEngineer();
-        engineer.setPosition(10f, 10f);
-        assertNotNull(engineer);
-        assert(!engineer.getFlagForDelete());
-        assert engineer.getPosition().x == 10f && engineer.getPosition().y == 10f;
-    }
-
     @Test
     void createBaseHumanNPC() {
         Entity human = EngineerFactory.createBaseHumanNPC();
         assertNotNull(human);
+    }
+
+    @Test
+    void testCreateEngineer() {
+        // Check engineer exists after creation
+        Entity engineer = EngineerFactory.createEngineer();
+        assertNotNull(engineer, "Engineer entity should not be null after creation");
+    }
+
+    @Test
+    void testDeleteEngineer() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assertFalse(engineer.getFlagForDelete(), "Engineer flagForDelete should be false on creation");
+        engineer.setFlagForDelete(true);
+        assertTrue(engineer.getFlagForDelete(), "Engineer getflagForDelete should return true after being set");
+    }
+
+    @Test
+    void testEngineerPhysicsComponents() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assertNotNull(engineer.getComponent(PhysicsComponent.class),
+                "Engineer should have a PhysicsComponent");
+        assertNotNull(engineer.getComponent(PhysicsMovementComponent.class),
+                "Engineer should have a PhysicsMovementComponent");
+    }
+
+    @Test
+    void testEngineerColliderAndHitboxComponents() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assertNotNull(engineer.getComponent(ColliderComponent.class),
+                "Engineer should have a ColliderComponent");
+        assertNotNull(engineer.getComponent(HitboxComponent.class),
+                "Engineer should have a HitBoxComponent");
+    }
+
+    @Test
+    void testEngineerTouchAttackAndCombatStatsComponents() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assertNotNull(engineer.getComponent(TouchAttackComponent.class),
+                "Engineer should have a TouchAttackComponent");
+        assertNotNull(engineer.getComponent(CombatStatsComponent.class),
+                "Engineer should have a CombatStatsComponent");
+    }
+
+    @Test
+    void testEngineerAnimationAndAITaskComponents() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assertNotNull(engineer.getComponent(HumanAnimationController.class),
+                "Engineer should have a HumanAnimationController");
+        assertNotNull(engineer.getComponent(AITaskComponent.class),
+                "Engineer should have an AITaskComponent");
+        assertNotNull(engineer.getComponent(AnimationRenderComponent.class),
+                "Engineer should have an AnimationRenderComponent");
+    }
+
+    @Test
+    void testEngineerAnimations() {
+        Entity engineer = EngineerFactory.createEngineer();
+        for (String animation : this.animations) {
+            assertTrue(engineer.getComponent(AnimationRenderComponent.class).hasAnimation(animation),
+                    ("Engineer AnimationRenderComponent should contain animation [" + animation + "]"));
+        }
+        for (String animation : this.animations) {
+            engineer.getComponent(AnimationRenderComponent.class).startAnimation(animation);
+            assert(Objects.equals(engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(), animation));
+        }
+    }
+
+    @Test
+    void testEngineerConfig() {
+        Entity engineer = EngineerFactory.createEngineer();
+        assert(engineer.getComponent(CombatStatsComponent.class).getHealth() == 100);
+        assert(engineer.getComponent(CombatStatsComponent.class).getBaseAttack() == 5);
+    }
+
+    /**
+     * Adapted from TowerFactoryTest testAttackerCollisionWithWall by MohamadDab11
+     */
+    @Test
+    void testEngineerCollisions() {
+        Entity engineer = EngineerFactory.createEngineer();
+
+        Entity attacker = createAttacker(engineer.getComponent(HitboxComponent.class).getLayer());
+
+        engineer.setPosition(10f,10f);
+        attacker.setPosition(10f,10f);
+        engineer.create();
+
+        assertEquals(100, engineer.getComponent(CombatStatsComponent.class).getHealth());
+
+        ServiceLocator.getPhysicsService().getPhysics().update();
+
+        assertEquals(90, engineer.getComponent(CombatStatsComponent.class).getHealth());
+
+    }
+
+    Entity createAttacker(short targetLayer) {
+        Entity entity =
+                new Entity()
+                        .addComponent(new TouchAttackComponent(targetLayer))
+                        .addComponent(new CombatStatsComponent(0, 10))
+                        .addComponent(new PhysicsComponent())
+                        .addComponent(new HitboxComponent());
+        entity.create();
+        return entity;
     }
 }
