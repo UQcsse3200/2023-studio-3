@@ -41,7 +41,8 @@ class EngineerFactoryTest {
 
     private String[] atlas = {"images/engineers/engineer.atlas"};
     private static final String[] sounds = {
-            "sounds/engineers/firing_auto.mp3"
+            "sounds/engineers/firing_auto.mp3",
+            "sounds/engineers/firing_single.mp3"
     };
 
     private String[] animations = {

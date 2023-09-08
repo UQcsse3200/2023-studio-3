@@ -133,7 +133,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     if (shotsFired <= 10) {
                         owner.getEntity().getEvents().trigger(FIRING);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
-                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.HUMANS,
+                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y),
 //                                fetchTarget(),
                                 new Vector2(4f, 4f));
