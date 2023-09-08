@@ -14,12 +14,14 @@ import com.csse3200.game.screens.text.AnimatedText;
 public class LevelSelectScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
-    private Texture bgText;
-    private Sprite bgSprite;
+
+    private Sprite background;
+    private Texture backgroundTexture;
+
 
     float timeCounter = 0;
 
-    private static final String TEXTURE = "planets/background.png";
+    private static final String BG_PATH = "planets/background.png";
 
     public LevelSelectScreen(GdxGame game) {
         this.game = game;
@@ -28,6 +30,20 @@ public class LevelSelectScreen extends ScreenAdapter {
     @Override
     public void show() {
         batch = new SpriteBatch();
+        backgroundTexture = new Texture(BG_PATH);
+        background = new Sprite(backgroundTexture);
+    }
+
+    private void spawnPlanets() {
+        // Spawn desert planet
+        spawnPlanet(150, 150, "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
+    }
+
+    private void spawnPlanet(int width, int height, String planetName, int version, int planetNumber) {
+        Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, planetNumber));
+        Sprite planetSprite = new Sprite(planet);
+        planetSprite.setSize(width, height);
+        batch.draw(planetSprite, Gdx.graphics.getWidth() / 3, Gdx.graphics.getHeight() / 2, width, height);
     }
 
     @Override
@@ -37,17 +53,15 @@ public class LevelSelectScreen extends ScreenAdapter {
         timeCounter += delta;
 
 
+
         batch.begin();
-        bgText = new Texture(String.format("planets/Desert/1/%d.png", (int) (timeCounter * 60) % 60 + 1));
-        bgSprite = new Sprite(bgText);
-        bgSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        bgSprite.draw(batch);
+        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spawnPlanets();
         batch.end();
     }
 
     @Override
     public void dispose() {
         batch.dispose();
-        bgSprite.getTexture().dispose();
     }
 }
