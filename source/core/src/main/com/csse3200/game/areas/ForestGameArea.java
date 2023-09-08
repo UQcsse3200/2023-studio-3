@@ -46,7 +46,8 @@ public class ForestGameArea extends GameArea {
 
 
   private static final int NUM_WEAPON_TOWERS = 3;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
+//  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(1, 4);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
 
