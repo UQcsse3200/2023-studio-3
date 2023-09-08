@@ -7,11 +7,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LevelSelectScreen extends ScreenAdapter {
+    Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
     private SpriteBatch batch;
 
@@ -36,16 +43,16 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     private void spawnPlanets() {
         // Spawn desert planet
-        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 6.0f), (int) (Gdx.graphics.getHeight() / 2.3f),"Desert", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
         // Spawn ice planet
-        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 3.0f), (int) (Gdx.graphics.getHeight() / 1.4f),"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
         // Spawn lava planet
-        spawnPlanet(150, 150, (int) (Gdx.graphics.getWidth() / 2.2f), (int) (Gdx.graphics.getHeight() / 7f),"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
 
     }
 
-    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int planetNumber) {
-        Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, planetNumber));
+    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame) {
+        Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
         Sprite planetSprite = new Sprite(planet);
         planetSprite.setSize(width, height);
         batch.draw(planetSprite, posx, posy, width, height);
@@ -57,7 +64,18 @@ public class LevelSelectScreen extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         timeCounter += delta;
 
+        if (Gdx.input.justTouched()) {
+            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
 
+            int planetNum = 0;
+            for (int[] planet : Planets.PLANETS) {
+                Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
+                if (planetRect.contains(touchPos.x, Gdx.graphics.getHeight() - touchPos.y)) {
+                    game.setScreen(new MainGameScreen(game));
+                }
+                planetNum++;
+            }
+        }
 
         batch.begin();
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
