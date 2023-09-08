@@ -16,15 +16,17 @@ import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Text;
 
+/**
+ * The game screen where you can choose a planet to play on.
+ */
 public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
     private SpriteBatch batch;
 
     private Sprite background;
-    private Texture backgroundTexture;
-
 
     float timeCounter = 0;
 
@@ -37,10 +39,14 @@ public class LevelSelectScreen extends ScreenAdapter {
     @Override
     public void show() {
         batch = new SpriteBatch();
-        backgroundTexture = new Texture(BG_PATH);
-        background = new Sprite(backgroundTexture);
+        background = new Sprite(new Texture(BG_PATH));
     }
 
+    /**
+     * Spawns the planets on the screen by doing contionous calls to spawnPlanet().
+     * The rotation speed of a planet is determined by the frame variable, this
+     * function can be modified.
+     */
     private void spawnPlanets() {
         // Spawn desert planet
         spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
@@ -49,6 +55,7 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Spawn lava planet
         spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
 
+        spawnPlanetBorders();
     }
 
     private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame) {
@@ -58,28 +65,39 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch.draw(planetSprite, posx, posy, width, height);
     }
 
+    private void spawnPlanetBorders() {
+        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        // Iterates through the planets checking for the bounding box
+        for (int[] planet : Planets.PLANETS) {
+            Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
+            if (planetRect.contains(mousePos.x, Gdx.graphics.getHeight() - mousePos.y)) {
+                // If a planet is clicked it will load the level based on the planet
+                if (Gdx.input.justTouched()) {
+                    dispose();
+                    game.setScreen(new MainGameScreen(game));
+                } else {
+                    Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
+                    batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
+                }
+            }
+        }
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         timeCounter += delta;
 
-        if (Gdx.input.justTouched()) {
-            Vector3 touchPos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-
-            int planetNum = 0;
-            for (int[] planet : Planets.PLANETS) {
-                Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
-                if (planetRect.contains(touchPos.x, Gdx.graphics.getHeight() - touchPos.y)) {
-                    game.setScreen(new MainGameScreen(game));
-                }
-                planetNum++;
-            }
-        }
-
+        // Gets position of cursor
         batch.begin();
+
+        // Draws the background
         batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // Draws the planets on top of the background
         spawnPlanets();
+
+
         batch.end();
     }
 
