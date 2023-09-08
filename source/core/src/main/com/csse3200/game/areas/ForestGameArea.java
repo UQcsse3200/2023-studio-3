@@ -493,13 +493,16 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnEngineer() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
-    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-    
-    Entity engineer = EngineerFactory.createEngineer();
-    spawnEntityAt(engineer, randomPos, true, true);
+
+    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
+      Entity engineer = EngineerFactory.createEngineer();
+      spawnEntityAt(engineer, new GridPoint2(2, i), true, true);
+    }
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
+//    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//
+//    Entity engineer = EngineerFactory.createEngineer();
+//    spawnEntityAt(engineer, randomPos, true, true);
   }
-
-
 }
