@@ -77,31 +77,38 @@ firing_auto
 firing_single
   rotate: false
   xy: 102, 42
-  size: 45, 33
+  size: 52, 33
   orig: 45, 33
   offset: 0, 0
   index: 2
 firing_single
   rotate: false
   xy: 179, 78
-  size: 45, 33
+  size: 52, 33
   orig: 45, 33
   offset: 0, 0
   index: 4
 firing_single
   rotate: false
   xy: 249, 78
-  size: 45, 33
+  size: 52, 33
   orig: 45, 33
   offset: 0, 0
   index: 1
 firing_single
   rotate: false
   xy: 319, 78
-  size: 45, 33
+  size: 52, 33
   orig: 45, 33
   offset: 0, 0
   index: 3
+firing_single
+  rotate: false
+  xy: 343, 40
+  size: 52, 33
+  orig: 29, 33
+  offset: 0, 0
+  index: 5
 hit
   rotate: false
   xy: 560, 79
@@ -189,28 +196,28 @@ idle_right
 prep
   rotate: false
   xy: 343, 40
-  size: 29, 33
+  size: 52, 33
   orig: 29, 33
   offset: 0, 0
   index: 4
 prep
   rotate: false
   xy: 853, 41
-  size: 29, 33
+  size: 52, 33
   orig: 29, 33
   offset: 0, 0
   index: 1
 prep
   rotate: false
   xy: 907, 41
-  size: 29, 33
+  size: 52, 33
   orig: 29, 33
   offset: 0, 0
   index: 3
 prep
   rotate: false
   xy: 961, 41
-  size: 29, 33
+  size: 52, 33
   orig: 29, 33
   offset: 0, 0
   index: 2
