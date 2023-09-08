@@ -116,7 +116,7 @@ public class NPCFactory {
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.LOOP);
