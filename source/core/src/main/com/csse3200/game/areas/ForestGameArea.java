@@ -111,7 +111,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
-          "images/projectiles/mobProjectile.atlas"
+          "images/projectiles/mobProjectile.atlas",
+          "images/projectiles/engineer_bullets.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",

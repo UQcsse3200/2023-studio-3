@@ -9,7 +9,6 @@ import com.csse3200.game.components.RicochetComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -23,6 +22,7 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 
 /**
@@ -107,6 +107,31 @@ public class ProjectileFactory {
                             .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
     animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+    projectile
+        .addComponent(animator)
+        .addComponent(new ProjectileAnimationController());
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+    return projectile;
+  }
+  /**
+   * Creates a enginner bullet
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createEngineerBullet(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+    animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
         .addComponent(animator)

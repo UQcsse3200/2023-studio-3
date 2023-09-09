@@ -1,41 +1,41 @@
 
-mobProjectile.png
+engineer_projectile.png
 size: 128, 32
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-rotate
+bullet
   rotate: false
-  xy: 80, 2
-  size: 24, 23
-  orig: 24, 23
+  xy: 68, 2
+  size: 19, 19
+  orig: 19, 19
   offset: 0, 0
   index: -1
-rotate
+bullet
   rotate: false
-  xy: 28, 2
-  size: 24, 23
-  orig: 24, 23
+  xy: 25, 2
+  size: 20, 19
+  orig: 20, 19
   offset: 0, 0
   index: -1
 default
   rotate: false
-  xy: 28, 2
-  size: 24, 23
-  orig: 24, 23
+  xy: 25, 2
+  size: 20, 19
+  orig: 20, 19
   offset: 0, 0
   index: -1
-rotate
+bullet
   rotate: false
   xy: 2, 2
-  size: 24, 23
-  orig: 24, 23
+  size: 21, 19
+  orig: 21, 19
   offset: 0, 0
   index: -1
-rotate
+bulletFinal
   rotate: false
-  xy: 54, 2
-  size: 24, 23
-  orig: 24, 23
+  xy: 47, 2
+  size: 19, 19
+  orig: 19, 19
   offset: 0, 0
   index: -1
