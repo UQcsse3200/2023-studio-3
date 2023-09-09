@@ -34,14 +34,14 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     private final int id;
 
     //TODO: change to item class
-    private final ArrayList<Integer> drops;
+    private final ArrayList<Currency> drops;
     private ArrayList<Melee> closeRangeAbilities;
     private ArrayList<Weapon> longRangeAbilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(ArrayList<Integer> drops,
+    public BaseEnemyConfig(ArrayList<Currency> drops,
                            ArrayList<Melee> closeRangeAbilities,
                            ArrayList<Weapon> longRangeAbilities) {
         this.speed = 1;
@@ -62,7 +62,7 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param drops the drops of the enemy
      * @param baseAttack the base damage to the target
      */
-    public BaseEnemyConfig(int speed, int health, ArrayList<Integer> drops,
+    public BaseEnemyConfig(int speed, int health, ArrayList<Currency> drops,
                            ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities, int baseAttack) {
         this.speed = speed;
         this.health = health;

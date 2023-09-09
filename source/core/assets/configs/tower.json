@@ -14,6 +14,7 @@
     "baseAttack": 0,
     "cost": 1
   },
+<<<<<<< HEAD
   "fireTower": {
     "health": 10,
     "baseAttack": 10,
@@ -23,5 +24,11 @@
     "health": 10,
     "baseAttack": 10,
     "cost": 10
+=======
+  "TNTTower": {
+    "health": 10,
+    "baseAttack": 5,
+    "cost": 1
+>>>>>>> main
   }
 }

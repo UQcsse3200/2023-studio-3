@@ -58,7 +58,7 @@ public class TouchAttackComponent extends Component {
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::onCollisionStart);
-    entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
+    // entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
     combatStats = entity.getComponent(CombatStatsComponent.class);
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
@@ -100,8 +100,11 @@ public class TouchAttackComponent extends Component {
     }
   }
 
-  private void onCollisionEnd(Fixture me, Fixture other) {
-    // Nothing to do on collision end
+  public void setDisposeOnHit(boolean disposeOnHit) {
+    this.disposeOnHit = disposeOnHit;
   }
+  // private void onCollisionEnd(Fixture me, Fixture other) {
+  //   // Nothing to do on collision end
+  // }
 }
 
