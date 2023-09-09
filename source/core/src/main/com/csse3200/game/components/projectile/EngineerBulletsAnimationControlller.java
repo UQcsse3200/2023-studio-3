@@ -4,7 +4,7 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator; //used for sound
 
-public class EngineerBullets extends Component{
+public class EngineerBulletsAnimationControlller extends Component{
     /** Event name constants */
 
     AnimationRenderComponent animator;
@@ -13,8 +13,8 @@ public class EngineerBullets extends Component{
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("start", this::animateStart);
-        entity.getEvents().addListener("final", this::animateFinal);
+        entity.getEvents().addListener("startProjectile", this::animateStart);
+        entity.getEvents().addListener("startProjectileFinal", this::animateFinal);
 
     }
 

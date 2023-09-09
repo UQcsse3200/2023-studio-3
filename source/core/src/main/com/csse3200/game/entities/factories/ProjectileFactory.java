@@ -22,6 +22,7 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlller;
 import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 
@@ -129,13 +130,13 @@ public class ProjectileFactory {
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService()
-                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+                            .getAsset("images/projectiles/engineer_projectile.atlas", TextureAtlas.class));
     animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
         .addComponent(animator)
-        .addComponent(new ProjectileAnimationController());
+        .addComponent(new EngineerBulletsAnimationControlller());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;

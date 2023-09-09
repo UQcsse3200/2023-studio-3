@@ -112,7 +112,7 @@ public class ForestGameArea extends GameArea {
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
           "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/engineer_bullets.atlas"
+          "images/projectiles/engineer_projectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -162,7 +162,8 @@ public class ForestGameArea extends GameArea {
 
     // Types of projectile
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-    spawnMobBall(new Vector2(15,10), PhysicsLayer.NPC, towardsTowers, new Vector2(2f, 2f));
+    spawnMobBall(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+
     spawnXenoGrunts();
 
     spawnGhosts();
@@ -300,7 +301,7 @@ public class ForestGameArea extends GameArea {
    * 
    */
   private void spawnMobBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createMobBall(targetLayer, new Vector2(direction, position.y), speed);
+    Entity Projectile = ProjectileFactory.createEngineerBullet(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
