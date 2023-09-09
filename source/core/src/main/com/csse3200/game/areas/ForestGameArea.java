@@ -169,8 +169,8 @@ public class ForestGameArea extends GameArea {
     spawnWeaponTower();
     spawnEngineer();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
+//    spawnIncome();
+//    spawnScrap();
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
