@@ -1,12 +1,10 @@
 package com.csse3200.game.areas;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.ProjectileEffects;
-import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
@@ -20,7 +18,6 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
@@ -95,10 +92,15 @@ public class ForestGameArea extends GameArea {
           "images/Dusty_MoonBG.png",
 
           "images/economy/scrap.png",
+          "images/economy/crystal.png",
+          "images/economy/econ-tower.png",
+
+
           "images/towers/mine_tower.png",
           "images/towers/TNTTower.png"
   };
   private static final String[] forestTextureAtlases = {
+          "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
           "images/ghostKing.atlas",
@@ -115,7 +117,9 @@ public class ForestGameArea extends GameArea {
           "sounds/Impact4.ogg",
           "sounds/towers/gun_shot_trimmed.mp3",
           "sounds/towers/deploy.mp3",
-          "sounds/towers/stow.mp3"
+          "sounds/towers/stow.mp3",
+          "sounds/engineers/firing_auto.mp3",
+          "sounds/engineers/firing_single.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -145,36 +149,26 @@ public class ForestGameArea extends GameArea {
   /** Create the game area, including terrain, static entities (trees), dynamic entities (player) */
   @Override
   public void create() {
+    // Load game assets
     loadAssets();
-
     displayUI();
-
     spawnTerrain();
-//    spawnBuilding1();
-//    spawnBuilding2();
-//    spawnMountains();
+
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
     playMusic();
 
     // Types of projectile
-    spawnEffectProjectile(new Vector2(0, 3), PhysicsLayer.PLAYER, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-//    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-//    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
     spawnXenoGrunts();
 
     spawnGhosts();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
-
+    spawnEngineer();
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-
     spawnTNTTower();
-
-    playMusic();
   }
 
   private void displayUI() {
@@ -485,10 +479,16 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity crystal = DropFactory.createCrystalDrop();
+      spawnEntityAt(crystal, randomPos, true, false);
     }
   }
 
@@ -496,12 +496,24 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 50; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
+  
+  private void spawnEngineer() {
 
-
+    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
+      Entity engineer = EngineerFactory.createEngineer();
+      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+    }
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
+//    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//
+//    Entity engineer = EngineerFactory.createEngineer();
+//    spawnEntityAt(engineer, randomPos, true, true);
+  }
 }

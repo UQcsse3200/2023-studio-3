@@ -113,9 +113,6 @@ public class ProjectileFactory {
         .addComponent(new ProjectileAnimationController());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
-//    projectile
-//        .getComponent(TextureRenderComponent.class).scaleEntity();
-
     return projectile;
   }
   
