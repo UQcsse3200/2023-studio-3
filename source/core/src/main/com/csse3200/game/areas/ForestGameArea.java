@@ -179,20 +179,13 @@ public class ForestGameArea extends GameArea {
 
     spawnGhosts();
     spawnWeaponTower();
-
-
-
-    spawnIncome();
-
+    spawnTNTTower();
     spawnDroidTower();
-
-
-
     spawnEngineer();
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
 
-    spawnTNTTower();
+
 
   }
 
@@ -533,7 +526,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 2; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);
