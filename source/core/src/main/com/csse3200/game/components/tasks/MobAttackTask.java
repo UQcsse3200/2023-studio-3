@@ -67,7 +67,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     startTime = timeSource.getTime();
     this.mobPosition = owner.getEntity().getCenterPosition();
     this.maxRangePosition.set(0, mobPosition.y);
-    owner.getEntity().getEvents().trigger(IDLE);
+//    owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
   }
 
@@ -91,6 +91,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   public void updateMobState() {
 //    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
     CombatStatsComponent statsComp = owner.getEntity().getComponent(CombatStatsComponent.class);
+    System.out.println(owner.getEntity().getId() + " health: " + statsComp.getHealth());
 //    if (statsComp != null) {
 //    System.out.println("is the target visible " + isTargetVisible());
 //    }
