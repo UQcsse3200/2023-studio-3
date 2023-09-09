@@ -38,7 +38,7 @@ public class BossStatsDisplay extends UIComponent {
 
             // Heart image
             float bossSideLength = 30f;
-            bossImage = new Image(ServiceLocator.getResourceService().getAsset("images/boss_health.png", Texture.class));
+            bossImage = new Image(ServiceLocator.getResourceService().getAsset("images/mobs/boss_health.png", Texture.class));
 
             // Health text
             int health = entity.getComponent(CombatStatsComponent.class).getHealth();

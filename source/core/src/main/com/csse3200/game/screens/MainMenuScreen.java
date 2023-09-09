@@ -97,7 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
-    backgroundTexture = new Texture("images/background1.png"); // Load the background image
+    backgroundTexture = new Texture("images/background1.png");
     ServiceLocator.getResourceService().loadAll();
   }
 

@@ -18,16 +18,21 @@ import org.slf4j.LoggerFactory;
  * A ui component for displaying the Main menu.
  */
 public class MainMenuDisplay extends UIComponent {
+
     private static final Logger logger = LoggerFactory.getLogger(MainMenuDisplay.class);
     private static final float Z_INDEX = 2f;
     private Table table;
     private Table table1;
+
+
+
 
     @Override
     public void create() {
         super.create();
         addActors();
     }
+
 
     private void addActors() {
         table = new Table();
@@ -41,6 +46,9 @@ public class MainMenuDisplay extends UIComponent {
         title.setWidth(Gdx.graphics.getWidth());
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0,0);
+
+
+
 
         TextButton startBtn = new TextButton("Start", skin);
         TextButton loadBtn = new TextButton("Help", skin);
@@ -85,6 +93,7 @@ public class MainMenuDisplay extends UIComponent {
                     }
                 });
 
+
         table.add(title);
         table1.row();
         table1.add(startBtn).padTop(30f);
@@ -98,6 +107,7 @@ public class MainMenuDisplay extends UIComponent {
         stage.addActor(table);
         stage.addActor(table1);
     }
+
 
     @Override
     public void draw(SpriteBatch batch) {

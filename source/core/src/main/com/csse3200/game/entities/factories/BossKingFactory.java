@@ -50,7 +50,7 @@ public class BossKingFactory {
         AnimationRenderComponent animator1 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/rangeBossRight.atlas", TextureAtlas.class));
+                                .getAsset("images/mobs/rangeBossRight.atlas", TextureAtlas.class));
         animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
 
 
@@ -78,7 +78,7 @@ public class BossKingFactory {
         AnimationRenderComponent animator2 =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/robot.atlas", TextureAtlas.class));
+                                .getAsset("images/mobs/robot.atlas", TextureAtlas.class));
         animator2.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
 
         bossKing2

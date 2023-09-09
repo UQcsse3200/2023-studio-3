@@ -5,6 +5,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -16,17 +18,20 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
 import java.security.Provider;
+import java.util.Arrays;
 
 @ExtendWith(GameExtension.class)
 public class TowerFactoryTest {
@@ -35,16 +40,17 @@ public class TowerFactoryTest {
     private Entity weaponTower;
     private Entity wallTower;
     private String[] texture = {
-            "images/turret_deployed.png",
-            "images/turret01.png",
-            "images/wallTower.png"
+            "images/towers/turret_deployed.png",
+            "images/towers/turret01.png",
+            "images/towers/wallTower.png"
     };
-    private String[] atlas = {"images/turret01.atlas"};
+    private String[] atlas = {"images/towers/turret01.atlas"};
     private static final String[] sounds = {
-            "sounds/gun_shot_trimmed.mp3",
-            "sounds/deploy.mp3",
-            "sounds/stow.mp3"
+            "sounds/towers/gun_shot_trimmed.mp3",
+            "sounds/towers/deploy.mp3",
+            "sounds/towers/stow.mp3"
     };
+
     @BeforeEach
     public void setUp() {
         GameTime gameTime = mock(GameTime.class);
@@ -61,7 +67,7 @@ public class TowerFactoryTest {
         resourceService.loadSounds(sounds);
         resourceService.loadAll();
         ServiceLocator.getResourceService()
-                .getAsset("images/turret01.atlas", TextureAtlas.class);
+                .getAsset("images/towers/turret01.atlas", TextureAtlas.class);
         baseTower = TowerFactory.createBaseTower();
         weaponTower = TowerFactory.createWeaponTower();
         wallTower = TowerFactory.createWallTower();
@@ -141,6 +147,11 @@ public class TowerFactoryTest {
         assertTrue(wallTower.getComponent(CostComponent.class).getCost() == 5,
                 "Cost should be 5");
 
+    }
+
+    @Test
+    public void weaponTowerHasAnimationComponent() {
+        assertNotNull(weaponTower.getComponent(AnimationRenderComponent.class));
     }
 
     @Test
