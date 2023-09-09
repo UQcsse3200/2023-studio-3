@@ -41,8 +41,7 @@ public class ForestGameArea extends GameArea {
 
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
-  private int wave = 0;
-  private Timer waveTimer;
+
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
@@ -137,37 +136,6 @@ public class ForestGameArea extends GameArea {
   private Entity bossKing1;
   private Entity bossKing2;
 
-  // Add this method to start the wave spawning timer when the game starts.
-  private void startWaveTimer() {
-    waveTimer = new Timer();
-    waveTimer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        spawnWave();
-      }
-    }, 0, 10000); // 10000 milliseconds = 10 seconds
-  }
-
-  // Add this method to stop the wave timer when the game ends or as needed.
-  private void stopWaveTimer() {
-    if (waveTimer != null) {
-      waveTimer.cancel();
-      waveTimer = null;
-    }
-  }
-
-  private void spawnWave() {
-    wave++;
-      switch (wave) {
-          case 1, 2 -> spawnXenoGrunts();
-          case 3 -> spawnBossKing1();
-          case 4 -> spawnBossKing2();
-          default -> {
-          }
-          // Handle other wave scenarios if needed
-      }
-  }
-
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
@@ -199,7 +167,8 @@ public class ForestGameArea extends GameArea {
     spawnGhosts();
     spawnWeaponTower();
     spawnEngineer();
-    startWaveTimer();
+    bossKing1 = spawnBossKing1();
+    bossKing2 = spawnBossKing2();
     spawnTNTTower();
   }
 
@@ -507,7 +476,6 @@ public class ForestGameArea extends GameArea {
     super.dispose();
     ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
-    stopWaveTimer();
   }
 
   private void spawnScrap() {
