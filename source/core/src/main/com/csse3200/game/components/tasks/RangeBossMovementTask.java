@@ -77,7 +77,8 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
                         PhysicsLayer.HUMANS, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
                 owner.getEntity().getEvents().trigger(START);
                 switchMobKingBallState();
-                newProjectile.scaleHeight(-0.6f);
+                // newProjectile.scaleHeight(-1f);
+                newProjectile.setScale(-1.3f, 0.82f);
                 newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                 ServiceLocator.getEntityService().register(newProjectile);
                 startWaiting();
