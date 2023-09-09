@@ -6,6 +6,8 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.physics.PhysicsLayer;
 import org.slf4j.Logger;
@@ -23,6 +25,9 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     private MovementTask movementTask;
     private WaitTask waitTask;
     private Task currentTask;
+    private PhysicsEngine physics;
+    private static final short TARGET = PhysicsLayer.TOWER;
+    private final RaycastHit hit = new RaycastHit();
 
     /**
      * @param waitTime    How long in seconds to wait between wandering.
@@ -30,6 +35,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     public RangeBossMovementTask(float waitTime) {
 
         this.waitTime = waitTime;
+        physics = ServiceLocator.getPhysicsService().getPhysics();
     }
 
     @Override
@@ -58,11 +64,12 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.OBSTACLE, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
-
-                newProjectile.scaleHeight(-0.4f);
-                newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
-                ServiceLocator.getEntityService().register(newProjectile);
+                if (towerAhead()) {
+                    Entity newProjectile = ProjectileFactory.createFireBall(TARGET, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
+                    newProjectile.scaleHeight(-0.4f);
+                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
+                    ServiceLocator.getEntityService().register(newProjectile);
+                }
                 startWaiting();
             } else {
                 startMoving();
@@ -88,6 +95,10 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         }
         currentTask = newTask;
         currentTask.start();
+    }
+
+    private boolean towerAhead() {
+        return physics.raycast(currentPos, new Vector2(0, currentPos.y), TARGET, hit);
     }
 
 }

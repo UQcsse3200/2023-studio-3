@@ -7,6 +7,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.events.listeners.EventListener0;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.utils.math.Vector2Utils;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.GameTime;
@@ -26,6 +27,7 @@ class RangeBossMovementTaskTest {
     @BeforeEach
     void beforeEach() {
         ServiceLocator.registerTimeSource(gameTime);
+        ServiceLocator.registerPhysicsService(new PhysicsService());
     }
 
     @Test
@@ -33,7 +35,9 @@ class RangeBossMovementTaskTest {
         RangeBossMovementTask RBMTask = new RangeBossMovementTask(1f);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(RBMTask);
-        Entity entity = new Entity().addComponent(aiTaskComponent).addComponent(new PhysicsMovementComponent());
+        Entity entity = new Entity()
+                .addComponent(aiTaskComponent)
+                .addComponent(new PhysicsMovementComponent());
         entity.create();
 
         // Register callbacks
