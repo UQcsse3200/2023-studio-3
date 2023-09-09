@@ -56,7 +56,7 @@ class ProjectileFactoryTest {
         // ServiceLocator.getResourceService()
         //         .getAsset("images/projectiles/basic_projectile.atlas", TextureAtlas.class);
         Vector2 destination = new Vector2(0.1f, 0.1f);
-        short targetLayer = PhysicsLayer.PLAYER;
+        short targetLayer = PhysicsLayer.HUMANS;
         Vector2 speed = new Vector2(2f, 2f);
         projectile = ProjectileFactory.createBaseProjectile(targetLayer, destination, speed);
     }

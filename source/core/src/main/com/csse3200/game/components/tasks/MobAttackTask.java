@@ -130,8 +130,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.IDLE;
           System.out.println("FIRING: target not visible for " + owner.getEntity().getId());
         } else {
-          //owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.PLAYER, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+          owner.getEntity().getEvents().trigger(FIRING);
+          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
           ServiceLocator.getEntityService().register(newProjectile);
 //          mobState = STATE.IDLE;
