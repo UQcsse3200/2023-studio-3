@@ -13,8 +13,6 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   private static final String START = "startProjectile";
   private static final String FINAL = "startProjectileFinal";
 
-
-
   private enum STATE {
     START, FINAL
   }
