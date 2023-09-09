@@ -7,6 +7,7 @@ import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.RicochetComponent;
 import com.csse3200.game.components.SplitFireworksComponent;
+import com.csse3200.game.components.projectile.MobKingProjectAnimController;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -202,16 +203,16 @@ public class ProjectileFactory {
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService()
                             .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
-    animator.addAnimation("mob_boss", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("mob_bossFinal", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("mob_boss", 0.17f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("mob_bossFinal", 0.17f, Animation.PlayMode.NORMAL);
 
 
     projectile
             .addComponent(animator)
-            .addComponent(new MobProjectileAnimationController());
+            .addComponent(new MobKingProjectAnimController());
 
-//    projectile
-//            .getComponent(AnimationRenderComponent.class).scaleEntity();
+    projectile
+            .getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return projectile;
   }
