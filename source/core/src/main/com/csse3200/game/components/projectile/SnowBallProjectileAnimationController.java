@@ -3,8 +3,7 @@ package com.csse3200.game.components.projectile;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
-public class ProjectileAnimationController extends Component{
-    /** Event name constants */
+public class SnowBallProjectileAnimationController extends Component{
     private static final String START = "startProjectile";
     private static final String FINAL = "startProjectileFinal";
 

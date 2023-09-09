@@ -1,5 +1,6 @@
-package com.csse3200.game.components;
+package com.csse3200.game.components.projectile;
 
+import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
 
