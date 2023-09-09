@@ -80,6 +80,7 @@ loadScripts(document, 'script');</script>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">TouchAttackComponent</span>
 <span class="extends-implements">extends <a href="Component.html" title="class in com.csse3200.game.components">Component</a></span></div>
 <div class="block">When this entity touches a valid enemy's hitbox, deal damage to them and apply a knockback.
+ Has an optional disposeOnHit property that disposes projectile upon collision.
 
  <p>Requires CombatStatsComponent, HitboxComponent on this entity.
 
@@ -142,6 +143,9 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDisposeOnHit(boolean)" class="member-name-link">setDisposeOnHit</a><wbr>(boolean&nbsp;disposeOnHit)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setKnockBack(float)" class="member-name-link">setKnockBack</a><wbr>(float&nbsp;knockback)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -226,6 +230,12 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="setDisposeOnHit(boolean)">
 <h3>setDisposeOnHit</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setDisposeOnHit</span><wbr><span class="parameters">(boolean&nbsp;disposeOnHit)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="setKnockBack(float)">
+<h3>setKnockBack</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setKnockBack</span><wbr><span class="parameters">(float&nbsp;knockback)</span></div>
 </section>
 </li>
 </ul>
