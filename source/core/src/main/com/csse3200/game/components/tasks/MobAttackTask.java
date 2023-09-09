@@ -20,7 +20,6 @@ import com.csse3200.game.entities.factories.ProjectileFactory;
 public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final int INTERVAL = 1; // time interval to scan for towers in
   private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
-  // ^ fix this
 
 //  private static final String STOW = "stowStart";
 //  private static final String DEPLOY = "deployStart";
@@ -101,13 +100,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
       case IDLE -> {
         if (isTargetVisible()) {
-          System.out.println("IDLE: target visible for " + owner.getEntity().getId());
           // targets detected in idle mode - start deployment
           //owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.FIRING;
-        }
-        else {
-          System.out.println("IDLE: target not visible for " + owner.getEntity().getId());
+          owner.getEntity().getEvents().trigger(FIRING);
         }
       }
 
@@ -128,14 +124,11 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         if (!isTargetVisible()) {
           //owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.IDLE;
-          System.out.println("FIRING: target not visible for " + owner.getEntity().getId());
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+          Entity newProjectile = ProjectileFactory.createMobBall(TARGET, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x - 1), (float) (owner.getEntity().getPosition().y));
           ServiceLocator.getEntityService().register(newProjectile);
-//          mobState = STATE.IDLE;
-          System.out.println("FIRING: target visible for " + owner.getEntity().getId());
           owner.getEntity().getEvents().trigger(FIRING);
         }
       }
