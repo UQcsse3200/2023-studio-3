@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks;
 
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -142,6 +143,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         }
         System.out.println("firing for " + owner.getEntity().getId());
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
+        System.out.println("the fixture for " + owner.getEntity().getId() + " is " + this.meleeOrProjectile());
 
       }
 
@@ -229,6 +231,12 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);
   }
 
-//  private boolean meleeOrProjectile() {
-//  }
+  private Fixture meleeOrProjectile() {
+//    RaycastHit[] hits = physics.raycastAll(owner.getEntity().getPosition(), new Vector2(0, 0), TARGET);
+//    owner.getEntity().getComponent(CombatStatsComponent.class);
+    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET, hit);
+    System.out.println("hit fixture if worked is: " + hitraycast);
+    return hitraycast;
+  }
 }
