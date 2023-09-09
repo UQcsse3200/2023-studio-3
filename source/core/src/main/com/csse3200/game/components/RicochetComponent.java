@@ -50,7 +50,7 @@ public class RicochetComponent extends Component {
   private void onCollisionEnd(Fixture me, Fixture other) {
     if (hitBoxComponent.getFixture() != me
         || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)
-        || bounceCount >= 2) // BounceCount base case
+        || bounceCount >= 3) // BounceCount base case of 3
       return;
 
     Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;

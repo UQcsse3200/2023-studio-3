@@ -162,6 +162,9 @@ public class ForestGameArea extends GameArea {
 
     // Types of projectile
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
 
     spawnXenoGrunts();
@@ -419,6 +422,55 @@ public class ForestGameArea extends GameArea {
     Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
+  }
+
+  /**
+   * Spawns a pierce fireball.
+   * Pierce fireball can go through targetlayers without disappearing but damage
+   * will still be applied.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   */
+  private void spawnPierceFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity projectile = ProjectileFactory.createPierceFireBall(targetLayer, new Vector2(direction, position.y), speed);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
+  }
+
+  /**
+   * Spawns a ricochet fireball
+   * Ricochet fireballs bounce off targets with a specified maximum count of 3
+   * Possible extensions: Make the bounce count flexible with a param.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   */
+  private void spawnRicochetFireball(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    // Bounce count set to 0.
+    Entity projectile = ProjectileFactory.createRicochetFireball(targetLayer, new Vector2(direction, position.y), speed, 0);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
+  }
+
+  /**
+   * Spawns a split firework fireball.
+   * Splits into mini projectiles that spreads out after collision.
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   * @param amount The amount of projectiles appearing after collision.
+   */
+  private void spawnSplitFireWorksFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed, int amount) {
+    Entity projectile = ProjectileFactory.createSplitFireWorksFireball(targetLayer, new Vector2(direction, position.y), speed, amount);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
   }
 
   private void spawnWeaponTower() {
