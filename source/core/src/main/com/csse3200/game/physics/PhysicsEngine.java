@@ -143,6 +143,13 @@ PhysicsEngine implements Disposable {
     return singleHitCallback.didHit;
   }
 
+  public Fixture raycastGetHit(Vector2 from, Vector2 to, short layerMask, RaycastHit hit) {
+    singleHitCallback.didHit = false;
+    singleHitCallback.layerMask = layerMask;
+    world.rayCast(singleHitCallback, from, to);
+    return singleHitCallback.hit.fixture;
+  }
+
   /**
    * Cast a ray in a straight line from one point to another, checking for all collision against
    * colliders in the specified layers.
