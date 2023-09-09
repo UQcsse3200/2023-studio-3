@@ -6,10 +6,12 @@ import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.RicochetComponent;
+import com.csse3200.game.components.SplitFireworksComponent;
+import com.csse3200.game.components.projectile.MobKingProjectAnimController;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.MobProjectileAnimationController;
+import com.csse3200.game.components.DeleteOnMapEdgeComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -23,6 +25,8 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlller;
+import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 
 /**
@@ -83,10 +87,21 @@ public class ProjectileFactory {
    * Create a ricochet fireball.
    * Ricochet fireball bounces off specified targets while applying intended effects i.e. damage
    */
-  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed) {
+  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed, int bounceCount) {
     Entity fireBall = createFireBall(targetLayer, destination, speed);
-    fireBall.addComponent(new RicochetComponent(targetLayer));
+    fireBall
+      .addComponent(new RicochetComponent(targetLayer, bounceCount));
+    
+    setColliderSize(fireBall, (float) 0.1, (float) 0.1);
 
+    return fireBall;
+  }
+
+  public static Entity createSplitFireWorksFireball(short targetLayer, Vector2 destination, Vector2 speed, int amount) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall
+      .addComponent(new SplitFireworksComponent(targetLayer, amount));
+    
     return fireBall;
   }
 
@@ -111,6 +126,33 @@ public class ProjectileFactory {
     projectile
         .addComponent(animator)
         .addComponent(new ProjectileAnimationController());
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+    return projectile;
+  }
+  /**
+   * Creates a engineer bullet
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createEngineerBullet(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/engineer_projectile.atlas", TextureAtlas.class));
+    animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+    projectile
+        .addComponent(animator)
+        .addComponent(new EngineerBulletsAnimationControlller());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;
@@ -137,9 +179,40 @@ public class ProjectileFactory {
     projectile
         .addComponent(animator)
         .addComponent(new MobProjectileAnimationController());
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
 
     projectile
         .getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return projectile;
+  }
+
+  /**
+   * Creates a projectile to be used by the MobKing
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createMobKingBall(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
+    animator.addAnimation("mob_boss", 0.17f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("mob_bossFinal", 0.17f, Animation.PlayMode.NORMAL);
+
+
+    projectile
+            .addComponent(animator)
+            .addComponent(new MobKingProjectAnimController());
+
+    projectile
+            .getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return projectile;
   }
@@ -170,7 +243,9 @@ public class ProjectileFactory {
         // specified target.
         // Original knockback value: 1.5f
         .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        // *TEMPORARY
+        .addComponent(new DeleteOnMapEdgeComponent());
 
         projectile
         .getComponent(PhysicsMovementComponent.class).setSpeed(speed);

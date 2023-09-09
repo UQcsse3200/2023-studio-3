@@ -11,6 +11,7 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 
 /**
  * When this entity touches a valid enemy's hitbox, deal damage to them and apply a knockback.
+ * Has an optional disposeOnHit property that disposes projectile upon collision.
  *
  * <p>Requires CombatStatsComponent, HitboxComponent on this entity.
  *
