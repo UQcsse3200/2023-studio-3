@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.security.Provider;
+import java.util.Comparator;
 
 /**
  * Provides a global access point for entities to register themselves. This allows for iterating
@@ -85,7 +86,9 @@ public class EntityService {
   public Array<Entity> getNearbyEntities(Entity source, float radius) {
     Array<Entity> nearbyEntities = new Array<Entity>();
     Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
-    for (Entity otherEntity : allEntities) {
+    for (int i = 0; i < allEntities.size; i++) {
+      Entity otherEntity = allEntities.get(i);
+
       if (source == otherEntity) continue; // Skip the source entity
 
       Vector2 positionSource = source.getPosition();
@@ -99,6 +102,7 @@ public class EntityService {
   }
   
   public Entity getEntityAtPosition(float x, float y) {
+    entities.sort(Comparator.comparingInt(Entity::getLayer));
     for (Entity entity : entities) {
       if (entityContainsPosition(entity, x, y)) {
         return entity;

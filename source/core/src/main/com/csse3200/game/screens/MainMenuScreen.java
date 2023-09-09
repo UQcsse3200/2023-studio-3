@@ -44,7 +44,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
     renderer = RenderFactory.createRenderer();
     batch = new SpriteBatch();
-     Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);
+    Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);
 
 
     loadAssets();
