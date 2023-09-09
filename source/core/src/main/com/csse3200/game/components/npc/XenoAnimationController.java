@@ -20,6 +20,7 @@ public class XenoAnimationController extends Component {
         entity.getEvents().addListener("meleeStart", this::animateMelee2);
         entity.getEvents().addListener("shootStart", this::animateShoot);
         entity.getEvents().addListener("dieStart", this::animateDie);
+        entity.getEvents().addListener("stop", this::stopAnimation);
     }
 
     void animateRun() {
@@ -44,5 +45,9 @@ public class XenoAnimationController extends Component {
 
     void animateDie() {
         animator.startAnimation("xeno_die");
+    }
+
+    void stopAnimation() {
+        animator.stopAnimation();
     }
 }

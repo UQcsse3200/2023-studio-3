@@ -24,7 +24,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   private static final String STOW = "stowStart";
   private static final String DEPLOY = "deployStart";
-  private static final String FIRING = "firingStart";
+  private static final String FIRING = "shootStart";
   private static final String IDLE = "idleStart";
 
   private final int priority;
@@ -131,7 +131,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           newProjectile.setScale(-1f, 0.5f);
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
-          owner.getEntity().getEvents().trigger("shootStart");
         }
       }
 
