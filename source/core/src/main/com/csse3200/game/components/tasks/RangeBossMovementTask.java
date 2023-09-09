@@ -7,6 +7,7 @@ import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.physics.PhysicsLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,8 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, (currentPos.y + 0.75f)), new Vector2(2f,2f));
+                Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.OBSTACLE, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
+
                 newProjectile.scaleHeight(-0.4f);
                 newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                 ServiceLocator.getEntityService().register(newProjectile);
