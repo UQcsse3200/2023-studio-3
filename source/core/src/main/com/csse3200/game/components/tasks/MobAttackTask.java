@@ -19,7 +19,7 @@ import com.csse3200.game.entities.factories.ProjectileFactory;
  */
 public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final int INTERVAL = 1; // time interval to scan for towers in
-  private static final short TARGET = PhysicsLayer.OBSTACLE; // mobs detecting for towers
+  private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
   // ^ fix this
 
   private static final String STOW = "stowStart";
