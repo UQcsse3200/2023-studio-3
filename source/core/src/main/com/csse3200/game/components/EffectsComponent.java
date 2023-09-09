@@ -15,6 +15,11 @@ import com.badlogic.gdx.utils.Array;
 
 import java.util.ArrayList;
 
+/**
+ * This component applies an effect from the ProjectileEffects enum. This consists of fireball, burn,
+ * slow, and stun. Component also handles the targeting of specific layers and an area of effect
+ * application of effects.
+ */
 public class EffectsComponent extends Component {
     private final float radius;
     private final ProjectileEffects effect;
@@ -65,15 +70,16 @@ public class EffectsComponent extends Component {
             return;
         }
 
+        // Apply effect
         switch (effect) {
             case FIREBALL -> {
                 if (aoe) {
-                    applyAoeEffect(ProjectileEffects.FIREBALL, other);
+                    applyAoeEffect(ProjectileEffects.FIREBALL);
                 }
             }
             case BURN -> {
                 if (aoe) {
-                    applyAoeEffect(ProjectileEffects.BURN, other);
+                    applyAoeEffect(ProjectileEffects.BURN);
                 } else {
                     applySingleEffect(ProjectileEffects.BURN, otherCombatStats);
                 }
@@ -96,6 +102,7 @@ public class EffectsComponent extends Component {
             return;
         }
 
+        // Apply effect
         switch (effect) {
             case FIREBALL -> {}
             case BURN -> {
@@ -109,7 +116,7 @@ public class EffectsComponent extends Component {
      * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
      * @param effect effect to be applied to entities within radius
      */
-    public void applyAoeEffect(ProjectileEffects effect, Fixture other) {
+    public void applyAoeEffect(ProjectileEffects effect) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
@@ -120,10 +127,13 @@ public class EffectsComponent extends Component {
 
         Array<Entity> nearbyEntities = ServiceLocator.getEntityService().getNearbyEntities(hostEntity, radius);
 
+        // Iterate through nearby entities and apply effects
         for (int i = 0; i < nearbyEntities.size; i++) {
             Entity targetEntity = nearbyEntities.get(i);
 
-            if (!PhysicsLayer.contains(targetLayer, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+            if (targetHitbox == null) { return; }
+            if (!PhysicsLayer.contains(targetLayer, targetHitbox.getLayer())) {
                 // Doesn't match our target layer, ignore
                 return;
             }
@@ -140,14 +150,26 @@ public class EffectsComponent extends Component {
                     case SLOW -> {}
                     case STUN -> {}
                 }
+            } else {
+                return;
             }
         }
     }
 
+    /**
+     * Deals damage to target based on hosts' CombatStatsComponent
+     * @param target CombatStatsComponent of entity hit by projectile
+     * @param host CombatStatsComponent of projectile
+     */
     private void fireballEffect(CombatStatsComponent target, CombatStatsComponent host) {
         target.hit(host);
     }
 
+    /**
+     * Applies 5 ticks of damage from hosts' CombatStatsComponent over 5 seconds
+     * @param target CombatStatsComponent of entity hit by projectile
+     * @param host CombatStatsComponent of projectile
+     */
     private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
         // Ensure burn effects aren't applied multiple times by same projectile
         if (burnEntities.contains(target)) {
@@ -173,4 +195,30 @@ public class EffectsComponent extends Component {
             }
         }, delay, delay);
     }
+
+//    private void slowEffect(Entity targetEntity) {
+//        // Create a timer task to apply the effect repeatedly
+//        int numberOfTicks = 5;
+//        long delay = 1;
+//        Timer.schedule(new Timer.Task() {
+//            private int count = 0;
+//
+//            @Override
+//            public void run() {
+//                if (count < numberOfTicks) {
+//                    // Check if projectile is meant for towers or mobs
+//                    if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+//                        // towers
+//                        targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
+//                    } else if (!PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+//                        // mobs
+//                    }
+//                    count++;
+//                } else {
+//                    // Ensure to cancel the task when it's done
+//                    this.cancel();
+//                }
+//            }
+//        }, delay, delay);
+//    }
 }

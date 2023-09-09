@@ -91,16 +91,18 @@ PhysicsEngine implements Disposable {
     world.getBodies(bodies);
 
     // Check for bodies to be deleted
-    for(Body body : bodies) {
-      Entity entity = ((BodyUserData) body.getUserData()).entity;
+    for (Body body : bodies) {
+      // check for null values
+      if (body.getUserData() != null) {
+        Entity entity = ((BodyUserData) body.getUserData()).entity;
+        // If the entity is flagged for deletion, destroy the body before world.step() is called
+        if (entity.getFlagForDelete()) {
+          logger.debug("Destroying physics body {}", body);
+          ProjectileDestructors.destroyProjectile(entity);
 
-      // If the entity is flagged for deletion, destroy the body before world.step() is called
-      if(entity.getFlagForDelete()) {
-        logger.debug("Destroying physics body {}", body);
-        ProjectileDestructors.destroyProjectile(entity);
-        
-        // Make sure not to delete the body twice
-        entity.setFlagForDelete(false);
+          // Make sure not to delete the body twice
+          entity.setFlagForDelete(false);
+        }
       }
     }
   }

@@ -24,6 +24,8 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlller;
+import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 
 /**
@@ -119,8 +121,30 @@ public class ProjectileFactory {
         // .addComponent(new DeleteOnMapEdgeComponent());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
-//    projectile
-//        .getComponent(TextureRenderComponent.class).scaleEntity();
+    return projectile;
+  }
+  /**
+   * Creates a enginner bullet
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createEngineerBullet(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/engineer_projectile.atlas", TextureAtlas.class));
+    animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+    projectile
+        .addComponent(animator)
+        .addComponent(new EngineerBulletsAnimationControlller());
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;
   }
@@ -151,6 +175,27 @@ public class ProjectileFactory {
 
     projectile
         .getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return projectile;
+  }
+
+  public static Entity createMobKingBall(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
+    animator.addAnimation("mob_boss", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("mob_bossFinal", 0.1f, Animation.PlayMode.NORMAL);
+
+
+    projectile
+            .addComponent(animator)
+            .addComponent(new MobProjectileAnimationController());
+
+    projectile
+            .getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return projectile;
   }

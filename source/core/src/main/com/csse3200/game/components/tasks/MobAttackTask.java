@@ -19,7 +19,7 @@ import com.csse3200.game.entities.factories.ProjectileFactory;
  */
 public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final int INTERVAL = 1; // time interval to scan for towers in
-  private static final short TARGET = PhysicsLayer.OBSTACLE; // mobs detecting for towers
+  private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
   // ^ fix this
 
   private static final String STOW = "stowStart";
@@ -126,9 +126,9 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
-          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.PLAYER, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-          newProjectile.setScale(-1f, 0.5f);
+          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y + 0.1));
+          newProjectile.setScale(-0.7f, 0.7f);
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
           owner.getEntity().getEvents().trigger("shootStart");

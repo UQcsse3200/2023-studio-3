@@ -130,12 +130,18 @@ public class CombatStatsComponent extends Component {
   public void hit(Integer damage) {
     int newHealth = getHealth() - damage;
     setHealth(newHealth);
+    if (entity != null && !this.isDead()) {
+        entity.getEvents().trigger("hitStart");
+    }
     changeState();
   }
 
   // Default CombatStatsComponent that relies on the attacker's combatStatsComponent.
   public void hit(CombatStatsComponent attacker) {
     int newHealth = getHealth() - attacker.getBaseAttack();
+    if (entity != null && !this.isDead()) {
+        entity.getEvents().trigger("hitStart");
+    }
     setHealth(newHealth);
     changeState();
   }

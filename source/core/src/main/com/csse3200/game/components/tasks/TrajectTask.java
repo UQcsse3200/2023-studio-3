@@ -13,8 +13,6 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
   private static final String START = "startProjectile";
   private static final String FINAL = "startProjectileFinal";
 
-
-
   private enum STATE {
     START, FINAL
   }
@@ -41,6 +39,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
 
     this.owner.getEntity().getEvents().trigger(START);
     this.owner.getEntity().getEvents().trigger("rotate");
+    this.owner.getEntity().getEvents().trigger("start");
   }
 
   public void switchProjectileState() {
