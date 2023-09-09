@@ -170,6 +170,27 @@ public class ProjectileFactory {
     return projectile;
   }
 
+  public static Entity createMobKingBall(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
+    animator.addAnimation("mob_boss", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("mob_bossFinal", 0.1f, Animation.PlayMode.NORMAL);
+
+
+    projectile
+            .addComponent(animator)
+            .addComponent(new MobProjectileAnimationController());
+
+    projectile
+            .getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return projectile;
+  }
+
   /**
    * Creates a generic projectile entity that can be used for multiple types of * projectiles.
    * 
