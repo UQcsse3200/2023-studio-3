@@ -117,7 +117,7 @@ public class ProjectileFactory {
     return projectile;
   }
   /**
-   * Creates a enginner bullet
+   * Creates a engineer bullet
    * 
    * @param targetLayer The enemy layer that the projectile collides with.
    * @param destination The destination the projectile heads towards.
@@ -170,6 +170,14 @@ public class ProjectileFactory {
     return projectile;
   }
 
+  /**
+   * Creates a projectile to be used by the MobKing
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
   public static Entity createMobKingBall(short targetLayer, Vector2 destination, Vector2 speed) {
     Entity projectile = createBaseProjectile(targetLayer, destination, speed);
 
@@ -177,7 +185,7 @@ public class ProjectileFactory {
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService()
                             .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
-    animator.addAnimation("mob_boss", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("mob_boss", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("mob_bossFinal", 0.1f, Animation.PlayMode.NORMAL);
 
 
@@ -185,8 +193,8 @@ public class ProjectileFactory {
             .addComponent(animator)
             .addComponent(new MobProjectileAnimationController());
 
-    projectile
-            .getComponent(AnimationRenderComponent.class).scaleEntity();
+//    projectile
+//            .getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return projectile;
   }

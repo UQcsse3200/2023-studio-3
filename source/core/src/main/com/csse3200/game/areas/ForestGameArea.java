@@ -52,7 +52,6 @@ public class ForestGameArea extends GameArea {
   // Required to load assets before using them
   private static final String[] forestTextures = {
          "images/ingamebg.png",
-          "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
           "images/ghost_1.png",
@@ -97,7 +96,12 @@ public class ForestGameArea extends GameArea {
 
 
           "images/towers/mine_tower.png",
-          "images/towers/TNTTower.png"
+          "images/towers/TNTTower.png",
+
+          "images/projectiles/basic_projectile.png",
+          "images/projectiles/mobProjectile.png",
+          "images/projectiles/engineer_projectile.png",
+          "images/projectiles/mobKing_projectile.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -112,7 +116,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
           "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/engineer_projectile.atlas"
+          "images/projectiles/engineer_projectile.atlas",
+          "images/projectiles/mobKing_projectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -120,7 +125,9 @@ public class ForestGameArea extends GameArea {
           "sounds/towers/deploy.mp3",
           "sounds/towers/stow.mp3",
           "sounds/engineers/firing_auto.mp3",
-          "sounds/engineers/firing_single.mp3"
+          "sounds/engineers/firing_single.mp3",
+          "sounds/projectiles/on_collision.mp3",
+          "sounds/projectiles/explosion.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
