@@ -57,7 +57,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                Entity newProjectile = ProjectileFactory.createFireball(owner.getEntity(), new Vector2(0, (currentPos.y + 0.75f)), new Vector2(2f,2f));
+                Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, (currentPos.y + 0.75f)), new Vector2(2f,2f));
                 newProjectile.scaleHeight(-0.4f);
                 newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                 ServiceLocator.getEntityService().register(newProjectile);
