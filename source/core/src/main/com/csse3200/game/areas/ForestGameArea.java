@@ -169,7 +169,7 @@ public class ForestGameArea extends GameArea {
 
     // Types of projectile
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-    spawnMobBall(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+    // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
 
     spawnXenoGrunts();
 
@@ -307,7 +307,7 @@ public class ForestGameArea extends GameArea {
    * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnMobBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+  private void spawnProjectileTest(Vector2 position, short targetLayer, int direction, Vector2 speed) {
     Entity Projectile = ProjectileFactory.createEngineerBullet(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
