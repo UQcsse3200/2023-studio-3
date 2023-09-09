@@ -6,9 +6,11 @@ import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.RicochetComponent;
+import com.csse3200.game.components.SplitFireworksComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.DeleteOnMapEdgeComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -84,10 +86,21 @@ public class ProjectileFactory {
    * Create a ricochet fireball.
    * Ricochet fireball bounces off specified targets while applying intended effects i.e. damage
    */
-  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed) {
+  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed, int bounceCount) {
     Entity fireBall = createFireBall(targetLayer, destination, speed);
-    fireBall.addComponent(new RicochetComponent(targetLayer));
+    fireBall
+      .addComponent(new RicochetComponent(targetLayer, bounceCount));
+    
+    setColliderSize(fireBall, (float) 0.1, (float) 0.1);
 
+    return fireBall;
+  }
+
+  public static Entity createSplitFireWorksFireball(short targetLayer, Vector2 destination, Vector2 speed, int amount) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall
+      .addComponent(new SplitFireworksComponent(targetLayer, amount));
+    
     return fireBall;
   }
 
@@ -112,6 +125,8 @@ public class ProjectileFactory {
     projectile
         .addComponent(animator)
         .addComponent(new ProjectileAnimationController());
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;
@@ -163,6 +178,8 @@ public class ProjectileFactory {
     projectile
         .addComponent(animator)
         .addComponent(new MobProjectileAnimationController());
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
 
     projectile
         .getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -225,7 +242,9 @@ public class ProjectileFactory {
         // specified target.
         // Original knockback value: 1.5f
         .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack));
+        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        // *TEMPORARY
+        .addComponent(new DeleteOnMapEdgeComponent());
 
         projectile
         .getComponent(PhysicsMovementComponent.class).setSpeed(speed);
