@@ -28,6 +28,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlller;
 import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
 
 /**
  * Responsible for creating projectiles within the game.
@@ -53,7 +54,7 @@ public class ProjectileFactory {
    * @return Returns a new single-target projectile entity
    */
   public static Entity createEffectProjectile(short targetLayer, Vector2 destination, Vector2 speed, ProjectileEffects effect, boolean aoe) {
-    Entity projectile = createFireBall(targetLayer, destination, speed);
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
 
     switch(effect) {
       case FIREBALL -> {
@@ -64,6 +65,21 @@ public class ProjectileFactory {
       }
       case SLOW -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
+        AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/snow_ball.atlas", TextureAtlas.class));
+        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+      projectile
+          .addComponent(animator)
+          .addComponent(new SnowBallProjectileAnimationController());
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+        return projectile;
       }
       case STUN -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
