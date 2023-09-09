@@ -45,7 +45,7 @@ PhysicsEngine implements Disposable {
 
   public void update() {
     // Check for deleted bodies and joints
-    // checkAndDeleteBodies();
+    checkAndDeleteBodies();
 
     // Updating physics isn't as easy as triggering an update every frame. Each frame could take a
     // different amount of time to run, but physics simulations are only stable if computed at a
@@ -90,21 +90,31 @@ PhysicsEngine implements Disposable {
 
     world.getBodies(bodies);
 
-    // Check for bodies to be deleted
-    for (Body body : bodies) {
-      // check for null values
-      if (body.getUserData() != null) {
-        Entity entity = ((BodyUserData) body.getUserData()).entity;
-        // If the entity is flagged for deletion, destroy the body before world.step() is called
-        if (entity.getFlagForDelete()) {
-          logger.debug("Destroying physics body {}", body);
-          ProjectileDestructors.destroyProjectile(entity);
-
-          // Make sure not to delete the body twice
-          entity.setFlagForDelete(false);
+    // ! CANNOT USE ITERATOR HERE
+    // ! If you do: "ERROR: #ITERATOR CAN'T BE NESTED"
+    for(int i = 0; i < bodies.size; i++) {
+      if(bodies.get(i) != null || bodies.get(i).getUserData() != null) {
+        Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;
+        if(entity.getFlagForDelete()) {
+          entity.dispose();
         }
       }
     }
+    // Check for bodies to be deleted
+    // for (Body body : bodies) {
+    //   // check for null values
+    //   if (body.getUserData() != null) {
+    //     Entity entity = ((BodyUserData) body.getUserData()).entity;
+    //     // If the entity is flagged for deletion, destroy the body before world.step() is called
+    //     if (entity.getFlagForDelete()) {
+    //       logger.debug("Destroying physics body {}", body);
+    //       ProjectileDestructors.destroyProjectile(entity);
+
+    //       // Make sure not to delete the body twice
+    //       entity.setFlagForDelete(false);
+    //     }
+    //   }
+    // }
   }
 
   public World getWorld() {

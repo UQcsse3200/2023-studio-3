@@ -261,10 +261,10 @@ public class Entity {
       createdComponents.get(i).triggerUpdate();
     } 
 
-    if (isFlaggedForDelete) {
-      dispose();
-      return;
-    }
+    // if (isFlaggedForDelete) {
+    //   dispose();
+    //   return;
+    // }
   }
 
   /**

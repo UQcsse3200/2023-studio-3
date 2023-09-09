@@ -10,7 +10,6 @@ import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.DeleteOnMapEdgeComponent;
-import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -91,7 +90,7 @@ public class ProjectileFactory {
     fireBall
       .addComponent(new RicochetComponent(targetLayer, bounceCount));
     
-    setColliderSize(fireBall, (float) 0.4, (float) 0.15);
+    setColliderSize(fireBall, (float) 0.1, (float) 0.1);
 
     return fireBall;
   }
