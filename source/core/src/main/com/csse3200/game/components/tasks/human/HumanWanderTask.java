@@ -18,17 +18,13 @@ import org.slf4j.LoggerFactory;
  */
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
-
-  private float maxRange;
-  private Vector2 wanderRange;
+  private final float maxRange;
   private final float waitTime;
-  private Vector2 startPos;
+  private final Vector2 startPos;
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
-
   private EngineerCombatTask combatTask;
   private Task currentTask;
-
   private boolean isDead = false;
 
   /**
@@ -37,6 +33,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   public HumanWanderTask(float waitTime, float maxRange) {
     this.waitTime = waitTime;
     this.maxRange = maxRange;
+    this.startPos = owner.getEntity().getCenterPosition();
   }
 
   @Override
@@ -47,12 +44,10 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   @Override
   public void start() {
     super.start();
-    startPos = owner.getEntity().getPosition();
-    this.wanderRange = owner.getEntity().getCenterPosition();
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(this.wanderRange, 1f);
+    movementTask = new HumanMovementTask(this.startPos, 1f);
     movementTask.create(owner);
     movementTask.start();
 
@@ -126,6 +121,6 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private Vector2 getDirection() {
 //    float y = startPos.y;
 //    return new Vector2(0, y);
-    return this.wanderRange;
+    return this.startPos;
   }
 }
