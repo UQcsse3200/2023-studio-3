@@ -215,11 +215,11 @@ public class EffectsComponent extends Component {
         float ySpeed = 0;
 
         // Create a timer task to apply the effect repeatedly
-        if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+        if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // towers
             towerFlag = true;
             //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
-        } else if (!PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+        } else if (PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // mobs
             mobFlag = true;
             targetPhysics = targetEntity.getComponent(PhysicsMovementComponent.class);
