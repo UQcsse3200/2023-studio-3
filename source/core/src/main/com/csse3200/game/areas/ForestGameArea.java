@@ -4,9 +4,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.components.player.PlayerStatsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
 
+  // Counts the number of humans left, if this reaches zero, game over.
+  private int endStateCounter = 2;
   private static final int NUM_BUILDINGS = 4;
 
   private static final int NUM_WALLS = 7;
@@ -38,9 +42,9 @@ public class ForestGameArea extends GameArea {
 
   private static final int NUM_BOSS=4;
 
+
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
-
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
@@ -153,6 +157,9 @@ public class ForestGameArea extends GameArea {
     loadAssets();
     displayUI();
     spawnTerrain();
+
+    // Set up infrastructure for end game tracking
+    gameTrackerStart();
 
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
@@ -508,6 +515,25 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
       Entity engineer = EngineerFactory.createEngineer();
       spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+    }
+  }
+
+  private void gameTrackerStart() {
+    Entity endGameTracker = new Entity();
+
+    endGameTracker
+            .addComponent(new CombatStatsComponent(2, 0))
+            .addComponent(new PlayerStatsDisplay());
+//    .getEvents().addListener("engineerKilled" , this::decrementCounter);
+    endGameTracker.create();
+  }
+
+  private void decrementCounter() {
+    this.endStateCounter -= 1;
+    logger.info("Engineer killed");
+    if (endStateCounter <= 0) {
+      // we've reached the end, game over
+      this.dispose();
     }
   }
 }
