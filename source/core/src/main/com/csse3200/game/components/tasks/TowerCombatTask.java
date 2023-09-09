@@ -116,7 +116,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
 
                     Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
                     newProjectile.setScale(1.1f, 0.8f);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.5));
+                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (float) (owner.getEntity().getPosition().y + 0.5));
                     ServiceLocator.getEntityService().register(newProjectile);
                     
                     // * TEMPRORARYYYYYYYY PLS DON'T DELETE THIS
