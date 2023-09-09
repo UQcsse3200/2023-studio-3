@@ -20,7 +20,7 @@
     "cost": 1
   },
   "DroidTower": {
-    "health": 10,
+    "health": 50,
     "baseAttack": 5,
     "cost": 1
   },
