@@ -93,10 +93,11 @@ public class ForestGameArea extends GameArea {
           "images/economy/crystal.png",
           "images/economy/econ-tower.png",
           "images/towers/mine_tower.png",
-          "images/towers/TNTTower.png"
+          "images/towers/TNTTower.png",
           "images/economy/scrap.png",
           "images/towers/mine_tower.png"
   };
+
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
@@ -109,7 +110,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
-          "images/projectiles/mobProjectile.atlas"
+          "images/projectiles/mobProjectile.atlas",
           "images/mobs/rangeBossRight.atlas"
   };
   private static final String[] forestSounds = {

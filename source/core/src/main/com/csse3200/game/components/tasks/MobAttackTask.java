@@ -22,8 +22,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final int INTERVAL = 1; // time interval to scan for towers in
   private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
 
-//  private static final String STOW = "stowStart";
-//  private static final String DEPLOY = "deployStart";
+  private static final String STOW = "stowStart";
+  private static final String DEPLOY = "deployStart";
   private static final String FIRING = "shootStart";
   private static final String IDLE = "idleStart";
 
