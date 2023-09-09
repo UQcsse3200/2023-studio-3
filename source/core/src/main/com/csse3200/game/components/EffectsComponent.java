@@ -83,10 +83,16 @@ public class EffectsComponent extends Component {
                 if (aoe) {
                     applyAoeEffect(ProjectileEffects.BURN);
                 } else {
-                    applySingleEffect(ProjectileEffects.BURN, otherCombatStats);
+                    applySingleEffect(ProjectileEffects.BURN, otherCombatStats, otherEntity);
                 }
             }
-            case SLOW -> {}
+            case SLOW -> {
+                if (aoe) {
+                    applyAoeEffect(ProjectileEffects.SLOW);
+                } else {
+                    applySingleEffect(ProjectileEffects.SLOW, otherCombatStats, otherEntity);
+                }
+            }
             case STUN -> {}
         }
     }
@@ -95,7 +101,7 @@ public class EffectsComponent extends Component {
      * Used for singe targeting projectiles to apply effects entity it collides with.
      * @param effect effect to be applied to entity
      */
-    public void applySingleEffect(ProjectileEffects effect, CombatStatsComponent targetCombatStats) {
+    public void applySingleEffect(ProjectileEffects effect, CombatStatsComponent targetCombatStats, Entity targetEntity) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
@@ -110,7 +116,7 @@ public class EffectsComponent extends Component {
             case BURN -> {
                 burnEffect(targetCombatStats, hostCombatStats);
             }
-            case SLOW -> {}
+            case SLOW -> {slowEffect(targetEntity);}
             case STUN -> {}
         }
     }
@@ -213,7 +219,7 @@ public class EffectsComponent extends Component {
             // towers
             towerFlag = true;
             //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
-        } else if (!PhysicsLayer.contains(PhysicsLayer.ALL, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+        } else if (!PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // mobs
             mobFlag = true;
             targetPhysics = targetEntity.getComponent(PhysicsMovementComponent.class);
