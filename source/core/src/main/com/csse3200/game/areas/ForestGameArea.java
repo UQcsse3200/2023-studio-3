@@ -160,7 +160,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
 
     // Types of projectile
-    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+    spawnEffectProjectile(new Vector2(0, 3), PhysicsLayer.ALL, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, false);
     spawnMobBall(new Vector2(15,10), PhysicsLayer.NPC, towardsTowers, new Vector2(2f, 2f));
     spawnXenoGrunts();
 

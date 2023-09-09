@@ -1,5 +1,6 @@
 package com.csse3200.game.components;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -7,13 +8,14 @@ import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import com.badlogic.gdx.utils.Array;
-
-import java.util.ArrayList;
 
 /**
  * This component applies an effect from the ProjectileEffects enum. This consists of fireball, burn,
@@ -26,7 +28,7 @@ public class EffectsComponent extends Component {
     private final boolean aoe;
     private HitboxComponent hitboxComponent;
     private final short targetLayer;
-    private ArrayList<CombatStatsComponent> burnEntities = new ArrayList<>();
+    private Array<CombatStatsComponent> burnEntities = new Array<>();
 
     /**
      * Constructor for the AoEComponent.
@@ -141,13 +143,9 @@ public class EffectsComponent extends Component {
             CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
             if (targetCombatStats != null) {
                 switch (effect) {
-                    case FIREBALL -> {
-                        fireballEffect(targetCombatStats, hostCombatStats);
-                    }
-                    case BURN -> {
-                        burnEffect(targetCombatStats, hostCombatStats);
-                    }
-                    case SLOW -> {}
+                    case FIREBALL -> {fireballEffect(targetCombatStats, hostCombatStats);}
+                    case BURN -> {burnEffect(targetCombatStats, hostCombatStats);}
+                    case SLOW -> {slowEffect(targetEntity);}
                     case STUN -> {}
                 }
             } else {
@@ -172,7 +170,7 @@ public class EffectsComponent extends Component {
      */
     private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
         // Ensure burn effects aren't applied multiple times by same projectile
-        if (burnEntities.contains(target)) {
+        if (burnEntities.contains(target, false)) {
             return;
         }
         burnEntities.add(target);
@@ -196,29 +194,56 @@ public class EffectsComponent extends Component {
         }, delay, delay);
     }
 
-//    private void slowEffect(Entity targetEntity) {
-//        // Create a timer task to apply the effect repeatedly
-//        int numberOfTicks = 5;
-//        long delay = 1;
-//        Timer.schedule(new Timer.Task() {
-//            private int count = 0;
-//
-//            @Override
-//            public void run() {
-//                if (count < numberOfTicks) {
-//                    // Check if projectile is meant for towers or mobs
-//                    if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
-//                        // towers
-//                        targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
-//                    } else if (!PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
-//                        // mobs
-//                    }
-//                    count++;
-//                } else {
-//                    // Ensure to cancel the task when it's done
-//                    this.cancel();
-//                }
-//            }
-//        }, delay, delay);
-//    }
+    /**
+     * Applies slow effect to targetEntity. If entity is a mob, speed
+     * and firing rate will be slowed. If entity is a tower, firing rate
+     * will be slowed
+     * @param targetEntity Entity for slow effect to be applied to
+     */
+    private void slowEffect(Entity targetEntity) {
+        boolean towerFlag = false;
+        boolean mobFlag = false;
+
+        PhysicsMovementComponent targetPhysics = null;
+        float xSpeed = 0;
+        float ySpeed = 0;
+
+        // Create a timer task to apply the effect repeatedly
+        if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+            // towers
+            towerFlag = true;
+            //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
+        } else if (!PhysicsLayer.contains(PhysicsLayer.ALL, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
+            // mobs
+            mobFlag = true;
+            targetPhysics = targetEntity.getComponent(PhysicsMovementComponent.class);
+            if (targetPhysics == null) {
+                return;
+            }
+
+            // Halve the mob speed
+            xSpeed = targetPhysics.getSpeed().x;
+            ySpeed = targetPhysics.getSpeed().y;
+            targetPhysics.setSpeed(new Vector2(xSpeed/2, ySpeed/2));
+        } else {
+            return;
+        }
+
+        // Reset speed
+        boolean finalTowerFlag = towerFlag;
+        boolean finalMobFlag = mobFlag;
+        PhysicsMovementComponent finalTargetPhysics = targetPhysics;
+        float finalXSpeed = xSpeed;
+        float finalYSpeed = ySpeed;
+        Timer.schedule(new Task() {
+            @Override
+            public void run() {
+                if (finalTowerFlag) {
+                    //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
+                } else if (finalMobFlag) {
+                    finalTargetPhysics.setSpeed(new Vector2(finalXSpeed, finalYSpeed));
+                }
+            }
+        }, 5); // 5 seconds delay
+    }
 }
