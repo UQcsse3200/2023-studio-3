@@ -89,6 +89,16 @@ public class StoryScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    /**
+     * Fixes the
+     * @param width
+     * @param height
+     */
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
     @Override
     public void dispose() {
         batch.dispose();

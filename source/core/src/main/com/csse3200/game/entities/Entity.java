@@ -314,4 +314,7 @@ public class Entity {
     return layer;
   }
 
+    public String getName() {
+    return this.getClass().getSimpleName();
+    }
 }
