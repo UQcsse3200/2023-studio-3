@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -65,7 +66,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
                 if (towerAhead()) {
-                    Entity newProjectile = ProjectileFactory.createFireBall(TARGET, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
+                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f), ProjectileEffects.BURN, false);
                     newProjectile.scaleHeight(-0.4f);
                     newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                     ServiceLocator.getEntityService().register(newProjectile);
