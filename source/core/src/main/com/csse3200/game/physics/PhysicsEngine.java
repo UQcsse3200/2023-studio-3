@@ -93,28 +93,16 @@ PhysicsEngine implements Disposable {
     // ! CANNOT USE ITERATOR HERE
     // ! If you do: "ERROR: #ITERATOR CAN'T BE NESTED"
     for(int i = 0; i < bodies.size; i++) {
-      if(bodies.get(i) != null || bodies.get(i).getUserData() != null) {
-        Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;
-        if(entity.getFlagForDelete()) {
-          entity.dispose();
-        }
+      if(bodies.get(i) != null 
+          && bodies.get(i).getUserData() != null 
+          && (BodyUserData) bodies.get(i).getUserData() != null) {
+            Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;
+
+            if(entity.getFlagForDelete()) {
+              entity.dispose();
+            }
       }
     }
-    // Check for bodies to be deleted
-    // for (Body body : bodies) {
-    //   // check for null values
-    //   if (body.getUserData() != null) {
-    //     Entity entity = ((BodyUserData) body.getUserData()).entity;
-    //     // If the entity is flagged for deletion, destroy the body before world.step() is called
-    //     if (entity.getFlagForDelete()) {
-    //       logger.debug("Destroying physics body {}", body);
-    //       ProjectileDestructors.destroyProjectile(entity);
-
-    //       // Make sure not to delete the body twice
-    //       entity.setFlagForDelete(false);
-    //     }
-    //   }
-    // }
   }
 
   public World getWorld() {
