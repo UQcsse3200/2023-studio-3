@@ -161,6 +161,7 @@ public class ForestGameArea extends GameArea {
 
     // Types of projectile
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+    spawnMobBall(new Vector2(15,10), PhysicsLayer.NPC, towardsTowers, new Vector2(2f, 2f));
     spawnXenoGrunts();
 
     spawnGhosts();
