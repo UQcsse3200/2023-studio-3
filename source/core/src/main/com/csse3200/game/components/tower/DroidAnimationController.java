@@ -81,6 +81,6 @@ public class DroidAnimationController extends Component {
      * Triggers the "default" animation for the entity.
      * This method should be invoked when the entity returns to its default state.
      */
-    void animateDefault() { animator.startAnimation("default");}
+    void animateDefault() { animator.startAnimation("idle");}
 
 }
