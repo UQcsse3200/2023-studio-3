@@ -6,6 +6,7 @@ import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.RicochetComponent;
+import com.csse3200.game.components.SplitFireworksComponent;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -92,6 +93,14 @@ public class ProjectileFactory {
     
     setColliderSize(fireBall, (float) 0.1, (float) 0.1);
 
+    return fireBall;
+  }
+
+  public static Entity createSplitFireWorksFireball(short targetLayer, Vector2 destination, Vector2 speed, int amount) {
+    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    fireBall
+      .addComponent(new SplitFireworksComponent(targetLayer, amount));
+    
     return fireBall;
   }
 

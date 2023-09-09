@@ -69,10 +69,12 @@ public class RicochetComponent extends Component {
     if (newYPosition >= 8 || newYPosition <= 1 || newXPosition >= 17 || newXPosition <= 1)
       return;
 
+    // * RIGHT NOW TARGET IS NPC, SUBJECT TO CHANGE
     Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC,
         new Vector2(100, projectile.getPosition().y + randomDirection), new Vector2(2f, 2f), ++bounceCount); // Increment bounceCount
 
     newProjectile.setPosition(newXPosition, newYPosition);
+    newProjectile.setScale(0.75f, 0.75f);
 
     ServiceLocator.getEntityService().register(newProjectile);
   }
