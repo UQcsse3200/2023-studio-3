@@ -17,7 +17,7 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Timer;
+import java.util.*;
 
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
@@ -265,10 +265,9 @@ public class ForestGameArea extends GameArea {
   }
 
   private Entity spawnBossKing1() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos 
-     = new GridPoint2(0, 0);
+    int[] pickedLanes = new Random().ints(0, 8)
+            .distinct().limit(5).toArray();
+    GridPoint2 randomPos = new GridPoint2(19, pickedLanes[0]);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
     return ghostKing;
@@ -360,13 +359,11 @@ public class ForestGameArea extends GameArea {
   }
 
   private Entity spawnBossKing2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    int[] pickedLanes = new Random().ints(0, 8)
+            .distinct().limit(5).toArray();
 
     for (int i = 0; i < NUM_BOSS; i++) {
-      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-      int randomY = MathUtils.random(0, maxPos.y);
-      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       bossKing2 = BossKingFactory.createBossKing2(player);
       spawnEntityAt(bossKing2,
               randomPos,
