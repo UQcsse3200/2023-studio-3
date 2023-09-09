@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -112,6 +113,12 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             case SHOOT_DOWN -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK_DOWN);
+                    Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+                            owner.getEntity().getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
+                    Projectile.setScale(new Vector2(0.5f,0.5f));
+                    Projectile.setPosition((float) (owner.getEntity().getPosition().x + 0.2),
+                            (float) (owner.getEntity().getPosition().y - 0.2));
+                    ServiceLocator.getEntityService().register(Projectile);
                     towerState = STATE.UP;
                 } else {
                     owner.getEntity().getEvents().trigger(GO_UP);
@@ -123,6 +130,12 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
 
                     owner.getEntity().getEvents().trigger(ATTACK_UP);
                     towerState = STATE.DOWN;
+                    Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+                            owner.getEntity().getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
+                    Projectile.setScale(new Vector2(0.5f,0.5f));
+                    Projectile.setPosition((float) (owner.getEntity().getPosition().x + 0.2),
+                            (float) (owner.getEntity().getPosition().y + 0.5));
+                    ServiceLocator.getEntityService().register(Projectile);
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
                     towerState = STATE.IDLE;
