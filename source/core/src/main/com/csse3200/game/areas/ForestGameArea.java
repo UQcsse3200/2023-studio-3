@@ -182,6 +182,7 @@ public class ForestGameArea extends GameArea {
     spawnTNTTower();
     spawnDroidTower();
     spawnEngineer();
+    spawnIncome();
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
 
