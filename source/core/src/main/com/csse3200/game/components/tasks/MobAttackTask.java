@@ -22,9 +22,9 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final short TARGET = PhysicsLayer.OBSTACLE; // mobs detecting for towers
   // ^ fix this
 
-  private static final String STOW = "stowStart";
-  private static final String DEPLOY = "deployStart";
-  private static final String FIRING = "firingStart";
+//  private static final String STOW = "stowStart";
+//  private static final String DEPLOY = "deployStart";
+  private static final String FIRING = "shootStart";
   private static final String IDLE = "idleStart";
 
   private final int priority;
@@ -69,7 +69,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     this.maxRangePosition.set(0, mobPosition.y);
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
-    owner.getEntity().getEvents().trigger("shootStart");
   }
 
   /**
@@ -80,7 +79,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   public void update() {
     updateMobState();
 
-    if (mobState == STATE.STOW) {
+    if (mobState == STATE.IDLE) {
       status = Status.FINISHED;
     }
   }
@@ -95,55 +94,56 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 //    if (statsComp != null) {
 //    System.out.println("is the target visible " + isTargetVisible());
 //    }
-    if (!isTargetVisible()) {
-      System.out.println("target is not visible for " + owner.getEntity().getId());
-    }
+//    if (!isTargetVisible()) {
+//      System.out.println("target is not visible for " + owner.getEntity().getId());
+//    }
     switch (mobState) {
 
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-          owner.getEntity().getEvents().trigger(DEPLOY);
-          mobState = STATE.DEPLOY;
+          //owner.getEntity().getEvents().trigger(DEPLOY);
+          mobState = STATE.FIRING;
         }
       }
 
-      case DEPLOY -> {
-        // currently deploying,
-        if (isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(FIRING);
-          mobState = STATE.FIRING;
-        } else {
-          owner.getEntity().getEvents().trigger(STOW);
-          mobState = STATE.STOW;
-        }
-      }
+//      case DEPLOY -> {
+//        // currently deploying,
+//        if (isTargetVisible()) {
+//          //owner.getEntity().getEvents().trigger(FIRING);
+//          mobState = STATE.FIRING;
+//          owner.getEntity().getEvents().trigger("shootStart");
+//        } else {
+//          //owner.getEntity().getEvents().trigger(STOW);
+//          mobState = STATE.STOW;
+//        }
+//      }
 
       case FIRING -> {
         // targets gone - stop firing
         if (!isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(STOW);
-          mobState = STATE.STOW;
+          //owner.getEntity().getEvents().trigger(STOW);
+          mobState = STATE.IDLE;
         } else {
-          owner.getEntity().getEvents().trigger(FIRING);
+          //owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.PLAYER, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
           ServiceLocator.getEntityService().register(newProjectile);
-          mobState = STATE.STOW;
-          owner.getEntity().getEvents().trigger("shootStart");
+//          mobState = STATE.IDLE;
+          owner.getEntity().getEvents().trigger(FIRING);
         }
       }
 
-      case STOW -> {
-        // currently stowing
-        if (isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(DEPLOY);
-          mobState = STATE.DEPLOY;
-        } else {
-          owner.getEntity().getEvents().trigger(IDLE);
-          mobState = STATE.IDLE;
-        }
-      }
+//      case STOW -> {
+//        // currently stowing
+//        if (isTargetVisible()) {
+//          //owner.getEntity().getEvents().trigger(DEPLOY);
+//          mobState = STATE.DEPLOY;
+//        } else {
+//          //owner.getEntity().getEvents().trigger(IDLE);
+//          mobState = STATE.IDLE;
+//        }
+//      }
     }
   }
 
@@ -153,7 +153,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   @Override
   public void stop() {
     super.stop();
-    owner.getEntity().getEvents().trigger(STOW);
+    owner.getEntity().getEvents().trigger(IDLE);
   }
 
   /**
