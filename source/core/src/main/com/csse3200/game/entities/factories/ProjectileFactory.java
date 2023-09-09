@@ -25,7 +25,7 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlller;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
 import com.csse3200.game.components.projectile.MobProjectileAnimationController;
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
@@ -59,9 +59,29 @@ public class ProjectileFactory {
     switch(effect) {
       case FIREBALL -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));
+        AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+    projectile
+        .addComponent(animator)
+        .addComponent(new ProjectileAnimationController());
       }
       case BURN -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
+        AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+
+    projectile
+        .addComponent(animator)
+        .addComponent(new ProjectileAnimationController());
       }
       case SLOW -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
@@ -95,6 +115,7 @@ public class ProjectileFactory {
   public static Entity createPierceFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
     Entity fireBall = createFireBall(targetLayer, destination, speed);
     fireBall.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+    fireBall.getComponent(TouchAttackComponent.class).setKnockBack(0f);
 
     return fireBall;
   }
@@ -168,7 +189,7 @@ public class ProjectileFactory {
 
     projectile
         .addComponent(animator)
-        .addComponent(new EngineerBulletsAnimationControlller());
+        .addComponent(new EngineerBulletsAnimationController());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;

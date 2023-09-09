@@ -4,7 +4,7 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator; //used for sound
 
-public class EngineerBulletsAnimationControlller extends Component{
+public class EngineerBulletsAnimationController extends Component{
     /** Event name constants */
 
     AnimationRenderComponent animator;
