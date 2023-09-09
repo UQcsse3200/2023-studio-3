@@ -87,17 +87,15 @@ public class ForestGameArea extends GameArea {
           "images/towers/wallTower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
-
           "images/terrain_use.png",
           "images/Dusty_MoonBG.png",
-
           "images/economy/scrap.png",
           "images/economy/crystal.png",
           "images/economy/econ-tower.png",
-
-
           "images/towers/mine_tower.png",
           "images/towers/TNTTower.png"
+          "images/economy/scrap.png",
+          "images/towers/mine_tower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -112,6 +110,7 @@ public class ForestGameArea extends GameArea {
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
           "images/projectiles/mobProjectile.atlas"
+          "images/mobs/rangeBossRight.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -153,7 +152,9 @@ public class ForestGameArea extends GameArea {
     loadAssets();
     displayUI();
     spawnTerrain();
-
+    spawnBuilding1();
+    spawnBuilding2();
+    spawnMountains();
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
@@ -166,6 +167,10 @@ public class ForestGameArea extends GameArea {
     spawnGhosts();
     spawnWeaponTower();
     spawnEngineer();
+    spawnWeaponTower();
+    spawnIncome();
+    spawnScrap();
+
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
     spawnTNTTower();
