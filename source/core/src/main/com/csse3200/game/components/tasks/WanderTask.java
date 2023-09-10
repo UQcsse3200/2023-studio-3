@@ -1,12 +1,24 @@
 package com.csse3200.game.components.tasks;
 
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.utils.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Wander around by moving a random position within a range of the starting position. Wait a little
@@ -21,6 +33,8 @@ public class WanderTask extends DefaultTask implements PriorityTask {
   private MovementTask movementTask;
   private WaitTask waitTask;
   private Task currentTask;
+  private boolean isDead = false;
+  private Vector2 mobPosition;
 
   /**
    * @param wanderRange Distance in X and Y the entity can move from its position when start() is
@@ -58,14 +72,47 @@ public class WanderTask extends DefaultTask implements PriorityTask {
 
   @Override
   public void update() {
-    if (currentTask.getStatus() != Status.ACTIVE) {
-      if (currentTask == movementTask) {
-        startWaiting();
-      } else {
-        startMoving();
-      }
+
+    //Update the position of the mob
+    mobPosition = owner.getEntity().getPosition();
+
+    // If the mob is at zero health, kill the mob,
+    // play the death animation and stop the task
+    // This method is the idea of Ahmad who very kindly helped
+    // with section, massive props to him for his help!
+    if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
+      owner.getEntity().getEvents().trigger("dieStart");
+      //owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
+      //owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
+      currentTask.stop();
+      isDead = true;
     }
-    currentTask.update();
+
+    // Check if the mob has finished death animation
+    else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+
+      // Drop scrap at the mobs location for player
+      // to collect.
+      Entity scrap = DropFactory.createScrapDrop();
+      scrap.setPosition(mobPosition.x,mobPosition.y);
+      ServiceLocator.getEntityService().register(scrap);
+
+      // Delete the mob.
+      owner.getEntity().setFlagForDelete(true);
+
+    }
+    // If not dead, do normal things...
+    else if (!isDead) {
+
+      if (currentTask.getStatus() != Status.ACTIVE) {
+        if (currentTask == movementTask) {
+          startWaiting();
+        } else {
+          startMoving();
+        }
+      }
+      currentTask.update();
+    }
   }
 
   private void startWaiting() {
