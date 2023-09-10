@@ -10,8 +10,6 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * HumanWanderTask is the entry point for the engineer entity's behaviour. Instantiates subtasks HumanWaitTask,
@@ -19,16 +17,14 @@ import org.slf4j.LoggerFactory;
  * handled in this class.
  */
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
-  private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
   private static final int TOLERANCE = 1;
   private static final float STOP_DISTANCE = 0.5f;
   private static final int DEFAULT_PRIORITY = 1;
   private static final String DEATH_EVENT = "deathStart";
   private static final String IDLE_EVENT = "idleRight";
-
+  private AnimationRenderComponent animator;
   private final float maxRange;
   private final float waitTime;
-  private Vector2 startPos;
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
   private EngineerCombatTask combatTask;
@@ -62,11 +58,11 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   @Override
   public void start() {
     super.start();
-    this.startPos = owner.getEntity().getCenterPosition();
+    Vector2 startPos = owner.getEntity().getCenterPosition();
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(this.startPos, STOP_DISTANCE);
+    movementTask = new HumanMovementTask(startPos, STOP_DISTANCE);
     movementTask.create(owner);
     movementTask.start();
 
@@ -75,6 +71,8 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     combatTask.start();
 
     currentTask = movementTask;
+
+    animator = owner.getEntity().getComponent(AnimationRenderComponent.class);
   }
 
   /**
@@ -87,42 +85,49 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
-    // Check if engineer has died since last update
-    if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
-      startDying();
-    }
 
-    // Check if engineer has finished dying animation
-    else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+    boolean justDied = owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
+    // Check if engineer has died since last update
+    if (!isDead && justDied) {
+      startDying();
+    } else if (isDead && animator.isFinished()) {
       owner.getEntity().setFlagForDelete(true);
+      // Decrement the engineer count
       ServiceLocator.getGameEndService().updateEngineerCount();
     }
 
     // otherwise doing engineer things since engineer is alive
-    else if (!isDead) {
-      if (currentTask.getStatus() != Status.ACTIVE) {
+    else if (!isDead){
+      doEngineerThings();
 
-        // if the engineer is in move state and update has been called, engineer has arrived at destination
-        if (currentTask == movementTask) {
-          startWaiting();
-          owner.getEntity().getEvents().trigger(IDLE_EVENT);
-
-        } else if (combatTask.isTargetVisible()) {
-            // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
-            if (combatTask.fetchTarget().y < owner.getEntity().getCenterPosition().y + TOLERANCE &&
-                    combatTask.fetchTarget().y > owner.getEntity().getCenterPosition().y - TOLERANCE) {
-              startCombat();
-
-            // move into position for targeting mob
-            } else {
-              startMoving(new Vector2(owner.getEntity().getCenterPosition().x, combatTask.fetchTarget().y));
-            }
-        }
-      }
       currentTask.update();
     }
   }
 
+  private void doEngineerThings() {
+    if (currentTask.getStatus() != Status.ACTIVE) {
+
+      // if the engineer is in move state and update has been called, engineer has arrived at destination
+      if (currentTask == movementTask) {
+        startWaiting();
+        owner.getEntity().getEvents().trigger(IDLE_EVENT);
+
+      } else if (combatTask.isTargetVisible()) {
+        float engY = owner.getEntity().getCenterPosition().y;
+        float targetY = combatTask.fetchTarget().y;
+        // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
+        if (engY <  targetY + TOLERANCE &&
+                engY > targetY - TOLERANCE) {
+          startCombat();
+
+          // move into position for targeting mob
+        } else {
+          Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
+          startMoving(newPos);
+        }
+      }
+    }
+  }
   /**
    * Handle the dying phase of the entity. Triggers an event to play the appropriate media,
    * sets HitBox and Collider components to ignore contact (stops the body being pushed around)
@@ -169,13 +174,5 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     }
     currentTask = newTask;
     currentTask.start();
-  }
-
-  /**
-   * Fetch the start position.
-   * @return a Vector2 start position
-   */
-  public Vector2 getStartPos() {
-    return this.startPos;
   }
 }
