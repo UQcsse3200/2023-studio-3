@@ -341,6 +341,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/human/package-summary.html">com.csse3200.game.components.tasks.human</a> - package com.csse3200.game.components.tasks.human</dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/package-summary.html">com.csse3200.game.components.tasks.scanner</a> - package com.csse3200.game.components.tasks.scanner</dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tower/package-summary.html">com.csse3200.game.components.tower</a> - package com.csse3200.game.components.tower</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/concurrency/package-summary.html">com.csse3200.game.concurrency</a> - package com.csse3200.game.concurrency</dt>
@@ -713,6 +715,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/entities/factories/ProjectileFactory.html#createRicochetFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createRicochetFireball(short, Vector2, Vector2, int)</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/ProjectileFactory.html" title="class in com.csse3200.game.entities.factories">ProjectileFactory</a></dt>
 <dd>
 <div class="block">Create a ricochet fireball.</div>
+</dd>
+<dt><a href="com/csse3200/game/entities/factories/GapScannerFactory.html#createScanner()" class="member-name-link">createScanner()</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/GapScannerFactory.html" title="class in com.csse3200.game.entities.factories">GapScannerFactory</a></dt>
+<dd>
+<div class="block">Creates a scanner entity</div>
 </dd>
 <dt><a href="com/csse3200/game/entities/factories/DropFactory.html#createScrapDrop()" class="member-name-link">createScrapDrop()</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/DropFactory.html" title="class in com.csse3200.game.entities.factories">DropFactory</a></dt>
 <dd>
@@ -1221,6 +1227,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/services/GameTime.html#%3Cinit%3E()" class="member-name-link">GameTime()</a> - Constructor for class com.csse3200.game.services.<a href="com/csse3200/game/services/GameTime.html" title="class in com.csse3200.game.services">GameTime</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/entities/factories/GapScannerFactory.html" class="type-name-link" title="class in com.csse3200.game.entities.factories">GapScannerFactory</a> - Class in <a href="com/csse3200/game/entities/factories/package-summary.html">com.csse3200.game.entities.factories</a></dt>
+<dd>
+<div class="block">Factory to create scanner entities that determine whether to spawn engineer entities.</div>
+</dd>
 <dt><a href="com/csse3200/game/GdxGame.html" class="type-name-link" title="class in com.csse3200.game">GdxGame</a> - Class in <a href="com/csse3200/game/package-summary.html">com.csse3200.game</a></dt>
 <dd>
 <div class="block">Entry point of the non-platform-specific game logic.</div>
@@ -1474,7 +1484,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Simplified getPriority function, returns the priority of the task</div>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Fetches the priority of this task.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/MobAttackTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/MobAttackTask.html" title="class in com.csse3200.game.components.tasks">MobAttackTask</a></dt>
 <dd>
 <div class="block">Returns the current priority of the task.</div>
@@ -1485,6 +1497,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html" title="class in com.csse3200.game.components.tasks">RangeBossMovementTask</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.scanner.<a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html" title="class in com.csse3200.game.components.tasks.scanner">ScannerTask</a></dt>
+<dd>
+<div class="block">Return the priority of the task.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/SpawnWaveTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/SpawnWaveTask.html" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">StunTowerCombatTask</a></dt>
@@ -1535,6 +1551,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/rendering/RenderService.html#getStage()" class="member-name-link">getStage()</a> - Method in class com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/RenderService.html" title="class in com.csse3200.game.rendering">RenderService</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html#getStartPos()" class="member-name-link">getStartPos()</a> - Method in class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a></dt>
+<dd>
+<div class="block">Fetch the start position.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/CombatStatsComponent.html#getState()" class="member-name-link">getState()</a> - Method in class com.csse3200.game.components.<a href="com/csse3200/game/components/CombatStatsComponent.html" title="class in com.csse3200.game.components">CombatStatsComponent</a></dt>
 <dd>
 <div class="block">Return the state of the enemy
@@ -1694,7 +1714,7 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanMovementTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.human">HumanMovementTask</a> - Class in <a href="com/csse3200/game/components/tasks/human/package-summary.html">com.csse3200.game.components.tasks.human</a></dt>
 <dd>
-<div class="block">Move to a given position, finishing when you get close enough.</div>
+<div class="block">Move a human entity to a given position, finishing when you get close enough.</div>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanMovementTask.html#%3Cinit%3E(com.badlogic.gdx.math.Vector2)" class="member-name-link">HumanMovementTask(Vector2)</a> - Constructor for class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanMovementTask.html" title="class in com.csse3200.game.components.tasks.human">HumanMovementTask</a></dt>
 <dd>&nbsp;</dd>
@@ -1710,10 +1730,12 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a> - Class in <a href="com/csse3200/game/components/tasks/human/package-summary.html">com.csse3200.game.components.tasks.human</a></dt>
 <dd>
-<div class="block">Wander around by moving a random position within a range of the starting position.</div>
+<div class="block">HumanWanderTask is the entry point for the engineer entity's behaviour.</div>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html#%3Cinit%3E(float,float)" class="member-name-link">HumanWanderTask(float, float)</a> - Constructor for class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Constructor of HumanWanderTask</div>
+</dd>
 <dt><a href="com/csse3200/game/entities/PredefinedWeapons.html#hurricane" class="member-name-link">hurricane</a> - Static variable in class com.csse3200.game.entities.<a href="com/csse3200/game/entities/PredefinedWeapons.html" title="class in com.csse3200.game.entities">PredefinedWeapons</a></dt>
 <dd>&nbsp;</dd>
 </dl>
@@ -2532,6 +2554,16 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Set the entity's width and scale the height to maintain aspect ratio.</div>
 </dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.scanner">ScannerTask</a> - Class in <a href="com/csse3200/game/components/tasks/scanner/package-summary.html">com.csse3200.game.components.tasks.scanner</a></dt>
+<dd>
+<div class="block">ScannerTask implements the behaviour of GapScannerEntities that detect the
+ conditions to trigger engineer spawning, i.e., No towers, no engineers, mobs within
+ a certain distance.</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html#%3Cinit%3E()" class="member-name-link">ScannerTask()</a> - Constructor for class com.csse3200.game.components.tasks.scanner.<a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html" title="class in com.csse3200.game.components.tasks.scanner">ScannerTask</a></dt>
+<dd>
+<div class="block">ScannerTask Constructor</div>
+</dd>
 <dt><a href="com/csse3200/game/currency/Scrap.html" class="type-name-link" title="class in com.csse3200.game.currency">Scrap</a> - Class in <a href="com/csse3200/game/currency/package-summary.html">com.csse3200.game.currency</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/currency/Scrap.html#%3Cinit%3E()" class="member-name-link">Scrap()</a> - Constructor for class com.csse3200.game.currency.<a href="com/csse3200/game/currency/Scrap.html" title="class in com.csse3200.game.currency">Scrap</a></dt>
@@ -2847,7 +2879,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Start waiting from now until duration has passed.</div>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Starts the HumanWanderTask instance and instantiates subtasks (HumanWaitTask, HumanWanderTask, EngineerCombatTask).</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/MobAttackTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/MobAttackTask.html" title="class in com.csse3200.game.components.tasks">MobAttackTask</a></dt>
 <dd>
 <div class="block">Starts the task running, triggers the initial "idleStart" event.</div>
@@ -2860,6 +2894,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html" title="class in com.csse3200.game.components.tasks">RangeBossMovementTask</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.scanner.<a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html" title="class in com.csse3200.game.components.tasks.scanner">ScannerTask</a></dt>
+<dd>
+<div class="block">Start method for the ScannerTask</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/SpawnWaveTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/SpawnWaveTask.html" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">StunTowerCombatTask</a></dt>
@@ -3341,7 +3379,9 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWaitTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWaitTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWaitTask</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.human.<a href="com/csse3200/game/components/tasks/human/HumanWanderTask.html" title="class in com.csse3200.game.components.tasks.human">HumanWanderTask</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Operates the main logic of the entity in this task.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/MobAttackTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/MobAttackTask.html" title="class in com.csse3200.game.components.tasks">MobAttackTask</a></dt>
 <dd>
 <div class="block">The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().</div>
@@ -3354,6 +3394,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/RangeBossMovementTask.html" title="class in com.csse3200.game.components.tasks">RangeBossMovementTask</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.scanner.<a href="com/csse3200/game/components/tasks/scanner/ScannerTask.html" title="class in com.csse3200.game.components.tasks.scanner">ScannerTask</a></dt>
+<dd>
+<div class="block">Update method for the scanner task.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/SpawnWaveTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/SpawnWaveTask.html" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/StunTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">StunTowerCombatTask</a></dt>
