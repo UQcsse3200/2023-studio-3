@@ -20,6 +20,7 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.maingame.MainGameActions;
+import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.PlayerFactory;
@@ -64,7 +65,6 @@ public class MainGameScreen extends ScreenAdapter {
   public static int viewportHeight= screenHeight;
 
 
-
   private OrthographicCamera camera;
   private SpriteBatch batch;
 
@@ -105,6 +105,8 @@ public class MainGameScreen extends ScreenAdapter {
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
 
+    ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
+
     loadAssets();
     createUI();
 
@@ -113,7 +115,6 @@ public class MainGameScreen extends ScreenAdapter {
     ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
     forestGameArea.create();
   }
-
   @Override
   public void render(float delta) {
     physicsEngine.update();
@@ -123,7 +124,6 @@ public class MainGameScreen extends ScreenAdapter {
     batch.begin();
     batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
     batch.end();
-
 
     renderer.render();
     stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
@@ -192,6 +192,7 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new PerformanceDisplay())
         .addComponent(new MainGameActions(this.game))
         .addComponent(new MainGameExitDisplay())
+            .addComponent(new MainGameLoseDisplay())
         .addComponent(new Terminal())
         .addComponent(inputComponent)
         .addComponent(new TerminalDisplay());

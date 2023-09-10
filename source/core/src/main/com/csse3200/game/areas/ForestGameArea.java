@@ -167,7 +167,8 @@ public class ForestGameArea extends GameArea {
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
 
     spawnXenoGrunts();
-
+    spawnScrap();
+    spawnIncome();
     spawnGhosts();
     spawnWeaponTower();
     spawnTNTTower();
