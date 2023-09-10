@@ -18,21 +18,20 @@ import org.slf4j.LoggerFactory;
  * handled in this class.
  */
 public class HumanWanderTask extends DefaultTask implements PriorityTask {
-  private static final Logger logger = LoggerFactory.getLogger(HumanWanderTask.class);
   private static final int TOLERANCE = 1;
   private static final float STOP_DISTANCE = 0.5f;
   private static final int DEFAULT_PRIORITY = 1;
   private static final String DEATH_EVENT = "deathStart";
   private static final String IDLE_EVENT = "idleRight";
-
   private final float maxRange;
   private final float waitTime;
-  private Vector2 startPos;
   private HumanMovementTask movementTask;
   private HumanWaitTask waitTask;
   private EngineerCombatTask combatTask;
   private Task currentTask;
   private boolean isDead = false;
+
+  private boolean hasDied = false;
 
   /**
    * Constructor of HumanWanderTask
@@ -56,16 +55,15 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
 
   /**
    * Starts the HumanWanderTask instance and instantiates subtasks (HumanWaitTask, HumanWanderTask, EngineerCombatTask).
-   *
    */
   @Override
   public void start() {
     super.start();
-    this.startPos = owner.getEntity().getCenterPosition();
+    Vector2 startPos = owner.getEntity().getCenterPosition();
     waitTask = new HumanWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(this.startPos, STOP_DISTANCE);
+    movementTask = new HumanMovementTask(startPos, STOP_DISTANCE);
     movementTask.create(owner);
     movementTask.start();
 
@@ -86,8 +84,9 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
+    hasDied =  owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
     // Check if engineer has died since last update
-    if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
+    if (!isDead && hasDied) {
       startDying();
     }
 
@@ -168,13 +167,5 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     }
     currentTask = newTask;
     currentTask.start();
-  }
-
-  /**
-   * Fetch the start position.
-   * @return a Vector2 start position
-   */
-  public Vector2 getStartPos() {
-    return this.startPos;
   }
 }
