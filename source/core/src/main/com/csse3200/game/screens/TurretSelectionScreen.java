@@ -3,6 +3,9 @@ package com.csse3200.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -32,9 +35,14 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
     private GdxGame game;
 
+    private SpriteBatch batch;
+
+    private Sprite introSprite;
+
     private Label message;
     private Label turretsPicked;
     private Table table;
+    private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
 
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
@@ -43,6 +51,12 @@ public class TurretSelectionScreen extends ScreenAdapter {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         table = new Table();
+
+        // Set up the background
+        batch = new SpriteBatch();
+        Texture introImage = new Texture(TEXTURE);
+        introSprite = new Sprite(introImage);
+        introSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
         turretList = new ArrayList<>();
@@ -68,6 +82,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
+
 
 
         table.add(message).row();
@@ -122,7 +137,9 @@ public class TurretSelectionScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        batch.begin();
+        introSprite.draw(batch);
+        batch.end();
         stage.draw();
     }
 
