@@ -124,6 +124,9 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
+          if (this.meleeOrProjectile() instanceof Melee) {
+
+          }
           Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
           newProjectile.setScale(-1f, 0.5f);
@@ -226,5 +229,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     }
 
     return chosenWeapon;
+  }
+
+  private void setTarget() {
+    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
   }
 }
