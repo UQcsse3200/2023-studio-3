@@ -171,10 +171,12 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
 
-    private boolean isReadyToDelete() {
+    public boolean isReadyToDelete() {
 
         return readToDelete;
     }
+
+
 }
 
 
