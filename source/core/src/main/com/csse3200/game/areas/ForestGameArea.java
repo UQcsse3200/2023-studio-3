@@ -31,9 +31,6 @@ import java.util.ArrayList;
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
-
-  // Counts the number of humans left, if this reaches zero, game over.
-  private int endStateCounter = 2;
   private static final int NUM_BUILDINGS = 4;
 
   private static final int NUM_WALLS = 7;
@@ -619,23 +616,4 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
   }
-
-//  private void gameTrackerStart() {
-//    Entity endGameTracker = new Entity();
-//
-//    endGameTracker
-//            .addComponent(new CombatStatsComponent(2, 0))
-//            .addComponent(new PlayerStatsDisplay());
-////    .getEvents().addListener("engineerKilled" , this::decrementCounter);
-//    endGameTracker.create();
-//  }
-//
-//  private void decrementCounter() {
-//    this.endStateCounter -= 1;
-//    logger.info("Engineer killed");
-//    if (endStateCounter <= 0) {
-//      // we've reached the end, game over
-//      this.dispose();
-//    }
-//  }
 }
