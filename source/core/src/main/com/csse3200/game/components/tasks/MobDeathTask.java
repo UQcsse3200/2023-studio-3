@@ -16,7 +16,14 @@ import com.csse3200.game.services.GameTime;
 
 
 /**
- * Task that prints a message to the terminal whenever it is called.
+ * THIS TASK IS NO LONGER USED. It may be deleted at a later date.
+ * Do not read this aweful task.
+ *
+ * DOES NOT DO ANYTHING.
+ *
+ * This task didn't work with the Wander & ShootTasks,
+ * and then it was
+ * decided to have mob death in wanderTask.
  */
 public class MobDeathTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1; // time interval to scan for towers in
