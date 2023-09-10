@@ -8,4 +8,8 @@ public class baseTowerConfigs {
     public WallTowerConfig wall = new WallTowerConfig();
     public IncomeTowerConfig income = new IncomeTowerConfig();
     public TNTTowerConfigs TNTTower = new TNTTowerConfigs();
+    public DroidTowerConfig DroidTower = new DroidTowerConfig();
+    public FireTowerConfig fireTower = new FireTowerConfig();
+    public StunTowerConfig stunTower = new StunTowerConfig();
+
 }

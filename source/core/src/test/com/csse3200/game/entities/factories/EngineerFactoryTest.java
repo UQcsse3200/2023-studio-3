@@ -39,13 +39,13 @@ import static org.mockito.Mockito.when;
 @ExtendWith(GameExtension.class)
 class EngineerFactoryTest {
 
-    private String[] atlas = {"images/engineers/engineer.atlas"};
+    private final String[] atlas = {"images/engineers/engineer.atlas"};
     private static final String[] sounds = {
             "sounds/engineers/firing_auto.mp3",
             "sounds/engineers/firing_single.mp3"
     };
 
-    private String[] animations = {
+    private final String[] animations = {
             "idle_right",
             "walk_left",
             "walk_right",
@@ -55,7 +55,7 @@ class EngineerFactoryTest {
             "firing_single",
             "hit",
             "death"
-    };;
+    };
 
     @BeforeEach
     void setUp() {

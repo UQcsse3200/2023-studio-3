@@ -32,24 +32,19 @@ public class HumanAnimationController extends Component {
     private static final String HIT_ANIM = "hit";
     private static final String DEATH_ANIM = "death";
     // Sound effects constants
-//    private static final String RUN_SFX = "";
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
     private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
-//    private static final String HIT_SFX = "";
-//    private static final String DEATH_SFX = "";
 
-    AnimationRenderComponent animator;
-//    Sound runSound = ServiceLocator.getResourceService().getAsset(
-//            RUN_SFX, Sound.class);
-    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
+    private AnimationRenderComponent animator;
+    private final Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
             FIRE_AUTO_SFX, Sound.class);
-    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
             FIRE_SINGLE_SFX, Sound.class);
-//    Sound hitSound = ServiceLocator.getResourceService().getAsset(
-//            HIT_SFX, Sound.class);
-//    Sound deathSound = ServiceLocator.getResourceService().getAsset(
-//            HIT_SFX, Sound.class);
 
+    /**
+     * Instantiates a HumanAnimationController and adds all the event listeners for the
+     * Human entity - Just engineers at this stage.
+     */
     @Override
     public void create() {
         super.create();
@@ -61,51 +56,83 @@ public class HumanAnimationController extends Component {
         entity.getEvents().addListener(PREP, this::animatePrep);
         entity.getEvents().addListener(WALK_PREP, this::animatePrepWalk);
         entity.getEvents().addListener(FIRING_SINGLE, this::animateSingleFiring);
-        entity.getEvents().addListener(FIRING_AUTO, this::animateFiring);
+        entity.getEvents().addListener(FIRING_AUTO, this::animateFiringAuto);
         entity.getEvents().addListener(HIT, this::animateHit);
         entity.getEvents().addListener(DEATH, this::animateDeath);
     }
 
+    /**
+     * Callback that starts the idle animation facing left
+     */
     void animateIdleLeft() {
         animator.startAnimation(IDLEL_ANIM);
     }
+
+    /**
+     * Callback that starts the idle animation facing right
+     */
     void animateIdleRight() {
         animator.startAnimation(IDLER_ANIM);
     }
 
+    /**
+     * Callback that starts the walk animation for left movement
+     */
     void animateLeftWalk() {
         animator.startAnimation(WALKL_ANIM);
 //        runSound.play();
     }
+
+    /**
+     * Callback that starts the walk animation for right movement
+     */
     void animateRightWalk() {
         animator.startAnimation(WALKR_ANIM);
-//        runSound.play();
     }
 
+    /**
+     * Callback that starts the walk animation in the 'prepared' state, i.e., weapon up and ready to fight - currently
+     * unused, but intended to be incorporated as engineer functionality expands
+     */
     void animatePrepWalk() {
         animator.startAnimation(WALK_PREP_ANIM);
     }
 
+    /**
+     * Callback that starts the shoot animation in single fire mode, and plays the single fire sound
+     */
     void animateSingleFiring() {
         animator.startAnimation(FIRE_SINGLE_ANIM);
         fireSingleSound.play();
     }
-    void animateFiring() {
+
+    /**
+     * Callback that starts the shoot animation in auto mode and plays the auto fire sound.
+     * Currently unused, but intended to be incorporated as engineer functionality expands.
+     */
+    void animateFiringAuto() {
         animator.startAnimation(FIRE_AUTO_ANIM);
         fireAutoSound.play();
     }
 
+    /**
+     * Callback that starts the 'prep' animation, i.e., raising weapon in preparation for firing
+     */
     void animatePrep() {
         animator.startAnimation(PREP);
     }
 
+    /**
+     * Callback that starts the 'hit' animation when engineer is damaged
+     */
     void animateHit() {
         animator.startAnimation(HIT_ANIM);
-//        hitSound.play();
     }
 
+    /**
+     * Callback that starts the 'death' animation when the engineer entity's health reaches zero.
+     */
     void animateDeath() {
         animator.startAnimation(DEATH_ANIM);
-//        deathSound.play();
     }
 }

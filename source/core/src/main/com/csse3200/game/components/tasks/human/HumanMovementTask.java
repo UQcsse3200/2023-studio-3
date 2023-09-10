@@ -10,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Move to a given position, finishing when you get close enough. Requires an entity with a
+ * Move a human entity to a given position, finishing when you get close enough. Requires an entity with a
  * PhysicsMovementComponent.
  */
 public class HumanMovementTask extends DefaultTask {

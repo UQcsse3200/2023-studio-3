@@ -38,7 +38,6 @@ class CurrencyTest {
         resourceService.loadAll();
         scrap = DropFactory.createScrapDrop();
     }
-
     @Test
     void shouldCreateCurrency() {
         Currency currency = mock(Currency.class, CALLS_REAL_METHODS);
