@@ -55,29 +55,29 @@ idle
   index: 0
 idle
   rotate: false
-  xy: 542, 2
-  size: 58, 58
-  orig: 58, 58
-  offset: 0, 0
-  index: 2
-prep_attack
-  rotate: false
-  xy: 2, 2
-  size: 58, 58
-  orig: 58, 58
-  offset: 0, 0
-  index: 1
-prep_attack
-  rotate: false
-  xy: 242, 2
-  size: 58, 58
-  orig: 58, 58
-  offset: 0, 0
-  index: 0
-prep_attack
-  rotate: false
   xy: 482, 2
   size: 58, 58
   orig: 58, 58
   offset: 0, 0
   index: 2
+prepAttack
+  rotate: false
+  xy: 2, 2
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: 2
+prepAttack
+  rotate: false
+  xy: 242, 2
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: 1
+prepAttack
+  rotate: false
+  xy: 542, 2
+  size: 58, 58
+  orig: 58, 58
+  offset: 0, 0
+  index: 0

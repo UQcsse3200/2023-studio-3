@@ -161,7 +161,7 @@ public class ForestGameArea extends GameArea {
     displayUI();
     spawnTerrain();
 //    spawnBuilding1();
-    spawnBuilding2();
+//    spawnBuilding2();
 //    spawnMountains();
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
@@ -179,14 +179,14 @@ public class ForestGameArea extends GameArea {
 //    spawnIncome();
 //    spawnScrap();
 
-    bossKing1 = spawnBossKing1();
-    bossKing2 = spawnBossKing2();
+//    bossKing1 = spawnBossKing1();
+//    bossKing2 = spawnBossKing2();
 
     playMusic();
-    spawnEngineer();
-    bossKing1 = spawnBossKing1();
-    bossKing2 = spawnBossKing2();
-    spawnTNTTower();
+//    spawnEngineer();
+//    bossKing1 = spawnBossKing1();
+//    bossKing2 = spawnBossKing2();
+//    spawnTNTTower();
   }
 
   private void displayUI() {
@@ -235,16 +235,16 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(building1, randomPos, true, false);
 //    }
 //  }
-  private void spawnBuilding2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_BUILDINGS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity building2 = ObstacleFactory.createBuilding2();
-      spawnEntityAt(building2, randomPos, true, false);
-    }
-  }
+//  private void spawnBuilding2() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < NUM_BUILDINGS; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity building2 = ObstacleFactory.createBuilding2();
+//      spawnEntityAt(building2, randomPos, true, false);
+//    }
+//  }
 
 //  private void spawnMountains() {
 //    ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
@@ -291,15 +291,15 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 
-  private Entity spawnBossKing1() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos
-     = new GridPoint2(0, 0);
-    Entity ghostKing = NPCFactory.createGhostKing(player);
-    spawnEntityAt(ghostKing, randomPos, true, true);
-    return ghostKing;
-  }
+//  private Entity spawnBossKing1() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//    GridPoint2 randomPos
+//     = new GridPoint2(0, 0);
+//    Entity ghostKing = NPCFactory.createGhostKing(player);
+//    spawnEntityAt(ghostKing, randomPos, true, true);
+//    return ghostKing;
+//  }
 
     /**
     * Spawns a projectile that only heads towards the enemies in its lane.
@@ -374,34 +374,34 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private Entity spawnGhostKing() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
-    GridPoint2 randomPos
-            = RandomUtils.random(minPos, maxPos);
-    // = new GridPoint2(26, 26);
-    Entity ghostKing = NPCFactory.createGhostKing(player);
-    spawnEntityAt(ghostKing, randomPos, true, true);
-    return ghostKing;
+//  private Entity spawnGhostKing() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
+//    GridPoint2 randomPos
+//            = RandomUtils.random(minPos, maxPos);
+//    // = new GridPoint2(26, 26);
+//    Entity ghostKing = NPCFactory.createGhostKing(player);
+//    spawnEntityAt(ghostKing, randomPos, true, true);
+//    return ghostKing;
+//
+//  }
 
-  }
-
-  private Entity spawnBossKing2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_BOSS; i++) {
-      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-      int randomY = MathUtils.random(0, maxPos.y);
-      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-      bossKing2 = BossKingFactory.createBossKing2(player);
-      spawnEntityAt(bossKing2,
-              randomPos,
-              true,
-              false);
-    }
-    return bossKing2;
-  }
+//  private Entity spawnBossKing2() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < NUM_BOSS; i++) {
+//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+//      int randomY = MathUtils.random(0, maxPos.y);
+//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+//      bossKing2 = BossKingFactory.createBossKing2(player);
+//      spawnEntityAt(bossKing2,
+//              randomPos,
+//              true,
+//              false);
+//    }
+//    return bossKing2;
+//  }
 
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same
@@ -457,17 +457,17 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity weaponTower = TowerFactory.createTNTTower();
-      spawnEntityAt(weaponTower, randomPos, true, true);
-    }
-
-  }
+//  private void spawnTNTTower() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity weaponTower = TowerFactory.createTNTTower();
+//      spawnEntityAt(weaponTower, randomPos, true, true);
+//    }
+//
+//  }
 
 
   private void playMusic() {
@@ -535,11 +535,11 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 //
-  private void spawnEngineer() {
-
-    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
-      Entity engineer = EngineerFactory.createEngineer();
-      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
-    }
-  }
+//  private void spawnEngineer() {
+//
+//    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
+//      Entity engineer = EngineerFactory.createEngineer();
+//      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+//    }
+//  }
 }
