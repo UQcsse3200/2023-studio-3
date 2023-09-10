@@ -59,7 +59,7 @@ public class TouchAttackComponent extends Component {
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::onCollisionStart);
-    // entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
+    entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
     combatStats = entity.getComponent(CombatStatsComponent.class);
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
@@ -108,8 +108,23 @@ public class TouchAttackComponent extends Component {
   public void setKnockBack(float knockback) {
     this.knockbackForce = knockback;
   }
-  // private void onCollisionEnd(Fixture me, Fixture other) {
-  //   // Nothing to do on collision end
-  // }
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
+    if (hitboxComponent.getFixture() != me) {
+      // Not triggered by hitbox, ignore
+      return;
+    }
+
+    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+      // Doesn't match our target layer, ignore
+      return;
+    }
+
+    if (disposeOnHit) {
+      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+      projectile.setFlagForDelete(true);
+    }
+  }
 }
 
