@@ -115,7 +115,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(ATTACK_DOWN);
                     Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
                             owner.getEntity().getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
-                    Projectile.setScale(new Vector2(0.5f,0.5f));
+                    Projectile.setScale(new Vector2(0.45f, 0.5f));
                     Projectile.setPosition((float) (owner.getEntity().getPosition().x + 0.2),
                             (float) (owner.getEntity().getPosition().y - 0.2));
                     ServiceLocator.getEntityService().register(Projectile);
