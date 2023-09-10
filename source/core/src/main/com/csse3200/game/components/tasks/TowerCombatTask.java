@@ -11,6 +11,7 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import static java.lang.Math.round;
 
 /**
  * The TowerCombatTask runs the AI for the WeaponTower class. The tower will scan for targets in a straight line
@@ -29,6 +30,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
 
     // class attributes
     private final int priority;  // The active priority this task will have
+    private float fireRateInterval; // time interval to fire projectiles at enemies in seconds
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten
     private final Vector2 maxRangePosition = new Vector2();
@@ -49,6 +51,20 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public TowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
+        physics = ServiceLocator.getPhysicsService().getPhysics();
+        timeSource = ServiceLocator.getTimeSource();
+    }
+
+    /**
+     * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
+     * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
+     * @param fireRate The number of times per second this tower should fire its weapon
+     */
+    public TowerCombatTask(int priority, float maxRange, float fireRate) {
+        this.priority = priority;
+        this.maxRange = maxRange;
+        this.fireRateInterval = 1/fireRate;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -64,6 +80,8 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(IDLE);
+        // Set up listener to change firerate
+        owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
 
         endTime = timeSource.getTime() + (INTERVAL * 500);
     }
@@ -76,7 +94,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (INTERVAL * 1000);
+            if (towerState == STATE.FIRING) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            } else {
+                endTime = timeSource.getTime() + (INTERVAL * 1000);
+            }
         }
     }
 
@@ -192,5 +214,29 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+    }
+
+    /**
+     * Increases the fireRateInterval, changing how frequently the turret fires. Will decrease if the argument is negative.
+     *
+     * @param perMinute The number of times per minute the turret's fire rate should increase
+     */
+    private void changeFireRateInterval(int perMinute) {
+        float oldFireSpeed = 1/fireRateInterval;
+        float newFireSpeed = oldFireSpeed + perMinute/60f;
+        if (newFireSpeed == 0) {
+            return;
+        } else {
+            fireRateInterval = 1 / newFireSpeed;
+        }
+    }
+
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+        return fireRateInterval;
     }
 }

@@ -1,13 +1,19 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.components.TouchAttackComponent;
+
+
+import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
+import com.csse3200.game.components.tower.DroidAnimationController;
 import com.csse3200.game.components.tower.TNTAnimationController;
 import com.csse3200.game.components.tower.TNTDamageComponent;
 import com.csse3200.game.entities.configs.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.badlogic.gdx.graphics.Texture;
+import com.csse3200.game.components.tasks.FireTowerCombatTask;
+import com.csse3200.game.components.tasks.StunTowerCombatTask;
+import com.csse3200.game.components.tower.FireTowerAnimationController;
+import com.csse3200.game.components.tower.StunTowerAnimationController;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
+
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -20,6 +26,7 @@ import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -27,6 +34,8 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ServiceConfigurationError;
 
 /**
  * Factory to create a tower entity.
@@ -39,18 +48,29 @@ public class TowerFactory {
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
-    private static final int TNT_TOWER_RANGE = 5;
+    private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
     private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
+    private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
+    private static final float DROID_SPEED = 0.25f;
     private static final String DEFAULT_ANIM = "default";
+    private static final String WALK_ANIM = "walk";
+    private static final String DEATH_ANIM = "death";
+    private static final String GO_UP = "goUp";
+    private static final String GO_DOWN = "goDown";
+    private static final String SHOOT_UP = "attackUp";
+    private static final String SHOOT_DOWN = "attackDown";
     private static final float DEFAULT_SPEED= 0.2f;
     private static final String DIG_ANIM = "dig";
     private static final float DIG_SPEED = 0.2f;
     private static final String EXPLODE_ANIM = "explode";
     private static final float EXPLODE_SPEED = 0.2f;
+    private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
+    private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
+
     private static final String IDLE_ANIM = "idle";
     private static final float IDLE_SPEED = 0.3f;
     private static final String DEPLOY_ANIM = "deploy";
@@ -59,7 +79,19 @@ public class TowerFactory {
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
     private static final float FIRE_SPEED = 0.25f;
-    private static final int INCOME_INTERVAL = 3;
+
+    private static final String FIRE_TOWER_IDLE_ANIM = "idle";
+    private static final float FIRE_TOWER_IDLE_SPEED = 0.3f;
+    private static final String FIRE_TOWER_PREP_ATTACK_ANIM = "prepAttack";
+    private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
+    private static final String FIRE_TOWER_ATTACK_ANIM = "attack";
+    private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+    private static final String STUN_TOWER_IDLE_ANIM = "idle";
+    private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
+    private static final String STUN_TOWER_ATTACK_ANIM = "attack";
+    private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
+    private static final int INCOME_INTERVAL = 300;
+
     private static final int INCOME_TASK_PRIORITY = 1;
 
 
@@ -150,6 +182,44 @@ public class TowerFactory {
         return TNTTower;
     }
 
+    /**
+     * This robotic unit is programmed to detect mobs within its vicinity and fire projectiles at them.
+     * The droid has the capability to switch its aim from high to low positions, thereby providing a versatile attack strategy.
+     * When it detects a mob, the droid releases a projectile that inflicts both physical damage and a slow-down effect on the target.
+     * @return entity
+     */
+    public static Entity createDroidTower() {
+        Entity DroidTower = createBaseTower();
+        DroidTowerConfig config = configs.DroidTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new DroidCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(DROID_ATLAS, TextureAtlas.class));
+
+        animator.addAnimation(IDLE_ANIM, DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(SHOOT_UP,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(SHOOT_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(WALK_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(DEATH_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(GO_UP,DROID_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(GO_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
+
+
+
+        DroidTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new DroidAnimationController())
+                .addComponent(animator)
+                .addComponent(aiTaskComponent);
+
+        return DroidTower;
+    }
+
 
     /**
      * Creates a weaponry tower that shoots at mobs - This will most likely need to be extended
@@ -184,6 +254,67 @@ public class TowerFactory {
         return weapon;
 
     }
+
+    /**
+     * Creates the FireTower entity which shoots at mobs traversing in a straight line.
+     * @return FireTower entity with relevant components.
+     */
+    public static Entity createFireTower() {
+        Entity fireTower = createBaseTower();
+        FireTowerConfig config = configs.fireTower;
+
+        //Component that handles triggering events and animations
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new FireTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+
+        fireTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new FireTowerAnimationController());
+        fireTower.setScale(1.25f, 1.25f);
+        return fireTower;
+    }
+
+    /**
+     * Creates the StunTower entity which shoots at mobs traversing in a straight line.
+     * @return StunTower entity with relevant components.
+     */
+    public static Entity createStunTower() {
+        Entity stunTower = createBaseTower();
+        StunTowerConfig config = configs.stunTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new StunTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+
+        stunTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new StunTowerAnimationController());
+
+        stunTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);
+        return stunTower;
+    }
+
     /**
      * Creates a generic tower entity to be used as a base entity by more specific tower creation methods.
      * @return entity
@@ -192,8 +323,11 @@ public class TowerFactory {
         // we're going to add more components later on
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
-                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody));
+                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
+                .addComponent(new TowerUpgraderComponent())
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)); // TODO: we might have to change the names of the layers
+
+
 
         return tower;
     }
