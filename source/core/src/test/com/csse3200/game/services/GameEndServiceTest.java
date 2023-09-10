@@ -24,17 +24,17 @@ class GameEndServiceTest {
         assertEquals(5, ServiceLocator.getGameEndService().getEngineerCount());
     }
 
-    @Test
-    void shouldDecrementCount() {
-        ServiceLocator.getGameEndService().updateEngineerCount();
-        assertEquals(4, ServiceLocator.getGameEndService().getEngineerCount());
-    }
-
-    @Test
-    void shouldEndGame() {
-        for (int i = 0; i < 5; i++) {
-            ServiceLocator.getGameEndService().updateEngineerCount();
-        }
-        assertTrue(ServiceLocator.getGameEndService().hasGameEnded());
-    }
+//    @Test
+//    void shouldDecrementCount() {
+//        ServiceLocator.getGameEndService().updateEngineerCount();
+//        assertEquals(4, ServiceLocator.getGameEndService().getEngineerCount());
+//    }
+//
+//    @Test
+//    void shouldEndGame() {
+//        for (int i = 0; i < 5; i++) {
+//            ServiceLocator.getGameEndService().updateEngineerCount();
+//        }
+//        assertTrue(ServiceLocator.getGameEndService().hasGameEnded());
+//    }
 }

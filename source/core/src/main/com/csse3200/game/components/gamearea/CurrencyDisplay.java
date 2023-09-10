@@ -44,7 +44,7 @@ public class CurrencyDisplay extends UIComponent {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
-        table.padTop(50f).padLeft(20f);
+        table.padTop(70f).padLeft(20f);
 
         // create scraps text button style
         Drawable scrapDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrapsUI.png")));
