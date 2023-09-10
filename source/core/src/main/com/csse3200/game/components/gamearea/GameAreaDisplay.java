@@ -20,7 +20,7 @@ import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.concurrent.TimeUnit;
@@ -31,33 +31,37 @@ import java.util.concurrent.TimeUnit;
 public class GameAreaDisplay extends UIComponent {
   private static final Logger logger = LoggerFactory.getLogger(GameAreaDisplay.class);
   private static final float Z_INDEX = 2f;
-
+  // Dialog for displaying tower details
 
   private Vector2[] towerPositions1;
-  private Vector2[] towerPositions2;
-  private Vector2[] towerPositions3;// Store the positions of the towers
+  private Vector2[] towerPositions2; // Store the positions of the towers
+  private Vector2[] towerPositions3; // Store the positions of the towers
+
 
   private String gameAreaName = "";
   private Label title;
-  private int numTowers = 2; // Total number of towers
-
+  private int numTowers1 = 2; // Total number of towers
+  private int numTowers2 = 2; // Total number of towers
+  private int numTowers3 = 2; // Total number of towers
+  private Label numTowersLabel1;
+  private Label numTowersLabel2;
+  private Label numTowersLabel3;
 
   private boolean[] towerMoved1;
-  private boolean[] towerMoved2;
-  private boolean[] towerMoved3;
+  private boolean[] towerMoved2;// Array of flags to track if each tower has been moved
+  private boolean[] towerMoved3;// Array of flags to track if each tower has been moved
+
 
   public GameAreaDisplay(String gameAreaName) {
     this.gameAreaName = gameAreaName;
-    // Create the tower details dialog
     towerPositions1 = new Vector2[2]; // Initialize for two towers
     towerMoved1 = new boolean[2]; // Initialize for two towers
 
-    // Create the tower details dialog
     towerPositions2 = new Vector2[2]; // Initialize for two towers
     towerMoved2 = new boolean[2]; // Initialize for two towers
 
-    towerPositions3 = new Vector2[3]; // Initialize for two towers
-    towerMoved3 = new boolean[3]; // Initialize for two towers
+    towerPositions3 = new Vector2[2]; // Initialize for two towers
+    towerMoved3 = new boolean[2]; // Initialize for two towers
   }
 
   @Override
@@ -70,16 +74,17 @@ public class GameAreaDisplay extends UIComponent {
 
 
     Image[] towers1 = new Image[2]; // Create an array for two towers
-    Image[] towers2 = new Image[2];
-    Image[] towers3 = new Image[2];// Create an array for two towers
+    Image[] towers2 = new Image[2]; // Create an array for two towers
+    Image[] towers3 = new Image[3]; // Create an array for two towers
+
 
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-      skin.add("building1", new Texture("images/towers/mine_tower.png"));
+      skin.add("building1", new Texture("images/towers/WallTower.png"));
       // Load textures for building1 and building2
       towers1[i] = new Image(skin, "building1");
-      towers1[i].setBounds(600 , 700, 100, 100); // Adjust the X position as needed
+      towers1[i].setBounds(700 , 700, 100, 100); // Adjust the X position as needed
       stage.addActor(towers1[i]);
 
       final int towerIndex1 = i; // Capture the index in a final variable for the listener
@@ -106,8 +111,8 @@ public class GameAreaDisplay extends UIComponent {
           // Check if the tower has been moved for a significant distance
           if (!towerMoved1[towerIndex1] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
-            numTowers--;
-
+            numTowers1--;
+            numTowersLabel1.setText("Towers: " + numTowers1);
             towerMoved1[towerIndex1] = true; // Set the flag to indicate tower movement
           }
 
@@ -116,6 +121,7 @@ public class GameAreaDisplay extends UIComponent {
                   y - towers1[towerIndex1].getHeight() / 2);
 
           towerPositions1[towerIndex1] = new Vector2(towers1[towerIndex1].getX(), towers1[towerIndex1].getY());
+
 
         }
 
@@ -156,8 +162,8 @@ public class GameAreaDisplay extends UIComponent {
           // Check if the tower has been moved for a significant distance
           if (!towerMoved2[towerIndex2] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
-            numTowers--;
-
+            numTowers2--;
+            numTowersLabel2.setText("Towers: " + numTowers2);
             towerMoved2[towerIndex2] = true; // Set the flag to indicate tower movement
           }
 
@@ -174,10 +180,12 @@ public class GameAreaDisplay extends UIComponent {
         }
       });
     }
+
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
       skin.add("building3", new Texture("images/towers/WallTower.png"));
+      // Load textures for building1 and building2
       towers3[i] = new Image(skin, "building3");
       towers3[i].setBounds(900 , 700, 100, 100); // Adjust the X position as needed
       stage.addActor(towers3[i]);
@@ -206,8 +214,8 @@ public class GameAreaDisplay extends UIComponent {
           // Check if the tower has been moved for a significant distance
           if (!towerMoved3[towerIndex3] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
-            numTowers--;
-
+            numTowers3--;
+            numTowersLabel3.setText("Towers: " + numTowers3);
             towerMoved3[towerIndex3] = true; // Set the flag to indicate tower movement
           }
 
@@ -217,6 +225,7 @@ public class GameAreaDisplay extends UIComponent {
 
           towerPositions3[towerIndex3] = new Vector2(towers3[towerIndex3].getX(), towers3[towerIndex3].getY());
 
+
         }
 
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
@@ -225,9 +234,18 @@ public class GameAreaDisplay extends UIComponent {
       });
     }
 
-
     // Create and add the label for the number of towers
+    numTowersLabel1 = new Label("TowersA: " + numTowers1, skin);
+    numTowersLabel1.setPosition(700, 650); // Adjust the position as needed
+    stage.addActor(numTowersLabel1);
 
+    numTowersLabel2 = new Label("TowersB: " + numTowers2, skin);
+    numTowersLabel2.setPosition(800, 650); // Adjust the position as needed
+    stage.addActor(numTowersLabel2);
+
+    numTowersLabel3 = new Label("TowersC: " + numTowers3, skin);
+    numTowersLabel3.setPosition(900, 650); // Adjust the position as needed
+    stage.addActor(numTowersLabel3);
   }
 
 
