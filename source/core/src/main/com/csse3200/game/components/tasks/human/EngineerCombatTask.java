@@ -106,7 +106,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
-                    if (shotsFired <= 10) {
+                    if (shotsFired <= weaponCapacity) {
                         owner.getEntity().getEvents().trigger(FIRING);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
                         Entity newProjectile = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC,
@@ -115,7 +115,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                         newProjectile.setScale(0.8f, 0.8f);
                         newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3), (float) (owner.getEntity().getPosition().y + 0.15));
                         ServiceLocator.getEntityService().register(newProjectile);
-                        shotsFired += 1;
+                        shotsFired ++;
                         reloadTime = timeSource.getTime();
                     } else {
                         // engineer needs to reload
