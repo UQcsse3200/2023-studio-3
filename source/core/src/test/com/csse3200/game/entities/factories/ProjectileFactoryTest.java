@@ -10,14 +10,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.CostComponent;
-import com.csse3200.game.components.DeleteOnMapEdgeComponent;
-import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
-import com.csse3200.game.components.projectile.MobKingProjectAnimController;
-import com.csse3200.game.components.projectile.MobProjectileAnimationController;
-import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.components.*;
+import com.csse3200.game.components.projectile.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -48,7 +42,9 @@ class ProjectileFactoryTest {
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/basic_projectile.atlas",
             "images/projectiles/mobKing_projectile.atlas",
-            "images/projectiles/engineer_projectile.atlas"
+            "images/projectiles/engineer_projectile.atlas",
+            "images/projectiles/stun_effect.atlas",
+            "images/projectiles/burn_effect.atlas"
     };
 
     private final String[] animations = {
@@ -207,6 +203,51 @@ class ProjectileFactoryTest {
         Entity engineerBullet = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(engineerBullet.getComponent(EngineerBulletsAnimationController.class),
                 "Engineer Bullet does not have Animation Controller");
+    }
+
+    @Test
+    public void testStunProjectileCreation() {
+        Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,
+                0.1f), new Vector2(2,2), ProjectileEffects.STUN, false);
+        assertNotNull(stunProjectile, "stunProjectile is null");
+    }
+
+    @Test
+    public void testStunProjectileAnimationRenderComponent() {
+        Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,01f),
+                new Vector2(2,2), ProjectileEffects.STUN, false);
+        assertNotNull(stunProjectile.getComponent(AnimationRenderComponent.class),
+                "Stun Projectile does not have AnimationRenderComponent");
+    }
+
+    @Test
+    public void testStunProjectileAnimationController() {
+        Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
+                , new Vector2(2,2), ProjectileEffects.STUN, false);
+        assertNotNull(stunProjectile.getComponent(StunEffectProjectileAnimationController.class),
+                "Stun Projectile does not have Animation Controller");
+    }
+
+    @Test
+    public void testBurnProjectileCreation() {
+        Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,
+                0.1f), new Vector2(2,2), ProjectileEffects.BURN, false);
+        assertNotNull(burnProjectile, "burnProjectile is null");
+    }
+
+    @Test
+    public void testBurnProjectileAnimationRenderComponent() {
+        Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,01f),
+                new Vector2(2,2), ProjectileEffects.BURN, false);
+        assertNotNull(burnProjectile.getComponent(AnimationRenderComponent.class),
+                "Burn Projectile does not have AnimationRenderComponent");
+    }
+    @Test
+    public void testBurnProjectileAnimationController() {
+        Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
+                , new Vector2(2,2), ProjectileEffects.BURN, false);
+        assertNotNull(burnProjectile.getComponent(BurnEffectProjectileAnimationController.class),
+                "Burn Projectile does not have Animation Controller");
     }
 }
 
