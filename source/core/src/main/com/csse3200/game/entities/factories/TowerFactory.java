@@ -125,16 +125,16 @@ public class TowerFactory {
         return income;
     }
 
-//    public static Entity createWallTower() {
-//        Entity wall = createBaseTower();
-//        WallTowerConfig config = configs.wall;
-//
-//        wall
-//                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-//                .addComponent(new CostComponent(config.cost))
-//                .addComponent(new TextureRenderComponent(WALL_IMAGE));
-//        return wall;
-//    }
+    public static Entity createWallTower() {
+        Entity wall = createBaseTower();
+        WallTowerConfig config = configs.wall;
+
+        wall
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new TextureRenderComponent(WALL_IMAGE));
+        return wall;
+    }
 
 
     /**
