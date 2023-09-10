@@ -9,6 +9,7 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +95,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     // Check if engineer has finished dying animation
     else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
       owner.getEntity().setFlagForDelete(true);
-      // TODO: make the appropriate calls to decrement the human count.
+      ServiceLocator.getGameEndService().updateEngineerCount();
     }
 
     // otherwise doing engineer things since engineer is alive
