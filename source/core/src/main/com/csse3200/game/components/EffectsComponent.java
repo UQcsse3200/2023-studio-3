@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -228,7 +229,7 @@ public class EffectsComponent extends Component {
         if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // towers
             towerFlag = true;
-            //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
+            targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
         } else if (PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // mobs
             mobFlag = true;
@@ -255,7 +256,7 @@ public class EffectsComponent extends Component {
             @Override
             public void run() {
                 if (finalTowerFlag) {
-                    //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
+                    targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
                 } else if (finalMobFlag) {
                     finalTargetPhysics.setSpeed(new Vector2(finalXSpeed, finalYSpeed));
                 }
