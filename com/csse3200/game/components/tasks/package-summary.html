@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -78,8 +82,9 @@ loadScripts(document, 'script');</script>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
-<div class="summary-table two-column-summary">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel">
+<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="ChaseTask.html" title="class in com.csse3200.game.components.tasks">ChaseTask</a></div>
@@ -95,43 +100,47 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The DroidCombatTask runs the AI for the DroidTower class.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FinalBossMovementTask.html" title="class in com.csse3200.game.components.tasks">FinalBossMovementTask</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab3"><a href="DroidCombatTask.STATE.html" title="enum class in com.csse3200.game.components.tasks">DroidCombatTask.STATE</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FinalBossMovementTask.html" title="class in com.csse3200.game.components.tasks">FinalBossMovementTask</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Going forward with certain speed, and switching to another land
  Requires an entity with a PhysicsMovementComponent.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="FireTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">FireTowerCombatTask</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="FireTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">FireTowerCombatTask</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The FireTowerCombatTask runs the AI for the FireTower class.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MobAttackTask.html" title="class in com.csse3200.game.components.tasks">MobAttackTask</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MobAttackTask.html" title="class in com.csse3200.game.components.tasks">MobAttackTask</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Task that allows mobs to shoot projectiles or melee attack towers</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MobDeathTask.html" title="class in com.csse3200.game.components.tasks">MobDeathTask</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MobDeathTask.html" title="class in com.csse3200.game.components.tasks">MobDeathTask</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">Task that prints a message to the terminal whenever it is called.</div>
 </div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MovementTask.html" title="class in com.csse3200.game.components.tasks">MovementTask</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MovementTask.html" title="class in com.csse3200.game.components.tasks">MovementTask</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Move to a given position, finishing when you get close enough.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="MoveToMiddleTask.html" title="class in com.csse3200.game.components.tasks">MoveToMiddleTask</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="RangeBossMovementTask.html" title="class in com.csse3200.game.components.tasks">RangeBossMovementTask</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="MoveToMiddleTask.html" title="class in com.csse3200.game.components.tasks">MoveToMiddleTask</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="RangeBossMovementTask.html" title="class in com.csse3200.game.components.tasks">RangeBossMovementTask</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Wander around by moving a random position within a range of the starting position.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="SpawnWaveTask.html" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
-<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="StunTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">StunTowerCombatTask</a></div>
-<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="SpawnWaveTask.html" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab2"><a href="StunTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">StunTowerCombatTask</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">The StunTowerCombatTask runs the AI for the StunTower class.</div>
 </div>
-<div class="col-first even-row-color class-summary class-summary-tab2"><a href="TNTTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">TNTTowerCombatTask</a></div>
-<div class="col-last even-row-color class-summary class-summary-tab2">
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TNTTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">TNTTowerCombatTask</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The TNTTowerCombatTask runs the AI for the TNTTower class.</div>
 </div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="TNTTowerCombatTask.STATE.html" title="enum class in com.csse3200.game.components.tasks">TNTTowerCombatTask.STATE</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="TowerCombatTask.html" title="class in com.csse3200.game.components.tasks">TowerCombatTask</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">
 <div class="block">The TowerCombatTask runs the AI for the WeaponTower class.</div>
@@ -147,6 +156,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="WanderTask.html" title="class in com.csse3200.game.components.tasks">WanderTask</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">
 <div class="block">Wander around by moving a random position within a range of the starting position.</div>
+</div>
 </div>
 </div>
 </div>
