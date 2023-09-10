@@ -57,6 +57,7 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
         this.mobPosition = owner.getEntity().getCenterPosition();
         //sets endTime
         endTime = timeSource.getTime() + (INTERVAL * 500);
+        this.owner.getEntity().getEvents().trigger("dieStart");
     }
 
     @Override

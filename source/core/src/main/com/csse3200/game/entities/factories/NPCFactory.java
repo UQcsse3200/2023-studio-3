@@ -116,17 +116,19 @@ public class NPCFactory {
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("xeno_shoot", 0.1f);
+    animator.addAnimation("xeno_melee_1", 0.1f);
+    animator.addAnimation("xeno_melee_2", 0.1f);
+    animator.addAnimation("xeno_die", 0.1f);
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
+    xenoGrunt.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return xenoGrunt;
@@ -148,11 +150,11 @@ public class NPCFactory {
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
             .addComponent(aiComponent);
 
-    PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);
+    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
 
