@@ -44,9 +44,15 @@ public class TowerFactoryTest {
     private String[] texture = {
             "images/towers/turret_deployed.png",
             "images/towers/turret01.png",
-            "images/towers/wallTower.png"
+            "images/towers/wallTower.png",
+            "images/towers/fire_tower_atlas.png",
+            "images/towers/stun_tower.png"
     };
-    private String[] atlas = {"images/towers/turret01.atlas"};
+    private String[] atlas = {
+            "images/towers/turret01.atlas",
+            "images/towers/stun_tower.atlas",
+            "images/towers/fire_tower_atlas.atlas"
+    };
     private static final String[] sounds = {
             "sounds/towers/gun_shot_trimmed.mp3",
             "sounds/towers/deploy.mp3",

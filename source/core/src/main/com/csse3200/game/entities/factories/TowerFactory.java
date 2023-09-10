@@ -314,8 +314,7 @@ public class TowerFactory {
                 .addComponent(new ColliderComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
-                .addComponent(new TowerUpgraderComponent())
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)); // TODO: we might have to change the names of the layers
+                .addComponent(new TowerUpgraderComponent());
 
         return tower;
     }
