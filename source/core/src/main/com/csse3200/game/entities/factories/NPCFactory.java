@@ -128,7 +128,7 @@ public class NPCFactory {
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
-//    xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
+    xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return xenoGrunt;
   }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -125,6 +126,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
+          System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
