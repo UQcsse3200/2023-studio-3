@@ -180,7 +180,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * @return (int) active priority if a target is visible, -1 otherwise
    */
   private int getActivePriority() {
-     if ((startTime + delay) < timeSource.getTime() && isTargetVisible()) {
+     if ((startTime + delay) < timeSource.getTime() && isTargetVisible() && this.meleeOrProjectile() != null) {
        return priority;
      }
     return -1;
@@ -191,7 +191,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * @return (int) -1 if a target is not visible, active priority otherwise
    */
   private int getInactivePriority() {
-    if ((startTime + delay) < timeSource.getTime() && isTargetVisible()) {
+    if ((startTime + delay) < timeSource.getTime() && isTargetVisible() && this.meleeOrProjectile() != null) {
       return priority;
     }
     return -1;
