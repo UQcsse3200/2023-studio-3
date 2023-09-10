@@ -4,6 +4,8 @@ public class GameEndService {
 
     private int engineerCount;
 
+    private boolean gameOver = false;
+
     public GameEndService() {
         this.engineerCount = 5;
     }
@@ -16,7 +18,11 @@ public class GameEndService {
         engineerCount -= 1;
         if (engineerCount == 0) {
             // loss screen
-
+            gameOver = true;
         }
+    }
+
+    public boolean hasGameEnded() {
+        return gameOver;
     }
 }
