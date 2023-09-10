@@ -25,12 +25,12 @@ import java.util.*;
 public class TurretSelectionScreen extends ScreenAdapter {
 
     private Stage stage;
-    private List<String> turretList;
+    private List<TowerType> turretList;
     private TextButton confirmButton;
 
     private GdxGame game;
 
-    private Set<String> selectedTurrets = new HashSet<>();
+    private Set<TowerType> selectedTurrets = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     public TurretSelectionScreen(GdxGame game) {
@@ -40,11 +40,14 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         turretList = new ArrayList<>();
         // Add turrets to the list
+        turretList.add(TowerType.WEAPON);
+        turretList.add(TowerType.TNT);
+        turretList.add(TowerType.DROID);
+        turretList.add(TowerType.WALL);
+        turretList.add(TowerType.FIRE);
+        turretList.add(TowerType.STUN);
+        turretList.add(TowerType.INCOME);
 
-        String weaponTower = "test";
-        String incomeTower = "test2";
-        turretList.add(weaponTower);
-        turretList.add(incomeTower);
 
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         confirmButton = new TextButton("Continue", skin);
@@ -57,8 +60,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
 
 
-        for (String turret : turretList) {
-            TextButton turretButton = new TextButton(turret, skin);
+        for (TowerType turret : turretList) {
+            TextButton turretButton = new TextButton(turret.getTowerName(), skin);
             turretButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
@@ -66,11 +69,11 @@ public class TurretSelectionScreen extends ScreenAdapter {
                         // Turret is already selected, unselect it
                         selectedTurrets.remove(turret);
                         // You can also change the button appearance to indicate unselection
-                        //logger.info(selectedTurrets.toString());
+                        logger.info(selectedTurrets.toString());
                     } else {
                         // Turret is not selected, select it
                         selectedTurrets.add(turret);
-                        //logger.info(selectedTurrets.toString());
+                        logger.info(selectedTurrets.toString());
 
                         // You can change the button appearance to indicate selection
                     }

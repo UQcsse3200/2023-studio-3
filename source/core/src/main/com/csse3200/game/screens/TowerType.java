@@ -7,7 +7,7 @@ public enum TowerType {
     WALL("images/towers/wallTower.png", "Wall Tower"),
     FIRE("images/towers/fire_tower_atlas.atlas", "Fire Tower"),
     STUN("images/towers/stun_tower.atlas", "Stun Tower"),
-    ECONOMY("images/economy/econ-tower.atlas", "Income Tower");
+    INCOME("images/economy/econ-tower.atlas", "Income Tower");
 
     private final String imagePath;
     private final String towerName;
