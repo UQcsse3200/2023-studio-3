@@ -253,10 +253,6 @@ public class Array {
   }
 }
 
-
-
-
-
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
     BitmapFont font = new BitmapFont();
     TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();

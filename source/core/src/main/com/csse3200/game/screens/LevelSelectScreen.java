@@ -14,6 +14,7 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
+import com.csse3200.game.screens.Planets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
@@ -99,14 +100,40 @@ public class LevelSelectScreen extends ScreenAdapter {
                 if (Gdx.input.justTouched()) {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
-                    game.setScreen(new MainGameScreen(game));
+                    if (planet[4] == 0) {
+                        handleDesertPlanetClick();
+                    } else if (planet[4] == 1) {
+                        handleIcePlanetClick();
+                    } else if (planet[4] == 2) {
+                        handleLavaPlanetClick();
+                    }
+                }
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
                     batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
                 }
             }
         }
+
+
+    private void handleDesertPlanetClick() {
+        // Implement logic for when the desert planet is clicked
+        logger.info("Desert planet clicked.");
+        game.setScreen(new DesertGameScreen(game)); // Load the DesertGameScreen
     }
+
+    private void handleIcePlanetClick() {
+        // Implement logic for when the ice planet is clicked
+        logger.info("Ice planet clicked.");
+        game.setScreen(new IceGameScreen(game)); // Load the IceGameScreen
+    }
+
+    private void handleLavaPlanetClick() {
+        // Implement logic for when the lava planet is clicked
+        logger.info("Lava planet clicked.");
+        game.setScreen(new LavaGameScreen(game)); // Load the LavaGameScreen
+    }
+
 
     // TODO: Make it display information about the planet
     @Override
