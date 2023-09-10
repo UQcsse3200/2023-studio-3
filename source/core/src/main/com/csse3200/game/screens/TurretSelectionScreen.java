@@ -5,6 +5,7 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -24,19 +25,25 @@ import java.util.*;
 
 public class TurretSelectionScreen extends ScreenAdapter {
 
+    private static final int MAX_SELECTED_TURRETS = 5;
     private Stage stage;
     private List<TowerType> turretList;
     private TextButton confirmButton;
 
     private GdxGame game;
 
+    private Label message;
+    private Label turretsPicked;
+    private Table table;
     private Set<TowerType> selectedTurrets = new HashSet<>();
+
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     public TurretSelectionScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
-        Table table = new Table();
+        table = new Table();
+
 
         turretList = new ArrayList<>();
         // Add turrets to the list
@@ -49,7 +56,11 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretList.add(TowerType.INCOME);
 
 
+
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        message = new Label("Select your turrets", skin);
+        turretsPicked = new Label("Turrets picked: ", skin);
+
         confirmButton = new TextButton("Continue", skin);
         confirmButton.addListener(new ClickListener() {
             @Override
@@ -59,29 +70,48 @@ public class TurretSelectionScreen extends ScreenAdapter {
         });
 
 
-
+        table.add(message).row();
+        table.add(turretsPicked).row();
         for (TowerType turret : turretList) {
             TextButton turretButton = new TextButton(turret.getTowerName(), skin);
             turretButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
+                    logger.info(String.valueOf(selectedTurrets.size()));
+                    if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
+                        message.setText("You can only select up to 5 turrets.");
+                    } else {
+                        message.setText("Select your turrets");
+                    }
                     if (selectedTurrets.contains(turret)) {
                         // Turret is already selected, unselect it
                         selectedTurrets.remove(turret);
                         // You can also change the button appearance to indicate unselection
                         logger.info(selectedTurrets.toString());
-                    } else {
+                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                    } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {
+                        // Turret is not selected, but the max number of turrets has been reached
+                        message.setText("You can only select up to 5 turrets.");
+                    } else if (selectedTurrets.size() < MAX_SELECTED_TURRETS) {
                         // Turret is not selected, select it
                         selectedTurrets.add(turret);
+                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                        logger.info(selectedTurrets.toString());
+                    }
+                    else {
+                        // Turret is not selected, select it
+                        selectedTurrets.add(turret);
+                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
                         logger.info(selectedTurrets.toString());
 
                         // You can change the button appearance to indicate selection
                     }
+
                 }
             });
             table.add(turretButton).row();
         }
-        table.add(confirmButton).padBottom(-400).row();
+        table.add(confirmButton).padBottom(20).row();
 
         stage.addActor(table);
         table.setFillParent(true);

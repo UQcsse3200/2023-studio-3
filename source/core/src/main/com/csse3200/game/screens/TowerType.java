@@ -1,13 +1,13 @@
 package com.csse3200.game.screens;
 
 public enum TowerType {
-    WEAPON("images/towers/turret01.atlas", "Weapon Tower"),
-    TNT("images/towers/TNTTower.atlas", "TNT Tower"),
-    DROID("images/towers/DroidTower.atlas", "Droid Tower"),
-    WALL("images/towers/wallTower.png", "Wall Tower"),
-    FIRE("images/towers/fire_tower_atlas.atlas", "Fire Tower"),
-    STUN("images/towers/stun_tower.atlas", "Stun Tower"),
-    INCOME("images/economy/econ-tower.atlas", "Income Tower");
+    WEAPON("images/towers/turret_deployed.png", "Weapon Tower"),
+    TNT("images/towers/turret_deployed.png", "TNT Tower"),
+    DROID("images/towers/turret_deployed.png", "Droid Tower"),
+    WALL("images/towers/turret_deployed.png", "Wall Tower"),
+    FIRE("images/towers/turret_deployed.png", "Fire Tower"),
+    STUN("images/towers/turret_deployed.png", "Stun Tower"),
+    INCOME("images/towers/turret_deployed.png", "Income Tower");
 
     private final String imagePath;
     private final String towerName;
