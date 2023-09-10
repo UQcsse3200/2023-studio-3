@@ -113,7 +113,8 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                                 new Vector2(100, owner.getEntity().getPosition().y),
                                 new Vector2(4f, 4f));
                         newProjectile.setScale(0.8f, 0.8f);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3), (float) (owner.getEntity().getPosition().y + 0.15));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3),
+                                (float) (owner.getEntity().getPosition().y + 0.15));
                         ServiceLocator.getEntityService().register(newProjectile);
                         shotsFired ++;
                         reloadTime = timeSource.getTime();
