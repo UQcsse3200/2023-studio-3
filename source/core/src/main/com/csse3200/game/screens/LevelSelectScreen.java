@@ -26,6 +26,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
     private SpriteBatch batch;
+    private int selectedLevel = -1;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
 
@@ -100,6 +101,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 if (Gdx.input.justTouched()) {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
+                    GameLevelData.setSelectedLevel(planet[4]);
                     if (planet[4] == 0) {
                         handleDesertPlanetClick();
                     } else if (planet[4] == 1) {
