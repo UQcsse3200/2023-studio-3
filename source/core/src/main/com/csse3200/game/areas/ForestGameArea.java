@@ -160,7 +160,7 @@ public class ForestGameArea extends GameArea {
     loadAssets();
     displayUI();
     spawnTerrain();
-    spawnBuilding1();
+//    spawnBuilding1();
     spawnBuilding2();
 //    spawnMountains();
     player = spawnPlayer();
@@ -174,10 +174,10 @@ public class ForestGameArea extends GameArea {
 //    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
     spawnXenoGrunts();
-    spawnGhosts();
+//    spawnGhosts();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
+//    spawnIncome();
+//    spawnScrap();
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
@@ -225,16 +225,16 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
   }
-  private void spawnBuilding1() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_BUILDINGS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity building1 = ObstacleFactory.createBuilding1();
-      spawnEntityAt(building1, randomPos, true, false);
-    }
-  }
+//  private void spawnBuilding1() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < NUM_BUILDINGS; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity building1 = ObstacleFactory.createBuilding1();
+//      spawnEntityAt(building1, randomPos, true, false);
+//    }
+//  }
   private void spawnBuilding2() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -278,18 +278,18 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
-  private void spawnGhosts() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 2);
-
-    for (int i = 0; i < NUM_GHOSTS; i++) {
-      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-      int randomY = MathUtils.random(0, maxPos.y);
-      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-      Entity ghost = createGhost(player);
-      spawnEntityAt(ghost, randomPos, true, true);
-    }
-  }
+//  private void spawnGhosts() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 2);
+//
+//    for (int i = 0; i < NUM_GHOSTS; i++) {
+//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
+//      int randomY = MathUtils.random(0, maxPos.y);
+//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+//      Entity ghost = createGhost(player);
+//      spawnEntityAt(ghost, randomPos, true, true);
+//    }
+//  }
 
   private Entity spawnBossKing1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
@@ -507,34 +507,34 @@ public class ForestGameArea extends GameArea {
     this.unloadAssets();
   }
 
-  private void spawnScrap() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//  private void spawnScrap() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < 5; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity scrap = DropFactory.createScrapDrop();
+//      spawnEntityAt(scrap, randomPos, true, false);
+//    }
+//
+//    for (int i = 0; i < 5; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity crystal = DropFactory.createCrystalDrop();
+//      spawnEntityAt(crystal, randomPos, true, false);
+//    }
+//  }
 
-    for (int i = 0; i < 5; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity scrap = DropFactory.createScrapDrop();
-      spawnEntityAt(scrap, randomPos, true, false);
-    }
-
-    for (int i = 0; i < 5; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity crystal = DropFactory.createCrystalDrop();
-      spawnEntityAt(crystal, randomPos, true, false);
-    }
-  }
-
-  private void spawnIncome() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < 50; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity towerfactory = TowerFactory.createIncomeTower();
-      spawnEntityAt(towerfactory, randomPos, true, true);
-    }
-  }
-  
+//  private void spawnIncome() {
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+//
+//    for (int i = 0; i < 50; i++) {
+//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//      Entity towerfactory = TowerFactory.createIncomeTower();
+//      spawnEntityAt(towerfactory, randomPos, true, true);
+//    }
+//  }
+//
   private void spawnEngineer() {
 
     for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
