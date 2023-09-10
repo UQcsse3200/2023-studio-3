@@ -218,4 +218,12 @@ public class CombatStatsComponent extends Component {
     public String getState() {
         return this.state;
     }
+
+    public ArrayList<Melee> getCloseRangeAbilities() {
+        return this.closeRangeAbilities;
+    }
+
+    public ArrayList<ProjectileConfig> getLongRangeAbilities() {
+        return this.longRangeAbilities;
+    }
 }

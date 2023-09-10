@@ -7,6 +7,9 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
@@ -72,7 +75,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
     owner.getEntity().getEvents().trigger("shootStart");
-    System.out.println("mob attack started for " + owner.getEntity().getId());
+//    System.out.println("mob attack started for " + owner.getEntity().getId());
   }
 
   /**
@@ -109,7 +112,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
-        System.out.println("idle for " + owner.getEntity().getId());
+//        System.out.println("idle for " + owner.getEntity().getId());
 
       }
 
@@ -124,17 +127,18 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
 
         }
-        System.out.println("deploying for " + owner.getEntity().getId());
+//        System.out.println("deploying for " + owner.getEntity().getId());
 
       }
 
       case FIRING -> {
 //        owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
         // targets gone - stop firing
-        if (!isTargetVisible()) {
+        if (!isTargetVisible() || this.meleeOrProjectile() == null) {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
+          System.out.println("weapon chosen is " + this.meleeOrProjectile());
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
@@ -145,7 +149,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         }
         System.out.println("firing for " + owner.getEntity().getId());
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
-        System.out.println("the fixture for " + owner.getEntity().getId() + " is " + this.meleeOrProjectile());
+//        this.meleeOrProjectile();
+//        System.out.println("the fixture for " + owner.getEntity().getId() + " is " + this.meleeOrProjectile());
 
       }
 
@@ -158,7 +163,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(IDLE);
           mobState = STATE.IDLE;
         }
-        System.out.println("stowing for " + owner.getEntity().getId());
+//        System.out.println("stowing for " + owner.getEntity().getId());
 
       }
     }
@@ -173,7 +178,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       this.updateMobState();
     } else {
 //      owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
-      System.out.println("mob attack stopped for " + owner.getEntity().getId());
+//      System.out.println("mob attack stopped for " + owner.getEntity().getId());
       super.stop();
       owner.getEntity().getEvents().trigger(STOW);
     }
@@ -190,7 +195,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       return getActivePriority();
     }
     return getInactivePriority();
-//    return isTargetVisible() ? getActivePriority() : getInactivePriority();
   }
 
   /**
@@ -199,12 +203,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    */
   private int getActivePriority() {
      if ((startTime + delay) < timeSource.getTime() && isTargetVisible()) {
-//     if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
-//       System.out.println("ready to fire while active");
        return priority;
      }
-//     System.out.println("not ready to fire while active");
-//     return !isTargetVisible() ? -1 : priority;
     return -1;
   }
 
@@ -213,15 +213,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * @return (int) -1 if a target is not visible, active priority otherwise
    */
   private int getInactivePriority() {
-//    return isTargetVisible() ? priority : 0;
     if ((startTime + delay) < timeSource.getTime() && isTargetVisible()) {
-//    if (isTargetVisible() && (startTime + delay) > timeSource.getTime()) {
-//      System.out.println("ready to fire while inactive");
       return priority;
     }
     return -1;
-//    System.out.println("not ready to fire while inactive");
-//    return isTargetVisible() ? priority : -1;
   }
 
   /**
@@ -233,12 +228,25 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);
   }
 
-  private Fixture meleeOrProjectile() {
-//    RaycastHit[] hits = physics.raycastAll(owner.getEntity().getPosition(), new Vector2(0, 0), TARGET);
-//    owner.getEntity().getComponent(CombatStatsComponent.class);
+  /**
+   * Uses a custom raycast method to find the closest target to the mob. Based on the distance to the
+   * target, the mob will choose a weapon to attack with.
+   *
+   * If the object does not have a CombatStatsComponent (which handles dealing damage etc), then
+   * the function will return null. If it returns null when the mob is in state FIRING or DEPLOY, it will not fire
+   * and will STOW.
+   * */
+  private Weapon meleeOrProjectile() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
     Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET, hit);
-    System.out.println("hit fixture if worked is: " + hitraycast);
-    return hitraycast;
+    TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);
+    Weapon chosenWeapon = null;
+    if (comp != null) {
+      chosenWeapon = comp.chooseWeapon(hitraycast);
+      if (chosenWeapon != null) {
+      }
+    }
+
+    return chosenWeapon;
   }
 }

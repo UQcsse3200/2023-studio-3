@@ -134,9 +134,9 @@ public class ForestGameArea extends GameArea {
     displayUI();
 
     spawnTerrain();
-//    spawnBuilding1();
-//    spawnBuilding2();
-//    spawnMountains();
+    spawnBuilding1();
+    spawnBuilding2();
+    spawnMountains();
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
@@ -148,10 +148,10 @@ public class ForestGameArea extends GameArea {
     spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnXenoGrunts();
 
-    spawnGhosts();
-//    spawnWeaponTower();
+//    spawnGhosts();
+    spawnWeaponTower();
     spawnIncome();
-//    spawnScrap();
+    spawnScrap();
 
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
