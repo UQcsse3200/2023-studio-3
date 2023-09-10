@@ -50,39 +50,31 @@ public class CurrencyDisplay extends UIComponent {
         table.setFillParent(true);
         table.padTop(50f).padLeft(20f);
 
-        // create scraps text button style
-        Drawable scrapDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrapsUI.png")));
-        TextButton.TextButtonStyle scrapStyle = new TextButton.TextButtonStyle(
-                scrapDrawable, scrapDrawable, scrapDrawable, new BitmapFont());
-
-        // create scraps button
-        String scrapText = String.format("%d", ServiceLocator.getCurrencyService().getScrap().getAmount());
-        scrapsTb = new TextButton(scrapText, scrapStyle);
-        scrapsTb.setDisabled(true);
-        scrapsTb.getLabel().setAlignment(Align.right);
-        scrapsTb.getLabel().setFontScale(2, 2); // font size
-        scrapsTb.pad(0, 0, 0, 70);
-        scrapsTb.setTransform(true);
-        scrapsTb.setScale(0.5f); // button size
-
-        // create crystals text button style
-        Drawable crystalDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/crystalUI.png")));
-        TextButton.TextButtonStyle crystalStyle = new TextButton.TextButtonStyle(
-                crystalDrawable, crystalDrawable,crystalDrawable, new BitmapFont());
-
-        // create crystals button
-        String crystalText = String.format("%d", ServiceLocator.getCurrencyService().getCrystal().getAmount());
-        crystalsTb = new TextButton(crystalText, crystalStyle);
-        crystalsTb.setDisabled(true);
-        crystalsTb.getLabel().setAlignment(Align.right);
-        crystalsTb.getLabel().setFontScale(2, 2); // font size
-        crystalsTb.pad(0, 0, 0, 70);
-        crystalsTb.setTransform(true);
-        crystalsTb.setScale(0.5f); // button size
+        scrapsTb = createButton("images/economy/scrapBanner.png",
+                ServiceLocator.getCurrencyService().getScrap().getAmount());
+        crystalsTb = createButton("images/economy/crystalBanner.png",
+                ServiceLocator.getCurrencyService().getCrystal().getAmount());
 
         table.add(scrapsTb);
         table.add(crystalsTb);
         stage.addActor(table);
+    }
+
+    private TextButton createButton(String imageFilePath, int value) {
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));
+        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
+                drawable, drawable, drawable, new BitmapFont());
+
+        // create button
+        TextButton tb = new TextButton(String.format("%d", value), style);
+        tb.setDisabled(true);
+        tb.getLabel().setAlignment(Align.right);
+        tb.getLabel().setFontScale(2, 2); // font size
+        tb.pad(0, 0, 0, 70);
+        tb.setTransform(true);
+        tb.setScale(0.5f); // button size
+
+        return tb;
     }
 
     @Override
