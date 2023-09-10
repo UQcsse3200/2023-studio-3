@@ -54,8 +54,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         // Set up the background
         batch = new SpriteBatch();
-        Texture introImage = new Texture(TEXTURE);
-        introSprite = new Sprite(introImage);
+        Texture backgroundImage = new Texture(TEXTURE);
+        introSprite = new Sprite(backgroundImage);
         introSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
