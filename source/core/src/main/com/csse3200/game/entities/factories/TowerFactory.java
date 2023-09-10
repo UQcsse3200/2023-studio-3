@@ -97,9 +97,9 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent(RESOURCE_TOWER))
-                .addComponent(aiTaskComponent);
-
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new EconTowerAnimationController());
 
         return income;
     }

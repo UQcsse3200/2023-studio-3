@@ -107,6 +107,8 @@ public class MainGameScreen extends ScreenAdapter {
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
 
+    ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
+
     loadAssets();
     createUI();
 
