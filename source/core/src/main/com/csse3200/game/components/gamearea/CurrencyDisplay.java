@@ -48,15 +48,15 @@ public class CurrencyDisplay extends UIComponent {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
-        table.padTop(50f).padLeft(20f);
+        table.padTop(100f).padLeft(20f);
 
         scrapsTb = createButton("images/economy/scrapBanner.png",
                 ServiceLocator.getCurrencyService().getScrap().getAmount());
         crystalsTb = createButton("images/economy/crystalBanner.png",
                 ServiceLocator.getCurrencyService().getCrystal().getAmount());
 
-        table.add(scrapsTb);
-        table.add(crystalsTb);
+        table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
+        table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
     }
 
@@ -69,10 +69,9 @@ public class CurrencyDisplay extends UIComponent {
         TextButton tb = new TextButton(String.format("%d", value), style);
         tb.setDisabled(true);
         tb.getLabel().setAlignment(Align.right);
-        tb.getLabel().setFontScale(2, 2); // font size
-        tb.pad(0, 0, 0, 70);
+
+        tb.pad(0, 0, 0, 50);
         tb.setTransform(true);
-        tb.setScale(0.5f); // button size
 
         return tb;
     }
