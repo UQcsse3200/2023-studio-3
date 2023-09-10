@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
  * Utilizes HitboxComponent and CombatStatsComponent for functionality.
  */
 public class TNTDamageComponent extends Component {
-    private static final Logger logger = LoggerFactory.getLogger(TNTDamageComponent.class);
     private short targetLayer;
     private float knockbackForce = 0f;
     private float radius;
@@ -84,12 +83,7 @@ public class TNTDamageComponent extends Component {
 
                 // Check for null components and log specifics
                 if (sourceHitbox == null || otherHitbox == null) {
-                    if (sourceHitbox == null) {
-                        logger.debug("Warning: Source Entity without HitboxComponent. Source Entity: " + entity);
-                    }
-                    if (otherHitbox == null) {
-                        logger.debug("Warning: Other Entity without HitboxComponent. Other Entity: " + otherEntity);
-                    }
+
                     continue;
                 }
 

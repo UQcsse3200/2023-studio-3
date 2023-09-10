@@ -4,8 +4,6 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -142,24 +140,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public STATE getState() {
         return this.towerState;
-    }
-
-    /**
-     * Fetches the active priority of the Task if a target is visible.
-     * @return (int) active priority if a target is visible, -1 otherwise
-     */
-    private int getActivePriority() {
-
-        return !isTargetVisible() ? 0 : priority;
-    }
-
-    /**
-     * Fetches the inactive priority of the Task if a target is not visible.
-     * @return (int) -1 if a target is not visible, active priority otherwise
-     */
-    private int getInactivePriority() {
-
-        return isTargetVisible() ? priority : 0;
     }
 
     /**
