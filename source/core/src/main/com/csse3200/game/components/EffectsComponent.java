@@ -51,7 +51,7 @@ public class EffectsComponent extends Component {
     }
 
     private void onCollisionStart(Fixture me, Fixture other) {
-        // Nothing to do on collision start
+        // Nothing to do in collision start
     }
 
     private void onCollisionEnd(Fixture me, Fixture other) {
@@ -73,33 +73,18 @@ public class EffectsComponent extends Component {
             return;
         }
 
+        System.out.println("target layer: " + otherEntity.getLayer());
+
         // Apply effect
-        switch (effect) {
-            case FIREBALL -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.FIREBALL);
-                }
+        if (effect == ProjectileEffects.FIREBALL) {
+            if (aoe) {
+                applyAoeEffect(ProjectileEffects.FIREBALL);
             }
-            case BURN -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.BURN);
-                } else {
-                    applySingleEffect(ProjectileEffects.BURN, otherCombatStats, otherEntity);
-                }
-            }
-            case SLOW -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.SLOW);
-                } else {
-                    applySingleEffect(ProjectileEffects.SLOW, otherCombatStats, otherEntity);
-                }
-            }
-            case STUN -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.STUN);
-                } else {
-                    applySingleEffect(ProjectileEffects.STUN, otherCombatStats, otherEntity);
-                }
+        } else {
+            if (aoe) {
+                applyAoeEffect(effect);
+            } else {
+                applySingleEffect(effect, otherCombatStats, otherEntity);
             }
         }
     }
@@ -124,9 +109,7 @@ public class EffectsComponent extends Component {
                 burnEffect(targetCombatStats, hostCombatStats);
             }
             case SLOW -> {slowEffect(targetEntity);}
-            case STUN -> {
-                stunEffect(targetEntity);
-            }
+            case STUN -> {stunEffect(targetEntity);}
         }
     }
     /**
@@ -263,23 +246,37 @@ public class EffectsComponent extends Component {
         }, 5); // 5 seconds delay
     }
 
+    /**
+     * Applies stun effect to a taget entity.
+     * @param targetEntity Entity for stun effect to be applied to.
+     */
     private void stunEffect(Entity targetEntity) {
+        CombatStatsComponent hostCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
         AITaskComponent taskComponent = targetEntity.getComponent(AITaskComponent.class);
-        if (taskComponent == null) {
+
+        if (hostCombatStats == null || taskComponent == null) {
             return;
         }
+
+        hostCombatStats.setBaseAttack(0);
+
         if (stunnedEntities.contains(targetEntity)) {
             return;
         }
+        
         taskComponent.disposeAll();
         stunnedEntities.add(targetEntity);
-
+    
         new java.util.Timer().schedule( 
         new java.util.TimerTask() {
             @Override
             public void run() {
                 taskComponent.restore();
-                stunnedEntities.remove(targetEntity);
+                for (int i = 0; i < stunnedEntities.size(); i++) {
+                    if (stunnedEntities.get(i).equals(targetEntity)) {
+                        stunnedEntities.remove(stunnedEntities.get(i));
+                    }
+                }
                 this.cancel();
             }
         }, 5000);

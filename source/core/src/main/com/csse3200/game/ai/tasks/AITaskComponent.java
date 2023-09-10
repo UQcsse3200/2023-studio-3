@@ -59,25 +59,31 @@ public class AITaskComponent extends Component implements TaskRunner {
     }
   }
 
-  public boolean disposeAll() {
+  /**
+   * Empties the priorityTasks List. Disposes all of the entity's tasks.
+   */
+  public void disposeAll() {
+    currentTask = null;
     for (int i = 0; i < priorityTasks.size(); i++) {
       priorityTasksToBeRestored.add(priorityTasks.get(i));
-      
     }
     for (int i = 0; i < priorityTasks.size(); i++) {
       priorityTasks.remove(i);
     }
-    return true;
   }
 
-  public boolean restore() {
+  /**
+   * Restores the priorityTasks List. Adds all of the entity's disposed tasks 
+   * back into priorityTasks.
+   */
+  public void restore() {
     for (int i = 0; i < priorityTasksToBeRestored.size(); i++) {
       priorityTasks.add(priorityTasksToBeRestored.get(i));
     }
     for (int i = 0; i < priorityTasksToBeRestored.size(); i++) {
       priorityTasksToBeRestored.remove(i);
     }
-    return true;
+    this.update();
   }
 
   private PriorityTask getHighestPriorityTask() {
