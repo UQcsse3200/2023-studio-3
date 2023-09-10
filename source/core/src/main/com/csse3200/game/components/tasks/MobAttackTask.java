@@ -101,18 +101,19 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-          //owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
 
       case DEPLOY -> {
         // currently deploying,
-        if (isTargetVisible()) {
-          //owner.getEntity().getEvents().trigger(FIRING);
+        if (isTargetVisible() || this.meleeOrProjectile() != null) {
+          owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
+          owner.getEntity().getEvents().trigger(FIRING);
           mobState = STATE.FIRING;
         } else {
-          //owner.getEntity().getEvents().trigger(STOW);
+          owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         }
       }
@@ -139,10 +140,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-          //owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
-          //owner.getEntity().getEvents().trigger(IDLE);
+          owner.getEntity().getEvents().trigger(IDLE);
           mobState = STATE.IDLE;
         }
       }
@@ -168,7 +169,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public int getPriority() {
-//    return  -1;
     if (status == Status.ACTIVE) {
       return getActivePriority();
     }
@@ -223,8 +223,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     Weapon chosenWeapon = null;
     if (comp != null) {
       chosenWeapon = comp.chooseWeapon(hitraycast);
-      if (chosenWeapon != null) {
-      }
     }
 
     return chosenWeapon;
