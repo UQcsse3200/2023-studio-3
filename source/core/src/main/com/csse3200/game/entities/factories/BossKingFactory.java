@@ -61,8 +61,8 @@ public class BossKingFactory {
                 .addComponent(new BossAnimationController());
 
         bossKing1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing1.scaleHeight(0.5f);
-        bossKing1.scaleWidth(0.5f);
+        bossKing1.setScale(-1f,1f);
+
         return bossKing1;
     }
 
@@ -101,7 +101,7 @@ public class BossKingFactory {
                         .addComponent(new ColliderComponent())
                         .addComponent(new PhysicsMovementComponent())
                         .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-                        .addComponent(new TouchAttackComponent(PhysicsLayer.PLAYER, 1.5f));
+                        .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));
 
 
         PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);

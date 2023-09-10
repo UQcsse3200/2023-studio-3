@@ -3,10 +3,13 @@ package com.csse3200.game.components;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.entities.configs.ProjectileConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Random;
 
 /**
@@ -28,11 +31,11 @@ public class CombatStatsComponent extends Component {
   private static final Logger logger = LoggerFactory.getLogger(CombatStatsComponent.class);
   private int health;
   private int baseAttack;
-  private final int fullHealth;
+  private int fullHealth;
   private String state;
-  private ArrayList<Integer> drops;
+  private ArrayList<Currency> drops;
   private ArrayList<Melee> closeRangeAbilities;
-  private ArrayList<Weapon> longRangeAbilities; //TODO change String to Projectiles
+  private ArrayList<ProjectileConfig> longRangeAbilities; //TODO change String to Projectiles
 
   public CombatStatsComponent(int health, int baseAttack) {
     setHealth(health);
@@ -42,9 +45,9 @@ public class CombatStatsComponent extends Component {
   }
 
   public CombatStatsComponent(int health, int baseAttack,
-                              ArrayList<Integer> drops,
+                              ArrayList<Currency> drops,
                               ArrayList<Melee> closeRangeAbilities,
-                              ArrayList<Weapon> longRangeAbilities) {
+                              ArrayList<ProjectileConfig> longRangeAbilities) {
     setHealth(health);
     this.fullHealth = health;
     setBaseAttack(baseAttack);
@@ -100,6 +103,25 @@ public class CombatStatsComponent extends Component {
   }
 
   /**
+   * Returns the entity's fullHealth value (note that this does not influence the ability to set its actual health)
+   *
+   * @return The entity's fullHealth variable
+   */
+  public int getMaxHealth() {
+      return fullHealth;
+  }
+
+  /**
+   * Sets the entity's fullHealth variable.
+   * Intended for when the entity's maximum health must be changed after creation, like upgrading a turret's HP.
+   *
+   * @param newMaxHealth The new value fullHealth should be set to
+   */
+  public void setMaxHealth(int newMaxHealth) {
+      fullHealth = newMaxHealth;
+  }
+
+  /**
    * Returns the entity's base attack damage.
    *
    * @return base attack damage
@@ -127,13 +149,20 @@ public class CombatStatsComponent extends Component {
   public void hit(Integer damage) {
     int newHealth = getHealth() - damage;
     setHealth(newHealth);
+    if (entity != null && !this.isDead()) {
+        entity.getEvents().trigger("hitStart");
+    }
     changeState();
   }
 
   // Default CombatStatsComponent that relies on the attacker's combatStatsComponent.
   public void hit(CombatStatsComponent attacker) {
     int newHealth = getHealth() - attacker.getBaseAttack();
+    if (entity != null && !this.isDead()) {
+        entity.getEvents().trigger("hitStart");
+    }
     setHealth(newHealth);
+    changeState();
   }
 
   /**
@@ -145,7 +174,7 @@ public class CombatStatsComponent extends Component {
   }
 
   //TODO: this will be changed to drop an item and load it to the screen
-  public Integer drop() {
+  public Currency drop() {
       return this.drops.get(pickRandom(this.drops));
   }
 
@@ -153,7 +182,7 @@ public class CombatStatsComponent extends Component {
    * If there are long range attacks provided, return a random one, else
    * return null
    * */
-    public Weapon longRangeAttack() {
+    public ProjectileConfig longRangeAttack() {
       if (this.longRangeAbilities == null) {
           return null;
       }

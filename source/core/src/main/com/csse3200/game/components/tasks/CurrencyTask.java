@@ -8,18 +8,21 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * The CurrencyTask updates the in-game currency based on time intervals.
  */
 public class CurrencyTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(CurrencyTask.class);
     private final int priority;  // The active priority this task will have
-    private final int INTERVAL = 10;  // time interval to update currency in seconds
     private final GameTime timeSource;
     private long endTime;
     private int interval;
     private final Scrap scrap = new Scrap(); // currency to update
     private final int currencyAmount = scrap.getAmount(); // amount of currency to update
+    private static final String IDLE = "idleStartEco";
+    private static final String MOVE = "moveStartEco";
 
     /**
      * @param priority Task priority for currency updates. Must be a positive integer.
@@ -37,7 +40,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        endTime = timeSource.getTime() + (INTERVAL * 1000);
+        endTime = timeSource.getTime() + (30 * 1000);
+        owner.getEntity().getEvents().trigger(IDLE);
     }
 
     /**
@@ -48,11 +52,12 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
+            owner.getEntity().getEvents().trigger(MOVE);
             updateCurrency(); // update currency
-            endTime = timeSource.getTime() + (interval * 1000L); // reset end time
+            endTime = timeSource.getTime() + (30 * 1000); // reset end time
+
         }
     }
-
 
     /**
      * Updates the currency based on time intervals.

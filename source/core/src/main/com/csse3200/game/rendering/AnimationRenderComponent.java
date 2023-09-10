@@ -179,7 +179,7 @@ public class AnimationRenderComponent extends RenderComponent {
 
   @Override
   public void dispose() {
-    atlas.dispose();
+   // atlas.dispose(); // this has to be disabled to keep the atlas file for other entities that rely on it
     super.dispose();
   }
 }
