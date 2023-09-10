@@ -172,7 +172,7 @@ public class TowerFactoryTest {
                 "Fire Tower cost must 10");
         assertEquals(10, stunTower.getComponent(CombatStatsComponent.class).getHealth(),
                 "Stun Tower health must be 10");
-        assertEquals(5, stunTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+        assertEquals(10, stunTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "Stun Tower base attack must be 10");
         assertEquals(10, fireTower.getComponent(CostComponent.class).getCost(),
                 "Stun Tower cost must 10");
