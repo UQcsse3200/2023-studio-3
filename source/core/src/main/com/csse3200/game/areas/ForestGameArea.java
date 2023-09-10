@@ -369,8 +369,8 @@ public class ForestGameArea extends GameArea {
 
 
   private void spawnXenoGrunts() {
-    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
+    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 10);
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
       System.out.println(randomPos);

@@ -5,17 +5,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
-import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
-import com.csse3200.game.components.tasks.SpawnWaveTask;
 import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
-import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -109,9 +107,8 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
-//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
