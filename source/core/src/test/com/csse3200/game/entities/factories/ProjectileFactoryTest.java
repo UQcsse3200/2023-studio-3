@@ -1,36 +1,42 @@
 package com.csse3200.game.entities.factories;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.Component;
+import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
-import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import java.security.Provider;
+import java.util.Arrays;
 
 @ExtendWith(GameExtension.class)
 class ProjectileFactoryTest {
-    private String[] texture = {"images/projectiles/projectile.png"};
     private Entity projectile;
 
     @BeforeEach
@@ -44,14 +50,15 @@ class ProjectileFactoryTest {
         ServiceLocator.registerRenderService(render);
         ResourceService resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
-        resourceService.loadTextures(texture);
+        // resourceService.loadTextures(texture);
+        // resourceService.loadTextureAtlases(atlas);
         resourceService.loadAll();
-        ServiceLocator.getResourceService()
-                .getAsset("images/projectiles/projectile.png", Texture.class);
+        // ServiceLocator.getResourceService()
+        //         .getAsset("images/projectiles/basic_projectile.atlas", TextureAtlas.class);
         Vector2 destination = new Vector2(0.1f, 0.1f);
-        Vector2 speed = new Vector2(0.2f, 0.2f);
-
-        projectile = ProjectileFactory.createBaseProjectile(new Entity(), destination);
+        short targetLayer = PhysicsLayer.HUMANS;
+        Vector2 speed = new Vector2(2f, 2f);
+        projectile = ProjectileFactory.createBaseProjectile(targetLayer, destination, speed);
     }
 
     @Test

@@ -1,15 +1,15 @@
 package com.csse3200.game.areas;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.utils.math.GridPoint2Utils;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
@@ -18,29 +18,32 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Timer;
-import java.util.TimerTask;
 
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import java.util.ArrayList;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
 
+  private static final int NUM_BUILDINGS = 4;
+
+  private static final int NUM_WALLS = 7;
+
   private static final int NUM_TREES = 0;
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
-  private static final int NUM_BUILDINGS = 4;
+
   private static final int NUM_BOSS=4;
-  private static final int NUM_WALLS = 7;
+
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
 
+
   private static final int NUM_WEAPON_TOWERS = 3;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 15);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
 
@@ -48,6 +51,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
+         "images/ingamebg.png",
           "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
@@ -83,24 +87,39 @@ public class ForestGameArea extends GameArea {
           "images/towers/wallTower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
+
+          "images/terrain_use.png",
+          "images/Dusty_MoonBG.png",
+
           "images/economy/scrap.png",
-          "images/towers/mine_tower.png"
+          "images/economy/crystal.png",
+          "images/economy/econ-tower.png",
+
+
+          "images/towers/mine_tower.png",
+          "images/towers/TNTTower.png"
   };
   private static final String[] forestTextureAtlases = {
+          "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
-          "images/xenoGrunt.atlas",
+          "images/mobs/xenoGrunt.atlas",
           "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas"
+          "images/mobs/rangeBossRight.atlas",
+          "images/towers/TNTTower.atlas",
+          "images/projectiles/basic_projectile.atlas",
+          "images/projectiles/mobProjectile.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
           "sounds/towers/gun_shot_trimmed.mp3",
           "sounds/towers/deploy.mp3",
-          "sounds/towers/stow.mp3"
+          "sounds/towers/stow.mp3",
+          "sounds/engineers/firing_auto.mp3",
+          "sounds/engineers/firing_single.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -112,6 +131,7 @@ public class ForestGameArea extends GameArea {
   // Variables to be used with spawn projectile methods. This is the variable 
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
+  private static final int towardsTowers = 0;
   private Entity bossKing1;
   private Entity bossKing2;
 
@@ -129,34 +149,26 @@ public class ForestGameArea extends GameArea {
   /** Create the game area, including terrain, static entities (trees), dynamic entities (player) */
   @Override
   public void create() {
+    // Load game assets
     loadAssets();
-
     displayUI();
-
     spawnTerrain();
-    spawnBuilding1();
-    spawnBuilding2();
-    spawnMountains();
+
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
     playMusic();
 
     // Types of projectile
-    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
     spawnXenoGrunts();
 
-//    spawnGhosts();
+    spawnGhosts();
     spawnWeaponTower();
-    spawnIncome();
-    spawnScrap();
-
+    spawnEngineer();
     bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
-
-    playMusic();
+    spawnTNTTower();
   }
 
   private void displayUI() {
@@ -219,10 +231,6 @@ public class ForestGameArea extends GameArea {
   private void spawnMountains() {
     ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
 
-    fixedPositions.add(new GridPoint2(5, 8));
-    fixedPositions.add(new GridPoint2(12, 4));
-    fixedPositions.add(new GridPoint2(20, 10));
-    fixedPositions.add(new GridPoint2(33, 17));
 
     for (GridPoint2 fixedPos : fixedPositions) {
       Entity tree = ObstacleFactory.createMountain();
@@ -270,13 +278,27 @@ public class ForestGameArea extends GameArea {
     * Spawns a projectile that only heads towards the enemies in its lane.
     * 
     * @param position The position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
+    * @param targetLayer The enemy layer of the "shooter".
     * @param direction The direction the projectile should head towards.
     * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y), speed);
+  private void spawnProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y), speed);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+ /**
+   * Spawns a projectile specifically for general mobs/xenohunters
+   * 
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   * 
+   */
+  private void spawnMobBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createMobBall(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -285,14 +307,14 @@ public class ForestGameArea extends GameArea {
     * Spawns a projectile to be used for multiple projectile function.
     * 
     * @param position The position of the Entity that's shooting the projectile.
-    * @param target The enemy entities of the "shooter".
+    * @param targetLayer The enemy layer of the "shooter".
     * @param space The space between the projectiles' destination.
     * @param direction The direction the projectile should head towards.
     * @param speed The speed of the projectiles.
    * 
    */
-  private void spawnProjectile(Vector2 position, Entity target, int space,  int direction, Vector2 speed) {
-    Entity Projectile = ProjectileFactory.createFireBall(target, new Vector2(direction, position.y + space), speed);
+  private void spawnProjectile(Vector2 position, short targetLayer, int space,  int direction, Vector2 speed) {
+    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -359,16 +381,16 @@ public class ForestGameArea extends GameArea {
    * the starting point but different destinations.
    * 
    * @param position The position of the Entity that's shooting the projectile.
-   * @param target The enemy entities of the "shooter".
+   * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param space The space between the projectiles' destination.
    * @param speed The speed of the projectiles.
    * @param quantity The amount of projectiles to spawn.
    */
-  private void spawnMultiProjectile(Vector2 position, Entity target, int direction, int space, Vector2 speed, int quantity) {
+  private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
     int half = quantity / 2;
     for (int i = 0; i < quantity; i++) {
-        spawnProjectile(position, target, space * half, direction, speed);
+        spawnProjectile(position, targetLayer, space * half, direction, speed);
         --half;
     }
   }
@@ -377,13 +399,15 @@ public class ForestGameArea extends GameArea {
    * Returns projectile that can do an area of effect damage
    * 
    * @param position The position of the Entity that's shooting the projectile.
-   * @param target The enemy entities of the "shooter".
+   * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param speed The speed of the projectiles.
-   * @param aoeSize The size of the area of effect.
+   * @param effect Type of effect.
+   * @param aoe Whether it is an aoe projectile.
    */
-  private void spawnAoeProjectile(Vector2 position, Entity target, int direction, Vector2 speed, int aoeSize) {
-    Entity Projectile = ProjectileFactory.createAOEFireBall(target, new Vector2(direction, position.y), speed, aoeSize);
+  private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
+                                     ProjectileEffects effect, boolean aoe) {
+    Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
@@ -399,6 +423,18 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, true);
       spawnEntityAt(wallTower, new GridPoint2(randomPos.x + 3, randomPos.y), true, true);
     }
+  }
+
+  private void spawnTNTTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createTNTTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
+
   }
 
 
@@ -443,10 +479,16 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
+    }
+
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity crystal = DropFactory.createCrystalDrop();
+      spawnEntityAt(crystal, randomPos, true, false);
     }
   }
 
@@ -454,12 +496,24 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < 50; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
+  
+  private void spawnEngineer() {
 
-
+    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
+      Entity engineer = EngineerFactory.createEngineer();
+      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+    }
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
+//    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//
+//    Entity engineer = EngineerFactory.createEngineer();
+//    spawnEntityAt(engineer, randomPos, true, true);
+  }
 }
