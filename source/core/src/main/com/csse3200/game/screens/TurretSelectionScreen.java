@@ -17,6 +17,8 @@ import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
@@ -29,6 +31,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private GdxGame game;
 
     private Set<String> selectedTurrets = new HashSet<>();
+    private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     public TurretSelectionScreen(GdxGame game) {
         this.game = game;
@@ -63,9 +66,12 @@ public class TurretSelectionScreen extends ScreenAdapter {
                         // Turret is already selected, unselect it
                         selectedTurrets.remove(turret);
                         // You can also change the button appearance to indicate unselection
+                        //logger.info(selectedTurrets.toString());
                     } else {
                         // Turret is not selected, select it
                         selectedTurrets.add(turret);
+                        //logger.info(selectedTurrets.toString());
+
                         // You can change the button appearance to indicate selection
                     }
                 }
