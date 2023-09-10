@@ -39,6 +39,8 @@ public class TowerFactoryTest {
     private Entity baseTower;
     private Entity weaponTower;
     private Entity wallTower;
+    private Entity stunTower;
+    private Entity fireTower;
     private String[] texture = {
             "images/towers/turret_deployed.png",
             "images/towers/turret01.png",
@@ -71,6 +73,8 @@ public class TowerFactoryTest {
         baseTower = TowerFactory.createBaseTower();
         weaponTower = TowerFactory.createWeaponTower();
         wallTower = TowerFactory.createWallTower();
+        fireTower = TowerFactory.createFireTower();
+        stunTower = TowerFactory.createFireTower();
     }
 
     @Test
@@ -79,6 +83,8 @@ public class TowerFactoryTest {
         assertNotNull(baseTower, "Base tower should not be null");
         assertNotNull(weaponTower, "Weaponry tower should not be null");
         assertNotNull(wallTower, "Wall tower should not be null");
+        assertNotNull(stunTower, "Stun tower must not be null");
+        assertNotNull(fireTower, "Stun tower must not be null");
     }
 
     @Test
@@ -89,6 +95,10 @@ public class TowerFactoryTest {
                 "Weaponry tower should have ColliderComponent");
         assertNotNull(wallTower.getComponent(ColliderComponent.class),
                 "Wall tower should have ColliderComponent");
+        assertNotNull(stunTower.getComponent(ColliderComponent.class),
+                "Stun Tower should have ColliderComponent");
+        assertNotNull(fireTower.getComponent(ColliderComponent.class),
+                "Fire tower should have ColliderComponent");
     }
 
     @Test
@@ -99,6 +109,10 @@ public class TowerFactoryTest {
                 "Weaponry tower should have HitboxComponent");
         assertNotNull(wallTower.getComponent(HitboxComponent.class),
                 "Wall tower should have HitboxComponent");
+        assertNotNull(stunTower.getComponent(HitboxComponent.class),
+                "Stun tower should have HitboxComponent");
+        assertNotNull(fireTower.getComponent(HitboxComponent.class),
+                "Fire tower should have HitboxComponent");
     }
 
     @Test
@@ -109,6 +123,10 @@ public class TowerFactoryTest {
                 "Weaponry tower should have PhysicsComponent");
         assertNotNull(wallTower.getComponent(PhysicsComponent.class),
                 "Wall tower should have PhysicsComponent");
+        assertNotNull(stunTower.getComponent(PhysicsComponent.class),
+                "Stun tower should have PhysicsComponent");
+        assertNotNull(fireTower.getComponent(PhysicsComponent.class),
+                "Fire tower should have PhysicsComponent");
     }
 
     @Test
@@ -116,6 +134,8 @@ public class TowerFactoryTest {
         PhysicsComponent physicsComponent = baseTower.getComponent(PhysicsComponent.class);
         PhysicsComponent physicsComponent1 = weaponTower.getComponent(PhysicsComponent.class);
         PhysicsComponent physicsComponent2 = wallTower.getComponent(PhysicsComponent.class);
+        PhysicsComponent physicsComponent3 = stunTower.getComponent(PhysicsComponent.class);
+        PhysicsComponent physicsComponent4 = fireTower.getComponent(PhysicsComponent.class);
 
         assertTrue(physicsComponent.getBody().getType() == BodyType.StaticBody,
                 "PhysicsComponent should be of type StaticBody");
@@ -123,18 +143,33 @@ public class TowerFactoryTest {
                 "PhysicsComponent1 should be of type StaticBody");
         assertTrue(physicsComponent2.getBody().getType() == BodyType.StaticBody,
                 "PhysicsComponent2 should be of type StaticBody");
+        assertTrue(physicsComponent3.getBody().getType() == BodyType.StaticBody,
+                "StunTower's PhysicsComponent should be of type StaticBody");
+        assertTrue(physicsComponent4.getBody().getType() == BodyType.StaticBody,
+                "FireTower's PhysicsComponent should be of type StaticBody");
     }
 
     @Test
     public void testWeaponTowerCombatStatsComponentAndCostComponent() {
 
-        assertTrue(weaponTower.getComponent(CombatStatsComponent.class).getHealth() == 10,
+        assertEquals(10, weaponTower.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 10");
-        assertTrue(weaponTower.getComponent(CombatStatsComponent.class).getBaseAttack() == 10,
+        assertEquals(10, weaponTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
-        assertTrue(weaponTower.getComponent(CostComponent.class).getCost() == 10,
+        assertEquals(10, weaponTower.getComponent(CostComponent.class).getCost(),
                 "Cost should be 10");
-
+        assertEquals(10, fireTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Fire Tower health must be 10");
+        assertEquals(10, fireTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Fire Tower base attack must be 10");
+        assertEquals(10, fireTower.getComponent(CostComponent.class).getCost(),
+                "Fire Tower cost must 10");
+        assertEquals(10, stunTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Stun Tower health must be 10");
+        assertEquals(5, stunTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Stun Tower base attack must be 10");
+        assertEquals(10, fireTower.getComponent(CostComponent.class).getCost(),
+                "Stun Tower cost must 10");
     }
 
     @Test
@@ -152,6 +187,8 @@ public class TowerFactoryTest {
     @Test
     public void weaponTowerHasAnimationComponent() {
         assertNotNull(weaponTower.getComponent(AnimationRenderComponent.class));
+        assertNotNull(stunTower.getComponent(AnimationRenderComponent.class));
+        assertNotNull(fireTower.getComponent(AnimationRenderComponent.class));
     }
 
     @Test
