@@ -7,7 +7,7 @@ import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.RicochetComponent;
 import com.csse3200.game.components.SplitFireworksComponent;
-import com.csse3200.game.components.projectile.MobKingProjectAnimController;
+import com.csse3200.game.components.projectile.*;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -25,10 +25,6 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
-import com.csse3200.game.components.projectile.MobProjectileAnimationController;
-import com.csse3200.game.components.projectile.ProjectileAnimationController;
-import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
 
 /**
  * Responsible for creating projectiles within the game.
@@ -75,13 +71,13 @@ public class ProjectileFactory {
         AnimationRenderComponent animator =
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService()
-                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
+                            .getAsset("images/projectiles/burn_effect.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
         .addComponent(animator)
-        .addComponent(new ProjectileAnimationController());
+        .addComponent(new BurnEffectProjectileAnimationController());
       }
       case SLOW -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
@@ -103,6 +99,15 @@ public class ProjectileFactory {
       }
       case STUN -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset("images/projectiles/stun_effect.atlas", TextureAtlas.class));
+        animator.addAnimation(START_ANIM, 0.1f, Animation.PlayMode.LOOP);
+
+        projectile
+                .addComponent(animator)
+                .addComponent(new StunEffectProjectileAnimationController());
       }
     }
       return projectile;
