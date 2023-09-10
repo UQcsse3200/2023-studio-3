@@ -23,7 +23,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final short TARGET = PhysicsLayer.OBSTACLE; // mobs detecting for towers
   // ^ fix this
 
-  private static final String STOW = "stowStart";
+  private static final String STOW = "wanderStart";
   private static final String DEPLOY = "deployStart";
   private static final String FIRING = "shootStart";
   private static final String IDLE = "idleStart";
@@ -68,9 +68,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     startTime = timeSource.getTime();
     this.mobPosition = owner.getEntity().getCenterPosition();
     this.maxRangePosition.set(0, mobPosition.y);
-    owner.getEntity().getEvents().trigger(IDLE);
+    //owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
-    owner.getEntity().getEvents().trigger("shootStart");
   }
 
   /**
@@ -104,7 +103,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-          owner.getEntity().getEvents().trigger(DEPLOY);
+          //owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -112,10 +111,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case DEPLOY -> {
         // currently deploying,
         if (isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(FIRING);
+          //owner.getEntity().getEvents().trigger(FIRING);
           mobState = STATE.FIRING;
         } else {
-          owner.getEntity().getEvents().trigger(STOW);
+          //owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         }
       }
@@ -123,15 +122,16 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case FIRING -> {
         // targets gone - stop firing
         if (!isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(STOW);
+          //owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
-          System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
-          owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
           newProjectile.setScale(-1f, 0.5f);
           ServiceLocator.getEntityService().register(newProjectile);
+
+          System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
+          owner.getEntity().getEvents().trigger(FIRING);
           mobState = STATE.STOW;
         }
       }
@@ -139,10 +139,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(DEPLOY);
+          //owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
-          owner.getEntity().getEvents().trigger(IDLE);
+          //owner.getEntity().getEvents().trigger(IDLE);
           mobState = STATE.IDLE;
         }
       }

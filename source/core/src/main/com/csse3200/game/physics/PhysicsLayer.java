@@ -11,6 +11,7 @@ public class PhysicsLayer {
   public static final short PROJECTILE = (1 << 4);
   public static final short TOWER = (1 << 5);
 
+  public static final short XENO = (1 << 3);
   public static final short HUMANS = (1 << 1) | (1 << 5);
   public static final short ALL = ~0;
 

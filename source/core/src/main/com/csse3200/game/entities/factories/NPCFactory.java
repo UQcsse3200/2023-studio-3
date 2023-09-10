@@ -128,6 +128,7 @@ public class NPCFactory {
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
+    xenoGrunt.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return xenoGrunt;
@@ -149,11 +150,11 @@ public class NPCFactory {
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
             .addComponent(aiComponent);
 
-    PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);
+    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
 
