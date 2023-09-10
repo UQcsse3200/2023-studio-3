@@ -27,9 +27,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     
     // Animation event names for the Engineer's state machine.
     private static final String FIRING = "firingSingleStart";
-    private static final String IDLE_LEFT = "idleLeft";
     private static final String IDLE_RIGHT = "idleRight";
-    private static final String DYING = "deathStart";
     
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the Engineer's weapon.
@@ -50,7 +48,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     
     /** The Engineer's states. */
     private enum STATE {
-        IDLE_LEFT, IDLE_RIGHT, DEPLOY, FIRING, STOW
+        IDLE_RIGHT, FIRING
     }
     private STATE engineerState = STATE.IDLE_RIGHT;
     
@@ -96,15 +94,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     public void updateEngineerState() {
         // configure engineer state depending on target visibility
         switch (engineerState) {
-            case IDLE_LEFT -> {
-                // targets detected in idle mode - start deployment
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
-                } else {
-
-                }
-            }
             case IDLE_RIGHT -> {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
