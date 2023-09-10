@@ -1,14 +1,14 @@
 package com.csse3200.game.components;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
-import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -29,6 +29,7 @@ public class EffectsComponent extends Component {
     private HitboxComponent hitboxComponent;
     private final short targetLayer;
     private Array<CombatStatsComponent> burnEntities = new Array<>();
+    private ArrayList<Entity> stunnedEntities = new ArrayList<>();
 
     /**
      * Constructor for the AoEComponent.
@@ -93,7 +94,13 @@ public class EffectsComponent extends Component {
                     applySingleEffect(ProjectileEffects.SLOW, otherCombatStats, otherEntity);
                 }
             }
-            case STUN -> {}
+            case STUN -> {
+                if (aoe) {
+                    applyAoeEffect(ProjectileEffects.STUN);
+                } else {
+                    applySingleEffect(ProjectileEffects.STUN, otherCombatStats, otherEntity);
+                }
+            }
         }
     }
 
@@ -117,7 +124,9 @@ public class EffectsComponent extends Component {
                 burnEffect(targetCombatStats, hostCombatStats);
             }
             case SLOW -> {slowEffect(targetEntity);}
-            case STUN -> {}
+            case STUN -> {
+                stunEffect(targetEntity);
+            }
         }
     }
     /**
@@ -152,7 +161,9 @@ public class EffectsComponent extends Component {
                     case FIREBALL -> {fireballEffect(targetCombatStats, hostCombatStats);}
                     case BURN -> {burnEffect(targetCombatStats, hostCombatStats);}
                     case SLOW -> {slowEffect(targetEntity);}
-                    case STUN -> {}
+                    case STUN -> {
+                        stunEffect(targetEntity);
+                    }
                 }
             } else {
                 return;
@@ -180,7 +191,6 @@ public class EffectsComponent extends Component {
             return;
         }
         burnEntities.add(target);
-
         // Create a timer task to apply the effect repeatedly
         int numberOfTicks = 5;
         long delay = 1;
@@ -251,5 +261,27 @@ public class EffectsComponent extends Component {
                 }
             }
         }, 5); // 5 seconds delay
+    }
+
+    private void stunEffect(Entity targetEntity) {
+        AITaskComponent taskComponent = targetEntity.getComponent(AITaskComponent.class);
+        if (taskComponent == null) {
+            return;
+        }
+        if (stunnedEntities.contains(targetEntity)) {
+            return;
+        }
+        taskComponent.disposeAll();
+        stunnedEntities.add(targetEntity);
+
+        new java.util.Timer().schedule( 
+        new java.util.TimerTask() {
+            @Override
+            public void run() {
+                taskComponent.restore();
+                stunnedEntities.remove(targetEntity);
+                this.cancel();
+            }
+        }, 5000);
     }
 }
