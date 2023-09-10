@@ -26,8 +26,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     private static final short TARGET = PhysicsLayer.NPC; // The type of targets that the Engineer will detect.
     
     // Animation event names for the Engineer's state machine.
-    private static final String STOW = "";
-    private static final String DEPLOY = "";
     private static final String FIRING = "firingSingleStart";
     private static final String IDLE_LEFT = "idleLeft";
     private static final String IDLE_RIGHT = "idleRight";
@@ -96,7 +94,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
      * Engineer state machine
      */
     public void updateEngineerState() {
-        // configure tower state depending on target visibility
+        // configure engineer state depending on target visibility
         switch (engineerState) {
             case IDLE_LEFT -> {
                 // targets detected in idle mode - start deployment
@@ -111,15 +109,6 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
                     combatState();
-                }
-            }
-            case DEPLOY -> {
-                // currently deploying,
-                if (isTargetVisible()) {
-                    combatState();
-                } else {
-                    owner.getEntity().getEvents().trigger(STOW);
-                    engineerState = STATE.STOW;
                 }
             }
             case FIRING -> {

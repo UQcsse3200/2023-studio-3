@@ -1,2 +1,3 @@
-package com.csse3200.game.components.tasks;public class EngineerCombatTaskTest {
+package com.csse3200.game.components.tasks;
+public class EngineerCombatTaskTest {
 }
