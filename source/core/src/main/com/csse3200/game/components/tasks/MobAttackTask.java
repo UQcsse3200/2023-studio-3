@@ -75,7 +75,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
     owner.getEntity().getEvents().trigger("shootStart");
-//    System.out.println("mob attack started for " + owner.getEntity().getId());
   }
 
   /**
@@ -96,14 +95,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * triggers the appropriate events corresponding to the STATE enum.
    */
   public void updateMobState() {
-//    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
-    CombatStatsComponent statsComp = owner.getEntity().getComponent(CombatStatsComponent.class);
-//    if (statsComp != null) {
-//    System.out.println("is the target visible " + isTargetVisible());
-//    }
-//    if (!isTargetVisible()) {
-//      System.out.println("target is not visible for " + owner.getEntity().getId());
-//    }
     switch (mobState) {
 
       case IDLE -> {
@@ -112,8 +103,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
-//        System.out.println("idle for " + owner.getEntity().getId());
-
       }
 
       case DEPLOY -> {
@@ -127,18 +116,14 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
 
         }
-//        System.out.println("deploying for " + owner.getEntity().getId());
-
       }
 
       case FIRING -> {
-//        owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
-        // targets gone - stop firing
+        // targets gone or cannot be attacked - stop firing
         if (!isTargetVisible() || this.meleeOrProjectile() == null) {
           owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
-          System.out.println("weapon chosen is " + this.meleeOrProjectile());
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createFireBall(owner.getEntity(), new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
           newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
@@ -147,10 +132,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
           owner.getEntity().getEvents().trigger("shootStart");
         }
-        System.out.println("firing for " + owner.getEntity().getId());
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
-//        this.meleeOrProjectile();
-//        System.out.println("the fixture for " + owner.getEntity().getId() + " is " + this.meleeOrProjectile());
 
       }
 
@@ -163,8 +145,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           owner.getEntity().getEvents().trigger(IDLE);
           mobState = STATE.IDLE;
         }
-//        System.out.println("stowing for " + owner.getEntity().getId());
-
       }
     }
   }
@@ -177,8 +157,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     if (mobState == STATE.FIRING || mobState == STATE.DEPLOY) {
       this.updateMobState();
     } else {
-//      owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
-//      System.out.println("mob attack stopped for " + owner.getEntity().getId());
       super.stop();
       owner.getEntity().getEvents().trigger(STOW);
     }
@@ -235,10 +213,12 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * If the object does not have a CombatStatsComponent (which handles dealing damage etc), then
    * the function will return null. If it returns null when the mob is in state FIRING or DEPLOY, it will not fire
    * and will STOW.
+   *
+   * returns the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
    * */
   private Weapon meleeOrProjectile() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET, hit);
+    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
     TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);
     Weapon chosenWeapon = null;
     if (comp != null) {

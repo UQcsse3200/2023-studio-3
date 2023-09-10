@@ -103,10 +103,8 @@ public class TouchAttackComponent extends Component {
 
   public Weapon chooseWeapon(Fixture other) {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
-//    System.out.println("Target is " + target);
     Weapon weapon = null;
     if (target.getComponent(CombatStatsComponent.class) != null) {
-//      System.out.println("Combat stats are " + combatStats.getCloseRangeAbilities() + " " + combatStats.getLongRangeAbilities());
       weapon = combatStats.getWeapon(target);
     }
     return weapon;
