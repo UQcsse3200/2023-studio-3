@@ -82,8 +82,6 @@ public class WanderTask extends DefaultTask implements PriorityTask {
     // with section, massive props to him for his help!
     if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
       owner.getEntity().getEvents().trigger("dieStart");
-      //owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
-      //owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
       currentTask.stop();
       isDead = true;
     }
