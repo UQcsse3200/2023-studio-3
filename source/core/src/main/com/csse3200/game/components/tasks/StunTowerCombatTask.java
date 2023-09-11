@@ -119,7 +119,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
             }
             case DIE -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-//                    owner.getEntity().setFlagForDelete(true);
+                    owner.getEntity().setFlagForDelete(true);
                 }
             }
         }

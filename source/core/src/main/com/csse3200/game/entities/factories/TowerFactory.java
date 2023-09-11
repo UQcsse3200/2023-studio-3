@@ -78,10 +78,14 @@ public class TowerFactory {
     private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
     private static final String FIRE_TOWER_ATTACK_ANIM = "attack";
     private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+    private static final String FIRE_TOWER_DEATH_ANIM = "death";
+    private static final float FIRE_TOWER_DEATH_SPEED = 0.12f;
     private static final String STUN_TOWER_IDLE_ANIM = "idle";
     private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
     private static final String STUN_TOWER_ATTACK_ANIM = "attack";
     private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
+    private static final String STUN_TOWER_DEATH_ANIM = "death";
+    private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
@@ -263,6 +267,7 @@ public class TowerFactory {
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -291,6 +296,7 @@ public class TowerFactory {
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
