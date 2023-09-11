@@ -34,6 +34,7 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.services.*;
+import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
@@ -59,6 +60,7 @@ public class MainGameScreen extends ScreenAdapter {
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
 
+  private Entity ui;
 
 
   public static int viewportWidth = screenWidth;
@@ -119,6 +121,11 @@ public class MainGameScreen extends ScreenAdapter {
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+
+    // Check if the game has ended
+    if (ServiceLocator.getGameEndService().hasGameEnded()) {
+      ui.getEvents().trigger("lose");
+    }
 
     batch.setProjectionMatrix(camera.combined);
     batch.begin();
@@ -187,7 +194,7 @@ public class MainGameScreen extends ScreenAdapter {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForTerminal();
 
-    Entity ui = new Entity();
+    ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
         .addComponent(new PerformanceDisplay())
         .addComponent(new MainGameActions(this.game))
