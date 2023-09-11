@@ -8,6 +8,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
@@ -189,8 +190,8 @@ public class ForestGameArea extends GameArea {
 
 //    // Types of projectile
 //    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-//    spawnProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f));
-//    spawnMultiProjectile(new Vector2(0, 10), player, towardsMobs, 20, new Vector2(2f, 2f), 7);
+    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
     spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
     spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
@@ -201,11 +202,10 @@ public class ForestGameArea extends GameArea {
 //    spawnGhosts();
     spawnWeaponTower();
 //    spawnIncome();
-//    spawnScrap();
-//    spawnTNTTower();
+    spawnScrap();
+    spawnTNTTower();
 //    spawnDroidTower();
-    spawnGapScanners();
-//    spawnIncome();
+//    spawnGapScanners();
 //    bossKing1 = spawnBossKing1();
 //    bossKing2 = spawnBossKing2();
 
@@ -534,17 +534,17 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-//  private void spawnTNTTower() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity weaponTower = TowerFactory.createTNTTower();
-//      spawnEntityAt(weaponTower, randomPos, true, true);
-//    }
-//
-//  }
+  private void spawnTNTTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createTNTTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
+
+  }
 
 
   private void playMusic() {
@@ -584,46 +584,46 @@ public class ForestGameArea extends GameArea {
     this.unloadAssets();
   }
 
-//  private void spawnScrap() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < 5; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity scrap = DropFactory.createScrapDrop();
-//      spawnEntityAt(scrap, randomPos, true, false);
-//    }
-//
-//    for (int i = 0; i < 5; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity crystal = DropFactory.createCrystalDrop();
-//      spawnEntityAt(crystal, randomPos, true, false);
-//    }
-//  }
+  private void spawnScrap() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-//  private void spawnIncome() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < 50; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity towerfactory = TowerFactory.createIncomeTower();
-//      spawnEntityAt(towerfactory, randomPos, true, true);
-//    }
-//  }
-//
-//  private void spawnEngineer() {
-//
-//    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
-//      Entity engineer = EngineerFactory.createEngineer();
-//      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity scrap = DropFactory.createScrapDrop();
+      spawnEntityAt(scrap, randomPos, true, false);
+    }
 
-  private void spawnGapScanners() {
-    for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
-      Entity scanner = GapScannerFactory.createScanner();
-      spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
+    for (int i = 0; i < 5; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity crystal = DropFactory.createCrystalDrop();
+      spawnEntityAt(crystal, randomPos, true, false);
     }
   }
+
+  private void spawnIncome() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < 50; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity towerfactory = TowerFactory.createIncomeTower();
+      spawnEntityAt(towerfactory, randomPos, true, true);
+    }
+  }
+
+  private void spawnEngineer() {
+    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
+      Entity engineer = EngineerFactory.createEngineer();
+      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+    }
+//
+//  private void spawnGapScanners() {
+//    for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
+//      Entity scanner = GapScannerFactory.createScanner();
+//      spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
+//    }
+//  }
 
 //  private void gameTrackerStart() {
 //    Entity endGameTracker = new Entity();
@@ -634,7 +634,7 @@ public class ForestGameArea extends GameArea {
 ////    .getEvents().addListener("engineerKilled" , this::decrementCounter);
 //    endGameTracker.create();
 //  }
-//
+
 //  private void decrementCounter() {
 //    this.endStateCounter -= 1;
 //    logger.info("Engineer killed");
@@ -643,4 +643,5 @@ public class ForestGameArea extends GameArea {
 //      this.dispose();
 //    }
 //  }
+  }
 }
