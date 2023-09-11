@@ -18,8 +18,8 @@ import org.slf4j.LoggerFactory;
  * Wander around by moving a random position within a range of the starting position. Wait a little
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
-public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(RangeBossMovementTask.class);
+public class RangeBossTask extends DefaultTask implements PriorityTask {
+    private static final Logger logger = LoggerFactory.getLogger(RangeBossTask.class);
 
     private final float waitTime;
     private Vector2 currentPos;
@@ -33,7 +33,7 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     /**
      * @param waitTime    How long in seconds to wait between wandering.
      */
-    public RangeBossMovementTask(float waitTime) {
+    public RangeBossTask(float waitTime) {
 
         this.waitTime = waitTime;
         physics = ServiceLocator.getPhysicsService().getPhysics();

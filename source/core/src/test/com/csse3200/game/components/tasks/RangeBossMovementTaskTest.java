@@ -32,7 +32,7 @@ class RangeBossMovementTaskTest {
 
     @Test
     void shouldTriggerEvent() {
-        RangeBossMovementTask RBMTask = new RangeBossMovementTask(1f);
+        RangeBossTask RBMTask = new RangeBossTask(1f);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(RBMTask);
         Entity entity = new Entity()

@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.npc.BossAnimationController;
-import com.csse3200.game.components.tasks.RangeBossMovementTask;
+import com.csse3200.game.components.tasks.RangeBossTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.BossKingConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -29,7 +29,7 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing1 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new RangeBossMovementTask(3f));
+        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new RangeBossTask(3f));
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
@@ -52,7 +52,7 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing2 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent2 = new AITaskComponent().addTask(new RangeBossMovementTask(2f));
+        AITaskComponent aiTaskComponent2 = new AITaskComponent().addTask(new RangeBossTask(2f));
 
         // Animation section
         AnimationRenderComponent animator2 = new AnimationRenderComponent(
