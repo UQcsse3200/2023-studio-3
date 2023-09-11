@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class SpawnWaveTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(SpawnWaveTask.class);
     private final GameTime globalTime;
-    private long endTime;
+    private long endTime = 0;
     private final int SPAWNING_INTERVAL = 10;
     public SpawnWaveTask() {
         this.globalTime = ServiceLocator.getTimeSource();
@@ -22,7 +22,7 @@ public class SpawnWaveTask extends DefaultTask implements PriorityTask {
 
     @Override
     public int getPriority() {
-        return 10; // Low priority task
+        return 10; // High priority task
     }
 
     @Override
