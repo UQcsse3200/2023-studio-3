@@ -4,8 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -23,13 +21,15 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1;  // time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
     // the following four constants are the event names that will be triggered in the state machine
-    private static final String GO_UP = "goUpStart";
-    private static final String GO_DOWN = "goDownStart";
-    private static final String ATTACK_UP = "attackUpStart";
-    private static final String ATTACK_DOWN = "attackDownStart";
-    private static final String WALK = "walkStart";
-    private static final String DEATH = "deathStart";
-    private static final String IDLE = "idleStart";
+    public static final String GO_UP = "goUpStart";
+    public static final String GO_DOWN = "goDownStart";
+    public static final String ATTACK_UP = "attackUpStart";
+    public static final String ATTACK_DOWN = "attackDownStart";
+    public static final String WALK = "walkStart";
+    public static final String DEATH = "deathStart";
+    public static final String IDLE = "idleStart";
+    public static final String SHOOT_UP = "ShootUp";
+    public static final String SHOOT_DOWN = "ShootDown";
 
 
     // class attributes
@@ -42,10 +42,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
 
-    private enum STATE {
+    public enum STATE {
         IDLE, UP, DOWN, SHOOT_UP, SHOOT_DOWN, WALK, DIE
     }
-    private STATE towerState = STATE.WALK;
+    public STATE towerState = STATE.WALK;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
@@ -104,6 +104,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             case IDLE -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK_UP);
+                    owner.getEntity().getEvents().trigger(SHOOT_UP);
                     towerState = STATE.DOWN;
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
@@ -112,6 +113,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             case SHOOT_DOWN -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK_DOWN);
+                    owner.getEntity().getEvents().trigger(SHOOT_DOWN);
                     towerState = STATE.UP;
                 } else {
                     owner.getEntity().getEvents().trigger(GO_UP);
@@ -122,6 +124,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
                 if (isTargetVisible()) {
 
                     owner.getEntity().getEvents().trigger(ATTACK_UP);
+                    owner.getEntity().getEvents().trigger(SHOOT_UP);
                     towerState = STATE.DOWN;
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
@@ -161,7 +164,15 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     @Override
     public void stop() {
         super.stop();
-//        owner.getEntity().getEvents().trigger(STOW);
+    }
+
+    /**
+     * Returns the current state of the tower.
+     *
+     * @return the current state of the tower.
+     */
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**
@@ -177,8 +188,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      * Uses a raycast to determine whether there are any targets in detection range
      * @return true if a target is visible, false otherwise
      */
-    private boolean isTargetVisible() {
+    public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
+
+
 }

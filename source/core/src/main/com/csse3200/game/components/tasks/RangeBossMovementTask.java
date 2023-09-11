@@ -23,6 +23,13 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
     private MovementTask movementTask;
     private WaitTask waitTask;
     private Task currentTask;
+    /** Animation event names */
+    private static final String START = "startMobKing";
+    private static final String FINAL = "startMobKingFinal";
+    private enum STATE {
+        START, FINAL
+    }
+    private STATE bossBallState = STATE.START;
 
     /**
      * @param waitTime    How long in seconds to wait between wandering.
@@ -54,13 +61,24 @@ public class RangeBossMovementTask extends DefaultTask implements PriorityTask {
         this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
     }
 
+    public void switchMobKingBallState() {
+        switch (bossBallState) {
+            case START:
+                owner.getEntity().getEvents().trigger(FINAL);
+                bossBallState = STATE.FINAL;
+        }
+    }
+
     @Override
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.OBSTACLE, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
-
-                newProjectile.scaleHeight(-0.4f);
+                Entity newProjectile = ProjectileFactory.createMobKingBall(
+                        PhysicsLayer.HUMANS, new Vector2(0, currentPos.y + 0.75f), new Vector2(2f,2f));
+                owner.getEntity().getEvents().trigger(START);
+                switchMobKingBallState();
+                // newProjectile.scaleHeight(-1f);
+                newProjectile.setScale(-1.3f, 0.82f);
                 newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                 ServiceLocator.getEntityService().register(newProjectile);
                 startWaiting();

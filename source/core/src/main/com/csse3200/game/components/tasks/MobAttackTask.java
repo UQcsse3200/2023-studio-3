@@ -127,8 +127,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         } else {
           owner.getEntity().getEvents().trigger(FIRING);
           Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-          newProjectile.setScale(-1f, 0.5f);
+          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y + 0.1));
+          newProjectile.setScale(-0.7f, 0.7f);
           ServiceLocator.getEntityService().register(newProjectile);
           mobState = STATE.STOW;
           owner.getEntity().getEvents().trigger("shootStart");

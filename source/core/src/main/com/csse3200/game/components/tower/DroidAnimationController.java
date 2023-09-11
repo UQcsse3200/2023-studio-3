@@ -1,7 +1,13 @@
 package com.csse3200.game.components.tower;
 
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * This class listens to events relevant to DroidTower entity's state and plays the animation when one
@@ -25,6 +31,8 @@ public class DroidAnimationController extends Component {
         entity.getEvents().addListener("attackUpStart",this::animateAttackUp);
         entity.getEvents().addListener("attackDownStart",this::animateAttackDown);
         entity.getEvents().addListener("deathStart",this::animateDeath);
+        entity.getEvents().addListener("ShootUp",this::shootUp);
+        entity.getEvents().addListener("ShootDown",this::shootDown);
 
     }
 
@@ -81,6 +89,34 @@ public class DroidAnimationController extends Component {
      * Triggers the "default" animation for the entity.
      * This method should be invoked when the entity returns to its default state.
      */
-    void animateDefault() { animator.startAnimation("default");}
+    void animateDefault() { animator.startAnimation("idle");}
+
+
+    //TODO: For the time being, these items will be positioned here. Next, we should create a component that enables an entity to fire projectiles.
+
+    /**
+     * Fires a projectile upwards from the entity's current position.
+     */
+    void shootUp() {
+        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+                entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
+        Projectile.setScale(new Vector2(0.5f,0.5f));
+        Projectile.setPosition((float) (entity.getPosition().x + 0.2),
+                (float) (entity.getPosition().y + 0.5));
+        ServiceLocator.getEntityService().register(Projectile);
+    }
+
+    /**
+     * Fires a projectile downwards from the entity's current position.
+     */
+    void shootDown() {
+        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+                entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
+        Projectile.setScale(new Vector2(0.5f,0.5f));
+        Projectile.setPosition((float) (entity.getPosition().x + 0.2),
+                (float) (entity.getPosition().y - 0.2));
+        ServiceLocator.getEntityService().register(Projectile);
+
+    }
 
 }
