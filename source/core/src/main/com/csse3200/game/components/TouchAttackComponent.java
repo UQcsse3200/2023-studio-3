@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -102,6 +103,18 @@ public class TouchAttackComponent extends Component {
 
   public void setDisposeOnHit(boolean disposeOnHit) {
     this.disposeOnHit = disposeOnHit;
+  }
+  public Weapon chooseWeapon(Fixture other) {
+    Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
+    Weapon weapon = null;
+    if (target.getComponent(CombatStatsComponent.class) != null) {
+      weapon = combatStats.getWeapon(target);
+    }
+    return weapon;
+  }
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
   }
   // private void onCollisionEnd(Fixture me, Fixture other) {
   //   // Nothing to do on collision end
