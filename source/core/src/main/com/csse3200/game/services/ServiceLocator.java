@@ -24,6 +24,7 @@ public class ServiceLocator {
   private static GameTime timeSource;
   private static InputService inputService;
   private static ResourceService resourceService;
+  private static GameEndService gameEndService;
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -51,6 +52,10 @@ public class ServiceLocator {
 
   public static ResourceService getResourceService() {
     return resourceService;
+  }
+
+  public static GameEndService getGameEndService() {
+    return gameEndService;
   }
 
   public static void registerCurrencyService(CurrencyService service) {
@@ -88,6 +93,11 @@ public class ServiceLocator {
     resourceService = source;
   }
 
+  public static void registerGameEndService(GameEndService source) {
+    logger.debug("Registering game end service service {}", source);
+    gameEndService = source;
+  }
+
   public static void clear() {
     entityService = null;
     renderService = null;
@@ -95,6 +105,7 @@ public class ServiceLocator {
     timeSource = null;
     inputService = null;
     resourceService = null;
+    gameEndService = null;
   }
 
   private ServiceLocator() {

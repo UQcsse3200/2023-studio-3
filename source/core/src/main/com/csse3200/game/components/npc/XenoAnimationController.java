@@ -34,38 +34,30 @@ public class XenoAnimationController extends Component {
     }
 
     void animateRun() {
-        if (!Objects.equals(animator.getCurrentAnimation(), "xeno_shoot")) {
-            animator.stopAnimation();
-            animator.startAnimation("xeno_run");
-        }
+        animator.startAnimation("xeno_run");
     }
 
     void animateHurt() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_hurt");
     }
 
     void animateShoot() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_shoot");
     }
 
     void animateMelee1() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_melee_1");
     }
 
     void animateMelee2() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_melee_2");
     }
 
     void animateDie() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_die");
     }
 
     void stopAnimation() {
-        animator.stopAnimation();
+        animator.startAnimation("default");
     }
 }
