@@ -65,7 +65,7 @@ public class TouchAttackComponent extends Component {
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
 
-  private void onCollisionStart(Fixture me, Fixture other) {
+  public void onCollisionStart(Fixture me, Fixture other) {
     if (hitboxComponent.getFixture() != me) {
       // Not triggered by hitbox, ignore
       return;
