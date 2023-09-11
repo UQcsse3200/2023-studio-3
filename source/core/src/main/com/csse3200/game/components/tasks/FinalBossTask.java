@@ -63,7 +63,7 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
         movementTask.create(owner);
 
         movementTask.start();
-        owner.getEntity().getEvents().trigger("walkStart");
+
         currentTask = movementTask;
 
         this.owner.getEntity().getEvents().trigger("finalBossMovementStart");
@@ -80,7 +80,6 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
                     newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
-
                 startWaiting();
             } else if (currentTask == waitTask) {
 //                startSwappingLane();
@@ -106,7 +105,7 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
         logger.debug("Starting moving");
 
         currentTask.stop();
-
+        owner.getEntity().getEvents().trigger("walkStart");
         movementTask.setTarget(currentPos.sub(2,0));
         currentTask = movementTask;
         currentTask.start();

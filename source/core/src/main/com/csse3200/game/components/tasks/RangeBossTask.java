@@ -55,7 +55,6 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
         movementTask.create(owner);
 
         movementTask.start();
-        owner.getEntity().getEvents().trigger("walkStart");
         currentTask = movementTask;
 
         this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
@@ -65,15 +64,17 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                if (towerAhead()) {
-                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f), ProjectileEffects.BURN, false);
-                    newProjectile.scaleHeight(-0.4f);
-                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
+                if (towerAhead() || engineerAhead()) {
+                    owner.getEntity().getEvents().trigger("chargingStart");
+                    Entity newProjectile = ProjectileFactory.createBossBall(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f));
+                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y));
                     ServiceLocator.getEntityService().register(newProjectile);
+                    this.owner.getEntity().getEvents().trigger("attack1Start");
                 }
                 startWaiting();
             } else {
                 startMoving();
+
             }
         }
         currentTask.update();
@@ -81,11 +82,14 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
 
     private void startWaiting() {
         logger.debug("Starting waiting");
+        owner.getEntity().getEvents().trigger("idleStart");
         swapTask(waitTask);
     }
 
     private void startMoving() {
         logger.debug("Starting moving");
+        owner.getEntity().getEvents().trigger("walkStart");
+        owner.getEntity().getEvents().trigger("attack1Start");
         movementTask.setTarget(currentPos.sub(2,0));
         swapTask(movementTask);
     }
@@ -100,6 +104,9 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
 
     private boolean towerAhead() {
         return physics.raycast(currentPos, new Vector2(0, currentPos.y), TARGET, hit);
+    }
+    private boolean engineerAhead() {
+        return physics.raycast(currentPos, new Vector2(0, currentPos.y), PhysicsLayer.ENGINEER, hit);
     }
 
 }

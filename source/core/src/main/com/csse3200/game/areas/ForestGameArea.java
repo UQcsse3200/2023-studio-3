@@ -75,6 +75,7 @@ public class ForestGameArea extends GameArea {
           "images/towers/turret_deployed.png",
           "images/background/building2.png",
           "images/mobs/robot.png",
+          "images/mobs/boss2.png",
           "images/mobs/Attack_1.png",
           "images/mobs/Attack_2.png",
           "images/mobs/Charge_1.png",
@@ -95,6 +96,7 @@ public class ForestGameArea extends GameArea {
           "images/economy/scrap.png",
           "images/economy/crystal.png",
           "images/economy/econ-tower.png",
+          "images/projectiles/bossProjectile.png",
 
 
           "images/towers/mine_tower.png",
@@ -104,6 +106,7 @@ public class ForestGameArea extends GameArea {
           "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
+          "images/mobs/boss2.atlas",
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
@@ -112,6 +115,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
+          "images/projectiles/bossProjectile.atlas",
           "images/projectiles/mobProjectile.atlas"
   };
   private static final String[] forestSounds = {

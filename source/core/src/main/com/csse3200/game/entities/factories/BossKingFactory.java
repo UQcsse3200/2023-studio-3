@@ -4,9 +4,11 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
-import com.csse3200.game.components.npc.BossAnimationController;
+import com.csse3200.game.components.npc.Boss1AnimationController;
+import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.FinalBossTask;
 import com.csse3200.game.components.tasks.RangeBossTask;
+import com.csse3200.game.components.tasks.bossDeathTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.BossKingConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -28,20 +30,22 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing1 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new FinalBossTask(1f, numLane));
+        AITaskComponent aiTaskComponent1 = new AITaskComponent()
+                .addTask(new FinalBossTask(1f, numLane))
+                .addTask(new bossDeathTask(1));
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/rangeBossRight.atlas", TextureAtlas.class));
-        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
+                ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
+        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP_REVERSED);
 
         bossKing1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator1)
                 .addComponent(aiTaskComponent1)
-                .addComponent(new BossAnimationController());
+                .addComponent(new Boss1AnimationController());
 
         bossKing1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing1.setScale(-1f, 1f);
+        bossKing1.setScale(1f, 1f);
 
         return bossKing1;
     }
@@ -51,21 +55,29 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing2 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent2 = new AITaskComponent().addTask(new RangeBossTask(2f));
+        AITaskComponent aiTaskComponent2 = new AITaskComponent()
+                .addTask(new RangeBossTask(2f))
+                .addTask(new bossDeathTask(1));
 
         // Animation section
         AnimationRenderComponent animator2 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
+                ServiceLocator.getResourceService().getAsset("images/mobs/boss2.atlas", TextureAtlas.class));
+        animator2.addAnimation("boss_death", 0.3f, Animation.PlayMode.LOOP);
+        animator2.addAnimation("Idle", 0.3f, Animation.PlayMode.LOOP);
         animator2.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
+        animator2.addAnimation("Charging", 0.3f, Animation.PlayMode.LOOP_REVERSED);
+        animator2.addAnimation("A1", 0.3f, Animation.PlayMode.LOOP);
+        animator2.addAnimation("A2", 0.3f, Animation.PlayMode.LOOP);
+        animator2.addAnimation("Hurt", 0.3f, Animation.PlayMode.LOOP);
 
         bossKing2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator2)
                 .addComponent(aiTaskComponent2)
-                .addComponent(new BossAnimationController());
+                .addComponent(new Boss2AnimationController());
 
         bossKing2.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing2.scaleHeight(-0.5f);
-        bossKing2.scaleWidth(0.5f);
+        bossKing2.scaleHeight(2f);
+        bossKing2.scaleWidth(2f);
 
         return bossKing2;
     }
