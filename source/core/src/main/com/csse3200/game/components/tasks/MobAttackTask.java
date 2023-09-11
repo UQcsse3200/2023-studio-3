@@ -12,6 +12,7 @@ import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.rendering.AnimationRenderComponent;
@@ -32,6 +33,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private static final String DEPLOY = "deployStart";
   private static final String FIRING = "shootStart";
   private static final String IDLE = "idleStart";
+
+  private Fixture target;
 
   private final int priority;
   private final float maxRange;
@@ -125,16 +128,20 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           if (this.meleeOrProjectile() instanceof Melee) {
+            System.out.println("Melee attack");
+            TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+            HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
+            attackComp.onCollisionStart(hitboxComp.getFixture(), target);
+          } else {
+            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile.setScale(-1f, 0.5f);
+            ServiceLocator.getEntityService().register(newProjectile);
 
+//            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
+            owner.getEntity().getEvents().trigger(FIRING);
+            mobState = STATE.STOW;
           }
-          Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-          newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-          newProjectile.setScale(-1f, 0.5f);
-          ServiceLocator.getEntityService().register(newProjectile);
-
-          System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
-          owner.getEntity().getEvents().trigger(FIRING);
-          mobState = STATE.STOW;
         }
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
 
@@ -220,12 +227,13 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * returns the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
    * */
   private Weapon meleeOrProjectile() {
-    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+//    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+//    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+    setTarget();
     TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);
     Weapon chosenWeapon = null;
     if (comp != null) {
-      chosenWeapon = comp.chooseWeapon(hitraycast);
+      chosenWeapon = comp.chooseWeapon(target);
     }
 
     return chosenWeapon;
@@ -233,6 +241,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   private void setTarget() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+    target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
   }
 }
