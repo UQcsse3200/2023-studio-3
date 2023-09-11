@@ -29,6 +29,9 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     private MovementTask swapLaneTask;
     private WaitTask waitTask;
     private Task currentTask;
+    private PhysicsEngine physics;
+    private static final short TARGET = PhysicsLayer.TOWER;
+    private final RaycastHit hit = new RaycastHit();
 
     /**
      * @param waitTime    How long in seconds to wait between moving.
@@ -36,6 +39,8 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     public FinalBossMovementTask(float waitTime, int numLane) {
         this.waitTime = waitTime;
         this.currLane = numLane;
+
+        physics = ServiceLocator.getPhysicsService().getPhysics();
     }
 
     @Override
@@ -68,6 +73,14 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
+                // Melee attack
+                if (towerAhead()) {
+                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f), ProjectileEffects.BURN, false);
+                    newProjectile.scaleHeight(-0.4f);
+                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
+                    ServiceLocator.getEntityService().register(newProjectile);
+                }
+
                 startWaiting();
             } else if (currentTask == waitTask) {
 //                startSwappingLane();
@@ -132,5 +145,9 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
         }
         currentTask = newTask;
         currentTask.start();
+    }
+
+    private boolean towerAhead() {
+        return physics.raycast(currentPos, new Vector2(currentPos.x - 1, currentPos.y), TARGET, hit);
     }
 }

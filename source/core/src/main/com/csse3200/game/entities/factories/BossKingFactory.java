@@ -30,7 +30,7 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing1 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new RangeBossTask(1f));
+        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new FinalBossMovementTask(1f, numLane));
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
