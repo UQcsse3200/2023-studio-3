@@ -113,7 +113,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                     new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
                     ProjectileEffects.STUN, false);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.85));
+                            (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
