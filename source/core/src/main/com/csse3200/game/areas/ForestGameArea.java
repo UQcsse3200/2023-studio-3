@@ -116,7 +116,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/snow_ball.png",
           "images/projectiles/burn_effect.png",
           "images/projectiles/stun_effect.png",
-          "images/projectiles/firework_anim.png"
+          "images/projectiles/firework_anim.png",
+          "images/projectiles/pierce_anim.png"
 
 
   };
@@ -145,7 +146,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/snow_ball.atlas",
           "images/projectiles/burn_effect.atlas",
           "images/projectiles/stun_effect.atlas",
-          "images/projectiles/firework_anim.atlas"
+          "images/projectiles/firework_anim.atlas",
+          "images/projectiles/pierce_anim.atlas"
 
   };
   private static final String[] forestSounds = {
