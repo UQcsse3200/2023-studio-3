@@ -167,9 +167,17 @@ implements com.badlogic.gdx.utils.Disposable</span></div>
 <div class="block">Cast a ray in a straight line from one point to another, checking for all collision against
  colliders in the specified layers.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.physics.box2d.Fixture</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#raycastGetHit(com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,short)" class="member-name-link">raycastGetHit</a><wbr>(com.badlogic.gdx.math.Vector2&nbsp;from,
+ com.badlogic.gdx.math.Vector2&nbsp;to,
+ short&nbsp;layerMask)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Cast a ray in a straight line from one point to another, checking for a collision
+ against colliders in the specified layers.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -286,6 +294,25 @@ implements com.badlogic.gdx.utils.Disposable</span></div>
      will be ignored.</dd>
 <dt>Returns:</dt>
 <dd>true if a collider was hit, false otherwise.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="raycastGetHit(com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,short)">
+<h3>raycastGetHit</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.badlogic.gdx.physics.box2d.Fixture</span>&nbsp;<span class="element-name">raycastGetHit</span><wbr><span class="parameters">(com.badlogic.gdx.math.Vector2&nbsp;from,
+ com.badlogic.gdx.math.Vector2&nbsp;to,
+ short&nbsp;layerMask)</span></div>
+<div class="block">Cast a ray in a straight line from one point to another, checking for a collision
+ against colliders in the specified layers.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>from</code> - The starting point of the ray.</dd>
+<dd><code>to</code> - The end point of the ray.</dd>
+<dd><code>layerMask</code> - The physics layer mask which specifies layers that can be hit. Other layers
+                  will be ignored.</dd>
+<dt>Returns:</dt>
+<dd>The fixture of the closest collider hit by the ray, or null if no collider was hit.</dd>
 </dl>
 </section>
 </li>
