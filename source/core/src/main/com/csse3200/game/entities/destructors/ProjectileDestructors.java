@@ -15,6 +15,7 @@ public class ProjectileDestructors {
    */
   public static Entity destroyProjectile(Entity projectile) {
     projectile.dispose();
+    projectile.getEvents().trigger("");
     return projectile;
   }
   /**
