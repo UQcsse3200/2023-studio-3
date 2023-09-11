@@ -1,10 +1,7 @@
 package com.csse3200.game.components.npc;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-
-import java.util.Objects;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
@@ -20,7 +17,7 @@ public class XenoAnimationController extends Component {
         entity.getEvents().addListener("wanderStart", this::animateRun);
         entity.getEvents().addListener("runHurt", this::animateHurt);
         entity.getEvents().addListener("meleeStart", this::animateMelee1);
-        entity.getEvents().addListener("meleeStart", this::animateMelee2);
+//        entity.getEvents().addListener("meleeStart", this::animateMelee2);
         entity.getEvents().addListener("shootStart", this::animateShoot);
         entity.getEvents().addListener("dieStart", this::animateDie);
         entity.getEvents().addListener("stop", this::stopAnimation);
