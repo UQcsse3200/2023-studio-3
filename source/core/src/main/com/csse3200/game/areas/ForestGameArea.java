@@ -52,7 +52,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
-         "images/ingamebg.png",
+          "images/ingamebg.png",
           "images/projectiles/projectile.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
@@ -128,7 +128,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
 
   private Entity player;
-  
+
   // Variables to be used with spawn projectile methods. This is the variable 
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
@@ -270,7 +270,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_BOSSKING1; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      bossKing1 = BossKingFactory.createBossKing1(player);
+      bossKing1 = BossKingFactory.createBossKing1(player, pickedLanes[i]);
       spawnEntityAt(bossKing1,
               randomPos,
               true,
@@ -279,28 +279,28 @@ public class ForestGameArea extends GameArea {
     return bossKing1;
   }
 
-    /**
-    * Spawns a projectile that only heads towards the enemies in its lane.
-    * 
-    * @param position The position of the Entity that's shooting the projectile.
-    * @param targetLayer The enemy layer of the "shooter".
-    * @param direction The direction the projectile should head towards.
-    * @param speed The speed of the projectiles.
-   * 
+  /**
+   * Spawns a projectile that only heads towards the enemies in its lane.
+   *
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   *
    */
   private void spawnProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed) {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
- /**
+  /**
    * Spawns a projectile specifically for general mobs/xenohunters
-   * 
+   *
    * @param position The position of the Entity that's shooting the projectile.
    * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
    * @param speed The speed of the projectiles.
-   * 
+   *
    */
   private void spawnMobBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
     Entity Projectile = ProjectileFactory.createMobBall(targetLayer, new Vector2(direction, position.y), speed);
@@ -309,14 +309,14 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-    * Spawns a projectile to be used for multiple projectile function.
-    * 
-    * @param position The position of the Entity that's shooting the projectile.
-    * @param targetLayer The enemy layer of the "shooter".
-    * @param space The space between the projectiles' destination.
-    * @param direction The direction the projectile should head towards.
-    * @param speed The speed of the projectiles.
-   * 
+   * Spawns a projectile to be used for multiple projectile function.
+   *
+   * @param position The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param space The space between the projectiles' destination.
+   * @param direction The direction the projectile should head towards.
+   * @param speed The speed of the projectiles.
+   *
    */
   private void spawnProjectile(Vector2 position, short targetLayer, int space,  int direction, Vector2 speed) {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
@@ -382,7 +382,7 @@ public class ForestGameArea extends GameArea {
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same 
    * the starting point but different destinations.
-   * 
+   *
    * @param position The position of the Entity that's shooting the projectile.
    * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
@@ -393,14 +393,14 @@ public class ForestGameArea extends GameArea {
   private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
     int half = quantity / 2;
     for (int i = 0; i < quantity; i++) {
-        spawnProjectile(position, targetLayer, space * half, direction, speed);
-        --half;
+      spawnProjectile(position, targetLayer, space * half, direction, speed);
+      --half;
     }
   }
 
   /**
    * Returns projectile that can do an area of effect damage
-   * 
+   *
    * @param position The position of the Entity that's shooting the projectile.
    * @param targetLayer The enemy layer of the "shooter".
    * @param direction The direction the projectile should head towards.
@@ -505,7 +505,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
-  
+
   private void spawnEngineer() {
 
     for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {

@@ -4,28 +4,38 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.physics.PhysicsLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
 
 /**
- * Going forward with certain speed, and switching to another land
- * Requires an entity with a PhysicsMovementComponent.
+ * Wander around by moving a random position within a range of the starting position. Wait a little
+ * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
 public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(FinalBossMovementTask.class);
 
-    private final float switchTime;
-    private Vector2 startPos;
-    //    private WaitTask waitTask;
-    private MovementTask moveForwardTask;
-    private MovementTask switchLaneTask;
+    private final float waitTime;
+    private int currLane;
+    private Vector2 currentPos;
+    private MovementTask movementTask;
+    private MovementTask swapLaneTask;
+    private WaitTask waitTask;
     private Task currentTask;
 
     /**
-     * @param switchTime How long in seconds to wait between switching land.
+     * @param waitTime    How long in seconds to wait between moving.
      */
-    public FinalBossMovementTask(float switchTime) {
-        this.switchTime = switchTime;
+    public FinalBossMovementTask(float waitTime, int numLane) {
+        this.waitTime = waitTime;
+        this.currLane = numLane;
     }
 
     @Override
@@ -36,19 +46,20 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        startPos = owner.getEntity().getPosition();
+        currentPos = owner.getEntity().getPosition();
 
-//        waitTask = new WaitTask(switchTime);
-//        waitTask.create(owner);
+        waitTask = new WaitTask(waitTime);
+        waitTask.create(owner);
 
-        switchLaneTask = new MovementTask(startPos.sub(0, 2));
-        switchLaneTask.create(owner);
+        swapLaneTask = new MovementTask(currentPos);
+        swapLaneTask.create(owner);
 
-        moveForwardTask = new MovementTask(startPos.sub(2,0));
-        moveForwardTask.create(owner);
+        movementTask = new MovementTask(currentPos);
+        movementTask.create(owner);
 
-        moveForwardTask.start();
-        currentTask = moveForwardTask;
+        movementTask.start();
+        owner.getEntity().getEvents().trigger("walkStart");
+        currentTask = movementTask;
 
         this.owner.getEntity().getEvents().trigger("finalBossMovementStart");
     }
@@ -56,31 +67,63 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
-            if (currentTask == moveForwardTask) {
-                startSwitchingLane();
-            } else {
+            if (currentTask == movementTask) {
+                startWaiting();
+            } else if (currentTask == waitTask) {
+//                startSwappingLane();
                 startMoving();
-//                startWaiting();;
             }
+//            } else {
+//                startMoving();
+//            }
         }
         currentTask.update();
     }
 
-//    private void startWaiting() {
-//        logger.debug("Starting waiting for switching lane");
-//        swapTask(waitTask);
-//    }
+    private void startWaiting() {
+        logger.debug("Starting waiting");
 
-    private void startSwitchingLane() {
-        logger.debug("Starting switching lane");
-        switchLaneTask.setTarget(startPos.sub(0, 2));
-        swapTask(switchLaneTask);
+        currentTask.stop();
+
+        currentTask = waitTask;
+        currentTask.start();
     }
 
     private void startMoving() {
-        logger.debug("Starting moving forward");
-        moveForwardTask.setTarget(startPos.sub(2,0));
-        swapTask(moveForwardTask);
+        logger.debug("Starting moving");
+
+        currentTask.stop();
+
+        movementTask.setTarget(currentPos.sub(2,0));
+        currentTask = movementTask;
+        currentTask.start();
+
+//        swapTask(movementTask);
+    }
+
+    private void startSwappingLane() {
+        logger.debug("Starting swapping");
+
+        currentTask.stop();
+
+        float laneHeight = viewportHeight / 8;
+
+        if (currLane == 0) {
+            // Move up
+            swapLaneTask.setTarget(currentPos.add(0, laneHeight));
+
+            currLane++;
+        } else {
+            // Temporary move down for all other cases
+            swapLaneTask.setTarget(currentPos.sub(0, laneHeight));
+
+            currLane--;
+        }
+
+        currentTask = swapLaneTask;
+        swapLaneTask.start();
+
+//        swapTask(swapLaneTask);
     }
 
     private void swapTask(Task newTask) {
@@ -90,5 +133,4 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
         currentTask = newTask;
         currentTask.start();
     }
-
 }

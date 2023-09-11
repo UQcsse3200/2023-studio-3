@@ -29,7 +29,7 @@ class FinalBossMovementTaskTest {
 
     @Test
     void shouldTriggerEvent() {
-        FinalBossMovementTask FBMTask = new FinalBossMovementTask(1f);
+        FinalBossMovementTask FBMTask = new FinalBossMovementTask(1f, 2);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(FBMTask);
         Entity entity = new Entity().addComponent(aiTaskComponent).addComponent(new PhysicsMovementComponent());
