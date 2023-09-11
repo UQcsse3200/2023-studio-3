@@ -1,22 +1,27 @@
 package com.csse3200.game.components.tasks;
 
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.currency.Currency;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.raycast.RaycastHit;
-import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
 //import com.csse3200.game.rendering.DebugRenderer;
 
 
 /**
- * Task that prints a message to the terminal whenever it is called.
+ * THIS TASK IS NO LONGER USED. It may be deleted at a later date.
+ * Do not read this aweful task.
+ *
+ * DOES NOT DO ANYTHING.
+ *
+ * This task didn't work with the Wander & ShootTasks,
+ * and then it was
+ * decided to have mob death in wanderTask.
  */
 public class MobDeathTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1; // time interval to scan for towers in
@@ -50,6 +55,7 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
         this.mobPosition = owner.getEntity().getCenterPosition();
         //sets endTime
         endTime = timeSource.getTime() + (INTERVAL * 500);
+        this.owner.getEntity().getEvents().trigger("dieStart");
     }
 
     @Override

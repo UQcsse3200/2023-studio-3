@@ -95,13 +95,12 @@ public class ForestGameArea extends GameArea {
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
+          "images/mobs/xenoGrunt.atlas",
           "images/towers/fire_tower_atlas.atlas",
           "images/towers/stun_tower.atlas",
-          "images/mobs/xenoGruntRunning.atlas",
           "images/mobs/robot.atlas",
           "images/mobs/rangeBossRight.atlas",
           "images/towers/DroidTower.atlas",
-          "images/xenoGrunt.atlas",
           "images/mobs/robot.atlas",
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
@@ -314,14 +313,14 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnXenoGrunts() {
-    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 5);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 25);
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
       xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, true);
+      spawnEntityAt(xenoGrunt, randomPos, true, false);
     }
   }
 
@@ -544,5 +543,11 @@ public class ForestGameArea extends GameArea {
       Entity scanner = GapScannerFactory.createScanner();
       spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
+//    GridPoint2 minPos = new GridPoint2(0, 0);
+//    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
+//    GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+//
+//    Entity engineer = EngineerFactory.createEngineer();
+//    spawnEntityAt(engineer, randomPos, true, true);
   }
 }
