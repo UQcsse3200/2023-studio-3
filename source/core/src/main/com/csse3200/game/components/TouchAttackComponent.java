@@ -137,5 +137,6 @@ public class TouchAttackComponent extends Component {
     }
     return weapon;
   }
+
 }
 

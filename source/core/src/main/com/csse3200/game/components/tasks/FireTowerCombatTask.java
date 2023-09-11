@@ -3,12 +3,14 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -21,9 +23,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private static final int INTERVAL = 1; //time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC; //the type of targets this tower will detect
     //The constants are names of events that will be triggered in the state machine
-    private static final String IDLE = "startIdle";
-    private static final String PREP_ATTACK = "startAttackPrep";
-    private static final String ATTACK = "startAttack";
+    public static final String IDLE = "startIdle";
+    public static final String PREP_ATTACK = "startAttackPrep";
+    public static final String ATTACK = "startAttack";
+    public static final String DEATH = "startDeath";
 
     //Class attributes
     private final int priority;
@@ -36,10 +39,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
 
-    private enum STATE {
-        IDLE, PREP_ATTACK, ATTACK
+    public enum STATE {
+        IDLE, PREP_ATTACK, ATTACK, DEATH
     }
-    private STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * Starts the task running, triggers the initial 'IDLE' event
@@ -81,6 +84,11 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
      * finite state machine for the FireTower. Detects mobs in a straight line and changes the state of the tower.
      */
     public void updateTowerState()  {
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
+            owner.getEntity().getEvents().trigger(DEATH);
+            towerState = STATE.DEATH;
+            return;
+        }
         switch (towerState) {
             case IDLE -> {
                 if (isTargetVisible())  {
@@ -110,6 +118,11 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
+            }
         }
     }
 
@@ -119,6 +132,13 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
+    }
+
+    /**
+     * @return returns the current state of the tower
+     */
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**
