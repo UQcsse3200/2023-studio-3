@@ -167,7 +167,18 @@ public class TerrainFactory {
     fillTiles(grassLayer, new GridPoint2(20, 8), grassTile);
     tiledMap.getLayers().add(grassLayer);
 
-    // Create lanes (invisible)
+    /**
+ * Creates lanes of invisible tiles in the TiledMap. These lanes are added as separate layers
+ * and are typically used for gameplay purposes.
+ *
+ * @param tiledMap     The TiledMap to which the lanes should be added.
+ * @param tileSize     The size of each tile in pixels (width and height).
+ * @param numberOfLanes The total number of lanes to create.
+ * @param mapWidth     The width of the TiledMap in tiles.
+ * @param mapHeight    The height of the TiledMap in tiles.
+ * @return The modified TiledMap with the added invisible lanes.
+ */
+
     int numberOfLanes = 8;
     int laneHeight = 1; // Height of each lane in tiles
     int mapWidth = 20;
@@ -182,6 +193,14 @@ public class TerrainFactory {
 
     return tiledMap;
   }
+
+  /**
+   * Fills a TiledMapTileLayer with invisible tiles, creating a layer of transparent tiles.
+   *
+   * @param layer   The TiledMapTileLayer to fill with invisible tiles.
+   * @param mapSize The size of the layer in tiles (width and height).
+   */
+
 
   private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize) {
     for (int x = 0; x < mapSize.x; x++) {
