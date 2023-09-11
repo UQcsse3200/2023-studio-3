@@ -111,6 +111,24 @@ public class TouchAttackComponent extends Component {
     this.knockbackForce = knockback;
   }
 
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
+    if (hitboxComponent.getFixture() != me) {
+      // Not triggered by hitbox, ignore
+      return;
+    }
+
+    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+      // Doesn't match our target layer, ignore
+      return;
+    }
+
+    if (disposeOnHit) {
+      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+      projectile.setFlagForDelete(true);
+    }
+  }
+
   public Weapon chooseWeapon(Fixture other) {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
     Weapon weapon = null;
@@ -120,11 +138,5 @@ public class TouchAttackComponent extends Component {
     return weapon;
   }
 
-  private void onCollisionEnd(Fixture me, Fixture other) {
-    // Nothing to do on collision end
-  }
-  // private void onCollisionEnd(Fixture me, Fixture other) {
-  //   // Nothing to do on collision end
-  // }
 }
 

@@ -2,15 +2,10 @@ package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
-import com.csse3200.game.components.tower.DroidAnimationController;
-import com.csse3200.game.components.tower.TNTAnimationController;
-import com.csse3200.game.components.tower.TNTDamageComponent;
+import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.components.tasks.FireTowerCombatTask;
 import com.csse3200.game.components.tasks.StunTowerCombatTask;
-import com.csse3200.game.components.tower.FireTowerAnimationController;
-import com.csse3200.game.components.tower.StunTowerAnimationController;
-import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -18,7 +13,6 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -122,9 +116,9 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent(RESOURCE_TOWER))
-                .addComponent(aiTaskComponent);
-
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new EconTowerAnimationController());
 
         return income;
     }

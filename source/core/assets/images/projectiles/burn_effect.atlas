@@ -32,14 +32,14 @@ projectile
   orig: 36, 31
   offset: 0, 0
   index: -1
-projectileFinal
+projectile
   rotate: false
   xy: 116, 2
   size: 36, 31
   orig: 36, 31
   offset: 0, 0
   index: -1
-projectile
+projectileFinal
   rotate: false
   xy: 191, 2
   size: 31, 31

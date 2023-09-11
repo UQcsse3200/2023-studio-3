@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks;
 
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.currency.Scrap;
@@ -65,6 +66,10 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void updateCurrency() {
         //logger.info("Updating currency");
         ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount/2);
+
+        Vector2 coordinates = this.owner.getEntity().getCenterPosition();
+        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount/2, 25);
+
         ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats(); // update currency display
 
     }

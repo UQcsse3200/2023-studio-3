@@ -80,10 +80,13 @@ public class DropInputComponent extends InputComponent {
                 ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
             }
 
+            float X = clickedEntity.getCenterPosition().x;
+            float Y = clickedEntity.getCenterPosition().y;
+
             // remove the entity from the game
             EntityService.removeEntity(clickedEntity);
             // display a visual indication that currency has been picked up
-            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(screenX, screenY, value);
+            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(X, Y, value, 10);
 
             //logger.info("Scrap amount: " + ServiceLocator.getCurrencyService().getScrap().getAmount());
             return true;
