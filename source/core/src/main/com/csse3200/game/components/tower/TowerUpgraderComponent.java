@@ -2,17 +2,23 @@ package com.csse3200.game.components.tower;
 
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
-import static java.lang.Math.round;
 
 /**
  * Listens for an event from the popup menu to upgrade
  *     the turret entity this component is attached to.
  */
 public class TowerUpgraderComponent extends Component {
+    /**
+     * A set of specifiers allowing upgrade event triggers to specify the type of upgrade being requested.
+     */
     public enum UPGRADE {
         ATTACK, MAXHP, FIRERATE, REPAIR
     }
 
+    /**
+     * Called when the entity is created and registered.
+     * Sets up an event listener to detect when an upgrade request is sent to this tower.
+     */
     @Override
     public void create() {
         super.create();
@@ -28,10 +34,10 @@ public class TowerUpgraderComponent extends Component {
      */
     void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
-            case ATTACK -> {upgradeTowerAttack(value);}
-            case MAXHP -> {upgradeTowerMaxHealth(value);}
-            case FIRERATE -> {getEntity().getEvents().trigger("addFireRate", value);}
-            case REPAIR -> {repairTower();}
+            case ATTACK -> upgradeTowerAttack(value);
+            case MAXHP -> upgradeTowerMaxHealth(value);
+            case FIRERATE -> getEntity().getEvents().trigger("addFireRate", value);
+            case REPAIR -> repairTower();
         }
     }
 
