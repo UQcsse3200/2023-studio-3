@@ -36,8 +36,8 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
 
-  private static final int NUM_BOSSKING2=2;
-  private static final int NUM_BOSSKING1=2;
+  private static final int NUM_BOSSKING2=3;
+  private static final int NUM_BOSSKING1=1;
 
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
@@ -171,7 +171,7 @@ public class ForestGameArea extends GameArea {
     spawnGhosts();
     spawnWeaponTower();
     spawnEngineer();
-    bossKing1 = spawnBossKing1();
+    //bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
     spawnTNTTower();
   }

@@ -32,7 +32,7 @@ public class BossKingFactory {
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
                 .addTask(new FinalBossTask(1f, numLane))
-                .addTask(new bossDeathTask(1));
+                .addTask(new bossDeathTask(1));;
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
@@ -57,7 +57,7 @@ public class BossKingFactory {
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
                 .addTask(new RangeBossTask(2f))
-                .addTask(new bossDeathTask(1));
+        .addTask(new bossDeathTask(1));
 
         // Animation section
         AnimationRenderComponent animator2 = new AnimationRenderComponent(
@@ -76,8 +76,8 @@ public class BossKingFactory {
                 .addComponent(new Boss2AnimationController());
 
         bossKing2.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing2.scaleHeight(2f);
-        bossKing2.scaleWidth(2f);
+        bossKing2.scaleHeight(3f);
+        bossKing2.scaleWidth(3f);
 
         return bossKing2;
     }
