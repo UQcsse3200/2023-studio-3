@@ -77,50 +77,67 @@ public class TurretSelectionScreen extends ScreenAdapter {
             }
         });
 
-
-
         table.add(message).row();
         table.add(turretsPicked).row();
-        for (TowerType turret : turretList) {
-            TextButton turretButton = new TextButton(turret.getTowerName(), skin);
-            turretButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    logger.info(String.valueOf(selectedTurrets.size()));
-                    if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
-                        message.setText("You can only select up to 5 turrets.");
-                    } else {
-                        message.setText("Select your turrets");
-                    }
-                    if (selectedTurrets.contains(turret)) {
-                        // Turret is already selected, unselect it
-                        selectedTurrets.remove(turret);
-                        // You can also change the button appearance to indicate unselection
-                        logger.info(selectedTurrets.toString());
-                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
-                    } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {
-                        // Turret is not selected, but the max number of turrets has been reached
-                        message.setText("You can only select up to 5 turrets.");
-                    } else if (selectedTurrets.size() < MAX_SELECTED_TURRETS) {
-                        // Turret is not selected, select it
-                        selectedTurrets.add(turret);
-                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
-                        logger.info(selectedTurrets.toString());
-                    }
-                    else {
-                        // Turret is not selected, select it
-                        selectedTurrets.add(turret);
-                        turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
-                        //logger.info(selectedTurrets.toString());
 
-                        // You can change the button appearance to indicate selection
-                    }
+        int towersPerRow = 4; // Set the number of towers to display per row
+        int numRows = (int) Math.ceil((double)turretList.size() / towersPerRow); // Calculate the number of rows
 
+        for (int row = 0; row < numRows; row++) {
+            for (int col = 0; col < towersPerRow; col++) {
+                int index = row * towersPerRow + col;
+                if (index >= turretList.size()) {
+                    break; // Ensure we don't try to access a turret beyond the list size
                 }
-            });
-            table.add(turretButton).row();
+
+                TowerType turret = turretList.get(index);
+                TextButton turretButton = new TextButton(turret.getTowerName(), skin);
+                turretButton.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        logger.info(String.valueOf(selectedTurrets.size()));
+                        if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
+                            message.setText("You can only select up to 5 turrets.");
+                        } else {
+                            message.setText("Select your turrets");
+                        }
+                        if (selectedTurrets.contains(turret)) {
+                            // Turret is already selected, unselect it
+                            selectedTurrets.remove(turret);
+                            // You can also change the button appearance to indicate unselection
+                            logger.info(selectedTurrets.toString());
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                        } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {
+                            // Turret is not selected, but the max number of turrets has been reached
+                            message.setText("You can only select up to 5 turrets.");
+                        } else if (selectedTurrets.size() < MAX_SELECTED_TURRETS) {
+                            // Turret is not selected, select it
+                            selectedTurrets.add(turret);
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                            logger.info(selectedTurrets.toString());
+                        }
+                        else {
+                            // Turret is not selected, select it
+                            selectedTurrets.add(turret);
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                            //logger.info(selectedTurrets.toString());
+
+                            // You can change the button appearance to indicate selection
+                        }
+
+                    }
+                });
+
+                table.add(turretButton).pad(10); // Add padding to separate the buttons
+            }
+            table.row(); // Start a new row
         }
+
         table.add(confirmButton).padBottom(20).row();
+
+        // Center the table within the stage
+        table.center();
+
 
         stage.addActor(table);
         table.setFillParent(true);
