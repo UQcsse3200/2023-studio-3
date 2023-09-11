@@ -36,7 +36,8 @@ public class SplitFireworksComponentTest {
       "images/projectiles/mobProjectile.atlas",
       "images/projectiles/basic_projectile.atlas",
       "images/projectiles/mobKing_projectile.atlas",
-      "images/projectiles/engineer_projectile.atlas"
+      "images/projectiles/engineer_projectile.atlas",
+      "images/projectiles/firework_anim.atlas"
   };
 
   @BeforeEach

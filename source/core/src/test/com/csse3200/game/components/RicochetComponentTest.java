@@ -54,9 +54,7 @@ public class RicochetComponentTest {
     ServiceLocator.registerEntityService(new EntityService());
 
     // For the time being, NPC is treated as an enemy.
-    // projectile = createProjectile(PhysicsLayer.NPC);
-    projectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f),
-        new Vector2(2f, 2f), 0);
+    projectile = createProjectile(PhysicsLayer.NPC, 0);
     mob = createMobTarget(PhysicsLayer.NPC);
     ServiceLocator.getEntityService().register(projectile);
     ServiceLocator.getEntityService().register(mob);
@@ -148,16 +146,28 @@ public class RicochetComponentTest {
         ServiceLocator.getEntityService().getNearbyEntities(mob, 0.5f).size);
   }
 
-  Entity createProjectile(short targetLayer) {
-    Entity projectile = new Entity();
+  @Test
+  public void shouldNotSpawnAnotherProjWithMaxBounceCount() {
+    Entity newProjectile = createProjectile(PhysicsLayer.NPC, 3);
+    ServiceLocator.getEntityService().register(newProjectile);
+    int currentEntities = ServiceLocator.getEntityService().getEntities().size;
 
-    projectile
-        .addComponent(new PhysicsComponent())
-        .addComponent(new PhysicsMovementComponent())
-        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
-        .addComponent(new CombatStatsComponent(0, 10))
-        .addComponent(new TouchAttackComponent(targetLayer, 0f, true))
-        .addComponent(new RicochetComponent(PhysicsLayer.NPC, 0));
+    newProjectile.setPosition(3, 3);
+    mob.setPosition(3, 3);
+
+    triggerCollisionEnd(newProjectile, mob);
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    assertNotEquals(currentEntities,
+        ServiceLocator.getEntityService().getEntities().size,
+        "Should not have spawned another projectile upon collision with a max bounce count");
+  }
+
+  Entity createProjectile(short targetLayer, int bounceCount) {
+    Entity projectile = ProjectileFactory.createRicochetFireball(targetLayer, new Vector2(0.1f, 0.1f),
+        new Vector2(2f, 2f), bounceCount);
 
     return projectile;
   }
