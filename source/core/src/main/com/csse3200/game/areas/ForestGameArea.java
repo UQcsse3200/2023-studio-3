@@ -369,7 +369,7 @@ public class ForestGameArea extends GameArea {
 
 
   private void spawnXenoGrunts() {
-    int[] pickedLanes = new Random().ints(0, 8)
+    int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
