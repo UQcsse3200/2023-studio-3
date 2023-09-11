@@ -120,7 +120,7 @@ public class ProjectileFactory {
    * Pierce fireball is basically a fireball that does damage but won't self destruct on hit.
    */
   public static Entity createPierceFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
-    Entity fireBall = createFireBall(targetLayer, destination, speed);
+    Entity fireBall = createPierceBallAnim(targetLayer, destination, speed);
     fireBall.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
     fireBall.getComponent(TouchAttackComponent.class).setKnockBack(0f);
 
@@ -169,7 +169,7 @@ public class ProjectileFactory {
 
     projectile
             .addComponent(animator)
-            .addComponent(new ProjectileAnimationController());
+            .addComponent(new PierceProjectileAnimationController());
     // * TEMPORARY
     // .addComponent(new DeleteOnMapEdgeComponent());
     // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
@@ -177,6 +177,14 @@ public class ProjectileFactory {
     return projectile;
   }
 
+  /**
+   * Creates new animation and fireballs for SplitFireworkComponent.
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed       The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
   public static Entity createFireworks(short targetLayer, Vector2 destination, Vector2 speed) {
     Entity projectile = createBaseProjectile(targetLayer, destination, speed);
 
@@ -185,6 +193,21 @@ public class ProjectileFactory {
                     ServiceLocator.getResourceService()
                             .getAsset("images/projectiles/firework_anim.atlas", TextureAtlas.class));
     animator.addAnimation(START_ANIM, 0.2f, Animation.PlayMode.LOOP);
+    projectile
+            .addComponent(animator)
+            .addComponent(new FireworkAnimationController());
+
+    return projectile;
+  }
+
+  public static Entity createPierceBallAnim(short targetLayer, Vector2 destination, Vector2 speed) {
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/pierce_anim.atlas", TextureAtlas.class));
+    animator.addAnimation(START_ANIM, 0.05f, Animation.PlayMode.LOOP);
     projectile
             .addComponent(animator)
             .addComponent(new FireworkAnimationController());
