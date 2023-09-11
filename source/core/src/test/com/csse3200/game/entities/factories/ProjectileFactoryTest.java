@@ -45,7 +45,8 @@ class ProjectileFactoryTest {
             "images/projectiles/engineer_projectile.atlas",
             "images/projectiles/stun_effect.atlas",
             "images/projectiles/burn_effect.atlas",
-            "images/projectiles/snow_ball.atlas"
+            "images/projectiles/snow_ball.atlas",
+            "images/projectiles/firework_anim.atlas"
     };
 
     private final String[] animations = {
@@ -270,6 +271,28 @@ class ProjectileFactoryTest {
         Entity slowProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
                 , new Vector2(2,2), ProjectileEffects.SLOW, false);
         assertNotNull(slowProjectile.getComponent(SnowBallProjectileAnimationController.class),
+                "Slow Projectile does not have Animation Controller");
+    }
+
+    @Test
+    public void testFireworkProjectileCreation() {
+        Entity fireworkProjectile = ProjectileFactory.createFireworks(
+                PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(fireworkProjectile, "fireworkProjectile is null");
+    }
+
+    @Test
+    public void testFireworkProjectileAnimationRenderComponent() {
+        Entity fireworkProjectile = ProjectileFactory.createFireworks(
+                PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(fireworkProjectile.getComponent(AnimationRenderComponent.class),
+                "Slow Projectile does not have AnimationRenderComponent");
+    }
+    @Test
+    public void testFireworkProjectileAnimationController() {
+        Entity fireworkProjectile = ProjectileFactory.createFireworks(
+                PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(fireworkProjectile.getComponent(FireworkAnimationController.class),
                 "Slow Projectile does not have Animation Controller");
     }
 }
