@@ -133,8 +133,8 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
             this.owner.getEntity().getEvents().trigger("meleeStart");
           } else {
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.7f), (float) (owner.getEntity().getPosition().y - 0.18f));
-            newProjectile.setScale(-1f, 1f);
+            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            // newProjectile.setScale(-1f, 1f);
             ServiceLocator.getEntityService().register(newProjectile);
 
 //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
