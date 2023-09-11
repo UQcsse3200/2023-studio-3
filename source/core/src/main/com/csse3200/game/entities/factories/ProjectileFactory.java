@@ -2,14 +2,9 @@ package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.csse3200.game.components.EffectsComponent;
-import com.csse3200.game.components.ProjectileEffects;
-import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.RicochetComponent;
+import com.csse3200.game.components.*;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -140,6 +135,28 @@ public class ProjectileFactory {
 
     projectile
         .getComponent(AnimationRenderComponent.class).scaleEntity();
+
+
+
+    return projectile;
+  }
+  public static Entity createBossBall(short targetLayer, Vector2 destination, Vector2 speed) {  // function added by team 7 for Boss projectile
+    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/bossProjectile.atlas", TextureAtlas.class));
+
+    animator.addAnimation("rotate", 0.15f, Animation.PlayMode.LOOP);
+
+    projectile
+            .addComponent(animator)
+            .addComponent(new BossProjectileAnimationController());
+
+    projectile
+            .getComponent(AnimationRenderComponent.class).scaleEntity();
+    projectile.setScale(2,2);
 
     return projectile;
   }
