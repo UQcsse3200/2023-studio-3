@@ -44,7 +44,7 @@ public class EngineerCountDisplay extends UIComponent {
         engineerTb.setDisabled(true);
         engineerTb.getLabel().setAlignment(Align.right);
 
-        engineerTb.pad(0, 0, 0, 70);
+        engineerTb.pad(0, 0, 0, 50);
         engineerTb.setTransform(true);
 
         table.add(engineerTb).width(engineerTb.getWidth() * 0.5f).height(engineerTb.getHeight() * 0.5f);
