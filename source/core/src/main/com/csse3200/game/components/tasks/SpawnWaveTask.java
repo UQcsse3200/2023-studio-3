@@ -7,10 +7,6 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * A task which spawns a new wave of mobs at a set spawning interval
- *
- */
 public class SpawnWaveTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(SpawnWaveTask.class);
     private final GameTime globalTime;

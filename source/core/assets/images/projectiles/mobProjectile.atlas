@@ -20,7 +20,7 @@ rotate
   index: -1
 default
   rotate: false
-  xy: 54, 2
+  xy: 28, 2
   size: 24, 23
   orig: 24, 23
   offset: 0, 0
