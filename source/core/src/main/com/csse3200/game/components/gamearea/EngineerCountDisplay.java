@@ -25,7 +25,7 @@ public class EngineerCountDisplay extends UIComponent {
     }
 
     /**
-     * Initialises the currency labels
+     * Initialises the engineer count display
      * Positions it on the stage using a table
      */
     private void addActors() {
@@ -51,6 +51,9 @@ public class EngineerCountDisplay extends UIComponent {
         stage.addActor(table);
     }
 
+    /**
+     * Updates the engineer count on the UI component
+     */
     public void updateCount() {
         String text = String.format("%d", ServiceLocator.getGameEndService().getEngineerCount());
         engineerTb.getLabel().setText(text);
@@ -58,7 +61,7 @@ public class EngineerCountDisplay extends UIComponent {
 
     @Override
     protected void draw(SpriteBatch batch) {
-
+        // handled by stage
     }
 
     @Override
