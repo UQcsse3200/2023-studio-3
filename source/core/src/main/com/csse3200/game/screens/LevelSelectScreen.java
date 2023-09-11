@@ -99,7 +99,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 if (Gdx.input.justTouched()) {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
-                    game.setScreen(new MainGameScreen(game));
+                    game.setScreen(new TurretSelectionScreen(game));
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
                     batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);

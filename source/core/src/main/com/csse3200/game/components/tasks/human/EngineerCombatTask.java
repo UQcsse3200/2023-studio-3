@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks;
+package com.csse3200.game.components.tasks.human;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
@@ -131,10 +131,11 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     if (shotsFired <= 10) {
                         owner.getEntity().getEvents().trigger(FIRING);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
-                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
+                        Entity newProjectile = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y),
                                 new Vector2(4f, 4f));
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
+                        newProjectile.setScale(0.8f, 0.8f);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3), (float) (owner.getEntity().getPosition().y + 0.15));
                         ServiceLocator.getEntityService().register(newProjectile);
                         shotsFired += 1;
                         reloadTime = timeSource.getTime();
