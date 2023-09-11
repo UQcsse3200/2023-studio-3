@@ -3,6 +3,7 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -95,10 +96,11 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                     towerState = STATE.IDLE;
                 } else {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+                            owner.getEntity().getPosition().y), new Vector2(2,2), ProjectileEffects.STUN, false);
+                    newProjectile.setScale(-0.4f, -0.4f);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.25));
+                            (float) (owner.getEntity().getPosition().y + 0.85));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }

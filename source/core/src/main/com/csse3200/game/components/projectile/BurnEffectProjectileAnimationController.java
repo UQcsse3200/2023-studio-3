@@ -3,7 +3,7 @@ package com.csse3200.game.components.projectile;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
-public class ProjectileAnimationController extends Component{
+public class BurnEffectProjectileAnimationController extends Component {
     /** Event name constants */
     private static final String START = "startProjectile";
     private static final String FINAL = "startProjectileFinal";
