@@ -1,6 +1,7 @@
 package com.csse3200.game.components.gamearea;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,6 +31,7 @@ public class CurrencyDisplay extends UIComponent {
     private Camera camera;
     private TextButton scrapsTb;
     private TextButton crystalsTb;
+    private Sound clickSound;
 
     /**
      * Adds actors to stage
@@ -37,6 +39,7 @@ public class CurrencyDisplay extends UIComponent {
     @Override
     public void create() {
         super.create();
+        clickSound = ServiceLocator.getResourceService().getAsset("sounds/economy/click.wav", Sound.class);
         addActors();
     }
 
@@ -101,12 +104,17 @@ public class CurrencyDisplay extends UIComponent {
 
     /**
      * A label that appears once currency is gained, to give the player visual feedback
+     * Also plays sound
      * @param x Screen x coordinate
      * @param y Screen y coordinate
      * @param amount value to display on the pop-up
      * @param offset value to offset the height of the label by
      */
     public void currencyPopUp(float x , float y, int amount, int offset) {
+        // play sound and set the volume
+        long soundId = clickSound.play();
+        clickSound.setVolume(soundId, 0.4f);
+
         Label label = new Label(String.format("+%d", amount), skin);
         // remove label after it fades out
         label.addAction(new SequenceAction(Actions.fadeOut(1.5f), Actions.removeActor()));
