@@ -108,7 +108,9 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/mobProjectile.png",
           "images/projectiles/engineer_projectile.png",
           "images/projectiles/mobKing_projectile.png",
-          "images/projectiles/snow_ball.png"
+          "images/projectiles/snow_ball.png",
+          "images/projectiles/burn_effect.png",
+          "images/projectiles/stun_effect.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -128,7 +130,9 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/mobProjectile.atlas",
           "images/projectiles/engineer_projectile.atlas",
           "images/projectiles/mobKing_projectile.atlas",
-          "images/projectiles/snow_ball.atlas"
+          "images/projectiles/snow_ball.atlas",
+          "images/projectiles/burn_effect.atlas",
+          "images/projectiles/stun_effect.atlas"
 
   };
   private static final String[] forestSounds = {
@@ -191,7 +195,7 @@ public class ForestGameArea extends GameArea {
     spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
-    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
+    // spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnXenoGrunts();
 //    spawnGhosts();
