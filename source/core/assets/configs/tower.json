@@ -13,5 +13,26 @@
     "health": 20,
     "baseAttack": 0,
     "cost": 1
+  },
+  "TNTTower": {
+    "health": 10,
+    "baseAttack": 5,
+    "cost": 1
+  },
+  "DroidTower": {
+    "health": 50,
+    "baseAttack": 5,
+    "cost": 1
+  },
+  "fireTower": {
+    "health": 10,
+    "baseAttack": 10,
+    "cost": 10
+  },
+  "stunTower": {
+    "health": 10,
+    "baseAttack": 10,
+    "cost": 10
+
   }
 }

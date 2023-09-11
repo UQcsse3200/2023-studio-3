@@ -1,6 +1,7 @@
 package com.csse3200.game.services;
 
 import com.csse3200.game.components.gamearea.CurrencyDisplay;
+import com.csse3200.game.currency.Crystal;
 import com.csse3200.game.currency.Scrap;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class CurrencyService {
     public CurrencyService() {
         this.currencies = new ArrayList<>(); // Creates an array list of currencies
         this.currencies.add(new Scrap()); // Adds a scrap currency to the array list
+        this.currencies.add(new Crystal());
         this.display = new CurrencyDisplay(); // Creates a new currency display
     }
 
@@ -30,6 +32,14 @@ public class CurrencyService {
      */
     public Scrap getScrap() {
         return (Scrap) this.currencies.get(0); // Returns the scrap currency
+    }
+
+    /**
+     * Returns the crystal currency
+     * @return Crystal object
+     */
+    public Crystal getCrystal() {
+        return (Crystal) this.currencies.get(1);
     }
 
     public CurrencyDisplay getDisplay() {

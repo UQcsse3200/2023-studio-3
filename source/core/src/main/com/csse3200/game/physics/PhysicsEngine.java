@@ -45,7 +45,7 @@ PhysicsEngine implements Disposable {
 
   public void update() {
     // Check for deleted bodies and joints
-//    checkAndDeleteBodies();
+    checkAndDeleteBodies();
 
     // Updating physics isn't as easy as triggering an update every frame. Each frame could take a
     // different amount of time to run, but physics simulations are only stable if computed at a
@@ -90,17 +90,17 @@ PhysicsEngine implements Disposable {
 
     world.getBodies(bodies);
 
-    // Check for bodies to be deleted
-    for(Body body : bodies) {
-      Entity entity = ((BodyUserData) body.getUserData()).entity;
+    // ! CANNOT USE ITERATOR HERE
+    // ! If you do: "ERROR: #ITERATOR CAN'T BE NESTED"
+    for(int i = 0; i < bodies.size; i++) {
+      if(bodies.get(i) != null 
+          && bodies.get(i).getUserData() != null 
+          && (BodyUserData) bodies.get(i).getUserData() != null) {
+            Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;
 
-      // If the entity is flagged for deletion, destroy the body before world.step() is called
-      if(entity.getFlagForDelete()) {
-        logger.debug("Destroying physics body {}", body);
-        ProjectileDestructors.destroyProjectile(entity);
-        
-        // Make sure not to delete the body twice
-        entity.setFlagForDelete(false);
+            if(entity.getFlagForDelete()) {
+              entity.dispose();
+            }
       }
     }
   }
@@ -139,6 +139,24 @@ PhysicsEngine implements Disposable {
     singleHitCallback.hit = hit;
     world.rayCast(singleHitCallback, from, to);
     return singleHitCallback.didHit;
+  }
+
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for a collision
+   * against colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param layerMask The physics layer mask which specifies layers that can be hit. Other layers
+   *                  will be ignored.
+   * @return The fixture of the closest collider hit by the ray, or null if no collider was hit.
+   * */
+  public Fixture raycastGetHit(Vector2 from, Vector2 to, short layerMask) {
+    singleHitCallback.didHit = false;
+    singleHitCallback.layerMask = layerMask;
+    world.rayCast(singleHitCallback, from, to);
+    return singleHitCallback.hit.fixture;
   }
 
   /**
