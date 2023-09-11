@@ -169,7 +169,7 @@ public class ProjectileFactory {
 
     projectile
             .addComponent(animator)
-            .addComponent(new PierceProjectileAnimationController());
+            .addComponent(new ProjectileAnimationController());
     // * TEMPORARY
     // .addComponent(new DeleteOnMapEdgeComponent());
     // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
@@ -210,7 +210,7 @@ public class ProjectileFactory {
     animator.addAnimation(START_ANIM, 0.05f, Animation.PlayMode.LOOP);
     projectile
             .addComponent(animator)
-            .addComponent(new FireworkAnimationController());
+            .addComponent(new PierceProjectileAnimationController());
 
     return projectile;
   }
