@@ -23,10 +23,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private static final int INTERVAL = 1; //time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC; //the type of targets this tower will detect
     //The constants are names of events that will be triggered in the state machine
-    private static final String IDLE = "startIdle";
-    private static final String PREP_ATTACK = "startAttackPrep";
-    private static final String ATTACK = "startAttack";
-    private static final String DEATH = "startDeath";
+    public static final String IDLE = "startIdle";
+    public static final String PREP_ATTACK = "startAttackPrep";
+    public static final String ATTACK = "startAttack";
+    public static final String DEATH = "startDeath";
 
     //Class attributes
     private final int priority;
@@ -39,10 +39,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
 
-    private enum STATE {
+    public enum STATE {
         IDLE, PREP_ATTACK, ATTACK, DEATH
     }
-    private STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * Starts the task running, triggers the initial 'IDLE' event
@@ -132,6 +132,13 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
+    }
+
+    /**
+     * @return returns the current state of the tower
+     */
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**

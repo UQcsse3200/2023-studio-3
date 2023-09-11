@@ -5,17 +5,15 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
-import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.tasks.MobAttackTask;
-import com.csse3200.game.components.tasks.SpawnWaveTask;
 import com.csse3200.game.components.tasks.MobDeathTask;
 import com.csse3200.game.components.tasks.WanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
-import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -109,24 +107,25 @@ public class NPCFactory {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>();
-//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.hurricane));
-//    ArrayList<Integer> drops = new ArrayList<>(Arrays.asList(1, 2));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/xenoGrunt.atlas", TextureAtlas.class));
+                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
     animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_shoot", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee_1", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_melee_2", 0.1f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("xeno_die", 0.1f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("xeno_shoot", 0.1f);
+    animator.addAnimation("xeno_melee_1", 0.1f);
+    animator.addAnimation("xeno_melee_2", 0.1f);
+    animator.addAnimation("xeno_die", 0.1f);
     xenoGrunt
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
+    xenoGrunt.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return xenoGrunt;
@@ -141,18 +140,17 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobAttackTask(2, 40))
-                .addTask(new MobDeathTask(2));
+            .addTask(new MobAttackTask(2, 40));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
             .addComponent(new PhysicsMovementComponent())
             .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f))
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
             .addComponent(aiComponent);
 
-    PhysicsUtils.setScaledCollider(npc, 0.9f, 0.4f);
+    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
 

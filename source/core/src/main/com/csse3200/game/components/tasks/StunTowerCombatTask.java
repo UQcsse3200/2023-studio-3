@@ -39,10 +39,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     private final RaycastHit hit = new RaycastHit();
 
     //enums for the state triggers
-    private enum STATE {
+    public enum STATE {
         IDLE, ATTACK, DIE
     }
-    private STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -123,6 +123,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
         }
+    }
+
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**
