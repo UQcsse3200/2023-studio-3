@@ -7,10 +7,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -19,7 +20,6 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
-import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
@@ -27,9 +27,10 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 @ExtendWith(GameExtension.class)
-public class RicochetComponentTest {
+public class SplitFireworksComponentTest {
   Entity projectile;
   Entity mob;
+  static double OFFSET_X = 1.75;
 
   private final String[] atlas = {
       "images/projectiles/mobProjectile.atlas",
@@ -54,9 +55,7 @@ public class RicochetComponentTest {
     ServiceLocator.registerEntityService(new EntityService());
 
     // For the time being, NPC is treated as an enemy.
-    // projectile = createProjectile(PhysicsLayer.NPC);
-    projectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f),
-        new Vector2(2f, 2f), 0);
+    projectile = createSplitFireworkProjectile(PhysicsLayer.NPC, 3);
     mob = createMobTarget(PhysicsLayer.NPC);
     ServiceLocator.getEntityService().register(projectile);
     ServiceLocator.getEntityService().register(mob);
@@ -68,59 +67,69 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void shouldHaveRicochetComponent() {
-    assertNotNull(projectile.getComponent(RicochetComponent.class),
-        "Projectile does not contain RicochetComponent");
+  public void shouldHaveSplitFireworksComponent() {
+    assertNotNull(projectile.getComponent(SplitFireworksComponent.class),
+        "Projectile does not contain SplitFireworksComponent");
   }
 
   @Test
   public void shouldDisposeAferCollision() {
-    int currentEntities = ServiceLocator.getEntityService().getEntities().size;
-
     triggerCollisionEnd(projectile, mob);
 
-    assertTrue("projectile entity flag should be true after collision",
+    assertTrue("original projectile entity flag should be true after collision",
         projectile.getFlagForDelete());
-
-    ServiceLocator.getPhysicsService().getPhysics().update();
-    ServiceLocator.getEntityService().update();
-
-    assertEquals("Projectile should be deleted after collision upon update", currentEntities - 1,
-        ServiceLocator.getEntityService().getEntities().size);
   }
 
-  // @Ignore
   @Test
-  public void shouldSpawnAnotherProjWithinMapBounds() {
+  void shouldSpawnCorrectNumberOfProjs() {
     projectile.setPosition(3, 3);
-    int currentEntities = ServiceLocator.getEntityService().getEntities().size;
+
+    int initialNumEntities = ServiceLocator.getEntityService().getEntities().size;
 
     triggerCollisionEnd(projectile, mob);
 
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("Should spawn another ricochet projectile within map bounds", currentEntities,
-        ServiceLocator.getEntityService().getEntities().size);
+    // initialNumEntities + 2 to account for the dispose of the original projectile.
+    assertEquals("Should spawn correct number of projectiles after collision based on amount given",
+        initialNumEntities + 2, ServiceLocator.getEntityService().getEntities().size);
   }
 
   @Test
-  public void shouldNotSpawnAnotherProjOutOfMapBounds() {
-    projectile.setPosition(-1, -1);
-    int currentEntities = ServiceLocator.getEntityService().getEntities().size;
+  public void shouldSpawnMultProjWithinMapBounds() {
+    projectile.setPosition(3, 3);
+    mob.setPosition(3, 3);
+
+    int initialNumEntities = ServiceLocator.getEntityService().getEntities().size;
 
     triggerCollisionEnd(projectile, mob);
 
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertNotEquals(currentEntities,
-        ServiceLocator.getEntityService().getEntities().size,
-        "Should not have spawned another projectile upon collision");
+    assertTrue("SplitFireWorks projectile should spawn multiple projectile out of map bounds",
+        ServiceLocator.getEntityService().getEntities().size > initialNumEntities);
   }
 
   @Test
-  public void testWithinRangeSpawnedProjectile() {
+  public void shouldNotSpawnMultProjOutOfMapBounds() {
+    projectile.setPosition(22, 22);
+    mob.setPosition(22, 22);
+
+    int initialNumEntities = ServiceLocator.getEntityService().getEntities().size;
+
+    triggerCollisionEnd(projectile, mob);
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    assertFalse(ServiceLocator.getEntityService().getEntities().size > initialNumEntities,
+        "SplitFireWorks projectile should not spawn multiple projectile out of map bounds");
+  }
+
+  @Test
+  public void testWithinRangeSpawnedProjectiles() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
 
@@ -129,35 +138,52 @@ public class RicochetComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    // For the time being, 2f seems to be the justifiable range
-    // for the new projectile to be spawned.
-    assertEquals("Projectile should be spawned within the range provided.", 1,
+    assertEquals("Projectiles should be spawned within the range provided.", 3,
         ServiceLocator.getEntityService().getNearbyEntities(mob, 2f).size);
   }
 
   @Test
-  public void testNotWithinRangeShouldNotSpawnProjectile() {
+  public void testTooCloseRangeSpawnedProjectiles() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
+
     triggerCollisionEnd(projectile, mob);
 
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("Projectile should not be spawned too close to the original (now disposed) projectile and mob", 0,
-        ServiceLocator.getEntityService().getNearbyEntities(mob, 0.5f).size);
+    assertNotEquals(3,
+        ServiceLocator.getEntityService().getNearbyEntities(mob, 0.5f).size,
+        "Projectiles should not be spawned too close upon impact.");
   }
 
-  Entity createProjectile(short targetLayer) {
-    Entity projectile = new Entity();
+  @Test
+  public void shouldSpawnAtSpecifiedLocation() {
+    projectile.setPosition(3, 3);
+    mob.setPosition(3, 3);
+    float currPosition = projectile.getPosition().x;
 
-    projectile
-        .addComponent(new PhysicsComponent())
-        .addComponent(new PhysicsMovementComponent())
-        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))
-        .addComponent(new CombatStatsComponent(0, 10))
-        .addComponent(new TouchAttackComponent(targetLayer, 0f, true))
-        .addComponent(new RicochetComponent(PhysicsLayer.NPC, 0));
+    triggerCollisionEnd(projectile, mob);
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    float newXPosition = (float) (currPosition + OFFSET_X);
+
+    Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
+
+    for (Entity entity : allEntities) {
+      if (entity == mob)
+        continue;
+
+      assertEquals("Projectiles were not spawned at the right offset x placement", newXPosition, entity.getPosition().x,
+          0.02);
+    }
+  }
+
+  Entity createSplitFireworkProjectile(short targetLayer, int amount) {
+    Entity projectile = ProjectileFactory.createSplitFireWorksFireball(targetLayer, new Vector2(100, 3),
+        new Vector2(2f, 2f), amount);
 
     return projectile;
   }
