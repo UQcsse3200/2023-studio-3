@@ -12,6 +12,7 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 
 /**
  * When this entity touches a valid enemy's hitbox, deal damage to them and apply a knockback.
+ * Has an optional disposeOnHit property that disposes projectile upon collision.
  *
  * <p>Requires CombatStatsComponent, HitboxComponent on this entity.
  *
@@ -64,7 +65,7 @@ public class TouchAttackComponent extends Component {
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
 
-  private void onCollisionStart(Fixture me, Fixture other) {
+  public void onCollisionStart(Fixture me, Fixture other) {
     if (hitboxComponent.getFixture() != me) {
       // Not triggered by hitbox, ignore
       return;
@@ -103,6 +104,11 @@ public class TouchAttackComponent extends Component {
 
   public void setDisposeOnHit(boolean disposeOnHit) {
     this.disposeOnHit = disposeOnHit;
+  }
+
+
+  public void setKnockBack(float knockback) {
+    this.knockbackForce = knockback;
   }
   public Weapon chooseWeapon(Fixture other) {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;

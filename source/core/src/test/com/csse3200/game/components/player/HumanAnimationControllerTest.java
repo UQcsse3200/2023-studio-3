@@ -58,6 +58,7 @@ class HumanAnimationControllerTest {
         resourceService.loadSounds(sounds);
         resourceService.loadAll();
         engineer = EngineerFactory.createEngineer();
+        engineer.create();
     }
 
     @AfterEach
@@ -70,46 +71,45 @@ class HumanAnimationControllerTest {
                 "Created Engineer entity should have a HumanAnimationController");
     }
 
-//    @Test
-//    void shouldAnimateIdleRight() {
-//        engineer.getEvents().trigger("idleStart");
-//        when(gameTime.getDeltaTime()).thenReturn(0.1f);
-//        assertEquals("idle_right", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'idleStart' event should trigger 'idle_right' animation'");
-//    }
-//
-//    @Test
-//    void animateLeftWalk() {
-//        engineer.getEvents().trigger("walkLeftStart");
-//        assertEquals("walk_left", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'walkLeftStart' event should trigger 'walk_left' animation'");
-//    }
-//
-//    @Test
-//    void animateRightWalk() {
-//        engineer.getEvents().trigger("walkRightStart");
-//        assertEquals("walk_right", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'walkRightStart' event should trigger 'walk_right' animation'");
-//    }
-//
-//    @Test
-//    void animateFiring() {
-//        engineer.getEvents().trigger("firingSingleStart");
-//        assertEquals("firing_single", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'firingSingleStart' event should trigger 'firing_single' animation'");
-//    }
-//
-//    @Test
-//    void animateHit() {
-//        engineer.getEvents().trigger("hitStart");
-//        assertEquals("hit", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'hitStart' event should trigger 'hit' animation'");
-//    }
-//
-//    @Test
-//    void animateDeath() {
-//        engineer.getEvents().trigger("hitStart");
-//        assertEquals("death", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
-//                "'deathStart' event should trigger 'death' animation'");
-//    }
+    @Test
+    void shouldAnimateIdleRight() {
+        engineer.getEvents().trigger("idleRight");
+        assertEquals("idle_right", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'idleRight' event should trigger 'idle_right' animation'");
+    }
+
+    @Test
+    void shouldAnimateLeftWalk() {
+        engineer.getEvents().trigger("walkLeftStart");
+        assertEquals("walk_left", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'walkLeftStart' event should trigger 'walk_left' animation'");
+    }
+
+    @Test
+    void shouldAnimateRightWalk() {
+        engineer.getEvents().trigger("walkRightStart");
+        assertEquals("walk_right", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'walkRightStart' event should trigger 'walk_right' animation'");
+    }
+
+    @Test
+    void shoudlAnimateFiring() {
+        engineer.getEvents().trigger("firingSingleStart");
+        assertEquals("firing_single", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'firingSingleStart' event should trigger 'firing_single' animation'");
+    }
+
+    @Test
+    void shouldAnimateHit() {
+        engineer.getEvents().trigger("hitStart");
+        assertEquals("hit", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'hitStart' event should trigger 'hit' animation'");
+    }
+
+    @Test
+    void shouldAnimateDeath() {
+        engineer.getEvents().trigger("deathStart");
+        assertEquals("death", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
+                "'deathStart' event should trigger 'death' animation'");
+    }
 }
