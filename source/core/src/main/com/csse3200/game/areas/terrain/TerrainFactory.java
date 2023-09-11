@@ -23,7 +23,6 @@ import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.screens.GameLevelData;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-
 import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
 import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
@@ -37,6 +36,7 @@ public class TerrainFactory {
   int selectedLevel = GameLevelData.getSelectedLevel();
   private Texture whiteTexture;
 
+
   /**
    * Create a terrain factory with Orthogonal orientation
    *
@@ -48,7 +48,6 @@ public class TerrainFactory {
     Viewport viewport = new ScreenViewport(camera);
     viewport.update(viewportWidth, viewportHeight, true);
     stage = new Stage(viewport, new SpriteBatch());
-
     camera.update();
 
     Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
