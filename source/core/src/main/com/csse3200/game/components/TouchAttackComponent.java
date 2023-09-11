@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -64,7 +65,7 @@ public class TouchAttackComponent extends Component {
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
 
-  private void onCollisionStart(Fixture me, Fixture other) {
+  public void onCollisionStart(Fixture me, Fixture other) {
     if (hitboxComponent.getFixture() != me) {
       // Not triggered by hitbox, ignore
       return;
@@ -105,6 +106,7 @@ public class TouchAttackComponent extends Component {
     this.disposeOnHit = disposeOnHit;
   }
 
+
   public void setKnockBack(float knockback) {
     this.knockbackForce = knockback;
   }
@@ -125,6 +127,15 @@ public class TouchAttackComponent extends Component {
       Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
       projectile.setFlagForDelete(true);
     }
+  }
+
+  public Weapon chooseWeapon(Fixture other) {
+    Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
+    Weapon weapon = null;
+    if (target.getComponent(CombatStatsComponent.class) != null) {
+      weapon = combatStats.getWeapon(target);
+    }
+    return weapon;
   }
 }
 

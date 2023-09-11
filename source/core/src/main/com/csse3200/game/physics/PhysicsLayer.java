@@ -13,6 +13,7 @@ public class PhysicsLayer {
   // * TEMPORARY WALL BOUNDARIES?
   public static final short WALL = (1 << 6);
 
+  public static final short XENO = (1 << 3);
   public static final short HUMANS = (1 << 1) | (1 << 5);
   public static final short ALL = ~0;
 
