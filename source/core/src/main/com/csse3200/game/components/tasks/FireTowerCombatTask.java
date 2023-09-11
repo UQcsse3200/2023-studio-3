@@ -3,12 +3,14 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -24,6 +26,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private static final String IDLE = "startIdle";
     private static final String PREP_ATTACK = "startAttackPrep";
     private static final String ATTACK = "startAttack";
+    private static final String DEATH = "startDeath";
 
     //Class attributes
     private final int priority;
@@ -37,7 +40,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     private final RaycastHit hit = new RaycastHit();
 
     private enum STATE {
-        IDLE, PREP_ATTACK, ATTACK
+        IDLE, PREP_ATTACK, ATTACK, DEATH
     }
     private STATE towerState = STATE.IDLE;
 
@@ -81,6 +84,11 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
      * finite state machine for the FireTower. Detects mobs in a straight line and changes the state of the tower.
      */
     public void updateTowerState()  {
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
+            owner.getEntity().getEvents().trigger(DEATH);
+            towerState = STATE.DEATH;
+            return;
+        }
         switch (towerState) {
             case IDLE -> {
                 if (isTargetVisible())  {
@@ -111,6 +119,11 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
+                }
+            }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
                 }
             }
         }

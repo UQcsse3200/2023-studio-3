@@ -296,6 +296,7 @@ public class ForestGameArea extends GameArea {
   private Entity spawnPlayer() {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
+    newPlayer.addComponent(new TouchAttackComponent(PhysicsLayer.NPC));
     return newPlayer;
   }
 
