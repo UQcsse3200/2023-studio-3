@@ -61,14 +61,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         turretList = new ArrayList<>();
         // Add turrets to the list
-        turretList.add(TowerType.WEAPON);
-        turretList.add(TowerType.TNT);
-        turretList.add(TowerType.DROID);
-        turretList.add(TowerType.WALL);
-        turretList.add(TowerType.FIRE);
-        turretList.add(TowerType.STUN);
-        turretList.add(TowerType.INCOME);
-
+        turretList.addAll(Arrays.asList(TowerType.values()));
+        // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1
 
 
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
@@ -141,6 +135,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
         introSprite.draw(batch);
         batch.end();
         stage.draw();
+    }
+
+    public List<TowerType> getTurretList() {
+        return turretList;
     }
 
     @Override
