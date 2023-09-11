@@ -19,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-class WanderTaskTest {
+class MobWanderTaskTest {
   @Mock
   GameTime gameTime;
 
@@ -30,9 +30,9 @@ class WanderTaskTest {
 
   @Test
   void shouldTriggerEvent() {
-    WanderTask wanderTask = new WanderTask(Vector2Utils.ONE, 1f);
+    MobWanderTask mobWanderTask = new MobWanderTask(Vector2Utils.ONE, 1f);
 
-    AITaskComponent aiTaskComponent = new AITaskComponent().addTask(wanderTask);
+    AITaskComponent aiTaskComponent = new AITaskComponent().addTask(mobWanderTask);
     Entity entity = new Entity().addComponent(aiTaskComponent).addComponent(new PhysicsMovementComponent());
     entity.create();
 
@@ -40,7 +40,7 @@ class WanderTaskTest {
     EventListener0 callback = mock(EventListener0.class);
     entity.getEvents().addListener("wanderStart", callback);
 
-    wanderTask.start();
+    mobWanderTask.start();
 
     verify(callback).handle();
   }

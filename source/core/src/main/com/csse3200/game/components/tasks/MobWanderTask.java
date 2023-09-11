@@ -1,31 +1,22 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
-import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.DropFactory;
-import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.ColliderComponent;
-import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.utils.math.RandomUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Wander around by moving a random position within a range of the starting position. Wait a little
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
-public class WanderTask extends DefaultTask implements PriorityTask {
-  private static final Logger logger = LoggerFactory.getLogger(WanderTask.class);
+public class MobWanderTask extends DefaultTask implements PriorityTask {
+  private static final Logger logger = LoggerFactory.getLogger(MobWanderTask.class);
 
   private final Vector2 wanderRange;
   private final float waitTime;
@@ -41,7 +32,7 @@ public class WanderTask extends DefaultTask implements PriorityTask {
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public WanderTask(Vector2 wanderRange, float waitTime) {
+  public MobWanderTask(Vector2 wanderRange, float waitTime) {
     this.wanderRange = wanderRange;
     this.waitTime = waitTime;
   }
