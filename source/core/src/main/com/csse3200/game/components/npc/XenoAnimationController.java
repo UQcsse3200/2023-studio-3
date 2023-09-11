@@ -27,10 +27,8 @@ public class XenoAnimationController extends Component {
     }
 
     void animateRun() {
-        if (!Objects.equals(animator.getCurrentAnimation(), "xeno_shoot")) {
-            animator.stopAnimation();
-            animator.startAnimation("xeno_run");
-        }
+        animator.stopAnimation();
+        animator.startAnimation("xeno_run");
     }
 
     void animateHurt() {
@@ -60,5 +58,6 @@ public class XenoAnimationController extends Component {
 
     void stopAnimation() {
         animator.stopAnimation();
+        animator.startAnimation("default");
     }
 }

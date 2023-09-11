@@ -59,7 +59,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
     currentTask = movementTask;
 
 
-    this.owner.getEntity().getEvents().trigger("wanderStart");
+//    this.owner.getEntity().getEvents().trigger("wanderStart");
   }
 
   @Override
@@ -73,7 +73,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
     // This method is the idea of Ahmad who very kindly helped
     // with section, massive props to him for his help!
     if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
-      owner.getEntity().getEvents().trigger("dieStart");
+      this.owner.getEntity().getEvents().trigger("dieStart");
       currentTask.stop();
       isDead = true;
     }
@@ -107,12 +107,14 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
 
   private void startWaiting() {
     logger.debug("Starting waiting");
+    this.owner.getEntity().getEvents().trigger("stop");
     swapTask(waitTask);
   }
 
   private void startMoving() {
     logger.debug("Starting moving");
     movementTask.setTarget(getDirection());
+    this.owner.getEntity().getEvents().trigger("wanderStart");
     swapTask(movementTask);
   }
 
