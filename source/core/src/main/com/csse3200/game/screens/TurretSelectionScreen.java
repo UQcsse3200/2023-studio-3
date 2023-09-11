@@ -21,8 +21,10 @@ import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.util.*;
 
@@ -91,6 +93,19 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 }
 
                 TowerType turret = turretList.get(index);
+
+                // Create a nested table for each turret
+                Table turretTable = new Table();
+                turretTable.center(); // Center the contents of the nested table
+
+                // Load the turret image
+                Texture turretTexture = new Texture(Gdx.files.internal(turret.getImagePath()));
+                Image turretImage = new Image(turretTexture);
+
+                // Add the image to the nested table
+                turretTable.add(turretImage).pad(10).row();
+
+                // Create a TextButton for the turret name
                 TextButton turretButton = new TextButton(turret.getTowerName(), skin);
                 turretButton.addListener(new ClickListener() {
                     @Override
@@ -124,13 +139,22 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
                             // You can change the button appearance to indicate selection
                         }
-
                     }
                 });
 
-                table.add(turretButton).pad(10); // Add padding to separate the buttons
+                // Add the turret name button to the nested table
+                turretTable.add(turretButton).center();
+
+                // Add the nested table to the main table
+                table.add(turretTable).pad(10).center();
+
+                // Center the contents of the main table cell
+                table.getCells().peek().center();
             }
-            table.row(); // Start a new row
+
+            // Center the entire row
+            table.row().center();
+
         }
 
         // Centered the "continue" button
@@ -138,8 +162,6 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         // Center the table within the stage
         table.center();
-
-
         stage.addActor(table);
         table.setFillParent(true);
         Gdx.input.setInputProcessor(stage);
