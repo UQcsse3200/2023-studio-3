@@ -4,9 +4,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.components.player.PlayerStatsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
 
+  // Counts the number of humans left, if this reaches zero, game over.
+  private int endStateCounter = 2;
   private static final int NUM_BUILDINGS = 4;
 
   private static final int NUM_WALLS = 7;
@@ -40,9 +44,9 @@ public class ForestGameArea extends GameArea {
 
   private static final int NUM_BOSS=4;
 
+
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
-
 
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
@@ -177,6 +181,8 @@ public class ForestGameArea extends GameArea {
     displayUI();
     spawnTerrain();
 
+    // Set up infrastructure for end game tracking
+
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
 
@@ -197,9 +203,9 @@ public class ForestGameArea extends GameArea {
     spawnWeaponTower();
     spawnTNTTower();
     spawnDroidTower();
-    spawnEngineer();
+    spawnGapScanners();
     spawnIncome();
-    bossKing1 = spawnBossKing1();
+//    bossKing1 = spawnBossKing1();
     bossKing2 = spawnBossKing2();
 
 
@@ -300,7 +306,7 @@ public class ForestGameArea extends GameArea {
   private Entity spawnBossKing1() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    GridPoint2 randomPos 
+    GridPoint2 randomPos
      = new GridPoint2(0, 0);
     Entity ghostKing = NPCFactory.createGhostKing(player);
     spawnEntityAt(ghostKing, randomPos, true, true);
@@ -369,14 +375,14 @@ public class ForestGameArea extends GameArea {
 
 
   private void spawnXenoGrunts() {
-    GridPoint2 minPos = terrain.getMapBounds(0).sub(1, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 10);
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(maxPos, minPos);
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
       xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, true);
+      spawnEntityAt(xenoGrunt, randomPos, true, false);
     }
   }
 
@@ -604,12 +610,11 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
-  
-  private void spawnEngineer() {
 
-    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
-      Entity engineer = EngineerFactory.createEngineer();
-      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
+  private void spawnGapScanners() {
+    for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
+      Entity scanner = GapScannerFactory.createScanner();
+      spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
 //    GridPoint2 minPos = new GridPoint2(0, 0);
 //    GridPoint2 maxPos = new GridPoint2(5, terrain.getMapBounds(0).sub(2, 2).y);
@@ -618,4 +623,23 @@ public class ForestGameArea extends GameArea {
 //    Entity engineer = EngineerFactory.createEngineer();
 //    spawnEntityAt(engineer, randomPos, true, true);
   }
+
+//  private void gameTrackerStart() {
+//    Entity endGameTracker = new Entity();
+//
+//    endGameTracker
+//            .addComponent(new CombatStatsComponent(2, 0))
+//            .addComponent(new PlayerStatsDisplay());
+////    .getEvents().addListener("engineerKilled" , this::decrementCounter);
+//    endGameTracker.create();
+//  }
+//
+//  private void decrementCounter() {
+//    this.endStateCounter -= 1;
+//    logger.info("Engineer killed");
+//    if (endStateCounter <= 0) {
+//      // we've reached the end, game over
+//      this.dispose();
+//    }
+//  }
 }

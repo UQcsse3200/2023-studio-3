@@ -133,7 +133,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           } else {
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
             newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            newProjectile.setScale(-1f, 0.5f);
+//            newProjectile.setScale(-1f, 0.5f);
             ServiceLocator.getEntityService().register(newProjectile);
 
 //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
