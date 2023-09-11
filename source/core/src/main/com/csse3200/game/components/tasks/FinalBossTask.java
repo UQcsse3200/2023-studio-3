@@ -19,8 +19,8 @@ import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
  * Wander around by moving a random position within a range of the starting position. Wait a little
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
-public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(FinalBossMovementTask.class);
+public class FinalBossTask extends DefaultTask implements PriorityTask {
+    private static final Logger logger = LoggerFactory.getLogger(FinalBossTask.class);
 
     private final float waitTime;
     private int currLane;
@@ -36,7 +36,7 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
     /**
      * @param waitTime    How long in seconds to wait between moving.
      */
-    public FinalBossMovementTask(float waitTime, int numLane) {
+    public FinalBossTask(float waitTime, int numLane) {
         this.waitTime = waitTime;
         this.currLane = numLane;
 

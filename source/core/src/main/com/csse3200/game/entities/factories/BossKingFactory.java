@@ -1,12 +1,11 @@
 package com.csse3200.game.entities.factories;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.npc.BossAnimationController;
-import com.csse3200.game.components.tasks.FinalBossMovementTask;
+import com.csse3200.game.components.tasks.FinalBossTask;
 import com.csse3200.game.components.tasks.RangeBossTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.BossKingConfigs;
@@ -16,7 +15,6 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.*;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 public class BossKingFactory {
@@ -30,7 +28,7 @@ public class BossKingFactory {
         BossKingConfigs config = configs.BossKing;
         Entity bossKing1 = createBaseBoss(target);
 
-        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new FinalBossMovementTask(1f, numLane));
+        AITaskComponent aiTaskComponent1 = new AITaskComponent().addTask(new FinalBossTask(1f, numLane));
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
