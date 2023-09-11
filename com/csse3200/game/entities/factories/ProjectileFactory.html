@@ -123,19 +123,31 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a fireball Entity.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobBall</a><wbr>(short&nbsp;targetLayer,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireworks(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireworks</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a projectile specifically for mobs to shoot</div>
+<div class="block">Creates new animation and fireballs for SplitFireworkComponent.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobKingBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobKingBall</a><wbr>(short&nbsp;targetLayer,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobBall</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a projectile specifically for mobs to shoot</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobKingBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobKingBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Creates a projectile to be used by the MobKing</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceBallAnim(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceBallAnim</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceFireBall</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
@@ -246,6 +258,31 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>Returns a new fireball projectile entity.</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createFireworks(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createFireworks</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createFireworks</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
+<div class="block">Creates new animation and fireballs for SplitFireworkComponent.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>targetLayer</code> - The enemy layer that the projectile collides with.</dd>
+<dd><code>destination</code> - The destination the projectile heads towards.</dd>
+<dd><code>speed</code> - The speed of the projectile.</dd>
+<dt>Returns:</dt>
+<dd>Returns a new fireball projectile entity.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createPierceBallAnim(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createPierceBallAnim</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createPierceBallAnim</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
 </section>
 </li>
 <li>

@@ -140,6 +140,16 @@ implements <a href="TaskRunner.html" title="interface in com.csse3200.game.ai.ta
 <div class="block">Called when the component is disposed.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disposeAll()" class="member-name-link">disposeAll</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Empties the priorityTasks List.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#restore()" class="member-name-link">restore</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Restores the priorityTasks List.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">On update, run the current highest priority task.</div>
@@ -217,6 +227,21 @@ implements <a href="TaskRunner.html" title="interface in com.csse3200.game.ai.ta
 <dt>Overrides:</dt>
 <dd><code><a href="../../components/Component.html#dispose()">dispose</a></code>&nbsp;in class&nbsp;<code><a href="../../components/Component.html" title="class in com.csse3200.game.components">Component</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="disposeAll()">
+<h3>disposeAll</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">disposeAll</span>()</div>
+<div class="block">Empties the priorityTasks List. Disposes all of the entity's tasks.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="restore()">
+<h3>restore</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">restore</span>()</div>
+<div class="block">Restores the priorityTasks List. Adds all of the entity's disposed tasks 
+ back into priorityTasks.</div>
 </section>
 </li>
 <li>
