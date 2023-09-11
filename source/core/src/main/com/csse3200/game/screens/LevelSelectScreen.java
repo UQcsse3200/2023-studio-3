@@ -94,7 +94,7 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
-            if (planetRect.contains(mousePos.x, Gdx.graphics.getHeight() - mousePos.y)) {
+            if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
                 // If a planet is clicked it will load the level based on the planet
                 if (Gdx.input.justTouched()) {
                     dispose();
@@ -102,7 +102,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                     game.setScreen(new MainGameScreen(game));
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
+                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
                 }
             }
         }
