@@ -107,9 +107,19 @@ public class TerrainFactory {
 
   private TiledMap createForestDemoTiles(GridPoint2 tileSize, TextureRegion grass) {
     TiledMap tiledMap = new TiledMap();
+    /**
+     * Creates a background layer for a tiled map with the specified dimensions and tile size.
+     *
+     * @param width The width of the layer in tiles.
+     * @param height The height of the layer in tiles.
+     * @param tileWidth The width of each individual tile in pixels.
+     * @param tileHeight The height of each individual tile in pixels.
+     */
 
-    // Create a background layer
     TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
+    /**
+     * Define a TextureRegion to be used as the background texture.
+     */
     TextureRegion backgroundTextureRegion ;
 
     switch (selectedLevel) {
@@ -128,14 +138,30 @@ public class TerrainFactory {
         break;
     }
 
-    // Create a single cell for the entire background image
+    /**
+     * Creates a single cell with the specified background texture region and adds it to the background layer
+     * of a tiled map. The background layer represents the entire background image of the map.
+     *
+     * @param backgroundTextureRegion The TextureRegion to use as the background texture.
+     * @param tileSizeX The width of each individual tile in pixels.
+     * @param tileSizeY The height of each individual tile in pixels.
+     * @param tiledMap The TiledMap to which the background layer should be added.
+     */
     Cell cell = new Cell();
     cell.setTile(new StaticTiledMapTile(backgroundTextureRegion));
     backgroundLayer.setCell(0, 0, cell);
 
     tiledMap.getLayers().add(backgroundLayer);
 
-    // Create a grass layer
+    /**
+     * Creates a grass layer for the tiled map with the specified dimensions and tile size, filling it with
+     * grass tiles using the provided grass terrain tile.
+     *
+     * @param tileSizeX The width of each individual tile in pixels.
+     * @param tileSizeY The height of each individual tile in pixels.
+     * @param grassTile The TerrainTile representing the grass tile to be used for the layer.
+     * @param tiledMap The TiledMap to which the grass layer should be added.
+     */
     TerrainTile grassTile = new TerrainTile(grass);
     TiledMapTileLayer grassLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
     fillTiles(grassLayer, new GridPoint2(20, 8), grassTile);
