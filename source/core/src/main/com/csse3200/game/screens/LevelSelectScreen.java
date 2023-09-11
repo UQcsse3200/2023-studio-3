@@ -60,9 +60,9 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Spawn desert planet
         spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
         // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
         // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1);
 
         spawnPlanetBorders();
     }
