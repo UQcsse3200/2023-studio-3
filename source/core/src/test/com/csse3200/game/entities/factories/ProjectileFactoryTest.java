@@ -286,14 +286,14 @@ class ProjectileFactoryTest {
         Entity fireworkProjectile = ProjectileFactory.createFireworks(
                 PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireworkProjectile.getComponent(AnimationRenderComponent.class),
-                "Slow Projectile does not have AnimationRenderComponent");
+                "Fire Projectile does not have AnimationRenderComponent");
     }
     @Test
     public void testFireworkProjectileAnimationController() {
         Entity fireworkProjectile = ProjectileFactory.createFireworks(
                 PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireworkProjectile.getComponent(FireworkAnimationController.class),
-                "Slow Projectile does not have Animation Controller");
+                "Fire Projectile does not have Animation Controller");
     }
 }
 
