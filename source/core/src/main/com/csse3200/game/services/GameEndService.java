@@ -15,6 +15,14 @@ public class GameEndService {
         this.display = new EngineerCountDisplay();
     }
 
+    /**
+     * Set the engineer limit. During instantiation, limit defaults to 5.
+     * @param newLimit as an integer representing the maximum number of engineer deaths
+     */
+    public void setEngineerCount(int newLimit) {
+        engineerCount = newLimit;
+    }
+
     public int getEngineerCount() {
         return engineerCount;
     }
@@ -24,7 +32,6 @@ public class GameEndService {
         display.updateCount();
 
         if (engineerCount == 0) {
-            // loss screen
             gameOver = true;
         }
     }
