@@ -77,9 +77,9 @@ public class TurretSelectionScreen extends ScreenAdapter {
             }
         });
 
-        table.add(message).row();
-        table.add(turretsPicked).row();
-
+        // Centered the message and turrets label
+        table.add(message).center().colspan(4).row();
+        table.add(turretsPicked).center().colspan(4).row();
         int towersPerRow = 4; // Set the number of towers to display per row
         int numRows = (int) Math.ceil((double)turretList.size() / towersPerRow); // Calculate the number of rows
 
@@ -133,7 +133,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
             table.row(); // Start a new row
         }
 
-        table.add(confirmButton).padBottom(20).row();
+        // Centered the "continue" button
+        table.add(confirmButton).center().colspan(4).padBottom(20).row();
 
         // Center the table within the stage
         table.center();
