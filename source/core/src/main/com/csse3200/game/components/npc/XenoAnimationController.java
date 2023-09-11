@@ -1,13 +1,18 @@
 package com.csse3200.game.components.npc;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
  * of the events is triggered.
  */
 public class XenoAnimationController extends Component {
+    private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
+    Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
+            COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
 
     @Override

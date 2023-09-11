@@ -103,7 +103,7 @@ public class HumanAnimationController extends Component {
      */
     void animateSingleFiring() {
         animator.startAnimation(FIRE_SINGLE_ANIM);
-        fireSingleSound.play();
+//        fireSingleSound.play();
     }
 
     /**
@@ -112,7 +112,7 @@ public class HumanAnimationController extends Component {
      */
     void animateFiring() {
         animator.startAnimation(FIRE_AUTO_ANIM);
-        fireAutoSound.play();
+//        fireAutoSound.play();
     }
 
     /**
