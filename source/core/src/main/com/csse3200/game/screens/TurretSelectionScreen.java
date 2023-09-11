@@ -58,11 +58,11 @@ public class TurretSelectionScreen extends ScreenAdapter {
         introSprite = new Sprite(backgroundImage);
         introSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-
+        // Add all turrets to turret list
         turretList = new ArrayList<>();
         // Add turrets to the list
         turretList.addAll(Arrays.asList(TowerType.values()));
-        // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1
+        // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
 
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
@@ -111,7 +111,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                         // Turret is not selected, select it
                         selectedTurrets.add(turret);
                         turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
-                        logger.info(selectedTurrets.toString());
+                        //logger.info(selectedTurrets.toString());
 
                         // You can change the button appearance to indicate selection
                     }
