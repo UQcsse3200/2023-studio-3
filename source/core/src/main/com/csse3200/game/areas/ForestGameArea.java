@@ -255,7 +255,7 @@ public class ForestGameArea extends GameArea {
 //    spawnDroidTower();
 //    spawnGapScanners();
 //    bossKing1 = spawnBossKing1();
-//    bossKing2 = spawnBossKing2();
+    bossKing2 = spawnBossKing2();
   }
 
   private void displayUI() {
