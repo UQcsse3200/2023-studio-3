@@ -2,12 +2,15 @@ package com.csse3200.game.physics;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
+import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.raycast.AllHitCallback;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.physics.raycast.SingleHitCallback;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.entities.destructors.ProjectileDestructors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +18,8 @@ import org.slf4j.LoggerFactory;
  * Process game physics using the Box2D library. See the Box2D documentation for examples or use
  * cases.
  */
-public class PhysicsEngine implements Disposable {
+public class
+PhysicsEngine implements Disposable {
   private static final Logger logger = LoggerFactory.getLogger(PhysicsEngine.class);
   private static final float MAX_UPDATE_TIME = 0.25f;
   private static final float PHYSICS_TIMESTEP = 0.016f;
@@ -40,11 +44,14 @@ public class PhysicsEngine implements Disposable {
   }
 
   public void update() {
+    // Check for deleted bodies and joints
+    checkAndDeleteBodies();
+
     // Updating physics isn't as easy as triggering an update every frame. Each frame could take a
     // different amount of time to run, but physics simulations are only stable if computed at a
     // consistent frame rate! See: https://gafferongames.com/post/fix_your_timestep/
     float deltaTime = timeSource.getDeltaTime();
-    float maxTime = Math.min(deltaTime, MAX_UPDATE_TIME);
+    float maxTime = Math.min(deltaTime,MAX_UPDATE_TIME);
     accumulator += maxTime;
 
     // Depending on how much time has passed, we may compute 0 or more physics steps in one go. If
@@ -73,6 +80,29 @@ public class PhysicsEngine implements Disposable {
   public void destroyJoint(Joint joint) {
     logger.debug("Destroying physics joint {}", joint);
     world.destroyJoint(joint);
+  }
+
+  // This is needed since it's not possible to destroy bodies or joints while
+  // the world is stepping/simulating.
+  // FIXME : THIS
+  public void checkAndDeleteBodies() {
+    Array<Body> bodies = new Array<Body>();
+
+    world.getBodies(bodies);
+
+    // ! CANNOT USE ITERATOR HERE
+    // ! If you do: "ERROR: #ITERATOR CAN'T BE NESTED"
+    for(int i = 0; i < bodies.size; i++) {
+      if(bodies.get(i) != null 
+          && bodies.get(i).getUserData() != null 
+          && (BodyUserData) bodies.get(i).getUserData() != null) {
+            Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;
+
+            if(entity.getFlagForDelete()) {
+              entity.dispose();
+            }
+      }
+    }
   }
 
   public World getWorld() {
@@ -109,6 +139,24 @@ public class PhysicsEngine implements Disposable {
     singleHitCallback.hit = hit;
     world.rayCast(singleHitCallback, from, to);
     return singleHitCallback.didHit;
+  }
+
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for a collision
+   * against colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param layerMask The physics layer mask which specifies layers that can be hit. Other layers
+   *                  will be ignored.
+   * @return The fixture of the closest collider hit by the ray, or null if no collider was hit.
+   * */
+  public Fixture raycastGetHit(Vector2 from, Vector2 to, short layerMask) {
+    singleHitCallback.didHit = false;
+    singleHitCallback.layerMask = layerMask;
+    world.rayCast(singleHitCallback, from, to);
+    return singleHitCallback.hit.fixture;
   }
 
   /**

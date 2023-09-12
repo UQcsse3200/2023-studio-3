@@ -1,5 +1,5 @@
 package com.csse3200.game.screens;
-import com.badlogic.gdx.graphics.Pixmap;
+import  com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,16 +13,19 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.maingame.MainGameActions;
+import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
 import com.csse3200.game.input.InputDecorator;
 import com.csse3200.game.input.InputService;
@@ -30,9 +33,8 @@ import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
-import com.csse3200.game.services.GameTime;
-import com.csse3200.game.services.ResourceService;
-import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.services.*;
+import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
@@ -48,7 +50,7 @@ import org.slf4j.LoggerFactory;
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
   private static final String[] mainGameTextures = {"images/heart.png"};
-  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 7.5f);
+  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
   private final Renderer renderer;
@@ -58,41 +60,29 @@ public class MainGameScreen extends ScreenAdapter {
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
 
+  private Entity ui;
+
+
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
-  public static final int NUM_LANES = 8;
-  public static final float LANE_HEIGHT = viewportHeight / NUM_LANES;
+
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
-  private Texture whiteTexture;
+
+  private Texture backgroundTexture;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
-    batch = new SpriteBatch();
-    Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-    pixmap.setColor(1, 1, 1, 1);
-    pixmap.fill();
-    whiteTexture = new Texture(pixmap);
-    pixmap.dispose();
-
     camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
     camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+
+    batch = new SpriteBatch();
+
     Viewport viewport = new ScreenViewport(camera);
     stage = new Stage(viewport, new SpriteBatch());
 
-
-    BitmapFont font = new BitmapFont();
-    TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
-    textButtonStyle.font = font;
-    textButtonStyle.fontColor = Color.WHITE;
-    for (int y = 0; y < 8; y++) {
-      for (int x = 0; x < 20; x++) {
-          TextButton button = new TextButton("" + x + y * 20, textButtonStyle);
-        stage.addActor(button);
-      }
-    }
 
 
     logger.debug("Initialising main game screen services");
@@ -105,12 +95,19 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.registerInputService(new InputService());
     ServiceLocator.registerResourceService(new ResourceService());
 
+    ServiceLocator.registerCurrencyService(new CurrencyService());
+
     ServiceLocator.registerEntityService(new EntityService());
     ServiceLocator.registerRenderService(new RenderService());
+    ServiceLocator.registerGameEndService(new GameEndService());
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
+    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(inputHandler);
+
+    ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
     createUI();
@@ -120,17 +117,19 @@ public class MainGameScreen extends ScreenAdapter {
     ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
     forestGameArea.create();
   }
-
   @Override
   public void render(float delta) {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
 
+    // Check if the game has ended
+    if (ServiceLocator.getGameEndService().hasGameEnded()) {
+      ui.getEvents().trigger("lose");
+    }
+
+    batch.setProjectionMatrix(camera.combined);
     batch.begin();
-    for (int i = 0; i < NUM_LANES; i++) {
-    float yPosition = i * LANE_HEIGHT;
-    batch.draw(whiteTexture, 0, yPosition, viewportWidth, 2);
-  }
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
     batch.end();
 
     renderer.render();
@@ -167,7 +166,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getEntityService().dispose();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getResourceService().dispose();
-    whiteTexture.dispose();
+
     ServiceLocator.clear();
   }
 
@@ -175,6 +174,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
+    backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
   }
 
@@ -194,12 +194,12 @@ public class MainGameScreen extends ScreenAdapter {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForTerminal();
 
-
-     Entity ui = new Entity();
+    ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
         .addComponent(new PerformanceDisplay())
         .addComponent(new MainGameActions(this.game))
         .addComponent(new MainGameExitDisplay())
+            .addComponent(new MainGameLoseDisplay())
         .addComponent(new Terminal())
         .addComponent(inputComponent)
         .addComponent(new TerminalDisplay());

@@ -23,7 +23,8 @@ public abstract class RenderComponent extends Component implements Renderable, D
   }
 
   @Override
-  public void render(SpriteBatch batch) {draw(batch);
+  public void render(SpriteBatch batch) {
+    draw(batch);
   }
 
   @Override

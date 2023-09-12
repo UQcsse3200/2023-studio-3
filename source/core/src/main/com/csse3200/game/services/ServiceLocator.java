@@ -17,13 +17,18 @@ import org.slf4j.LoggerFactory;
  */
 public class ServiceLocator {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
+  private static CurrencyService currencyService;
   private static EntityService entityService;
   private static RenderService renderService;
   private static PhysicsService physicsService;
   private static GameTime timeSource;
   private static InputService inputService;
   private static ResourceService resourceService;
+  private static GameEndService gameEndService;
 
+  public static CurrencyService getCurrencyService() {
+      return currencyService;
+  }
 
   public static EntityService getEntityService() {
     return entityService;
@@ -47,6 +52,15 @@ public class ServiceLocator {
 
   public static ResourceService getResourceService() {
     return resourceService;
+  }
+
+  public static GameEndService getGameEndService() {
+    return gameEndService;
+  }
+
+  public static void registerCurrencyService(CurrencyService service) {
+    logger.debug("Registering currency service {}", service);
+    currencyService = service;
   }
 
   public static void registerEntityService(EntityService service) {
@@ -79,6 +93,11 @@ public class ServiceLocator {
     resourceService = source;
   }
 
+  public static void registerGameEndService(GameEndService source) {
+    logger.debug("Registering game end service service {}", source);
+    gameEndService = source;
+  }
+
   public static void clear() {
     entityService = null;
     renderService = null;
@@ -86,6 +105,7 @@ public class ServiceLocator {
     timeSource = null;
     inputService = null;
     resourceService = null;
+    gameEndService = null;
   }
 
   private ServiceLocator() {

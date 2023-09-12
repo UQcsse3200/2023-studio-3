@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -11,6 +12,7 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 
 /**
  * When this entity touches a valid enemy's hitbox, deal damage to them and apply a knockback.
+ * Has an optional disposeOnHit property that disposes projectile upon collision.
  *
  * <p>Requires CombatStatsComponent, HitboxComponent on this entity.
  *
@@ -20,6 +22,8 @@ import com.csse3200.game.physics.components.PhysicsComponent;
 public class TouchAttackComponent extends Component {
   private short targetLayer;
   private float knockbackForce = 0f;
+  private boolean disposeOnHit = false;
+  private int aoeSize = 0;
   private CombatStatsComponent combatStats;
   private HitboxComponent hitboxComponent;
 
@@ -41,14 +45,27 @@ public class TouchAttackComponent extends Component {
     this.knockbackForce = knockback;
   }
 
+  /**
+   * Create a component which attacks entities on collision, with knockback and self-dispose.
+   * @param targetLayer The physics layer of the target's collider.
+   * @param knockback The magnitude of the knockback applied to the entity.
+   * @param disposeOnHit Whether this entity should be disposed on hit.
+   */
+  public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit) {
+    this.targetLayer = targetLayer;
+    this.knockbackForce = knockback;
+    this.disposeOnHit = disposeOnHit;
+  }
+
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::onCollisionStart);
+    entity.getEvents().addListener("collisionEnd", this::onCollisionEnd);
     combatStats = entity.getComponent(CombatStatsComponent.class);
     hitboxComponent = entity.getComponent(HitboxComponent.class);
   }
 
-  private void onCollisionStart(Fixture me, Fixture other) {
+  public void onCollisionStart(Fixture me, Fixture other) {
     if (hitboxComponent.getFixture() != me) {
       // Not triggered by hitbox, ignore
       return;
@@ -63,9 +80,13 @@ public class TouchAttackComponent extends Component {
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
-      targetStats.hit(combatStats);
+        // If entity has abilities, pick one at random and apply it else use baseAttack damage
+        if (combatStats.getWeapon(target) != null) {
+            targetStats.hit(combatStats.getWeapon(target).getDamage());
+        } else {
+            targetStats.hit(combatStats.getBaseAttack());
+        }
     }
-
     // Apply knockback
     PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);
     if (physicsComponent != null && knockbackForce > 0f) {
@@ -74,5 +95,48 @@ public class TouchAttackComponent extends Component {
       Vector2 impulse = direction.setLength(knockbackForce);
       targetBody.applyLinearImpulse(impulse, targetBody.getWorldCenter(), true);
     }
+
+    if (disposeOnHit) {
+      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+      projectile.setFlagForDelete(true);
+    }
   }
+
+  public void setDisposeOnHit(boolean disposeOnHit) {
+    this.disposeOnHit = disposeOnHit;
+  }
+
+
+  public void setKnockBack(float knockback) {
+    this.knockbackForce = knockback;
+  }
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
+    if (hitboxComponent.getFixture() != me) {
+      // Not triggered by hitbox, ignore
+      return;
+    }
+
+    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+      // Doesn't match our target layer, ignore
+      return;
+    }
+
+    if (disposeOnHit) {
+      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+      projectile.setFlagForDelete(true);
+    }
+  }
+
+  public Weapon chooseWeapon(Fixture other) {
+    Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
+    Weapon weapon = null;
+    if (target.getComponent(CombatStatsComponent.class) != null) {
+      weapon = combatStats.getWeapon(target);
+    }
+    return weapon;
+  }
+
 }
+

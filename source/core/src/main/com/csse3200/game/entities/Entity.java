@@ -38,6 +38,11 @@ public class Entity {
   private Vector2 scale = new Vector2(1, 1);
   private Array<Component> createdComponents;
 
+  private int layer = 2;
+
+  // Check if the entity is flagged for deletion
+  private boolean isFlaggedForDelete = false;
+
   public Entity() {
     id = nextId;
     nextId++;
@@ -246,9 +251,20 @@ public class Entity {
     if (!enabled) {
       return;
     }
-    for (Component component : createdComponents) {
-      component.triggerUpdate();
-    }
+
+    // ! ITERATOR CAUSES PROBLEMS
+    // for (Component component : createdComponents) {
+    //   component.triggerUpdate();
+    // }
+    
+    for (int i = 0; i < createdComponents.size; i++) {
+      createdComponents.get(i).triggerUpdate();
+    } 
+
+    // if (isFlaggedForDelete) {
+    //   dispose();
+    //   return;
+    // }
   }
 
   /**
@@ -270,6 +286,17 @@ public class Entity {
     return eventHandler;
   }
 
+  public boolean getFlagForDelete() {
+    return isFlaggedForDelete;
+  }
+  /**
+   * Flag the entity for deletion. This will be deleted at the end of the frame.
+   * @param condition true to flag for deletion, false to unflag
+   */
+  public void setFlagForDelete(boolean condition) {
+    this.isFlaggedForDelete = condition;
+  }
+
   @Override
   public boolean equals(Object obj) {
     return (obj instanceof Entity && ((Entity) obj).getId() == this.getId());
@@ -284,4 +311,14 @@ public class Entity {
   public String toString() {
     return String.format("Entity{id=%d}", id);
   }
+
+  public int getLayer() {
+    return layer;
+  }
+
+  public int setLayer(int layer) {
+    this.layer = layer;
+    return layer;
+  }
+
 }
