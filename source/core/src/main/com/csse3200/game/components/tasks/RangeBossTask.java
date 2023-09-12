@@ -6,6 +6,11 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.physics.PhysicsLayer;
 import org.slf4j.Logger;
@@ -29,14 +34,17 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
     private enum STATE {
         START, FINAL
     }
+    private PhysicsEngine physics;
+    private static final short TARGET = PhysicsLayer.TOWER;
+    private final RaycastHit hit = new RaycastHit();
     private STATE bossBallState = STATE.START;
 
     /**
      * @param waitTime    How long in seconds to wait between wandering.
      */
     public RangeBossTask(float waitTime) {
-
         this.waitTime = waitTime;
+        physics = ServiceLocator.getPhysicsService().getPhysics();
     }
 
     @Override
@@ -73,14 +81,16 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
-                Entity newProjectile = ProjectileFactory.createBossBall(
-                        PhysicsLayer.HUMANS, new Vector2(0, currentPos.y), new Vector2(2f,2f));
+                if (towerAhead() || engineerAhead()) {
+                    owner.getEntity().getEvents().trigger("chargingStart");
+                    Entity newProjectile = ProjectileFactory.createBossBall(PhysicsLayer.HUMANS, new Vector2(0,currentPos.y), new Vector2(2f,2f));
+                    newProjectile.setScale(-1.3f, 0.82f);
+                    newProjectile.setPosition((currentPos.x), (currentPos.y));
+                    ServiceLocator.getEntityService().register(newProjectile);
+                    this.owner.getEntity().getEvents().trigger("attack1Start");
+                }
                 owner.getEntity().getEvents().trigger(START);
                 switchMobKingBallState();
-                // newProjectile.scaleHeight(-1f);
-                newProjectile.setScale(2f, 2f);
-                newProjectile.setPosition((currentPos.x), (currentPos.y));
-                ServiceLocator.getEntityService().register(newProjectile);
                 startWaiting();
             } else {
                 startMoving();
@@ -91,11 +101,14 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
 
     private void startWaiting() {
         logger.debug("Starting waiting");
+        owner.getEntity().getEvents().trigger("idleStart");
         swapTask(waitTask);
     }
 
     private void startMoving() {
         logger.debug("Starting moving");
+        owner.getEntity().getEvents().trigger("walkStart");
+        owner.getEntity().getEvents().trigger("attack1Start");
         movementTask.setTarget(currentPos.sub(2,0));
         swapTask(movementTask);
     }
@@ -108,4 +121,10 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
         currentTask.start();
     }
 
+    private boolean towerAhead() {
+        return physics.raycast(currentPos, new Vector2(0, currentPos.y), TARGET, hit);
+    }
+    private boolean engineerAhead() {
+        return physics.raycast(currentPos, new Vector2(0, currentPos.y), PhysicsLayer.ENGINEER, hit);
+    }
 }

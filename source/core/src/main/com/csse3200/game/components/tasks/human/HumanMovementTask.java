@@ -2,20 +2,15 @@ package com.csse3200.game.components.tasks.human;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
-import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * Move to a given position, finishing when you get close enough. Requires an entity with a
+ * Move a human entity to a given position, finishing when you get close enough. Requires an entity with a
  * PhysicsMovementComponent.
  */
 public class HumanMovementTask extends DefaultTask {
-  private static final Logger logger = LoggerFactory.getLogger(HumanMovementTask.class);
-
   private final GameTime gameTime;
   private Vector2 target;
   private float stopDistance = 0.01f;
@@ -47,7 +42,6 @@ public class HumanMovementTask extends DefaultTask {
       owner.getEntity().getEvents().trigger("walkRightStart");
     }
 
-    logger.debug("Starting movement towards {}", target);
     lastTimeMoved = gameTime.getTime();
     lastPos = owner.getEntity().getPosition();
   }
@@ -58,7 +52,6 @@ public class HumanMovementTask extends DefaultTask {
       movementComponent.setMoving(false);
       owner.getEntity().getEvents().trigger("idleStart");
       status = Status.FINISHED;
-      logger.debug("Finished moving to {}", target);
     } else {
       checkIfStuck();
     }
@@ -73,7 +66,6 @@ public class HumanMovementTask extends DefaultTask {
   public void stop() {
     super.stop();
     movementComponent.setMoving(false);
-    logger.debug("Stopping movement");
   }
 
   private boolean isAtTarget() {
@@ -87,7 +79,6 @@ public class HumanMovementTask extends DefaultTask {
     } else if (gameTime.getTimeSince(lastTimeMoved) > 500L) {
       movementComponent.setMoving(false);
       status = Status.FAILED;
-      logger.debug("Got stuck! Failing movement task");
     }
   }
 

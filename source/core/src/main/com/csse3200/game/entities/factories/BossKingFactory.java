@@ -56,8 +56,7 @@ public class BossKingFactory {
         Entity bossKing2 = createBaseBoss(target);
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
-                .addTask(new RangeBossTask(2f))
-        .addTask(new bossDeathTask(1));
+                .addTask(new RangeBossTask(2f));
 
         // Animation section
         AnimationRenderComponent animator2 = new AnimationRenderComponent(
@@ -73,7 +72,8 @@ public class BossKingFactory {
         bossKing2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator2)
                 .addComponent(aiTaskComponent2)
-                .addComponent(new Boss2AnimationController());
+                .addComponent(new Boss2AnimationController())
+                .addComponent(new PhysicsComponent());
 
         bossKing2.getComponent(AnimationRenderComponent.class).scaleEntity();
         bossKing2.scaleHeight(3f);
