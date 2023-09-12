@@ -86,6 +86,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Charge_1.png",
           "images/mobs/Charge_2.png",
           "images/mobs/Dead.png",
+          "images/mobs/boss2.png",
           "images/mobs/Enabling-5.png",
           "images/mobs/satyr.png",
           "images/mobs/Hurt.png",
@@ -113,6 +114,7 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.png",
           "images/projectiles/pierce_anim.png",
           "images/projectiles/snow_ball.png"
+
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -131,6 +133,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rangeBossRight.atlas",
           "images/towers/DroidTower.atlas",
           "images/mobs/robot.atlas",
+          "images/mobs/boss2.atlas",
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
