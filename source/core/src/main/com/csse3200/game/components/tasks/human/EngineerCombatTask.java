@@ -28,6 +28,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // Animation event names for the Engineer's state machine.
     private static final String FIRING = "firingSingleStart";
     private static final String IDLE_RIGHT = "idleRight";
+    private static final String ENGINEER_PROJECTILE_FIRED = "engineerProjectileFired";
     
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the Engineer's weapon.
@@ -108,6 +109,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                 } else {
                     if (shotsFired <= weaponCapacity) {
                         owner.getEntity().getEvents().trigger(FIRING);
+                        owner.getEntity().getEvents().trigger(ENGINEER_PROJECTILE_FIRED);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
                         Entity newProjectile = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y),
@@ -164,7 +166,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
         Vector2 position = owner.getEntity().getCenterPosition();
-
+        hits.clear();
         for (int i = 5; i > -5; i--) {
             if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {
                 hits.add(hit);

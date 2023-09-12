@@ -1,14 +1,15 @@
 package com.csse3200.game.components;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
-import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -29,6 +30,7 @@ public class EffectsComponent extends Component {
     private HitboxComponent hitboxComponent;
     private final short targetLayer;
     private Array<CombatStatsComponent> burnEntities = new Array<>();
+    private ArrayList<Entity> stunnedEntities = new ArrayList<>();
 
     /**
      * Constructor for the AoEComponent.
@@ -50,7 +52,7 @@ public class EffectsComponent extends Component {
     }
 
     private void onCollisionStart(Fixture me, Fixture other) {
-        // Nothing to do on collision start
+        // Nothing to do in collision start
     }
 
     private void onCollisionEnd(Fixture me, Fixture other) {
@@ -72,28 +74,19 @@ public class EffectsComponent extends Component {
             return;
         }
 
+        System.out.println("target layer: " + otherEntity.getLayer());
+
         // Apply effect
-        switch (effect) {
-            case FIREBALL -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.FIREBALL);
-                }
+        if (effect == ProjectileEffects.FIREBALL) {
+            if (aoe) {
+                applyAoeEffect(ProjectileEffects.FIREBALL);
             }
-            case BURN -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.BURN);
-                } else {
-                    applySingleEffect(ProjectileEffects.BURN, otherCombatStats, otherEntity);
-                }
+        } else {
+            if (aoe) {
+                applyAoeEffect(effect);
+            } else {
+                applySingleEffect(effect, otherCombatStats, otherEntity);
             }
-            case SLOW -> {
-                if (aoe) {
-                    applyAoeEffect(ProjectileEffects.SLOW);
-                } else {
-                    applySingleEffect(ProjectileEffects.SLOW, otherCombatStats, otherEntity);
-                }
-            }
-            case STUN -> {}
         }
     }
 
@@ -117,7 +110,7 @@ public class EffectsComponent extends Component {
                 burnEffect(targetCombatStats, hostCombatStats);
             }
             case SLOW -> {slowEffect(targetEntity);}
-            case STUN -> {}
+            case STUN -> {stunEffect(targetEntity);}
         }
     }
     /**
@@ -152,7 +145,9 @@ public class EffectsComponent extends Component {
                     case FIREBALL -> {fireballEffect(targetCombatStats, hostCombatStats);}
                     case BURN -> {burnEffect(targetCombatStats, hostCombatStats);}
                     case SLOW -> {slowEffect(targetEntity);}
-                    case STUN -> {}
+                    case STUN -> {
+                        stunEffect(targetEntity);
+                    }
                 }
             } else {
                 return;
@@ -180,7 +175,6 @@ public class EffectsComponent extends Component {
             return;
         }
         burnEntities.add(target);
-
         // Create a timer task to apply the effect repeatedly
         int numberOfTicks = 5;
         long delay = 1;
@@ -218,7 +212,7 @@ public class EffectsComponent extends Component {
         if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // towers
             towerFlag = true;
-            //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
+            targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
         } else if (PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
             // mobs
             mobFlag = true;
@@ -245,11 +239,47 @@ public class EffectsComponent extends Component {
             @Override
             public void run() {
                 if (finalTowerFlag) {
-                    //targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
+                    targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
                 } else if (finalMobFlag) {
                     finalTargetPhysics.setSpeed(new Vector2(finalXSpeed, finalYSpeed));
                 }
             }
         }, 5); // 5 seconds delay
+    }
+
+    /**
+     * Applies stun effect to a taget entity.
+     * @param targetEntity Entity for stun effect to be applied to.
+     */
+    private void stunEffect(Entity targetEntity) {
+        CombatStatsComponent hostCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
+        AITaskComponent taskComponent = targetEntity.getComponent(AITaskComponent.class);
+
+        if (hostCombatStats == null || taskComponent == null) {
+            return;
+        }
+
+        hostCombatStats.setBaseAttack(0);
+
+        if (stunnedEntities.contains(targetEntity)) {
+            return;
+        }
+        
+        taskComponent.disposeAll();
+        stunnedEntities.add(targetEntity);
+    
+        new java.util.Timer().schedule( 
+        new java.util.TimerTask() {
+            @Override
+            public void run() {
+                taskComponent.restore();
+                for (int i = 0; i < stunnedEntities.size(); i++) {
+                    if (stunnedEntities.get(i).equals(targetEntity)) {
+                        stunnedEntities.remove(stunnedEntities.get(i));
+                    }
+                }
+                this.cancel();
+            }
+        }, 5000);
     }
 }

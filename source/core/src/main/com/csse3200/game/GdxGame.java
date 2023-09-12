@@ -3,6 +3,7 @@ package com.csse3200.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.files.UserSettings;
 import com.csse3200.game.screens.*;
 import org.slf4j.Logger;
@@ -74,13 +75,15 @@ public class GdxGame extends Game {
         return new StoryScreen(this);
       case LEVEL_SELECT:
         return new LevelSelectScreen(this);
+      case LOSING_SCREEN:
+        return new LosingScreen(this);
       default:
         return null;
     }
   }
 
   public enum ScreenType {
-    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT
+    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, LOSING_SCREEN
   }
 
   /**
