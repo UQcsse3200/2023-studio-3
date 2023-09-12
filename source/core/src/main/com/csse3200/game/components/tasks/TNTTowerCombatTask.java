@@ -4,8 +4,6 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -22,10 +20,10 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1;  // time interval to scan for enemies in seconds
     private static final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
     // the following four constants are the event names that will be triggered in the state machine
-    private static final String DIG = "digStart";
-    private static final String EXPLOSION = "explodeStart";
-    private static final String DEFAULT = "defaultStart";
-    private static final String DAMAGE = "TNTDamageStart";
+    public static final String DIG = "digStart";
+    public static final String EXPLOSION = "explodeStart";
+    public static final String DEFAULT = "defaultStart";
+    public static final String DAMAGE = "TNTDamageStart";
 
 
     // class attributes
@@ -37,9 +35,9 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     private final GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-    private boolean readToDelete = false;
+    public boolean readToDelete = false;
 
-    private enum STATE {
+    public enum STATE {
         IDLE, EXPLODE, REMOVE
     }
     private STATE towerState = STATE.IDLE;
@@ -136,36 +134,29 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Fetches the active priority of the Task if a target is visible.
-     * @return (int) active priority if a target is visible, -1 otherwise
+     * Returns the current state of the tower.
+     *
+     * @return the current state of the tower.
      */
-    private int getActivePriority() {
-
-        return !isTargetVisible() ? 0 : priority;
-    }
-
-    /**
-     * Fetches the inactive priority of the Task if a target is not visible.
-     * @return (int) -1 if a target is not visible, active priority otherwise
-     */
-    private int getInactivePriority() {
-
-        return isTargetVisible() ? priority : 0;
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**
      * Uses a raycast to determine whether there are any targets in detection range
      * @return true if a target is visible, false otherwise
      */
-    private boolean isTargetVisible() {
+    public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
 
-    private boolean isReadyToDelete() {
+    public boolean isReadyToDelete() {
 
         return readToDelete;
     }
+
+
 }
 
 

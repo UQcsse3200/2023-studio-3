@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
 class WaitTaskTest {
-  @Disabled("Testing without use of WaitTask")
   @Test
   void shouldWaitUntilTime() {
     GameTime time = mock(GameTime.class);

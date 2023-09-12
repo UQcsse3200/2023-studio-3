@@ -152,6 +152,111 @@ public class TerrainFactory {
     }
   }
 
+//tile class
+  public static class Tile {
+    private int row;
+    private int col;
+    private Object object;
+
+    public Tile(int row, int col) {
+      this.row = row;
+      this.col = col;
+      this.object = null; // Initially, no object is placed on the tile
+    }
+
+    public void setObject(Object object) {
+      this.object = object;
+    }
+
+    public Object getObject() {
+      return object;
+    }
+
+    public String getLogCoordinates() {
+      return "(" + row + ", " + col + ")";
+    }
+  }
+
+// grid class
+public static class Grid {
+  private Tile[][] tiles;
+
+  public Grid(int numRows, int numCols) {
+    tiles = new Tile[numRows][numCols];
+
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        tiles[row][col] = new Tile(row,col);
+      }
+    }
+  }
+
+  public void placeObject(int row, int col, Object object) {
+    if (isValidCoordinate(row, col)) {
+      tiles[row][col].setObject(object);
+    } else {
+      System.out.println("Invalid coordinates.");
+    }
+  }
+
+  public Object getObject(int row, int col) {
+    if (isValidCoordinate(row, col)) {
+      return tiles[row][col].getObject();
+    } else {
+      System.out.println("Invalid coordinates.");
+      return null;
+    }
+  }
+
+  public String getLogCoordinates(int row, int col) {
+    if (isValidCoordinate(row, col)) {
+      return tiles[row][col].getLogCoordinates();
+    } else {
+      return "Invalid coordinates.";
+    }
+  }
+
+  private boolean isValidCoordinate(int row, int col) {
+    return row >= 0 && row < tiles.length && col >= 0 && col < tiles[0].length;
+  }
+
+  public void placeEntity(int row, int col, Object existingEntity) {
+  }
+
+  public Object getEntity(int row, int col) {
+      return null;
+  }
+}
+
+// Array class 1+2
+public class Array {
+  public static void main(String[] args) {
+    int numRows = 8;
+    int numCols = 20;
+
+    Grid grid = new Grid(numRows, numCols);
+
+    // Place an existing entity in a specific tile
+    int row = 3;
+    int col = 5;
+    // Replace 'Object' with the type of existing entity you want to place
+    Object existingEntity = new YourExistingEntity();
+
+    grid.placeEntity(row, col, existingEntity);
+
+    // Get the entity from a tile
+    Object entity = grid.getEntity(row, col);
+    System.out.println("Entity at " + grid.getLogCoordinates(row, col) + ": " + entity);
+  }
+
+  private static class YourExistingEntity {
+  }
+}
+
+
+
+
+
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
     BitmapFont font = new BitmapFont();
     TextButton.TextButtonStyle textButtonStyle = new TextButton.TextButtonStyle();
