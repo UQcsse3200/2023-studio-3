@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="studio.list.LinkedListTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-09-11T22:40:34" hostname="VISHAL-JODD" time="0.019">
+  <properties/>
+  <testcase name="testAdd()" classname="studio.list.LinkedListTest" time="0.014"/>
+  <testcase name="testRemoveMissing()" classname="studio.list.LinkedListTest" time="0.001"/>
+  <testcase name="testRemove()" classname="studio.list.LinkedListTest" time="0.001"/>
+  <testcase name="testConstructor()" classname="studio.list.LinkedListTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
