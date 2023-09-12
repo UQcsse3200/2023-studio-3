@@ -41,11 +41,11 @@ public class MainGameExitDisplay extends UIComponent {
 
     Image sourceImage = new Image(skin, "badlogic");
     sourceImage.setBounds(600, 900, 100, 100);
-    stage.addActor(sourceImage);
+//    stage.addActor(sourceImage);
 
-    Label dragTowerLabel = new Label("Drag Tower", skin); // The text you want to display
-    dragTowerLabel.setPosition(610, 890); // Adjust the position as needed
-    stage.addActor(dragTowerLabel);
+//    Label dragTowerLabel = new Label("Drag Tower", skin); // The text you want to display
+//    dragTowerLabel.setPosition(610, 890); // Adjust the position as needed
+//    stage.addActor(dragTowerLabel);
 
 
     DragAndDrop dragAndDrop = new DragAndDrop();

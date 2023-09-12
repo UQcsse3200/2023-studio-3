@@ -37,7 +37,9 @@ public class GameAreaDisplay extends UIComponent {
   private Vector2[] towerPositions2; // Store the positions of the towers
   private Vector2[] towerPositions3; // Store the positions of the towers
 
-
+  private Dialog towerDetailsDialog1;
+  private Dialog towerDetailsDialog2;
+  private Dialog towerDetailsDialog3;// Dialog for displaying tower details
   private String gameAreaName = "";
   private Label title;
   private int numTowers1 = 2; // Total number of towers
@@ -62,6 +64,10 @@ public class GameAreaDisplay extends UIComponent {
 
     towerPositions3 = new Vector2[2]; // Initialize for two towers
     towerMoved3 = new boolean[2]; // Initialize for two towers
+
+    towerDetailsDialog1 = createTowerDetailsDialog(); // Create the tower details dialog
+    towerDetailsDialog2 = createTowerDetailsDialog(); // Create the tower details dialog
+    towerDetailsDialog3 = createTowerDetailsDialog(); // Create the tower details dialog
   }
 
   @Override
@@ -84,7 +90,7 @@ public class GameAreaDisplay extends UIComponent {
       skin.add("building1", new Texture("images/towers/WallTower.png"));
       // Load textures for building1 and building2
       towers1[i] = new Image(skin, "building1");
-      towers1[i].setBounds(700 , 700, 100, 100); // Adjust the X position as needed
+      towers1[i].setBounds(Gdx.graphics.getWidth() * 40f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
       stage.addActor(towers1[i]);
 
       final int towerIndex1 = i; // Capture the index in a final variable for the listener
@@ -97,6 +103,8 @@ public class GameAreaDisplay extends UIComponent {
           startX = towers1[towerIndex1].getX();
           startY = towers1[towerIndex1].getY();
           Gdx.app.log("GameAreaDisplay", "Touch Down on Tower " + towerIndex1);
+          towerDetailsDialog1.setVisible(true);
+          towerDetailsDialog1.show(stage);
 
           return true; // Return true to indicate that the event was handled
         }
@@ -112,7 +120,7 @@ public class GameAreaDisplay extends UIComponent {
           if (!towerMoved1[towerIndex1] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
             numTowers1--;
-            numTowersLabel1.setText("Towers: " + numTowers1);
+
             towerMoved1[towerIndex1] = true; // Set the flag to indicate tower movement
           }
 
@@ -121,12 +129,14 @@ public class GameAreaDisplay extends UIComponent {
                   y - towers1[towerIndex1].getHeight() / 2);
 
           towerPositions1[towerIndex1] = new Vector2(towers1[towerIndex1].getX(), towers1[towerIndex1].getY());
-
+          towerDetailsDialog1.setPosition(
+                  towerPositions1[towerIndex1].x + towers1[towerIndex1].getWidth(),
+                  towerPositions1[towerIndex1].y);
 
         }
 
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
+          towerDetailsDialog1.hide();
         }
       });
     }
@@ -135,7 +145,7 @@ public class GameAreaDisplay extends UIComponent {
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
       skin.add("building2", new Texture("images/towers/turret_deployed.png"));
       towers2[i] = new Image(skin, "building2");
-      towers2[i].setBounds(800 , 700, 100, 100); // Adjust the X position as needed
+      towers2[i].setBounds(Gdx.graphics.getWidth() * 50f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
       stage.addActor(towers2[i]);
 
       final int towerIndex2 = i; // Capture the index in a final variable for the listener
@@ -148,7 +158,8 @@ public class GameAreaDisplay extends UIComponent {
           startX = towers2[towerIndex2].getX();
           startY = towers2[towerIndex2].getY();
           Gdx.app.log("GameAreaDisplay", "Touch Down on Tower " + towerIndex2);
-
+          towerDetailsDialog2.setVisible(true);
+          towerDetailsDialog2.show(stage);
           return true; // Return true to indicate that the event was handled
         }
 
@@ -172,11 +183,14 @@ public class GameAreaDisplay extends UIComponent {
                   y - towers2[towerIndex2].getHeight() / 2);
 
           towerPositions2[towerIndex2] = new Vector2(towers2[towerIndex2].getX(), towers2[towerIndex2].getY());
-
+          towerDetailsDialog2.setPosition(
+                  towerPositions2[towerIndex2].x + towers2[towerIndex2].getWidth(),
+                  towerPositions2[towerIndex2].y
+          );
         }
 
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
+          towerDetailsDialog2.hide();
         }
       });
     }
@@ -184,10 +198,10 @@ public class GameAreaDisplay extends UIComponent {
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-      skin.add("building3", new Texture("images/towers/WallTower.png"));
+      skin.add("building3", new Texture("images/towers/mine_tower.png"));
       // Load textures for building1 and building2
       towers3[i] = new Image(skin, "building3");
-      towers3[i].setBounds(900 , 700, 100, 100); // Adjust the X position as needed
+      towers3[i].setBounds(Gdx.graphics.getWidth() * 60f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
       stage.addActor(towers3[i]);
 
       final int towerIndex3 = i; // Capture the index in a final variable for the listener
@@ -200,7 +214,8 @@ public class GameAreaDisplay extends UIComponent {
           startX = towers3[towerIndex3].getX();
           startY = towers3[towerIndex3].getY();
           Gdx.app.log("GameAreaDisplay", "Touch Down on Tower " + towerIndex3);
-
+          towerDetailsDialog3.setVisible(true);
+          towerDetailsDialog3.show(stage);
           return true; // Return true to indicate that the event was handled
         }
 
@@ -215,7 +230,7 @@ public class GameAreaDisplay extends UIComponent {
           if (!towerMoved3[towerIndex3] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
             numTowers3--;
-            numTowersLabel3.setText("Towers: " + numTowers3);
+
             towerMoved3[towerIndex3] = true; // Set the flag to indicate tower movement
           }
 
@@ -224,27 +239,30 @@ public class GameAreaDisplay extends UIComponent {
                   y - towers3[towerIndex3].getHeight() / 2);
 
           towerPositions3[towerIndex3] = new Vector2(towers3[towerIndex3].getX(), towers3[towerIndex3].getY());
-
+          towerDetailsDialog3.setPosition(
+                  towerPositions3[towerIndex3].x + towers3[towerIndex3].getWidth(),
+                  towerPositions3[towerIndex3].y
+          );
 
         }
 
         public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
+          towerDetailsDialog3.hide();
         }
       });
     }
 
     // Create and add the label for the number of towers
     numTowersLabel1 = new Label("TowersA: " + numTowers1, skin);
-    numTowersLabel1.setPosition(700, 650); // Adjust the position as needed
+    numTowersLabel1.setPosition(Gdx.graphics.getWidth() * 41f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
     stage.addActor(numTowersLabel1);
 
     numTowersLabel2 = new Label("TowersB: " + numTowers2, skin);
-    numTowersLabel2.setPosition(800, 650); // Adjust the position as needed
+    numTowersLabel2.setPosition(Gdx.graphics.getWidth() * 51f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
     stage.addActor(numTowersLabel2);
 
     numTowersLabel3 = new Label("TowersC: " + numTowers3, skin);
-    numTowersLabel3.setPosition(900, 650); // Adjust the position as needed
+    numTowersLabel3.setPosition(Gdx.graphics.getWidth() * 61f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
     stage.addActor(numTowersLabel3);
   }
 
@@ -257,7 +275,24 @@ public class GameAreaDisplay extends UIComponent {
     stage.act(delta);
     stage.draw();
   }
+  private Dialog createTowerDetailsDialog() {
+    Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
 
+    // Register a label style named "default" with the skin
+    Label.LabelStyle labelStyle = new Label.LabelStyle();
+    labelStyle.font = new BitmapFont();
+    labelStyle.fontColor = Color.WHITE;
+    skin.add("default", labelStyle);
+
+    // Create the dialog using the registered label style
+    Dialog dialog = new Dialog("Tower Details", skin,"default");
+    dialog.text("Health: 100"); // Set tower health here
+    dialog.getContentTable().row();
+    dialog.text("Attack: 50"); // Set tower attack here
+    dialog.button("Close");
+    dialog.setVisible(false); // Hide the dialog initially
+    return dialog;
+  }
   private void addActors() {
     title = new Label(this.gameAreaName, skin, "large");
     stage.addActor(title);

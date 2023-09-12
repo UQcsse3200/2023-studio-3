@@ -34,14 +34,14 @@ public class ForestGameArea extends GameArea {
 
   private static final int NUM_WALLS = 7;
 
-  private static final int NUM_TREES = 0;
+ // private static final int NUM_TREES = 0;
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
 
   private static final int NUM_BOSS=4;
 
   private Timer bossSpawnTimer;
-  private int bossSpawnInterval = 10000; // 1 minute in milliseconds
+  private int bossSpawnInterval = 10000; // 1 minute in millisecondsz
 
 
   private static final int NUM_WEAPON_TOWERS = 3;
