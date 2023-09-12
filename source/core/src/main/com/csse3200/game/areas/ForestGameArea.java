@@ -173,9 +173,6 @@ public class ForestGameArea extends GameArea {
     loadAssets();
     displayUI();
     spawnTerrain();
-//    spawnBuilding1();
-//    spawnBuilding2();
-//    spawnMountains();
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
@@ -192,17 +189,13 @@ public class ForestGameArea extends GameArea {
     spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
-    // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnXenoGrunts();
-//    spawnGhosts();
     spawnWeaponTower();
 //    spawnIncome();
     spawnScrap();
     spawnTNTTower();
 //    spawnDroidTower();
-//    spawnGapScanners();
-//    bossKing1 = spawnBossKing1();
-//    bossKing2 = spawnBossKing2();
+    spawnGapScanners();
     
     bossKing2 = spawnBossKing2();
   }
