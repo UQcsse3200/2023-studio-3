@@ -16,9 +16,12 @@ public class NPCConfigs {
   public BaseEntityConfig projectile = new ProjectileConfig();
   public GhostKingConfig ghostKing = new GhostKingConfig();
   public BaseEnemyConfig xenoGrunt = new BaseEnemyConfig(
+          10,
+          100,
           new ArrayList<Currency>(),
           new ArrayList<Melee>(),
-          new ArrayList<Weapon>());
+          new ArrayList<Weapon>(),
+          10);
 
   public BossKingConfigs BossKing = new BossKingConfigs();
 

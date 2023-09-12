@@ -12,9 +12,11 @@ public class StunTowerAnimationController extends Component {
     //Event name constants
     private static final String IDLE = "startIdle";
     private static final String ATTACK = "startAttack";
+    private static final String DEATH = "startDeath";
     //animation name constants
     private static final String IDLE_ANIM = "idle";
     private static final String ATTACK_ANIM = "attack";
+    private static final String DEATH_ANIM = "death";
 
     //further sounds can be added for the tower attacks/movement
 
@@ -30,6 +32,7 @@ public class StunTowerAnimationController extends Component {
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener(IDLE, this::animateIdle);
         entity.getEvents().addListener(ATTACK, this::animateAttack);
+        entity.getEvents().addListener(DEATH, this::animateDeath);
     }
 
     /**
@@ -44,5 +47,12 @@ public class StunTowerAnimationController extends Component {
      */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);
+    }
+
+    /**
+     * starts the death animation
+     */
+    void animateDeath() {
+        animator.startAnimation(DEATH_ANIM);
     }
 }
