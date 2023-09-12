@@ -100,80 +100,85 @@ loadScripts(document, 'script');</script>
 <div class="block">Creates a generic projectile entity that can be used for multiple types of * projectiles.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEffectProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,com.csse3200.game.components.ProjectileEffects,boolean)" class="member-name-link">createEffectProjectile</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed,
- <a href="../../components/ProjectileEffects.html" title="enum class in com.csse3200.game.components">ProjectileEffects</a>&nbsp;effect,
- boolean&nbsp;aoe)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a single-targeting projectile with specified effect</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEngineerBullet(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createEngineerBullet</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a engineer bullet</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireBall</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a fireball Entity.</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireworks(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireworks</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates new animation and fireballs for SplitFireworkComponent.</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobBall</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a projectile specifically for mobs to shoot</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobKingBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobKingBall</a><wbr>(short&nbsp;targetLayer,
- com.badlogic.gdx.math.Vector2&nbsp;destination,
- com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Creates a projectile to be used by the MobKing</div>
-</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceBallAnim(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceBallAnim</a><wbr>(short&nbsp;targetLayer,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createBossBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createBossBall</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceFireBall</a><wbr>(short&nbsp;targetLayer,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEffectProjectile(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,com.csse3200.game.components.ProjectileEffects,boolean)" class="member-name-link">createEffectProjectile</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed,
+ <a href="../../components/ProjectileEffects.html" title="enum class in com.csse3200.game.components">ProjectileEffects</a>&nbsp;effect,
+ boolean&nbsp;aoe)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a single-targeting projectile with specified effect</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createEngineerBullet(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createEngineerBullet</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a engineer bullet</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireBall</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create a pierce fireball.</div>
+<div class="block">Creates a fireball Entity.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createRicochetFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createRicochetFireball</a><wbr>(short&nbsp;targetLayer,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createFireworks(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createFireworks</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates new animation and fireballs for SplitFireworkComponent.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a projectile specifically for mobs to shoot</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobKingBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createMobKingBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a projectile to be used by the MobKing</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceBallAnim(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceBallAnim</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPierceFireBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)" class="member-name-link">createPierceFireBall</a><wbr>(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create a pierce fireball.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createRicochetFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createRicochetFireball</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed,
  int&nbsp;bounceCount)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Create a ricochet fireball.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createSplitFireWorksFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createSplitFireWorksFireball</a><wbr>(short&nbsp;targetLayer,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createSplitFireWorksFireball(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2,int)" class="member-name-link">createSplitFireWorksFireball</a><wbr>(short&nbsp;targetLayer,
  com.badlogic.gdx.math.Vector2&nbsp;destination,
  com.badlogic.gdx.math.Vector2&nbsp;speed,
  int&nbsp;amount)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setColliderSize(com.csse3200.game.entities.Entity,float,float)" class="member-name-link">setColliderSize</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;projectile,
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#setColliderSize(com.csse3200.game.entities.Entity,float,float)" class="member-name-link">setColliderSize</a><wbr>(<a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;projectile,
  float&nbsp;x,
  float&nbsp;y)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Sets the projectile collider so that the collider size can be altered for flexibility.</div>
 </div>
 </div>
@@ -317,6 +322,14 @@ loadScripts(document, 'script');</script>
 <dt>Returns:</dt>
 <dd>Returns a new fireball projectile entity.</dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createBossBall(short,com.badlogic.gdx.math.Vector2,com.badlogic.gdx.math.Vector2)">
+<h3>createBossBall</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createBossBall</span><wbr><span class="parameters">(short&nbsp;targetLayer,
+ com.badlogic.gdx.math.Vector2&nbsp;destination,
+ com.badlogic.gdx.math.Vector2&nbsp;speed)</span></div>
 </section>
 </li>
 <li>
