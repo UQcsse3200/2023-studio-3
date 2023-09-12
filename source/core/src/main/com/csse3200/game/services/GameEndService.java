@@ -23,7 +23,7 @@ public class GameEndService {
      * @param newLimit as an integer representing the maximum number of engineer deaths
      */
     public void setEngineerCount(int newLimit) {
-        if (newLimit > 0) {
+        if (newLimit > 0 && newLimit < 1000) {
             engineerCount = newLimit;
             display.updateCount();
         }
