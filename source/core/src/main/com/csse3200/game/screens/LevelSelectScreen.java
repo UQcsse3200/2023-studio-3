@@ -60,9 +60,9 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Spawn desert planet
         spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
         // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
         // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1);
 
         spawnPlanetBorders();
     }
@@ -94,15 +94,15 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
-            if (planetRect.contains(mousePos.x, Gdx.graphics.getHeight() - mousePos.y)) {
+            if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
                 // If a planet is clicked it will load the level based on the planet
                 if (Gdx.input.justTouched()) {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
-                    game.setScreen(new MainGameScreen(game));
+                    game.setScreen(new TurretSelectionScreen(game));
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
+                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
                 }
             }
         }
