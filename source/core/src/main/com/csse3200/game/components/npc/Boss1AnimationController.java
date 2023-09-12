@@ -14,33 +14,22 @@ public class Boss1AnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("walkStart", this::animateWalk);
-        entity.getEvents().addListener("deadStart", this::animateDead);
-        entity.getEvents().addListener("idleStart", this::animateIdle);
-        entity.getEvents().addListener("chargingStart", this::animateCharging);
+        entity.getEvents().addListener("walk", this::animateWalk);
+        entity.getEvents().addListener("death", this::animateDead);
+        entity.getEvents().addListener("idle", this::animateIdle);
         entity.getEvents().addListener("attack1Start", this::animateAttack1);
-        entity.getEvents().addListener("attack2Start", this::animateAttack2);
-        entity.getEvents().addListener("hurtStart", this::animateHurt);
     }
 
-    void animateHurt() {
-        animator.startAnimation("Hurt");
-    }
-    void animateAttack2() {
-        animator.startAnimation("A2");
-    }
+
     void animateAttack1() {
-        animator.startAnimation("A1");
-    }
-    void animateCharging() {
-        animator.startAnimation("Charging");
+        animator.startAnimation("Attack1");
     }
     void animateIdle() {
         animator.startAnimation("Idle");
     }
 
     void animateDead() {
-        animator.startAnimation("boss_death");
+        animator.startAnimation("Death");
     }
 
     void animateWalk() {

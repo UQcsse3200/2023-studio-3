@@ -37,7 +37,10 @@ public class BossKingFactory {
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
-        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP_REVERSED);
+        animator1.addAnimation("Death", 0.3f, Animation.PlayMode.LOOP);
+        animator1.addAnimation("Idle", 0.3f, Animation.PlayMode.LOOP);
+        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
+        animator1.addAnimation("Attack1", 0.3f, Animation.PlayMode.LOOP);
 
         bossKing1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator1)
@@ -45,7 +48,8 @@ public class BossKingFactory {
                 .addComponent(new Boss1AnimationController());
 
         bossKing1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing1.setScale(1f, 1f);
+        bossKing1.scaleHeight(3f);
+        bossKing1.scaleWidth(3f);
 
         return bossKing1;
     }

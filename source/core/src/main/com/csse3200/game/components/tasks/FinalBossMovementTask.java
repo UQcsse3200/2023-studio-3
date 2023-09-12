@@ -79,10 +79,10 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
             if (currentTask == movementTask) {
                 // Melee attack
                 if (towerAhead() || engineerAhead()) {
-                    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+                    /**TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
                     HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
                     attackComp.onCollisionStart(hitboxComp.getFixture(), target);
-                    this.owner.getEntity().getEvents().trigger("meleeStart");
+                    this.owner.getEntity().getEvents().trigger("meleeStart");*/
                 }
                 startWaiting();
             } else  {
@@ -104,7 +104,7 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
 
     private void startMoving() {
         logger.debug("Starting moving");
-        owner.getEntity().getEvents().trigger("walk");
+        owner.getEntity().getEvents().trigger("Walk");
         movementTask.setTarget(currentPos.sub(2,0));
         swapTask(movementTask);
     }
