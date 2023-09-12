@@ -31,6 +31,8 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private Task currentTask;
   private boolean isDead = false;
 
+  private boolean hasDied = false;
+
   /**
    * Constructor of HumanWanderTask
    *
@@ -53,7 +55,6 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
 
   /**
    * Starts the HumanWanderTask instance and instantiates subtasks (HumanWaitTask, HumanWanderTask, EngineerCombatTask).
-   *
    */
   @Override
   public void start() {
@@ -85,6 +86,11 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
+    hasDied =  owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
+    // Check if engineer has died since last update
+    if (!isDead && hasDied) {
+      startDying();
+    }
 
     boolean justDied = owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
     // Check if engineer has died since last update
