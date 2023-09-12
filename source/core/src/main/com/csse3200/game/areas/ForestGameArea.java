@@ -167,16 +167,16 @@ public class ForestGameArea extends GameArea {
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
 
-//    spawnXenoGrunts();
-//    spawnScrap();
-//    spawnIncome();
-//    spawnGhosts();
-//    spawnWeaponTower();
-//    spawnTNTTower();
-//    spawnDroidTower();
+    spawnXenoGrunts();
+    spawnScrap();
+    spawnIncome();
+    spawnGhosts();
+    spawnWeaponTower();
+    spawnTNTTower();
+    spawnDroidTower();
     spawnGapScanners();
-//    spawnIncome();
-    ServiceLocator.getGameEndService().setEngineerCount(18);
+    spawnIncome();
+
     bossKing2 = spawnBossKing2();
   }
 
