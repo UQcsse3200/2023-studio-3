@@ -129,10 +129,12 @@ public class Entity {
    *
    * @param x width in metres
    * @param y height in metres
+   * @return
    */
-  public void setScale(float x, float y) {
+  public Entity setScale(float x, float y) {
     this.scale.x = x;
     this.scale.y = y;
+    return null;
   }
 
   /**
@@ -251,13 +253,20 @@ public class Entity {
     if (!enabled) {
       return;
     }
-    for (Component component : createdComponents) {
-      component.triggerUpdate();
-    }
-    if (isFlaggedForDelete) {
-      dispose();
-      return;
-    }
+
+    // ! ITERATOR CAUSES PROBLEMS
+    // for (Component component : createdComponents) {
+    //   component.triggerUpdate();
+    // }
+    
+    for (int i = 0; i < createdComponents.size; i++) {
+      createdComponents.get(i).triggerUpdate();
+    } 
+
+    // if (isFlaggedForDelete) {
+    //   dispose();
+    //   return;
+    // }
   }
 
   /**
@@ -314,4 +323,7 @@ public class Entity {
     return layer;
   }
 
+    public String getName() {
+    return this.getClass().getSimpleName();
+    }
 }

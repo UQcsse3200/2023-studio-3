@@ -4,6 +4,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.events.listeners.EventListener0;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
@@ -25,11 +26,12 @@ class FinalBossMovementTaskTest {
     @BeforeEach
     void beforeEach() {
         ServiceLocator.registerTimeSource(gameTime);
+        ServiceLocator.registerPhysicsService(new PhysicsService());
     }
 
     @Test
     void shouldTriggerEvent() {
-        FinalBossMovementTask FBMTask = new FinalBossMovementTask(1f);
+        FinalBossMovementTask FBMTask = new FinalBossMovementTask(1f, 2);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(FBMTask);
         Entity entity = new Entity().addComponent(aiTaskComponent).addComponent(new PhysicsMovementComponent());

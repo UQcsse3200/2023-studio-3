@@ -55,7 +55,7 @@ class EngineerFactoryTest {
             "firing_single",
             "hit",
             "death"
-    };;
+    };
 
     @BeforeEach
     void setUp() {

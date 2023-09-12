@@ -2,7 +2,6 @@ package com.csse3200.game.components.projectile;
 
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator; //used for sound
 
 public class ProjectileAnimationController extends Component{
     /** Event name constants */
@@ -12,8 +11,8 @@ public class ProjectileAnimationController extends Component{
     /** Animation name constants */
     private static final String START_ANIM = "projectile";
     private static final String FINAL_ANIM = "projectileFinal";
-
     AnimationRenderComponent animator;
+
 
     @Override
     public void create() {

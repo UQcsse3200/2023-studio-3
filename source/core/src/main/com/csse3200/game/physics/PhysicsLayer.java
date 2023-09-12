@@ -10,7 +10,10 @@ public class PhysicsLayer {
   public static final short NPC = (1 << 3);
   public static final short PROJECTILE = (1 << 4);
   public static final short TOWER = (1 << 5);
+  // * TEMPORARY WALL BOUNDARIES?
+  public static final short WALL = (1 << 6);
 
+  public static final short XENO = (1 << 3);
   public static final short HUMANS = (1 << 1) | (1 << 5);
   public static final short ALL = ~0;
 
