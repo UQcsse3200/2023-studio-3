@@ -1,0 +1,194 @@
+boss1.png
+size: 126, 1014
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+death
+  rotate: false
+  xy: 0, 0
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+death
+  rotate: false
+  xy: 0, 39
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+death
+  rotate: false
+  xy: 0, 78
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+death
+  rotate: false
+  xy: 0, 117
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+death
+  rotate: false
+  xy: 0, 156
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 0, 195
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 195
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 234
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 273
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 312
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+idle
+  rotate: false
+  xy: 0, 351
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 390
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 429
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 468
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 507
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 546
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 585
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 624
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+walk
+  rotate: false
+  xy: 0, 663
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 702
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 741
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 780
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 819
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 858
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 897
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 936
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
+attack
+  rotate: false
+  xy: 0, 975
+  size: 126, 39
+  orig: 126, 39
+  offset: 0, 0
+  index: -1
