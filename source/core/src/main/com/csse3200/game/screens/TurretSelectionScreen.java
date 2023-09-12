@@ -105,13 +105,6 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 // Add the image to the nested table
                 turretTable.add(turretImage).pad(10).row();
 
-                // Create a label for the turret description
-                Label turretDescriptionLabel = new Label(turret.getDescription(), skin);
-                turretDescriptionLabel.setWrap(true); // Wrap text if it's too long
-
-                // Add the description label to the nested table
-                turretTable.add(turretDescriptionLabel).center().width(200).pad(10).row(); // Adjust width if needed
-
                 // Create a TextButton for the turret name
                 TextButton turretButton = new TextButton(turret.getTowerName(), skin);
                 turretButton.addListener(new ClickListener() {
