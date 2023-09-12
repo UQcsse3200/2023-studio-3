@@ -31,22 +31,13 @@ import java.util.ArrayList;
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_BUILDINGS = 4;
-
-
- // private static final int NUM_TREES = 0;
-
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
   
   
   private Timer bossSpawnTimer;
- // 1 minute in millisecondsz
-
-
-
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
-
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
   // Temporary spawn point for testing
