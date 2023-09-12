@@ -152,8 +152,9 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case DIE -> {
-                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished())
-                owner.getEntity().setFlagForDelete(true);
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
             }
         }
     }

@@ -13,6 +13,7 @@ public class ProjectileAnimationController extends Component{
     private static final String FINAL_ANIM = "projectileFinal";
     AnimationRenderComponent animator;
 
+
     @Override
     public void create() {
         super.create();

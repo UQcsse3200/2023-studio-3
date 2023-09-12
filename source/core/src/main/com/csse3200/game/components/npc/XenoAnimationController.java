@@ -1,7 +1,9 @@
 package com.csse3200.game.components.npc;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 import java.util.Random;
 
@@ -10,6 +12,10 @@ import java.util.Random;
  * of the events is triggered.
  */
 public class XenoAnimationController extends Component {
+    // // For on collision sounds later
+    // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
+    // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
+    //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
     Random rand = new Random();
 
