@@ -55,12 +55,12 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
-            updateMobState();
+            updateBossState();
             endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 
-    public void updateMobState() {
+    public void updateBossState() {
 
         mobHealth = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();
         // TODO: inset a bit that picks from a list of drop options and drops this

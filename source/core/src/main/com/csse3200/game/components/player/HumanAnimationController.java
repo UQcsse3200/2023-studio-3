@@ -35,10 +35,10 @@ public class HumanAnimationController extends Component {
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
     private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
 
-    AnimationRenderComponent animator;
-    Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
+    private AnimationRenderComponent animator;
+    private final Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
             FIRE_AUTO_SFX, Sound.class);
-    Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
             FIRE_SINGLE_SFX, Sound.class);
 
     /**
@@ -56,7 +56,7 @@ public class HumanAnimationController extends Component {
         entity.getEvents().addListener(PREP, this::animatePrep);
         entity.getEvents().addListener(WALK_PREP, this::animatePrepWalk);
         entity.getEvents().addListener(FIRING_SINGLE, this::animateSingleFiring);
-        entity.getEvents().addListener(FIRING_AUTO, this::animateFiring);
+        entity.getEvents().addListener(FIRING_AUTO, this::animateFiringAuto);
         entity.getEvents().addListener(HIT, this::animateHit);
         entity.getEvents().addListener(DEATH, this::animateDeath);
     }
@@ -110,7 +110,7 @@ public class HumanAnimationController extends Component {
      * Callback that starts the shoot animation in auto mode and plays the auto fire sound.
      * Currently unused, but intended to be incorporated as engineer functionality expands.
      */
-    void animateFiring() {
+    void animateFiringAuto() {
         animator.startAnimation(FIRE_AUTO_ANIM);
         fireAutoSound.play();
     }
