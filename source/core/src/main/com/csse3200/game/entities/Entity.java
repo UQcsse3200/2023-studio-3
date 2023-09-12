@@ -129,10 +129,12 @@ public class Entity {
    *
    * @param x width in metres
    * @param y height in metres
+   * @return
    */
-  public void setScale(float x, float y) {
+  public Entity setScale(float x, float y) {
     this.scale.x = x;
     this.scale.y = y;
+    return null;
   }
 
   /**
@@ -321,4 +323,7 @@ public class Entity {
     return layer;
   }
 
+    public String getName() {
+    return this.getClass().getSimpleName();
+    }
 }

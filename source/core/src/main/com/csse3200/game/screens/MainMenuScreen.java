@@ -31,7 +31,7 @@ public class MainMenuScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
-  private static final String[] mainMenuTextures = {"images/background1.png"};
+  private static final String[] mainMenuTextures = {"images/background/background1.png"};
 
   public MainMenuScreen(GdxGame game) {
     this.game = game;
@@ -97,7 +97,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
-    backgroundTexture = new Texture("images/background1.png");
+    backgroundTexture = new Texture("images/background/background1.png");
     ServiceLocator.getResourceService().loadAll();
   }
 
@@ -116,8 +116,8 @@ public class MainMenuScreen extends ScreenAdapter {
     Stage stage = ServiceLocator.getRenderService().getStage();
     Entity ui = new Entity();
     ui.addComponent(new MainMenuDisplay())
-        .addComponent(new InputDecorator(stage, 10))
-        .addComponent(new MainMenuActions(game));
+            .addComponent(new InputDecorator(stage, 10))
+            .addComponent(new MainMenuActions(game));
     ServiceLocator.getEntityService().register(ui);
   }
 }
