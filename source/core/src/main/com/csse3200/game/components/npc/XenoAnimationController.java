@@ -3,12 +3,15 @@ package com.csse3200.game.components.npc;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
+import java.util.Random;
+
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
  * of the events is triggered.
  */
 public class XenoAnimationController extends Component {
     AnimationRenderComponent animator;
+    Random rand = new Random();
 
     @Override
     public void create() {
@@ -16,8 +19,7 @@ public class XenoAnimationController extends Component {
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener("wanderStart", this::animateRun);
         entity.getEvents().addListener("runHurt", this::animateHurt);
-        entity.getEvents().addListener("meleeStart", this::animateMelee1);
-//        entity.getEvents().addListener("meleeStart", this::animateMelee2);
+        entity.getEvents().addListener("meleeStart", this::animateMelee);
         entity.getEvents().addListener("shootStart", this::animateShoot);
         entity.getEvents().addListener("dieStart", this::animateDie);
         entity.getEvents().addListener("stop", this::stopAnimation);
@@ -35,12 +37,13 @@ public class XenoAnimationController extends Component {
         animator.startAnimation("xeno_shoot");
     }
 
-    void animateMelee1() {
-        animator.startAnimation("xeno_melee_1");
-    }
-
-    void animateMelee2() {
-        animator.startAnimation("xeno_melee_2");
+    void animateMelee() {
+        int randAnim = rand.nextInt(2);
+        if (randAnim == 1) {
+            animator.startAnimation("xeno_melee_1");
+        } else {
+            animator.startAnimation("xeno_melee_2");
+        }
     }
 
     void animateDie() {

@@ -14,6 +14,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -55,7 +57,8 @@ public class XenoAnimationControllerTest {
     @Test
     public void testAnimateMelee1() {
         xenoGrunt.getEvents().trigger("meleeStart");
-        assertEquals("xeno_melee_1", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
+        assert(Objects.equals(xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation(), "xeno_melee_1")
+                || Objects.equals(xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation(), "xeno_melee_2"));
     }
 
     @Test
