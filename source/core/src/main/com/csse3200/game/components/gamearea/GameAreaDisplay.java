@@ -1,26 +1,79 @@
 package com.csse3200.game.components.gamearea;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Null;
+import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import com.csse3200.game.ui.UIComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Displays the name of the current game area.
  */
 public class GameAreaDisplay extends UIComponent {
+  private static final Logger logger = LoggerFactory.getLogger(GameAreaDisplay.class);
+  private static final float Z_INDEX = 2f;
+  // Dialog for displaying tower details
+
+  private Vector2[] towerPositions1;
+  private Vector2[] towerPositions2; // Store the positions of the towers
+  private Vector2[] towerPositions3; // Store the positions of the towers
+
+  private Dialog towerDetailsDialog1;
+  private Dialog towerDetailsDialog2;
+  private Dialog towerDetailsDialog3;// Dialog for displaying tower details
   private String gameAreaName = "";
   private Label title;
+  private int numTowers1 = 2; // Total number of towers
+  private int numTowers2 = 2; // Total number of towers
+  private int numTowers3 = 2; // Total number of towers
+  private Label numTowersLabel1;
+  private Label numTowersLabel2;
+  private Label numTowersLabel3;
+
+  private boolean[] towerMoved1;
+  private boolean[] towerMoved2;// Array of flags to track if each tower has been moved
+  private boolean[] towerMoved3;// Array of flags to track if each tower has been moved
+
 
   public GameAreaDisplay(String gameAreaName) {
     this.gameAreaName = gameAreaName;
+    towerPositions1 = new Vector2[2]; // Initialize for two towers
+    towerMoved1 = new boolean[2]; // Initialize for two towers
+
+    towerPositions2 = new Vector2[2]; // Initialize for two towers
+    towerMoved2 = new boolean[2]; // Initialize for two towers
+
+    towerPositions3 = new Vector2[2]; // Initialize for two towers
+    towerMoved3 = new boolean[2]; // Initialize for two towers
+
+    towerDetailsDialog1 = createTowerDetailsDialog(); // Create the tower details dialog
+    towerDetailsDialog2 = createTowerDetailsDialog(); // Create the tower details dialog
+    towerDetailsDialog3 = createTowerDetailsDialog(); // Create the tower details dialog
   }
 
   @Override
   public void create() {
     super.create();
     addActors();
-
     final Skin skin = new Skin();
 
 
@@ -220,21 +273,38 @@ public class GameAreaDisplay extends UIComponent {
     // Update the stage
     stage.act(delta);
     stage.draw();
-
   }
+  private Dialog createTowerDetailsDialog() {
+    Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
 
+    // Register a label style named "default" with the skin
+    Label.LabelStyle labelStyle = new Label.LabelStyle();
+    labelStyle.font = new BitmapFont();
+    labelStyle.fontColor = Color.WHITE;
+    skin.add("default", labelStyle);
+
+    // Create the dialog using the registered label style
+    Dialog dialog = new Dialog("Tower Details", skin,"default");
+    dialog.text("Health: 100"); // Set tower health here
+    dialog.getContentTable().row();
+    dialog.text("Attack: 50"); // Set tower attack here
+    dialog.button("Close");
+    dialog.setVisible(false); // Hide the dialog initially
+    return dialog;
+  }
   private void addActors() {
     title = new Label(this.gameAreaName, skin, "large");
     stage.addActor(title);
   }
 
   @Override
-  public void draw(SpriteBatch batch)  {
+  public void draw(SpriteBatch batch) {
     int screenHeight = Gdx.graphics.getHeight();
-    float offsetX = 0f;
-    float offsetY = 0f;
+    float offsetX = 10f;
+    float offsetY = 30f;
 
     title.setPosition(offsetX, screenHeight - offsetY);
+
   }
 
   @Override
