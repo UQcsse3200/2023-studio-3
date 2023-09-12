@@ -42,7 +42,7 @@ public class MainMenuDisplay extends UIComponent {
         Image title =
                 new Image(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/background1.png", Texture.class));
+                                .getAsset("images/background/background1.png", Texture.class));
         title.setWidth(Gdx.graphics.getWidth());
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0,0);
