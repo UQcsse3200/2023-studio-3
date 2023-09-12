@@ -29,6 +29,9 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
     private MovementTask swapLaneTask;
     private WaitTask waitTask;
     private Task currentTask;
+    /** Animations */
+
+
     private PhysicsEngine physics;
     private static final short TARGET = PhysicsLayer.TOWER;
     private final RaycastHit hit = new RaycastHit();
@@ -59,10 +62,11 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
         swapLaneTask = new MovementTask(currentPos);
         swapLaneTask.create(owner);
 
-        movementTask = new MovementTask(currentPos);
+        movementTask = new MovementTask(currentPos.sub(2,0));
         movementTask.create(owner);
 
         movementTask.start();
+        owner.getEntity().getEvents().trigger("walk");
 
         currentTask = movementTask;
 
@@ -74,14 +78,14 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
         if (currentTask.getStatus() != Status.ACTIVE) {
             if (currentTask == movementTask) {
                 // Melee attack
-                if (towerAhead()) {
-                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f), ProjectileEffects.BURN, false);
-                    newProjectile.scaleHeight(-0.4f);
-                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                if (towerAhead() || engineerAhead()) {
+                    TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+                    HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
+                    attackComp.onCollisionStart(hitboxComp.getFixture(), target);
+                    this.owner.getEntity().getEvents().trigger("meleeStart");
                 }
                 startWaiting();
-            } else if (currentTask == waitTask) {
+            } else  {
 //                startSwappingLane();
                 startMoving();
             }
@@ -94,26 +98,18 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
 
     private void startWaiting() {
         logger.debug("Starting waiting");
-
-        currentTask.stop();
-
-        currentTask = waitTask;
-        currentTask.start();
+        owner.getEntity().getEvents().trigger("idle");
+        swapTask(waitTask);
     }
 
     private void startMoving() {
         logger.debug("Starting moving");
-
-        currentTask.stop();
-        owner.getEntity().getEvents().trigger("walkStart");
+        owner.getEntity().getEvents().trigger("walk");
         movementTask.setTarget(currentPos.sub(2,0));
-        currentTask = movementTask;
-        currentTask.start();
-
-//        swapTask(movementTask);
+        swapTask(movementTask);
     }
 
-    private void startSwappingLane() {
+    /** private void startSwappingLane() {
         logger.debug("Starting swapping");
 
         currentTask.stop();
@@ -137,7 +133,7 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
 
 //        swapTask(swapLaneTask);
     }
-
+*/
     private void swapTask(Task newTask) {
         if (currentTask != null) {
             currentTask.stop();
@@ -148,5 +144,8 @@ public class FinalBossTask extends DefaultTask implements PriorityTask {
 
     private boolean towerAhead() {
         return physics.raycast(currentPos, new Vector2(currentPos.x - 1, currentPos.y), TARGET, hit);
+    }
+    private boolean engineerAhead() {
+        return physics.raycast(currentPos, new Vector2(0, currentPos.y), PhysicsLayer.ENGINEER, hit);
     }
 }
