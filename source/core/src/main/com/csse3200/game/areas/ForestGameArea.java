@@ -199,7 +199,7 @@ public class ForestGameArea extends GameArea {
 //    spawnIncome();
     spawnScrap();
     spawnTNTTower();
-//    spawnDroidTower();
+    spawnDroidTower();
 //    spawnGapScanners();
 //    bossKing1 = spawnBossKing1();
 //    bossKing2 = spawnBossKing2();
@@ -566,6 +566,17 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
     
+  }
+
+  private void spawnDroidTower() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity weaponTower = TowerFactory.createDroidTower();
+      spawnEntityAt(weaponTower, randomPos, true, true);
+    }
   }
   
   
