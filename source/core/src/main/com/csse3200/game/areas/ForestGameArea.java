@@ -25,6 +25,7 @@ import java.util.Timer;
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
@@ -36,6 +37,9 @@ public class ForestGameArea extends GameArea {
 
   private static final int NUM_BOSSKING2=3;
   private static final int NUM_BOSSKING1=1;
+
+  private int wave = 0;
+  private Timer waveTimer;
 
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
@@ -172,6 +176,44 @@ public class ForestGameArea extends GameArea {
     this.terrainFactory = terrainFactory;
   }
 
+  // Add this method to start the wave spawning timer when the game starts.
+  private void startWaveTimer() {
+    waveTimer = new Timer();
+    waveTimer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        spawnWave();
+      }
+    }, 0, 10000); // 10000 milliseconds = 10 seconds
+  }
+
+  // Add this method to stop the wave timer when the game ends or as needed.
+  private void stopWaveTimer() {
+    if (waveTimer != null) {
+      waveTimer.cancel();
+      waveTimer = null;
+    }
+  }
+
+  private void spawnWave() {
+    wave++;
+    switch (wave) {
+      case 1:
+      case 2:
+        spawnXenoGrunts();
+        break;
+      case 3:
+        bossKing2 = spawnBossKing2();
+        break;
+      case 4:
+        bossKing2 = spawnBossKing2();
+        break;
+      default:
+        // Handle other wave scenarios if needed
+        break;
+    }
+  }
+
   /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
@@ -206,7 +248,7 @@ public class ForestGameArea extends GameArea {
     spawnWeaponTower();
     spawnEngineer();
     //bossKing1 = spawnBossKing1();
-    bossKing2 = spawnBossKing2();
+    startWaveTimer();
 //    spawnIncome();
     spawnScrap();
     spawnTNTTower();
@@ -214,8 +256,6 @@ public class ForestGameArea extends GameArea {
 //    spawnGapScanners();
 //    bossKing1 = spawnBossKing1();
 //    bossKing2 = spawnBossKing2();
-
-    bossKing2 = spawnBossKing2();
   }
 
   private void displayUI() {
@@ -627,6 +667,7 @@ public class ForestGameArea extends GameArea {
     super.dispose();
     ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
+    stopWaveTimer();
   }
 
   private void spawnScrap() {
