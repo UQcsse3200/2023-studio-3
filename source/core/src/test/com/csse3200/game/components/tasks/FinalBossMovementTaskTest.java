@@ -19,7 +19,7 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-class FinalBossTaskTest {
+class FinalBossMovementTaskTest {
     @Mock
     GameTime gameTime;
 
@@ -31,7 +31,7 @@ class FinalBossTaskTest {
 
     @Test
     void shouldTriggerEvent() {
-        FinalBossTask FBMTask = new FinalBossTask(1f, 2);
+        FinalBossMovementTask FBMTask = new FinalBossMovementTask(1f, 2);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(FBMTask);
         Entity entity = new Entity().addComponent(aiTaskComponent).addComponent(new PhysicsMovementComponent());
