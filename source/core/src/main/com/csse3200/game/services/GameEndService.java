@@ -25,6 +25,7 @@ public class GameEndService {
     public void setEngineerCount(int newLimit) {
         if (newLimit > 0) {
             engineerCount = newLimit;
+            display.updateCount();
         }
     }
 
