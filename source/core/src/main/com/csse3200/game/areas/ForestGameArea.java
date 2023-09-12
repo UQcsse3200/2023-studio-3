@@ -248,7 +248,6 @@ public class ForestGameArea extends GameArea {
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     spawnXenoGrunts();
     spawnWeaponTower();
-    spawnEngineer();
     //bossKing1 = spawnBossKing1();
     startWaveTimer();
 //    spawnIncome();
@@ -713,14 +712,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
-  
-  private void spawnEngineer() {
-    for (int i = 0; i < terrain.getMapBounds(0).x; i += 3) {
-      Entity engineer = EngineerFactory.createEngineer();
-      spawnEntityAt(engineer, new GridPoint2(1, i), true, true);
-    }
-  }
-  
+
   /**
    * Creates the scanners (one per lane) that detect absence of towers and presence of mobs,
    * and trigger engineer spawning
