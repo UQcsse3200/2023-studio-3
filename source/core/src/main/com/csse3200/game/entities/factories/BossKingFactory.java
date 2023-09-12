@@ -6,7 +6,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
-import com.csse3200.game.components.tasks.FinalBossTask;
+import com.csse3200.game.components.tasks.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.RangeBossTask;
 import com.csse3200.game.components.tasks.bossDeathTask;
 import com.csse3200.game.entities.Entity;
@@ -31,7 +31,7 @@ public class BossKingFactory {
         Entity bossKing1 = createBaseBoss(target);
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
-                .addTask(new FinalBossTask(1f, numLane))
+                .addTask(new FinalBossMovementTask(1f, numLane))
                 .addTask(new bossDeathTask(1));;
 
         // Animation section
