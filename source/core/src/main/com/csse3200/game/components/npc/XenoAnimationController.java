@@ -1,8 +1,11 @@
 package com.csse3200.game.components.npc;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
+
+import com.badlogic.gdx.audio.Sound;
+
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 import java.util.Objects;
 
@@ -11,6 +14,10 @@ import java.util.Objects;
  * of the events is triggered.
  */
 public class XenoAnimationController extends Component {
+    // // For on collision sounds later
+    // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
+    // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
+    //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
 
     @Override
@@ -27,38 +34,30 @@ public class XenoAnimationController extends Component {
     }
 
     void animateRun() {
-        if (!Objects.equals(animator.getCurrentAnimation(), "xeno_shoot")) {
-            animator.stopAnimation();
-            animator.startAnimation("xeno_run");
-        }
+        animator.startAnimation("xeno_run");
     }
 
     void animateHurt() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_hurt");
     }
 
     void animateShoot() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_shoot");
     }
 
     void animateMelee1() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_melee_1");
     }
 
     void animateMelee2() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_melee_2");
     }
 
     void animateDie() {
-        animator.stopAnimation();
         animator.startAnimation("xeno_die");
     }
 
     void stopAnimation() {
-        animator.stopAnimation();
+        animator.startAnimation("default");
     }
 }
