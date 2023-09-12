@@ -58,21 +58,10 @@ public class XenoAnimationControllerTest {
         assertEquals("xeno_melee_1", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
-//    @Test
-//    public void testAnimateMelee2() {
-//        xenoGrunt.getEvents().trigger("meleeStart");
-//        assertEquals("xeno_melee_2", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
-//    }
-
     @Test
     public void testAnimateDie() {
         xenoGrunt.getEvents().trigger("dieStart");
         assertEquals("xeno_die", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
-//    @Test
-//    public void testAnimateStop() {
-//        xenoGrunt.getEvents().trigger("stop");
-//        assertEquals("default", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
-//    }
 }
