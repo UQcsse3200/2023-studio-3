@@ -18,7 +18,6 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Random;
 import java.util.Timer;
 
@@ -26,6 +25,7 @@ import java.util.Timer;
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
@@ -34,8 +34,14 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-  
-  
+
+
+  private static final int NUM_BOSSKING2=3;
+  private static final int NUM_BOSSKING1=1;
+
+  private int wave = 0;
+  private Timer waveTimer;
+
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
   private static final int NUM_WEAPON_TOWERS = 3;
@@ -45,6 +51,11 @@ public class ForestGameArea extends GameArea {
   
   // Required to load assets before using them
   private static final String[] forestTextures = {
+         "images/desert_bg.png",
+          "images/ice_bg.png",
+          "images/lava_bg.png",
+          "images/ingamebg.png",
+          "images/projectiles/projectile.png",
           "images/ingamebg.png",
           "images/box_boy_leaf.png",
           "images/background/building1.png",
@@ -69,6 +80,7 @@ public class ForestGameArea extends GameArea {
           "images/towers/stun_tower.png",
           "images/background/building2.png",
           "images/mobs/robot.png",
+          "images/mobs/boss2.png",
           "images/mobs/Attack_1.png",
           "images/mobs/Attack_2.png",
           "images/mobs/Charge_1.png",
@@ -87,6 +99,7 @@ public class ForestGameArea extends GameArea {
           "images/economy/scrap.png",
           "images/economy/crystal.png",
           "images/economy/econ-tower.png",
+          "images/projectiles/bossProjectile.png",
           "images/towers/mine_tower.png",
           "images/towers/TNTTower.png",
           "images/towers/DroidTower.png",
@@ -105,6 +118,7 @@ public class ForestGameArea extends GameArea {
           "images/economy/econ-tower.atlas",
           "images/terrain_iso_grass.atlas",
           "images/ghost.atlas",
+          "images/mobs/boss2.atlas",
           "images/ghostKing.atlas",
           "images/towers/turret.atlas",
           "images/towers/turret01.atlas",
@@ -120,6 +134,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rangeBossRight.atlas",
           "images/towers/TNTTower.atlas",
           "images/projectiles/basic_projectile.atlas",
+          "images/projectiles/bossProjectile.atlas",
+          "images/projectiles/mobProjectile.atlas",
           "images/projectiles/mobProjectile.atlas",
           "images/projectiles/engineer_projectile.atlas",
           "images/projectiles/mobKing_projectile.atlas",
@@ -151,8 +167,8 @@ public class ForestGameArea extends GameArea {
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
   private Entity bossKing2;
-  
-  
+  private Entity bossKing1;
+
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
    *
@@ -163,7 +179,46 @@ public class ForestGameArea extends GameArea {
     super();
     this.terrainFactory = terrainFactory;
   }
-  
+
+  // Add this method to start the wave spawning timer when the game starts.
+  private void startWaveTimer() {
+    waveTimer = new Timer();
+    waveTimer.scheduleAtFixedRate(new TimerTask() {
+      @Override
+      public void run() {
+        spawnWave();
+      }
+    }, 0, 10000); // 10000 milliseconds = 10 seconds
+  }
+
+  // Add this method to stop the wave timer when the game ends or as needed.
+  private void stopWaveTimer() {
+    if (waveTimer != null) {
+      waveTimer.cancel();
+      waveTimer = null;
+    }
+  }
+
+  private void spawnWave() {
+    wave++;
+    switch (wave) {
+      case 1:
+      case 2:
+        spawnXenoGrunts();
+        break;
+      case 3:
+        bossKing2 = spawnBossKing2();
+        break;
+      case 4:
+        bossKing2 = spawnBossKing2();
+        break;
+      default:
+        // Handle other wave scenarios if needed
+        break;
+    }
+  }
+
+
   /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
@@ -191,14 +246,18 @@ public class ForestGameArea extends GameArea {
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     spawnXenoGrunts();
     spawnWeaponTower();
+    spawnEngineer();
+    //bossKing1 = spawnBossKing1();
+    startWaveTimer();
 //    spawnIncome();
     spawnScrap();
     spawnTNTTower();
 
     spawnGapScanners();
     spawnDroidTower();
-    
+
     bossKing2 = spawnBossKing2();
+
   }
   
   private void displayUI() {
@@ -331,7 +390,23 @@ public class ForestGameArea extends GameArea {
 //    spawnEntityAt(ghostKing, randomPos, true, true);
 //    return ghostKing;
 //  }
-  
+
+
+  private Entity spawnBossKing1() {
+    int[] pickedLanes = new Random().ints(0, 8)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_BOSSKING1; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      bossKing1 = BossKingFactory.createBossKing1(player, pickedLanes[i]);
+      spawnEntityAt(bossKing1,
+              randomPos,
+              true,
+              false);
+    }
+    return bossKing1;
+  }
+
+
   /**
    * Spawns a projectile that only heads towards the enemies in its lane.
    *
@@ -434,13 +509,10 @@ public class ForestGameArea extends GameArea {
 //  }
   
   private Entity spawnBossKing2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
-    for (int i = 0; i < NUM_BOSS; i++) {
-      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-      int randomY = MathUtils.random(0, maxPos.y);
-      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
+    int[] pickedLanes = new Random().ints(0, 8)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_BOSSKING2; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       bossKing2 = BossKingFactory.createBossKing2(player);
       spawnEntityAt(bossKing2,
               randomPos,
@@ -609,6 +681,7 @@ public class ForestGameArea extends GameArea {
     super.dispose();
     ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
+    stopWaveTimer();
   }
   
   private void spawnScrap() {
