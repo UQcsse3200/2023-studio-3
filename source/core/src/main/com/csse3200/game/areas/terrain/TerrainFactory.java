@@ -20,9 +20,9 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.areas.terrain.TerrainComponent.TerrainOrientation;
 import com.csse3200.game.components.CameraComponent;
-import com.csse3200.game.screens.GameLevelData;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+
 import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
 import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
@@ -33,9 +33,7 @@ public class TerrainFactory {
   private static OrthographicCamera camera;
   private final TerrainOrientation orientation;
   private static Stage stage;
-  int selectedLevel = GameLevelData.getSelectedLevel();
   private Texture whiteTexture;
-
 
   /**
    * Create a terrain factory with Orthogonal orientation
@@ -48,6 +46,7 @@ public class TerrainFactory {
     Viewport viewport = new ScreenViewport(camera);
     viewport.update(viewportWidth, viewportHeight, true);
     stage = new Stage(viewport, new SpriteBatch());
+
     camera.update();
 
     Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -107,78 +106,25 @@ public class TerrainFactory {
 
   private TiledMap createForestDemoTiles(GridPoint2 tileSize, TextureRegion grass) {
     TiledMap tiledMap = new TiledMap();
-    /**
-     * Creates a background layer for a tiled map with the specified dimensions and tile size.
-     *
-     * @param width The width of the layer in tiles.
-     * @param height The height of the layer in tiles.
-     * @param tileWidth The width of each individual tile in pixels.
-     * @param tileHeight The height of each individual tile in pixels.
-     */
 
+    // Create a background layer
     TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
-    /**
-     * Define a TextureRegion to be used as the background texture.
-     */
-    TextureRegion backgroundTextureRegion ;
+    TextureRegion backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/ingamebg.png", Texture.class));
 
-    switch (selectedLevel) {
-      case 0: // Desert
-        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class));
-        break;
-      case 1: // Ice
-        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/ice_bg.png", Texture.class));
-        break;
-      case 2: // Lava
-        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/lava_bg.png", Texture.class));
-        break;
-      default:
-        // Use a default background for other levels or planets
-        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class));
-        break;
-    }
-
-    /**
-     * Creates a single cell with the specified background texture region and adds it to the background layer
-     * of a tiled map. The background layer represents the entire background image of the map.
-     *
-     * @param backgroundTextureRegion The TextureRegion to use as the background texture.
-     * @param tileSizeX The width of each individual tile in pixels.
-     * @param tileSizeY The height of each individual tile in pixels.
-     * @param tiledMap The TiledMap to which the background layer should be added.
-     */
+    // Create a single cell for the entire background image
     Cell cell = new Cell();
     cell.setTile(new StaticTiledMapTile(backgroundTextureRegion));
     backgroundLayer.setCell(0, 0, cell);
 
     tiledMap.getLayers().add(backgroundLayer);
 
-    /**
-     * Creates a grass layer for the tiled map with the specified dimensions and tile size, filling it with
-     * grass tiles using the provided grass terrain tile.
-     *
-     * @param tileSizeX The width of each individual tile in pixels.
-     * @param tileSizeY The height of each individual tile in pixels.
-     * @param grassTile The TerrainTile representing the grass tile to be used for the layer.
-     * @param tiledMap The TiledMap to which the grass layer should be added.
-     */
+    // Create a grass layer
     TerrainTile grassTile = new TerrainTile(grass);
     TiledMapTileLayer grassLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
     fillTiles(grassLayer, new GridPoint2(20, 8), grassTile);
     tiledMap.getLayers().add(grassLayer);
 
-    /**
- * Creates lanes of invisible tiles in the TiledMap. These lanes are added as separate layers
- * and are typically used for gameplay purposes.
- *
- * @param tiledMap     The TiledMap to which the lanes should be added.
- * @param tileSize     The size of each tile in pixels (width and height).
- * @param numberOfLanes The total number of lanes to create.
- * @param mapWidth     The width of the TiledMap in tiles.
- * @param mapHeight    The height of the TiledMap in tiles.
- * @return The modified TiledMap with the added invisible lanes.
- */
-
+    // Create lanes (invisible)
     int numberOfLanes = 8;
     int laneHeight = 1; // Height of each lane in tiles
     int mapWidth = 20;
@@ -194,14 +140,6 @@ public class TerrainFactory {
     return tiledMap;
   }
 
-  /**
-   * Fills a TiledMapTileLayer with invisible tiles, creating a layer of transparent tiles.
-   *
-   * @param layer   The TiledMapTileLayer to fill with invisible tiles.
-   * @param mapSize The size of the layer in tiles (width and height).
-   */
-
-
   private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize) {
     for (int x = 0; x < mapSize.x; x++) {
       for (int y = 0; y < mapSize.y; y++) {
@@ -214,7 +152,7 @@ public class TerrainFactory {
     }
   }
 
-  //tile class
+//tile class
   public static class Tile {
     private int row;
     private int col;
@@ -239,81 +177,85 @@ public class TerrainFactory {
     }
   }
 
-  // grid class
-  public static class Grid {
-    private Tile[][] tiles;
+// grid class
+public static class Grid {
+  private Tile[][] tiles;
 
-    public Grid(int numRows, int numCols) {
-      tiles = new Tile[numRows][numCols];
+  public Grid(int numRows, int numCols) {
+    tiles = new Tile[numRows][numCols];
 
-      for (int row = 0; row < numRows; row++) {
-        for (int col = 0; col < numCols; col++) {
-          tiles[row][col] = new Tile(row,col);
-        }
+    for (int row = 0; row < numRows; row++) {
+      for (int col = 0; col < numCols; col++) {
+        tiles[row][col] = new Tile(row,col);
       }
     }
+  }
 
-    public void placeObject(int row, int col, Object object) {
-      if (isValidCoordinate(row, col)) {
-        tiles[row][col].setObject(object);
-      } else {
-        System.out.println("Invalid coordinates.");
-      }
+  public void placeObject(int row, int col, Object object) {
+    if (isValidCoordinate(row, col)) {
+      tiles[row][col].setObject(object);
+    } else {
+      System.out.println("Invalid coordinates.");
     }
+  }
 
-    public Object getObject(int row, int col) {
-      if (isValidCoordinate(row, col)) {
-        return tiles[row][col].getObject();
-      } else {
-        System.out.println("Invalid coordinates.");
-        return null;
-      }
-    }
-
-    public String getLogCoordinates(int row, int col) {
-      if (isValidCoordinate(row, col)) {
-        return tiles[row][col].getLogCoordinates();
-      } else {
-        return "Invalid coordinates.";
-      }
-    }
-
-    private boolean isValidCoordinate(int row, int col) {
-      return row >= 0 && row < tiles.length && col >= 0 && col < tiles[0].length;
-    }
-
-    public void placeEntity(int row, int col, Object existingEntity) {
-    }
-
-    public Object getEntity(int row, int col) {
+  public Object getObject(int row, int col) {
+    if (isValidCoordinate(row, col)) {
+      return tiles[row][col].getObject();
+    } else {
+      System.out.println("Invalid coordinates.");
       return null;
     }
   }
 
-  // Array class 1+2
-  public class Array {
-    public static void main(String[] args) {
-      int numRows = 8;
-      int numCols = 20;
-
-      Grid grid = new Grid(numRows, numCols);
-
-      // Place an existing entity in a specific tile
-      int row = 3;
-      int col = 5;
-      // Replace 'Object' with the type of existing entity you want to place
-      Object existingEntity = new YourExistingEntity();
-
-      grid.placeEntity(row, col, existingEntity);
-
-      // Get the entity from a tile
-      Object entity = grid.getEntity(row, col);
-      System.out.println("Entity at " + grid.getLogCoordinates(row, col) + ": " + entity);
-    }
-
-    private static class YourExistingEntity {
+  public String getLogCoordinates(int row, int col) {
+    if (isValidCoordinate(row, col)) {
+      return tiles[row][col].getLogCoordinates();
+    } else {
+      return "Invalid coordinates.";
     }
   }
+
+  private boolean isValidCoordinate(int row, int col) {
+    return row >= 0 && row < tiles.length && col >= 0 && col < tiles[0].length;
+  }
+
+  public void placeEntity(int row, int col, Object existingEntity) {
+  }
+
+  public Object getEntity(int row, int col) {
+      return null;
+  }
+}
+
+// Array class 1+2
+public class Array {
+  public static void main(String[] args) {
+    int numRows = 8;
+    int numCols = 20;
+
+    Grid grid = new Grid(numRows, numCols);
+
+    // Place an existing entity in a specific tile
+    int row = 3;
+    int col = 5;
+    // Replace 'Object' with the type of existing entity you want to place
+    Object existingEntity = new YourExistingEntity();
+
+    grid.placeEntity(row, col, existingEntity);
+
+    // Get the entity from a tile
+    Object entity = grid.getEntity(row, col);
+    System.out.println("Entity at " + grid.getLogCoordinates(row, col) + ": " + entity);
+  }
+
+  private static class YourExistingEntity {
+  }
+}
+
+
+
+
 
   private static void fillTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
     BitmapFont font = new BitmapFont();
