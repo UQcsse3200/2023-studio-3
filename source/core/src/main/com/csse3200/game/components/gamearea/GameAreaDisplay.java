@@ -91,7 +91,7 @@ public class GameAreaDisplay extends UIComponent {
       // Load textures for building1 and building2
       towers1[i] = new Image(skin, "building1");
       towers1[i].setBounds(Gdx.graphics.getWidth() * 40f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
-      stage.addActor(towers1[i]);
+      // stage.addActor(towers1[i]);
 
       final int towerIndex1 = i; // Capture the index in a final variable for the listener
       towerPositions1[towerIndex1] = new Vector2(towers1[towerIndex1].getX(), towers1[towerIndex1].getY());
@@ -120,7 +120,6 @@ public class GameAreaDisplay extends UIComponent {
           if (!towerMoved1[towerIndex1] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
             numTowers1--;
-
             towerMoved1[towerIndex1] = true; // Set the flag to indicate tower movement
           }
 
@@ -143,7 +142,7 @@ public class GameAreaDisplay extends UIComponent {
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-      skin.add("building2", new Texture("images/towers/turret_deployed.png"));
+      skin.add("building2", new Texture("images/towers/WallTower.png"));
       towers2[i] = new Image(skin, "building2");
       towers2[i].setBounds(Gdx.graphics.getWidth() * 50f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
       stage.addActor(towers2[i]);
@@ -174,7 +173,7 @@ public class GameAreaDisplay extends UIComponent {
           if (!towerMoved2[towerIndex2] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
             numTowers2--;
-            numTowersLabel2.setText("Towers: " + numTowers2);
+            numTowersLabel2.setText("TowersA: " + numTowers2);
             towerMoved2[towerIndex2] = true; // Set the flag to indicate tower movement
           }
 
@@ -230,7 +229,7 @@ public class GameAreaDisplay extends UIComponent {
           if (!towerMoved3[towerIndex3] && distanceMoved >= 100f) {
             // Decrement the number of towers and set the flag for this tower
             numTowers3--;
-
+            numTowersLabel3.setText("TowersB: " + numTowers3);
             towerMoved3[towerIndex3] = true; // Set the flag to indicate tower movement
           }
 
@@ -255,13 +254,13 @@ public class GameAreaDisplay extends UIComponent {
     // Create and add the label for the number of towers
     numTowersLabel1 = new Label("TowersA: " + numTowers1, skin);
     numTowersLabel1.setPosition(Gdx.graphics.getWidth() * 41f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
-    stage.addActor(numTowersLabel1);
+    //  stage.addActor(numTowersLabel1);
 
-    numTowersLabel2 = new Label("TowersB: " + numTowers2, skin);
+    numTowersLabel2 = new Label("TowersA: " + numTowers2, skin);
     numTowersLabel2.setPosition(Gdx.graphics.getWidth() * 51f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
     stage.addActor(numTowersLabel2);
 
-    numTowersLabel3 = new Label("TowersC: " + numTowers3, skin);
+    numTowersLabel3 = new Label("TowersB: " + numTowers3, skin);
     numTowersLabel3.setPosition(Gdx.graphics.getWidth() * 61f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
     stage.addActor(numTowersLabel3);
   }
