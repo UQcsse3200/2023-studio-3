@@ -8,6 +8,7 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
@@ -30,12 +31,12 @@ public class NPCFactoryTest {
     private Entity engineerTarget;
     private Entity playerTarget;
 
-    private String[] texture = {
+    private final String[] texture = {
             "images/towers/turret_deployed.png",
             "images/towers/turret01.png",
             "images/towers/wallTower.png"
     };
-    private String[] atlas = {"images/towers/turret01.atlas",
+    private final String[] atlas = {"images/towers/turret01.atlas",
             "images/mobs/xenoGrunt.atlas"};
     private static final String[] sounds = {
             "sounds/towers/gun_shot_trimmed.mp3",
@@ -62,7 +63,7 @@ public class NPCFactoryTest {
         ServiceLocator.getResourceService()
                 .getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class);
         //playerTarget = PlayerFactory.createPlayer();
-        towerTarget = TowerFactory.createBaseTower();
+        //towerTarget = TowerFactory.createBaseTower();
         //engineerTarget = EngineerFactory.createEngineer();
         xenoGrunt = NPCFactory.createXenoGrunt(playerTarget);
     }
@@ -100,7 +101,14 @@ public class NPCFactoryTest {
 
     @Test
     public void xenoGruntHasAnimationComponent() {
-        assertNotNull(xenoGrunt.getComponent(AnimationRenderComponent.class));
+        assertNotNull(xenoGrunt.getComponent(AnimationRenderComponent.class),
+                "Xeno Grunt should have AnimationRenderComponent");
+    }
+
+    @Test
+    public void testCreateXenoGruntHasPhysicsMovementComponent() {
+        assertNotNull(xenoGrunt.getComponent(PhysicsMovementComponent.class),
+                "Xeno Grunt should have PhysicsMovementComponent");
     }
 
 }
