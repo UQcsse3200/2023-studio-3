@@ -1,19 +1,11 @@
 package com.csse3200.game.entities.factories;
 
-
-
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
-import com.csse3200.game.components.tower.DroidAnimationController;
-import com.csse3200.game.components.tower.TNTAnimationController;
-import com.csse3200.game.components.tower.TNTDamageComponent;
+import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.components.tasks.FireTowerCombatTask;
 import com.csse3200.game.components.tasks.StunTowerCombatTask;
-import com.csse3200.game.components.tower.FireTowerAnimationController;
-import com.csse3200.game.components.tower.StunTowerAnimationController;
-import com.csse3200.game.components.tower.TowerUpgraderComponent;
-
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,8 +13,6 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tower.EconTowerAnimationController;
-import com.csse3200.game.components.tower.TowerAnimationController;
 import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -34,8 +24,6 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
-import java.util.ServiceConfigurationError;
 
 /**
  * Factory to create a tower entity.
@@ -53,6 +41,8 @@ public class TowerFactory {
     private static final String WALL_IMAGE = "images/towers/wallTower.png";
     private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
+    private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
+    private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
     private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
     private static final float DROID_SPEED = 0.25f;
@@ -68,9 +58,6 @@ public class TowerFactory {
     private static final float DIG_SPEED = 0.2f;
     private static final String EXPLODE_ANIM = "explode";
     private static final float EXPLODE_SPEED = 0.2f;
-    private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
-    private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
-
     private static final String IDLE_ANIM = "idle";
     private static final float IDLE_SPEED = 0.3f;
     private static final String DEPLOY_ANIM = "deploy";
@@ -79,22 +66,22 @@ public class TowerFactory {
     private static final float STOW_SPEED = 0.2f;
     private static final String FIRE_ANIM = "firing";
     private static final float FIRE_SPEED = 0.25f;
-
     private static final String FIRE_TOWER_IDLE_ANIM = "idle";
     private static final float FIRE_TOWER_IDLE_SPEED = 0.3f;
     private static final String FIRE_TOWER_PREP_ATTACK_ANIM = "prepAttack";
     private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
     private static final String FIRE_TOWER_ATTACK_ANIM = "attack";
     private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+    private static final String FIRE_TOWER_DEATH_ANIM = "death";
+    private static final float FIRE_TOWER_DEATH_SPEED = 0.12f;
     private static final String STUN_TOWER_IDLE_ANIM = "idle";
     private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
     private static final String STUN_TOWER_ATTACK_ANIM = "attack";
     private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
+    private static final String STUN_TOWER_DEATH_ANIM = "death";
+    private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
     private static final int INCOME_INTERVAL = 300;
-
     private static final int INCOME_TASK_PRIORITY = 1;
-
-
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
     private static final String ECO_MOVE = "move1";
     private static final String ECO_IDLE = "idle";
@@ -129,9 +116,9 @@ public class TowerFactory {
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent(RESOURCE_TOWER))
-                .addComponent(aiTaskComponent);
-
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new EconTowerAnimationController());
 
         return income;
     }
@@ -274,6 +261,7 @@ public class TowerFactory {
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -302,6 +290,7 @@ public class TowerFactory {
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -323,11 +312,9 @@ public class TowerFactory {
         // we're going to add more components later on
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
-                .addComponent(new TowerUpgraderComponent())
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)); // TODO: we might have to change the names of the layers
-
-
+                .addComponent(new TowerUpgraderComponent());
 
         return tower;
     }

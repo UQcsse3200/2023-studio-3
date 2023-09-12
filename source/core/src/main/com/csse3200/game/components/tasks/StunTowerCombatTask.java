@@ -3,11 +3,14 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -23,6 +26,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     //Following constants are names of events that will be triggered in the state machine
     public static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
+    public static final String DEATH = "startDeath";
 
     //Following are the class constants
     private final int priority;
@@ -35,10 +39,10 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     private final RaycastHit hit = new RaycastHit();
 
     //enums for the state triggers
-    private enum STATE {
-        IDLE, ATTACK
+    public enum STATE {
+        IDLE, ATTACK, DIE
     }
-    private STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -82,6 +86,14 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
      * of the game. If enemies are detected, state of the tower is changed to attack state.
      */
     public void updateTowerState() {
+
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 &&
+        towerState != STATE.DIE) {
+            owner.getEntity().getEvents().trigger(DEATH);
+            towerState = STATE.DIE;
+            return;
+        }
+
         switch (towerState) {
             case IDLE -> {
                 if(isTargetVisible()) {
@@ -95,14 +107,26 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                     towerState = STATE.IDLE;
                 } else {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+//                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
+//                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
+                    new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
+                    ProjectileEffects.STUN, false);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
             }
+            case DIE -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
+            }
         }
+    }
+
+    public STATE getState() {
+        return this.towerState;
     }
 
     /**
