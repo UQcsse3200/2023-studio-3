@@ -36,7 +36,7 @@ public class BossKingFactory {
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
+                ServiceLocator.getResourceService().getAsset("images/mobs/boss1.atlas", TextureAtlas.class));
         animator1.addAnimation("Death", 0.3f, Animation.PlayMode.LOOP);
         animator1.addAnimation("Idle", 0.3f, Animation.PlayMode.LOOP);
         animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
