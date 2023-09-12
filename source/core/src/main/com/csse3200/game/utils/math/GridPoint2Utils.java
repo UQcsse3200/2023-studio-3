@@ -9,6 +9,7 @@ public class GridPoint2Utils {
   public static final GridPoint2 ZERO = new GridPoint2(0, 0);
 
 
+
   private GridPoint2Utils() {
     throw new IllegalStateException("Instantiating static util class");
   }
