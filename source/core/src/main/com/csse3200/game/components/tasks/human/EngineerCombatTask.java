@@ -26,12 +26,9 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     private static final short TARGET = PhysicsLayer.NPC; // The type of targets that the Engineer will detect.
     
     // Animation event names for the Engineer's state machine.
-    private static final String STOW = "";
-    private static final String DEPLOY = "";
     private static final String FIRING = "firingSingleStart";
-    private static final String IDLE_LEFT = "idleLeft";
     private static final String IDLE_RIGHT = "idleRight";
-    private static final String DYING = "deathStart";
+    private static final String ENGINEER_PROJECTILE_FIRED = "engineerProjectileFired";
     
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the Engineer's weapon.
@@ -52,7 +49,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     
     /** The Engineer's states. */
     private enum STATE {
-        IDLE_LEFT, IDLE_RIGHT, DEPLOY, FIRING, STOW
+        IDLE_RIGHT, FIRING
     }
     private STATE engineerState = STATE.IDLE_RIGHT;
     
@@ -96,30 +93,12 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
      * Engineer state machine
      */
     public void updateEngineerState() {
-        // configure tower state depending on target visibility
+        // configure engineer state depending on target visibility
         switch (engineerState) {
-            case IDLE_LEFT -> {
-                // targets detected in idle mode - start deployment
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    engineerState = STATE.FIRING;
-                } else {
-
-                }
-            }
             case IDLE_RIGHT -> {
                 // targets detected in idle mode - start deployment
                 if (isTargetVisible()) {
                     combatState();
-                }
-            }
-            case DEPLOY -> {
-                // currently deploying,
-                if (isTargetVisible()) {
-                    combatState();
-                } else {
-                    owner.getEntity().getEvents().trigger(STOW);
-                    engineerState = STATE.STOW;
                 }
             }
             case FIRING -> {
@@ -128,16 +107,18 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
-                    if (shotsFired <= 10) {
+                    if (shotsFired <= weaponCapacity) {
                         owner.getEntity().getEvents().trigger(FIRING);
+                        owner.getEntity().getEvents().trigger(ENGINEER_PROJECTILE_FIRED);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
                         Entity newProjectile = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y),
                                 new Vector2(4f, 4f));
                         newProjectile.setScale(0.8f, 0.8f);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3), (float) (owner.getEntity().getPosition().y + 0.15));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3),
+                                (float) (owner.getEntity().getPosition().y + 0.15));
                         ServiceLocator.getEntityService().register(newProjectile);
-                        shotsFired += 1;
+                        shotsFired ++;
                         reloadTime = timeSource.getTime();
                     } else {
                         // engineer needs to reload
@@ -185,7 +166,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
         Vector2 position = owner.getEntity().getCenterPosition();
-
+        hits.clear();
         for (int i = 5; i > -5; i--) {
             if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {
                 hits.add(hit);
