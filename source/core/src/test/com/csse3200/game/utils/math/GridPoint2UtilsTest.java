@@ -17,6 +17,8 @@ public class GridPoint2UtilsTest {
         assertEquals(0, zero.y);
     }
 
+
+
     /**
      * testInstantiation() checks if private constructor of GridPoint2Utils throws an exception
      * while creating an instance.
