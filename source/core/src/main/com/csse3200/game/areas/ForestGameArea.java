@@ -213,6 +213,12 @@ public class ForestGameArea extends GameArea {
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
+    for (int planet = 0; planet < 3; planet++) {
+      if (planet < -1) {
+        ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
+      }
+    }
+
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
   }
