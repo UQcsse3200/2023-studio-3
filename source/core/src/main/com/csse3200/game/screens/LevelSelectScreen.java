@@ -14,7 +14,6 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
-import com.csse3200.game.screens.Planets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
@@ -26,7 +25,6 @@ public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
     private SpriteBatch batch;
-    private int selectedLevel = -1;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
 
@@ -62,9 +60,9 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Spawn desert planet
         spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
         // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
         // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1);
 
         spawnPlanetBorders();
     }
@@ -96,46 +94,19 @@ public class LevelSelectScreen extends ScreenAdapter {
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
-            if (planetRect.contains(mousePos.x, Gdx.graphics.getHeight() - mousePos.y)) {
+            if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
                 // If a planet is clicked it will load the level based on the planet
                 if (Gdx.input.justTouched()) {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
-                    GameLevelData.setSelectedLevel(planet[4]);
-                    if (planet[4] == 0) {
-                        handleDesertPlanetClick();
-                    } else if (planet[4] == 1) {
-                        handleIcePlanetClick();
-                    } else if (planet[4] == 2) {
-                        handleLavaPlanetClick();
-                    }
-                }
+                    game.setScreen(new TurretSelectionScreen(game));
                 } else {
                     Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
+                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
                 }
             }
         }
-
-
-    private void handleDesertPlanetClick() {
-        // Implement logic for when the desert planet is clicked
-        logger.info("Desert planet clicked.");
-        game.setScreen(new DesertGameScreen(game)); // Load the DesertGameScreen
     }
-
-    private void handleIcePlanetClick() {
-        // Implement logic for when the ice planet is clicked
-        logger.info("Ice planet clicked.");
-        game.setScreen(new IceGameScreen(game)); // Load the IceGameScreen
-    }
-
-    private void handleLavaPlanetClick() {
-        // Implement logic for when the lava planet is clicked
-        logger.info("Lava planet clicked.");
-        game.setScreen(new LavaGameScreen(game)); // Load the LavaGameScreen
-    }
-
 
     // TODO: Make it display information about the planet
     @Override
