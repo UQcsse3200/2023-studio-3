@@ -13,11 +13,14 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.GameEndService; // Import the GameEndService
 import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.screens.Planets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
+import com.csse3200.game.services.ServiceLocator;
+
 
 /**
  * The game screen where you can choose a planet to play on.
@@ -51,10 +54,13 @@ public class LevelSelectScreen extends ScreenAdapter {
     public void show() {
         batch = new SpriteBatch();
         background = new Sprite(new Texture(BG_PATH));
+
+        // Register the gameEndService here before using it
+        ServiceLocator.registerGameEndService(new GameEndService()); // Replace 'new GameEndService()' with your actual implementation
     }
 
     /**
-     * Spawns the planets on the screen by doing contionous calls to spawnPlanet().
+     * Spawns the planets on the screen by doing continuous calls to spawnPlanet().
      * The rotation speed of a planet is determined by the frame variable, this
      * function can be modified.
      */
@@ -110,13 +116,12 @@ public class LevelSelectScreen extends ScreenAdapter {
                         handleLavaPlanetClick();
                     }
                 }
-                } else {
-                    Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
-                }
+            } else {
+                Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
+                batch.draw(planetBorder, planet[0] - 2, planet[1] - 2, planet[2] + 3, planet[3] + 3);
             }
         }
-
+    }
 
     private void handleDesertPlanetClick() {
         // Implement logic for when the desert planet is clicked
@@ -135,7 +140,6 @@ public class LevelSelectScreen extends ScreenAdapter {
         logger.info("Lava planet clicked.");
         game.setScreen(new LavaGameScreen(game)); // Load the LavaGameScreen
     }
-
 
     // TODO: Make it display information about the planet
     @Override
