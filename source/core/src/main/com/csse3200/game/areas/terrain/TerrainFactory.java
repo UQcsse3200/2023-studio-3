@@ -22,7 +22,7 @@ import com.csse3200.game.areas.terrain.TerrainComponent.TerrainOrientation;
 import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-
+import com.csse3200.game.screens.GameLevelData;
 import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
 import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 
@@ -34,6 +34,7 @@ public class TerrainFactory {
   private final TerrainOrientation orientation;
   private static Stage stage;
   private Texture whiteTexture;
+  int selectedLevel = GameLevelData.getSelectedLevel();
 
   /**
    * Create a terrain factory with Orthogonal orientation
@@ -109,7 +110,24 @@ public class TerrainFactory {
 
     // Create a background layer
     TiledMapTileLayer backgroundLayer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
-    TextureRegion backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/ingamebg.png", Texture.class));
+
+    TextureRegion backgroundTextureRegion ;
+
+    switch (selectedLevel) {
+      case 0: // Desert
+        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class));
+        break;
+      case 1: // Ice
+        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/ice_bg.png", Texture.class));
+        break;
+      case 2: // Lava
+        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/lava_bg.png", Texture.class));
+        break;
+      default:
+        // Use a default background for other levels or planets
+        backgroundTextureRegion = new TextureRegion(ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class));
+        break;
+    }
 
     // Create a single cell for the entire background image
     Cell cell = new Cell();

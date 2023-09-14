@@ -14,6 +14,7 @@ import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
@@ -54,7 +55,6 @@ public class ForestGameArea extends GameArea {
          "images/desert_bg.png",
           "images/ice_bg.png",
           "images/lava_bg.png",
-          "images/ingamebg.png",
           "images/projectiles/projectile.png",
           "images/ingamebg.png",
           "images/box_boy_leaf.png",
