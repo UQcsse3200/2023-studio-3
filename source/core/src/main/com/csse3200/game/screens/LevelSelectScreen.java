@@ -100,8 +100,11 @@ public class LevelSelectScreen extends ScreenAdapter {
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
             if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
-                // If a planet is clicked it will load the level based on the planet
+                // If the mouse is over a planet, draw the planet border
+                Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
+                batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
                 if (Gdx.input.justTouched()) {
+                    // If the planet is clicked, load the corresponding level
                     dispose();
                     logger.info("Loading level {}", planet[4]);
                     GameLevelData.setSelectedLevel(planet[4]);
@@ -117,12 +120,9 @@ public class LevelSelectScreen extends ScreenAdapter {
                     }
                 }
             }
-            else {
-                    Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
-            }
         }
     }
+
     private void handleDesertPlanetClick() {
         // Implement logic for when the desert planet is clicked
         logger.info("Desert planet clicked.");
