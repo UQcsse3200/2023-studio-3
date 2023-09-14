@@ -24,4 +24,5 @@ public class GameLevelData {
     public static void setSelectedLevel(int level) {
         selectedLevel = level;
     }
+
 }
