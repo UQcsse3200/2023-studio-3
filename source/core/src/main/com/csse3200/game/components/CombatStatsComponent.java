@@ -40,7 +40,7 @@ public class CombatStatsComponent extends Component {
   private String state;
   private ArrayList<Currency> drops;
   private ArrayList<Melee> closeRangeAbilities;
-  private ArrayList<ProjectileConfig> longRangeAbilities; //TODO change String to Projectiles
+  private ArrayList<ProjectileConfig> longRangeAbilities;
 
   public CombatStatsComponent(int health, int baseAttack) {
     setHealth(health);

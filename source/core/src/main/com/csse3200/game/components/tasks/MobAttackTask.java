@@ -102,7 +102,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -124,20 +124,20 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
         if (!isTargetVisible() || this.meleeOrProjectile() == null) {
           this.owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
+
         } else {
+          // produce a projectile or melee attack based on chosen weapon
           if (this.meleeOrProjectile() instanceof Melee) {
             System.out.println("Melee attack");
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
             this.owner.getEntity().getEvents().trigger("meleeStart");
+
           } else {
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
             newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-//            newProjectile.setScale(-1f, 0.5f);
             ServiceLocator.getEntityService().register(newProjectile);
-
-//            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
             this.owner.getEntity().getEvents().trigger(FIRING);
             mobState = STATE.STOW;
           }
@@ -149,7 +149,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
           owner.getEntity().getEvents().trigger(IDLE);
@@ -226,8 +226,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * returns the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
    * */
   private Weapon meleeOrProjectile() {
-//    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-//    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
     setTarget();
     TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);
     Weapon chosenWeapon = null;
@@ -238,6 +236,9 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     return chosenWeapon;
   }
 
+  /**
+   * set the target of this attack taskto the closest HUMAN target to the mob
+   * */
   private void setTarget() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
     target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
