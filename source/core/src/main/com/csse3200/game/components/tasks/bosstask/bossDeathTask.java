@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks;
+package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
