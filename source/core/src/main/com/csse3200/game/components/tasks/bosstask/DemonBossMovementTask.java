@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks.bosstask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.DefaultTask;
@@ -19,6 +20,11 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     private MovementTask movementTask;
     private final PhysicsEngine physics;
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
+    private float jumpMinX;
+    private float jumpMinY;
+    private float jumpMaxX;
+    private float jumpMaxY;
+
 
     private enum STATE {
         WALK, JUMP, IDLE
@@ -50,5 +56,27 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
         jump.create(owner);
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
         jump.start();
+    }
+
+    private Vector2 getJumpPos() {
+        // check where demon can jump
+        jumpMinX = currentPos.x - 2;
+        jumpMaxX = currentPos.x + 2;
+        jumpMinY = currentPos.y - 2;
+        jumpMaxY = currentPos.y + 2;
+        if (jumpMinX < 1) {
+            jumpMinX = 1;
+        } else if (jumpMinX > 19) {
+            jumpMinX = 19;
+        } else if (jumpMinY < 1) {
+            jumpMinX = 1;
+        } else if (jumpMinY > 7) {
+            jumpMinX = 7;
+        }
+
+        // generate random jump pos
+        float randomX = MathUtils.random(jumpMinX, jumpMaxX);
+        float randomY = MathUtils.random(jumpMinY, jumpMaxY);
+        return new Vector2(randomX, randomY);
     }
 }
