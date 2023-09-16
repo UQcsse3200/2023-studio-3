@@ -1,4 +1,4 @@
-package com.csse3200.game.entities.factories;
+package com.csse3200.game.components.tasks;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
@@ -7,10 +7,11 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
-import com.csse3200.game.components.tasks.FinalBossMovementTask;
+import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.human.EngineerCombatTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.EngineerFactory;
 import com.csse3200.game.events.listeners.EventListener0;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsLayer;

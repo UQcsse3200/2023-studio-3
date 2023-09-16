@@ -6,11 +6,12 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
+import com.csse3200.game.components.tasks.bosstask.DemonBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
 import com.csse3200.game.components.tasks.bosstask.bossDeathTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.BossKingConfigs;
+import com.csse3200.game.entities.configs.MobBossConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -19,16 +20,32 @@ import com.csse3200.game.physics.components.*;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
-public class BossKingFactory {
+public class MobBossFactory {
 
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
 
+    // Create Demon Boss
+    private static Entity createDemonBoss() {
+        MobBossConfigs config = configs.MobBoss;
+        Entity demon = createBaseBoss();
+
+        // Animation addition
+
+        // AI task addition
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new DemonBossMovementTask());
+
+        // Component addition
+
+        return demon;
+    }
+
     // Create Boss King 1
-    public static Entity createBossKing1(Entity target, int numLane) {
-        BossKingConfigs config = configs.BossKing;
-        Entity bossKing1 = createBaseBoss(target);
+    public static Entity createMobBoss1(int numLane) {
+        MobBossConfigs config = configs.MobBoss;
+        Entity mobBoss1 = createBaseBoss();
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
                 .addTask(new FinalBossMovementTask(1f, numLane))
@@ -39,21 +56,21 @@ public class BossKingFactory {
                 ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
         animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP_REVERSED);
 
-        bossKing1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        mobBoss1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator1)
                 .addComponent(aiTaskComponent1)
                 .addComponent(new Boss1AnimationController());
 
-        bossKing1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing1.setScale(1f, 1f);
+        mobBoss1.getComponent(AnimationRenderComponent.class).scaleEntity();
+        mobBoss1.setScale(1f, 1f);
 
-        return bossKing1;
+        return mobBoss1;
     }
 
     // Create Boss King 2
-    public static Entity createBossKing2(Entity target) {
-        BossKingConfigs config = configs.BossKing;
-        Entity bossKing2 = createBaseBoss(target);
+    public static Entity createMobBoss2() {
+        MobBossConfigs config = configs.MobBoss;
+        Entity mobBoss2 = createBaseBoss();
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
                 .addTask(new RangeBossTask(2f));
@@ -69,21 +86,21 @@ public class BossKingFactory {
         animator2.addAnimation("A2", 0.3f, Animation.PlayMode.LOOP);
         animator2.addAnimation("Hurt", 0.3f, Animation.PlayMode.LOOP);
 
-        bossKing2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+        mobBoss2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(animator2)
                 .addComponent(aiTaskComponent2)
                 .addComponent(new Boss2AnimationController())
                 .addComponent(new PhysicsComponent());
 
-        bossKing2.getComponent(AnimationRenderComponent.class).scaleEntity();
-        bossKing2.scaleHeight(3f);
-        bossKing2.scaleWidth(3f);
+        mobBoss2.getComponent(AnimationRenderComponent.class).scaleEntity();
+        mobBoss2.scaleHeight(3f);
+        mobBoss2.scaleWidth(3f);
 
-        return bossKing2;
+        return mobBoss2;
     }
 
     // Create the base boss entity
-    private static Entity createBaseBoss(Entity target) {
+    private static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
                 .addComponent(new ColliderComponent())
@@ -96,7 +113,7 @@ public class BossKingFactory {
         return boss;
     }
 
-    private BossKingFactory() {
+    private MobBossFactory() {
         throw new IllegalStateException("Instantiating static util class");
     }
 }
