@@ -1,5 +1,5 @@
 
-mobKing_projectile.png
+mobBoss_projectile.png
 size: 256, 32
 format: RGBA8888
 filter: Nearest, Nearest
