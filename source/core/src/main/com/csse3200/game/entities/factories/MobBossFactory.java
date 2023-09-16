@@ -6,6 +6,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
+import com.csse3200.game.components.tasks.bosstask.DemonBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
 import com.csse3200.game.components.tasks.bosstask.bossDeathTask;
@@ -25,10 +26,26 @@ public class MobBossFactory {
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
 
-    // Create Boss King 1
-    public static Entity createMobBoss1(Entity target, int numLane) {
+    // Create Demon Boss
+    private static Entity createDemonBoss() {
         MobBossConfigs config = configs.MobBoss;
-        Entity mobBoss1 = createBaseBoss(target);
+        Entity demon = createBaseBoss();
+
+        // Animation addition
+
+        // AI task addition
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new DemonBossMovementTask());
+
+        // Component addition
+
+        return demon;
+    }
+
+    // Create Boss King 1
+    public static Entity createMobBoss1(int numLane) {
+        MobBossConfigs config = configs.MobBoss;
+        Entity mobBoss1 = createBaseBoss();
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
                 .addTask(new FinalBossMovementTask(1f, numLane))
@@ -51,9 +68,9 @@ public class MobBossFactory {
     }
 
     // Create Boss King 2
-    public static Entity createMobBoss2(Entity target) {
+    public static Entity createMobBoss2() {
         MobBossConfigs config = configs.MobBoss;
-        Entity mobBoss2 = createBaseBoss(target);
+        Entity mobBoss2 = createBaseBoss();
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
                 .addTask(new RangeBossTask(2f));
@@ -83,7 +100,7 @@ public class MobBossFactory {
     }
 
     // Create the base boss entity
-    private static Entity createBaseBoss(Entity target) {
+    private static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
                 .addComponent(new ColliderComponent())

@@ -390,7 +390,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_MOBBOSS1; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss1 = MobBossFactory.createMobBoss1(player, pickedLanes[i]);
+      mobBoss1 = MobBossFactory.createMobBoss1(pickedLanes[i]);
       spawnEntityAt(mobBoss1,
               randomPos,
               true,
@@ -506,7 +506,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_MOBBOSS2; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss2 = MobBossFactory.createMobBoss2(player);
+      mobBoss2 = MobBossFactory.createMobBoss2();
       spawnEntityAt(mobBoss2,
               randomPos,
               true,
