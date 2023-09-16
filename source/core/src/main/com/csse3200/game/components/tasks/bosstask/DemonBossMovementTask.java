@@ -2,6 +2,7 @@ package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -24,6 +25,7 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     private float jumpMinY;
     private float jumpMaxX;
     private float jumpMaxY;
+    private long time;
 
 
     private enum STATE {
@@ -39,12 +41,15 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         this.currentPos = owner.getEntity().getPosition();
+        System.out.println(currentPos);
+        jump(getJumpPos());
+        System.out.println(owner.getEntity().getPosition());
     }
 
-    @Override
-    public void update() {
-
-    }
+//    @Override
+//    public void update() {
+//
+//    }
 
     @Override
     public int getPriority() {
@@ -78,5 +83,9 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
         float randomX = MathUtils.random(jumpMinX, jumpMaxX);
         float randomY = MathUtils.random(jumpMinY, jumpMaxY);
         return new Vector2(randomX, randomY);
+    }
+
+    private long getTime() {
+        return TimeUtils.millis();
     }
 }
