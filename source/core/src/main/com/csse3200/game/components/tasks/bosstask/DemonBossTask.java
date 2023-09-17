@@ -8,6 +8,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Vector2 currentPos;
     private MovementTask movementTask;
     private final PhysicsEngine physics;
-    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
-    private long time;
+    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
+    private final GameTime gameTime;
     private Vector2 jumpPos;
+    private MovementTask jumpTask;
+    private boolean isJumping;
 
 
     private enum STATE {
@@ -31,6 +34,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     public DemonBossTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
+        gameTime = ServiceLocator.getTimeSource();
     }
 
     @Override
@@ -43,8 +47,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         this.currentPos = owner.getEntity().getPosition();
-        if (currentPos.equals(jumpPos)) {
-            logger.debug("Demon jump completed");
+        System.out.println("Status: " + jumpTask.getStatus());
+
+        if (jumpTask.getStatus().equals(Status.FINISHED) || jumpTask.getStatus().equals(Status.FAILED)) {
+            if (isJumping) {
+                isJumping = false;
+                System.out.println("Jump complete");
+            }
         }
     }
 
@@ -56,24 +65,25 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private void jump(Vector2 finalPos) {
         // Start animation
         owner.getEntity().getEvents().trigger("demon_walk");
-        MovementTask jump = new MovementTask(finalPos);
-        jump.create(owner);
+        jumpTask = new MovementTask(finalPos);
+        jumpTask.create(owner);
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
         logger.debug("Demon jump starting");
-        jump.start();
+        jumpTask.start();
+        isJumping = true;
     }
 
     private Vector2 getJumpPos() {
         // check where demon can jump
-        float jumpMinX = currentPos.x - 2;
-        float jumpMaxX = currentPos.x + 2;
-        float jumpMinY = currentPos.y - 2;
-        float jumpMaxY = currentPos.y + 2;
+        float jumpMinX = currentPos.x - 4;
+        float jumpMaxX = currentPos.x + 4;
+        float jumpMinY = currentPos.y - 4;
+        float jumpMaxY = currentPos.y + 4;
 
         if (jumpMinX < 1) {
             jumpMinX = 1;
-        } else if (jumpMinX > 19) {
-            jumpMinX = 19;
+        } else if (jumpMinX > 18) {
+            jumpMinX = 18;
         } else if (jumpMinY < 1) {
             jumpMinX = 1;
         } else if (jumpMinY > 7) {
@@ -86,7 +96,4 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return jumpPos = new Vector2(randomX, randomY);
     }
 
-    private long getTime() {
-        return TimeUtils.millis();
-    }
 }
