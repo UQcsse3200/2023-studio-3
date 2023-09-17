@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +59,21 @@ public class MainMenuDisplay extends UIComponent {
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0, 0);
 
-        TextButton startBtn = new TextButton("Start", skin);
-        TextButton loadBtn = new TextButton("Help", skin);
-        TextButton settingsBtn = new TextButton("Settings", skin);
-        TextButton exitBtn = new TextButton("Quit", skin);
+        // Create an instance of the ButtonFactory class
+        ButtonFactory buttonFactory = new ButtonFactory();
+
+// Create a "Start" TextButton using the default style
+        TextButton startBtn = buttonFactory.createButton("Start");
+
+// Create a "Help" TextButton using the default style
+        TextButton loadBtn = buttonFactory.createButton("Help");
+
+// Create a "Settings" TextButton with a custom image
+        TextButton settingsBtn = buttonFactory.createCustomButton("Settings", "images/ui/Sprites/UI_Glass_Button_Large_Lock_01a2.png");
+
+// Create a "Quit" TextButton with a custom image
+        TextButton exitBtn = buttonFactory.createCustomButton("Quit", "images/ui/Sprites/UI_Glass_Button_Large_Press_01a2.png");
+
 
         // Triggers an event when the button is pressed
         startBtn.addListener(
