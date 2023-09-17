@@ -3,6 +3,7 @@ package com.csse3200.game.components.tasks.bosstask;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -21,11 +22,8 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     private MovementTask movementTask;
     private final PhysicsEngine physics;
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
-    private float jumpMinX;
-    private float jumpMinY;
-    private float jumpMaxX;
-    private float jumpMaxY;
     private long time;
+    private Vector2 jumpPos;
 
 
     private enum STATE {
@@ -43,13 +41,16 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
         this.currentPos = owner.getEntity().getPosition();
         System.out.println(currentPos);
         jump(getJumpPos());
-        System.out.println(owner.getEntity().getPosition());
+        System.out.println("DEMON: " + owner.getEntity().getPosition());
     }
 
-//    @Override
-//    public void update() {
-//
-//    }
+    @Override
+    public void update() {
+        this.currentPos = owner.getEntity().getPosition();
+        if (currentPos == jumpPos) {
+            logger.debug("Demon jump completed");
+        }
+    }
 
     @Override
     public int getPriority() {
@@ -60,15 +61,17 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
         MovementTask jump = new MovementTask(finalPos);
         jump.create(owner);
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
+        logger.debug("Demon jump starting");
         jump.start();
     }
 
     private Vector2 getJumpPos() {
         // check where demon can jump
-        jumpMinX = currentPos.x - 2;
-        jumpMaxX = currentPos.x + 2;
-        jumpMinY = currentPos.y - 2;
-        jumpMaxY = currentPos.y + 2;
+        float jumpMinX = currentPos.x - 2;
+        float jumpMaxX = currentPos.x + 2;
+        float jumpMinY = currentPos.y - 2;
+        float jumpMaxY = currentPos.y + 2;
+
         if (jumpMinX < 1) {
             jumpMinX = 1;
         } else if (jumpMinX > 19) {
@@ -82,7 +85,7 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
         // generate random jump pos
         float randomX = MathUtils.random(jumpMinX, jumpMaxX);
         float randomY = MathUtils.random(jumpMinY, jumpMaxY);
-        return new Vector2(randomX, randomY);
+        return jumpPos = new Vector2(randomX, randomY);
     }
 
     private long getTime() {
