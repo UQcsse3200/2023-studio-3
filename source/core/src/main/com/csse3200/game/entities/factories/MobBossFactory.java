@@ -35,9 +35,9 @@ public class MobBossFactory {
         Entity demon = createBaseBoss();
 
         // Animation addition
-        AnimationRenderComponent animator1 = new AnimationRenderComponent(
+        AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
-        animator1.addAnimation("demon_walk", 0.3f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_walk", 0.3f, Animation.PlayMode.LOOP);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -45,7 +45,7 @@ public class MobBossFactory {
 
         // Component addition
         demon
-                .addComponent(animator1)
+                .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));

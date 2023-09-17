@@ -13,11 +13,15 @@ public class DemonAnimationController extends Component {
     @Override
     public void create() {
         super.create();
-        animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("demon_walk", this::animateStart);
+        animator = entity.getComponent(AnimationRenderComponent.class);
+        registerAnimationListener("demon_walk");
+        registerAnimationListener("demon_cleave");
+        registerAnimationListener("demon_take_hit");
+        registerAnimationListener("demon_idle");
+        registerAnimationListener("demon_death");
     }
 
-    void animateStart() {
-        animator.startAnimation("demon_walk");
+    private void registerAnimationListener(String animationName) {
+        entity.getEvents().addListener(animationName, () -> animator.startAnimation(animationName));
     }
 }
