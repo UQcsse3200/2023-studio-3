@@ -104,7 +104,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/stun_effect.png",
           "images/projectiles/firework_anim.png",
           "images/projectiles/pierce_anim.png",
-          "images/projectiles/snow_ball.png"
+          "images/projectiles/snow_ball.png",
+          "images/mobboss/demon.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -136,7 +137,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/burn_effect.atlas",
           "images/projectiles/firework_anim.atlas",
           "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/stun_effect.atlas"
+          "images/projectiles/stun_effect.atlas",
+          "images/mobboss/demon.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -240,6 +242,9 @@ public class ForestGameArea extends GameArea {
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     spawnXenoGrunts();
     spawnWeaponTower();
+
+    spawnDemonBoss();
+
     //mobBoss1 = spawnMobBoss1();
     startWaveTimer();
 //    spawnIncome();
@@ -384,6 +389,10 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //  }
 
+  private void spawnDemonBoss() {
+    Entity demon = MobBossFactory.createDemonBoss();
+    spawnEntityAt(demon, new GridPoint2(19, 4), true, false);
+  }
 
   private Entity spawnMobBoss1() {
     int[] pickedLanes = new Random().ints(0, 8)

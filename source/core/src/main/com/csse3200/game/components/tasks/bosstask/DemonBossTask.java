@@ -3,8 +3,6 @@ package com.csse3200.game.components.tasks.bosstask;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.Timer;
-import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.tasks.MovementTask;
@@ -14,9 +12,9 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
+public class DemonBossTask extends DefaultTask implements PriorityTask {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemonBossMovementTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
     private static final int PRIORITY = 3;
     private Vector2 currentPos;
     private MovementTask movementTask;
@@ -31,7 +29,7 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     }
     private STATE demonState = STATE.IDLE;
 
-    public DemonBossMovementTask() {
+    public DemonBossTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
     }
 
@@ -39,15 +37,13 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         this.currentPos = owner.getEntity().getPosition();
-        System.out.println(currentPos);
         jump(getJumpPos());
-        System.out.println("DEMON: " + owner.getEntity().getPosition());
     }
 
     @Override
     public void update() {
         this.currentPos = owner.getEntity().getPosition();
-        if (currentPos == jumpPos) {
+        if (currentPos.equals(jumpPos)) {
             logger.debug("Demon jump completed");
         }
     }
@@ -58,6 +54,8 @@ public class DemonBossMovementTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
+        // Start animation
+        owner.getEntity().getEvents().trigger("demon_walk");
         MovementTask jump = new MovementTask(finalPos);
         jump.create(owner);
         owner.getEntity().getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
