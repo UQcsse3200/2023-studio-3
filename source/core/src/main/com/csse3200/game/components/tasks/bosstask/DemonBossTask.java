@@ -5,16 +5,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.components.tasks.WaitTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.math.MathUtils;
 
 public class DemonBossTask extends DefaultTask implements PriorityTask {
 
@@ -23,6 +27,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final float TIME_INTERVAL = 10f; // 10 seconds
+    private static final int BURN_BALLS = 5;
+    private static final int X_LENGTH = 20; // for projectile destination calculations
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -38,6 +44,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Entity demon;
     private float elapsedTime = 0f;
     private boolean sequenceFlag = false;
+    private Double[] yArray = {Math.sqrt(3), 1/Math.sqrt(3), -1/Math.sqrt(3), -Math.sqrt(3)};
 
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -80,6 +87,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         if (!sequenceFlag) {return;}
 
         // Run sequence otherwise
+        jump(getJumpPos());
+        if (jumpComplete()) {
+            fireBreath();
+        }
 
     }
 
@@ -160,5 +171,18 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             return true;
         }
         return false;
+    }
+
+    private void fireBreath() {
+        changeState(DEMON_STATE.BREATH);
+        Vector2 destination = null;
+        for (int i = 0; i < BURN_BALLS; i++) {
+            float x = demon.getPosition().x - X_LENGTH;
+            float y = (float) (demon.getPosition().y + yArray[i] * X_LENGTH);
+            destination = new Vector2(x, y);
+        }
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                new Vector2(2,2), ProjectileEffects.BURN, false);
+        projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
     }
 }
