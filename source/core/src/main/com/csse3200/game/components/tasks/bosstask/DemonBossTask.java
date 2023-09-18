@@ -2,6 +2,7 @@ package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -44,7 +45,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Entity demon;
     private float elapsedTime = 0f;
     private boolean sequenceFlag = false;
-    private Double[] yArray = {Math.sqrt(3), 1/Math.sqrt(3), -1/Math.sqrt(3), -Math.sqrt(3)};
+    Array<Double> yArray = new Array<>();
 
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -90,6 +91,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         jump(getJumpPos());
         if (jumpComplete()) {
             fireBreath();
+            sequenceFlag = false;
         }
 
     }
@@ -175,14 +177,26 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private void fireBreath() {
         changeState(DEMON_STATE.BREATH);
-        Vector2 destination = null;
+
+        // add constant y changes to burn projectile
+        yArray.add(Math.sqrt(3));
+        yArray.add(1/Math.sqrt(3));
+        yArray.add(1d);
+        yArray.add(-1/Math.sqrt(3));
+        yArray.add(-Math.sqrt(3));
+
+        // spawn breath balls
         for (int i = 0; i < BURN_BALLS; i++) {
+
+            // calculate destination of burn balls
             float x = demon.getPosition().x - X_LENGTH;
-            float y = (float) (demon.getPosition().y + yArray[i] * X_LENGTH);
-            destination = new Vector2(x, y);
+            float y = (float) (demon.getPosition().y + yArray.get(i) * X_LENGTH);
+            Vector2 destination = new Vector2(x, y);
+
+            // create burn projectiles
+            Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                    new Vector2(2,2), ProjectileEffects.BURN, false);
+            projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
         }
-        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
-                new Vector2(2,2), ProjectileEffects.BURN, false);
-        projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
     }
 }
