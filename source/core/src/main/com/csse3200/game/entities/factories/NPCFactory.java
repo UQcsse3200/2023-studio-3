@@ -102,6 +102,39 @@ public class NPCFactory {
    * @param target entity to chase
    * @return entity
    */
+  public static Entity createFireWorm(Entity target) {
+    Entity fireWorm = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
+    animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("xeno_shoot", 0.1f);
+    animator.addAnimation("xeno_melee_1", 0.1f);
+    animator.addAnimation("xeno_melee_2", 0.1f);
+    animator.addAnimation("xeno_die", 0.1f);
+    fireWorm
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new XenoAnimationController());
+
+    fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return fireWorm;
+  }
+  /**
+   * Creates a xeno grunt entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
   public static Entity createXenoGrunt(Entity target) {
     Entity xenoGrunt = createBaseNPC(target);
     BaseEnemyConfig config = configs.xenoGrunt;
@@ -129,6 +162,8 @@ public class NPCFactory {
 
     return xenoGrunt;
   }
+
+
 
   /**
    * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
