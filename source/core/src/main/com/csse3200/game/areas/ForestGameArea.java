@@ -230,7 +230,7 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     //player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
     
-    playMusic();
+    //playMusic();
     
     // Types of projectile
 //    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
