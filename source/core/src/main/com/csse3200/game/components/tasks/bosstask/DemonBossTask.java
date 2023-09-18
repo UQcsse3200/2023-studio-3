@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.tasks.MovementTask;
+import com.csse3200.game.components.tasks.WaitTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
@@ -19,7 +20,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
-    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
+    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final float TIME_INTERVAL = 10f; // 10 seconds
 
@@ -36,6 +37,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private AnimationRenderComponent animation;
     private Entity demon;
     private float elapsedTime = 0f;
+    private boolean sequenceFlag = false;
 
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -60,21 +62,30 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         currentPos = owner.getEntity().getPosition();
         animate();
 
-        // Check if transform is complete
-        if (state.equals(DEMON_STATE.TRANSFORM)) {
-            if (!animation.isFinished()) {
-                return;
-            }
-        }
-        state = DEMON_STATE.IDLE;
+//        // Check if transform is complete
+//        if (state.equals(DEMON_STATE.TRANSFORM)) {
+//            WaitTask wait = new WaitTask(2);
+//            wait.create(owner);
+//        }
+//        changeState(DEMON_STATE.IDLE);
 
-        // Every 10 seconds perform sequence
+        // Change sequence flag to true every 10 seconds
         elapsedTime += gameTime.getDeltaTime();
         if (elapsedTime >= TIME_INTERVAL) {
-            jump(getJumpPos());
-
+            sequenceFlag = true;
             elapsedTime = 0f; // Reset the elapsed time
         }
+
+        // Do nothing if sequence flag is false
+        if (!sequenceFlag) {return;}
+
+        // Run sequence otherwise
+
+    }
+
+    private void changeState(DEMON_STATE state) {
+        prevState = this.state;
+        this.state = state;
     }
 
     private void animate() {
@@ -93,11 +104,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
             case TRANSFORM -> demon.getEvents().trigger("transform");
-            default -> {
-                logger.debug("Demon animation {state} not found");
-            }
+            default -> logger.debug("Demon animation {state} not found");
         }
-        prevState = state;
     }
 
     @Override
@@ -106,7 +114,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
-        state = DEMON_STATE.SMASH;
+        changeState(DEMON_STATE.SMASH);
 
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
