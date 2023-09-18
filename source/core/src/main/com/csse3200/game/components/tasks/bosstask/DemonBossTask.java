@@ -45,9 +45,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private AnimationRenderComponent animation;
     private Entity demon;
     private float elapsedTime = 0f;
-    private boolean sequenceFlag = false;
     Array<Double> yArray = new Array<>();
-    WaitTask waitTask;
+    private boolean isBreath;
+    private boolean waitFlag = false;
 
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -81,23 +81,41 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         animate();
+        System.out.println(state);
+        currentPos = demon.getPosition();
 
         switch (state) {
             case IDLE -> {jump(getJumpPos());}
             case SMASH -> {
                 if (jumpComplete()) {
                     fireBreath();
+                    isBreath = true;
                 }
             }
-            case BREATH -> Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
+            case BREATH -> {
+                if (!isBreath) {
                     changeState(DEMON_STATE.IDLE);
+                    waitFlag = false;
+                } else {
+                    if (waitFlag) {
+                        return;
+                    }
+                    waitTask();
                 }
-            }, 4.2f); // Delay in seconds
+            }
         }
     }
 
+    private void waitTask() {
+        waitFlag = true;
+        // to be replaced by wait task
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                isBreath = false;
+            }
+        }, 4.2f); // Delay in seconds
+    }
     private void changeState(DEMON_STATE state) {
         prevState = this.state;
         this.state = state;
@@ -131,7 +149,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
-        sequenceFlag = false;
         changeState(DEMON_STATE.SMASH);
 
         jumpTask = new MovementTask(finalPos);
@@ -188,7 +205,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // add constant y changes to burn projectile
         yArray.add(Math.sqrt(3));
         yArray.add(1/Math.sqrt(3));
-        yArray.add(1d);
+        yArray.add(0d);
         yArray.add(-1/Math.sqrt(3));
         yArray.add(-Math.sqrt(3));
 
@@ -204,6 +221,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
                     new Vector2(2,2), ProjectileEffects.BURN, false);
             projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
+            ServiceLocator.getEntityService().register(projectile);
         }
     }
 }
