@@ -42,7 +42,6 @@ public class MobBossFactory {
         animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_idle", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_smash", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
@@ -51,7 +50,7 @@ public class MobBossFactory {
         animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.5f, Animation.PlayMode.LOOP);
 
 
         // AI task addition

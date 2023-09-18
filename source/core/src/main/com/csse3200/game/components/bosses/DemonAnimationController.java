@@ -19,6 +19,16 @@ public class DemonAnimationController extends Component {
         registerAnimationListener("demon_take_hit");
         registerAnimationListener("demon_idle");
         registerAnimationListener("demon_death");
+        registerAnimationListener("demon_cast_spell");
+        registerAnimationListener("demon_fire_breath");
+        registerAnimationListener("demon_smash");
+        registerAnimationListener("demon_take_hit");
+        registerAnimationListener("idle");
+        registerAnimationListener("move");
+        registerAnimationListener("projectile_explosion");
+        registerAnimationListener("projectile_idle");
+        registerAnimationListener("take_hit");
+        registerAnimationListener("transform");
     }
 
     private void registerAnimationListener(String animationName) {
