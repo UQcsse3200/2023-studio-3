@@ -51,10 +51,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     public void update() {
         currentPos = owner.getEntity().getPosition();
 
-        if (isAtTarget() && isJumping) {
-            isJumping = false;
-            jumpTask.stop();
-        }
     }
 
     @Override
@@ -98,5 +94,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private boolean isAtTarget() {
         return currentPos.dst(jumpPos) <= STOP_DISTANCE;
+    }
+
+    private void JumpComplete() {
+        if (isAtTarget() && isJumping) {
+            isJumping = false;
+            jumpTask.stop();
+        }
     }
 }

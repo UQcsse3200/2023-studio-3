@@ -105,7 +105,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.png",
           "images/projectiles/pierce_anim.png",
           "images/projectiles/snow_ball.png",
-          "images/mobboss/demon.png"
+          "images/mobboss/demon.png",
+          "images/mobboss/demon2.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
