@@ -37,20 +37,20 @@ public class MobBossFactory {
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
-        animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_smash", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("move", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("transform", 0.5f, Animation.PlayMode.LOOP);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
 
 
         // AI task addition

@@ -21,6 +21,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int PRIORITY = 3;
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
+    private static final float TIME_INTERVAL = 10f; // 10 seconds
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -31,7 +32,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private MovementTask jumpTask;
     private boolean isJumping;
     private DEMON_STATE state;
+    private DEMON_STATE prevState = DEMON_STATE.IDLE;
+    private AnimationRenderComponent animation;
     private Entity demon;
+    private float elapsedTime = 0f;
+
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
     }
@@ -46,27 +51,40 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         super.start();
         demon = owner.getEntity();
         state = DEMON_STATE.TRANSFORM;
-        this.currentPos = owner.getEntity().getPosition();
-        jump(getJumpPos());
+        animation = demon.getComponent(AnimationRenderComponent.class); // get animation
+        currentPos = owner.getEntity().getPosition(); // get current position
     }
 
     @Override
     public void update() {
-        animate(state);
         currentPos = owner.getEntity().getPosition();
+        animate();
 
         // Check if transform is complete
         if (state.equals(DEMON_STATE.TRANSFORM)) {
-            if (demon.getComponent(AnimationRenderComponent.class).isFinished()) {
-                state = DEMON_STATE.IDLE;
+            if (!animation.isFinished()) {
+                return;
             }
         }
+        state = DEMON_STATE.IDLE;
 
+        // Every 10 seconds perform sequence
+        elapsedTime += gameTime.getDeltaTime();
+        if (elapsedTime >= TIME_INTERVAL) {
+            jump(getJumpPos());
+
+            elapsedTime = 0f; // Reset the elapsed time
+        }
     }
 
-    private void animate(DEMON_STATE state) {
+    private void animate() {
+        // Check if same animation is being called
+        if (prevState.equals(state)) {
+            return; // skip rest of function
+        }
+
         switch (state) {
-            case CAST -> demon.getEvents().trigger("demon_cast_spell");
+            case CAST -> {demon.getEvents().trigger("demon_cast_spell");}
             case IDLE -> demon.getEvents().trigger("demon_idle");
             case WALK -> demon.getEvents().trigger("demon_walk");
             case DEATH -> demon.getEvents().trigger("demon_death");
@@ -75,7 +93,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
             case TRANSFORM -> demon.getEvents().trigger("transform");
+            default -> {
+                logger.debug("Demon animation {state} not found");
+            }
         }
+        prevState = state;
     }
 
     @Override
@@ -84,14 +106,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
-        // Start animation
-        demon.getEvents().trigger("demon_walk");
+        state = DEMON_STATE.SMASH;
+
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
-        logger.debug("Demon jump starting");
         jumpTask.start();
         isJumping = true;
+
+        logger.debug("Demon jump starting");
+
     }
 
     private Vector2 getJumpPos() {
@@ -121,10 +145,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return currentPos.dst(jumpPos) <= STOP_DISTANCE;
     }
 
-    private void JumpComplete() {
+    private boolean jumpComplete() {
         if (isAtTarget() && isJumping) {
             isJumping = false;
             jumpTask.stop();
+            return true;
         }
+        return false;
     }
 }
