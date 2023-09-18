@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.ProjectileEffects;
@@ -39,13 +40,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Vector2 jumpPos;
     private MovementTask jumpTask;
     private boolean isJumping;
-    private DEMON_STATE state;
-    private DEMON_STATE prevState = DEMON_STATE.IDLE;
+    private DEMON_STATE state = DEMON_STATE.IDLE;
+    private DEMON_STATE prevState;
     private AnimationRenderComponent animation;
     private Entity demon;
     private float elapsedTime = 0f;
     private boolean sequenceFlag = false;
     Array<Double> yArray = new Array<>();
+    WaitTask waitTask;
 
     private enum DEMON_STATE {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -60,40 +62,26 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         demon = owner.getEntity();
-        state = DEMON_STATE.TRANSFORM;
-        animation = demon.getComponent(AnimationRenderComponent.class); // get animation
+        changeState(DEMON_STATE.TRANSFORM);
+        animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
     }
 
     @Override
     public void update() {
-        currentPos = owner.getEntity().getPosition();
         animate();
 
-//        // Check if transform is complete
-//        if (state.equals(DEMON_STATE.TRANSFORM)) {
-//            WaitTask wait = new WaitTask(2);
-//            wait.create(owner);
-//        }
-//        changeState(DEMON_STATE.IDLE);
-
-        // Change sequence flag to true every 10 seconds
-        elapsedTime += gameTime.getDeltaTime();
-        if (elapsedTime >= TIME_INTERVAL) {
-            sequenceFlag = true;
-            elapsedTime = 0f; // Reset the elapsed time
+        // temporary fix for not wait task and NORMAL not working
+        if (animation.getCurrentAnimation().equals("transform")) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    // Your code to execute after the delay
+                    changeState(DEMON_STATE.IDLE);
+                    sequenceFlag = true;
+                }
+            }, 6.4f); // Delay in seconds
         }
-
-        // Do nothing if sequence flag is false
-        if (!sequenceFlag) {return;}
-
-        // Run sequence otherwise
-        jump(getJumpPos());
-        if (jumpComplete()) {
-            fireBreath();
-            sequenceFlag = false;
-        }
-
     }
 
     private void changeState(DEMON_STATE state) {
@@ -119,6 +107,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case TRANSFORM -> demon.getEvents().trigger("transform");
             default -> logger.debug("Demon animation {state} not found");
         }
+
+        prevState = state;
     }
 
     @Override
