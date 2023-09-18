@@ -28,8 +28,8 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
     private WaitTask waitTask;
     private Task currentTask;
     /** Animation event names */
-    private static final String START = "startMobKing";
-    private static final String FINAL = "startMobKingFinal";
+    private static final String START = "startMobBoss";
+    private static final String FINAL = "startMobBossFinal";
     private enum STATE {
         START, FINAL
     }
@@ -68,7 +68,7 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
         this.owner.getEntity().getEvents().trigger("rangeBossMovementStart");
     }
 
-    public void switchMobKingBallState() {
+    public void switchMobBossBallState() {
         switch (bossBallState) {
             case START:
                 owner.getEntity().getEvents().trigger(FINAL);
@@ -89,7 +89,7 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
                     this.owner.getEntity().getEvents().trigger("attack1Start");
                 }
                 owner.getEntity().getEvents().trigger(START);
-                switchMobKingBallState();
+                switchMobBossBallState();
                 startWaiting();
             } else {
                 startMoving();

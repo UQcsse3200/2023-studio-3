@@ -3,10 +3,10 @@ package com.csse3200.game.components.projectile;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
-public class MobKingProjectAnimController extends Component {
+public class MobBossProjectAnimController extends Component {
     /** Event names */
-    private static final String START = "startMobKing";
-    private static final String FINAL = "startMobKingFinal";
+    private static final String START = "startMobBoss";
+    private static final String FINAL = "startMobBossFinal";
 
     /** Animation name constants */
     private static final String START_ANIM = "mob_boss";
