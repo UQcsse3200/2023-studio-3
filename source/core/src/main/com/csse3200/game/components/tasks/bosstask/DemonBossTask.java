@@ -65,22 +65,36 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         changeState(DEMON_STATE.TRANSFORM);
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
+
+        // temporary fix for not wait task and NORMAL not working
+        animate();
+        if (animation.getCurrentAnimation().equals("transform")) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    changeState(DEMON_STATE.IDLE);
+                }
+            }, 6.4f); // Delay in seconds
+        }
     }
 
     @Override
     public void update() {
         animate();
 
-        // temporary fix for not wait task and NORMAL not working
-        if (animation.getCurrentAnimation().equals("transform")) {
-            Timer.schedule(new Timer.Task() {
+        switch (state) {
+            case IDLE -> {jump(getJumpPos());}
+            case SMASH -> {
+                if (jumpComplete()) {
+                    fireBreath();
+                }
+            }
+            case BREATH -> Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    // Your code to execute after the delay
                     changeState(DEMON_STATE.IDLE);
-                    sequenceFlag = true;
                 }
-            }, 6.4f); // Delay in seconds
+            }, 4.2f); // Delay in seconds
         }
     }
 
@@ -117,6 +131,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
+        sequenceFlag = false;
         changeState(DEMON_STATE.SMASH);
 
         jumpTask = new MovementTask(finalPos);
@@ -138,12 +153,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         if (jumpMinX < 1) {
             jumpMinX = 1;
-        } else if (jumpMinX > 18) {
-            jumpMinX = 18;
+        } else if (jumpMaxX > 18) {
+            jumpMaxX = 18;
         } else if (jumpMinY < 1) {
             jumpMinX = 1;
         } else if (jumpMinY > 7) {
-            jumpMinX = 7;
+            jumpMaxY = 7;
         }
 
         // generate random jump pos
@@ -153,6 +168,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private boolean isAtTarget() {
+        System.out.println(currentPos);
+        System.out.println(jumpPos);
         return currentPos.dst(jumpPos) <= STOP_DISTANCE;
     }
 
