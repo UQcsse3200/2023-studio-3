@@ -15,12 +15,15 @@ import org.slf4j.LoggerFactory;
 
 public class DemonBossTask extends DefaultTask implements PriorityTask {
 
-    private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
+    // Constants
     private static final int PRIORITY = 3;
-    private Vector2 currentPos;
-    private MovementTask movementTask;
-    private final PhysicsEngine physics;
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
+    private static final float STOP_DISTANCE = 0.1f;
+
+    // Private variables
+    private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
+    private Vector2 currentPos;
+    private final PhysicsEngine physics;
     private final GameTime gameTime;
     private Vector2 jumpPos;
     private MovementTask jumpTask;
@@ -46,14 +49,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     @Override
     public void update() {
-        this.currentPos = owner.getEntity().getPosition();
-        System.out.println("Status: " + jumpTask.getStatus());
+        currentPos = owner.getEntity().getPosition();
 
-        if (jumpTask.getStatus().equals(Status.FINISHED) || jumpTask.getStatus().equals(Status.FAILED)) {
-            if (isJumping) {
-                isJumping = false;
-                System.out.println("Jump complete");
-            }
+        if (isAtTarget() && isJumping) {
+            isJumping = false;
+            jumpTask.stop();
         }
     }
 
@@ -96,4 +96,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return jumpPos = new Vector2(randomX, randomY);
     }
 
+    private boolean isAtTarget() {
+        return currentPos.dst(jumpPos) <= STOP_DISTANCE;
+    }
 }

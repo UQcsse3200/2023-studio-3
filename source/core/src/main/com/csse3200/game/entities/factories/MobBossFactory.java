@@ -52,8 +52,8 @@ public class MobBossFactory {
 
         // Scale demon
         demon.getComponent(AnimationRenderComponent.class).scaleEntity();
-        demon.scaleHeight(2f);
-        demon.scaleWidth(2f);
+        demon.scaleHeight(5f);
+        demon.scaleWidth(5f);
         return demon;
     }
 
