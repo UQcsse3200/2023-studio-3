@@ -52,7 +52,6 @@ public class MobBossFactory {
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
 
-
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new DemonBossTask());

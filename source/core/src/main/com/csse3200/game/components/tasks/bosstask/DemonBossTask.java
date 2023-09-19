@@ -31,7 +31,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final float TIME_INTERVAL = 10f; // 10 seconds
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
-    private static final int JUMP_DISTANCE = 4;
+    private static final float JUMP_DISTANCE = 4.0f;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -82,7 +82,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         animate();
-        System.out.println(state);
         currentPos = demon.getPosition();
 
         switch (state) {
@@ -173,26 +172,27 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         // generate random jump pos
         float randomX = MathUtils.random(jumpMinX, jumpMaxX);
-        float yLen = (float) Math.sqrt(Math.pow(JUMP_DISTANCE, 2) - Math.pow(randomX, 2));
-        float yDown = demon.getPosition().y - yLen;
-        float yUp = demon.getPosition().y + yLen;
-        float yValue = 0;
+        float xValue = currentPos.x - randomX;
+        float xLen = (float) Math.sqrt((double) xValue * xValue);
+        float yLen = (float) Math.sqrt(JUMP_DISTANCE * JUMP_DISTANCE - xLen * xLen);
+        float yDown = currentPos.y - yLen;
+        float yUp = currentPos.y + yLen;
+        float yValue = 0f;
 
         // check y bounds
         if (yUp > 7) { yValue = yDown; }
         if (yDown < 1) { yValue = yUp; }
 
         // randomise y value selection
-        if (yValue == 0) {
+        if (yValue == 0f) {
             int randomNumber = (int) (Math.random() * 100);
             if (randomNumber % 2 == 0) { yValue = yUp; } else { yValue = yDown; }
         }
-        return jumpPos = new Vector2(randomX, yValue);
+        jumpPos = new Vector2(randomX, yValue);
+        return jumpPos;
     }
 
     private boolean isAtTarget() {
-        System.out.println(currentPos);
-        System.out.println(jumpPos);
         return currentPos.dst(jumpPos) <= STOP_DISTANCE;
     }
 

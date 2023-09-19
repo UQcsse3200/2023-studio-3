@@ -34,4 +34,6 @@ public class DemonAnimationController extends Component {
     private void registerAnimationListener(String animationName) {
         entity.getEvents().addListener(animationName, () -> animator.startAnimation(animationName));
     }
+
+
 }
