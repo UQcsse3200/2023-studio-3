@@ -32,7 +32,7 @@ public class FireWormAnimationController extends Component {
     }
 
     void animateAttack() {
-        animator.startAnimation("xeno_shoot");
+        animator.startAnimation("fire_worm_attack");
     }
 }
 

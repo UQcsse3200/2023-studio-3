@@ -104,7 +104,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/stun_effect.png",
           "images/projectiles/firework_anim.png",
           "images/projectiles/pierce_anim.png",
-          "images/projectiles/snow_ball.png"
+          "images/projectiles/snow_ball.png",
+          "images/mobs/fire_worm.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -136,7 +137,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/burn_effect.atlas",
           "images/projectiles/firework_anim.atlas",
           "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/stun_effect.atlas"
+          "images/projectiles/stun_effect.atlas",
+          "images/mobs/fire_worm.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -238,7 +240,8 @@ public class ForestGameArea extends GameArea {
     spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
-    spawnXenoGrunts();
+    // spawnXenoGrunts();
+    spawnFireWorm();
     spawnWeaponTower();
     //mobBoss1 = spawnMobBoss1();
     startWaveTimer();
@@ -467,6 +470,18 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      xenoGrunt.setScale(1.5f, 1.5f);
+      spawnEntityAt(xenoGrunt, randomPos, true, false);
+    }
+  }
+
+  private void spawnFireWorm() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity xenoGrunt = NPCFactory.createFireWorm(player);
       xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, false);
     }

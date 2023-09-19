@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
@@ -97,7 +98,7 @@ public class NPCFactory {
   }
 
   /**
-   * Creates a xeno grunt entity.
+   * Creates a fire worm entity.
    *
    * @param target entity to chase
    * @return entity
@@ -112,23 +113,21 @@ public class NPCFactory {
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
-    animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_shoot", 0.1f);
-    animator.addAnimation("xeno_melee_1", 0.1f);
-    animator.addAnimation("xeno_melee_2", 0.1f);
-    animator.addAnimation("xeno_die", 0.1f);
+                    ServiceLocator.getResourceService().getAsset("images/mobs/fire_worm.atlas", TextureAtlas.class));
+    animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("fire_worm_attack", 0.1f);
     fireWorm
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
-            .addComponent(new XenoAnimationController());
+            .addComponent(new FireWormAnimationController());
 
     fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return fireWorm;
   }
+
+
   /**
    * Creates a xeno grunt entity.
    *
