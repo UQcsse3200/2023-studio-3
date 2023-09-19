@@ -48,11 +48,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private DemonState prevState;
     private AnimationRenderComponent animation;
     private Entity demon;
-    private float elapsedTime = 0f;
-    Array<Double> yArray = new Array<>();
-    private boolean isBreath;
     private boolean waitFlag = false;
     private boolean timerFlag;
+    private int numBalls = 5;
+    private ProjectileEffects effect = ProjectileEffects.FIREBALL;
+    private boolean aoe = true;
 
     // Enums
     private enum AnimState {
@@ -112,7 +112,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
-                    fireBreath(5, ProjectileEffects.FIREBALL, true);
+                    fireBreath();
                 }
             }
             case BREATH -> {
@@ -216,9 +216,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return false;
     }
 
-    private void fireBreath(int numBalls, ProjectileEffects effect, boolean aoe) {
+    public void changeBreathAttack(int numBalls, ProjectileEffects effect, boolean aoe) {
+        this.numBalls = numBalls;
+        this.effect = effect;
+        this.aoe = aoe;
+    }
+
+    private void fireBreath() {
         changeState(DemonState.BREATH);
-        isBreath = true;
+
+        long delay = (long) AnimState.BREATH.getDuration() / numBalls;
 
         float startAngle = (float) Math.toRadians(135);
         float endAngle = (float) Math.toRadians(225);
