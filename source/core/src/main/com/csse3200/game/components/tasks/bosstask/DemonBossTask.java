@@ -112,7 +112,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
-                    fireBreath();
+                    fireBreath(5, ProjectileEffects.FIREBALL, true);
                 }
             }
             case BREATH -> {
@@ -216,37 +216,27 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return false;
     }
 
-    private void fireBreath() {
+    private void fireBreath(int numBalls, ProjectileEffects effect, boolean aoe) {
         changeState(DemonState.BREATH);
         isBreath = true;
 
-        // add constant y changes to burn projectile
-        yArray.add(Math.sqrt(3));
-        yArray.add(1/Math.sqrt(3));
-        yArray.add(0d);
-        yArray.add(-1/Math.sqrt(3));
-        yArray.add(-Math.sqrt(3));
+        float startAngle = (float) Math.toRadians(135);
+        float endAngle = (float) Math.toRadians(225);
+        float angleIncrement = (endAngle - startAngle) / (numBalls - 1);
 
-        // spawn breath balls
-        for (int i = 0; i < BURN_BALLS; i++) {
-            // Wait for a certain amount of time before each iteration
-            float delay = 0.2f;
-            int finalI = i;
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    // This code will run after the delay
-                    float x = demon.getPosition().x - X_LENGTH;
-                    float y = (float) (demon.getPosition().y + yArray.get(finalI) * X_LENGTH);
-                    Vector2 destination = new Vector2(x, y);
+        // spawn projectiles
+        for (int i = 0; i < numBalls; i++) {
+            // calculate unit vectors for projectiles
+            float currentAngle = startAngle + i * angleIncrement;
+            float x = MathUtils.cos(currentAngle) * 20;
+            float y = MathUtils.sin(currentAngle) * 20;
+            Vector2 destination = new Vector2(x, y);
 
-                    // Create burn projectiles
-                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
-                            new Vector2(2, 2), ProjectileEffects.BURN, false);
-                    projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
-                    ServiceLocator.getEntityService().register(projectile);
-                }
-            }, delay);
+            // Create burn projectiles
+            Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                    new Vector2(2, 2), effect, aoe);
+            projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
+            ServiceLocator.getEntityService().register(projectile);
         }
     }
 }
