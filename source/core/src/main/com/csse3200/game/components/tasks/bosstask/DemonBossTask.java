@@ -49,6 +49,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     Array<Double> yArray = new Array<>();
     private boolean isBreath;
     private boolean waitFlag = false;
+    private boolean breathFlag;
 
     // Enums
     private enum AnimState {
@@ -109,18 +110,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case SMASH -> {
                 if (jumpComplete()) {
                     fireBreath();
-                    isBreath = true;
                 }
             }
             case BREATH -> {
-                if (!isBreath) {
-                    changeState(DemonState.IDLE);
-                    waitFlag = false;
-                } else {
-                    if (waitFlag) {
-                        return;
-                    }
+                if (!breathFlag) {
                     waitTask(AnimState.BREATH.getDuration());
+                    breathFlag = true;
+                } else {
+                    if (!waitFlag) { changeState(DemonState.IDLE); }
                 }
             }
         }
@@ -138,7 +135,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                isBreath = false;
+                waitFlag = false;
             }
         }, duration);
         return true;
