@@ -42,7 +42,7 @@ public class MobBossFactory {
         animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_idle", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("demon_smash", 0.1f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_smash", 0.10f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
