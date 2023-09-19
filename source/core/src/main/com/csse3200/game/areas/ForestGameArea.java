@@ -138,7 +138,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.atlas",
           "images/projectiles/mobProjectile.atlas",
           "images/projectiles/stun_effect.atlas",
-          "images/mobs/fire_worm.atlas"
+          "images/mobs/fire_worm.atlas",
+          "images/mobs/dragon_knight.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -201,6 +202,7 @@ public class ForestGameArea extends GameArea {
       case 1:
       case 2:
         spawnFireWorm();
+        spawnDragonKnight();
         break;
       case 3:
         mobBoss2 = spawnMobBoss2();
@@ -482,6 +484,18 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity fireWorm = NPCFactory.createFireWorm(player);
+      fireWorm.setScale(1.5f, 1.5f);
+      spawnEntityAt(fireWorm, randomPos, true, false);
+    }
+  }
+
+  private void spawnDragonKnight() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity fireWorm = NPCFactory.createDragonKnight(player);
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
     }

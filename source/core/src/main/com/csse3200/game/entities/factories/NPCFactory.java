@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
@@ -126,6 +127,36 @@ public class NPCFactory {
     fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return fireWorm;
+  }
+  /**
+   * Creates a dragon Knight entity
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createDragonKnight(Entity target) {
+    Entity dragonKnight = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/dragon_knight.atlas", TextureAtlas.class));
+    animator.addAnimation("dragon_knight_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("dragon_knight_attack", 0.1f);
+    animator.addAnimation("dragon_knight_death", 0.1f);
+    dragonKnight
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new DragonKnightAnimationController());
+
+    dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    dragonKnight.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return dragonKnight;
   }
 
 
