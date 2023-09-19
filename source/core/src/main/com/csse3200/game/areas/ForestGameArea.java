@@ -232,7 +232,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnFireWorm);
+    player.getEvents().addListener("spawnWave", this::spawnWave);
     
     //playMusic();
     
@@ -248,10 +248,12 @@ public class ForestGameArea extends GameArea {
 //    spawnXenoGrunts();
 //    spawnWeaponTower();
 
-    spawnDemonBoss();
+// spawnDragonKnight();
+// spawnFireWorm();
+spawnDemonBoss();
 
     //mobBoss1 = spawnMobBoss1();
-//    startWaveTimer();
+  //  startWaveTimer();
 ////    spawnIncome();
 //    spawnScrap();
 //    spawnTNTTower();
