@@ -105,6 +105,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.png",
           "images/projectiles/pierce_anim.png",
           "images/projectiles/snow_ball.png",
+          "images/mobboss/demon.png",
+          "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png"
   };
   private static final String[] forestTextureAtlases = {
@@ -138,6 +140,7 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.atlas",
           "images/projectiles/mobProjectile.atlas",
           "images/projectiles/stun_effect.atlas",
+          "images/mobboss/demon.atlas",
           "images/mobs/fire_worm.atlas",
           "images/mobs/dragon_knight.atlas"
   };
@@ -231,30 +234,32 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnFireWorm);
     
-    playMusic();
+    //playMusic();
     
     // Types of projectile
 //    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
-    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
-    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
-    // spawnXenoGrunts();
-    // spawnFireWorm();
-    spawnWeaponTower();
+//    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
+//    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+//    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
+//    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
+//    spawnXenoGrunts();
+//    spawnWeaponTower();
+
+    spawnDemonBoss();
+
     //mobBoss1 = spawnMobBoss1();
-    startWaveTimer();
-//    spawnIncome();
-    spawnScrap();
-    spawnTNTTower();
-
-    spawnGapScanners();
-    spawnDroidTower();
-
-    mobBoss2 = spawnMobBoss2();
+//    startWaveTimer();
+////    spawnIncome();
+//    spawnScrap();
+//    spawnTNTTower();
+//
+//    spawnGapScanners();
+//    spawnDroidTower();
+//
+//    mobBoss2 = spawnMobBoss2();
 
   }
   
@@ -389,6 +394,10 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //  }
 
+  private void spawnDemonBoss() {
+    Entity demon = MobBossFactory.createDemonBoss();
+    spawnEntityAt(demon, new GridPoint2(19, 4), true, false);
+  }
 
   private Entity spawnMobBoss1() {
     int[] pickedLanes = new Random().ints(0, 8)

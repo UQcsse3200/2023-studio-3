@@ -4,9 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
+import com.csse3200.game.components.bosses.DemonAnimationController;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
-import com.csse3200.game.components.tasks.bosstask.DemonBossMovementTask;
+import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
 import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
 import com.csse3200.game.components.tasks.bosstask.bossDeathTask;
@@ -25,20 +26,47 @@ public class MobBossFactory {
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
+    private static final int DEMON_HEALTH = 10000;
+    private static final int DEMON_ATTACK = 50;
 
     // Create Demon Boss
-    private static Entity createDemonBoss() {
+    public static Entity createDemonBoss() {
         MobBossConfigs config = configs.MobBoss;
         Entity demon = createBaseBoss();
 
         // Animation addition
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
+        animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_smash", 0.10f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("move", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new DemonBossMovementTask());
+                .addTask(new DemonBossTask());
 
         // Component addition
+        demon
+                .addComponent(animator)
+                .addComponent(new DemonAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
 
+        // Scale demon
+        demon.getComponent(AnimationRenderComponent.class).scaleEntity();
+        demon.scaleHeight(5f);
+        demon.scaleWidth(5f);
         return demon;
     }
 
