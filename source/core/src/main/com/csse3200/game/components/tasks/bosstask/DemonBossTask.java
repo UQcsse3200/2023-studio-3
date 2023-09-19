@@ -28,10 +28,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int PRIORITY = 3;
     private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
     private static final float STOP_DISTANCE = 0.1f;
-    private static final float TIME_INTERVAL = 10f; // 10 seconds
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
-    private static final float JUMP_DISTANCE = 4.0f;
+    private static final float JUMP_DISTANCE = 3.0f;
+    private static final int xRightBoundary = 17;
+    private static final int xLeftBoundary = 1;
+    private static final int yTopBoundary = 6;
+    private static final int yBotBoundary = 1;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -49,7 +52,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     Array<Double> yArray = new Array<>();
     private boolean isBreath;
     private boolean waitFlag = false;
-    private boolean breathFlag;
+    private boolean timerFlag;
 
     // Enums
     private enum AnimState {
@@ -84,11 +87,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         demon = owner.getEntity();
-        changeState(DemonState.TRANSFORM);
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
 
-        // temporary fix for not wait task and NORMAL not working
+        // Handle initial transform animation
+        changeState(DemonState.TRANSFORM);
         animate();
         if (animation.getCurrentAnimation().equals("transform")) {
             Timer.schedule(new Timer.Task() {
@@ -106,18 +109,20 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         currentPos = demon.getPosition();
 
         switch (state) {
-            case IDLE -> {jump(getJumpPos());}
+            case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
                     fireBreath();
                 }
             }
             case BREATH -> {
-                if (!breathFlag) {
+                if (!timerFlag) {
                     waitTask(AnimState.BREATH.getDuration());
-                    breathFlag = true;
-                } else {
-                    if (!waitFlag) { changeState(DemonState.IDLE); }
+                    timerFlag = true;
+                }
+                if (!waitFlag) {
+                    changeState(DemonState.IDLE);
+                    timerFlag = false;
                 }
             }
         }
@@ -129,8 +134,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      * @param duration time to set the timer for
      * @return true or false depending if the timer is on
      */
-    private boolean waitTask(float duration) {
-        if (waitFlag) { return false; }
+    private void waitTask(float duration) {
         waitFlag = true;
         Timer.schedule(new Timer.Task() {
             @Override
@@ -138,7 +142,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 waitFlag = false;
             }
         }, duration);
-        return true;
     }
     private void changeState(DemonState state) {
         prevState = this.state;
@@ -156,7 +159,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> demon.getEvents().trigger("demon_idle");
             case WALK -> demon.getEvents().trigger("demon_walk");
             case DEATH -> demon.getEvents().trigger("demon_death");
-            case BREATH -> demon.getEvents().trigger("demon_breath");
+            case BREATH -> demon.getEvents().trigger("demon_fire_breath");
             case SMASH -> demon.getEvents().trigger("demon_smash");
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
@@ -174,44 +177,29 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private void jump(Vector2 finalPos) {
         changeState(DemonState.SMASH);
+        isJumping = true;
 
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
         jumpTask.start();
-        isJumping = true;
 
         logger.debug("Demon jump starting");
     }
 
     private Vector2 getJumpPos() {
-        // check where demon can jump
-        float jumpMinX = currentPos.x - 4;
-        float jumpMaxX = currentPos.x + 4;
+        float randomAngle = MathUtils.random(0, 2 * MathUtils.PI);
+        float x = JUMP_DISTANCE * MathUtils.cos(randomAngle);
+        float y = JUMP_DISTANCE * MathUtils.sin(randomAngle);
 
-        // check x bounds
-        if (jumpMinX < 1) { jumpMinX = 1; }
-        else if (jumpMaxX > 18) { jumpMaxX = 18; }
+        // check boundaries
+        if (x + currentPos.x > xRightBoundary || x + currentPos.x < xLeftBoundary) { x *= -1; }
+        if (y + currentPos.y > yTopBoundary || y + currentPos.y < yBotBoundary) { y *= -1; }
 
-        // generate random jump pos
-        float randomX = MathUtils.random(jumpMinX, jumpMaxX);
-        float xValue = currentPos.x - randomX;
-        float xLen = (float) Math.sqrt((double) xValue * xValue);
-        float yLen = (float) Math.sqrt(JUMP_DISTANCE * JUMP_DISTANCE - xLen * xLen);
-        float yDown = currentPos.y - yLen;
-        float yUp = currentPos.y + yLen;
-        float yValue = 0f;
-
-        // check y bounds
-        if (yUp > 7) { yValue = yDown; }
-        if (yDown < 1) { yValue = yUp; }
-
-        // randomise y value selection
-        if (yValue == 0f) {
-            int randomNumber = (int) (Math.random() * 100);
-            if (randomNumber % 2 == 0) { yValue = yUp; } else { yValue = yDown; }
-        }
-        jumpPos = new Vector2(randomX, yValue);
+        // get final jump position
+        float finalX = x + currentPos.x;
+        float finalY = y + currentPos.y;
+        jumpPos = new Vector2(finalX, finalY);
         return jumpPos;
     }
 
@@ -230,6 +218,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private void fireBreath() {
         changeState(DemonState.BREATH);
+        isBreath = true;
 
         // add constant y changes to burn projectile
         yArray.add(Math.sqrt(3));
@@ -240,17 +229,24 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         // spawn breath balls
         for (int i = 0; i < BURN_BALLS; i++) {
+            // Wait for a certain amount of time before each iteration
+            float delay = 0.2f;
+            int finalI = i;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    // This code will run after the delay
+                    float x = demon.getPosition().x - X_LENGTH;
+                    float y = (float) (demon.getPosition().y + yArray.get(finalI) * X_LENGTH);
+                    Vector2 destination = new Vector2(x, y);
 
-            // calculate destination of burn balls
-            float x = demon.getPosition().x - X_LENGTH;
-            float y = (float) (demon.getPosition().y + yArray.get(i) * X_LENGTH);
-            Vector2 destination = new Vector2(x, y);
-
-            // create burn projectiles
-            Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
-                    new Vector2(2,2), ProjectileEffects.BURN, false);
-            projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
-            ServiceLocator.getEntityService().register(projectile);
+                    // Create burn projectiles
+                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                            new Vector2(2, 2), ProjectileEffects.BURN, false);
+                    projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
+                    ServiceLocator.getEntityService().register(projectile);
+                }
+            }, delay);
         }
     }
 }
