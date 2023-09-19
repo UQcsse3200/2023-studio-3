@@ -10,7 +10,7 @@ import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
 import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
 import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
-import com.csse3200.game.components.tasks.bosstask.BossMobDeathTask;
+import com.csse3200.game.components.tasks.bosstask.MobBossDeathTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.MobBossConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -77,7 +77,7 @@ public class MobBossFactory {
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
                 .addTask(new FinalBossMovementTask(1f, numLane))
-                .addTask(new BossMobDeathTask(1));;
+                .addTask(new MobBossDeathTask(1));;
 
         // Animation section
         AnimationRenderComponent animator1 = new AnimationRenderComponent(
