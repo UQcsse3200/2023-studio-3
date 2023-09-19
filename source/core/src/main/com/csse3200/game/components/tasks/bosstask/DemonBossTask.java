@@ -26,7 +26,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
-    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
+    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
