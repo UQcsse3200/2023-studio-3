@@ -106,7 +106,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/pierce_anim.png",
           "images/projectiles/snow_ball.png",
           "images/mobboss/demon.png",
-          "images/mobboss/demon2.png"
+          "images/mobboss/demon2.png",
+          "images/mobs/fire_worm.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -139,7 +140,9 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/firework_anim.atlas",
           "images/projectiles/mobProjectile.atlas",
           "images/projectiles/stun_effect.atlas",
-          "images/mobboss/demon.atlas"
+          "images/mobboss/demon.atlas",
+          "images/mobs/fire_worm.atlas",
+          "images/mobs/dragon_knight.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -201,7 +204,8 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        spawnXenoGrunts();
+        spawnFireWorm();
+        spawnDragonKnight();
         break;
       case 3:
         mobBoss2 = spawnMobBoss2();
@@ -228,7 +232,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    //player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
+    player.getEvents().addListener("spawnWave", this::spawnWave);
     
     //playMusic();
     
@@ -244,10 +248,12 @@ public class ForestGameArea extends GameArea {
 //    spawnXenoGrunts();
 //    spawnWeaponTower();
 
-    spawnDemonBoss();
+// spawnDragonKnight();
+// spawnFireWorm();
+spawnDemonBoss();
 
     //mobBoss1 = spawnMobBoss1();
-//    startWaveTimer();
+  //  startWaveTimer();
 ////    spawnIncome();
 //    spawnScrap();
 //    spawnTNTTower();
@@ -479,6 +485,30 @@ public class ForestGameArea extends GameArea {
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
       xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, false);
+    }
+  }
+
+  private void spawnFireWorm() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity fireWorm = NPCFactory.createFireWorm(player);
+      fireWorm.setScale(1.5f, 1.5f);
+      spawnEntityAt(fireWorm, randomPos, true, false);
+    }
+  }
+
+  private void spawnDragonKnight() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity fireWorm = NPCFactory.createDragonKnight(player);
+      fireWorm.setScale(1.5f, 1.5f);
+      spawnEntityAt(fireWorm, randomPos, true, false);
     }
   }
 
