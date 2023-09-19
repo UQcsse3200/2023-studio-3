@@ -41,8 +41,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Vector2 jumpPos;
     private MovementTask jumpTask;
     private boolean isJumping;
-    private DEMON_STATE state = DEMON_STATE.IDLE;
-    private DEMON_STATE prevState;
+    private DemonState state = DemonState.IDLE;
+    private DemonState prevState;
     private AnimationRenderComponent animation;
     private Entity demon;
     private float elapsedTime = 0f;
@@ -50,7 +50,27 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private boolean isBreath;
     private boolean waitFlag = false;
 
-    private enum DEMON_STATE {
+    // Enums
+    private enum AnimState {
+        TRANSFORM(6.4f),
+        CLEAVE(3f),
+        DEATH(4.4f),
+        BREATH(4.2f),
+        SMASH(3.6f),
+        TAKE_HIT(1f);
+
+        private final float duration;
+
+        private AnimState(float duration) {
+            this.duration = duration;
+        }
+
+        public float getDuration() {
+            return duration;
+        }
+    }
+
+    private enum DemonState {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
     }
 
@@ -63,7 +83,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         demon = owner.getEntity();
-        changeState(DEMON_STATE.TRANSFORM);
+        changeState(DemonState.TRANSFORM);
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
 
@@ -73,7 +93,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
-                    changeState(DEMON_STATE.IDLE);
+                    changeState(DemonState.IDLE);
                 }
             }, 6.4f); // Delay in seconds
         }
@@ -94,29 +114,36 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             }
             case BREATH -> {
                 if (!isBreath) {
-                    changeState(DEMON_STATE.IDLE);
+                    changeState(DemonState.IDLE);
                     waitFlag = false;
                 } else {
                     if (waitFlag) {
                         return;
                     }
-                    waitTask();
+                    waitTask(AnimState.BREATH.getDuration());
                 }
             }
         }
     }
 
-    private void waitTask() {
+    /**
+     * Starts a timer when called and returns true. When timer is complete,
+     * false will be returned
+     * @param duration time to set the timer for
+     * @return true or false depending if the timer is on
+     */
+    private boolean waitTask(float duration) {
+        if (waitFlag) { return false; }
         waitFlag = true;
-        // to be replaced by wait task
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 isBreath = false;
             }
-        }, 4.2f); // Delay in seconds
+        }, duration);
+        return true;
     }
-    private void changeState(DEMON_STATE state) {
+    private void changeState(DemonState state) {
         prevState = this.state;
         this.state = state;
     }
@@ -149,7 +176,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
-        changeState(DEMON_STATE.SMASH);
+        changeState(DemonState.SMASH);
 
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
@@ -158,7 +185,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         isJumping = true;
 
         logger.debug("Demon jump starting");
-
     }
 
     private Vector2 getJumpPos() {
@@ -206,7 +232,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void fireBreath() {
-        changeState(DEMON_STATE.BREATH);
+        changeState(DemonState.BREATH);
 
         // add constant y changes to burn projectile
         yArray.add(Math.sqrt(3));
