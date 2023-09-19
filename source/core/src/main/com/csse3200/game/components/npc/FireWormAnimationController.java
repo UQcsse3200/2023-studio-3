@@ -25,6 +25,7 @@ public class FireWormAnimationController extends Component {
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener("wanderStart", this::animateWalk);
         entity.getEvents().addListener("shootStart", this::animateAttack);
+        entity.getEvents().addListener("dieStart", this::animateDeath);
     }
 
     void animateWalk() {
@@ -34,5 +35,11 @@ public class FireWormAnimationController extends Component {
     void animateAttack() {
         animator.startAnimation("fire_worm_attack");
     }
+
+    void animateDeath() {
+        animator.startAnimation("fire_worm_death");
+    }
+
+
 }
 

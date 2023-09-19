@@ -1,75 +1,12 @@
 
 fire_worm.png
-size: 2048, 128
+size: 1024, 256
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 fire_worm_attack
   rotate: false
-  xy: 695, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 1080, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 310, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 1542, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 772, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 79, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 1311, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 541, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 1850, 2
-  size: 75, 75
-  orig: 75, 75
-  offset: 0, 0
-  index: -1
-fire_worm_attack
-  rotate: false
-  xy: 1157, 2
+  xy: 233, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
@@ -83,14 +20,35 @@ fire_worm_attack
   index: -1
 fire_worm_attack
   rotate: false
-  xy: 1696, 2
+  xy: 79, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 fire_worm_attack
   rotate: false
-  xy: 926, 2
+  xy: 618, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_attack
+  rotate: false
+  xy: 388, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_attack
+  rotate: false
+  xy: 80, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_attack
+  rotate: false
+  xy: 541, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
@@ -104,42 +62,133 @@ fire_worm_attack
   index: -1
 fire_worm_attack
   rotate: false
-  xy: 1388, 2
+  xy: 850, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 fire_worm_attack
   rotate: false
-  xy: 618, 2
+  xy: 464, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
-fire_worm_walk
+fire_worm_attack
   rotate: false
-  xy: 1619, 2
+  xy: 156, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
-fire_worm_walk
+fire_worm_attack
   rotate: false
-  xy: 849, 2
+  xy: 695, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
-fire_worm_walk
+fire_worm_attack
+  rotate: false
+  xy: 387, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_attack
   rotate: false
   xy: 2, 2
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
+fire_worm_attack
+  rotate: false
+  xy: 619, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_attack
+  rotate: false
+  xy: 233, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 311, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 695, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 2, 156
+  size: 76, 75
+  orig: 76, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 79, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 541, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 310, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 772, 79
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_death
+  rotate: false
+  xy: 542, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
 fire_worm_walk
   rotate: false
-  xy: 1234, 2
+  xy: 696, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_walk
+  rotate: false
+  xy: 310, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_walk
+  rotate: false
+  xy: 2, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
@@ -153,35 +202,42 @@ fire_worm_walk
   index: -1
 fire_worm_walk
   rotate: false
-  xy: 1773, 2
+  xy: 234, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 fire_worm_walk
   rotate: false
-  xy: 1003, 2
+  xy: 773, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 fire_worm_walk
   rotate: false
-  xy: 233, 2
+  xy: 465, 156
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 fire_worm_walk
   rotate: false
-  xy: 1465, 2
+  xy: 157, 156
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
+fire_worm_walk
+  rotate: false
+  xy: 618, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0
   index: -1
 default
   rotate: false
-  xy: 1465, 2
+  xy: 618, 79
   size: 75, 75
   orig: 75, 75
   offset: 0, 0

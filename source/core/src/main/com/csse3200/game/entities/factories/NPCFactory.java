@@ -116,6 +116,7 @@ public class NPCFactory {
                     ServiceLocator.getResourceService().getAsset("images/mobs/fire_worm.atlas", TextureAtlas.class));
     animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("fire_worm_attack", 0.1f);
+    animator.addAnimation("fire_worm_death", 0.1f);
     fireWorm
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)

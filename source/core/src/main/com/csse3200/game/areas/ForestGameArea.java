@@ -200,7 +200,7 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        spawnXenoGrunts();
+        spawnFireWorm();
         break;
       case 3:
         mobBoss2 = spawnMobBoss2();
@@ -227,7 +227,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
+    player.getEvents().addListener("spawnWave", this::spawnFireWorm);
     
     playMusic();
     
@@ -241,7 +241,7 @@ public class ForestGameArea extends GameArea {
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     // spawnXenoGrunts();
-    spawnFireWorm();
+    // spawnFireWorm();
     spawnWeaponTower();
     //mobBoss1 = spawnMobBoss1();
     startWaveTimer();
@@ -481,9 +481,9 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
-      Entity xenoGrunt = NPCFactory.createFireWorm(player);
-      xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, false);
+      Entity fireWorm = NPCFactory.createFireWorm(player);
+      fireWorm.setScale(1.5f, 1.5f);
+      spawnEntityAt(fireWorm, randomPos, true, false);
     }
   }
 
