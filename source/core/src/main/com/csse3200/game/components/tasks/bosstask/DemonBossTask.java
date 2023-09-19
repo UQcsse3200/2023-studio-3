@@ -31,6 +31,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final float TIME_INTERVAL = 10f; // 10 seconds
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
+    private static final int JUMP_DISTANCE = 4;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -165,23 +166,28 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // check where demon can jump
         float jumpMinX = currentPos.x - 4;
         float jumpMaxX = currentPos.x + 4;
-        float jumpMinY = currentPos.y - 4;
-        float jumpMaxY = currentPos.y + 4;
 
-        if (jumpMinX < 1) {
-            jumpMinX = 1;
-        } else if (jumpMaxX > 18) {
-            jumpMaxX = 18;
-        } else if (jumpMinY < 1) {
-            jumpMinX = 1;
-        } else if (jumpMinY > 7) {
-            jumpMaxY = 7;
-        }
+        // check x bounds
+        if (jumpMinX < 1) { jumpMinX = 1; }
+        else if (jumpMaxX > 18) { jumpMaxX = 18; }
 
         // generate random jump pos
         float randomX = MathUtils.random(jumpMinX, jumpMaxX);
-        float randomY = MathUtils.random(jumpMinY, jumpMaxY);
-        return jumpPos = new Vector2(randomX, randomY);
+        float yLen = (float) Math.sqrt(Math.pow(JUMP_DISTANCE, 2) - Math.pow(randomX, 2));
+        float yDown = demon.getPosition().y - yLen;
+        float yUp = demon.getPosition().y + yLen;
+        float yValue = 0;
+
+        // check y bounds
+        if (yUp > 7) { yValue = yDown; }
+        if (yDown < 1) { yValue = yUp; }
+
+        // randomise y value selection
+        if (yValue == 0) {
+            int randomNumber = (int) (Math.random() * 100);
+            if (randomNumber % 2 == 0) { yValue = yUp; } else { yValue = yDown; }
+        }
+        return jumpPos = new Vector2(randomX, yValue);
     }
 
     private boolean isAtTarget() {
