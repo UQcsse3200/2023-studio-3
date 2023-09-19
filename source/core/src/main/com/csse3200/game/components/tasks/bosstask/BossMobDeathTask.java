@@ -16,7 +16,7 @@ import com.csse3200.game.services.ServiceLocator;
 /**
  * Task that prints a message to the terminal whenever it is called.
  */
-public class BossDeathTask extends DefaultTask implements PriorityTask {
+public class BossMobDeathTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1; // time interval to scan for towers in
 
     private final int priority;
@@ -31,7 +31,7 @@ public class BossDeathTask extends DefaultTask implements PriorityTask {
     /**
      * @param priority Task priority when shooting (0 when not chasing).
      */
-    public BossDeathTask(int priority) {
+    public BossMobDeathTask(int priority) {
         this.priority = priority;
 
         physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -117,5 +117,4 @@ public class BossDeathTask extends DefaultTask implements PriorityTask {
         ServiceLocator.getEntityService().register(scrap.setScale(2,2));
 
     }
-
 }
