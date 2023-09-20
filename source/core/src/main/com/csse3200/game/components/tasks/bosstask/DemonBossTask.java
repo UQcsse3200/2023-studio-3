@@ -117,14 +117,23 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
-                    if (getNearbyEntities().isEmpty()) {
-                        fireBreath();
-                    } else { cleave(); }
+                    if (getNearbyEntities().isEmpty()) { fireBreath(); }
+                    else { cleave(); }
                 }
             }
             case BREATH -> {
                 if (!timerFlag) {
                     waitTask(AnimState.BREATH.getDuration());
+                    timerFlag = true;
+                }
+                if (!waitFlag) {
+                    changeState(DemonState.IDLE);
+                    timerFlag = false;
+                }
+            }
+            case CLEAVE -> {
+                if (!timerFlag) {
+                    waitTask(AnimState.CLEAVE.getDuration());
                     timerFlag = true;
                 }
                 if (!waitFlag) {
