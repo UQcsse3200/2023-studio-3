@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
+import com.csse3200.game.areas.WaveManager;
+import com.csse3200.game.areas.WaveDefinition;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
@@ -21,18 +23,17 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 import java.util.Timer;
-
-
-import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
-
 import java.util.ArrayList;
+import java.util.List;
+
+//import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   private static final int NUM_BUILDINGS = 4;
   private static final int NUM_GHOSTS = 0;
-  private static final int NUM_GRUNTS = 5;
+//  private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
   
   
@@ -151,6 +152,8 @@ public class ForestGameArea extends GameArea {
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
   private Entity bossKing2;
+
+  private WaveManager waveManager;
   
   
   /**
@@ -178,8 +181,8 @@ public class ForestGameArea extends GameArea {
 //    spawnMountains();
     
     // Set up infrastructure for end game tracking
-    player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
+//    player = spawnPlayer();
+//    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
     
     playMusic();
     
@@ -193,7 +196,7 @@ public class ForestGameArea extends GameArea {
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnXenoGrunts();
+//    spawnXenoGrunts();
 //    spawnGhosts();
     spawnWeaponTower();
 //    spawnIncome();
@@ -205,6 +208,18 @@ public class ForestGameArea extends GameArea {
 //    bossKing2 = spawnBossKing2();
     
     bossKing2 = spawnBossKing2();
+
+    //createfakeentity
+
+
+    // Create enemy waves
+    List<WaveDefinition> waveDefinitions = new ArrayList<>();
+    waveDefinitions.add(new WaveDefinition("XenoGrunt", 3, 2.0f));
+    waveDefinitions.add(new WaveDefinition("XenoGrunt", 4, 2.0f));
+
+    // Initialize the WaveManager with the list of wave definitions and this game area
+    waveManager = new WaveManager(waveDefinitions, this);
+    waveManager.startWave();
   }
   
   private void displayUI() {
@@ -398,10 +413,11 @@ public class ForestGameArea extends GameArea {
 //   }
   
   
-  private void spawnXenoGrunts() {
+  public void spawnXenoGrunts(int quantityToSpawn) {
     int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
+    for (int i = 0; i < quantityToSpawn; i++) {
+      logger.info("Spawning Xeno {}", i);
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt(player);

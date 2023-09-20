@@ -36,8 +36,10 @@ public class PlayerFactory {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForPlayer();
     AITaskComponent aiComponent =
-            new AITaskComponent()
-                    .addTask(new SpawnWaveTask());
+//            new WaveManager()
+       //     new AITaskComponent()
+//                    .addTask(new WaveManager())
+                //    .addTask(new SpawnWaveTask());
     Entity player =
         new Entity()
             .addComponent(new TextureRenderComponent("images/box_boy_leaf.png"))

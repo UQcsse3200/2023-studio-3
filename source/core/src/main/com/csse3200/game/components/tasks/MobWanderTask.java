@@ -9,6 +9,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.areas.WaveManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,13 +66,12 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
   @Override
   public void update() {
 
-    //Update the position of the mob
+    // Update the position of the mob
     mobPosition = owner.getEntity().getPosition();
 
     // If the mob is at zero health, kill the mob,
     // play the death animation and stop the task
-    // This method is the idea of Ahmad who very kindly helped
-    // with section, massive props to him for his help!
+    // This method is the idea of Ahmad who very kindly helped with section, massive props to him for his help!
     if (!isDead && owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {
       this.owner.getEntity().getEvents().trigger("dieStart");
       currentTask.stop();
@@ -80,9 +80,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
 
     // Check if the mob has finished death animation
     else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-
-      // Drop scrap at the mobs location for player
-      // to collect.
+      // Drop scrap at the mobs location
       Entity scrap = DropFactory.createScrapDrop();
       scrap.setPosition(mobPosition.x,mobPosition.y);
       ServiceLocator.getEntityService().register(scrap);
