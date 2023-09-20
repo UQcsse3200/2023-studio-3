@@ -129,7 +129,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case SMASH -> {
                 if (jumpComplete()) {
                     if (getNearbyHumans().isEmpty()) { fireBreath(); }
-                    else { cleave(); }
+                    else {
+                        System.out.println(getNearbyHumans());
+                        cleave();
+                    }
                 }
             }
             case BREATH -> {
@@ -203,22 +206,23 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private Array<Entity> getNearbyHumans() {
-        Array<Entity> nearbyHumans = ServiceLocator.getEntityService().
+        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
                 getNearbyEntities(demon, SMASH_RADIUS);
-        for (int i = 0; i < nearbyHumans.size; i++) {
-            Entity targetEntity = nearbyHumans.get(i);
+        Array<Entity> nearbyHumans = new Array<>();
+        for (int i = 0; i < nearbyEntities.size; i++) {
+            Entity targetEntity = nearbyEntities.get(i);
             HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
             if (targetHitbox == null) { break; }
 
             // target layer check
             if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
                     getLayer())) { break; }
+            nearbyHumans.add(targetEntity);
         }
         return nearbyHumans;
     }
 
     private void jump(Vector2 finalPos) {
-        System.out.println(finalPos);
         changeState(DemonState.SMASH);
         isJumping = true;
 
