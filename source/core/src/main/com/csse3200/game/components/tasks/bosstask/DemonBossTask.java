@@ -262,7 +262,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             Entity targetEntity = nearbyEntities.get(i);
 
             HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-            if (targetHitbox == null) { return; }
+            if (targetHitbox == null) {
+                return;
+            }
             if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
                 // Doesn't match our target layer, ignore
                 return;
@@ -274,5 +276,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             } else {
                 return;
             }
+        }
     }
 }
