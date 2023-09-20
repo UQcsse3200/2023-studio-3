@@ -115,7 +115,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     xLeftBoundary -= 2;
                     xRightBoundary -= 2;
                 }
-            }, MOVE_FORWARD_DELAY);
+            }, MOVE_FORWARD_DELAY * i);
         }
     }
 
@@ -218,6 +218,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private void jump(Vector2 finalPos) {
+        System.out.println(finalPos);
         changeState(DemonState.SMASH);
         isJumping = true;
 
@@ -230,6 +231,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     private Vector2 getJumpPos() {
+        // check if boundary has shifted causing demon to be out of bounds
+        if (currentPos.x > xRightBoundary) {
+            jumpPos = new Vector2(currentPos.x - JUMP_DISTANCE, currentPos.y); //jump back into boundary
+            return jumpPos;
+        }
+
         float randomAngle = MathUtils.random(0, 2 * MathUtils.PI);
         float x = JUMP_DISTANCE * MathUtils.cos(randomAngle);
         float y = JUMP_DISTANCE * MathUtils.sin(randomAngle);
