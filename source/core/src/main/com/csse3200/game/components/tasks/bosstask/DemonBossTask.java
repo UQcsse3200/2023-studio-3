@@ -289,6 +289,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
                             new Vector2(2, 2), effect, aoe);
                     projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
+                    projectile.setScale(-1f, 1f);
                     ServiceLocator.getEntityService().register(projectile);
                 }
             }, delay * i + BREATH_ANIM_TIME);
