@@ -1,0 +1,62 @@
+
+button_lg.png
+size: 128, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+UI_Glass_Button_Large_Press_01a1
+  rotate: false
+  xy: 2, 172
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 4
+UI_Glass_Button_Large_Press_01a2
+  rotate: false
+  xy: 2, 104
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 3
+UI_Glass_Button_Large_Press_01a3
+  rotate: false
+  xy: 2, 70
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 2
+UI_Glass_Button_Large_Press_01a4
+  rotate: false
+  xy: 2, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 1
+UI_Glass_Button_Large_Release_01a4
+  rotate: false
+  xy: 2, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 8
+UI_Glass_Button_Large_Release_01a1
+  rotate: false
+  xy: 2, 36
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 5
+UI_Glass_Button_Large_Release_01a2
+  rotate: false
+  xy: 2, 138
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 6
+UI_Glass_Button_Large_Release_01a3
+  rotate: false
+  xy: 2, 2
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: 7
