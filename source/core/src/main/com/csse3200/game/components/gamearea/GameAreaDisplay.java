@@ -87,7 +87,7 @@ public class GameAreaDisplay extends UIComponent {
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-      skin.add("building1", new Texture("images/towers/WallTower.png"));
+      skin.add("building1", new Texture("images/towers/wallTower.png"));
       // Load textures for building1 and building2
       towers1[i] = new Image(skin, "building1");
       towers1[i].setBounds(Gdx.graphics.getWidth() * 40f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
@@ -142,7 +142,7 @@ public class GameAreaDisplay extends UIComponent {
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-      skin.add("building2", new Texture("images/towers/WallTower.png"));
+      skin.add("building2", new Texture("images/towers/wallTower.png"));
       towers2[i] = new Image(skin, "building2");
       towers2[i].setBounds(Gdx.graphics.getWidth() * 50f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
       stage.addActor(towers2[i]);
