@@ -208,10 +208,10 @@ public class ForestGameArea extends GameArea {
         spawnDragonKnight();
         break;
       case 3:
-        mobBoss2 = spawnMobBoss2();
+        //mobBoss2 = spawnMobBoss2();
         break;
       case 4:
-        mobBoss2 = spawnMobBoss2();
+        //mobBoss2 = spawnMobBoss2();
         break;
       default:
         // Handle other wave scenarios if needed
@@ -227,8 +227,11 @@ public class ForestGameArea extends GameArea {
   public void create() {
     // Load game assets
     loadAssets();
+    logger.info("Lol");
     displayUI();
+    logger.info("Lol");
     spawnTerrain();
+    logger.info("Lol");
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
@@ -248,9 +251,9 @@ public class ForestGameArea extends GameArea {
 //    spawnXenoGrunts();
 //    spawnWeaponTower();
 
-// spawnDragonKnight();
-// spawnFireWorm();
-spawnDemonBoss();
+//    spawnDragonKnight();
+//    spawnFireWorm();
+    spawnDemonBoss();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();

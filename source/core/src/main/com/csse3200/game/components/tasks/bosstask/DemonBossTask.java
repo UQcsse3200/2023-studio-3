@@ -39,6 +39,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int Y_BOT_BOUNDARY = 1;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_DAMAGE = 30;
+    private static final int SMASH_RADIUS = 3;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -116,7 +117,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
-                    fireBreath();
+                    if (getNearbyEntities().isEmpty()) {
+                        fireBreath();
+                    }
                 }
             }
             case BREATH -> {
@@ -179,6 +182,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return PRIORITY;
     }
 
+    private Array<Entity> getNearbyEntities() {
+        return ServiceLocator.getEntityService().
+                getNearbyEntities(demon, SMASH_RADIUS);
+    }
+
     private void jump(Vector2 finalPos) {
         changeState(DemonState.SMASH);
         isJumping = true;
@@ -213,6 +221,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private boolean jumpComplete() {
         if (isAtTarget() && isJumping) {
+            smash();
             isJumping = false;
             jumpTask.stop();
             return true;
@@ -256,21 +265,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
     }
 
-    private void smash(int aoe) {
-        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().getNearbyEntities(demon, aoe);
+    private void smash() {
+        Array<Entity> nearbyEntities = getNearbyEntities();
         for (int i = 0; i < nearbyEntities.size; i++) {
             Entity targetEntity = nearbyEntities.get(i);
 
-            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-            if (targetHitbox == null) {
-                return;
-            }
-            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
-                // Doesn't match our target layer, ignore
-                return;
-            }
-
-            CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
+            CombatStatsComponent targetCombatStats = targetEntity.
+                    getComponent(CombatStatsComponent.class);
             if (targetCombatStats != null) {
                 targetCombatStats.hit(SMASH_DAMAGE);
             } else {
