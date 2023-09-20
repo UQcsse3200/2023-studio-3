@@ -119,7 +119,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 if (jumpComplete()) {
                     if (getNearbyEntities().isEmpty()) {
                         fireBreath();
-                    }
+                    } else { cleave(); }
                 }
             }
             case BREATH -> {
@@ -221,7 +221,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private boolean jumpComplete() {
         if (isAtTarget() && isJumping) {
-            smash();
+            applyAoeDamage(getNearbyEntities()); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;
@@ -265,18 +265,20 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
     }
 
-    private void smash() {
-        Array<Entity> nearbyEntities = getNearbyEntities();
-        for (int i = 0; i < nearbyEntities.size; i++) {
-            Entity targetEntity = nearbyEntities.get(i);
+    private void applyAoeDamage(Array<Entity> targets) {
+        for (int i = 0; i < targets.size; i++) {
+            Entity targetEntity = targets.get(i);
 
             CombatStatsComponent targetCombatStats = targetEntity.
                     getComponent(CombatStatsComponent.class);
             if (targetCombatStats != null) {
                 targetCombatStats.hit(SMASH_DAMAGE);
-            } else {
-                return;
             }
         }
+    }
+
+    private void cleave() {
+        changeState(DemonState.CLEAVE);
+        applyAoeDamage(getNearbyEntities());
     }
 }
