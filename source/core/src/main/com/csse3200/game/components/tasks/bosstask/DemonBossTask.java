@@ -33,13 +33,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
     private static final float JUMP_DISTANCE = 3.0f;
-    private static final int X_RIGHT_BOUNDARY = 17;
-    private static final int X_LEFT_BOUNDARY = 1;
     private static final int Y_TOP_BOUNDARY = 6;
     private static final int Y_BOT_BOUNDARY = 1;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_DAMAGE = 30;
     private static final int SMASH_RADIUS = 3;
+    private static final int MOVE_FORWARD_DELAY = 30;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -55,7 +54,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private Entity demon;
     private boolean waitFlag = false;
     private boolean timerFlag;
-    private int numBalls = 5;
+    private int numBalls = 6;
+    private static int xRightBoundary = 17;
+    private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
 
@@ -104,7 +105,17 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 public void run() {
                     changeState(DemonState.IDLE);
                 }
-            }, 6.4f); // Delay in seconds
+            }, 6.4f);
+        }
+
+        for (int i = 0; i < 6; i++) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    xLeftBoundary -= 2;
+                    xRightBoundary -= 2;
+                }
+            }, MOVE_FORWARD_DELAY);
         }
     }
 
@@ -224,7 +235,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         float y = JUMP_DISTANCE * MathUtils.sin(randomAngle);
 
         // check boundaries
-        if (x + currentPos.x > X_RIGHT_BOUNDARY || x + currentPos.x < X_LEFT_BOUNDARY) { x *= -1; }
+        if (x + currentPos.x > xRightBoundary || x + currentPos.x < xLeftBoundary) { x *= -1; }
         if (y + currentPos.y > Y_TOP_BOUNDARY || y + currentPos.y < Y_BOT_BOUNDARY) { y *= -1; }
 
         // get final jump position
