@@ -232,7 +232,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+    //player.getEvents().addListener("spawnWave", this::spawnWave);
     
     //playMusic();
     

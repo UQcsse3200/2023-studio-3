@@ -26,15 +26,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
-    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(2f, 2f);
+    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final int BURN_BALLS = 5;
     private static final int X_LENGTH = 20; // for projectile destination calculations
     private static final float JUMP_DISTANCE = 3.0f;
-    private static final int xRightBoundary = 17;
-    private static final int xLeftBoundary = 1;
-    private static final int yTopBoundary = 6;
-    private static final int yBotBoundary = 1;
+    private static final int X_RIGHT_BOUNDARY = 17;
+    private static final int X_LEFT_BOUNDARY = 1;
+    private static final int Y_TOP_BOUNDARY = 6;
+    private static final int Y_BOT_BOUNDARY = 1;
+    private static final int BREATH_ANIM_TIME = 2;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -51,7 +52,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private boolean waitFlag = false;
     private boolean timerFlag;
     private int numBalls = 5;
-    private ProjectileEffects effect = ProjectileEffects.FIREBALL;
+    private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
 
     // Enums
@@ -193,8 +194,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         float y = JUMP_DISTANCE * MathUtils.sin(randomAngle);
 
         // check boundaries
-        if (x + currentPos.x > xRightBoundary || x + currentPos.x < xLeftBoundary) { x *= -1; }
-        if (y + currentPos.y > yTopBoundary || y + currentPos.y < yBotBoundary) { y *= -1; }
+        if (x + currentPos.x > X_RIGHT_BOUNDARY || x + currentPos.x < X_LEFT_BOUNDARY) { x *= -1; }
+        if (y + currentPos.y > Y_TOP_BOUNDARY || y + currentPos.y < Y_BOT_BOUNDARY) { y *= -1; }
 
         // get final jump position
         float finalX = x + currentPos.x;
@@ -225,7 +226,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private void fireBreath() {
         changeState(DemonState.BREATH);
 
-        long delay = (long) AnimState.BREATH.getDuration() / numBalls;
+        float delay = (AnimState.BREATH.getDuration() - BREATH_ANIM_TIME) / numBalls;
 
         float startAngle = (float) Math.toRadians(135);
         float endAngle = (float) Math.toRadians(225);
@@ -240,11 +241,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             Vector2 destination = new Vector2(x, y);
 
             // Create burn projectiles
-            Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
-                    new Vector2(2, 2), effect, aoe);
-            projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                            new Vector2(2, 2), effect, aoe);
+                    projectile.setPosition(demon.getPosition().x, demon.getPosition().y);
             projectile.setScale(-1f, 1f);
-            ServiceLocator.getEntityService().register(projectile);
+                    ServiceLocator.getEntityService().register(projectile);
+                }
+            }, delay * i + BREATH_ANIM_TIME);
         }
     }
 }
