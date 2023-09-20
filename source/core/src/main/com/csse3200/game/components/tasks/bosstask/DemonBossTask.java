@@ -117,7 +117,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> { jump(getJumpPos()); }
             case SMASH -> {
                 if (jumpComplete()) {
-                    if (getNearbyEntities().isEmpty()) { fireBreath(); }
+                    if (getNearbyHumans().isEmpty()) { fireBreath(); }
                     else { cleave(); }
                 }
             }
@@ -191,9 +191,19 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return PRIORITY;
     }
 
-    private Array<Entity> getNearbyEntities() {
-        return ServiceLocator.getEntityService().
+    private Array<Entity> getNearbyHumans() {
+        Array<Entity> nearbyHumans = ServiceLocator.getEntityService().
                 getNearbyEntities(demon, SMASH_RADIUS);
+        for (int i = 0; i < nearbyHumans.size; i++) {
+            Entity targetEntity = nearbyHumans.get(i);
+            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+            if (targetHitbox == null) { break; }
+
+            // target layer check
+            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
+                    getLayer())) { break; }
+        }
+        return nearbyHumans;
     }
 
     private void jump(Vector2 finalPos) {
@@ -230,7 +240,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private boolean jumpComplete() {
         if (isAtTarget() && isJumping) {
-            applyAoeDamage(getNearbyEntities()); // do damage upon landing
+            applyAoeDamage(getNearbyHumans()); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;
@@ -288,6 +298,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private void cleave() {
         changeState(DemonState.CLEAVE);
-        applyAoeDamage(getNearbyEntities());
+        applyAoeDamage(getNearbyHumans());
     }
 }
