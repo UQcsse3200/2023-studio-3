@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.components.tasks.WaitTask;
@@ -14,6 +15,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
@@ -36,6 +38,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int Y_TOP_BOUNDARY = 6;
     private static final int Y_BOT_BOUNDARY = 1;
     private static final int BREATH_ANIM_TIME = 2;
+    private static final int SMASH_DAMAGE = 30;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -251,5 +254,25 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 }
             }, delay * i + BREATH_ANIM_TIME);
         }
+    }
+
+    private void smash(int aoe) {
+        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().getNearbyEntities(demon, aoe);
+        for (int i = 0; i < nearbyEntities.size; i++) {
+            Entity targetEntity = nearbyEntities.get(i);
+
+            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+            if (targetHitbox == null) { return; }
+            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
+                // Doesn't match our target layer, ignore
+                return;
+            }
+
+            CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
+            if (targetCombatStats != null) {
+                targetCombatStats.hit(SMASH_DAMAGE);
+            } else {
+                return;
+            }
     }
 }
