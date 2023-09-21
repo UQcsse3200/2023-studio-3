@@ -43,6 +43,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int SMASH_DAMAGE = 30;
     private static final Vector2 SLIME_SPEED = new Vector2(0.5f, 0.5f);
     private static final int CLEAVE_DAMAGE = 50;
+    private static final int HEAL_TIMES = 10;
+    private static final int HEALTH_TO_ADD = 100;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -66,6 +68,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private boolean startFlag = false;
     private MovementTask slimeMovementTask;
     private boolean moving = false;
+    private int health;
+    private boolean halfHealthFlag = false;
+    private boolean isHealing = false;
 
     /**
      * The different demon states
@@ -128,6 +133,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         animate();
         currentPos = demon.getPosition();
+        health = demon.getComponent(CombatStatsComponent.class).getHealth();
 
         // handle initial demon transformation
         if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
@@ -135,10 +141,17 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         // detect death stage
-        if (demon.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !slimeFlag) {
+        if (health <= 0 && !slimeFlag) {
             slimeFlag = true;
             changeState(DemonState.DEATH);
             demon.getComponent(CombatStatsComponent.class).addHealth(500);
+        }
+
+        // detect half health
+        if (health <= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
+                !halfHealthFlag) {
+            halfHealth();
+            halfHealthFlag = true;
         }
 
         switch (state) {
@@ -156,6 +169,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             }
             case BREATH, CLEAVE -> {
                 if (animation.isFinished()) {
+                    changeState(DemonState.IDLE);
+                }
+            }
+            case CAST -> {
+                if (!isHealing) {
                     changeState(DemonState.IDLE);
                 }
             }
@@ -425,5 +443,29 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private boolean targetFound() {
         return !getNearbyHumans(1).isEmpty();
+    }
+
+    /**
+     * When at half health demon starts healing by a certain amount every second
+     */
+    private void halfHealth() {
+        changeState(DemonState.CAST);
+        isHealing = true;
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                isHealing = false;
+            }
+        }, HEAL_TIMES);
+
+        // add health every 10s
+        for (int i = 0; i < HEAL_TIMES; i++) {
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);
+                }
+            }, i);
+        }
     }
 }
