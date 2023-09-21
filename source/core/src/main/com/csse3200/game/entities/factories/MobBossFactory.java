@@ -26,8 +26,8 @@ public class MobBossFactory {
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
-    private static final int DEMON_HEALTH = 10000;
-    private static final int DEMON_ATTACK = 50;
+    private static final int DEMON_HEALTH = 5000;
+    private static final int DEMON_ATTACK = 0;
 
     // Create Demon Boss
     public static Entity createDemonBoss() {
@@ -50,7 +50,7 @@ public class MobBossFactory {
         animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()

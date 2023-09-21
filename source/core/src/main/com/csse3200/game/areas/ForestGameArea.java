@@ -10,6 +10,7 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -40,7 +41,7 @@ public class ForestGameArea extends GameArea {
   private Timer bossSpawnTimer;
   private int bossSpawnInterval = 10000; // 1 minute in milliseconds
   private static final int NUM_WEAPON_TOWERS = 3;
-  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
+  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
   
@@ -238,8 +239,8 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    // player.getEvents().addListener("spawnWave", this::spawnWave);
-    
+    player.getEvents().addListener("spawnWave", this::spawnWave);
+
     //playMusic();
     
     // Types of projectile
@@ -365,12 +366,12 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(building2, randomPos, true, false);
     }
   }
-  
-  
+
   private Entity spawnPlayer() {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
     newPlayer.addComponent(new TouchAttackComponent(PhysicsLayer.NPC));
+    newPlayer.addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS));
     return newPlayer;
   }
   
