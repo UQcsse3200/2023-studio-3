@@ -331,6 +331,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Returns the closest human entity
+     * @param targets array of human entities within radius of 3
+     * @return closest human entity
+     */
     private Entity getClosestHuman(Array<Entity> targets) {
         Entity closestEntity = null;
         float closestDistance = SMASH_RADIUS;
