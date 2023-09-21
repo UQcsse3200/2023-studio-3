@@ -63,6 +63,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private HumanWaitTask waitTask;
     private boolean startFlag = false;
     private MovementTask slimeMovementTask;
+    private boolean moving = false;
 
     /**
      * The different demon states
@@ -141,7 +142,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> jump(getJumpPos());
             case SMASH -> {
                 if (jumpComplete()) {
-                    if (getNearbyHumans().isEmpty()) {
+                    if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {
                         fireBreath();
                     }
                     else {
@@ -160,7 +161,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 }
             }
             case SLIME_MOVE -> {
-                seekAndDestroy();
+                if (!moving) {
+                    seekAndDestroy();
+                    moving = true;
+                } else {
+                    if (targetFound()) {
+                        // do aoe damage based on how much health slime has left
+                        applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
+                                demon.getComponent(CombatStatsComponent.class).getHealth());
+                    }
+                }
             }
         }
     }
@@ -214,9 +224,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     /**
      * @return nearby entities with the PhysicsLayer of HUMAN
      */
-    private Array<Entity> getNearbyHumans() {
+    private Array<Entity> getNearbyHumans(int radius) {
         Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
-                getNearbyEntities(demon, SMASH_RADIUS);
+                getNearbyEntities(demon, radius);
         Array<Entity> nearbyHumans = new Array<>();
 
         // iterate through nearby entities checking if they have desired properties
@@ -288,7 +298,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private boolean jumpComplete() {
         if (currentPos.dst(jumpPos) <= STOP_DISTANCE && isJumping) {
-            applyAoeDamage(getNearbyHumans(), SMASH_DAMAGE); // do damage upon landing
+            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;
@@ -358,6 +368,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Return closest entity given an array of human entities
+     * @param targets array of human entities
+     * @return closest human entity
+     */
     private Entity getClosestHuman(Array<Entity> targets) {
         Entity closestEntity = null;
         float closestDistance = SMASH_RADIUS;
@@ -380,13 +395,26 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
-        Entity target = getClosestHuman(getNearbyHumans());
+        Entity target = getClosestHuman(getNearbyHumans(SMASH_RADIUS));
         CombatStatsComponent targetCombatStats = target.
                 getComponent(CombatStatsComponent.class);
         targetCombatStats.hit(demon.getComponent(CombatStatsComponent.class).getBaseAttack());
     }
 
+    /**
+     * Find the closest human entity and start moving towards them
+     */
     private void seekAndDestroy() {
-        slimeMovementTask = new MovementTask(new Vector2(0, 4));
+        Entity targetEntity = getClosestHuman(getNearbyHumans(20));
+        slimeMovementTask = new MovementTask(targetEntity.getPosition());
+        slimeMovementTask.create(owner);
+        slimeMovementTask.start();
+    }
+
+    /**
+     * @return if target has been reached or not
+     */
+    private boolean targetFound() {
+        return !getNearbyHumans(1).isEmpty();
     }
 }
