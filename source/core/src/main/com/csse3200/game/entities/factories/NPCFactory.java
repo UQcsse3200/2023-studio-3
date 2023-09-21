@@ -9,6 +9,7 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
+import com.csse3200.game.components.npc.SplitMoblings;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
@@ -221,6 +222,15 @@ public class NPCFactory {
 
   private NPCFactory() {
     throw new IllegalStateException("Instantiating static util class");
+  }
+
+  public static Entity createSplittingXenoGrunt() {
+    Entity splitXenoGrunt = createXenoGrunt(new Entity())
+        // add the scaling yourself. can also scale the X and Y component,
+        // leading to some very interesting mob designs.
+        .addComponent(new SplitMoblings(7, 2.25f));
+
+    return splitXenoGrunt;
   }
 }
 

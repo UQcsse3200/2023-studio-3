@@ -14,6 +14,8 @@ import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
+import com.csse3200.game.components.npc.SplitMoblings;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
@@ -250,12 +252,12 @@ public class ForestGameArea extends GameArea {
 //    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
 //    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
 //    spawnXenoGrunts();
-//    spawnWeaponTower();
+   spawnWeaponTower();
 
   //  spawnDragonKnight();
-    spawnFireWorm(19, 5); // * TEMPORARY
-    spawnXenoGrunt(19, 4);
-    // spawnDemonBoss();
+    spawnFireWorm(19, 5); // * TEMPORARY for testing
+    spawnSplittingXenoGrunt(17, 5);
+    spawnDemonBoss();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
@@ -495,11 +497,11 @@ public class ForestGameArea extends GameArea {
   }
 
   // * TEMPORARY FOR TESTING
-  private void spawnXenoGrunt(int x, int y) {
+  private void spawnSplittingXenoGrunt(int x, int y) {
     GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrint = NPCFactory.createXenoGrunt(player);
-    xenoGrint.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrint, pos, true, true);
+    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+    xenoGrunt.setScale(1.5f, 1.5f);
+    spawnEntityAt(xenoGrunt, pos, false, true);
   }
 
   private void spawnFireWorm() {
@@ -665,7 +667,7 @@ public class ForestGameArea extends GameArea {
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
