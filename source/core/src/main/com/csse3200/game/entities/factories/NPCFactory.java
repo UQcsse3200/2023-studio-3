@@ -123,7 +123,7 @@ public class NPCFactory {
             .addComponent(animator)
             .addComponent(new FireWormAnimationController());
 
-    fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
     fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return fireWorm;

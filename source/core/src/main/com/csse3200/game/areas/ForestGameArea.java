@@ -235,7 +235,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    //player.getEvents().addListener("spawnWave", this::spawnWave);
+    player.getEvents().addListener("spawnWave", this::spawnWave);
     
     //playMusic();
     
@@ -251,9 +251,10 @@ public class ForestGameArea extends GameArea {
 //    spawnXenoGrunts();
 //    spawnWeaponTower();
 
-//    spawnDragonKnight();
-//    spawnFireWorm();
-    spawnDemonBoss();
+   spawnDragonKnight();
+    spawnFireWorm(19, 5); // * TEMPORARY
+    spawnXenoGrunt(19, 4);
+    // spawnDemonBoss();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
@@ -491,6 +492,14 @@ public class ForestGameArea extends GameArea {
     }
   }
 
+  // * TEMPORARY FOR TESTING
+  private void spawnXenoGrunt(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity xenoGrint = NPCFactory.createXenoGrunt(player);
+    xenoGrint.setScale(1.5f, 1.5f);
+    spawnEntityAt(xenoGrint, pos, true, true);
+  }
+
   private void spawnFireWorm() {
     int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
@@ -501,6 +510,14 @@ public class ForestGameArea extends GameArea {
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
     }
+  }
+
+  // * TEMPORARY FOR TESTING
+  private void spawnFireWorm(int x, int y) {
+    GridPoint2 poistion = new GridPoint2(x, y);
+    Entity fireWorm = NPCFactory.createFireWorm(player);
+    fireWorm.setScale(1.5f, 1.5f);
+    spawnEntityAt(fireWorm, poistion, true, true);
   }
 
   private void spawnDragonKnight() {
