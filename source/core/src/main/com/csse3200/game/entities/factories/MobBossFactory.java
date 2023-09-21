@@ -50,7 +50,7 @@ public class MobBossFactory {
         animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()

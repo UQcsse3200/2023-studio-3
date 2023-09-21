@@ -9,6 +9,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
+import com.csse3200.game.components.tasks.human.HumanWaitTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -58,12 +59,17 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
+    private boolean slimeFlag = false;
+    private HumanWaitTask waitTask;
+    private boolean startFlag = false;
+    private MovementTask slimeMovementTask;
 
     /**
      * The different demon states
      */
     private enum DemonState {
-        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
+        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK,
+        SLIME_IDLE, SLIME_MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, SLIME_TAKE_HIT
     }
 
     /**
@@ -85,17 +91,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
 
-        changeState(DemonState.TRANSFORM);
-        animate();
-        // Temporary fix for transform animation
-        if (animation.getCurrentAnimation().equals("transform")) {
-            Timer.schedule(new Timer.Task() {
-                @Override
-                public void run() {
-                    changeState(DemonState.IDLE);
-                }
-            }, 6.4f);
-        }
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                changeState(DemonState.TRANSFORM);
+                startFlag = true;
+            }
+        }, 0.1f);
 
         // shift demon's boundary left every 30s
         for (int i = 0; i < 5; i++) {
@@ -115,13 +117,25 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public void update() {
-        // handle initial demon transformation
-//        if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
-//            changeState(DemonState.IDLE); // start sequence
-//        }
+        // give game time to load in then start
+        if (!startFlag) {
+            return;
+        }
 
         animate();
         currentPos = demon.getPosition();
+
+        // handle initial demon transformation
+        if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
+            changeState(DemonState.IDLE); // start sequence
+        }
+
+        // detect death stage
+        if (demon.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !slimeFlag) {
+            slimeFlag = true;
+            changeState(DemonState.DEATH);
+            demon.getComponent(CombatStatsComponent.class).addHealth(500);
+        }
 
         switch (state) {
             case IDLE -> jump(getJumpPos());
@@ -139,6 +153,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 if (animation.isFinished()) {
                     changeState(DemonState.IDLE);
                 }
+            }
+            case DEATH -> {
+                if (animation.isFinished()) {
+                    changeState(DemonState.SLIME_MOVE);
+                }
+            }
+            case SLIME_MOVE -> {
+                seekAndDestroy();
             }
         }
     }
@@ -162,7 +184,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         switch (state) {
-            case CAST -> {demon.getEvents().trigger("demon_cast_spell");}
+            case CAST ->demon.getEvents().trigger("demon_cast_spell");
             case IDLE -> demon.getEvents().trigger("demon_idle");
             case WALK -> demon.getEvents().trigger("demon_walk");
             case DEATH -> demon.getEvents().trigger("demon_death");
@@ -171,6 +193,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
             case TRANSFORM -> demon.getEvents().trigger("transform");
+            case SLIME_IDLE -> demon.getEvents().trigger("idle");
+            case SLIME_MOVE -> demon.getEvents().trigger("move");
+            case SLIME_TAKE_HIT -> demon.getEvents().trigger("take_hit");
+            case PROJECTILE_IDLE -> demon.getEvents().trigger("projectile_explosion");
+            case PROJECTILE_EXPLOSION -> demon.getEvents().trigger("projectile_idle");
             default -> logger.debug("Demon animation {state} not found");
         }
         prevState = state;
@@ -357,5 +384,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         CombatStatsComponent targetCombatStats = target.
                 getComponent(CombatStatsComponent.class);
         targetCombatStats.hit(demon.getComponent(CombatStatsComponent.class).getBaseAttack());
+    }
+
+    private void seekAndDestroy() {
+        slimeMovementTask = new MovementTask(new Vector2(0, 4));
     }
 }
