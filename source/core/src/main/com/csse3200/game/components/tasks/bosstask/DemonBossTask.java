@@ -39,6 +39,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int SMASH_DAMAGE = 30;
     private static final int SMASH_RADIUS = 3;
     private static final int MOVE_FORWARD_DELAY = 30;
+    private static final float BREATH_DURATION = 4.2f;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -59,27 +60,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
-    private boolean test = true;
-
-    // Enums
-    private enum AnimState {
-        TRANSFORM(6.4f),
-        CLEAVE(3f),
-        DEATH(4.4f),
-        BREATH(4.2f),
-        SMASH(3.6f),
-        TAKE_HIT(1f);
-
-        private final float duration;
-
-        private AnimState(float duration) {
-            this.duration = duration;
-        }
-
-        public float getDuration() {
-            return duration;
-        }
-    }
 
     private enum DemonState {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
@@ -96,19 +76,19 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         demon = owner.getEntity();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
-
-        // Handle initial transform animation
         changeState(DemonState.TRANSFORM);
         animate();
+        // Temporary fix for transform animation
         if (animation.getCurrentAnimation().equals("transform")) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
                     changeState(DemonState.IDLE);
                 }
-            }, AnimState.TRANSFORM.getDuration());
+            }, 6.4f);
         }
 
+        // shift demon's boundary left every 30s
         for (int i = 0; i < 5; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
@@ -122,6 +102,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     @Override
     public void update() {
+        // handle initial demon transformation
+//        if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
+//            changeState(DemonState.IDLE); // start sequence
+//        }
+
         animate();
         currentPos = demon.getPosition();
 
@@ -130,50 +115,15 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case SMASH -> {
                 if (jumpComplete()) {
                     if (getNearbyHumans().isEmpty()) { fireBreath(); }
-                    else {
-                        System.out.println(getNearbyHumans());
-                        cleave();
-                    }
+                    else { cleave(); }
                 }
             }
-            case BREATH -> {
-                if (!timerFlag) {
-                    waitTask(AnimState.BREATH.getDuration());
-                    timerFlag = true;
-                }
-                if (!waitFlag) {
-                    changeState(DemonState.IDLE);
-                    timerFlag = false;
-                }
-            }
-            case CLEAVE -> {
-                if (!timerFlag) {
-                    waitTask(AnimState.CLEAVE.getDuration());
-                    timerFlag = true;
-                }
-                if (!waitFlag) {
-                    changeState(DemonState.IDLE);
-                    timerFlag = false;
-                }
+            case BREATH, CLEAVE -> {
+                if (animation.isFinished()) { changeState(DemonState.IDLE); }
             }
         }
     }
 
-    /**
-     * Starts a timer when called and returns true. When timer is complete,
-     * false will be returned
-     * @param duration time to set the timer for
-     * @return true or false depending if the timer is on
-     */
-    private void waitTask(float duration) {
-        waitFlag = true;
-        Timer.schedule(new Timer.Task() {
-            @Override
-            public void run() {
-                waitFlag = false;
-            }
-        }, duration);
-    }
     private void changeState(DemonState state) {
         prevState = this.state;
         this.state = state;
@@ -281,7 +231,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private void fireBreath() {
         changeState(DemonState.BREATH);
 
-        float delay = (AnimState.BREATH.getDuration() - BREATH_ANIM_TIME) / numBalls;
+        float delay = (BREATH_DURATION - BREATH_ANIM_TIME) / numBalls;
 
         float startAngle = (float) Math.toRadians(135);
         float endAngle = (float) Math.toRadians(225);
