@@ -206,6 +206,7 @@ public class ForestGameArea extends GameArea {
       case 2:
         spawnFireWorm();
         spawnDragonKnight();
+        // spawnXenoGrunts();
         break;
       case 3:
         //mobBoss2 = spawnMobBoss2();
@@ -235,7 +236,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+    // player.getEvents().addListener("spawnWave", this::spawnWave);
     
     //playMusic();
     
@@ -251,10 +252,11 @@ public class ForestGameArea extends GameArea {
 //    spawnXenoGrunts();
 //    spawnWeaponTower();
 
-   spawnDragonKnight();
+  //  spawnDragonKnight();
     spawnFireWorm(19, 5); // * TEMPORARY
     spawnXenoGrunt(19, 4);
     // spawnDemonBoss();
+  //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
