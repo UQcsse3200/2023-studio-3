@@ -26,8 +26,8 @@ public class MobBossFactory {
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
-    private static final int DEMON_HEALTH = 10000;
-    private static final int DEMON_ATTACK = 50;
+    private static final int DEMON_HEALTH = 5000;
+    private static final int DEMON_ATTACK = 0;
 
     // Create Demon Boss
     public static Entity createDemonBoss() {

@@ -31,7 +31,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
-    private static final Vector2 DEMON_JUMP_SPEED = new Vector2(1f, 1f);
+    private static final Vector2 DEMON_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final float JUMP_DISTANCE = 3.0f;
     private static final int Y_TOP_BOUNDARY = 6;
@@ -41,6 +41,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int MOVE_FORWARD_DELAY = 30;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
+    private static final Vector2 SLIME_SPEED = new Vector2(0.5f, 0.5f);
+    private static final int CLEAVE_DAMAGE = 50;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -91,6 +93,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         demon = owner.getEntity();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
+        demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_SPEED); // set speed
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -143,6 +146,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case SMASH -> {
                 if (jumpComplete()) {
                     if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {
+                        System.out.println(demon.getComponent(CombatStatsComponent.class).getHealth());
                         fireBreath();
                     }
                     else {
@@ -258,7 +262,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
-        demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_JUMP_SPEED);
         jumpTask.start();
 
         logger.debug("Demon jump starting");
@@ -398,7 +401,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         Entity target = getClosestHuman(getNearbyHumans(SMASH_RADIUS));
         CombatStatsComponent targetCombatStats = target.
                 getComponent(CombatStatsComponent.class);
-        targetCombatStats.hit(demon.getComponent(CombatStatsComponent.class).getBaseAttack());
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                targetCombatStats.hit(CLEAVE_DAMAGE);
+            }
+        }, 2f);
     }
 
     /**
@@ -409,6 +417,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         slimeMovementTask = new MovementTask(targetEntity.getPosition());
         slimeMovementTask.create(owner);
         slimeMovementTask.start();
+        demon.getComponent(PhysicsMovementComponent.class).setSpeed(SLIME_SPEED);
     }
 
     /**
