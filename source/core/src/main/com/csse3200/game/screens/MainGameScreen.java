@@ -206,7 +206,6 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new Terminal())
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
-
     ServiceLocator.getEntityService().register(ui);
   }
 }
