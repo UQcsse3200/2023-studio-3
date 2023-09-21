@@ -59,6 +59,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
+    private boolean test = true;
 
     // Enums
     private enum AnimState {
@@ -105,10 +106,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 public void run() {
                     changeState(DemonState.IDLE);
                 }
-            }, 6.4f);
+            }, AnimState.TRANSFORM.getDuration());
         }
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 5; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -196,7 +197,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case TRANSFORM -> demon.getEvents().trigger("transform");
             default -> logger.debug("Demon animation {state} not found");
         }
-
         prevState = state;
     }
 
@@ -247,7 +247,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         // check boundaries
         if (x + currentPos.x > xRightBoundary || x + currentPos.x < xLeftBoundary) { x *= -1; }
-        if (y + currentPos.y > Y_TOP_BOUNDARY || y + currentPos.y < Y_BOT_BOUNDARY) { y *= -1; }
+        if (y + currentPos.y > Y_TOP_BOUNDARY || y + currentPos.y < Y_BOT_BOUNDARY) {
+            y *= -1;
+        }
 
         // get final jump position
         float finalX = x + currentPos.x;
