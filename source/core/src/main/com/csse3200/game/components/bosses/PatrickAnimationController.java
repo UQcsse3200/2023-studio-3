@@ -33,12 +33,7 @@ public class DemonAnimationController extends Component {
     }
 
     private void registerAnimationListener(String animationName) {
-        if (animationName.equals("transform_reverse")) {
-            entity.getEvents().addListener(animationName, () ->
-                    animator.startAnimation("transform"));
-        } else {
-            entity.getEvents().addListener(animationName, () ->
-                    animator.startAnimation(animationName));
-        }
+        entity.getEvents().addListener(animationName, () ->
+                animator.startAnimation(animationName));
     }
 }

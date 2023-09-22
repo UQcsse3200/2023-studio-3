@@ -108,7 +108,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/snow_ball.png",
           "images/mobboss/demon.png",
           "images/mobboss/demon2.png",
-          "images/mobs/fire_worm.png"
+          "images/mobs/fire_worm.png",
+          "images/mobs/patrick.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -143,7 +144,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/stun_effect.atlas",
           "images/mobboss/demon.atlas",
           "images/mobs/fire_worm.atlas",
-          "images/mobs/dragon_knight.atlas"
+          "images/mobs/dragon_knight.atlas",
+          "images/mobs/patrick.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
