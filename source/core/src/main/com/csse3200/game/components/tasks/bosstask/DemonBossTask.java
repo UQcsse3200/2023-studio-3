@@ -53,7 +53,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private final GameTime gameTime;
     private Vector2 jumpPos;
     private MovementTask jumpTask;
-    private boolean isJumping;
     private DemonState state = DemonState.IDLE;
     private DemonState prevState;
     private AnimationRenderComponent animation;
@@ -63,13 +62,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
-    private boolean slimeFlag = false;
+    private int deathCounter = 0;
+
+    // Flags
     private boolean startFlag = false;
     private boolean moving = false;
-    private int health;
+    private boolean isJumping;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
-    private int deathCounter = 0;
 
     /**
      * The different demon states
@@ -133,7 +133,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         animate();
         currentPos = demon.getPosition();
-        health = demon.getComponent(CombatStatsComponent.class).getHealth();
+        int health = demon.getComponent(CombatStatsComponent.class).getHealth();
 
         // handle initial demon transformation
         if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
