@@ -9,7 +9,6 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
-import com.csse3200.game.components.tasks.human.HumanWaitTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -64,9 +63,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
     private boolean slimeFlag = false;
-    private HumanWaitTask waitTask;
     private boolean startFlag = false;
-    private MovementTask slimeMovementTask;
     private boolean moving = false;
     private int health;
     private boolean halfHealthFlag = false;
@@ -141,12 +138,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             changeState(DemonState.IDLE); // start sequence
         }
 
-        // detect death stage
+        // detect death stages
         if (health <= 0 && !slimeFlag) {
             slimeFlag = true;
             changeState(DemonState.TRANSFORM_REVERSE);
             demon.getComponent(CombatStatsComponent.class).addHealth(500);
-        } else if (health <= 0 && slimeFlag) {
+        } else if (health <= 0) {
             changeState(DemonState.TRANSFORM);
         }
 
@@ -157,6 +154,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             halfHealthFlag = true;
         }
 
+        // detect sequence changes and run accordingly
         switch (state) {
             case IDLE -> jump(getJumpPos());
             case SMASH -> {
@@ -448,7 +446,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private void seekAndDestroy() {
         Entity targetEntity = getClosestHuman(getNearbyHumans(20));
-        slimeMovementTask = new MovementTask(targetEntity.getPosition());
+        MovementTask slimeMovementTask = new MovementTask(targetEntity.getPosition());
         slimeMovementTask.create(owner);
         slimeMovementTask.start();
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(SLIME_SPEED);
