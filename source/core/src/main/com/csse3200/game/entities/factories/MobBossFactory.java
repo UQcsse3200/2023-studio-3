@@ -51,6 +51,7 @@ public class MobBossFactory {
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("transform_reverse", 0.2f, Animation.PlayMode.REVERSED);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()

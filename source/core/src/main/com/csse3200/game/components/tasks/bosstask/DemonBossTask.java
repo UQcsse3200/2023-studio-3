@@ -76,8 +76,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      * The different demon states
      */
     private enum DemonState {
-        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK,
-        SLIME_IDLE, SLIME_MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, SLIME_TAKE_HIT
+        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT,
+        WALK, TRANSFORM_REVERSE, SLIME_IDLE, SLIME_MOVE, PROJECTILE_EXPLOSION,
+        PROJECTILE_IDLE, SLIME_TAKE_HIT
     }
 
     /**
@@ -216,7 +217,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         switch (state) {
-            case CAST ->demon.getEvents().trigger("demon_cast_spell");
+            case CAST -> demon.getEvents().trigger("demon_cast_spell");
             case IDLE -> demon.getEvents().trigger("demon_idle");
             case WALK -> demon.getEvents().trigger("demon_walk");
             case DEATH -> demon.getEvents().trigger("demon_death");
@@ -225,6 +226,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
             case TRANSFORM -> demon.getEvents().trigger("transform");
+            case TRANSFORM_REVERSE -> demon.getEvents().trigger("transform_reverse");
             case SLIME_IDLE -> demon.getEvents().trigger("idle");
             case SLIME_MOVE -> demon.getEvents().trigger("move");
             case SLIME_TAKE_HIT -> demon.getEvents().trigger("take_hit");

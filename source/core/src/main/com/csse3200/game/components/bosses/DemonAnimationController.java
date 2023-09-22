@@ -29,10 +29,17 @@ public class DemonAnimationController extends Component {
         registerAnimationListener("projectile_idle");
         registerAnimationListener("take_hit");
         registerAnimationListener("transform");
+        registerAnimationListener("transform_reverse");
     }
 
     private void registerAnimationListener(String animationName) {
-        entity.getEvents().addListener(animationName, () -> animator.startAnimation(animationName));
+        if (animationName.equals("transform_reverse")) {
+            entity.getEvents().addListener(animationName, () ->
+                    animator.startAnimation("transform"));
+        } else {
+            entity.getEvents().addListener(animationName, () ->
+                    animator.startAnimation(animationName));
+        }
     }
 
 
