@@ -257,6 +257,7 @@ public class ForestGameArea extends GameArea {
 //    spawnDragonKnight();
 //    spawnFireWorm();
     spawnDemonBoss();
+    spawnPatrick();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
@@ -367,8 +368,6 @@ public class ForestGameArea extends GameArea {
   private Entity spawnPlayer() {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
-    newPlayer.addComponent(new TouchAttackComponent(PhysicsLayer.NPC));
-    newPlayer.addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS));
     return newPlayer;
   }
   
@@ -404,7 +403,12 @@ public class ForestGameArea extends GameArea {
 
   private void spawnDemonBoss() {
     Entity demon = MobBossFactory.createDemonBoss();
-    spawnEntityAt(demon, new GridPoint2(19, 4), true, false);
+    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+  }
+
+  private void spawnPatrick() {
+    Entity patrick = MobBossFactory.createPatrickBoss();
+    spawnEntityAt(patrick, new GridPoint2(19, 3), true, false);
   }
 
   private Entity spawnMobBoss1() {

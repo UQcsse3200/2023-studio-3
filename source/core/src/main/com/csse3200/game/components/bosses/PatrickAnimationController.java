@@ -14,13 +14,13 @@ public class PatrickAnimationController extends Component {
     public void create() {
         super.create();
         animator = entity.getComponent(AnimationRenderComponent.class);
-        registerAnimationListener("Patrick_Attack");
-        registerAnimationListener("Patrick_Cast");
-        registerAnimationListener("Patrick_Death");
-        registerAnimationListener("Patrick_Hurt");
-        registerAnimationListener("Patrick_Idle");
-        registerAnimationListener("Patrick_Spell");
-        registerAnimationListener("Patrick_Walk");
+        registerAnimationListener("patrick_attack");
+        registerAnimationListener("patrick_cast");
+        registerAnimationListener("patrick_death");
+        registerAnimationListener("patrick_hurt");
+        registerAnimationListener("patrick_idle");
+        registerAnimationListener("patrick_spell");
+        registerAnimationListener("patrick_walk");
     }
 
     private void registerAnimationListener(String animationName) {

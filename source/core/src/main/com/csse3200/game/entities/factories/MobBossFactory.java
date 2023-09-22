@@ -78,13 +78,13 @@ public class MobBossFactory {
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
-        animator.addAnimation("Patrick_Attack", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Cast", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Death", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Hurt", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Idle", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Spell", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("Patrick_Walk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_attack", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_cast", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_hurt", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("patrick_spell", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_walk", 0.2f, Animation.PlayMode.LOOP);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()

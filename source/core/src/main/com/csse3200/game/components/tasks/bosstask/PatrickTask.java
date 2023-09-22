@@ -5,6 +5,7 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
@@ -22,11 +23,11 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private Vector2 currentPos;
     private PhysicsEngine physics;
     private GameTime gameTime;
-    private DeathBringerState state = DeathBringerState.IDLE;
-    private DeathBringerState prevState;
+    private PatrickState state = PatrickState.IDLE;
+    private PatrickState prevState;
     private AnimationRenderComponent animation;
     private Entity patrick;
-    private  enum DeathBringerState {
+    private  enum PatrickState {
         IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL
     }
 
@@ -38,11 +39,28 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
+        patrick = owner.getEntity();
+        animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
+        currentPos = owner.getEntity().getPosition(); // get current position
+        patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
+        changeState(PatrickState.IDLE);
     }
 
     @Override
     public void update() {
+        animate();
+        switch (state) {
+            case IDLE -> {}
+        }
+    }
 
+    /**
+     * Changes the state of patrick
+     * @param state state to be changed to
+     */
+    private void changeState(PatrickState state) {
+        prevState = this.state;
+        this.state = state;
     }
 
     /**
@@ -55,9 +73,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         }
 
         switch (state) {
-            case IDLE -> {
-
-            }
+            case IDLE -> patrick.getEvents().trigger("Patrick_Attack");
             default -> logger.debug("Patrick animation {state} not found");
         }
         prevState = state;
