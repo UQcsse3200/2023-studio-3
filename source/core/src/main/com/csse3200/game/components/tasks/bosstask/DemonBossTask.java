@@ -144,8 +144,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // detect death stage
         if (health <= 0 && !slimeFlag) {
             slimeFlag = true;
-            changeState(DemonState.DEATH);
+            changeState(DemonState.TRANSFORM_REVERSE);
             demon.getComponent(CombatStatsComponent.class).addHealth(500);
+        } else if (health <= 0 && slimeFlag) {
+            changeState(DemonState.TRANSFORM);
         }
 
         // detect half health
@@ -178,7 +180,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     changeState(DemonState.IDLE);
                 }
             }
-            case DEATH -> {
+            case TRANSFORM -> {
+                if (health <= 0) {
+                    if (animation.isFinished()) {
+                        changeState(DemonState.DEATH);
+                    }
+                }
+            }
+            case TRANSFORM_REVERSE -> {
                 if (animation.isFinished()) {
                     changeState(DemonState.SLIME_MOVE);
                 }
@@ -193,6 +202,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                         applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
                                 demon.getComponent(CombatStatsComponent.class).getHealth());
                     }
+                }
+            }
+            case DEATH -> {
+                if (animation.isFinished()) {
+                    demon.dispose();
                 }
             }
         }
