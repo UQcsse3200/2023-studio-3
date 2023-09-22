@@ -6,7 +6,7 @@ import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
-public class DeathBringerTask extends DefaultTask implements PriorityTask {
+public class PatrickTask extends DefaultTask implements PriorityTask {
     private static final int PRIORITY = 3;
     private PhysicsEngine physics;
     private GameTime gameTime;
@@ -14,7 +14,7 @@ public class DeathBringerTask extends DefaultTask implements PriorityTask {
         IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL
     }
 
-    public DeathBringerTask() {
+    public PatrickTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
         gameTime = ServiceLocator.getTimeSource();
     }

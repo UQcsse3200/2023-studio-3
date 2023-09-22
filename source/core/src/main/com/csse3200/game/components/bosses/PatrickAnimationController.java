@@ -3,7 +3,7 @@ package com.csse3200.game.components.bosses;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
-public class DemonAnimationController extends Component {
+public class PatrickAnimationController extends Component {
     AnimationRenderComponent animator;
 
     /**
@@ -14,22 +14,13 @@ public class DemonAnimationController extends Component {
     public void create() {
         super.create();
         animator = entity.getComponent(AnimationRenderComponent.class);
-        registerAnimationListener("demon_walk");
-        registerAnimationListener("demon_cleave");
-        registerAnimationListener("demon_take_hit");
-        registerAnimationListener("demon_idle");
-        registerAnimationListener("demon_death");
-        registerAnimationListener("demon_cast_spell");
-        registerAnimationListener("demon_fire_breath");
-        registerAnimationListener("demon_smash");
-        registerAnimationListener("demon_take_hit");
-        registerAnimationListener("idle");
-        registerAnimationListener("move");
-        registerAnimationListener("projectile_explosion");
-        registerAnimationListener("projectile_idle");
-        registerAnimationListener("take_hit");
-        registerAnimationListener("transform");
-        registerAnimationListener("transform_reverse");
+        registerAnimationListener("Patrick_Attack");
+        registerAnimationListener("Patrick_Cast");
+        registerAnimationListener("Patrick_Death");
+        registerAnimationListener("Patrick_Hurt");
+        registerAnimationListener("Patrick_Idle");
+        registerAnimationListener("Patrick_Spell");
+        registerAnimationListener("Patrick_Walk");
     }
 
     private void registerAnimationListener(String animationName) {

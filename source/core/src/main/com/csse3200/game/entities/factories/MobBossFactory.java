@@ -5,12 +5,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
+import com.csse3200.game.components.bosses.PatrickAnimationController;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
-import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
-import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
-import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
-import com.csse3200.game.components.tasks.bosstask.MobBossDeathTask;
+import com.csse3200.game.components.tasks.bosstask.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.MobBossConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -28,6 +26,8 @@ public class MobBossFactory {
     private static final int BOSS_MOB_AGRO_RANGE = 10;
     private static final int DEMON_HEALTH = 5000;
     private static final int DEMON_ATTACK = 0;
+    private static final int PATRICK_HEALTH = 2500;
+    private static final int PATRICK_ATTACK = 0;
 
     // Create Demon Boss
     public static Entity createDemonBoss() {
@@ -63,6 +63,39 @@ public class MobBossFactory {
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
+
+        // Scale demon
+        demon.getComponent(AnimationRenderComponent.class).scaleEntity();
+        demon.scaleHeight(5f);
+        demon.scaleWidth(5f);
+        return demon;
+    }
+
+    public static Entity createPatrickBoss() {
+        MobBossConfigs config = configs.MobBoss;
+        Entity demon = createBaseBoss();
+
+        // Animation addition
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
+        animator.addAnimation("Patrick_Attack", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Cast", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Hurt", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Idle", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Spell", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("Patrick_Walk", 0.2f, Animation.PlayMode.NORMAL);
+
+        // AI task addition
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new PatrickTask());
+
+        // Component addition
+        demon
+                .addComponent(animator)
+                .addComponent(new PatrickAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(PATRICK_HEALTH, PATRICK_ATTACK));
 
         // Scale demon
         demon.getComponent(AnimationRenderComponent.class).scaleEntity();
