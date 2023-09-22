@@ -4,6 +4,10 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -67,5 +71,10 @@ public class PlayerActions extends Component {
   void attack() {
     Sound attackSound = ServiceLocator.getResourceService().getAsset("sounds/Impact4.ogg", Sound.class);
     attackSound.play();
+    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(20f, entity.getPosition().y),
+            new Vector2(2, 2), ProjectileEffects.FIREBALL, false);
+    projectile.setPosition(entity.getPosition());
+    projectile.setScale(1f, 1f);
+    ServiceLocator.getEntityService().register(projectile);
   }
 }

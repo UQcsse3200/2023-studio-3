@@ -229,9 +229,15 @@ public class ForestGameArea extends GameArea {
     // Load game assets
     loadAssets();
     logger.info("Lol");
+    logger.info("Lol");
+    logger.info("Lol");
     displayUI();
     logger.info("Lol");
+    logger.info("Lol");
+    logger.info("Lol");
     spawnTerrain();
+    logger.info("Lol");
+    logger.info("Lol");
     logger.info("Lol");
     
     // Set up infrastructure for end game tracking
