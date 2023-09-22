@@ -43,7 +43,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final Vector2 SLIME_SPEED = new Vector2(0.5f, 0.5f);
     private static final int CLEAVE_DAMAGE = 50;
     private static final int HEAL_TIMES = 10;
-    private static final int HEALTH_TO_ADD = 100;
+    private static final int HEALTH_TO_ADD = 10;
+    private static final Vector2 DEFAULT_POS = new Vector2(0, 4);
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -68,6 +69,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private int health;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
+    private int deathCounter = 0;
 
     /**
      * The different demon states
@@ -139,13 +141,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         // detect death stages
-        if (health <= 0 && !slimeFlag) {
-            slimeFlag = true;
+        if (health <= 0 && deathCounter == 0) {
             changeState(DemonState.TRANSFORM_REVERSE);
-            demon.getComponent(CombatStatsComponent.class).addHealth(500);
-        } else if (health <= 0) {
-            changeState(DemonState.TRANSFORM);
+            demon.getComponent(CombatStatsComponent.class).addHealth(100);
+            deathCounter += 1;
         }
+//        else if (health <= 0 && deathCounter == 1) {
+//            changeState(DemonState.TRANSFORM);
+//        }
 
         // detect half health
         if (health <= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
@@ -160,7 +163,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case SMASH -> {
                 if (jumpComplete()) {
                     if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {
-                        System.out.println(demon.getComponent(CombatStatsComponent.class).getHealth());
                         fireBreath();
                     }
                     else {
@@ -204,7 +206,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             }
             case DEATH -> {
                 if (animation.isFinished()) {
-                    demon.dispose();
+                    demon.setFlagForDelete(true);
                 }
             }
         }
@@ -446,7 +448,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private void seekAndDestroy() {
         Entity targetEntity = getClosestHuman(getNearbyHumans(20));
-        MovementTask slimeMovementTask = new MovementTask(targetEntity.getPosition());
+        Vector2 targetPos;
+        if (targetEntity == null) {
+            targetPos = DEFAULT_POS;
+        } else {
+            targetPos = targetEntity.getPosition();
+        }
+        MovementTask slimeMovementTask = new MovementTask(targetPos);
         slimeMovementTask.create(owner);
         slimeMovementTask.start();
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(SLIME_SPEED);
@@ -479,7 +487,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 public void run() {
                     demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);
                 }
-            }, i);
+            }, (float) i /2);
         }
     }
 }
