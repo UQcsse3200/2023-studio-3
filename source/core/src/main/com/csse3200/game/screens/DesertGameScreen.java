@@ -1,6 +1,7 @@
 package com.csse3200.game.screens;
 import  com.badlogic.gdx.graphics.Pixmap;
 
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Color;
@@ -47,6 +48,7 @@ import org.slf4j.LoggerFactory;
 public class DesertGameScreen extends ScreenAdapter {
     private static final Logger logger = LoggerFactory.getLogger(DesertGameScreen.class);
     private static final String[] mainGameTextures = {"images/heart.png"};
+    private static final String[] desertBackgroundMusic = {"sounds/background/desert/desert_bgm.ogg"};
     private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
     private final GdxGame game;
@@ -175,6 +177,7 @@ public class DesertGameScreen extends ScreenAdapter {
         ResourceService resourceService = ServiceLocator.getResourceService();
         resourceService.loadTextures(mainGameTextures);
         backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
+        ServiceLocator.getResourceService().loadMusic(desertBackgroundMusic);
         ServiceLocator.getResourceService().loadAll();
     }
 
@@ -204,5 +207,9 @@ public class DesertGameScreen extends ScreenAdapter {
                 .addComponent(new TerminalDisplay());
 
         ServiceLocator.getEntityService().register(ui);
+        Music music = ServiceLocator.getResourceService().getAsset(desertBackgroundMusic[0], Music.class);
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
     }
 }

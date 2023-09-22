@@ -51,7 +51,7 @@ public class ForestGameArea extends GameArea {
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
-  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+//  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
   private final TerrainFactory terrainFactory;
   
@@ -130,7 +130,7 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
     
-    playMusic();
+//    playMusic();
     
     // Types of projectile
 //    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
@@ -542,12 +542,12 @@ public class ForestGameArea extends GameArea {
   }
   
   
-  private void playMusic() {
-    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
-    music.setLooping(true);
-    music.setVolume(0.3f);
-    music.play();
-  }
+//  private void playMusic() {
+//    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
+//    music.setLooping(true);
+//    music.setVolume(0.3f);
+//    music.play();
+//  }
   
 
 
@@ -563,7 +563,7 @@ public class ForestGameArea extends GameArea {
   @Override
   public void dispose() {
     super.dispose();
-    ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
+//    ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
     stopWaveTimer();
   }

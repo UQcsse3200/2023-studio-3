@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -30,7 +31,7 @@ public class LosingScreen extends ScreenAdapter {
     private static final String INTRO_TEXT = """
             The aliens gained control. You lose!
             """;
-
+    private static final String[] lossSounds = {"sounds/background/loss/RisingScreams.ogg"};
     private BitmapFont font;
     private AnimatedText text;
     private Stage stage;
@@ -77,13 +78,15 @@ public class LosingScreen extends ScreenAdapter {
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
-
+        ServiceLocator.getResourceService().loadSounds(lossSounds);
         Table table = new Table();
         table.setFillParent(true);
         table.add(exitButton).padTop(-100).row();
         table.add(mainMenuButton).padTop(-200).row();
         table.add(playAgainButton).padTop(-300).row();
         stage.addActor(table);
+        Sound sound = ServiceLocator.getResourceService().getAsset(lossSounds[0], Sound.class);
+        sound.play();
     }
 
     @Override

@@ -1,4 +1,5 @@
 package com.csse3200.game.screens;
+import com.badlogic.gdx.audio.Music;
 import  com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
@@ -46,6 +47,7 @@ import org.slf4j.LoggerFactory;
 public class IceGameScreen extends ScreenAdapter {
     private static final Logger logger = LoggerFactory.getLogger(IceGameScreen.class);
     private static final String[] mainGameTextures = {"images/heart.png"};
+    private static final String[] iceBackgroundMusic = {"sounds/background/ice/ice_bgm.ogg"};
     private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
     private final GdxGame game;
@@ -174,6 +176,7 @@ public class IceGameScreen extends ScreenAdapter {
         ResourceService resourceService = ServiceLocator.getResourceService();
         resourceService.loadTextures(mainGameTextures);
         backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
+        ServiceLocator.getResourceService().loadMusic(iceBackgroundMusic);
         ServiceLocator.getResourceService().loadAll();
     }
 
@@ -203,5 +206,9 @@ public class IceGameScreen extends ScreenAdapter {
                 .addComponent(new TerminalDisplay());
 
         ServiceLocator.getEntityService().register(ui);
+        Music music = ServiceLocator.getResourceService().getAsset(iceBackgroundMusic[0], Music.class);
+        music.setLooping(true);
+        music.setVolume(0.3f);
+        music.play();
     }
 }
