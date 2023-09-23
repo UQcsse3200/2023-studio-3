@@ -252,12 +252,25 @@ public class ForestGameArea extends GameArea {
 //    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
 //    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
 //    spawnXenoGrunts();
-   spawnWeaponTower();
+  //  spawnWeaponTower();
 
   //  spawnDragonKnight();
     spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnSplittingXenoGrunt(17, 5);
-    spawnDemonBoss();
+    spawnFireTowerTowerAt(3, 1);
+    spawnFireTowerTowerAt(3, 2);
+    spawnFireTowerTowerAt(3, 3);
+    spawnFireTowerTowerAt(3, 4);
+    spawnFireTowerTowerAt(3, 5);
+    spawnDroidTowerAt(3, 1);
+    spawnDroidTowerAt(3, 2);
+    spawnDroidTowerAt(3, 3);
+    spawnDroidTowerAt(3, 4);
+    spawnDroidTowerAt(3, 5);
+    spawnSplittingXenoGrunt(15, 5);
+    // spawnSplittingXenoGrunt(15, 4);
+    // spawnSplittingXenoGrunt(15, 5);
+    spawnDodgingDragonKnight(15, 3);
+    // spawnDemonBoss();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
@@ -304,7 +317,7 @@ public class ForestGameArea extends GameArea {
     // Top
     spawnEntityAt(
             ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7),
-            new GridPoint2(0, tileBounds.y - 1),
+            new GridPoint2(0, tileBounds.y),
             false,
             false);
     // Bottom
@@ -501,7 +514,15 @@ public class ForestGameArea extends GameArea {
     GridPoint2 pos = new GridPoint2(x, y);
     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
     xenoGrunt.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrunt, pos, false, true);
+    spawnEntityAt(xenoGrunt, pos, true, true);
+  }
+
+  // * TEMPORARY FOR TESTING
+  private void spawnDodgingDragonKnight(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+    fireworm.setScale(1.5f, 1.5f);
+    spawnEntityAt(fireworm, pos, true, true);
   }
 
   private void spawnFireWorm() {
@@ -668,7 +689,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       Entity wallTower = TowerFactory.createWallTower();
@@ -677,6 +698,20 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(fireTower, randomPos1, true, true);
       spawnEntityAt(stunTower, randomPos2, true, true);
     }
+  }
+
+  // * TEMPORARY FOR TESTING
+  private void spawnFireTowerTowerAt(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity fireTower = TowerFactory.createFireTower();
+
+    spawnEntityAt(fireTower, pos, true, true);
+  }
+  private void spawnDroidTowerAt(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity droidTower = TowerFactory.createDroidTower();
+
+    spawnEntityAt(droidTower, pos, true, true);
   }
   
   private void spawnTNTTower() {

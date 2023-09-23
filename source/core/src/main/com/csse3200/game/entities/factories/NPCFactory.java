@@ -6,12 +6,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.SplitMoblings;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
@@ -215,7 +217,6 @@ public class NPCFactory {
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
             .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
             .addComponent(aiComponent);
-
     PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
@@ -228,10 +229,24 @@ public class NPCFactory {
     Entity splitXenoGrunt = createXenoGrunt(new Entity())
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 2.25f));
-
+        .addComponent(new SplitMoblings(7, 0.5f))
+        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+    
+    // * TEMPORARY TESTING FOR PROJECTILE DODGING
+    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
     return splitXenoGrunt;
   }
+
+  public static Entity createDodgingDragonKnight() {
+    Entity fireWorm = createDragonKnight(new Entity());
+
+    fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+
+   fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+
+    return fireWorm;
+  }
+
 }
 
 
