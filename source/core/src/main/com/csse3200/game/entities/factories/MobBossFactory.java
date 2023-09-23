@@ -26,7 +26,6 @@ public class MobBossFactory {
     private static final int BOSS_MOB_AGRO_RANGE = 10;
     private static final int DEMON_HEALTH = 5000;
     private static final int DEMON_ATTACK = 0;
-    private static final int PATRICK_HEALTH = 2500;
     private static final int PATRICK_ATTACK = 0;
 
     // Create Demon Boss
@@ -71,7 +70,7 @@ public class MobBossFactory {
         return demon;
     }
 
-    public static Entity createPatrickBoss() {
+    public static Entity createPatrickBoss(int health) {
         MobBossConfigs config = configs.MobBoss;
         Entity demon = createBaseBoss();
 
@@ -95,7 +94,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(PATRICK_HEALTH, PATRICK_ATTACK));
+                .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));
 
         // Scale demon
         demon.getComponent(AnimationRenderComponent.class).scaleEntity();

@@ -407,7 +407,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnPatrick() {
-    Entity patrick = MobBossFactory.createPatrickBoss();
+    Entity patrick = MobBossFactory.createPatrickBoss(2500);
     spawnEntityAt(patrick, new GridPoint2(19, 3), true, false);
   }
 

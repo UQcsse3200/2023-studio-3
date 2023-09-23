@@ -104,6 +104,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             @Override
             public void run() {
                 changeState(DemonState.TRANSFORM);
+                animate();
                 startFlag = true;
             }
         }, 0.1f);
