@@ -2,6 +2,7 @@ package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.pausemenu.*;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Factory to create the pause menu and attach its components.
@@ -20,7 +21,7 @@ public class PauseMenuFactory {
                 .addComponent(new PauseMenuSettingsButton())
                 .addComponent(new PauseMenuPlanetSelectButton())
                 .addComponent(new PauseMenuMainMenuButton());
-        pauseMenu.create();
+        ServiceLocator.getEntityService().register(pauseMenu);
         return pauseMenu;
     }
 }
