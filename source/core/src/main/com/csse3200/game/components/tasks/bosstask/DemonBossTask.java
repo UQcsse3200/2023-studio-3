@@ -145,10 +145,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             changeState(DemonState.TRANSFORM_REVERSE);
             demon.getComponent(CombatStatsComponent.class).addHealth(100);
             deathCounter += 1;
+        } else if (health <= 0 && deathCounter == 1) {
+            changeState(DemonState.TRANSFORM);
         }
-//        else if (health <= 0 && deathCounter == 1) {
-//            changeState(DemonState.TRANSFORM);
-//        }
 
         // detect half health
         if (health <= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
