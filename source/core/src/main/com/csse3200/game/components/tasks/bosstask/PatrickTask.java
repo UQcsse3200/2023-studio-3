@@ -22,6 +22,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     // Constants
     private static final int PRIORITY = 3;
     private static final Vector2 PATRICK_SPEED = new Vector2(1f, 1f);
+    private static final float MAX_RADIUS = 20f;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(PatrickTask.class);
@@ -38,6 +39,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private boolean meleeFlag = false;
     private boolean rangeFlag = false;
     private boolean spawnFlag = false;
+    private boolean attackFlag = false;
     private  enum PatrickState {
         IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL, APPEAR
     }
@@ -66,15 +68,23 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                 if (animation.isFinished()) {
                     if (spawnFlag) {
                         changeState(PatrickState.CAST);
+                        spawnFlag = false;
                     } else if (meleeFlag) {
                         changeState(PatrickState.ATTACK);
+                        meleeFlag = false;
                     } else if (rangeFlag) {
                         changeState(PatrickState.IDLE);
+                        rangeFlag = false;
                     }
                 }
             }
             case CAST -> {
-
+                if (animation.isFinished()) {
+                    if (attackFlag) {
+                        PatrickTeleportTask teleportTask = new PatrickTeleportTask(patrick,
+                                getHuman());
+                    }
+                }
             }
             case IDLE -> {
                 if (animation.isFinished()) {
@@ -143,5 +153,24 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                 return ProjectileEffects.FIREBALL;
             }
         }
+    }
+
+    private Entity getHuman() {
+        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
+                getNearbyEntities(patrick, MAX_RADIUS);
+        Entity human = null;
+        float closestDistance = MAX_RADIUS;
+
+        for (int i = 0; i < nearbyEntities.size; i++) {
+            Entity targetEntity = nearbyEntities.get(i);
+            Vector2 targetPosition = targetEntity.getPosition();
+            float distance = currentPos.dst(targetPosition);
+
+            if (distance < closestDistance) {
+                closestEntity = targetEntity;
+                closestDistance = distance;
+            }
+        }
+        return human;
     }
 }

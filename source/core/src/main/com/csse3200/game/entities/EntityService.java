@@ -7,6 +7,8 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ public class EntityService {
   private static final Logger logger = LoggerFactory.getLogger(EntityService.class);
   private static final int INITIAL_CAPACITY = 16;
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
+  private static final float MAX_RADIUS = 20f;
 
   public static void removeEntity(Entity clickedEntity) {
     clickedEntity.dispose();
@@ -99,6 +102,34 @@ public class EntityService {
       }
     }
     return nearbyEntities;
+  }
+
+  public Entity getClosestHuman(Entity source) {
+    Entity closestHuman = null;
+    Vector2 sourcePos = source.getPosition();
+    float closestDistance = MAX_RADIUS;
+
+    for (int i = 0; i < getEntities().size; i++) {
+      Entity targetEntity = getEntities().get(i);
+
+      // check if target is human
+      HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+      if (targetHitbox == null) {
+        break;
+      }
+      if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
+        break;
+      }
+
+      // check how close target is to source
+      Vector2 targetPosition = targetEntity.getPosition();
+      float distance = sourcePos.dst(targetPosition);
+      if (distance < closestDistance) {
+        closestHuman = targetEntity;
+        closestDistance = distance;
+      }
+    }
+    return closestHuman;
   }
   
   public Entity getEntityAtPosition(float x, float y) {
