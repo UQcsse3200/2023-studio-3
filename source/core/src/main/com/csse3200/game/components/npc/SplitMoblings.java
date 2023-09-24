@@ -119,7 +119,7 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY, float initialScaleX, float initialScaleY) {
     // ? ENTITY PARAM KINDA USELESS?
-    Entity xenoGrunt = NPCFactory.createXenoGrunt(new Entity());
+    Entity xenoGrunt = NPCFactory.createXenoGrunt();
     xenoGrunt.setPosition(positionX, positionY);
 
     xenoGrunt.setScale(initialScaleX * scaleX, initialScaleY * scaleY);

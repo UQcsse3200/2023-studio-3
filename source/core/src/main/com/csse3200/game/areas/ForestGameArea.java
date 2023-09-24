@@ -490,7 +490,7 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
-      Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
+      Entity xenoGrunt = NPCFactory.createXenoGrunt();
       xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, false);
     }
@@ -510,7 +510,7 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
-      Entity fireWorm = NPCFactory.createFireWorm(player);
+      Entity fireWorm = NPCFactory.createFireWorm();
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
     }
@@ -519,7 +519,7 @@ public class ForestGameArea extends GameArea {
   // * TEMPORARY FOR TESTING
   private void spawnFireWorm(int x, int y) {
     GridPoint2 poistion = new GridPoint2(x, y);
-    Entity fireWorm = NPCFactory.createFireWorm(player);
+    Entity fireWorm = NPCFactory.createFireWorm();
     fireWorm.setScale(1.5f, 1.5f);
     spawnEntityAt(fireWorm, poistion, true, true);
   }
@@ -530,7 +530,7 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
       System.out.println(randomPos);
-      Entity fireWorm = NPCFactory.createDragonKnight(player);
+      Entity fireWorm = NPCFactory.createDragonKnight();
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
     }

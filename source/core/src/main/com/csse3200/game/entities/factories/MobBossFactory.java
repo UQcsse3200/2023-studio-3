@@ -31,7 +31,6 @@ public class MobBossFactory {
 
     // Create Demon Boss
     public static Entity createDemonBoss() {
-        MobBossConfigs config = configs.MobBoss;
         Entity demon = createBaseBoss();
 
         // Animation addition
@@ -73,7 +72,7 @@ public class MobBossFactory {
 
     // Create Boss King 1
     public static Entity createMobBoss1(int numLane) {
-        MobBossConfigs config = configs.MobBoss;
+        MobBossConfigs config = configs.mobBoss;
         Entity mobBoss1 = createBaseBoss();
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
@@ -98,7 +97,7 @@ public class MobBossFactory {
 
     // Create Boss King 2
     public static Entity createMobBoss2() {
-        MobBossConfigs config = configs.MobBoss;
+        MobBossConfigs config = configs.mobBoss;
         Entity mobBoss2 = createBaseBoss();
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
