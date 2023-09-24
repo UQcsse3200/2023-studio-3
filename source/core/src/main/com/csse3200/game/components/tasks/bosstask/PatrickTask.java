@@ -161,18 +161,25 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     }
 
     private void rangeAttack() {
+        // detect if 3 shots have been fired
         if (shotsFired == 3) {
             shotsFired = 0;
-            meleeAttack();
-            meleeFlag = true;
+            rangeFlag = false;
+            spawnFlag = true;
         }
+
+        // spawn random projectile
         Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
                 new Vector2(0f, patrick.getPosition().y), new Vector2(2, 2),
                 getEffect(), false);
         projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
         projectile.setScale(-1f, 1f);
         ServiceLocator.getEntityService().register(projectile);
-        changeState(PatrickState.IDLE);
         shotsFired++;
+
+        // teleport to random position
+        float randomX = MathUtils.random(10f, 19f);
+        float randomY = MathUtils.random(1f, 6f);
+        teleport(new Vector2(randomX, randomY));
     }
 }
