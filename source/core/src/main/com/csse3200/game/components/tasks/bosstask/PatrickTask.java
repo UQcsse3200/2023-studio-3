@@ -73,18 +73,16 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
         switch (state) {
             case APPEAR -> {
-                if (animation.isFinished()) {
-                    if (spawnFlag) {
-                        meleeAttack();
-                        meleeFlag = true;
-                        spawnFlag = false;
-                    } else if (meleeFlag) {
-                        changeState(PatrickState.ATTACK);
-                        meleeFlag = false;
-                    } else if (rangeFlag) {
-                        changeState(PatrickState.IDLE);
-                        rangeFlag = false;
-                    }
+                if (spawnFlag) {
+                    meleeAttack();
+                    meleeFlag = true;
+                    spawnFlag = false;
+                } else if (meleeFlag) {
+                    changeState(PatrickState.ATTACK);
+                    meleeFlag = false;
+                } else if (rangeFlag) {
+                    changeState(PatrickState.IDLE);
+                    rangeFlag = false;
                 }
             }
             case IDLE -> {
@@ -159,6 +157,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         initialPos = patrick.getPosition();
         meleeTarget = ServiceLocator.getEntityService().getClosestHuman(patrick);
         teleport(meleeTarget.getPosition());
+        changeState(PatrickState.ATTACK);
     }
 
     private void rangeAttack() {
