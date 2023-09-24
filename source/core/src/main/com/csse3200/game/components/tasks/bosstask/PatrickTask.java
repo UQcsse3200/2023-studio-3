@@ -2,7 +2,6 @@ package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.ProjectileEffects;
@@ -34,6 +33,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private AnimationRenderComponent animation;
     private Entity patrick;
     private int shotsFired;
+    private PatrickTeleportTask teleportTask;
+    private Vector2 initialPos;
 
     // Flags
     private boolean meleeFlag = false;
@@ -63,6 +64,11 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         animate();
+
+        if (teleportTask.getStatus().equals(Status.FINISHED)) {
+            changeState(PatrickState.APPEAR);
+        }
+
         switch (state) {
             case APPEAR -> {
                 if (animation.isFinished()) {
@@ -81,8 +87,10 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             case CAST -> {
                 if (animation.isFinished()) {
                     if (attackFlag) {
-                        PatrickTeleportTask teleportTask = new PatrickTeleportTask(patrick,
-                                getHuman());
+                        initialPos = patrick.getPosition();
+                        teleport(ServiceLocator.getEntityService().getClosestHuman(patrick).getPosition());
+                    } else {
+                        teleport(initialPos);
                     }
                 }
             }
@@ -155,22 +163,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         }
     }
 
-    private Entity getHuman() {
-        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
-                getNearbyEntities(patrick, MAX_RADIUS);
-        Entity human = null;
-        float closestDistance = MAX_RADIUS;
-
-        for (int i = 0; i < nearbyEntities.size; i++) {
-            Entity targetEntity = nearbyEntities.get(i);
-            Vector2 targetPosition = targetEntity.getPosition();
-            float distance = currentPos.dst(targetPosition);
-
-            if (distance < closestDistance) {
-                closestEntity = targetEntity;
-                closestDistance = distance;
-            }
-        }
-        return human;
+    private void teleport(Vector2 pos) {
+        teleportTask = new PatrickTeleportTask(patrick, pos);
     }
 }
