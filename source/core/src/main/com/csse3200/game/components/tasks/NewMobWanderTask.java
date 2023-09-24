@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
  * Wander around by moving a random position within a range of the starting position. Wait a little
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
  */
-public class MobWanderTask extends DefaultTask implements PriorityTask {
+public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(MobWanderTask.class);
 
   private final Vector2 wanderRange;
@@ -33,7 +33,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public MobWanderTask(Vector2 wanderRange, float waitTime) {
+  public NewMobWanderTask(Vector2 wanderRange, float waitTime) {
     this.wanderRange = wanderRange;
     this.waitTime = waitTime;
   }
@@ -59,7 +59,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
     currentTask = movementTask;
 
 
-  //  this.owner.getEntity().getEvents().trigger("wanderStart");
+   this.owner.getEntity().getEvents().trigger("wanderStart");
   }
 
   @Override
