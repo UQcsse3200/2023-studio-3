@@ -24,6 +24,11 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private static final Vector2 PATRICK_SPEED = new Vector2(1f, 1f);
     private static final float MAX_RADIUS = 20f;
     private static final int ATTACK_DAMAGE = 100;
+    private static final float RANGE_MIN_X = 10f;
+    private static final float RANGE_MAX_X = 18f;
+    private static final float RANGE_MIN_Y = 1f;
+    private static final float RANGE_MAX_Y = 6f;
+    private static final int HALF_HEALTH_ATTACKS = 5;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(PatrickTask.class);
@@ -43,6 +48,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private boolean meleeFlag = false;
     private boolean rangeFlag = false;
     private boolean spawnFlag = false;
+    private boolean halfHealthFlag = false;
     private  enum PatrickState {
         IDLE, WALK, ATTACK, HURT, DEATH, SPELL, APPEAR
     }
@@ -66,11 +72,22 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         animate();
+        int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
 
+        // check if patrick has just teleported
         if (teleportTask.getStatus().equals(Status.FINISHED)) {
             changeState(PatrickState.APPEAR);
         }
 
+        // handle half health special ability
+        // detect half health
+        if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
+                !halfHealthFlag) {
+            halfHealth();
+            halfHealthFlag = true;
+        }
+
+        // handle state switches
         switch (state) {
             case APPEAR -> {
                 if (spawnFlag) {
@@ -92,6 +109,10 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             }
             case ATTACK -> {
                 if (animation.isFinished()) {
+                    if (halfHealthFlag) {
+
+                        break;
+                    }
                     meleeTarget.getComponent(CombatStatsComponent.class).hit(ATTACK_DAMAGE);
                     teleport(initialPos);
                 }
@@ -160,6 +181,24 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         changeState(PatrickState.ATTACK);
     }
 
+    private void spawnRandProjectile(Vector2 destination) {
+        // spawn random projectile
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
+                destination, new Vector2(2, 2),
+                getEffect(), false);
+        projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
+        projectile.setScale(-1f, 1f);
+        ServiceLocator.getEntityService().register(projectile);
+        shotsFired++;
+    }
+
+    private void randomTeleport() {
+        // teleport to random position
+        float randomX = MathUtils.random(RANGE_MIN_X, RANGE_MAX_X);
+        float randomY = MathUtils.random(RANGE_MIN_Y, RANGE_MAX_Y);
+        teleport(new Vector2(randomX, randomY));
+    }
+
     private void rangeAttack() {
         // detect if 3 shots have been fired
         if (shotsFired == 3) {
@@ -167,19 +206,24 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             rangeFlag = false;
             spawnFlag = true;
         }
+        randomTeleport();
+        spawnRandProjectile(new Vector2(0f, patrick.getPosition().y));
+    }
 
-        // spawn random projectile
-        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
-                new Vector2(0f, patrick.getPosition().y), new Vector2(2, 2),
-                getEffect(), false);
-        projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
-        projectile.setScale(-1f, 1f);
-        ServiceLocator.getEntityService().register(projectile);
-        shotsFired++;
+    private void halfHealth() {
+        float startAngle = (float) Math.toRadians(135);
+        float endAngle = (float) Math.toRadians(225);
+        float angleIncrement = (endAngle - startAngle) / (HALF_HEALTH_ATTACKS - 1);
 
-        // teleport to random position
-        float randomX = MathUtils.random(10f, 19f);
-        float randomY = MathUtils.random(1f, 6f);
-        teleport(new Vector2(randomX, randomY));
+        for (int i = 0; i < HALF_HEALTH_ATTACKS; i++) {
+            randomTeleport();
+
+            // calculate unit vectors for projectiles
+            float currentAngle = startAngle + i * angleIncrement;
+            float x = MathUtils.cos(currentAngle) * 20;
+            float y = MathUtils.sin(currentAngle) * 20;
+            Vector2 destination = new Vector2(x, y);
+            spawnRandProjectile(destination);
+        }
     }
 }
