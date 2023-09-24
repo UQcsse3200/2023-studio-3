@@ -1,0 +1,265 @@
+
+skeleton.png
+size: 512, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+skeleton_attack1
+  rotate: false
+  xy: 188, 2
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack10
+  rotate: false
+  xy: 444, 102
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack11
+  rotate: false
+  xy: 252, 152
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack12
+  rotate: false
+  xy: 188, 202
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack13
+  rotate: false
+  xy: 252, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack2
+  rotate: false
+  xy: 380, 2
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack3
+  rotate: false
+  xy: 252, 102
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack4
+  rotate: false
+  xy: 188, 152
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack5
+  rotate: false
+  xy: 316, 2
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack6
+  rotate: false
+  xy: 380, 152
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack7
+  rotate: false
+  xy: 380, 202
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack8
+  rotate: false
+  xy: 316, 102
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_attack9
+  rotate: false
+  xy: 188, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death1
+  rotate: false
+  xy: 444, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death10
+  rotate: false
+  xy: 316, 202
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death11
+  rotate: false
+  xy: 380, 102
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death12
+  rotate: false
+  xy: 444, 5
+  size: 62, 45
+  orig: 62, 45
+  offset: 0, 0
+  index: -1
+skeleton_death2
+  rotate: false
+  xy: 444, 152
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death3
+  rotate: false
+  xy: 444, 202
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death4
+  rotate: false
+  xy: 316, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death5
+  rotate: false
+  xy: 316, 152
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death6
+  rotate: false
+  xy: 252, 202
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death7
+  rotate: false
+  xy: 252, 2
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death8
+  rotate: false
+  xy: 188, 102
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_death9
+  rotate: false
+  xy: 380, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+skeleton_walk1
+  rotate: false
+  xy: 64, 190
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk10
+  rotate: false
+  xy: 64, 128
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk11
+  rotate: false
+  xy: 2, 190
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk12
+  rotate: false
+  xy: 126, 190
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk2
+  rotate: false
+  xy: 126, 4
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk3
+  rotate: false
+  xy: 64, 4
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk4
+  rotate: false
+  xy: 2, 66
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk5
+  rotate: false
+  xy: 126, 66
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk6
+  rotate: false
+  xy: 64, 66
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk7
+  rotate: false
+  xy: 2, 128
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk8
+  rotate: false
+  xy: 126, 128
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+skeleton_walk9
+  rotate: false
+  xy: 2, 4
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
