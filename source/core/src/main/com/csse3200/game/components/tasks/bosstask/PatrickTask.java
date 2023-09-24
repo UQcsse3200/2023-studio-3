@@ -44,7 +44,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private boolean rangeFlag = false;
     private boolean spawnFlag = false;
     private  enum PatrickState {
-        IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL, APPEAR
+        IDLE, WALK, ATTACK, HURT, DEATH, SPELL, APPEAR
     }
 
     public PatrickTask() {
@@ -89,18 +89,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             }
             case IDLE -> {
                 if (animation.isFinished()) {
-                    if (shotsFired == 3) {
-                        shotsFired = 0;
-                        changeState(PatrickState.CAST);
-                    }
-                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
-                            new Vector2(0f, patrick.getPosition().y), new Vector2(2, 2),
-                            getEffect(), false);
-                    projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
-                    projectile.setScale(-1f, 1f);
-                    ServiceLocator.getEntityService().register(projectile);
-                    changeState(PatrickState.IDLE);
-                    shotsFired++;
+                    rangeAttack();
                 }
             }
             case ATTACK -> {
@@ -170,5 +159,21 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         initialPos = patrick.getPosition();
         meleeTarget = ServiceLocator.getEntityService().getClosestHuman(patrick);
         teleport(meleeTarget.getPosition());
+    }
+
+    private void rangeAttack() {
+        if (shotsFired == 3) {
+            shotsFired = 0;
+            meleeAttack();
+            meleeFlag = true;
+        }
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
+                new Vector2(0f, patrick.getPosition().y), new Vector2(2, 2),
+                getEffect(), false);
+        projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
+        projectile.setScale(-1f, 1f);
+        ServiceLocator.getEntityService().register(projectile);
+        changeState(PatrickState.IDLE);
+        shotsFired++;
     }
 }
