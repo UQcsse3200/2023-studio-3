@@ -35,7 +35,8 @@ public class MobBossFactory {
 
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
+                ServiceLocator.getResourceService()
+                .getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
         animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.NORMAL);

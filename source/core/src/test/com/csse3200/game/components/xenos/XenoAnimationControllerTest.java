@@ -24,7 +24,6 @@ import static org.mockito.Mockito.mock;
 public class XenoAnimationControllerTest {
 
     private Entity xenoGrunt;
-    private Entity target;
     private final String[] atlas = {"images/mobs/xenoGrunt.atlas"};
 
     @BeforeEach
