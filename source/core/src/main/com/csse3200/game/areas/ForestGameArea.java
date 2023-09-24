@@ -257,7 +257,7 @@ public class ForestGameArea extends GameArea {
 //    spawnDragonKnight();
 //    spawnFireWorm();
     spawnDemonBoss();
-    //spawnPatrick();
+    spawnPatrick();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();

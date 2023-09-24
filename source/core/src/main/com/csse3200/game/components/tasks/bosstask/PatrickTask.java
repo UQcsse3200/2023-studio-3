@@ -1,10 +1,15 @@
 package com.csse3200.game.components.tasks.bosstask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
@@ -27,8 +32,13 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private PatrickState prevState;
     private AnimationRenderComponent animation;
     private Entity patrick;
+    private int shotsFired;
+
+    // Flags
+    private boolean meleeFlag = false;
+    private boolean rangeFlag = false;
     private  enum PatrickState {
-        IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL
+        IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL, APPEAR
     }
 
     public PatrickTask() {
@@ -43,14 +53,38 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
         patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
-        changeState(PatrickState.IDLE);
+        changeState(PatrickState.APPEAR);
     }
 
     @Override
     public void update() {
         animate();
         switch (state) {
-            case IDLE -> {}
+            case APPEAR -> {
+                if (animation.isFinished()) {
+                    if (rangeFlag) {
+                        changeState(PatrickState.IDLE);
+                    } else if (meleeFlag) {
+                        changeState(PatrickState.ATTACK);
+                    }
+                }
+            }
+            case IDLE -> {
+                if (animation.isFinished()) {
+                    if (shotsFired == 3) {
+                        shotsFired = 0;
+                        changeState(PatrickState.CAST);
+                    }
+                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
+                            new Vector2(0f, patrick.getPosition().y), new Vector2(2, 2),
+                            getEffect(), false);
+                    projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
+                    projectile.setScale(-1f, 1f);
+                    ServiceLocator.getEntityService().register(projectile);
+                    changeState(PatrickState.IDLE);
+                    shotsFired++;
+                }
+            }
         }
     }
 
@@ -73,7 +107,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         }
 
         switch (state) {
-            case IDLE -> patrick.getEvents().trigger("Patrick_Attack");
+            case IDLE -> {
+
+            }
             default -> logger.debug("Patrick animation {state} not found");
         }
         prevState = state;
@@ -82,5 +118,23 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+    private ProjectileEffects getEffect() {
+        int randomNumber = MathUtils.random(0, 3);
+        switch (randomNumber) {
+            case 1 -> {
+                return ProjectileEffects.BURN;
+            }
+            case 2 -> {
+                return ProjectileEffects.SLOW;
+            }
+            case 3 -> {
+                return ProjectileEffects.STUN;
+            }
+            default -> {
+                return ProjectileEffects.FIREBALL;
+            }
+        }
     }
 }

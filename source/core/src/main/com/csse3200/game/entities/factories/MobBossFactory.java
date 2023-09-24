@@ -81,7 +81,7 @@ public class MobBossFactory {
         animator.addAnimation("patrick_cast", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_hurt", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("patrick_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("patrick_idle", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_spell", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_walk", 0.2f, Animation.PlayMode.LOOP);
 
