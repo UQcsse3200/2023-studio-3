@@ -2,17 +2,9 @@ package com.csse3200.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.csse3200.game.components.npc.DropComponent;
-import com.csse3200.game.input.DropInputComponent;
-import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.security.Provider;
 import java.util.Comparator;
 
 /**

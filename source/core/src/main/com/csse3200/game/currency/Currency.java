@@ -1,6 +1,5 @@
 package com.csse3200.game.currency;
 
-import com.csse3200.game.entities.Entity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
