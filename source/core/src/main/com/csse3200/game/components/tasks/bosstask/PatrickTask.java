@@ -225,5 +225,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             Vector2 destination = new Vector2(x, y);
             spawnRandProjectile(destination);
         }
+        if (shotsFired == HALF_HEALTH_ATTACKS) {
+            meleeFlag = true;
+        }
     }
 }
