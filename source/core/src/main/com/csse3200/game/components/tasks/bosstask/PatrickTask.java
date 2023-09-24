@@ -37,6 +37,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     // Flags
     private boolean meleeFlag = false;
     private boolean rangeFlag = false;
+    private boolean spawnFlag = false;
     private  enum PatrickState {
         IDLE, WALK, ATTACK, HURT, DEATH, CAST, SPELL, APPEAR
     }
@@ -53,6 +54,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
         patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
+        spawnFlag = true;
         changeState(PatrickState.APPEAR);
     }
 
@@ -62,12 +64,17 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         switch (state) {
             case APPEAR -> {
                 if (animation.isFinished()) {
-                    if (rangeFlag) {
-                        changeState(PatrickState.IDLE);
+                    if (spawnFlag) {
+                        changeState(PatrickState.CAST);
                     } else if (meleeFlag) {
                         changeState(PatrickState.ATTACK);
+                    } else if (rangeFlag) {
+                        changeState(PatrickState.IDLE);
                     }
                 }
+            }
+            case CAST -> {
+
             }
             case IDLE -> {
                 if (animation.isFinished()) {
