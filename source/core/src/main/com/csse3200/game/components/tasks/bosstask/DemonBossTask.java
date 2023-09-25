@@ -10,6 +10,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -40,11 +41,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int MOVE_FORWARD_DELAY = 30;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
-    private static final Vector2 SLIME_SPEED = new Vector2(0.5f, 0.5f);
     private static final int CLEAVE_DAMAGE = 50;
     private static final int HEAL_TIMES = 10;
     private static final int HEALTH_TO_ADD = 10;
-    private static final Vector2 DEFAULT_POS = new Vector2(0, 4);
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -53,7 +52,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private final GameTime gameTime;
     private Vector2 jumpPos;
     private MovementTask jumpTask;
-    private boolean isJumping;
     private DemonState state = DemonState.IDLE;
     private DemonState prevState;
     private AnimationRenderComponent animation;
@@ -63,13 +61,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
-    private boolean slimeFlag = false;
+
+    // Flags
     private boolean startFlag = false;
-    private boolean moving = false;
-    private int health;
+    private boolean isJumping;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
-    private int deathCounter = 0;
 
     /**
      * The different demon states.
@@ -96,20 +93,21 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         demon = owner.getEntity();
-        animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
-        currentPos = owner.getEntity().getPosition(); // get current position
+        animation = demon.getComponent(AnimationRenderComponent.class); // get animation
+        currentPos = demon.getPosition(); // get current position
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_SPEED); // set speed
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 changeState(DemonState.TRANSFORM);
+                animate();
                 startFlag = true;
             }
         }, 0.1f);
 
         // shift demon's boundary left every 30s
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 6; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
@@ -133,7 +131,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
         animate();
         currentPos = demon.getPosition();
-        health = demon.getComponent(CombatStatsComponent.class).getHealth();
+        int health = demon.getComponent(CombatStatsComponent.class).getHealth();
 
         // handle initial demon transformation
         if (animation.getCurrentAnimation().equals("transform") && animation.isFinished()) {
@@ -141,14 +139,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         // detect death stages
-        if (health <= 0 && deathCounter == 0) {
-            changeState(DemonState.TRANSFORM_REVERSE);
-            demon.getComponent(CombatStatsComponent.class).addHealth(100);
-            deathCounter += 1;
+        if (health <= 0) {
+            // spawn slimey boy
+            Entity slimey = MobBossFactory.createSlimeyBoy();
+            slimey.setPosition(demon.getPosition().x, demon.getPosition().y);
+            slimey.setScale(5f, 5f);
+            ServiceLocator.getEntityService().register(slimey);
+            demon.setFlagForDelete(true);
         }
-//        else if (health <= 0 && deathCounter == 1) {
-//            changeState(DemonState.TRANSFORM);
-//        }
 
         // detect half health
         if (health <= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
@@ -185,28 +183,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     if (animation.isFinished()) {
                         changeState(DemonState.DEATH);
                     }
-                }
-            }
-            case TRANSFORM_REVERSE -> {
-                if (animation.isFinished()) {
-                    changeState(DemonState.SLIME_MOVE);
-                }
-            }
-            case SLIME_MOVE -> {
-                if (!moving) {
-                    seekAndDestroy();
-                    moving = true;
-                } else {
-                    if (targetFound()) {
-                        // do aoe damage based on how much health slime has left
-                        applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
-                                demon.getComponent(CombatStatsComponent.class).getHealth());
-                    }
-                }
-            }
-            case DEATH -> {
-                if (animation.isFinished()) {
-                    demon.setFlagForDelete(true);
                 }
             }
         }
@@ -418,6 +394,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+<<<<<<< HEAD
      * Returns the closest human entity from a given array.
      * 
      * @param targets array of human entities
@@ -442,10 +419,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     /**
      * Change state to cleave and deals damage to target.
+=======
+     * Change state to cleave and deal damage to target
+>>>>>>> AOE-Projectile
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
-        Entity target = getClosestHuman(getNearbyHumans(SMASH_RADIUS));
+        Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(demon,
+                PhysicsLayer.HUMANS);
         CombatStatsComponent targetCombatStats = target.
                 getComponent(CombatStatsComponent.class);
         Timer.schedule(new Timer.Task() {
@@ -457,35 +438,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Find the closest human entity and start moving towards them.
-     */
-    private void seekAndDestroy() {
-        Entity targetEntity = getClosestHuman(getNearbyHumans(20));
-        Vector2 targetPos;
-        if (targetEntity == null) {
-            targetPos = DEFAULT_POS;
-        } else {
-            targetPos = targetEntity.getPosition();
-        }
-        MovementTask slimeMovementTask = new MovementTask(targetPos);
-        slimeMovementTask.create(owner);
-        slimeMovementTask.start();
-        demon.getComponent(PhysicsMovementComponent.class).setSpeed(SLIME_SPEED);
-    }
-
-    /**
-     * Returns a boolean that indicates whether the demon entity has reached the
-     * target.
-     * 
-     * @return if target has been reached or not
-     */
-    private boolean targetFound() {
-        return !getNearbyHumans(1).isEmpty();
-    }
-
-    /**
-     * When at half health, demon starts healing by a certain amount every 10
-     * seconds.
+     * When at half health demon starts healing by a certain amount every second
      */
     private void halfHealth() {
         changeState(DemonState.CAST);

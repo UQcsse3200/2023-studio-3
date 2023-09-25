@@ -2,6 +2,13 @@ package com.csse3200.game.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +25,7 @@ public class EntityService {
   private static final Logger logger = LoggerFactory.getLogger(EntityService.class);
   private static final int INITIAL_CAPACITY = 16;
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
+  private static final float MAX_RADIUS = 50f;
 
   public static void removeEntity(Entity clickedEntity) {
     clickedEntity.dispose();
@@ -91,6 +99,60 @@ public class EntityService {
       }
     }
     return nearbyEntities;
+  }
+
+  /**
+   * Get entities within a certain radius of a given entity.
+   *
+   * @param source The reference entity to check distance from.
+   * @param radius The radius within which to fetch entities.
+   * @param layer Desired layer for entities to be in
+   * @return An array containing entities within the given radius.
+   */
+  public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
+    Array<Entity> entities = new Array<Entity>();
+    Array<Entity> allEntities = getNearbyEntities(source, radius);
+
+    for (int i = 0; i < allEntities.size; i++) {
+      Entity targetEntity = allEntities.get(i);
+
+      // check targets layer
+      HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+      if (targetHitbox == null) {
+        continue;
+      }
+      if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {
+        continue;
+      }
+      entities.add(targetEntity);
+    }
+    return entities;
+  }
+
+  /**
+   * Returns the closest entity to the source of provided layer
+   * @param source source entity
+   * @param layer layer for desired entity to be returned
+   * @return closest entity of correct layer
+   */
+  public Entity getClosestEntityOfLayer(Entity source, short layer) {
+    Entity closestHuman = null;
+    Vector2 sourcePos = source.getPosition();
+    float closestDistance = MAX_RADIUS;
+    Array<Entity> entitiesInLayer = getEntitiesInLayer(source, MAX_RADIUS, layer);
+
+    for (int i = 0; i < entitiesInLayer.size; i++) {
+      Entity targetEntity = entitiesInLayer.get(i);
+
+      // check how close target is to source
+      Vector2 targetPosition = targetEntity.getPosition();
+      float distance = sourcePos.dst(targetPosition);
+      if (distance < closestDistance) {
+        closestHuman = targetEntity;
+        closestDistance = distance;
+      }
+    }
+    return closestHuman;
   }
   
   public Entity getEntityAtPosition(float x, float y) {

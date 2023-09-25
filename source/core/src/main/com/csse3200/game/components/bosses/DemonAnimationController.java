@@ -7,7 +7,7 @@ public class DemonAnimationController extends Component {
     AnimationRenderComponent animator;
 
     /**
-     * Creation call for a TowerAnimationController, fetches the animationRenderComponent that this controller will
+     * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
      * be attached to and registers all the event listeners required to trigger the animations and sounds.
      */
     @Override
@@ -41,6 +41,4 @@ public class DemonAnimationController extends Component {
                     animator.startAnimation(animationName));
         }
     }
-
-
 }

@@ -111,7 +111,8 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/snow_ball.png",
           "images/mobboss/demon.png",
           "images/mobboss/demon2.png",
-          "images/mobs/fire_worm.png"
+          "images/mobs/fire_worm.png",
+          "images/mobboss/patrick.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -150,7 +151,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/skeleton.atlas",
           "images/mobs/wizard.atlas", 
           "images/mobs/water_queen.atlas",
-          "images/mobs/water_slime.atlas"
+          "images/mobs/water_slime.atlas",
+          "images/mobboss/patrick.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -282,6 +284,7 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
     // spawnDemonBoss();
+    // spawnPatrickBoss();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
@@ -291,7 +294,7 @@ public class ForestGameArea extends GameArea {
 //    spawnTNTTower();
 //
 //    spawnGapScanners();
-//    spawnDroidTower();
+    spawnDroidTower();
 //
 //    mobBoss2 = spawnMobBoss2();
 
@@ -393,8 +396,6 @@ public class ForestGameArea extends GameArea {
   private Entity spawnPlayer() {
     Entity newPlayer = PlayerFactory.createPlayer();
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
-    newPlayer.addComponent(new TouchAttackComponent(PhysicsLayer.NPC));
-    newPlayer.addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS));
     return newPlayer;
   }
   
@@ -430,7 +431,12 @@ public class ForestGameArea extends GameArea {
 
   private void spawnDemonBoss() {
     Entity demon = MobBossFactory.createDemonBoss();
-    spawnEntityAt(demon, new GridPoint2(19, 4), true, false);
+    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+  }
+
+  private void spawnPatrick() {
+    Entity patrick = MobBossFactory.createPatrickBoss(2500);
+    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
   }
 
   private Entity spawnMobBoss1() {
