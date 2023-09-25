@@ -97,7 +97,7 @@ public class MobBossFactory {
     }
 
     public static Entity createPatrickBoss(int health) {
-        Entity demon = createBaseBoss();
+        Entity patrick = createBaseBoss();
 
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
@@ -115,17 +115,48 @@ public class MobBossFactory {
                 .addTask(new PatrickTask());
 
         // Component addition
-        demon
+        patrick
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));
 
         // Scale demon
-        demon.getComponent(AnimationRenderComponent.class).scaleEntity();
-        demon.scaleHeight(4f);
-        demon.scaleWidth(4f);
-        return demon;
+        patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
+        patrick.scaleHeight(4f);
+        patrick.scaleWidth(4f);
+        return patrick;
+    }
+
+    /*
+     Patrick death: cant figure out how to get another animation because
+     APPEAR uses "patrick_death" REVERSED. So creating a new animator to be
+     able to use his death animation
+     */
+    public static Entity patrickDead() {
+        Entity patrick = createBaseBoss();
+
+        // Animation addition
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
+        animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.NORMAL);
+
+        // AI task addition
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new PatrickDeathTask());
+
+        // Component addition
+        patrick
+                .addComponent(animator)
+                .addComponent(new PatrickAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(1, 0));
+
+        // Scale patrick
+        patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
+        patrick.scaleHeight(4f);
+        patrick.scaleWidth(4f);
+        return patrick;
     }
 
     // Create Boss King 1

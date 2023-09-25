@@ -15,6 +15,7 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import net.dermetfan.gdx.physics.box2d.PositionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +97,14 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             } else {
                 return;
             }
+        }
+
+        System.out.println(patrick.getComponent(CombatStatsComponent.class).getHealth());
+        // check if patrick is dead
+        if (patrick.getComponent(CombatStatsComponent.class).getHealth() <= 0) {
+            PatrickDeathTask deathTask = new PatrickDeathTask();
+            deathTask.create(owner);
+            deathTask.start();
         }
 
         animate();

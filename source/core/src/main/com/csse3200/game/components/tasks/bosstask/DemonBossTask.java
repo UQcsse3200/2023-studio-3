@@ -38,7 +38,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int Y_BOT_BOUNDARY = 1;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_RADIUS = 3;
-    private static final int MOVE_FORWARD_DELAY = 30;
+    private static final int MOVE_FORWARD_DELAY = 15;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
     private static final int CLEAVE_DAMAGE = 50;
@@ -56,7 +56,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private DemonState prevState;
     private AnimationRenderComponent animation;
     private Entity demon;
-    private int numBalls = 6;
+    private int numBalls = 3;
     private static int xRightBoundary = 17;
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
@@ -72,9 +72,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      * The different demon states.
      */
     private enum DemonState {
-        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT,
-        WALK, TRANSFORM_REVERSE, SLIME_IDLE, SLIME_MOVE, PROJECTILE_EXPLOSION,
-        PROJECTILE_IDLE, SLIME_TAKE_HIT
+        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
     }
 
     /**
@@ -217,12 +215,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case CLEAVE -> demon.getEvents().trigger("demon_cleave");
             case TAKE_HIT -> demon.getEvents().trigger("demon_take_hit");
             case TRANSFORM -> demon.getEvents().trigger("transform");
-            case TRANSFORM_REVERSE -> demon.getEvents().trigger("transform_reverse");
-            case SLIME_IDLE -> demon.getEvents().trigger("idle");
-            case SLIME_MOVE -> demon.getEvents().trigger("move");
-            case SLIME_TAKE_HIT -> demon.getEvents().trigger("take_hit");
-            case PROJECTILE_IDLE -> demon.getEvents().trigger("projectile_explosion");
-            case PROJECTILE_EXPLOSION -> demon.getEvents().trigger("projectile_idle");
             default -> logger.debug("Demon animation {state} not found");
         }
         prevState = state;
@@ -293,6 +285,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         if (currentPos.x > xRightBoundary) {
             jumpPos = new Vector2(currentPos.x - JUMP_DISTANCE, currentPos.y); //jump back into boundary
             return jumpPos;
+        }
+
+        // jump backwards if right next to tower
+        if (currentPos.dst(ServiceLocator.getEntityService().getClosestEntityOfLayer(
+                demon, PhysicsLayer.HUMANS).getPosition()) < 2f) {
+            jumpPos = new Vector2(currentPos.x + JUMP_DISTANCE, currentPos.y);
         }
 
         float randomAngle = MathUtils.random(0, 2 * MathUtils.PI);

@@ -283,7 +283,7 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
-    // spawnDemonBoss();
+//     spawnDemonBoss();
      spawnPatrick();
   //  spawnFireWorm();
 
@@ -294,7 +294,7 @@ public class ForestGameArea extends GameArea {
 //    spawnTNTTower();
 //
 //    spawnGapScanners();
-    spawnDroidTower();
+//    spawnDroidTower();
 //
 //    mobBoss2 = spawnMobBoss2();
 
