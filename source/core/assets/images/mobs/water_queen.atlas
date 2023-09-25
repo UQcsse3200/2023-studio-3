@@ -1,0 +1,202 @@
+
+water_queen.png
+size: 2048, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+water_queen_attack1
+  rotate: false
+  xy: 922, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack2
+  rotate: false
+  xy: 1106, 7
+  size: 90, 55
+  orig: 90, 55
+  offset: 0, 0
+  index: -1
+water_queen_attack3
+  rotate: false
+  xy: 2, 64
+  size: 100, 60
+  orig: 100, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack4
+  rotate: false
+  xy: 748, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack5
+  rotate: false
+  xy: 1300, 71
+  size: 90, 53
+  orig: 90, 53
+  offset: 0, 0
+  index: -1
+water_queen_attack6
+  rotate: false
+  xy: 1014, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack7
+  rotate: false
+  xy: 564, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack8
+  rotate: false
+  xy: 196, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_attack9
+  rotate: false
+  xy: 932, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death1
+  rotate: false
+  xy: 278, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death2
+  rotate: false
+  xy: 1024, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death3
+  rotate: false
+  xy: 462, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death4
+  rotate: false
+  xy: 94, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death5
+  rotate: false
+  xy: 840, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death6
+  rotate: false
+  xy: 370, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death7
+  rotate: false
+  xy: 2, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death8
+  rotate: false
+  xy: 656, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_death9
+  rotate: false
+  xy: 288, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk1
+  rotate: false
+  xy: 738, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk10
+  rotate: false
+  xy: 830, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk2
+  rotate: false
+  xy: 380, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk3
+  rotate: false
+  xy: 1116, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk4
+  rotate: false
+  xy: 554, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk5
+  rotate: false
+  xy: 186, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk6
+  rotate: false
+  xy: 1208, 70
+  size: 90, 54
+  orig: 90, 54
+  offset: 0, 0
+  index: -1
+water_queen_walk7
+  rotate: false
+  xy: 472, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk8
+  rotate: false
+  xy: 104, 64
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
+water_queen_walk9
+  rotate: false
+  xy: 646, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1

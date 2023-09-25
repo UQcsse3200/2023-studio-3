@@ -1,0 +1,97 @@
+
+water_slime.png
+size: 512, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+slime-attack-0
+  rotate: false
+  xy: 308, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-attack-1
+  rotate: false
+  xy: 104, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-attack-2
+  rotate: false
+  xy: 376, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-attack-3
+  rotate: false
+  xy: 206, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-attack-4
+  rotate: false
+  xy: 2, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-die-0
+  rotate: false
+  xy: 138, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-die-1
+  rotate: false
+  xy: 410, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-die-2
+  rotate: false
+  xy: 240, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-die-3
+  rotate: false
+  xy: 36, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-move-0
+  rotate: false
+  xy: 274, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-move-1
+  rotate: false
+  xy: 70, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-move-2
+  rotate: false
+  xy: 342, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
+slime-move-3
+  rotate: false
+  xy: 172, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
