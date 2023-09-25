@@ -1,10 +1,13 @@
 package com.csse3200.game.components.pausemenu;
 
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.csse3200.game.GdxGame;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +20,11 @@ public class PauseMenuPlanetSelectButton extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table;
 
+    private final GdxGame game;
+
+    public PauseMenuPlanetSelectButton(GdxGame screenSwitchHandle) {
+        game = screenSwitchHandle;
+    }
     @Override
     public void create() {
         super.create();
@@ -36,7 +44,7 @@ public class PauseMenuPlanetSelectButton extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Planet select button clicked");
-                        // open settings
+                        game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
                     }
                 });
 

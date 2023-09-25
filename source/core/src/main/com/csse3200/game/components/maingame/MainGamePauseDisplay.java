@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.ui.UIComponent;
@@ -18,6 +19,12 @@ public class MainGamePauseDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGamePauseDisplay.class);
     private static final float Z_INDEX = 2f;
     private Table table;
+
+    private GdxGame game;
+
+    public MainGamePauseDisplay(GdxGame screenSwitchHandle) {
+        game = screenSwitchHandle;
+    }
 
     @Override
     public void create() {
@@ -38,7 +45,7 @@ public class MainGamePauseDisplay extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Pause button clicked");
-                        PauseMenuFactory.createPauseMenu();
+                        PauseMenuFactory.createPauseMenu(game);
                     }
                 });
 
