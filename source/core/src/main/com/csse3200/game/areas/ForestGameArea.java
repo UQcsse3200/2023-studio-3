@@ -684,7 +684,6 @@ public class ForestGameArea extends GameArea {
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createDroidTower();
-      System.out.println(weaponTower);
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
   }

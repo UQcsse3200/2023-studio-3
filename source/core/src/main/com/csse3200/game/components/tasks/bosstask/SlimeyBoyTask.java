@@ -27,7 +27,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     private Entity slimey;
     private AnimationRenderComponent animation;
     private Vector2 currentPos;
-    private SlimeState state = SlimeState.PROJECTILE_EXPLOSION; // set initial state to random unused state
+    private SlimeState state = SlimeState.IDLE; // set initial state to random unused state
     private SlimeState prevState;
     private Entity targetEntity;
 
@@ -42,7 +42,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
         slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed
-        changeState(SlimeState.IDLE);
+        changeState(SlimeState.TRANSFORM);
     }
 
     @Override
@@ -52,7 +52,11 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         int health = slimey.getComponent(CombatStatsComponent.class).getHealth();
 
         switch (state) {
-            case IDLE -> seekAndDestroy();
+            case TRANSFORM -> {
+                if (animation.isFinished()) {
+                    seekAndDestroy();
+                }
+            }
             case MOVE -> {
                 if (targetFound()) {
                     // do aoe damage based on how much health slime has left
@@ -104,6 +108,8 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         changeState(SlimeState.MOVE);
         targetEntity = ServiceLocator.getEntityService().getClosestEntityOfLayer(
                 slimey, PhysicsLayer.HUMANS);
+//        System.out.println(ServiceLocator.getEntityService().getEntitiesInLayer(slimey, MAX_RADIUS, PhysicsLayer.HUMANS));
+//        System.out.println(ServiceLocator.getEntityService().getClosestEntityOfLayer(slimey, PhysicsLayer.HUMANS));
         Vector2 targetPos;
         if (targetEntity == null) {
             targetPos = DEFAULT_POS;
@@ -120,6 +126,9 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
      * @return if target has been reached or not
      */
     private boolean targetFound() {
+        if (targetEntity == null) {
+            return false;
+        }
         return currentPos.dst(targetEntity.getPosition()) < 1;
     }
 

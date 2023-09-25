@@ -115,23 +115,30 @@ public class EntityService {
   public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
     Array<Entity> entities = new Array<Entity>();
     Array<Entity> allEntities = getNearbyEntities(source, radius);
+    System.out.println(allEntities);
 
     for (int i = 0; i < allEntities.size; i++) {
-      Entity targetEntity = getEntities().get(i);
+      Entity targetEntity = allEntities.get(i);
 
       // check targets layer
       HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
       if (targetHitbox == null) {
-        break;
+        continue;
       }
       if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {
-        break;
+        continue;
       }
       entities.add(targetEntity);
     }
     return entities;
   }
 
+  /**
+   * Returns the closest entity to the source of provided layer
+   * @param source source entity
+   * @param layer layer for desired entity to be returned
+   * @return closest entity of correct layer
+   */
   public Entity getClosestEntityOfLayer(Entity source, short layer) {
     Entity closestHuman = null;
     Vector2 sourcePos = source.getPosition();
