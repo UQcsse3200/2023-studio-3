@@ -11,6 +11,9 @@ public class DodgingComponent extends Component {
   private final RaycastHit hit = new RaycastHit();
   private short targetLayer;
   private float rangeDetection;
+  private float dodgeSpeed = 1.75f;
+  // Original entity y's speed
+  private float originalSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed().y;
   private PhysicsEngine physics;
   private static final float Y_OFFSET_MOB_DETECTION = 0.35f;
 
@@ -24,7 +27,11 @@ public class DodgingComponent extends Component {
     this.rangeDetection = rangeDetection;
   }
 
-  // TODO: add speed as a param for the constructor
+  public DodgingComponent(short targetLayer, float rangeDetection, float dodgeSpeed) {
+    this.targetLayer = targetLayer;
+    this.rangeDetection = rangeDetection;
+    this.dodgeSpeed = dodgeSpeed;
+  }
 
   @Override
   public void create() {
@@ -39,10 +46,10 @@ public class DodgingComponent extends Component {
         setVerticalAngleDirection(mobPos.y - 15);
       }
       setVerticalAngleDirection(mobPos.y > 3.5 ? mobPos.y - 15 : mobPos.y + 15);
-      setVerticalSpeed(1.75f);
+      setVerticalSpeed(dodgeSpeed);
     } else {
       setVerticalAngleDirection(mobPos.y);
-      setVerticalSpeed(1f);
+      setVerticalSpeed(originalSpeed);
     }
   }
 
