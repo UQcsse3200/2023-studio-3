@@ -251,7 +251,7 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+    //player.getEvents().addListener("spawnWave", this::spawnWave);
     //playMusic();
     
     // Types of projectile
@@ -273,18 +273,18 @@ public class ForestGameArea extends GameArea {
     spawnFireTowerTowerAt(3, 3);
     spawnFireTowerTowerAt(3, 4);
     spawnFireTowerTowerAt(3, 5);
-    spawnDroidTowerAt(3, 1);
-    spawnDroidTowerAt(3, 2);
-    spawnDroidTowerAt(3, 3);
-    spawnDroidTowerAt(3, 4);
-    spawnDroidTowerAt(3, 5);
+//    spawnDroidTowerAt(3, 1);
+//    spawnDroidTowerAt(3, 2);
+//    spawnDroidTowerAt(3, 3);
+//    spawnDroidTowerAt(3, 4);
+//    spawnDroidTowerAt(3, 5);
     // spawnSplittingXenoGrunt(15, 5);
-    spawnDeflectXenoGrunt(15, 5);
+//    spawnDeflectXenoGrunt(15, 5);
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
     // spawnDemonBoss();
-    // spawnPatrickBoss();
+     spawnPatrick();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
