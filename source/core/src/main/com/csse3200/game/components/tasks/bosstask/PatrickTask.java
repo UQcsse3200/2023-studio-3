@@ -90,16 +90,16 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // update teleport task while teleporting
         if (teleportFlag) {
             teleportTask.update();
+            if (teleportTask.getStatus().equals(Status.FINISHED)) {
+                teleportFlag = false;
+                changeState(PatrickState.APPEAR);
+            } else {
+                return;
+            }
         }
 
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
-
-        // check if patrick has just teleported
-        if (teleportFlag && teleportTask.getStatus().equals(Status.FINISHED)) {
-            changeState(PatrickState.APPEAR);
-            teleportFlag = false;
-        }
 
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
@@ -118,8 +118,14 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                     changeState(PatrickState.ATTACK);
                     meleeFlag = false;
                 } else if (rangeFlag) {
-                    changeState(PatrickState.IDLE);
-                    rangeFlag = false;
+                    // shoot 3 projectiles
+                    if (shotsFired > 2) {
+                        rangeFlag = false;
+                        spawnFlag = true;
+                        shotsFired = 0; // reset shots fired
+                    } else {
+                        changeState(PatrickState.IDLE);
+                    }
                 }
             }
             case IDLE -> {
@@ -129,11 +135,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             }
             case ATTACK -> {
                 if (animation.isFinished()) {
-                    if (halfHealthFlag) {
-                        break;
-                    }
                     meleeTarget.getComponent(CombatStatsComponent.class).hit(ATTACK_DAMAGE);
                     teleport(initialPos);
+                    rangeFlag = true;
                 }
             }
         }
@@ -204,7 +208,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         meleeTarget = ServiceLocator.getEntityService().getClosestEntityOfLayer(
                 patrick, PhysicsLayer.HUMANS);
         teleport(meleeTarget.getPosition());
-        changeState(PatrickState.ATTACK);
         meleeFlag = true;
     }
 
@@ -227,12 +230,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     }
 
     private void rangeAttack() {
-        // detect if 3 shots have been fired
-        if (shotsFired == 3) {
-            shotsFired = 0;
-            rangeFlag = false;
-            spawnFlag = true;
-        }
         randomTeleport();
         spawnRandProjectile(new Vector2(0f, patrick.getPosition().y));
     }
