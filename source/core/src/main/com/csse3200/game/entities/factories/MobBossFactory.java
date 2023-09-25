@@ -45,11 +45,6 @@ public class MobBossFactory {
         animator.addAnimation("demon_smash", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("move", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
-        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
 
         // AI task addition
@@ -77,7 +72,29 @@ public class MobBossFactory {
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas",
                         TextureAtlas.class));
+        animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("move", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.REVERSED);
 
+        // AI task addition
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new SlimeyBoyTask());
+
+        // Component addition
+        slimeyBoy
+                .addComponent(animator)
+                .addComponent(new DemonAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(500, 0));
+
+        // Scale demon
+        slimeyBoy.getComponent(AnimationRenderComponent.class).scaleEntity();
+        slimeyBoy.scaleHeight(5f);
+        slimeyBoy.scaleWidth(5f);
+        return slimeyBoy;
     }
 
     public static Entity createPatrickBoss(int health) {
