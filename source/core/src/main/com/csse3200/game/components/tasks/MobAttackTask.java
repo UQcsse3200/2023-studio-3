@@ -125,7 +125,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           if (this.meleeOrProjectile() instanceof Melee) {
-            System.out.println("Melee attack");
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);

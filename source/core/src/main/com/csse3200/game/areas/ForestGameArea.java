@@ -519,7 +519,6 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
       Entity xenoGrunt = NPCFactory.createXenoGrunt();
       xenoGrunt.setScale(1.5f, 1.5f);
       spawnEntityAt(xenoGrunt, randomPos, true, false);
@@ -555,7 +554,6 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
       Entity fireWorm = NPCFactory.createFireWorm();
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
@@ -574,7 +572,6 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
       Entity skeleton = NPCFactory.createSkeleton();
       skeleton.setScale(1.5f, 1.5f);
       spawnEntityAt(skeleton, randomPos, true, false);
@@ -586,7 +583,6 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
       Entity fireWorm = NPCFactory.createDragonKnight();
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
