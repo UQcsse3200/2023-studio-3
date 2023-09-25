@@ -8,7 +8,6 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 

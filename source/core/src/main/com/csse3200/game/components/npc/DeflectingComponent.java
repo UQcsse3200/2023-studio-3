@@ -64,6 +64,11 @@ public class DeflectingComponent extends Component {
     resetHealth();
   }
 
+  /**
+   * Deflects projectile to the opposite direction
+   * @param me Self entity fixture
+   * @param other Colliding projectile fixture.
+   */
   private void deflectProj(Fixture me, Fixture other) {
     // If self fixture does not match or the colliding target
     if (hitboxComponent.getFixture() != me
