@@ -539,14 +539,6 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  // * TEMPORARY FOR TESTING
-  private void spawnFireWorm(int x, int y) {
-    GridPoint2 poistion = new GridPoint2(x, y);
-    Entity fireWorm = NPCFactory.createFireWorm(player);
-    fireWorm.setScale(1.5f, 1.5f);
-    spawnEntityAt(fireWorm, poistion, true, true);
-  }
-
   private void spawnDragonKnight() {
     int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
