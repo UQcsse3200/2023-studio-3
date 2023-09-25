@@ -31,12 +31,12 @@ public class MobBossFactory {
 
     // Create Demon Boss
     public static Entity createDemonBoss() {
-        MobBossConfigs config = configs.MobBoss;
         Entity demon = createBaseBoss();
 
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
+                ServiceLocator.getResourceService()
+                .getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
         animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.NORMAL);
@@ -73,7 +73,7 @@ public class MobBossFactory {
 
     // Create Boss King 1
     public static Entity createMobBoss1(int numLane) {
-        MobBossConfigs config = configs.MobBoss;
+        MobBossConfigs config = configs.mobBoss;
         Entity mobBoss1 = createBaseBoss();
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
@@ -98,7 +98,7 @@ public class MobBossFactory {
 
     // Create Boss King 2
     public static Entity createMobBoss2() {
-        MobBossConfigs config = configs.MobBoss;
+        MobBossConfigs config = configs.mobBoss;
         Entity mobBoss2 = createBaseBoss();
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()

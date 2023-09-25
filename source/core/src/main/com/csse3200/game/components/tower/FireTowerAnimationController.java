@@ -39,21 +39,21 @@ public class FireTowerAnimationController extends Component{
     }
 
     /**
-     * Starts the idle animation
+     * Starts the idle animation.
      */
     void animateIdle() {
         animator.startAnimation(IDLE_ANIM);
     }
 
     /**
-     * starts the prep_attack animation
+     * Starts the prep_attack animation.
      */
     void animatePrepAttack() {
         animator.startAnimation(PREP_ATTACK_ANIM);
     }
 
     /**
-     * starts the attack animation
+     * Starts the attack animation.
      */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);

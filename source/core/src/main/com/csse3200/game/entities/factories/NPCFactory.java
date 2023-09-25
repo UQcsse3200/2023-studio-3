@@ -51,11 +51,10 @@ public class NPCFactory {
   /**
    * Creates a ghost entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createGhost(Entity target) {
-    Entity ghost = createBaseNPC(target);
+  public static Entity createGhost() {
+    Entity ghost = createBaseNPC();
     BaseEntityConfig config = configs.ghost;
     /**
     AnimationRenderComponent animator =
@@ -76,13 +75,12 @@ public class NPCFactory {
   }
 
   /**
-
-   Creates a ghost king entity.*
-   @param target entity to chase
-   @return entity
+   * Creates a ghost king entity.
+   * 
+   * @return entity
    */
-  public static Entity createGhostKing(Entity target) {
-    Entity ghostKing = createBaseNPC(target);
+  public static Entity createGhostKing() {
+    Entity ghostKing = createBaseNPC();
     GhostKingConfig config = configs.ghostKing;
 
     AnimationRenderComponent animator =
@@ -104,11 +102,10 @@ public class NPCFactory {
   /**
    * Creates a fire worm entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createFireWorm(Entity target) {
-    Entity fireWorm = createBaseNPC(target);
+  public static Entity createFireWorm() {
+    Entity fireWorm = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -134,11 +131,10 @@ public class NPCFactory {
   /**
    * Creates a dragon Knight entity
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createDragonKnight(Entity target) {
-    Entity dragonKnight = createBaseNPC(target);
+  public static Entity createDragonKnight() {
+    Entity dragonKnight = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -166,11 +162,10 @@ public class NPCFactory {
   /**
    * Creates a xeno grunt entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createXenoGrunt(Entity target) {
-    Entity xenoGrunt = createBaseNPC(target);
+  public static Entity createXenoGrunt() {
+    Entity xenoGrunt = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -204,7 +199,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createBaseNPC(Entity target) {
+  public static Entity createBaseNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
@@ -226,7 +221,7 @@ public class NPCFactory {
   }
 
   public static Entity createSplittingXenoGrunt() {
-    Entity splitXenoGrunt = createXenoGrunt(new Entity())
+    Entity splitXenoGrunt = createXenoGrunt()
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
         .addComponent(new SplitMoblings(7, 0.5f))

@@ -7,8 +7,6 @@ import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.projectile.*;
-import com.csse3200.game.components.tasks.TrajectTask;
-import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
