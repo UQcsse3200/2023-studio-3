@@ -184,7 +184,7 @@ public class NPCFactory {
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService().getAsset("images/mobs/water_queen.atlas", TextureAtlas.class));
-    animator.addAnimation("water_queen_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("water_queen_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_queen_attack", 0.1f);
     animator.addAnimation("water_queen_death", 0.1f);
     wizard

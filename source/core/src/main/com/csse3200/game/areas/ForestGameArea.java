@@ -214,9 +214,7 @@ public class ForestGameArea extends GameArea {
       case 2:
         spawnFireWorm();
         spawnDragonKnight();
-        // spawnSkeleton();
-        // spawnWizard();
-        // spawnXenoGrunts();
+        
         break;
       case 3:
         spawnSkeleton();
@@ -267,7 +265,7 @@ public class ForestGameArea extends GameArea {
   //  spawnWeaponTower();
 
   //  spawnDragonKnight();
-    spawnFireWorm(19, 5); // * TEMPORARY for testing
+    // spawnFireWorm(19, 5); // * TEMPORARY for testing
     spawnFireTowerTowerAt(3, 1);
     spawnFireTowerTowerAt(3, 2);
     spawnFireTowerTowerAt(3, 3);
