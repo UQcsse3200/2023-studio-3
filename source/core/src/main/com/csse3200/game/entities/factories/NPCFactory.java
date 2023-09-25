@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.DeflectingComponent;
 import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
@@ -220,6 +221,7 @@ public class NPCFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 
+  // * COW'S TESTING ARENA DONT TOUCH
   public static Entity createSplittingXenoGrunt() {
     Entity splitXenoGrunt = createXenoGrunt()
         // add the scaling yourself. can also scale the X and Y component,
@@ -240,6 +242,14 @@ public class NPCFactory {
    fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
 
     return fireWorm;
+  }
+
+  public static Entity createDeflectXenoGrunt() {
+    Entity deflectXenoGrunt = createXenoGrunt();
+    deflectXenoGrunt.addComponent(new DeflectingComponent(
+        PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
+
+    return deflectXenoGrunt;
   }
 
 }

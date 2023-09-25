@@ -267,10 +267,11 @@ public class ForestGameArea extends GameArea {
     spawnDroidTowerAt(3, 3);
     spawnDroidTowerAt(3, 4);
     spawnDroidTowerAt(3, 5);
-    spawnSplittingXenoGrunt(15, 5);
+    // spawnSplittingXenoGrunt(15, 5);
+    spawnDeflectXenoGrunt(15, 5);
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
-    spawnDodgingDragonKnight(15, 3);
+    // spawnDodgingDragonKnight(15, 3);
     // spawnDemonBoss();
   //  spawnFireWorm();
 
@@ -526,6 +527,14 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(fireworm, pos, true, true);
   }
 
+  // * TEMPORARY FOR TESTING
+  private void spawnDeflectXenoGrunt(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
+    xenoGrunt.setScale(1.5f, 1.5f);
+    spawnEntityAt(xenoGrunt, pos, true, true);
+  }
+  
   private void spawnFireWorm() {
     int[] pickedLanes = random.ints(1, 7)
             .distinct().limit(5).toArray();
