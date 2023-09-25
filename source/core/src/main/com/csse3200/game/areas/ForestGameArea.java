@@ -145,7 +145,9 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/stun_effect.atlas",
           "images/mobboss/demon.atlas",
           "images/mobs/fire_worm.atlas",
-          "images/mobs/dragon_knight.atlas"
+          "images/mobs/dragon_knight.atlas",
+          "images/mobs/skeleton.atlas",
+          "images/mobs/wizard.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -207,15 +209,17 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        spawnFireWorm();
-        spawnDragonKnight();
+        // spawnFireWorm();
+        // spawnDragonKnight();
+        // spawnSkeleton();
+        spawnWizard();
         // spawnXenoGrunts();
         break;
       case 3:
-        //mobBoss2 = spawnMobBoss2();
+        mobBoss2 = spawnMobBoss2();
         break;
       case 4:
-        //mobBoss2 = spawnMobBoss2();
+        mobBoss2 = spawnMobBoss2();
         break;
       default:
         // Handle other wave scenarios if needed
@@ -255,8 +259,8 @@ public class ForestGameArea extends GameArea {
    spawnWeaponTower();
 
   //  spawnDragonKnight();
-    spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnSplittingXenoGrunt(17, 5);
+    // spawnFireWorm(19, 5); // * TEMPORARY for testing
+    // spawnSplittingXenoGrunt(17, 5);
     spawnDemonBoss();
   //  spawnFireWorm();
 
@@ -516,6 +520,18 @@ public class ForestGameArea extends GameArea {
     }
   }
 
+  private void spawnSkeleton() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity skeleton = NPCFactory.createSkeleton(player);
+      skeleton.setScale(1.5f, 1.5f);
+      spawnEntityAt(skeleton, randomPos, true, false);
+    }
+  }
+
   // * TEMPORARY FOR TESTING
   private void spawnFireWorm(int x, int y) {
     GridPoint2 poistion = new GridPoint2(x, y);
@@ -535,6 +551,20 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(fireWorm, randomPos, true, false);
     }
   }
+
+  private void spawnWizard() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      System.out.println(randomPos);
+      Entity wizard = NPCFactory.createWizard(player);
+      wizard.setScale(1.5f, 1.5f);
+      spawnEntityAt(wizard, randomPos, true, false);
+    }
+  }
+
+
 
 //  private Entity spawnGhostKing() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);

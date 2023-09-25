@@ -11,7 +11,7 @@ import java.util.Random;
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
  * of the events is triggered.
  */
-public class SkeletonAnimationController extends Component {
+public class WizardAnimationController extends Component {
     // // For on collision sounds later
     // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
     // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
@@ -29,15 +29,15 @@ public class SkeletonAnimationController extends Component {
     }
 
     void animateWalk() {
-        animator.startAnimation("skeleton_walk");
+        animator.startAnimation("wizard_run");
     }
 
     void animateAttack() {
-        animator.startAnimation("skeleton_attack");
+        animator.startAnimation("wizard_attack");
     }
 
     void animateDeath() {
-        animator.startAnimation("skeleton_death");
+        animator.startAnimation("wizard_death");
     }
 }
 

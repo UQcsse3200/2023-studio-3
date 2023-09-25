@@ -9,10 +9,14 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
+import com.csse3200.game.components.npc.SkeletonAnimationController;
 import com.csse3200.game.components.npc.SplitMoblings;
+import com.csse3200.game.components.npc.WizardAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.MobShootTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
+import com.csse3200.game.components.tasks.NewMobWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -99,6 +103,67 @@ public class NPCFactory {
     return ghostKing;
   }
 
+  /**
+   * Creates a fire worm entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createSkeleton(Entity target) {
+    Entity skeleton = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/skeleton.atlas", TextureAtlas.class));
+    animator.addAnimation("skeleton_walk", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("skeleton_attack", 0.1f);
+    animator.addAnimation("skeleton_death", 0.1f);
+    skeleton
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new SkeletonAnimationController());
+
+    skeleton.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
+    skeleton.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return skeleton;
+  }
+
+  /**
+   * Creates a wizard entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createWizard(Entity target) {
+    Entity wizard = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/wizard.atlas", TextureAtlas.class));
+    animator.addAnimation("wizard_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("wizard_attack", 0.1f);
+    animator.addAnimation("wizard_death", 0.1f);
+    wizard
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new WizardAnimationController());
+
+    wizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
+    wizard.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return wizard;
+  }
   /**
    * Creates a fire worm entity.
    *
@@ -207,6 +272,8 @@ public class NPCFactory {
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
             .addTask(new MobAttackTask(2, 40));
+
+            // .addTask(new MobAttackTask(2, 40));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())

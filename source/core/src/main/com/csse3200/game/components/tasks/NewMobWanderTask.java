@@ -12,6 +12,12 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+
 /**
  * Wander around by moving a random position within a range of the starting position. Wait a little
  * bit between movements. Requires an entity with a PhysicsMovementComponent.
@@ -19,7 +25,6 @@ import org.slf4j.LoggerFactory;
 public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(MobWanderTask.class);
 
-  private final Vector2 wanderRange;
   private final float waitTime;
   private Vector2 startPos;
   private MovementTask movementTask;
@@ -27,15 +32,18 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private Task currentTask;
   private boolean isDead = false;
   private Vector2 mobPosition;
-
+  private final PhysicsEngine physics;
+  private static final short TARGET = PhysicsLayer.HUMANS;
+  private final RaycastHit hit = new RaycastHit();
+  
   /**
    * @param wanderRange Distance in X and Y the entity can move from its position when start() is
    *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public NewMobWanderTask(Vector2 wanderRange, float waitTime) {
-    this.wanderRange = wanderRange;
+  public NewMobWanderTask(float waitTime) {
     this.waitTime = waitTime;
+    physics = ServiceLocator.getPhysicsService().getPhysics();
   }
 
   @Override
@@ -50,16 +58,13 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
 
     waitTask = new WaitTask(waitTime);
     waitTask.create(owner);
-
     movementTask = new MovementTask(getDirection());
     movementTask.create(owner);
 
     movementTask.start();
-
     currentTask = movementTask;
 
-
-   this.owner.getEntity().getEvents().trigger("wanderStart");
+    this.owner.getEntity().getEvents().trigger("wanderStart");
   }
 
   @Override
@@ -96,14 +101,25 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
 
       if (currentTask.getStatus() != Status.ACTIVE) {
         if (currentTask == movementTask) {
-          startWaiting();
+          if (isTargetVisible()) {
+                Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+                newProjectile.setScale(-1f, 1f);
+                newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+                ServiceLocator.getEntityService().register(newProjectile);
+
+        //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
+                this.owner.getEntity().getEvents().trigger("shootStart");
+                System.out.println("TESTING SHOOT");
+            }   
         } else {
           startMoving();
+            
         }
       }
       currentTask.update();
     }
   }
+
 
   private void startWaiting() {
     logger.debug("Starting waiting");
@@ -129,5 +145,14 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private Vector2 getDirection() {
     float y = startPos.y;
     return new Vector2(0, y);
+  }
+
+  /**
+   * Uses a raycast to determine whether there are any targets in detection range
+   * @return true if a target is visible, false otherwise
+   */
+  private boolean isTargetVisible() {
+    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+    return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);
   }
 }

@@ -1,265 +1,272 @@
 
 skeleton.png
-size: 512, 256
+size: 2048, 128
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-skeleton_attack1
+skeleton_attack
   rotate: false
-  xy: 188, 2
+  xy: 386, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack10
+skeleton_attack
   rotate: false
-  xy: 444, 102
+  xy: 898, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack11
+skeleton_attack
   rotate: false
-  xy: 252, 152
+  xy: 450, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack12
+skeleton_attack
   rotate: false
-  xy: 188, 202
+  xy: 2, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack13
+skeleton_attack
   rotate: false
-  xy: 252, 52
+  xy: 706, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack2
+skeleton_attack
   rotate: false
-  xy: 380, 2
+  xy: 1090, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack3
+skeleton_attack
   rotate: false
-  xy: 252, 102
+  xy: 642, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack4
+skeleton_attack
   rotate: false
-  xy: 188, 152
+  xy: 258, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack5
+skeleton_attack
   rotate: false
-  xy: 316, 2
+  xy: 962, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack6
+skeleton_attack
   rotate: false
-  xy: 380, 152
+  xy: 514, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack7
+skeleton_attack
   rotate: false
-  xy: 380, 202
+  xy: 130, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack8
+skeleton_attack
   rotate: false
-  xy: 316, 102
+  xy: 770, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_attack9
+skeleton_attack
   rotate: false
-  xy: 188, 52
+  xy: 322, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death1
+skeleton_death
   rotate: false
-  xy: 444, 52
+  xy: 1026, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death10
+skeleton_death
   rotate: false
-  xy: 316, 202
+  xy: 66, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death11
+skeleton_death
   rotate: false
-  xy: 380, 102
+  xy: 834, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death12
+skeleton_death
   rotate: false
-  xy: 444, 5
+  xy: 1154, 55
   size: 62, 45
   orig: 62, 45
   offset: 0, 0
   index: -1
-skeleton_death2
+skeleton_death
   rotate: false
-  xy: 444, 152
+  xy: 578, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death3
+skeleton_death
   rotate: false
-  xy: 444, 202
+  xy: 194, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death4
+skeleton_death
   rotate: false
-  xy: 316, 52
+  xy: 898, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death5
+skeleton_death
   rotate: false
-  xy: 316, 152
+  xy: 450, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death6
+skeleton_death
   rotate: false
-  xy: 252, 202
+  xy: 2, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death7
+skeleton_death
   rotate: false
-  xy: 252, 2
+  xy: 706, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death8
+skeleton_death
   rotate: false
-  xy: 188, 102
+  xy: 258, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_death9
+skeleton_death
   rotate: false
-  xy: 380, 52
+  xy: 1026, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk1
+skeleton_walk
   rotate: false
-  xy: 64, 190
-  size: 60, 60
-  orig: 60, 60
+  xy: 386, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk10
+skeleton_walk
   rotate: false
-  xy: 64, 128
-  size: 60, 60
-  orig: 60, 60
+  xy: 514, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk11
+skeleton_walk
   rotate: false
-  xy: 2, 190
-  size: 60, 60
-  orig: 60, 60
+  xy: 66, 2
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk12
+skeleton_walk
   rotate: false
-  xy: 126, 190
-  size: 60, 60
-  orig: 60, 60
+  xy: 770, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk2
+skeleton_walk
   rotate: false
-  xy: 126, 4
-  size: 60, 60
-  orig: 60, 60
+  xy: 1090, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk3
+skeleton_walk
   rotate: false
-  xy: 64, 4
-  size: 60, 60
-  orig: 60, 60
+  xy: 642, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk4
+skeleton_walk
   rotate: false
-  xy: 2, 66
-  size: 60, 60
-  orig: 60, 60
+  xy: 194, 2
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk5
+skeleton_walk
   rotate: false
-  xy: 126, 66
-  size: 60, 60
-  orig: 60, 60
+  xy: 962, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk6
+skeleton_walk
   rotate: false
-  xy: 64, 66
-  size: 60, 60
-  orig: 60, 60
+  xy: 578, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk7
+skeleton_walk
   rotate: false
-  xy: 2, 128
-  size: 60, 60
-  orig: 60, 60
+  xy: 130, 2
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk8
+skeleton_walk
   rotate: false
-  xy: 126, 128
-  size: 60, 60
-  orig: 60, 60
+  xy: 834, 2
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
-skeleton_walk9
+skeleton_walk
   rotate: false
-  xy: 2, 4
-  size: 60, 60
-  orig: 60, 60
+  xy: 322, 52
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 322, 52
+  size: 62, 48
+  orig: 62, 48
   offset: 0, 0
   index: -1
