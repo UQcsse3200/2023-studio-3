@@ -28,7 +28,7 @@ public class EntityService {
   private static final Logger logger = LoggerFactory.getLogger(EntityService.class);
   private static final int INITIAL_CAPACITY = 16;
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
-  private static final float MAX_RADIUS = 20f;
+  private static final float MAX_RADIUS = 50f;
 
   public static void removeEntity(Entity clickedEntity) {
     clickedEntity.dispose();

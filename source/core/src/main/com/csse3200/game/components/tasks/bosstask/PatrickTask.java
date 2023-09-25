@@ -2,6 +2,7 @@ package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -49,6 +50,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private boolean rangeFlag = false;
     private boolean spawnFlag = false;
     private boolean halfHealthFlag = false;
+    private boolean teleportFlag = false;
+    private boolean startFlag = false;
     private  enum PatrickState {
         IDLE, WALK, ATTACK, HURT, DEATH, SPELL, APPEAR
     }
@@ -65,21 +68,34 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
         patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
-        spawnFlag = true;
-        changeState(PatrickState.APPEAR);
+
+        // give game time to load
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                changeState(PatrickState.APPEAR);
+                animate();
+                startFlag = true;
+                spawnFlag = true;
+            }
+        }, 0.1f);
     }
 
     @Override
     public void update() {
+        // give game time to load
+        if (!startFlag) {
+            return;
+        }
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
 
         // check if patrick has just teleported
-        if (teleportTask.getStatus().equals(Status.FINISHED)) {
+        if (teleportFlag && teleportTask.getStatus().equals(Status.FINISHED)) {
             changeState(PatrickState.APPEAR);
+            teleportFlag = false;
         }
 
-        // handle half health special ability
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
                 !halfHealthFlag) {
@@ -92,7 +108,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             case APPEAR -> {
                 if (spawnFlag) {
                     meleeAttack();
-                    meleeFlag = true;
                     spawnFlag = false;
                 } else if (meleeFlag) {
                     changeState(PatrickState.ATTACK);
@@ -174,14 +189,18 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     }
 
     private void teleport(Vector2 pos) {
+        teleportFlag = true;
         teleportTask = new PatrickTeleportTask(patrick, pos);
     }
 
     private void meleeAttack() {
         initialPos = patrick.getPosition();
         meleeTarget = ServiceLocator.getEntityService().getClosestHuman(patrick);
+        System.out.println(ServiceLocator.getEntityService().getEntities());
+        System.out.println(ServiceLocator.getEntityService().getClosestHuman(patrick));
         teleport(meleeTarget.getPosition());
         changeState(PatrickState.ATTACK);
+        meleeFlag = true;
     }
 
     private void spawnRandProjectile(Vector2 destination) {

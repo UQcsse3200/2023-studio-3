@@ -35,7 +35,8 @@ public class MobBossFactory {
 
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
+                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas",
+                        TextureAtlas.class));
         animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.NORMAL);
@@ -50,7 +51,6 @@ public class MobBossFactory {
         animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("transform_reverse", 0.2f, Animation.PlayMode.REVERSED);
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -68,6 +68,16 @@ public class MobBossFactory {
         demon.scaleHeight(5f);
         demon.scaleWidth(5f);
         return demon;
+    }
+
+    public static Entity slimeyBoy() {
+        Entity slimeyBoy = createBaseBoss();
+
+        // Animation
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas",
+                        TextureAtlas.class));
+
     }
 
     public static Entity createPatrickBoss(int health) {
