@@ -5,13 +5,14 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PatrickTeleportTask extends DefaultTask {
     private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
-    private final Entity patrick;
+    private Entity patrick;
     private final Vector2 location;
     private PatrickState state = PatrickState.IDLE;
     private PatrickState prevState;

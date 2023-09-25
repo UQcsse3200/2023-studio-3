@@ -74,7 +74,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             @Override
             public void run() {
                 changeState(PatrickState.APPEAR);
-                animate();
                 startFlag = true;
                 spawnFlag = true;
             }
@@ -83,13 +82,16 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
     @Override
     public void update() {
-        if(animation.isFinished()) {
-            teleport(ServiceLocator.getEntityService().getClosestEntityOfLayer(patrick, PhysicsLayer.HUMANS).getPosition());
-        }
         // give game time to load
         if (!startFlag) {
             return;
         }
+
+        // update teleport task while teleporting
+        if (teleportFlag) {
+            teleportTask.update();
+        }
+
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
 
@@ -109,17 +111,15 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
-                if (animation.isFinished()) {
-                    if (spawnFlag) {
-                        meleeAttack();
-                        spawnFlag = false;
-                    } else if (meleeFlag) {
-                        changeState(PatrickState.ATTACK);
-                        meleeFlag = false;
-                    } else if (rangeFlag) {
-                        changeState(PatrickState.IDLE);
-                        rangeFlag = false;
-                    }
+                if (spawnFlag) {
+                    meleeAttack();
+                    spawnFlag = false;
+                } else if (meleeFlag) {
+                    changeState(PatrickState.ATTACK);
+                    meleeFlag = false;
+                } else if (rangeFlag) {
+                    changeState(PatrickState.IDLE);
+                    rangeFlag = false;
                 }
             }
             case IDLE -> {
@@ -130,7 +130,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             case ATTACK -> {
                 if (animation.isFinished()) {
                     if (halfHealthFlag) {
-
                         break;
                     }
                     meleeTarget.getComponent(CombatStatsComponent.class).hit(ATTACK_DAMAGE);
@@ -195,6 +194,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
     private void teleport(Vector2 pos) {
         teleportTask = new PatrickTeleportTask(patrick, pos);
+        teleportTask.create(owner);
+        teleportTask.start();
         teleportFlag = true;
     }
 

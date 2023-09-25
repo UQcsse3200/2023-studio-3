@@ -107,7 +107,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }, 0.1f);
 
         // shift demon's boundary left every 30s
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i < 6; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
