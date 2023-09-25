@@ -1,6 +1,8 @@
 package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -17,6 +19,8 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
+import static com.csse3200.game.screens.MainGameScreen.viewportHeight;
+import static com.csse3200.game.screens.MainGameScreen.viewportWidth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
@@ -239,13 +243,13 @@ public class ForestGameArea extends GameArea {
     
     // Types of projectile
 //    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
-    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
-    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
+//    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
+//    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+//    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
+//    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     spawnXenoGrunts();
     spawnWeaponTower();
     //bossKing1 = spawnBossKing1();
@@ -270,8 +274,8 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTerrain() {
-    // Background terrain
-    terrain = terrainFactory.createTerrain(TerrainType.FOREST_DEMO);
+
+    terrain = terrainFactory.createTerrain(TerrainType.ALL_DEMO);
     spawnEntity(new Entity().addComponent(terrain));
     
     // Terrain walls
@@ -280,9 +284,11 @@ public class ForestGameArea extends GameArea {
     Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);
     
     // Left
-    // ! THIS ONE DOESNT WORK. GRIDPOINTS2UTIL.ZERO is (0, 4), not (0, 0)
     spawnEntityAt(
-            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), new GridPoint2(1, 0), false, false);
+            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
+            new GridPoint2(0, 2),
+            false,
+            false);
     // Right
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
@@ -291,17 +297,19 @@ public class ForestGameArea extends GameArea {
             false);
     // Top
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7),
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
             new GridPoint2(0, tileBounds.y - 1),
             false,
             false);
     // Bottom
-    // spawnEntityAt(
-    //         ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
-    // * TMPORARY
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7), new GridPoint2(0, 0), false, false);
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
+            new GridPoint2(0, 2),
+            false,
+            false);
   }
+
+
 //  private void spawnBuilding1() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);
 //    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -609,7 +617,7 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnWeaponTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
@@ -624,7 +632,7 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
@@ -636,7 +644,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDroidTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
