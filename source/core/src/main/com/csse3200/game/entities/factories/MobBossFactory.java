@@ -79,7 +79,7 @@ public class MobBossFactory {
                 ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
         animator.addAnimation("patrick_attack", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_cast", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.REVERSED);
         animator.addAnimation("patrick_hurt", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_idle", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_spell", 0.2f, Animation.PlayMode.NORMAL);

@@ -139,9 +139,12 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         }
 
         switch (state) {
-            case IDLE -> {
-
-            }
+            case IDLE -> owner.getEntity().getEvents().trigger("patrick_idle");
+            case WALK -> owner.getEntity().getEvents().trigger("patrick_walk");
+            case HURT -> owner.getEntity().getEvents().trigger("patrick_hurt");
+            case SPELL -> owner.getEntity().getEvents().trigger("patrick_spell");
+            case APPEAR -> owner.getEntity().getEvents().trigger("patrick_death");
+            case ATTACK -> owner.getEntity().getEvents().trigger("patrick_attack");
             default -> logger.debug("Patrick animation {state} not found");
         }
         prevState = state;
