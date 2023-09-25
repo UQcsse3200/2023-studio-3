@@ -11,6 +11,8 @@ import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
 import com.csse3200.game.components.npc.SkeletonAnimationController;
 import com.csse3200.game.components.npc.SplitMoblings;
+import com.csse3200.game.components.npc.WaterQueenAnimationController;
+import com.csse3200.game.components.npc.WaterSlimeAnimationController;
 import com.csse3200.game.components.npc.WizardAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
@@ -163,6 +165,66 @@ public class NPCFactory {
     wizard.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return wizard;
+  }
+  /**
+   * Creates a wizard entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createWaterQueen(Entity target) {
+    Entity wizard = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/water_queen.atlas", TextureAtlas.class));
+    animator.addAnimation("water_queen_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("water_queen_attack", 0.1f);
+    animator.addAnimation("water_queen_death", 0.1f);
+    wizard
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new WaterQueenAnimationController());
+
+    wizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
+    wizard.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return wizard;
+  }
+  /**
+   * Creates a wizard entity.
+   *
+   * @param target entity to chase
+   * @return entity
+   */
+  public static Entity createWaterSlime(Entity target) {
+    Entity waterSlime = createBaseNPC(target);
+    BaseEnemyConfig config = configs.xenoGrunt;
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    // tester projectiles
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/water_slime.atlas", TextureAtlas.class));
+    animator.addAnimation("water_slime_walk", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("water_slime_attack", 0.1f);
+    animator.addAnimation("water_slime_death", 0.1f);
+    waterSlime
+            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(animator)
+            .addComponent(new WaterSlimeAnimationController());
+
+    waterSlime.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
+    waterSlime.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return waterSlime;
   }
   /**
    * Creates a fire worm entity.

@@ -147,7 +147,9 @@ public class ForestGameArea extends GameArea {
           "images/mobs/fire_worm.atlas",
           "images/mobs/dragon_knight.atlas",
           "images/mobs/skeleton.atlas",
-          "images/mobs/wizard.atlas"
+          "images/mobs/wizard.atlas", 
+          "images/mobs/water_queen.atlas",
+          "images/mobs/water_slime.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -209,17 +211,22 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        // spawnFireWorm();
-        // spawnDragonKnight();
+        spawnFireWorm();
+        spawnDragonKnight();
         // spawnSkeleton();
-        spawnWizard();
+        // spawnWizard();
         // spawnXenoGrunts();
         break;
       case 3:
-        mobBoss2 = spawnMobBoss2();
+        spawnSkeleton();
+        spawnWizard();
+        // mobBoss2 = spawnMobBoss2();
         break;
       case 4:
-        mobBoss2 = spawnMobBoss2();
+        spawnWaterQueen();
+        spawnWaterSlime();
+        // mobBoss2 = spawnMobBoss2();
+        
         break;
       default:
         // Handle other wave scenarios if needed
@@ -557,10 +564,30 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
       Entity wizard = NPCFactory.createWizard(player);
       wizard.setScale(1.5f, 1.5f);
       spawnEntityAt(wizard, randomPos, true, false);
+    }
+  }
+
+  private void spawnWaterQueen() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      Entity waterQueen = NPCFactory.createWaterQueen(player);
+      waterQueen.setScale(1.5f, 1.5f);
+      spawnEntityAt(waterQueen, randomPos, true, false);
+    }
+  }
+  private void spawnWaterSlime() {
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < NUM_GRUNTS; i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      Entity waterSlime = NPCFactory.createWaterSlime(player);
+      waterSlime.setScale(1.5f, 1.5f);
+      spawnEntityAt(waterSlime, randomPos, true, false);
     }
   }
 
