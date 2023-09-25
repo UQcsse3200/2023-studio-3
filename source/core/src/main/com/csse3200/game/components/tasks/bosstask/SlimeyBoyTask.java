@@ -20,6 +20,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     private static final int PRIORITY = 3;
     private static final Vector2 SLIMEY_SPEED = new Vector2(0.5f, 0.5f);
     private static final Vector2 DEFAULT_POS = new Vector2(0, 4);
+    private static final float MAX_RADIUS = 40f;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(SlimeyBoyTask.class);
@@ -48,15 +49,20 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     public void update() {
         animate();
         currentPos = slimey.getPosition();
+        int health = slimey.getComponent(CombatStatsComponent.class).getHealth();
 
         switch (state) {
             case IDLE -> seekAndDestroy();
             case MOVE -> {
                 if (targetFound()) {
                     // do aoe damage based on how much health slime has left
-                    applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
-                            slimey.getComponent(CombatStatsComponent.class).getHealth());
+                    applyAoeDamage(ServiceLocator.getEntityService().getEntitiesInLayer(
+                            slimey, MAX_RADIUS, PhysicsLayer.HUMANS), health);
+                    changeState(SlimeState.TAKE_HIT);
                 }
+            }
+            case TAKE_HIT -> {
+                slimey.setFlagForDelete(true);
             }
         }
     }
