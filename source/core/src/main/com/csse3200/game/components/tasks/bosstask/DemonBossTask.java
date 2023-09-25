@@ -382,33 +382,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Return closest entity given an array of human entities
-     * @param targets array of human entities
-     * @return closest human entity
-     */
-    private Entity getClosestHuman(Array<Entity> targets) {
-        Entity closestEntity = null;
-        float closestDistance = SMASH_RADIUS;
-
-        for (int i = 0; i < targets.size; i++) {
-            Entity targetEntity = targets.get(i);
-            Vector2 targetPosition = targetEntity.getPosition();
-            float distance = currentPos.dst(targetPosition);
-
-            if (distance < closestDistance) {
-                closestEntity = targetEntity;
-                closestDistance = distance;
-            }
-        }
-        return closestEntity;
-    }
-
-    /**
      * Change state to cleave and deal damage to target
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
-        Entity target = getClosestHuman(getNearbyHumans(SMASH_RADIUS));
+        Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(demon,
+                PhysicsLayer.HUMANS);
         CombatStatsComponent targetCombatStats = target.
                 getComponent(CombatStatsComponent.class);
         Timer.schedule(new Timer.Task() {
