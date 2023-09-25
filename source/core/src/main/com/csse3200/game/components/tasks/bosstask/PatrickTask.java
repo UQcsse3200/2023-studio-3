@@ -83,6 +83,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
     @Override
     public void update() {
+        if(animation.isFinished()) {
+            teleport(ServiceLocator.getEntityService().getClosestEntityOfLayer(patrick, PhysicsLayer.HUMANS).getPosition());
+        }
         // give game time to load
         if (!startFlag) {
             return;
@@ -106,15 +109,17 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
-                if (spawnFlag) {
-                    meleeAttack();
-                    spawnFlag = false;
-                } else if (meleeFlag) {
-                    changeState(PatrickState.ATTACK);
-                    meleeFlag = false;
-                } else if (rangeFlag) {
-                    changeState(PatrickState.IDLE);
-                    rangeFlag = false;
+                if (animation.isFinished()) {
+                    if (spawnFlag) {
+                        meleeAttack();
+                        spawnFlag = false;
+                    } else if (meleeFlag) {
+                        changeState(PatrickState.ATTACK);
+                        meleeFlag = false;
+                    } else if (rangeFlag) {
+                        changeState(PatrickState.IDLE);
+                        rangeFlag = false;
+                    }
                 }
             }
             case IDLE -> {
@@ -189,8 +194,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     }
 
     private void teleport(Vector2 pos) {
-        teleportFlag = true;
         teleportTask = new PatrickTeleportTask(patrick, pos);
+        teleportFlag = true;
     }
 
     private void meleeAttack() {

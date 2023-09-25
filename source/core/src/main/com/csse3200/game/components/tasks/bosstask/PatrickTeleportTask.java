@@ -11,18 +11,19 @@ import org.slf4j.LoggerFactory;
 
 public class PatrickTeleportTask extends DefaultTask {
     private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
-    private final Entity entity;
+    private final Entity patrick;
     private final Vector2 location;
-    private PatrickState state;
+    private PatrickState state = PatrickState.IDLE;
+    private PatrickState prevState;
     private AnimationRenderComponent animation;
-    private Status status;
+    private Status status = Status.INACTIVE;
     private int health;
     private enum PatrickState {
-        CAST, APPEAR, SPELL
+        CAST, APPEAR, SPELL, IDLE
     }
 
-    public PatrickTeleportTask(Entity entity, Vector2 location) {
-        this.entity = entity;
+    public PatrickTeleportTask(Entity patrick, Vector2 location) {
+        this.patrick = patrick;
         this.location = location;
     }
 
@@ -30,35 +31,59 @@ public class PatrickTeleportTask extends DefaultTask {
     public void start() {
         super.start();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class);
-        owner.getEntity().getEvents().trigger("patrick_cast");
-        state = PatrickState.CAST;
-        status = Status.ACTIVE;
         health = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();
+        changeState(PatrickState.CAST);
     }
 
     @Override
     public void update() {
+        animate();
+
         switch (state) {
             case CAST -> {
                 if (animation.isFinished()) {
-                    entity.setPosition(location);
-                    owner.getEntity().getEvents().trigger("patrick_spell");
-                    state = PatrickState.SPELL;
+                    patrick.setPosition(location);
+                    changeState(PatrickState.SPELL);
                 }
             }
             case SPELL -> {
                 if (animation.isFinished()) {
-                    owner.getEntity().getEvents().trigger("patrick_appear");
-                    state = PatrickState.APPEAR;
+                    changeState(PatrickState.APPEAR);
                 }
             }
             case APPEAR -> {
                 if (animation.isFinished()) {
-                    entity.getComponent(CombatStatsComponent.class).setHealth(health);
                     status = Status.FINISHED;
                 }
             }
         }
+    }
+
+    /**
+     * Changes the state of patrick
+     * @param state state to be changed to
+     */
+    private void changeState(PatrickState state) {
+        prevState = this.state;
+        this.state = state;
+    }
+
+    /**
+     * Changes the animation of the demon if a state change occurs
+     */
+    private void animate() {
+        // Check if same animation is being called
+        if (prevState.equals(state)) {
+            return; // skip rest of function
+        }
+
+        switch (state) {
+            case SPELL -> owner.getEntity().getEvents().trigger("patrick_spell");
+            case APPEAR -> owner.getEntity().getEvents().trigger("patrick_death");
+            case CAST -> owner.getEntity().getEvents().trigger("patrick_cast");
+            default -> logger.debug("Patrick animation {state} not found");
+        }
+        prevState = state;
     }
 
     @Override

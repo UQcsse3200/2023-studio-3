@@ -115,7 +115,6 @@ public class EntityService {
   public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
     Array<Entity> entities = new Array<Entity>();
     Array<Entity> allEntities = getNearbyEntities(source, radius);
-    System.out.println(allEntities);
 
     for (int i = 0; i < allEntities.size; i++) {
       Entity targetEntity = allEntities.get(i);

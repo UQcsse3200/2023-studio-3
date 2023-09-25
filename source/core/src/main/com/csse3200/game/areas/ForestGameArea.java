@@ -256,8 +256,8 @@ public class ForestGameArea extends GameArea {
 
 //    spawnDragonKnight();
 //    spawnFireWorm();
-    spawnDemonBoss();
-//    spawnPatrick();
+    //spawnDemonBoss();
+    spawnPatrick();
 
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
@@ -408,7 +408,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnPatrick() {
     Entity patrick = MobBossFactory.createPatrickBoss(2500);
-    spawnEntityAt(patrick, new GridPoint2(19, 3), true, false);
+    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
   }
 
   private Entity spawnMobBoss1() {

@@ -108,8 +108,6 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         changeState(SlimeState.MOVE);
         targetEntity = ServiceLocator.getEntityService().getClosestEntityOfLayer(
                 slimey, PhysicsLayer.HUMANS);
-//        System.out.println(ServiceLocator.getEntityService().getEntitiesInLayer(slimey, MAX_RADIUS, PhysicsLayer.HUMANS));
-//        System.out.println(ServiceLocator.getEntityService().getClosestEntityOfLayer(slimey, PhysicsLayer.HUMANS));
         Vector2 targetPos;
         if (targetEntity == null) {
             targetPos = DEFAULT_POS;
