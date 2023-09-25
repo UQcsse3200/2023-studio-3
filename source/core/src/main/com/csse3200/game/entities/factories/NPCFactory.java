@@ -233,7 +233,7 @@ public class NPCFactory {
   }
 
   public static Entity createDodgingDragonKnight() {
-    Entity fireWorm = createDragonKnight(new Entity());
+    Entity fireWorm = createDragonKnight();
 
     fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
 

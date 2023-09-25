@@ -7,7 +7,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 /**
  * A component that splits the target mob entity into multiple entities after
- * after the mob dies. This class adds a method to the exisiting event listener
+ * after the mob dies. This class adds a method to the existing event listener
  * "dieStart".
  * <p>
  * Amount of moblings spawned must be provided in the construcor.
