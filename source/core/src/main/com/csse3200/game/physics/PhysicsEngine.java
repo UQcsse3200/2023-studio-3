@@ -10,7 +10,6 @@ import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.physics.raycast.SingleHitCallback;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.entities.destructors.ProjectileDestructors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

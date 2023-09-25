@@ -120,7 +120,7 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
 
         currentTask.stop();
 
-        float laneHeight = viewportHeight / 8;
+        float laneHeight = (float) (viewportHeight / 8);
 
         if (currLane == 0) {
             // Move up

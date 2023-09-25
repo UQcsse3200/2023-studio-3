@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.DeflectingComponent;
+import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
@@ -16,6 +18,7 @@ import com.csse3200.game.components.npc.WaterSlimeAnimationController;
 import com.csse3200.game.components.npc.WizardAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
+import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobShootTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
 import com.csse3200.game.components.tasks.NewMobWanderTask;
@@ -55,11 +58,10 @@ public class NPCFactory {
   /**
    * Creates a ghost entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createGhost(Entity target) {
-    Entity ghost = createBaseNPC(target);
+  public static Entity createGhost() {
+    Entity ghost = createBaseNPC();
     BaseEntityConfig config = configs.ghost;
     /**
     AnimationRenderComponent animator =
@@ -80,13 +82,12 @@ public class NPCFactory {
   }
 
   /**
-
-   Creates a ghost king entity.*
-   @param target entity to chase
-   @return entity
+   * Creates a ghost king entity.
+   * 
+   * @return entity
    */
-  public static Entity createGhostKing(Entity target) {
-    Entity ghostKing = createBaseNPC(target);
+  public static Entity createGhostKing() {
+    Entity ghostKing = createBaseNPC();
     GhostKingConfig config = configs.ghostKing;
 
     AnimationRenderComponent animator =
@@ -111,8 +112,8 @@ public class NPCFactory {
    * @param target entity to chase
    * @return entity
    */
-  public static Entity createSkeleton(Entity target) {
-    Entity skeleton = createBaseNPC(target);
+  public static Entity createSkeleton() {
+    Entity skeleton = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -142,8 +143,8 @@ public class NPCFactory {
    * @param target entity to chase
    * @return entity
    */
-  public static Entity createWizard(Entity target) {
-    Entity wizard = createBaseNPC(target);
+  public static Entity createWizard() {
+    Entity wizard = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -172,8 +173,8 @@ public class NPCFactory {
    * @param target entity to chase
    * @return entity
    */
-  public static Entity createWaterQueen(Entity target) {
-    Entity wizard = createBaseNPC(target);
+  public static Entity createWaterQueen() {
+    Entity wizard = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -202,8 +203,8 @@ public class NPCFactory {
    * @param target entity to chase
    * @return entity
    */
-  public static Entity createWaterSlime(Entity target) {
-    Entity waterSlime = createBaseNPC(target);
+  public static Entity createWaterSlime() {
+    Entity waterSlime = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -229,11 +230,10 @@ public class NPCFactory {
   /**
    * Creates a fire worm entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createFireWorm(Entity target) {
-    Entity fireWorm = createBaseNPC(target);
+  public static Entity createFireWorm() {
+    Entity fireWorm = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -259,11 +259,10 @@ public class NPCFactory {
   /**
    * Creates a dragon Knight entity
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createDragonKnight(Entity target) {
-    Entity dragonKnight = createBaseNPC(target);
+  public static Entity createDragonKnight() {
+    Entity dragonKnight = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -291,11 +290,10 @@ public class NPCFactory {
   /**
    * Creates a xeno grunt entity.
    *
-   * @param target entity to chase
    * @return entity
    */
-  public static Entity createXenoGrunt(Entity target) {
-    Entity xenoGrunt = createBaseNPC(target);
+  public static Entity createXenoGrunt() {
+    Entity xenoGrunt = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -329,7 +327,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createBaseNPC(Entity target) {
+  public static Entity createBaseNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
@@ -344,7 +342,6 @@ public class NPCFactory {
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
             .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
             .addComponent(aiComponent);
-
     PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
@@ -353,14 +350,37 @@ public class NPCFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 
+  // * COW'S TESTING ARENA DONT TOUCH
   public static Entity createSplittingXenoGrunt() {
-    Entity splitXenoGrunt = createXenoGrunt(new Entity())
+    Entity splitXenoGrunt = createXenoGrunt()
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 2.25f));
-
+        .addComponent(new SplitMoblings(7, 0.5f))
+        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+    
+    // * TEMPORARY TESTING FOR PROJECTILE DODGING
+    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
     return splitXenoGrunt;
   }
+
+  public static Entity createDodgingDragonKnight() {
+    Entity fireWorm = createDragonKnight();
+
+    fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+
+   fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+
+    return fireWorm;
+  }
+
+  public static Entity createDeflectXenoGrunt() {
+    Entity deflectXenoGrunt = createXenoGrunt();
+    deflectXenoGrunt.addComponent(new DeflectingComponent(
+        PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
+
+    return deflectXenoGrunt;
+  }
+
 }
 
 

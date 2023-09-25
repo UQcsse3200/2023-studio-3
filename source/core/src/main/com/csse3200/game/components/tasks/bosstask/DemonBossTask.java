@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The AI Task for the demon boss entity. The demon boss will first play its transform animation
  * before beginning its sequence. Its sequence is based on its state and the different game
- * scenarios that happen in game dictate its states.
+ * scenarios that happen in game dictate its state.
  */
 public class DemonBossTask extends DefaultTask implements PriorityTask {
 
@@ -72,7 +72,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private int deathCounter = 0;
 
     /**
-     * The different demon states
+     * The different demon states.
      */
     private enum DemonState {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT,
@@ -81,7 +81,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * The demon boss task constructor
+     * The demon boss task constructor. Initialises the physics and time.
      */
     public DemonBossTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -89,8 +89,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Starts transform animation, triggers idle animation which starts sequence, and dynamically
-     * shifts the demons boundary to the left
+     * Starts transform animation, triggers idle animation which starts 
+     * sequence, and dynamically shifts the demons boundary to the left.
      */
     @Override
     public void start() {
@@ -121,8 +121,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Is called every frame and is responsible for updating the animation and position and
-     * detecting and updating the state scenarios
+     * This function is called every frame and is responsible for updating the 
+     * animation, the position and the state scenarios.
      */
     @Override
     public void update() {
@@ -157,7 +157,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             halfHealthFlag = true;
         }
 
-        // detect sequence changes and run accordingly
+        // detect sequence changes and runs the relevant state accordingly
         switch (state) {
             case IDLE -> jump(getJumpPos());
             case SMASH -> {
@@ -213,7 +213,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Changes the state of the demon
+     * Changes the state of the demon.
+     * 
      * @param state state to be changed to
      */
     private void changeState(DemonState state) {
@@ -222,7 +223,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Changes the animation of the demon if a state change occurs
+     * Changes the animation of the demon if a state change occurs.
      */
     private void animate() {
         // Check if same animation is being called
@@ -252,6 +253,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * Returns the priority of this task.
+     * 
      * @return priority of task
      */
     @Override
@@ -260,6 +263,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
+     * 
      * @return nearby entities with the PhysicsLayer of HUMAN
      */
     private Array<Entity> getNearbyHumans(int radius) {
@@ -275,7 +280,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 break;
             }
 
-            // target layer check
+            // check target layer
             if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
                     getLayer())) {
                 break;
@@ -287,7 +292,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Changes state of demon and moves it to the desired position
+     * Changes state of demon and moves it to the desired position.
+     * 
      * @param finalPos position for demon to jump to
      */
     private void jump(Vector2 finalPos) {
@@ -302,6 +308,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * Returns a a random position 3 units away for the demon to jump to.
+     * 
      * @return a position 3 units away from the demon to jump to
      */
     private Vector2 getJumpPos() {
@@ -331,6 +339,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * Returns a boolean to confirm whether the demon has completed a jump or not.
+     * 
      * @return if demon has completed jump or not
      */
     private boolean jumpComplete() {
@@ -344,7 +354,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Changes current breath attack with the given parameters
+     * Changes current breath attack with the given parameters.
+     * 
      * @param numBalls numbers of projectiles to be fired
      * @param effect effect the projectile will apply
      * @param aoe whether the effect will be applied in a radius or not
@@ -356,7 +367,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Fire breath attack that launches an amount of projectiles with a given effect at the humans
+     * Fire breath attack that launches an amount of projectiles with a given effect at the humans.
      */
     private void fireBreath() {
         changeState(DemonState.BREATH);
@@ -390,7 +401,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Applies aoe damage to nearby human entities
+     * Applies aoe damage to nearby human entities.
+     * 
      * @param targets array of human entities to deal damage to
      */
     private void applyAoeDamage(Array<Entity> targets, int damage) {
@@ -406,7 +418,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Return closest entity given an array of human entities
+     * Returns the closest human entity from a given array.
+     * 
      * @param targets array of human entities
      * @return closest human entity
      */
@@ -428,7 +441,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Change state to cleave and deal damage to target
+     * Change state to cleave and deals damage to target.
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
@@ -444,7 +457,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Find the closest human entity and start moving towards them
+     * Find the closest human entity and start moving towards them.
      */
     private void seekAndDestroy() {
         Entity targetEntity = getClosestHuman(getNearbyHumans(20));
@@ -461,6 +474,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * Returns a boolean that indicates whether the demon entity has reached the
+     * target.
+     * 
      * @return if target has been reached or not
      */
     private boolean targetFound() {
@@ -468,7 +484,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * When at half health demon starts healing by a certain amount every second
+     * When at half health, demon starts healing by a certain amount every 10
+     * seconds.
      */
     private void halfHealth() {
         changeState(DemonState.CAST);
