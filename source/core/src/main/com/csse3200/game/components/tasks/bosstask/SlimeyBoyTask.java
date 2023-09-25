@@ -1,11 +1,16 @@
 package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +19,16 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     // Constants
     private static final int PRIORITY = 3;
     private static final Vector2 SLIMEY_SPEED = new Vector2(0.5f, 0.5f);
+    private static final Vector2 DEFAULT_POS = new Vector2(0, 4);
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(SlimeyBoyTask.class);
     private Entity slimey;
     private AnimationRenderComponent animation;
     private Vector2 currentPos;
-    private SlimeState state = SlimeState.IDLE;
+    private SlimeState state = SlimeState.PROJECTILE_EXPLOSION; // set initial state to random unused state
     private SlimeState prevState;
+    private Entity targetEntity;
 
     private enum SlimeState {
         IDLE, MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, TAKE_HIT, TRANSFORM
@@ -35,6 +42,23 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         currentPos = owner.getEntity().getPosition(); // get current position
         slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed
         changeState(SlimeState.IDLE);
+    }
+
+    @Override
+    public void update() {
+        animate();
+        currentPos = slimey.getPosition();
+
+        switch (state) {
+            case IDLE -> seekAndDestroy();
+            case MOVE -> {
+                if (targetFound()) {
+                    // do aoe damage based on how much health slime has left
+                    applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
+                            slimey.getComponent(CombatStatsComponent.class).getHealth());
+                }
+            }
+        }
     }
 
     /**
@@ -65,6 +89,48 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
             default -> logger.debug("Slimey boy animation {state} not found");
         }
         prevState = state;
+    }
+
+    /**
+     * Find the closest human entity and start moving towards them
+     */
+    private void seekAndDestroy() {
+        changeState(SlimeState.MOVE);
+        targetEntity = ServiceLocator.getEntityService().getClosestEntityOfLayer(
+                slimey, PhysicsLayer.HUMANS);
+        Vector2 targetPos;
+        if (targetEntity == null) {
+            targetPos = DEFAULT_POS;
+        } else {
+            targetPos = targetEntity.getPosition();
+        }
+        MovementTask slimeyMovementTask = new MovementTask(targetPos);
+        slimeyMovementTask.create(owner);
+        slimeyMovementTask.start();
+        slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED);
+    }
+
+    /**
+     * @return if target has been reached or not
+     */
+    private boolean targetFound() {
+        return currentPos.dst(targetEntity.getPosition()) < 1;
+    }
+
+    /**
+     * Applies aoe damage to nearby human entities
+     * @param targets array of human entities to deal damage to
+     */
+    private void applyAoeDamage(Array<Entity> targets, int damage) {
+        for (int i = 0; i < targets.size; i++) {
+            Entity targetEntity = targets.get(i);
+
+            CombatStatsComponent targetCombatStats = targetEntity.
+                    getComponent(CombatStatsComponent.class);
+            if (targetCombatStats != null) {
+                targetCombatStats.hit(damage);
+            }
+        }
     }
 
     @Override

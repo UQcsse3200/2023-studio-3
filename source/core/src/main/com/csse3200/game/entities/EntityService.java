@@ -104,22 +104,42 @@ public class EntityService {
     return nearbyEntities;
   }
 
-  public Entity getClosestHuman(Entity source) {
-    Entity closestHuman = null;
-    Vector2 sourcePos = source.getPosition();
-    float closestDistance = MAX_RADIUS;
+  /**
+   * Get entities within a certain radius of a given entity.
+   *
+   * @param source The reference entity to check distance from.
+   * @param radius The radius within which to fetch entities.
+   * @param layer Desired layer for entities to be in
+   * @return An array containing entities within the given radius.
+   */
+  public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
+    Array<Entity> entities = new Array<Entity>();
+    Array<Entity> allEntities = getNearbyEntities(source, radius);
 
-    for (int i = 0; i < getEntities().size; i++) {
+    for (int i = 0; i < allEntities.size; i++) {
       Entity targetEntity = getEntities().get(i);
 
-      // check if target is human
+      // check targets layer
       HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
       if (targetHitbox == null) {
         break;
       }
-      if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
+      if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {
         break;
       }
+      entities.add(targetEntity);
+    }
+    return entities;
+  }
+
+  public Entity getClosestEntityOfLayer(Entity source, short layer) {
+    Entity closestHuman = null;
+    Vector2 sourcePos = source.getPosition();
+    float closestDistance = MAX_RADIUS;
+    Array<Entity> entitiesInLayer = getEntitiesInLayer(source, MAX_RADIUS, layer);
+
+    for (int i = 0; i < entitiesInLayer.size; i++) {
+      Entity targetEntity = entitiesInLayer.get(i);
 
       // check how close target is to source
       Vector2 targetPosition = targetEntity.getPosition();

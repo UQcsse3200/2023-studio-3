@@ -195,9 +195,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
     private void meleeAttack() {
         initialPos = patrick.getPosition();
-        meleeTarget = ServiceLocator.getEntityService().getClosestHuman(patrick);
-        System.out.println(ServiceLocator.getEntityService().getEntities());
-        System.out.println(ServiceLocator.getEntityService().getClosestHuman(patrick));
+        meleeTarget = ServiceLocator.getEntityService().getClosestEntityOfLayer(
+                patrick, PhysicsLayer.HUMANS);
         teleport(meleeTarget.getPosition());
         changeState(PatrickState.ATTACK);
         meleeFlag = true;
