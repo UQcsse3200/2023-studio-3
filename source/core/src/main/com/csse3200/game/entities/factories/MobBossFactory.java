@@ -65,7 +65,7 @@ public class MobBossFactory {
         return demon;
     }
 
-    public static Entity slimeyBoy() {
+    public static Entity createSlimeyBoy() {
         Entity slimeyBoy = createBaseBoss();
 
         // Animation

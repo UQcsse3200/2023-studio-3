@@ -10,6 +10,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -40,11 +41,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int MOVE_FORWARD_DELAY = 30;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
-    private static final Vector2 SLIME_SPEED = new Vector2(0.5f, 0.5f);
     private static final int CLEAVE_DAMAGE = 50;
     private static final int HEAL_TIMES = 10;
     private static final int HEALTH_TO_ADD = 10;
-    private static final Vector2 DEFAULT_POS = new Vector2(0, 4);
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -62,11 +61,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
-    private int deathCounter = 0;
 
     // Flags
     private boolean startFlag = false;
-    private boolean moving = false;
     private boolean isJumping;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
@@ -142,12 +139,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         }
 
         // detect death stages
-        if (health <= 0 && deathCounter == 0) {
-            changeState(DemonState.TRANSFORM_REVERSE);
-            demon.getComponent(CombatStatsComponent.class).addHealth(100);
-            deathCounter += 1;
-        } else if (health <= 0 && deathCounter == 1) {
-            changeState(DemonState.TRANSFORM);
+        if (health <= 0) {
+            // spawn slimey boy
+            Entity slimey = MobBossFactory.createSlimeyBoy();
+            slimey.setPosition(demon.getPosition().x, demon.getPosition().y);
+            slimey.setScale(5f, 5f);
+            ServiceLocator.getEntityService().register(slimey);
+            demon.setFlagForDelete(true);
         }
 
         // detect half health
@@ -185,28 +183,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     if (animation.isFinished()) {
                         changeState(DemonState.DEATH);
                     }
-                }
-            }
-            case TRANSFORM_REVERSE -> {
-                if (animation.isFinished()) {
-                    changeState(DemonState.SLIME_MOVE);
-                }
-            }
-            case SLIME_MOVE -> {
-                if (!moving) {
-                    seekAndDestroy();
-                    moving = true;
-                } else {
-                    if (targetFound()) {
-                        // do aoe damage based on how much health slime has left
-                        applyAoeDamage(getNearbyHumans(SMASH_RADIUS),
-                                demon.getComponent(CombatStatsComponent.class).getHealth());
-                    }
-                }
-            }
-            case DEATH -> {
-                if (animation.isFinished()) {
-                    demon.setFlagForDelete(true);
                 }
             }
         }
@@ -441,30 +417,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 targetCombatStats.hit(CLEAVE_DAMAGE);
             }
         }, 2f);
-    }
-
-    /**
-     * Find the closest human entity and start moving towards them
-     */
-    private void seekAndDestroy() {
-        Entity targetEntity = getClosestHuman(getNearbyHumans(20));
-        Vector2 targetPos;
-        if (targetEntity == null) {
-            targetPos = DEFAULT_POS;
-        } else {
-            targetPos = targetEntity.getPosition();
-        }
-        MovementTask slimeMovementTask = new MovementTask(targetPos);
-        slimeMovementTask.create(owner);
-        slimeMovementTask.start();
-        demon.getComponent(PhysicsMovementComponent.class).setSpeed(SLIME_SPEED);
-    }
-
-    /**
-     * @return if target has been reached or not
-     */
-    private boolean targetFound() {
-        return !getNearbyHumans(1).isEmpty();
     }
 
     /**
