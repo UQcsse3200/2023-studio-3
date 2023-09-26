@@ -25,6 +25,7 @@ public class ServiceLocator {
   private static InputService inputService;
   private static ResourceService resourceService;
   private static GameEndService gameEndService;
+  private static WaveService waveService;
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -57,6 +58,8 @@ public class ServiceLocator {
   public static GameEndService getGameEndService() {
     return gameEndService;
   }
+
+  public static WaveService getWaveService() { return waveService; }
 
   public static void registerCurrencyService(CurrencyService service) {
     logger.debug("Registering currency service {}", service);

@@ -6,8 +6,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
-import com.csse3200.game.areas.WaveManager;
-import com.csse3200.game.areas.WaveDefinition;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
@@ -152,8 +150,6 @@ public class ForestGameArea extends GameArea {
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
   private Entity bossKing2;
-
-  private WaveManager waveManager;
   
   
   /**
@@ -181,7 +177,7 @@ public class ForestGameArea extends GameArea {
 //    spawnMountains();
     
     // Set up infrastructure for end game tracking
-//    player = spawnPlayer();
+    player = spawnPlayer();
 //    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
     
     playMusic();
@@ -196,7 +192,7 @@ public class ForestGameArea extends GameArea {
     spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
     spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
     // spawnProjectileTest(new Vector2(0, 8), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnXenoGrunts();
+    spawnXenoGrunts(5);
 //    spawnGhosts();
     spawnWeaponTower();
 //    spawnIncome();
@@ -213,13 +209,13 @@ public class ForestGameArea extends GameArea {
 
 
     // Create enemy waves
-    List<WaveDefinition> waveDefinitions = new ArrayList<>();
-    waveDefinitions.add(new WaveDefinition("XenoGrunt", 3, 2.0f));
-    waveDefinitions.add(new WaveDefinition("XenoGrunt", 4, 2.0f));
-
-    // Initialize the WaveManager with the list of wave definitions and this game area
-    waveManager = new WaveManager(waveDefinitions, this);
-    waveManager.startWave();
+//    List<WaveDefinition> waveDefinitions = new ArrayList<>();
+//    waveDefinitions.add(new WaveDefinition("XenoGrunt", 3, 2.0f));
+//    waveDefinitions.add(new WaveDefinition("XenoGrunt", 4, 2.0f));
+//
+//    // Initialize the WaveManager with the list of wave definitions and this game area
+//    waveManager = new WaveManager(waveDefinitions, this);
+//    waveManager.startWave();
   }
   
   private void displayUI() {

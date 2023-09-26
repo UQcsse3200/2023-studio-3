@@ -1,51 +1,44 @@
 package com.csse3200.game.services;
 
-//import com.csse3200.game.components.gamearea.EngineerCountDisplay;
-
 public class WaveService {
-
-    private int engineerCount;
-
+    private int enemyCount;
     private boolean gameOver = false;
 
-    private EngineerCountDisplay display;
 
     /**
      * Constructor for the Game End Service
      */
-    public GameEndService() {
-        this.engineerCount = 5;
-        this.display = new EngineerCountDisplay();
+    public WaveService() {
+        this.enemyCount = 0;
     }
 
     /**
-     * Set the engineer limit. During instantiation, limit defaults to 5.
+     * Set the enemy limit. During instantiation, limit defaults to 5.
      * @param newLimit as an integer representing the maximum number of engineer deaths
      */
-    public void setEngineerCount(int newLimit) {
+    public void setEnemyCount(int newLimit) {
         if (newLimit > 0) {
-            engineerCount = newLimit;
+            enemyCount = newLimit;
         }
     }
 
     /**
-     * Returns the number of engineers left
+     * Returns the number of enemy left
      * @return (int) engineer count
      */
 
-    public int getEngineerCount() {
-        return engineerCount;
+    public int getEnemyCount() {
+        return enemyCount;
     }
 
     /**
-     * Updates engineer count and the UI display
-     * If engineer count is 0, the game is over.
+     * Updates enemy count
+     * If enemy count is 0, the game is over.
      */
-    public void updateEngineerCount() {
-        engineerCount -= 1;
-        display.updateCount();
+    public void updateEnemyCount() {
+        enemyCount -= 1;
 
-        if (engineerCount == 0) {
+        if (enemyCount == 0) {
             gameOver = true;
         }
     }
@@ -56,12 +49,5 @@ public class WaveService {
      */
     public boolean hasGameEnded() {
         return gameOver;
-    }
-
-    /**
-     * Returns the Engineer Count UI component
-     */
-    public EngineerCountDisplay getDisplay() {
-        return display;
     }
 }

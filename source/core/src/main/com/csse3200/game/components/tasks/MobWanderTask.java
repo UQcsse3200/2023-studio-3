@@ -9,7 +9,6 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.areas.WaveManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +84,9 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
       scrap.setPosition(mobPosition.x,mobPosition.y);
       ServiceLocator.getEntityService().register(scrap);
 
-      // Delete the mob.
+      // Delete the mob and update count for number of mobs remaining in the wave
+      ServiceLocator.getWaveService().updateEnemyCount();
+      logger.info("Number of enemies remaining: {}", ServiceLocator.getWaveService().getEnemyCount());
       owner.getEntity().setFlagForDelete(true);
 
     }
