@@ -9,17 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
-import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * The game screen where you can choose a planet to play on.
