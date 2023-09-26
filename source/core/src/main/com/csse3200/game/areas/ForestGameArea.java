@@ -257,28 +257,16 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
-    
-
     spawnXenoGrunts();
-    spawnWeaponTower();
-
     startWaveTimer();
-
     spawnScrap();
-    spawnTNTTower();
-
     spawnDeflectXenoGrunt(15, 5);
     spawnSplittingXenoGrunt(15, 4);
-
-
-
-
-   spawnScrap();
-   spawnTNTTower();
-   spawnWeaponTower();
-
+    spawnScrap();
+    spawnTNTTower();
+    spawnWeaponTower();
+    spawnGapScanners();
     spawnDroidTower();
-
 
   }
   
