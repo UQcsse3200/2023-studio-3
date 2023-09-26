@@ -37,8 +37,6 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private final RaycastHit hit = new RaycastHit();
   
   /**
-   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
-   *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
   public NewMobWanderTask(float waitTime) {
