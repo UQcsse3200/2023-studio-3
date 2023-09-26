@@ -229,6 +229,8 @@ public class ForestGameArea extends GameArea {
         // mobBoss2 = spawnMobBoss2();
         
         break;
+      case 5:
+        spawnDemonBoss();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -254,19 +256,19 @@ public class ForestGameArea extends GameArea {
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
     
-    spawnFireTowerTowerAt(3, 1);
-    spawnFireTowerTowerAt(3, 2);
-    spawnFireTowerTowerAt(3, 3);
-    spawnFireTowerTowerAt(3, 4);
-    spawnFireTowerTowerAt(3, 5);
-    spawnDroidTowerAt(3, 1);
-    spawnDroidTowerAt(3, 2);
-    spawnDroidTowerAt(3, 3);
-    spawnDroidTowerAt(3, 4);
-    spawnDroidTowerAt(3, 5);
+    // spawnFireTowerTowerAt(3, 1);
+    // spawnFireTowerTowerAt(3, 2);
+    // spawnFireTowerTowerAt(3, 3);
+    // spawnFireTowerTowerAt(3, 4);
+    // spawnFireTowerTowerAt(3, 5);
+    // spawnDroidTowerAt(3, 1);
+    // spawnDroidTowerAt(3, 2);
+    // spawnDroidTowerAt(3, 3);
+    // spawnDroidTowerAt(3, 4);
+    // spawnDroidTowerAt(3, 5);
     // spawnSplittingXenoGrunt(15, 5);
     spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
+    spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
     // spawnDemonBoss();
@@ -276,10 +278,11 @@ public class ForestGameArea extends GameArea {
     //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
 ////    spawnIncome();
-//    spawnScrap();
-//    spawnTNTTower();
+   spawnScrap();
+   spawnTNTTower();
+   spawnWeaponTower();
 //
-//    spawnGapScanners();
+   spawnGapScanners();
     spawnDroidTower();
 //
 //    mobBoss2 = spawnMobBoss2();
@@ -481,24 +484,7 @@ public class ForestGameArea extends GameArea {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
-  }
-
-
-//   private Entity spawnMobBoss() {
-//     for (int i = 0; i < NUM_BOSS; i++) {
-//       int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-//       int randomY = MathUtils.random(0, maxPos.y);
-//       GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-//       mobBoss1 = MobBossFactory.createMobBoss1(player);
-//       spawnEntityAt(mobBoss1,
-//           randomPos,
-//           true,
-//           false);
-//     }
-//     return mobBoss1;
-//
-//   }
-  
+  }  
   
   private void spawnXenoGrunts() {
     int[] pickedLanes = random.ints(1, 7)
@@ -546,13 +532,6 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  // * TEMPORARY FOR TESTING
-  private void spawnFireWorm(int x, int y) {
-    GridPoint2 poistion = new GridPoint2(x, y);
-    Entity fireWorm = NPCFactory.createFireWorm();
-    fireWorm.setScale(1.5f, 1.5f);
-    spawnEntityAt(fireWorm, poistion, true, true);
-  }
   private void spawnSkeleton() {
     int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
@@ -596,6 +575,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(waterQueen, randomPos, true, false);
     }
   }
+
   private void spawnWaterSlime() {
     int[] pickedLanes = new Random().ints(1, 7)
             .distinct().limit(5).toArray();
@@ -606,8 +586,6 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(waterSlime, randomPos, true, false);
     }
   }
-
-
 
 //  private Entity spawnGhostKing() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);
@@ -620,122 +598,6 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //
 //  }
-
-//  private Entity spawnMobBoss2() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_BOSS; i++) {
-//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-//      int randomY = MathUtils.random(0, maxPos.y);
-//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-//      mobBoss2 = MobBossFactory.createMobBoss2(player);
-//      spawnEntityAt(mobBoss2,
-//              randomPos,
-//              true,
-//              false);
-//    }
-//    return mobBoss2;
-//  }
-  
-  private Entity spawnMobBoss2() {
-    int[] pickedLanes = random.ints(0, 8)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_MOBBOSS2; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss2 = MobBossFactory.createMobBoss2();
-      spawnEntityAt(mobBoss2,
-              randomPos,
-              true,
-              false);
-    }
-    return mobBoss2;
-  }
-  
-  /**
-   * Creates multiple projectiles that travel simultaneous. They all have same
-   * the starting point but different destinations.
-   *
-   * @param position    The position of the Entity that's shooting the projectile.
-   * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
-   * @param space       The space between the projectiles' destination.
-   * @param speed       The speed of the projectiles.
-   * @param quantity    The amount of projectiles to spawn.
-   */
-  private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
-    int half = quantity / 2;
-    for (int i = 0; i < quantity; i++) {
-      spawnProjectile(position, targetLayer, space * half, direction, speed);
-      --half;
-    }
-  }
-  
-  /**
-   * Returns projectile that can do an area of effect damage
-   *
-   * @param position    The position of the Entity that's shooting the projectile.
-   * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
-   * @param speed       The speed of the projectiles.
-   * @param effect      Type of effect.
-   * @param aoe         Whether it is an aoe projectile.
-   */
-  private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
-                                     ProjectileEffects effect, boolean aoe) {
-    Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
-    Projectile.setPosition(position);
-    spawnEntity(Projectile);
-  }
-  
-  /**
-   * Spawns a pierce fireball.
-   * Pierce fireball can go through targetlayers without disappearing but damage
-   * will still be applied.
-   *
-   * @param position    The position of the Entity that's shooting the projectile.
-   * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
-   * @param speed       The speed of the projectiles.
-   */
-  private void spawnPierceFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
-    Entity projectile = ProjectileFactory.createPierceFireBall(targetLayer, new Vector2(direction, position.y), speed);
-    projectile.setPosition(position);
-    spawnEntity(projectile);
-  }
-  
-  /**
-   * Spawns a ricochet fireball
-   * Ricochet fireballs bounce off targets with a specified maximum count of 3
-   * Possible extensions: Make the bounce count flexible with a param.
-   *
-   * @param position    The position of the Entity that's shooting the projectile.
-   * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
-   * @param speed       The speed of the projectiles.
-   */
-  private void spawnRicochetFireball(Vector2 position, short targetLayer, int direction, Vector2 speed) {
-    // Bounce count set to 0.
-    Entity projectile = ProjectileFactory.createRicochetFireball(targetLayer, new Vector2(direction, position.y), speed, 0);
-    projectile.setPosition(position);
-    spawnEntity(projectile);
-  }
-  
-  /**
-   * Spawns a split firework fireball.
-   * Splits into mini projectiles that spreads out after collision.
-   *
-   * @param position    The position of the Entity that's shooting the projectile.
-   * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
-   * @param speed       The speed of the projectiles.
-   * @param amount      The amount of projectiles appearing after collision.
-   */
-  private void spawnSplitFireWorksFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed, int amount) {
-    Entity projectile = ProjectileFactory.createSplitFireWorksFireball(targetLayer, new Vector2(direction, position.y), speed, amount);
-    projectile.setPosition(position);
-    spawnEntity(projectile);
-  }
   
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
