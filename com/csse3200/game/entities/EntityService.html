@@ -114,10 +114,23 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Dispose all entities.</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.utils.Array&lt;<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntities()" class="member-name-link">getEntities</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getClosestEntityOfLayer(com.csse3200.game.entities.Entity,short)" class="member-name-link">getClosestEntityOfLayer</a><wbr>(<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;source,
+ short&nbsp;layer)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns the closest entity to the source of provided layer</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.utils.Array&lt;<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntities()" class="member-name-link">getEntities</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Get all entities</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.utils.Array&lt;<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntitiesInLayer(com.csse3200.game.entities.Entity,float,short)" class="member-name-link">getEntitiesInLayer</a><wbr>(<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;source,
+ float&nbsp;radius,
+ short&nbsp;layer)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get entities within a certain radius of a given entity.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntityAtPosition(float,float)" class="member-name-link">getEntityAtPosition</a><wbr>(float&nbsp;x,
@@ -239,6 +252,38 @@ loadScripts(document, 'script');</script>
 <dd><code>radius</code> - The radius within which to fetch entities.</dd>
 <dt>Returns:</dt>
 <dd>An array containing entities within the given radius.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getEntitiesInLayer(com.csse3200.game.entities.Entity,float,short)">
+<h3>getEntitiesInLayer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.badlogic.gdx.utils.Array&lt;<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&gt;</span>&nbsp;<span class="element-name">getEntitiesInLayer</span><wbr><span class="parameters">(<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;source,
+ float&nbsp;radius,
+ short&nbsp;layer)</span></div>
+<div class="block">Get entities within a certain radius of a given entity.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>source</code> - The reference entity to check distance from.</dd>
+<dd><code>radius</code> - The radius within which to fetch entities.</dd>
+<dd><code>layer</code> - Desired layer for entities to be in</dd>
+<dt>Returns:</dt>
+<dd>An array containing entities within the given radius.</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getClosestEntityOfLayer(com.csse3200.game.entities.Entity,short)">
+<h3>getClosestEntityOfLayer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">getClosestEntityOfLayer</span><wbr><span class="parameters">(<a href="Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;source,
+ short&nbsp;layer)</span></div>
+<div class="block">Returns the closest entity to the source of provided layer</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>source</code> - source entity</dd>
+<dd><code>layer</code> - layer for desired entity to be returned</dd>
+<dt>Returns:</dt>
+<dd>closest entity of correct layer</dd>
 </dl>
 </section>
 </li>

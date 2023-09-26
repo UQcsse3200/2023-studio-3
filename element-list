@@ -4,6 +4,7 @@ com.csse3200.game.ai.tasks
 com.csse3200.game.areas
 com.csse3200.game.areas.terrain
 com.csse3200.game.components
+com.csse3200.game.components.bosses
 com.csse3200.game.components.gamearea
 com.csse3200.game.components.maingame
 com.csse3200.game.components.mainmenu
@@ -13,6 +14,7 @@ com.csse3200.game.components.popupmenu
 com.csse3200.game.components.projectile
 com.csse3200.game.components.settingsmenu
 com.csse3200.game.components.tasks
+com.csse3200.game.components.tasks.bosstask
 com.csse3200.game.components.tasks.human
 com.csse3200.game.components.tasks.scanner
 com.csse3200.game.components.tower
