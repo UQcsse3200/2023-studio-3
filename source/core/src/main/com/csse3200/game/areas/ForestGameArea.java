@@ -252,22 +252,8 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
-    //playMusic();
+    playMusic();
     
-    // Types of projectile
-//    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-//    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
-//    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-//    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
-//    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
-//    spawnXenoGrunts();
-  //  spawnWeaponTower();
-
-  //  spawnDragonKnight();
-    // spawnFireWorm(19, 5); // * TEMPORARY for testing
     spawnFireTowerTowerAt(3, 1);
     spawnFireTowerTowerAt(3, 2);
     spawnFireTowerTowerAt(3, 3);
