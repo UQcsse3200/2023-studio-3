@@ -8,22 +8,18 @@ import com.csse3200.game.services.ServiceLocator;
 import java.util.*;
 
 
-public class WaveClass extends Entity {
+public class WaveClass {
   private HashMap<String, Integer> entities;
-  private float spawnDelay;
   private GameTime gameTime;
   private long startTime;
   private List<String> wave;
   private Random rand = new Random();
-  private int waveIndex;
+  private int mobIndex;
 
-  public WaveClass(HashMap<String, Integer> entities, float spawnDelay) {
+  public WaveClass(HashMap<String, Integer> entities) {
     this.entities = entities;
-    this.spawnDelay = spawnDelay;
-    this.gameTime = ServiceLocator.getTimeSource();
-    this.startTime = this.gameTime.getTime();
     this.wave = entitiesToWave();
-    this.waveIndex = 0;
+    this.mobIndex = 0;
   }
 
   private List<String> entitiesToWave() {
@@ -37,24 +33,12 @@ public class WaveClass extends Entity {
     return enemies;
   }
 
-  public void spawnWave() {
-    System.out.println("This is triggering");
-    if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
-      GridPoint2 randomPos = new GridPoint2(19, rand.nextInt(1, 7));
-      this.getEvents().trigger("spawnWave", wave.get(waveIndex), randomPos);
-      startTime = gameTime.getTime();
-      waveIndex++;
-    } else if (waveIndex == wave.size()) {
-      this.getEvents().trigger("waveFinishedSpawning");
-    }
-  }
-
   public int getSize() {
     return this.wave.size();
   }
 
-  public WaveClass getWave() {
-    return this;
+  public List<String> getMobs() {
+    return this.wave;
   }
 
 }
