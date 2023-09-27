@@ -1,6 +1,8 @@
 package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.ProjectileEffects;
@@ -255,37 +257,16 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
-    
-    // spawnFireTowerTowerAt(3, 1);
-    // spawnFireTowerTowerAt(3, 2);
-    // spawnFireTowerTowerAt(3, 3);
-    // spawnFireTowerTowerAt(3, 4);
-    // spawnFireTowerTowerAt(3, 5);
-    // spawnDroidTowerAt(3, 1);
-    // spawnDroidTowerAt(3, 2);
-    // spawnDroidTowerAt(3, 3);
-    // spawnDroidTowerAt(3, 4);
-    // spawnDroidTowerAt(3, 5);
-    // spawnSplittingXenoGrunt(15, 5);
+    spawnXenoGrunts();
+    startWaveTimer();
+    spawnScrap();
     spawnDeflectXenoGrunt(15, 5);
     spawnSplittingXenoGrunt(15, 4);
-    // spawnSplittingXenoGrunt(15, 5);
-    // spawnDodgingDragonKnight(15, 3);
-    // spawnDemonBoss();
-    // spawnPatrickBoss();
-  //  spawnFireWorm();
-
-    //mobBoss1 = spawnMobBoss1();
-  //  startWaveTimer();
-////    spawnIncome();
-   spawnScrap();
-   spawnTNTTower();
-   spawnWeaponTower();
-//
-  //  spawnGapScanners();
+    spawnScrap();
+    spawnTNTTower();
+    spawnWeaponTower();
+    spawnGapScanners();
     spawnDroidTower();
-//
-//    mobBoss2 = spawnMobBoss2();
 
   }
   
@@ -298,8 +279,8 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTerrain() {
-    // Background terrain
-    terrain = terrainFactory.createTerrain(TerrainType.FOREST_DEMO);
+
+    terrain = terrainFactory.createTerrain(TerrainType.ALL_DEMO);
     spawnEntity(new Entity().addComponent(terrain));
     
     // Terrain walls
@@ -308,9 +289,11 @@ public class ForestGameArea extends GameArea {
     Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);
     
     // Left
-    // ! THIS ONE DOESNT WORK. GRIDPOINTS2UTIL.ZERO is (0, 4), not (0, 0)
     spawnEntityAt(
-            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y), new GridPoint2(1, 0), false, false);
+            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
+            new GridPoint2(0, 2),
+            false,
+            false);
     // Right
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
@@ -324,12 +307,14 @@ public class ForestGameArea extends GameArea {
             false,
             false);
     // Bottom
-    // spawnEntityAt(
-    //         ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH), GridPoint2Utils.ZERO, false, false);
-    // * TMPORARY
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7), new GridPoint2(0, 0), false, false);
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
+            new GridPoint2(0, 2),
+            false,
+            false);
   }
+
+
 //  private void spawnBuilding1() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);
 //    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
@@ -600,7 +585,7 @@ public class ForestGameArea extends GameArea {
 //  }
   
   private void spawnWeaponTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
@@ -629,7 +614,7 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
@@ -641,7 +626,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDroidTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {

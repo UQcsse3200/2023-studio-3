@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -40,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
-  private static final String[] mainGameTextures = {"images/heart.png"};
+  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png"};
   private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
@@ -56,7 +57,7 @@ public class MainGameScreen extends ScreenAdapter {
 
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
-
+  int selectedLevel = GameLevelData.getSelectedLevel();
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
@@ -71,9 +72,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     batch = new SpriteBatch();
 
-    Viewport viewport = new ScreenViewport(camera);
-    stage = new Stage(viewport, new SpriteBatch());
-
+    stage = new Stage(new ScreenViewport());
 
 
     logger.debug("Initialising main game screen services");
@@ -108,8 +107,57 @@ public class MainGameScreen extends ScreenAdapter {
     ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
     forestGameArea.create();
   }
+
+  /**
+   * Retrieves the background texture based on the currently selected game level.
+   *
+   * <p>The method returns different textures for each game level:
+   * <ul>
+   *     <li>Ice Level: "images/ice_bg.png"</li>
+   *     <li>Lava Level: "images/lava_bg.png"</li>
+   *     <li>Any other level: Default to "images/desert_bg.png"</li>
+   * </ul>
+   *
+   * @return The background {@link Texture} corresponding to the selected level.
+   */
+  public Texture getBackgroundTexture() {
+    Texture background;
+    switch (selectedLevel) {
+      // Desert
+      case 1: // Ice
+        background = ServiceLocator.getResourceService().getAsset("images/ice_bg.png", Texture.class);
+        break;
+      case 2: // Lava
+        background = ServiceLocator.getResourceService().getAsset("images/lava_bg.png", Texture.class);
+        break;
+      default:
+        // Use a default background for other levels or planets
+        background = ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class);
+        break;
+    }
+    return background;
+  }
+
   @Override
   public void render(float delta) {
+    // Clear the screen
+    Gdx.gl.glClearColor(0, 0, 0, 1);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+    // Update the camera and set the batch's projection matrix
+    camera.update();
+    batch.setProjectionMatrix(camera.combined);
+
+    // Begin the batch
+    batch.begin();
+
+    // Draw the background texture.
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
+
+    // End the batch
+    batch.end();
+
+    // Continue with other rendering logic
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
 
@@ -118,18 +166,8 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     }
 
-    batch.setProjectionMatrix(camera.combined);
-    batch.begin();
-    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
-    batch.end();
-
     renderer.render();
-    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-    stage.draw();
   }
-
-
-
 
   @Override
   public void resize(int width, int height) {
@@ -165,8 +203,8 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
-    backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
+    backgroundTexture = getBackgroundTexture(); // Load the background image
   }
 
   private void unloadAssets() {
