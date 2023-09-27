@@ -38,7 +38,8 @@ public class WaveClass extends Entity {
   }
 
   public void spawnWave() {
-    if (gameTime.getTime() >= startTime + spawnDelay) {
+    System.out.println("This is triggering");
+    if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
       GridPoint2 randomPos = new GridPoint2(19, rand.nextInt(1, 7));
       this.getEvents().trigger("spawnWave", wave.get(waveIndex), randomPos);
       startTime = gameTime.getTime();
@@ -50,6 +51,10 @@ public class WaveClass extends Entity {
 
   public int getSize() {
     return this.wave.size();
+  }
+
+  public WaveClass getWave() {
+    return this;
   }
 
 }

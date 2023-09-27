@@ -9,6 +9,7 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
+import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -181,6 +182,7 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
 
     waves = WaveFactory.createWave();
+    spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
     
     playMusic();
@@ -413,6 +415,7 @@ public class ForestGameArea extends GameArea {
   
   public void spawnMob(String entity, GridPoint2 randomPos) {
     Entity mob;
+    System.out.println("attempting to spawn");
     logger.info("Spawning Xeno {}");
     switch (entity) {
       case "Xeno":

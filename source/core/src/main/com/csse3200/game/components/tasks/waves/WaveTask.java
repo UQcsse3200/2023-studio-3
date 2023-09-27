@@ -25,7 +25,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
 
   public WaveTask() {
     this.globalTime = ServiceLocator.getTimeSource();
-    this.currentWaveIndex = 1;
+    this.currentWaveIndex = 0;
     this.waveInProgress = false;
   }
 
@@ -36,17 +36,16 @@ public class WaveTask extends DefaultTask implements PriorityTask {
 
   @Override
   public void start() {
+    System.out.println("this is starting");
     super.start();
-    startTime = globalTime.getTime() + (INITIAL_WAIT_INTERVAL * 1000);
     this.owner.getEntity().getEvents().addListener("waveFinishedSpawning", () -> waveInProgress = false);
-
-    if (globalTime.getTime() >= startTime) {
-      this.waveInProgress = true;
-      this.currentWave = waves.get(currentWaveIndex);
-      ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-      logger.info("Wave {} starting", currentWaveIndex);
-      endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
-    }
+    this.waveInProgress = true;
+    //this.currentWave = waves.get(currentWaveIndex);
+    WaveClass wave = (WaveClass) this.owner.getEntity();
+    this.currentWave = wave.getWave();
+    ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
+    logger.info("Wave {} starting", currentWaveIndex);
+    endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
   @Override
@@ -55,7 +54,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       this.waveInProgress = true;
       logger.info("No enemies remaining, begin next wave");
       currentWaveIndex++;
-      this.currentWave = waves.get(currentWaveIndex);
+      //this.currentWave = waves.get(currentWaveIndex);
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
     } else {
       logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);

@@ -100,6 +100,10 @@ public class ServiceLocator {
     logger.debug("Registering game end service service {}", source);
     gameEndService = source;
   }
+  public static void registerWaveService(WaveService source) {
+    logger.debug("Registering wave service {}", source);
+    waveService = source;
+  }
 
   public static void clear() {
     entityService = null;
