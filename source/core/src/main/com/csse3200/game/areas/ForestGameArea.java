@@ -145,6 +145,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
   
   private Entity player;
+  private Entity waves;
   
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
@@ -178,7 +179,9 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-//    player.getEvents().addListener("spawnWave", this::spawnXenoGrunts);
+
+    waves = WaveFactory.createWave();
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
     
     playMusic();
     
