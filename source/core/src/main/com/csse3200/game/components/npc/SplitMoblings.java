@@ -119,7 +119,7 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY, float initialScaleX, float initialScaleY) {
     // ? ENTITY PARAM KINDA USELESS?
-    Entity waterSlime = NPCFactory.createWaterSlime();
+    Entity waterSlime = NPCFactory.createBaseWaterSlime();
     waterSlime.setPosition(positionX, positionY);
 
     waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);

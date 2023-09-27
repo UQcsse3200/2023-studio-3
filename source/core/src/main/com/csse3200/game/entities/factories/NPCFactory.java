@@ -204,7 +204,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createWaterSlime() {
+  public static Entity createBaseWaterSlime() {
     Entity waterSlime = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -379,15 +379,15 @@ public class NPCFactory {
   }
 
   // * COW'S TESTING ARENA DONT TOUCH
-  public static Entity createSplittingXenoGrunt() {
-    Entity splitWaterSlime = createWaterSlime()
+  public static Entity createSplittingWaterSlime() {
+    Entity splitWaterSlime = createBaseWaterSlime()
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 0.5f))
-        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+        .addComponent(new SplitMoblings(7, 0.5f));
+        // .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
     
     // * TEMPORARY TESTING FOR PROJECTILE DODGING
-    splitWaterSlime.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+//     splitWaterSlime.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
     return splitWaterSlime;
   }
 
@@ -401,8 +401,8 @@ public class NPCFactory {
     return fireWorm;
   }
 
-  public static Entity createDeflectXenoGrunt() {
-    Entity deflectXenoGrunt = createXenoGrunt();
+  public static Entity createDeflectWizard() {
+    Entity deflectXenoGrunt = createWizard();
     deflectXenoGrunt.addComponent(new DeflectingComponent(
         PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
 

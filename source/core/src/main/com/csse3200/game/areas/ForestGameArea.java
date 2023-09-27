@@ -216,18 +216,18 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-      spawnWaterQueen();
+      // spawnWaterQueen();
       spawnWaterSlime();
       
       break;
       case 3:
-      spawnSkeleton();
+      // spawnSkeleton();
       spawnWizard();
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
-      spawnFireWorm();
-      spawnDragonKnight();
+      // spawnFireWorm();
+      // spawnDragonKnight();
         // mobBoss2 = spawnMobBoss2();
         break;
       case 5:
@@ -259,8 +259,8 @@ public class ForestGameArea extends GameArea {
     spawnXenoGrunts();
     startWaveTimer();
     spawnScrap();
-    spawnDeflectXenoGrunt(15, 5);
-    spawnSplittingXenoGrunt(15, 4);
+    // spawnDeflectXenoGrunt(15, 5);
+    // spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
@@ -481,12 +481,12 @@ public class ForestGameArea extends GameArea {
   }
 
   // * TEMPORARY FOR TESTING
-  private void spawnSplittingXenoGrunt(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
-    xenoGrunt.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrunt, pos, true, true);
-  }
+  // private void spawnSplittingXenoGrunt(int x, int y) {
+  //   GridPoint2 pos = new GridPoint2(x, y);
+  //   Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+  //   xenoGrunt.setScale(1.5f, 1.5f);
+  //   spawnEntityAt(xenoGrunt, pos, true, true);
+  // }
 
   // * TEMPORARY FOR TESTING
   private void spawnDodgingDragonKnight(int x, int y) {
@@ -497,9 +497,9 @@ public class ForestGameArea extends GameArea {
   }
 
   // * TEMPORARY FOR TESTING
-  private void spawnDeflectXenoGrunt(int x, int y) {
+  private void spawnDeflectWizard(int x, int y) {
     GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
+    Entity xenoGrunt = NPCFactory.createDeflectWizard();
     xenoGrunt.setScale(1.5f, 1.5f);
     spawnEntityAt(xenoGrunt, pos, true, true);
   }
@@ -542,7 +542,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity wizard = NPCFactory.createWizard();
+      Entity wizard = NPCFactory.createDeflectWizard();
       wizard.setScale(1.5f, 1.5f);
       spawnEntityAt(wizard, randomPos, true, false);
     }
@@ -564,7 +564,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity waterSlime = NPCFactory.createWaterSlime();
+      Entity waterSlime = NPCFactory.createSplittingWaterSlime();
       waterSlime.setScale(1.5f, 1.5f);
       spawnEntityAt(waterSlime, randomPos, true, false);
     }
