@@ -5,7 +5,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.player.InventoryComponent;
 import com.csse3200.game.components.player.PlayerActions;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
-import com.csse3200.game.components.tasks.SpawnWaveTask;
+import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.PlayerConfig;
 import com.csse3200.game.files.FileLoader;
@@ -35,11 +35,9 @@ public class PlayerFactory {
   public static Entity createPlayer() {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForPlayer();
-    //AITaskComponent aiComponent =
-//            new WaveManager()
-       //     new AITaskComponent()
-//                    .addTask(new WaveManager())
-                //    .addTask(new SpawnWaveTask());
+    AITaskComponent aiComponent =
+            new AITaskComponent()
+                    .addTask(new WaveTask());
     Entity player =
         new Entity()
             .addComponent(new TextureRenderComponent("images/box_boy_leaf.png"))
