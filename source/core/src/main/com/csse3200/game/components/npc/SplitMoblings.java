@@ -119,12 +119,12 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY, float initialScaleX, float initialScaleY) {
     // ? ENTITY PARAM KINDA USELESS?
-    Entity xenoGrunt = NPCFactory.createXenoGrunt();
-    xenoGrunt.setPosition(positionX, positionY);
+    Entity waterSlime = NPCFactory.createWaterSlime();
+    waterSlime.setPosition(positionX, positionY);
 
-    xenoGrunt.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
 
-    ServiceLocator.getEntityService().register(xenoGrunt);
+    ServiceLocator.getEntityService().register(waterSlime);
   }
 
   /**

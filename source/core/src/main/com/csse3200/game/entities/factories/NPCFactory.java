@@ -222,7 +222,6 @@ public class NPCFactory {
     waterSlime
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
-            .addComponent(new SplitMoblings(7, 0.5f))
             .addComponent(new WaterSlimeAnimationController());
 
     waterSlime.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
@@ -381,15 +380,15 @@ public class NPCFactory {
 
   // * COW'S TESTING ARENA DONT TOUCH
   public static Entity createSplittingXenoGrunt() {
-    Entity splitXenoGrunt = createXenoGrunt()
+    Entity splitWaterSlime = createWaterSlime()
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
         .addComponent(new SplitMoblings(7, 0.5f))
         .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
     
     // * TEMPORARY TESTING FOR PROJECTILE DODGING
-    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    return splitXenoGrunt;
+    splitWaterSlime.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    return splitWaterSlime;
   }
 
   public static Entity createDodgingDragonKnight() {
