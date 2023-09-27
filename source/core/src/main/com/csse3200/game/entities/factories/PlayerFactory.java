@@ -35,7 +35,7 @@ public class PlayerFactory {
   public static Entity createPlayer() {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForPlayer();
-    AITaskComponent aiComponent =
+    //AITaskComponent aiComponent =
 //            new WaveManager()
        //     new AITaskComponent()
 //                    .addTask(new WaveManager())

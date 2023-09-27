@@ -214,8 +214,11 @@ public class ForestGameArea extends GameArea {
 
     // Create enemy waves
     List<WaveDefinition> waveDefinitions = new ArrayList<>();
-    waveDefinitions.add(new WaveDefinition("XenoGrunt", 3, 2.0f));
-    waveDefinitions.add(new WaveDefinition("XenoGrunt", 4, 2.0f));
+    ArrayList<String> wave1 = new ArrayList<>();
+    wave1.add("Xeno");
+
+    waveDefinitions.add(new WaveDefinition(wave1, 3, 2.0f));
+    //waveDefinitions.add(new WaveDefinition("XenoGrunt", 4, 2.0f));
 
     // Initialize the WaveManager with the list of wave definitions and this game area
     waveManager = new WaveManager(waveDefinitions, this);
@@ -413,17 +416,18 @@ public class ForestGameArea extends GameArea {
 //   }
   
   
-  public void spawnXenoGrunts(int quantityToSpawn) {
-    int[] pickedLanes = new Random().ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < quantityToSpawn; i++) {
-      logger.info("Spawning Xeno {}", i);
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      System.out.println(randomPos);
-      Entity xenoGrunt = NPCFactory.createXenoGrunt(player);
-      xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, false);
+  public void spawnMob(String entity, GridPoint2 randomPos) {
+    Entity mob;
+    logger.info("Spawning Xeno {}");
+    switch (entity) {
+      case "Xeno":
+        mob = NPCFactory.createXenoGrunt(player);
+        break;
+      default:
+        mob = NPCFactory.createBaseNPC(player);
     }
+    mob.setScale(1.5f, 1.5f);
+    spawnEntityAt(mob, randomPos, true, false);
   }
 
 //  private Entity spawnGhostKing() {

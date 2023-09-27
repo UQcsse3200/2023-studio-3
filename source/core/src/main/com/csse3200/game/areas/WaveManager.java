@@ -1,7 +1,10 @@
 package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.GridPoint2;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -9,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Random;
 
 public class WaveManager extends AITaskComponent {
   private Logger logger = LoggerFactory.getLogger(WaveManager.class);
@@ -31,7 +35,7 @@ public class WaveManager extends AITaskComponent {
     this.timeSinceLastSpawn = 0;
     this.waveInProgress = false;
     this.initialWaitTime = 20.0f;
-    this.timeElapsed = 0;F
+    this.timeElapsed = 0;
 
     // randomise waves for this level
   }
@@ -42,14 +46,19 @@ public class WaveManager extends AITaskComponent {
     WaveDefinition currentWave = waves.get(currentWaveIndex);
     // Add sound trigger here
 
-    if (currentWave.getEntityToSpawn() == "XenoGrunt") {
-      forestGameArea.spawnXenoGrunts(currentWave.getQuantity());
+    // for mobs in wave
+    // spawn mob with delay
+    int[] pickedLanes = new Random().ints(1, 7)
+            .distinct().limit(5).toArray();
+    for (int i = 0; i < currentWave.getSize(); i++) {
+      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+      forestGameArea.spawnMob(currentWave.getEntityToSpawn(0), randomPos);
     }
   }
-
+/*
   @Override
   public void update(float delta) {
-    timeElapsed += delta;
+    timeElapsed = delta;
 
     if (timeElapsed >= initialWaitTime) {
       if (currentWaveIndex < waves.size()) {
@@ -78,7 +87,7 @@ public class WaveManager extends AITaskComponent {
       }
     }
   }
-
+*/
   @Override
   public int getPriority() {
     return 1;
