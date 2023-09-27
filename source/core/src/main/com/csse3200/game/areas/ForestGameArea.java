@@ -216,22 +216,23 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-      // spawnWaterQueen();
-      spawnWizard();
-      spawnDragonKnight();
+      spawnWaterQueen();
+      spawnWaterSlime();
       
       break;
       case 3:
-      spawnWaterSlime();
-      // spawnSkeleton();
+      spawnWizard();
+      // spawnDragonKnight();
+      spawnSkeleton();
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
-      // spawnFireWorm();
+      spawnFireWorm();
+      spawnDragonKnight();
         // mobBoss2 = spawnMobBoss2();
         break;
       case 5:
-        // spawnDemonBoss();
+        spawnDemonBoss();
       default:
         // Handle other wave scenarios if needed
         break;
