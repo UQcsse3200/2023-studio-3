@@ -16,10 +16,14 @@ public class WaveFactory {
      */
     public static Entity createWaves() {
         HashMap<String, Integer> mobs = new HashMap<>();
-        mobs.put("Xeno", 5);
-        WaveClass wave = new WaveClass(mobs);
+        mobs.put("Xeno", 0);
+        HashMap<String, Integer> mobs2 = new HashMap<>();
+        mobs2.put("Xeno", 3);
+        WaveClass wave1 = new WaveClass(mobs);
+        WaveClass wave2 = new WaveClass(mobs2);
         LevelWaves level = new LevelWaves(1);
-        level.addWave(wave);
+        level.addWave(wave1);
+        level.addWave(wave2);
         AITaskComponent aiComponent =
                 new AITaskComponent()
                         .addTask(new WaveTask());

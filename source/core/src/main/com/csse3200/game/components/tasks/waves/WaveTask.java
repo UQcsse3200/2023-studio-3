@@ -53,6 +53,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       logger.info("No enemies remaining, begin next wave");
       currentWaveIndex++;
       this.currentWave = this.level.getWave(currentWaveIndex);
+      ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
     } else {
       logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
