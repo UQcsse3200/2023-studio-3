@@ -216,23 +216,22 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        spawnFireWorm();
-        spawnDragonKnight();
-        
-        break;
+      spawnWaterQueen();
+      spawnWaterSlime();
+      
+      break;
       case 3:
-        spawnSkeleton();
-        spawnWizard();
-        // mobBoss2 = spawnMobBoss2();
-        break;
+      spawnSkeleton();
+      spawnWizard();
+      // mobBoss2 = spawnMobBoss2();
+      break;
       case 4:
-        spawnWaterQueen();
-        spawnWaterSlime();
+      spawnFireWorm();
+      spawnDragonKnight();
         // mobBoss2 = spawnMobBoss2();
-        
         break;
       case 5:
-        spawnDemonBoss();
+        // spawnDemonBoss();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -267,7 +266,6 @@ public class ForestGameArea extends GameArea {
     spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
-
   }
   
   private void displayUI() {

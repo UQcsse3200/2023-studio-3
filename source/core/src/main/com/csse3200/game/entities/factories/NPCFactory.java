@@ -19,9 +19,11 @@ import com.csse3200.game.components.npc.WizardAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobAttackTask;
 import com.csse3200.game.components.tasks.MobDodgeTask;
+import com.csse3200.game.components.tasks.MobMeleeAttackTask;
+import com.csse3200.game.components.tasks.MobRangedAttackTask;
 import com.csse3200.game.components.tasks.MobShootTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
-import com.csse3200.game.components.tasks.NewMobWanderTask;
+
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -61,7 +63,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhost() {
-    Entity ghost = createBaseNPC();
+    Entity ghost = createMeleeBaseNPC();
     BaseEntityConfig config = configs.ghost;
     /**
     AnimationRenderComponent animator =
@@ -87,7 +89,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhostKing() {
-    Entity ghostKing = createBaseNPC();
+    Entity ghostKing = createMeleeBaseNPC();
     GhostKingConfig config = configs.ghostKing;
 
     AnimationRenderComponent animator =
@@ -112,7 +114,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createSkeleton() {
-    Entity skeleton = createBaseNPC();
+    Entity skeleton = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -143,7 +145,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createWizard() {
-    Entity wizard = createBaseNPC();
+    Entity wizard = createRangedBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -173,7 +175,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createWaterQueen() {
-    Entity wizard = createBaseNPC();
+    Entity wizard = createRangedBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -203,7 +205,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createWaterSlime() {
-    Entity waterSlime = createBaseNPC();
+    Entity waterSlime = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -220,6 +222,7 @@ public class NPCFactory {
     waterSlime
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
+            .addComponent(new SplitMoblings(7, 0.5f))
             .addComponent(new WaterSlimeAnimationController());
 
     waterSlime.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
@@ -233,7 +236,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createFireWorm() {
-    Entity fireWorm = createBaseNPC();
+    Entity fireWorm = createRangedBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -263,7 +266,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createDragonKnight() {
-    Entity dragonKnight = createBaseNPC();
+    Entity dragonKnight = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -295,7 +298,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createXenoGrunt() {
-    Entity xenoGrunt = createBaseNPC();
+    Entity xenoGrunt = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
     // tester projectiles
@@ -323,18 +326,41 @@ public class NPCFactory {
     return xenoGrunt;
   }
 
-
-
   /**
    * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
    *
    * @return entity
    */
-  public static Entity createBaseNPC() {
+  public static Entity createMeleeBaseNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobAttackTask(2, 40));
+            .addTask(new MobMeleeAttackTask(2, 2f));
+        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
+
+            // .addTask(new MobAttackTask(2, 40));
+    Entity npc =
+        new Entity()
+            .addComponent(new PhysicsComponent())
+            .addComponent(new PhysicsMovementComponent())
+            .addComponent(new ColliderComponent())
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
+            .addComponent(aiComponent);
+    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
+    return npc;
+  }
+  /**
+   * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
+   *
+   * @return entity
+   */
+  public static Entity createRangedBaseNPC() {
+    AITaskComponent aiComponent =
+        new AITaskComponent()
+            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+            .addTask(new MobRangedAttackTask(2, 2f));
+        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
             // .addTask(new MobAttackTask(2, 40));
     Entity npc =
@@ -383,7 +409,6 @@ public class NPCFactory {
 
     return deflectXenoGrunt;
   }
-
 }
 
 
