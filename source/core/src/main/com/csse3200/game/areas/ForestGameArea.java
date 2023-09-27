@@ -218,6 +218,7 @@ public class ForestGameArea extends GameArea {
       case 2:
       // spawnWaterQueen();
       spawnWizard();
+      spawnDragonKnight();
       
       break;
       case 3:
@@ -227,7 +228,6 @@ public class ForestGameArea extends GameArea {
       break;
       case 4:
       // spawnFireWorm();
-      // spawnDragonKnight();
         // mobBoss2 = spawnMobBoss2();
         break;
       case 5:
@@ -256,7 +256,6 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
-    spawnXenoGrunts();
     startWaveTimer();
     spawnScrap();
     // spawnDeflectXenoGrunt(15, 5);
@@ -531,7 +530,7 @@ public class ForestGameArea extends GameArea {
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity fireWorm = NPCFactory.createDragonKnight();
+      Entity fireWorm = NPCFactory.createDodgingDragonKnight();
       fireWorm.setScale(1.5f, 1.5f);
       spawnEntityAt(fireWorm, randomPos, true, false);
     }
