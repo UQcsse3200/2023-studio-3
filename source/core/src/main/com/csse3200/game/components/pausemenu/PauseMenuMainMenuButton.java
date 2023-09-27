@@ -48,7 +48,7 @@ public class PauseMenuMainMenuButton extends UIComponent {
                     }
                 });
 
-        table.add(pauseMenuBtn).padTop(400f).padRight(400f);
+        table.add(pauseMenuBtn).padTop(400f).padRight(490f);
 
         stage.addActor(table);
     }
