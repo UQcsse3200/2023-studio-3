@@ -12,6 +12,7 @@ import com.csse3200.game.components.player.PlayerStatsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.screens.AssetLoader;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.GameEndService;
@@ -24,6 +25,7 @@ import java.util.Timer;
 
 
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
+import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 
 import java.util.ArrayList;
 import java.util.TimerTask;
@@ -35,7 +37,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-
+  private AssetLoader assetLoader;
 
   private static final int NUM_BOSSKING2=3;
   private static final int NUM_BOSSKING1=1;
@@ -49,118 +51,8 @@ public class ForestGameArea extends GameArea {
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(0, 0);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
-  
-  // Required to load assets before using them
-  private static final String[] forestTextures = {
-         "images/desert_bg.png",
-          "images/ice_bg.png",
-          "images/lava_bg.png",
-          "images/projectiles/projectile.png",
-          "images/ingamebg.png",
-          "images/box_boy_leaf.png",
-          "images/background/building1.png",
-          "images/ghost_1.png",
-          "images/grass_2.png",
-          "images/grass_3.png",
-          "images/hex_grass_1.png",
-          "images/background/mountain.png",
-          "images/ghost_king.png",
-          "images/ghost_1.png",
-          "images/terrain 2 normal.png",
-          "images/terrain 2 hex.png",
-          "images/hex_grass_2.png",
-          "images/hex_grass_3.png",
-          "images/iso_grass_1.png",
-          "images/iso_grass_2.png",
-          "images/iso_grass_3.png",
-          "images/towers/turret.png",
-          "images/towers/turret01.png",
-          "images/towers/turret_deployed.png",
-          "images/towers/fire_tower_atlas.png",
-          "images/towers/stun_tower.png",
-          "images/background/building2.png",
-          "images/mobs/robot.png",
-          "images/mobs/boss2.png",
-          "images/mobs/Attack_1.png",
-          "images/mobs/Attack_2.png",
-          "images/mobs/Charge_1.png",
-          "images/mobs/Charge_2.png",
-          "images/mobs/Dead.png",
-          "images/mobs/Enabling-5.png",
-          "images/mobs/satyr.png",
-          "images/mobs/Hurt.png",
-          "images/mobs/Idle.png",
-          "images/mobs/rangeBossRight.png",
-          "images/towers/wallTower.png",
-          "images/background/building2.png",
-          "images/iso_grass_3.png",
-          "images/terrain_use.png",
-          "images/Dusty_MoonBG.png",
-          "images/economy/scrap.png",
-          "images/economy/crystal.png",
-          "images/economy/econ-tower.png",
-          "images/projectiles/bossProjectile.png",
-          "images/towers/mine_tower.png",
-          "images/towers/TNTTower.png",
-          "images/towers/DroidTower.png",
-          "images/projectiles/basic_projectile.png",
-          "images/projectiles/mobProjectile.png",
-          "images/projectiles/engineer_projectile.png",
-          "images/projectiles/mobKing_projectile.png",
-          "images/projectiles/snow_ball.png",
-          "images/projectiles/burn_effect.png",
-          "images/projectiles/stun_effect.png",
-          "images/projectiles/firework_anim.png",
-          "images/projectiles/pierce_anim.png",
-          "images/projectiles/snow_ball.png"
-  };
-  private static final String[] forestTextureAtlases = {
-          "images/economy/econ-tower.atlas",
-          "images/terrain_iso_grass.atlas",
-          "images/ghost.atlas",
-          "images/mobs/boss2.atlas",
-          "images/ghostKing.atlas",
-          "images/towers/turret.atlas",
-          "images/towers/turret01.atlas",
-          "images/mobs/xenoGrunt.atlas",
-          "images/towers/fire_tower_atlas.atlas",
-          "images/towers/stun_tower.atlas",
-          "images/mobs/xenoGruntRunning.atlas",
-          "images/xenoGrunt.atlas",
-          "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas",
-          "images/towers/DroidTower.atlas",
-          "images/mobs/robot.atlas",
-          "images/mobs/rangeBossRight.atlas",
-          "images/towers/TNTTower.atlas",
-          "images/projectiles/basic_projectile.atlas",
-          "images/projectiles/bossProjectile.atlas",
-          "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/engineer_projectile.atlas",
-          "images/projectiles/mobKing_projectile.atlas",
-          "images/projectiles/snow_ball.atlas",
-          "images/projectiles/pierce_anim.atlas",
-          "images/projectiles/burn_effect.atlas",
-          "images/projectiles/firework_anim.atlas",
-          "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/stun_effect.atlas"
-  };
-  private static final String[] forestSounds = {
-          "sounds/Impact4.ogg",
-          "sounds/economy/click.wav",
-          "sounds/economy/click_1.wav",
-          "sounds/towers/gun_shot_trimmed.mp3",
-          "sounds/towers/deploy.mp3",
-          "sounds/towers/stow.mp3",
-          "sounds/engineers/firing_auto.mp3",
-          "sounds/engineers/firing_single.mp3",
-          "sounds/projectiles/on_collision.mp3",
-          "sounds/projectiles/explosion.mp3"
-  };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
-  private static final String[] forestMusic = {backgroundMusic};
-  
+
   private final TerrainFactory terrainFactory;
   
   private Entity player;
@@ -180,6 +72,9 @@ public class ForestGameArea extends GameArea {
   public ForestGameArea(TerrainFactory terrainFactory) {
     super();
     this.terrainFactory = terrainFactory;
+  }
+  public void setAssetLoader(AssetLoader assetLoader) {
+    this.assetLoader = assetLoader;
   }
 
   // Add this method to start the wave spawning timer when the game starts.
@@ -227,7 +122,7 @@ public class ForestGameArea extends GameArea {
   @Override
   public void create() {
     // Load game assets
-    loadAssets();
+    loadAllAssets();
     displayUI();
     spawnTerrain();
     
@@ -654,27 +549,15 @@ public class ForestGameArea extends GameArea {
     music.play();
   }
   
-  private void loadAssets() {
-    logger.debug("Loading assets");
-    ResourceService resourceService = ServiceLocator.getResourceService();
-    resourceService.loadTextures(forestTextures);
-    resourceService.loadTextureAtlases(forestTextureAtlases);
-    resourceService.loadSounds(forestSounds);
-    resourceService.loadMusic(forestMusic);
-    
-    while (!resourceService.loadForMillis(10)) {
-      // This could be upgraded to a loading screen
-      logger.info("Loading... {}%", resourceService.getProgress());
-    }
-  }
-  
+
+
   private void unloadAssets() {
     logger.debug("Unloading assets");
-    ResourceService resourceService = ServiceLocator.getResourceService();
-    resourceService.unloadAssets(forestTextures);
-    resourceService.unloadAssets(forestTextureAtlases);
-    resourceService.unloadAssets(forestSounds);
-    resourceService.unloadAssets(forestMusic);
+    if (assetLoader != null) {
+      AssetLoader.unloadAllAssets(); // Use the AssetLoader to unload assets if it's not null
+    } else {
+      logger.error("AssetLoader is not set. Cannot unload assets.");
+    }
   }
   
   @Override
