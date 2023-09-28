@@ -394,7 +394,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-<<<<<<< HEAD
      * Returns the closest human entity from a given array.
      * 
      * @param targets array of human entities
@@ -419,9 +418,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     /**
      * Change state to cleave and deals damage to target.
-=======
-     * Change state to cleave and deal damage to target
->>>>>>> AOE-Projectile
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);

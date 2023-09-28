@@ -6,6 +6,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
 import com.csse3200.game.components.bosses.PatrickAnimationController;
+import com.csse3200.game.components.bosses.IceBabyAnimationController;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.bosstask.*;
@@ -126,6 +127,27 @@ public class MobBossFactory {
         demon.scaleHeight(4f);
         demon.scaleWidth(4f);
         return demon;
+    }
+
+    public static Entity createIceBoss() {
+        Entity iceBaby = createBaseBoss();
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new IceBabyTask());
+
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/iceBaby.atlas", TextureAtlas.class));
+        animator.addAnimation("idle", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("1_atk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("2_atk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("2_atk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("intro_or_revive", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("stagger", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("walk", 0.2f, Animation.PlayMode.NORMAL);
+
+        iceBaby.addComponent(aiTaskComponent);
+        return iceBaby;
     }
 
     // Create Boss King 1
