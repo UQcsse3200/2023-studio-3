@@ -38,7 +38,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int Y_BOT_BOUNDARY = 1;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_RADIUS = 3;
-    private static final int MOVE_FORWARD_DELAY = 30;
+    private static final float MOVE_FORWARD_DELAY = 30;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
     private static final int CLEAVE_DAMAGE = 50;

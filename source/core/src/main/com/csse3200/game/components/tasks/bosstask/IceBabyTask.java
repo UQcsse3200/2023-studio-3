@@ -9,7 +9,6 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -18,12 +17,8 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-import net.dermetfan.gdx.physics.box2d.PositionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.Serial;
-import java.text.DecimalFormat;
 
 public class IceBabyTask extends DefaultTask implements PriorityTask {
     private static final int PRIORITY = 3;

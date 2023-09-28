@@ -95,7 +95,7 @@ public class SplitMoblings extends Component {
     // Inspired by:
     // https://stackoverflow.com/questions/37145768/distribute-points-evenly-on-circle-circumference-in-quadrants-i-and-iv-only
     for (int i = 0; i < amount; i++) {
-      float currAngle = (360 / amount) * i;
+      float currAngle = (float) (360 / amount) * i;
       double radians = currAngle * Math.PI / 180;
 
       float newX = entity.getPosition().x + (float) OFFSET_DISTANCE *
