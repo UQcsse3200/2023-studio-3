@@ -89,7 +89,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Hurt.png",
           "images/mobs/Idle.png",
           "images/mobs/rangeBossRight.png",
-          "images/towers/wallTower.png",
+          "images/towers/WallTower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/terrain_use.png",
@@ -256,17 +256,17 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
-    playMusic();
-    spawnXenoGrunts();
-    startWaveTimer();
-    spawnScrap();
-    spawnDeflectXenoGrunt(15, 5);
-    spawnSplittingXenoGrunt(15, 4);
-    spawnScrap();
-    spawnTNTTower();
-    spawnWeaponTower();
-    spawnGapScanners();
-    spawnDroidTower();
+//    playMusic();
+//    spawnXenoGrunts();
+//    startWaveTimer();
+//    spawnScrap();
+//    spawnDeflectXenoGrunt(15, 5);
+//    spawnSplittingXenoGrunt(15, 4);
+//    spawnScrap();
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    spawnGapScanners();
+//    spawnDroidTower();
 
   }
   
