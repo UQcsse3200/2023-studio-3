@@ -4,34 +4,30 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.npc.SplitMoblings;
-import com.csse3200.game.components.tasks.MobWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.events.listeners.EventListener0;
 import com.csse3200.game.extensions.GameExtension;
-import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
-import com.csse3200.game.physics.components.PhysicsComponent;
-import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
@@ -43,7 +39,6 @@ public class SplitMoblingsTest {
   private static final int BASE_Y_COORD = 3;
   private static final int BASE_AMOUNT = 5;
   private final String[] atlas = {
-      "images/mobs/xenoGrunt.atlas",
       "images/mobs/water_slime.atlas",
   };
 
@@ -75,6 +70,23 @@ public class SplitMoblingsTest {
   public void shouldNotBeNull() {
     Entity mob = createSplitMob(5);
     assertNotNull("Mobling components does not exists", mob.getComponent(SplitMoblings.class));
+  }
+
+  @Test
+  public void shouldHaveAsset() {
+    Entity projectile = createDummyProjectile();
+
+    baseMob.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+    projectile.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+
+    for (Entity entity : ServiceLocator.getEntityService().getEntities()) {
+      if (entity.equals(baseMob) || entity.equals(projectile))
+        continue;
+
+      assertTrue("moblings does not contain the right asset",
+          ServiceLocator.getResourceService().containsAsset(atlas[0], entity.getClass()));
+
+    }
   }
 
   @Test
@@ -112,7 +124,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotInvokeDieStartEventAfterDeath() {
+  public void shouldNotInvokeDieStartEventNoDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
 
     assertFalse("mob is dead when health is not 0", baseMob.getComponent(CombatStatsComponent.class).isDead());
@@ -165,6 +177,115 @@ public class SplitMoblingsTest {
         ServiceLocator.getEntityService().getEntities().size);
   }
 
+  @Test
+  public void shouldSpawnWithinRangeAmountOne() {
+    Entity mob = createSplitMob(1);
+    Entity projectile = createDummyProjectile();
+
+    mob.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+    projectile.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+
+    triggerCollision(mob, projectile);
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    // Should spawn with a default offset distance to the left.
+    Entity mobling = ServiceLocator.getEntityService().getEntityAtPosition(
+        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE, SplitMoblings.MIN_Y_BOUNDS + 2);
+
+    assertNotNull("spawned mobling was not spawned at the correct position with a default amount of 1.", mobling);
+  }
+
+  @Test
+  public void shouldSpawnWithinRangeMultipleAmount() {
+    Entity projectile = createDummyProjectile();
+    Entity mobThree = createSplitMob(3);
+    Entity mobSeven = createSplitMob(7);
+
+    ArrayList<Entity> initialEntities = new ArrayList<Entity>(
+        Arrays.asList(mobThree, baseMob, mobSeven, projectile));
+
+    int nearbyEntities = ServiceLocator.getEntityService().getNearbyEntities(projectile,
+        (float) SplitMoblings.OFFSET_DISTANCE).size;
+
+    // assertEquals(1, nearbyEntities);
+
+    for (Entity entity : initialEntities) {
+      entity.setPosition(
+          SplitMoblings.MIN_X_BOUNDS + 5, SplitMoblings.MIN_Y_BOUNDS + 5);
+    }
+
+    projectile.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+
+    for (Entity entity : initialEntities.subList(0, initialEntities.size() - 1)) {
+      triggerCollision(entity, projectile);
+    }
+
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    assertEquals("incorrect number of moblings spawned within range", nearbyEntities + 3 + 5 + 7,
+        ServiceLocator.getEntityService().getNearbyEntities(projectile,
+
+            // 0.2f is delta float consideration
+            (float) SplitMoblings.OFFSET_DISTANCE + 0.2f).size);
+  }
+
+  @Test
+  public void shouldScaleBasedOnParamsSingleAmt() {
+    float scale = 1.5f;
+    Entity mob = createSplitMob(1, scale);
+    Entity projectile = createDummyProjectile();
+
+    float initialScaleX = mob.getScale().x;
+    float initialScaleY = mob.getScale().y;
+
+    mob.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+    projectile.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
+
+    triggerCollision(mob, projectile);
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    Entity mobling = ServiceLocator.getEntityService().getEntityAtPosition(
+        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE, SplitMoblings.MIN_Y_BOUNDS + 2);
+
+    assertEquals("Scaling X does not match based on params (1.5f)", initialScaleX * scale, mobling.getScale().x, 0.1);
+    assertEquals("Scaling Y does not match based on params (1.5f)", initialScaleY * scale, mobling.getScale().y, 0.1);
+  }
+
+  @Test
+  public void shouldScaleXAndYbasedOnParamsMultiAmt() {
+    float scaleX = 0.5f;
+    float scaleY = 1.75f;
+    Entity mob = createSplitMob(5, scaleX, scaleY);
+    Entity projectile = createDummyProjectile();
+
+    float initialScaleX = mob.getScale().x;
+    float initialScaleY = mob.getScale().y;
+
+    mob.setPosition(SplitMoblings.MIN_X_BOUNDS + 3, SplitMoblings.MIN_Y_BOUNDS + 3);
+    projectile.setPosition(SplitMoblings.MIN_X_BOUNDS + 3, SplitMoblings.MIN_Y_BOUNDS + 3);
+
+    triggerCollision(mob, projectile);
+    ServiceLocator.getPhysicsService().getPhysics().update();
+    ServiceLocator.getEntityService().update();
+
+    for (Entity mobling : ServiceLocator.getEntityService().getNearbyEntities(mob,
+        (float) SplitMoblings.OFFSET_DISTANCE + 0.5f)) {
+      if (mobling.equals(projectile))
+        continue;
+
+      assertEquals("Scaling X does not match based on params (0.5f)", initialScaleX
+          * scaleX, mobling.getScale().x,
+          0.1);
+
+      assertEquals("Scaling Y does not match based on params (1.75f)", initialScaleY * scaleY, mobling.getScale().y,
+          0.1);
+    }
+  }
+
   Entity createSplitMob(int amount) {
     Entity mob = NPCFactory.createRangedBaseNPC();
     mob.addComponent(new CombatStatsComponent(10, 10));
@@ -173,16 +294,18 @@ public class SplitMoblingsTest {
     return mob;
   }
 
-  Entity createSplitMob(int amount, int scale) {
+  Entity createSplitMob(int amount, float scale) {
     Entity mob = NPCFactory.createRangedBaseNPC();
     mob.addComponent(new SplitMoblings(amount, scale));
+    mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;
   }
 
-  Entity createSplitMob(int amount, int scaleX, int scaleY) {
+  Entity createSplitMob(int amount, float scaleX, float scaleY) {
     Entity mob = NPCFactory.createRangedBaseNPC();
     mob.addComponent(new SplitMoblings(amount, scaleX, scaleY));
+    mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;
   }
