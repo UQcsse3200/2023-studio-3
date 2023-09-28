@@ -22,6 +22,7 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameLoseDisplay;
+import com.csse3200.game.components.maingame.UIElementsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.PlayerFactory;
@@ -200,6 +201,7 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new PerformanceDisplay())
         .addComponent(new MainGameActions(this.game))
         .addComponent(new MainGameExitDisplay())
+            .addComponent(new UIElementsDisplay())
             .addComponent(new MainGameLoseDisplay())
         .addComponent(new Terminal())
         .addComponent(inputComponent)
