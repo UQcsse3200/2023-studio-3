@@ -221,7 +221,7 @@ public class MobBossFactory {
     }
 
     // Create the base boss entity
-    private static Entity createBaseBoss() {
+    public static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
                 .addComponent(new ColliderComponent())
