@@ -28,6 +28,8 @@ public class MobBossFactory {
     private static final int DEMON_HEALTH = 5000;
     private static final int DEMON_ATTACK = 0;
     private static final int PATRICK_ATTACK = 0;
+    private static final int ICEBABY_ATTACK = 0;
+    private static final int ICEBABY_HEALTH = 3000;
 
     // Create Demon Boss
     public static Entity createDemonBoss() {
@@ -147,6 +149,17 @@ public class MobBossFactory {
         animator.addAnimation("walk", 0.2f, Animation.PlayMode.NORMAL);
 
         iceBaby.addComponent(aiTaskComponent);
+
+        iceBaby
+                .addComponent(animator)
+                .addComponent(new IceBabyAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(ICEBABY_HEALTH, ICEBABY_ATTACK));
+
+        iceBaby.getComponent(AnimationRenderComponent.class).scaleEntity();
+        iceBaby.scaleHeight(4f);
+        iceBaby.scaleWidth(4f);
+
         return iceBaby;
     }
 

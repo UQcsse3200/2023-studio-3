@@ -220,15 +220,19 @@ public class ForestGameArea extends GameArea {
       case 2:
       spawnWaterQueen();
       spawnWaterSlime();
+      spawnIceBaby();
+      logger.info("Lol");
       
       break;
       case 3:
+        logger.info("Lol");
       spawnWizard();
       // spawnDragonKnight();
       spawnSkeleton();
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
+        logger.info("Lol");
       spawnFireWorm();
       spawnDragonKnight();
         // mobBoss2 = spawnMobBoss2();
@@ -257,17 +261,21 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
+    logger.info("Lol");
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
     startWaveTimer();
     spawnScrap();
+    logger.info("Lol");
     // spawnDeflectXenoGrunt(15, 5);
     // spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
+    logger.info("Lol");
     spawnGapScanners();
     spawnDroidTower();
+    logger.info("Lol");
   }
   
   private void displayUI() {
@@ -411,6 +419,11 @@ public class ForestGameArea extends GameArea {
   private void spawnPatrick() {
     Entity patrick = MobBossFactory.createPatrickBoss(2500);
     spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+  }
+
+  private void spawnIceBaby() {
+    Entity iceBaby = MobBossFactory.createIceBoss();
+    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
   }
 
   private Entity spawnMobBoss1() {
