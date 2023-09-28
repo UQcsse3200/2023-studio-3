@@ -40,8 +40,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.globalTime = ServiceLocator.getTimeSource();
     this.waveInProgress = false;
     loadSounds();
-    //this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);
-    //this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);
+    this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);
+    this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);
   }
 
   /**
@@ -74,7 +74,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
     logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
-    // this.waveStart.play();
+    this.waveStart.play();
     // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
