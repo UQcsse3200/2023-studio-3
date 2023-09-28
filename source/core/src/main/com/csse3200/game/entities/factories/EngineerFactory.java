@@ -51,7 +51,7 @@ public class EngineerFactory {
     BaseEntityConfig config = configs.engineer;
     
     AITaskComponent aiComponent = new AITaskComponent();
-    AnimationRenderComponent animator = createAnimationRenderComponent();
+    AnimationRenderComponent animator = createAnimationRenderComponent(false);
     
     engineer
             .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -65,9 +65,11 @@ public class EngineerFactory {
     return engineer;
   }
   
-  private static AnimationRenderComponent createAnimationRenderComponent() {
+  public static AnimationRenderComponent createAnimationRenderComponent(boolean isClicked) {
+    String atlasPath = isClicked ? "images/engineers/engineer_outline.atlas"
+            : "images/engineers/engineer.atlas";
     AnimationRenderComponent animator = new AnimationRenderComponent(
-            new TextureAtlas("images/engineers/engineer.atlas"));
+            new TextureAtlas(atlasPath));
     animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_prep", 0.2f, Animation.PlayMode.LOOP);

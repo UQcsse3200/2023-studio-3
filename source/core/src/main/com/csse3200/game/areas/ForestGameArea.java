@@ -256,6 +256,10 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
     player.getEvents().addListener("spawnWave", this::spawnWave);
+
+    Entity engineer = EngineerFactory.createEngineer();
+    spawnEntityAt(engineer, new GridPoint2(2, 4), true, true);
+
 //    playMusic();
 //    spawnXenoGrunts();
 //    startWaveTimer();
