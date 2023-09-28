@@ -56,6 +56,7 @@ public class MainMenuScreen extends ScreenAdapter {
   private int MM_Planet2_frameHeight;
   private int MM_Planet3_frameWidth;
   private int MM_Planet3_frameHeight;
+
 //  private int MM_MonitorFace1_frameWidth;
 //  private int MM_MonitorFace1_frameHeight;
   private static final String[] mainMenuTextures = {"images/background/main_menu/main_menu_bg.png"};
