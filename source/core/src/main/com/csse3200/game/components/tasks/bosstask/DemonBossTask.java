@@ -284,7 +284,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Returns a a random position 3 units away for the demon to jump to.
+     * Returns a random position 3 units away for the demon to jump to.
      * 
      * @return a position 3 units away from the demon to jump to
      */

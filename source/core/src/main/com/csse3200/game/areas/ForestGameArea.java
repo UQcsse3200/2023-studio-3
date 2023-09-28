@@ -262,14 +262,15 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
     logger.info("Lol");
-    player.getEvents().addListener("spawnWave", this::spawnWave);
-    playMusic();
-    startWaveTimer();
-    spawnScrap();
-    logger.info("Lol");
-    // spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
-    spawnScrap();
+    spawnIceBaby();
+//    player.getEvents().addListener("spawnWave", this::spawnWave);
+//    playMusic();
+//    startWaveTimer();
+//    spawnScrap();
+//    logger.info("Lol");
+//    // spawnDeflectXenoGrunt(15, 5);
+//    // spawnSplittingXenoGrunt(15, 4);
+//    spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
     logger.info("Lol");
