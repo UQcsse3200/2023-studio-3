@@ -268,11 +268,11 @@ public class ForestGameArea extends GameArea {
 
   //  spawnDragonKnight();
     // spawnFireWorm(19, 5); // * TEMPORARY for testing
-//    spawnFireTowerTowerAt(3, 1);
-//    spawnFireTowerTowerAt(3, 2);
-//    spawnFireTowerTowerAt(3, 3);
-//    spawnFireTowerTowerAt(3, 4);
-//    spawnFireTowerTowerAt(3, 5);
+    spawnFireTowerTowerAt(3, 1);
+    spawnFireTowerTowerAt(3, 2);
+    spawnFireTowerTowerAt(3, 3);
+    spawnFireTowerTowerAt(3, 4);
+    spawnFireTowerTowerAt(3, 5);
 //    spawnDroidTowerAt(3, 1);
 //    spawnDroidTowerAt(3, 2);
 //    spawnDroidTowerAt(3, 3);
@@ -283,21 +283,19 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
-//     spawnDemonBoss();
+     spawnDemonBoss();
      spawnPatrick();
 //     spawnPatrickDeath();
   //  spawnFireWorm();
 
-    //mobBoss1 = spawnMobBoss1();
   //  startWaveTimer();
 ////    spawnIncome();
 //    spawnScrap();
-//    spawnTNTTower();
+    spawnTNTTower();
 //
 //    spawnGapScanners();
 //    spawnDroidTower();
 //
-//    mobBoss2 = spawnMobBoss2();
 
   }
   

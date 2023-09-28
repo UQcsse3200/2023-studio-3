@@ -125,7 +125,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
-        System.out.println(health);
 
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
