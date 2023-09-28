@@ -25,6 +25,7 @@ public class SplitMoblings extends Component {
   public static final float MAX_X_BOUNDS = (float) 18.5;
   public static final float MIN_Y_BOUNDS = 0;
   public static final float MAX_Y_BOUNDS = 8;
+  public static final String DIE_START_EVENT = "dieStart";
 
   /**
    * Initialises a component that splits mob into multiple moblings. Amount of
@@ -71,7 +72,7 @@ public class SplitMoblings extends Component {
 
   @Override
   public void create() {
-    entity.getEvents().addListener("dieStart", this::onDeath);
+    entity.getEvents().addListener(DIE_START_EVENT, this::onDeath);
   }
 
   /**
@@ -119,12 +120,12 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY, float initialScaleX, float initialScaleY) {
     // ? ENTITY PARAM KINDA USELESS?
-    Entity xenoGrunt = NPCFactory.createXenoGrunt();
-    xenoGrunt.setPosition(positionX, positionY);
+    Entity waterSlime = NPCFactory.createBaseWaterSlime();
+    waterSlime.setPosition(positionX, positionY);
 
-    xenoGrunt.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
 
-    ServiceLocator.getEntityService().register(xenoGrunt);
+    ServiceLocator.getEntityService().register(waterSlime);
   }
 
   /**
