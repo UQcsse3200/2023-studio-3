@@ -50,19 +50,8 @@ public class EngineerFactory {
     Entity engineer = createBaseHumanNPC();
     BaseEntityConfig config = configs.engineer;
     
-    AnimationRenderComponent animator = new AnimationRenderComponent(
-            new TextureAtlas("images/engineers/engineer.atlas"));
-    animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("walk_prep", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("idle_right", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("firing_auto", 0.05f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("firing_single", 0.05f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("prep", 0.05f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
-    animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
-    
     AITaskComponent aiComponent = new AITaskComponent();
+    AnimationRenderComponent animator = createAnimationRenderComponent();
     
     engineer
             .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -74,6 +63,21 @@ public class EngineerFactory {
     engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
     engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
     return engineer;
+  }
+  
+  private static AnimationRenderComponent createAnimationRenderComponent() {
+    AnimationRenderComponent animator = new AnimationRenderComponent(
+            new TextureAtlas("images/engineers/engineer.atlas"));
+    animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("walk_prep", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("idle_right", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("firing_auto", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("firing_single", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("prep", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
+    return animator;
   }
   
   /**
