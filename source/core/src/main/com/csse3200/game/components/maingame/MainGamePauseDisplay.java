@@ -19,12 +19,11 @@ public class MainGamePauseDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGamePauseDisplay.class);
     private static final float Z_INDEX = 2f;
     private Table table;
-    private GdxGame game;
-    private Entity waveSpawner;
 
-    public MainGamePauseDisplay(GdxGame screenSwitchHandle, Entity waveSpawner) {
+    private GdxGame game;
+
+    public MainGamePauseDisplay(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
-        this.waveSpawner = waveSpawner;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class MainGamePauseDisplay extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Pause button clicked");
-                        PauseMenuFactory.createPauseMenu(game, waveSpawner);
+                        PauseMenuFactory.createPauseMenu(game);
                     }
                 });
 

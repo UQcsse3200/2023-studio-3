@@ -202,10 +202,7 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new MainGameActions(this.game))
             .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
-            // WHERE'S THE WAVE SPAWNER, HOW IS THIS GAME FUNCTIONING WHEN IT DOESN'T EVEN MAKE A WAVE SPAWNER
-            // I'm told there's a new entity for the SpawnWaveTask, maybe it'll actually be accessible in this class.
-            // fyi there REALLY shouldn't be a null arg, but I need to push this before I can fix the issue.
-            .addComponent(new MainGamePauseDisplay(this.game, null))
+            .addComponent(new MainGamePauseDisplay(this.game))
             .addComponent(new Terminal())
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());

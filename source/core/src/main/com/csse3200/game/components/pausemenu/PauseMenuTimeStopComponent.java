@@ -11,14 +11,7 @@ import com.csse3200.game.services.ServiceLocator;
 public class PauseMenuTimeStopComponent extends Component {
 
     private Array<Entity> freezeList;
-    private Entity waveSpawner;
-
-    /**
-     * Initialises the component.
-     * @param waveSpawner The entity that controls the wave spawning timer.
-     */
-    public PauseMenuTimeStopComponent(Entity waveSpawner) {
-        this.waveSpawner = waveSpawner;
+    public PauseMenuTimeStopComponent() {
     }
 
     /**
@@ -26,7 +19,6 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void create() {
-        waveSpawner.getEvents().trigger("toggleWaveTimer");
         freezeList = ServiceLocator.getEntityService().getEntities();
         for (Entity pauseTarget : freezeList) {
             if (pauseTarget.getId() != getEntity().getId()) {
@@ -41,7 +33,6 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void dispose() {
-        waveSpawner.getEvents().trigger("toggleWaveTimer");
         for (Entity pauseTarget : freezeList) {
                 pauseTarget.setEnabled(true);
         }
