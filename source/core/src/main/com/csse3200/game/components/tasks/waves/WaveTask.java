@@ -1,10 +1,12 @@
 package com.csse3200.game.components.tasks.waves;
 
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,10 +25,26 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   private final float INITIAL_WAIT_INTERVAL = 10;
   private final int SPAWNING_INTERVAL = 10;
 
+  private static final String[] waveSounds = {
+          "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+          "sounds/waves/wave-end/Wave_Over_01.ogg"
+  };
+
+  private Sound waveStart;
+  private Sound waveEnd;
+
   public WaveTask() {
     this.globalTime = ServiceLocator.getTimeSource();
     this.currentWaveIndex = 0;
     this.waveInProgress = false;
+    loadSounds();
+    this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);
+    this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);
+  }
+
+  public void loadSounds() {
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.loadSounds(waveSounds);
   }
 
   @Override
@@ -43,6 +61,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
     logger.info("Wave {} starting", currentWaveIndex);
+    this.waveStart.play();
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
