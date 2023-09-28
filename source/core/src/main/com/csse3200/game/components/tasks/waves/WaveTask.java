@@ -23,17 +23,28 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   private final float INITIAL_WAIT_INTERVAL = 10;
   private final int SPAWNING_INTERVAL = 10;
 
+  /**
+   * Constructor for the WaveTask
+   */
   public WaveTask() {
     this.globalTime = ServiceLocator.getTimeSource();
     this.currentWaveIndex = 0;
     this.waveInProgress = false;
   }
 
+  /**
+   * Gets the priority of the current task
+   * @return priority of the WaveTask
+   */
   @Override
   public int getPriority() {
     return 10; // High priority task
   }
 
+  /**
+   * Starts the WaveTask and initialises all relevant attributes.
+   * Sets the current count of enmies to be the size of the current wave.
+   */
   @Override
   public void start() {
     super.start();
@@ -42,13 +53,20 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.level = (LevelWaves) this.owner.getEntity();
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-    logger.info("Wave {} starting", currentWaveIndex);
+    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount);
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
+  /**
+   * Checks if the current wave has finished (i.e. number of mobs left is 0) and calls the next wave
+   * to begin. If there are still mobs remaining, continue the wave.
+   */
   @Override
   public void update() {
     if (ServiceLocator.getWaveService().getEnemyCount() == 0) {
+      // TODO: Implement the level completed, when the number of mobs left is 0, and no more waves to
+      // spawn - level is completed.
+
       this.waveInProgress = true;
       logger.info("No enemies remaining, begin next wave");
       currentWaveIndex++;

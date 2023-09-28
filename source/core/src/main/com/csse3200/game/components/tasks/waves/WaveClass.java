@@ -16,12 +16,20 @@ public class WaveClass {
   private Random rand = new Random();
   private int mobIndex;
 
+  /**
+   * Constructor for the WaveClass
+   * @param entities: HashMap of entities and the quantity of them to be spawned in this wave
+   */
   public WaveClass(HashMap<String, Integer> entities) {
     this.entities = entities;
     this.wave = entitiesToWave();
     this.mobIndex = 0;
   }
 
+  /**
+   *
+   * @return
+   */
   private List<String> entitiesToWave() {
     List<String> enemies = new ArrayList<>();
     for (Map.Entry<String, Integer> set : entities.entrySet()) {
@@ -33,10 +41,18 @@ public class WaveClass {
     return enemies;
   }
 
+  /**
+   * Gets the current number of entities spawned in the wave
+   * @return size of the current wave (number of entities)
+   */
   public int getSize() {
     return this.wave.size();
   }
 
+  /**
+   * Gets the current entities that have spawned in the wave
+   * @return list of mobs in the current wave
+   */
   public List<String> getMobs() {
     return this.wave;
   }

@@ -192,7 +192,9 @@ public class ForestGameArea extends GameArea {
     this.terrainFactory = terrainFactory;
   }
 
-  // Add this method to start the wave spawning timer when the game starts.
+  /**
+   * Add this method to start the wave spawning timer when the game starts.
+   */
   private void startWaveTimer() {
     waveTimer = new Timer();
     waveTimer.scheduleAtFixedRate(new TimerTask() {
@@ -203,7 +205,9 @@ public class ForestGameArea extends GameArea {
     }, 0, 10000); // 10000 milliseconds = 10 seconds
   }
 
-  // Add this method to stop the wave timer when the game ends or as needed.
+  /**
+   * Add this method to stop the wave timer when the game ends or as needed.
+   */
   private void stopWaveTimer() {
     if (waveTimer != null) {
       waveTimer.cancel();
@@ -211,6 +215,9 @@ public class ForestGameArea extends GameArea {
     }
   }
 
+  /**
+   * Cases to spawn a wave
+   */
   private void spawnWave() {
     wave++;
     switch (wave) {
