@@ -222,7 +222,6 @@ public class ForestGameArea extends GameArea {
       break;
       case 3:
       spawnWizard();
-      // spawnDragonKnight();
       spawnSkeleton();
       // mobBoss2 = spawnMobBoss2();
       break;

@@ -217,7 +217,7 @@ public class NPCFactory {
                     ServiceLocator.getResourceService().getAsset("images/mobs/water_slime.atlas", TextureAtlas.class));
     animator.addAnimation("water_slime_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_slime_attack", 0.1f);
-    animator.addAnimation("water_slime_death", 0.1f);
+    animator.addAnimation("water_slime_death", 0.2f);
     animator.addAnimation("default", 0.1f);
     waterSlime
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
