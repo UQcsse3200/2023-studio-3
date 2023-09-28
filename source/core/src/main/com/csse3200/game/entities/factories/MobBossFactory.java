@@ -159,63 +159,6 @@ public class MobBossFactory {
         return patrick;
     }
 
-    // Create Boss King 1
-    public static Entity createMobBoss1(int numLane) {
-        MobBossConfigs config = configs.mobBoss;
-        Entity mobBoss1 = createBaseBoss();
-
-        AITaskComponent aiTaskComponent1 = new AITaskComponent()
-                .addTask(new FinalBossMovementTask(1f, numLane))
-                .addTask(new MobBossDeathTask(1));;
-
-        // Animation section
-        AnimationRenderComponent animator1 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
-        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP_REVERSED);
-
-        mobBoss1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator1)
-                .addComponent(aiTaskComponent1)
-                .addComponent(new Boss1AnimationController());
-
-        mobBoss1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        mobBoss1.setScale(1f, 1f);
-
-        return mobBoss1;
-    }
-
-    // Create Boss King 2
-    public static Entity createMobBoss2() {
-        MobBossConfigs config = configs.mobBoss;
-        Entity mobBoss2 = createBaseBoss();
-
-        AITaskComponent aiTaskComponent2 = new AITaskComponent()
-                .addTask(new RangeBossTask(2f));
-
-        // Animation section
-        AnimationRenderComponent animator2 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/boss2.atlas", TextureAtlas.class));
-        animator2.addAnimation("boss_death", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Idle", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Charging", 0.3f, Animation.PlayMode.LOOP_REVERSED);
-        animator2.addAnimation("A1", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("A2", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Hurt", 0.3f, Animation.PlayMode.LOOP);
-
-        mobBoss2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator2)
-                .addComponent(aiTaskComponent2)
-                .addComponent(new Boss2AnimationController())
-                .addComponent(new PhysicsComponent());
-
-        mobBoss2.getComponent(AnimationRenderComponent.class).scaleEntity();
-        mobBoss2.scaleHeight(3f);
-        mobBoss2.scaleWidth(3f);
-
-        return mobBoss2;
-    }
-
     // Create the base boss entity
     private static Entity createBaseBoss() {
         Entity boss = new Entity()
