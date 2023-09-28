@@ -13,7 +13,7 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -29,7 +29,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_MOBBOSS2=3;
   private static final int NUM_MOBBOSS1=1;
 
-  private Random random = new Random();
+  private SecureRandom rand = new SecureRandom();
 
   private int wave = 0;
   private Timer waveTimer;
@@ -424,7 +424,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private Entity spawnMobBoss1() {
-    int[] pickedLanes = random.ints(0, 8)
+    int[] pickedLanes = rand.ints(0, 8)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_MOBBOSS1; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -482,7 +482,7 @@ public class ForestGameArea extends GameArea {
   }  
   
   private void spawnXenoGrunts() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -517,7 +517,7 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnFireWorm() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -528,7 +528,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnSkeleton() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -539,7 +539,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDragonKnight() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -550,7 +550,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWizard() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -561,7 +561,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterQueen() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -572,7 +572,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterSlime() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
