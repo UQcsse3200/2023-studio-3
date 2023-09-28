@@ -62,7 +62,7 @@ public class LavaGameScreen extends ScreenAdapter {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, viewportWidth, viewportHeight);
-        camera.position.set((float) (viewportWidth / 2), (float) (viewportHeight / 2), 0);
+        camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
         batch = new SpriteBatch();
 

@@ -1,23 +1,17 @@
 package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
-import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
-import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
@@ -567,7 +561,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnSkeleton() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = random.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -589,7 +583,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWizard() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = random.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -600,7 +594,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterQueen() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = random.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -611,7 +605,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterSlime() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = random.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -708,7 +702,7 @@ public class ForestGameArea extends GameArea {
    *
    * @param position    The position of the Entity that's shooting the projectile.
    * @param targetLayer The enemy layer of the "shooter".
-   * @param direction   The direction the projectile should head towards.
+   * @param direction   The direction the projectile should towards.
    * @param speed       The speed of the projectiles.
    * @param amount      The amount of projectiles appearing after collision.
    */
