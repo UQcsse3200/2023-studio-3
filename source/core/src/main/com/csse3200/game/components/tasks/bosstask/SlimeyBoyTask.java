@@ -31,10 +31,16 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     private SlimeState prevState;
     private Entity targetEntity;
 
+    /**
+     * States that the slime cycles through
+     */
     private enum SlimeState {
         IDLE, MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, TAKE_HIT, TRANSFORM
     }
 
+    /**
+     * What is called when task is assigned
+     */
     @Override
     public void start() {
         super.start();
@@ -45,6 +51,9 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         changeState(SlimeState.TRANSFORM);
     }
 
+    /**
+     * What is run every frame update
+     */
     @Override
     public void update() {
         animate();
@@ -146,6 +155,9 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * @return priority of class
+     */
     @Override
     public int getPriority() {
         return PRIORITY;
