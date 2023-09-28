@@ -268,11 +268,11 @@ public class ForestGameArea extends GameArea {
 
   //  spawnDragonKnight();
     // spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnFireTowerTowerAt(3, 1);
-    spawnFireTowerTowerAt(3, 2);
-    spawnFireTowerTowerAt(3, 3);
-    spawnFireTowerTowerAt(3, 4);
-    spawnFireTowerTowerAt(3, 5);
+//    spawnFireTowerTowerAt(3, 1);
+//    spawnFireTowerTowerAt(3, 2);
+//    spawnFireTowerTowerAt(3, 3);
+//    spawnFireTowerTowerAt(3, 4);
+//    spawnFireTowerTowerAt(3, 5);
 //    spawnDroidTowerAt(3, 1);
 //    spawnDroidTowerAt(3, 2);
 //    spawnDroidTowerAt(3, 3);
@@ -436,7 +436,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnPatrick() {
-    Entity patrick = MobBossFactory.createPatrickBoss(2500);
+    Entity patrick = MobBossFactory.createPatrickBoss();
     spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
   }
 

@@ -19,6 +19,9 @@ import com.csse3200.game.physics.components.*;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
+/**
+ * Where all entities of mob bosses are created
+ */
 public class MobBossFactory {
 
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
@@ -27,8 +30,12 @@ public class MobBossFactory {
     private static final int DEMON_HEALTH = 5000;
     private static final int DEMON_ATTACK = 0;
     private static final int PATRICK_ATTACK = 0;
+    private static final int PATRICK_HEALTH = 2500;
 
-    // Create Demon Boss
+    /**
+     * Creates the demon boss
+     * @return demon boss entity
+     */
     public static Entity createDemonBoss() {
         Entity demon = createBaseBoss();
 
@@ -64,6 +71,10 @@ public class MobBossFactory {
         return demon;
     }
 
+    /**
+     * Creates slime that is spawned after demon boss dies
+     * @return slime entity
+     */
     public static Entity createSlimeyBoy() {
         Entity slimeyBoy = createBaseBoss();
 
@@ -96,7 +107,11 @@ public class MobBossFactory {
         return slimeyBoy;
     }
 
-    public static Entity createPatrickBoss(int health) {
+    /**
+     * Creates the patrick boss
+     * @return patrick boss entity
+     */
+    public static Entity createPatrickBoss() {
         Entity patrick = createBaseBoss();
 
         // Animation addition
@@ -119,7 +134,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));
+                .addComponent(new CombatStatsComponent(PATRICK_HEALTH, PATRICK_ATTACK));
 
         // Scale demon
         patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -128,10 +143,9 @@ public class MobBossFactory {
         return patrick;
     }
 
-    /*
-     Patrick death: cant figure out how to get another animation because
-     APPEAR uses "patrick_death" REVERSED. So creating a new animator to be
-     able to use his death animation
+    /**
+     * Creates a patrick entity whose sole purpose is to display death animation
+     * @return patrick death entity
      */
     public static Entity patrickDead() {
         Entity patrick = createBaseBoss();
@@ -159,7 +173,10 @@ public class MobBossFactory {
         return patrick;
     }
 
-    // Create the base boss entity
+    /**
+     * Create base boss entity that all boss mobs will inherit
+     * @return base mob boss entity
+     */
     private static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
@@ -173,6 +190,9 @@ public class MobBossFactory {
         return boss;
     }
 
+    /**
+     * Throw IllegalStateException
+     */
     private MobBossFactory() {
         throw new IllegalStateException("Instantiating static util class");
     }

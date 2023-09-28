@@ -12,7 +12,11 @@ import com.csse3200.game.services.ServiceLocator;
 public class PatrickDeathTask extends DefaultTask implements PriorityTask {
 
     private boolean startFlag = false;
+    private static final int PRIORITY = 3;
 
+    /**
+     * What is run when patrick's death task is assigned
+     */
     @Override
     public void start() {
         super.start();
@@ -20,6 +24,9 @@ public class PatrickDeathTask extends DefaultTask implements PriorityTask {
         owner.getEntity().getEvents().trigger("patrick_death");
     }
 
+    /**
+     * What is run every frame
+     */
     @Override
     public void update() {
         if (startFlag && owner.getEntity().getComponent(AnimationRenderComponent.class).
@@ -28,8 +35,11 @@ public class PatrickDeathTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * @return priority of task
+     */
     @Override
     public int getPriority() {
-        return 3;
+        return PRIORITY;
     }
 }

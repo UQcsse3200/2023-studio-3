@@ -276,8 +276,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Returns a a random position 3 units away for the demon to jump to.
-     * 
+     * Returns a random position 3 units away for the demon to jump to.
      * @return a position 3 units away from the demon to jump to
      */
     private Vector2 getJumpPos() {
@@ -314,7 +313,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     /**
      * Returns a boolean to confirm whether the demon has completed a jump or not.
-     * 
+     *
      * @return if demon has completed jump or not
      */
     private boolean jumpComplete() {
@@ -392,34 +391,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-<<<<<<< HEAD
-     * Returns the closest human entity from a given array.
-     * 
-     * @param targets array of human entities
-     * @return closest human entity
-     */
-    private Entity getClosestHuman(Array<Entity> targets) {
-        Entity closestEntity = null;
-        float closestDistance = SMASH_RADIUS;
-
-        for (int i = 0; i < targets.size; i++) {
-            Entity targetEntity = targets.get(i);
-            Vector2 targetPosition = targetEntity.getPosition();
-            float distance = currentPos.dst(targetPosition);
-
-            if (distance < closestDistance) {
-                closestEntity = targetEntity;
-                closestDistance = distance;
-            }
-        }
-        return closestEntity;
-    }
-
-    /**
-     * Change state to cleave and deals damage to target.
-=======
-     * Change state to cleave and deal damage to target
->>>>>>> AOE-Projectile
+     * Change state to cleave and deals damage to target
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
