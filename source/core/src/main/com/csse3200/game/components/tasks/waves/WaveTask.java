@@ -52,6 +52,14 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     resourceService.loadSounds(waveSounds);
   }
 
+    /**
+     * Get the sounds to be played when a wave starts or ends
+     * @return String array of sounds
+     */
+  public String[] getSounds() {
+    return waveSounds;
+  }
+
   /**
    * Gets the priority of the current task
    * @return priority of the WaveTask
@@ -90,6 +98,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       // Check if level has been completed - no more waves remaining
       if (currentWaveIndex == this.level.getNumWaves()) {
         logger.info("No waves remaining, level completed");
+        this.waveEnd.play();
         ServiceLocator.getWaveService().setLevelCompleted();
 
       } else {
