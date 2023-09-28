@@ -284,7 +284,8 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
 //     spawnDemonBoss();
-     spawnPatrick();
+//     spawnPatrick();
+     spawnPatrickDeath();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();
@@ -439,20 +440,10 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
   }
 
-  private Entity spawnMobBoss1() {
-    int[] pickedLanes = random.ints(0, 8)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_MOBBOSS1; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss1 = MobBossFactory.createMobBoss1(pickedLanes[i]);
-      spawnEntityAt(mobBoss1,
-              randomPos,
-              true,
-              false);
-    }
-    return mobBoss1;
+  private void spawnPatrickDeath() {
+    Entity patrickDeath = MobBossFactory.patrickDead();
+    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
   }
-
 
   /**
    * Spawns a projectile that only heads towards the enemies in its lane.
@@ -638,37 +629,6 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //
 //  }
-
-//  private Entity spawnMobBoss2() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_BOSS; i++) {
-//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-//      int randomY = MathUtils.random(0, maxPos.y);
-//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-//      mobBoss2 = MobBossFactory.createMobBoss2(player);
-//      spawnEntityAt(mobBoss2,
-//              randomPos,
-//              true,
-//              false);
-//    }
-//    return mobBoss2;
-//  }
-  
-  private Entity spawnMobBoss2() {
-    int[] pickedLanes = random.ints(0, 8)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_MOBBOSS2; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss2 = MobBossFactory.createMobBoss2();
-      spawnEntityAt(mobBoss2,
-              randomPos,
-              true,
-              false);
-    }
-    return mobBoss2;
-  }
   
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same
