@@ -47,7 +47,7 @@ public class ButtonFactory {
     /**
      * Creates a custom TextButton with the specified text and a custom image.
      *
-     * @param text           The text to display on the button.
+     * @param text            The text to display on the button.
      * @param customImagePath The path to the custom image for the button.
      * @return The created custom TextButton.
      */
@@ -70,8 +70,8 @@ public class ButtonFactory {
     /**
      * Creates a custom TextButton with the specified text and an image from a TextureAtlas.
      *
-     * @param text       The text to display on the button.
-     * @param atlasPath  The path to the TextureAtlas containing the button image.
+     * @param text      The text to display on the button.
+     * @param atlasPath The path to the TextureAtlas containing the button image.
      * @return The created custom TextButton.
      */
     public static TextButton createCustomButtonWithAtlas(String text, String atlasPath) {
@@ -80,9 +80,7 @@ public class ButtonFactory {
         Skin customSkin = new Skin(atlas);
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = customSkin.getFont("default"); // for custom font if specified in the atlas
-        style.up = customSkin.getDrawable("button"); // for the button drawable from the atlas
-
+        style.font = defaultSkin.getFont("default"); // Use the default font
         TextButton button = new TextButton(text, style);
         button.getLabel().setFontScale(0.8f); // Adjust text size
         button.pad(10f); // Adjust padding
