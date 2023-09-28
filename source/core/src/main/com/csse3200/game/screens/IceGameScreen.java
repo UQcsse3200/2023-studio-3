@@ -1,20 +1,13 @@
 package com.csse3200.game.screens;
 import com.badlogic.gdx.audio.Music;
-import  com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
@@ -22,10 +15,8 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
-import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
@@ -36,11 +27,9 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.services.*;
-import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
-import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +64,7 @@ public class IceGameScreen extends ScreenAdapter {
         this.game = game;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, viewportWidth, viewportHeight);
-        camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+        camera.position.set((float) (viewportWidth / 2), (float) (viewportHeight / 2), 0);
 
         batch = new SpriteBatch();
 

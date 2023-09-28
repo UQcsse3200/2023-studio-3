@@ -3,7 +3,6 @@ package com.csse3200.game.components.popupmenu;
 import com.csse3200.game.input.InputService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.events.EventHandler;
 import com.csse3200.game.events.listeners.EventListener0;
 import com.csse3200.game.extensions.GameExtension;
 import org.junit.jupiter.api.Test;

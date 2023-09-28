@@ -65,7 +65,7 @@ public class NPCFactoryTest {
         //playerTarget = PlayerFactory.createPlayer();
         //towerTarget = TowerFactory.createBaseTower();
         //engineerTarget = EngineerFactory.createEngineer();
-        xenoGrunt = NPCFactory.createXenoGrunt(playerTarget);
+        xenoGrunt = NPCFactory.createXenoGrunt();
     }
 
     @Test

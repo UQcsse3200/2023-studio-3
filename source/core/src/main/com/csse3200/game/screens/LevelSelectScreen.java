@@ -9,17 +9,12 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
-import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * The game screen where you can choose a planet to play on.
@@ -108,16 +103,17 @@ public class LevelSelectScreen extends ScreenAdapter {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
                     GameLevelData.setSelectedLevel(planet[4]);
-                    if (planet[4] == 0) {
-                        handleDesertPlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    } else if (planet[4] == 1) {
-                        handleIcePlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    } else if (planet[4] == 2) {
-                        handleLavaPlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    }
+                    game.setScreen(new TurretSelectionScreen(game));
+//                    if (planet[4] == 0) {
+//                        handleDesertPlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    } else if (planet[4] == 1) {
+//                        handleIcePlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    } else if (planet[4] == 2) {
+//                        handleLavaPlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    }
                 }
             }
         }
