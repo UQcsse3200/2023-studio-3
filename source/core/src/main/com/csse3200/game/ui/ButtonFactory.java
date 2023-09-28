@@ -22,11 +22,6 @@ public class ButtonFactory {
     private static Skin createDefaultSkin() {
         Skin skin = new Skin(Gdx.files.internal("configs/text.json"));
 
-        // Load the background image for the default button style
-        TextureRegionDrawable buttonBackground = new TextureRegionDrawable(
-                new TextureRegion(new Texture("images/ui/Button_Bg.png"))
-        );
-
         // Define the button style with the background image
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = skin.getFont("default");
