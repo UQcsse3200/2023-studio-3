@@ -168,7 +168,10 @@ public class ForestGameArea extends GameArea {
           "sounds/engineers/firing_auto.mp3",
           "sounds/engineers/firing_single.mp3",
           "sounds/projectiles/on_collision.mp3",
-          "sounds/projectiles/explosion.mp3"
+          "sounds/projectiles/explosion.mp3",
+          "sounds/mobBoss/iceBabySound.mp3",
+          "sounds/mobBoss/mobSpawnStomp.mp3",
+          "sounds/mobBoss/iceBabyAOE.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -263,20 +266,20 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     logger.info("Lol");
     spawnIceBaby();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
-    playMusic();
-    startWaveTimer();
-    spawnScrap();
-    logger.info("Lol");
-    // spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
-    spawnScrap();
-    spawnTNTTower();
-    spawnWeaponTower();
-    logger.info("Lol");
-    spawnGapScanners();
-    spawnDroidTower();
-    logger.info("Lol");
+//    player.getEvents().addListener("spawnWave", this::spawnWave);
+//    playMusic();
+//    startWaveTimer();
+//    spawnScrap();
+//    logger.info("Lol");
+//    // spawnDeflectXenoGrunt(15, 5);
+//    // spawnSplittingXenoGrunt(15, 4);
+//    spawnScrap();
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    logger.info("Lol");
+//    spawnGapScanners();
+//    spawnDroidTower();
+//    logger.info("Lol");
   }
   
   private void displayUI() {

@@ -2,6 +2,8 @@ package com.csse3200.game.components.bosses;
 
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.services.ServiceLocator;
 
 public class IceBabyAnimationController extends Component {
     AnimationRenderComponent animator;
@@ -28,6 +30,17 @@ public class IceBabyAnimationController extends Component {
     private static final String TAKEHIT = "startTake_hit";
     private static final String WALK = "startWalk";
 
+    /** Sound variables */
+    private static final String SPAWN_SOUND = "sounds/mobBoss/iceBabySound.mp3";
+    Sound spawnSound = ServiceLocator.getResourceService().getAsset(
+            SPAWN_SOUND, Sound.class);
+    private static final String MOB_SPAWN_SOUND = "sounds/mobBoss/mobSpawnStomp.mp3";
+    Sound mobSpawnSound = ServiceLocator.getResourceService().getAsset(
+            MOB_SPAWN_SOUND, Sound.class);
+    private static final String AOE_SOUND = "sounds/mobBoss/iceBabyAOE.mp3";
+    Sound AOESound = ServiceLocator.getResourceService().getAsset(
+            AOE_SOUND, Sound.class);
+
     @Override
     public void create() {
         super.create();
@@ -51,15 +64,22 @@ public class IceBabyAnimationController extends Component {
     }
     void animateATK2() {
         animator.startAnimation(ATK2_ANIM);
+        //volume does not work
+        mobSpawnSound.setVolume(1000, 5.5f);
+        mobSpawnSound.play();
     }
     void animateATK3() {
         animator.startAnimation(ATK3_ANIM);
+        AOESound.setVolume(1000, 5.5f);
+        AOESound.play();
     }
     void animateDeath() {
         animator.startAnimation(DEATH_ANIM);
     }
     void animateIntro() {
         animator.startAnimation(INTRO_ANIM);
+        spawnSound.setVolume(1000, 5.5f);
+        spawnSound.play();
     }
     void animateTakeHit() {
         animator.startAnimation(TAKEHIT_ANIM);
