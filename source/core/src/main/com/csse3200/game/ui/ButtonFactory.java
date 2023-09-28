@@ -1,7 +1,3 @@
-/**
- * The ButtonFactory class is responsible for creating different types of TextButtons
- * with customizable styles and properties for use in a LibGDX user interface.
- */
 package com.csse3200.game.ui;
 
 import com.badlogic.gdx.Gdx;
@@ -13,28 +9,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
- * This class provides methods for creating various types of TextButtons with different styles.
+ * This class provides static methods for creating various types of TextButtons with different styles.
  */
 public class ButtonFactory {
-    private Skin defaultSkin;
+    private static Skin defaultSkin;
 
-    /**
-     * Constructs a ButtonFactory and initializes the default skin.
-     */
-    public ButtonFactory() {
+    // Static initializer block to initialize the default skin
+    static {
         defaultSkin = createDefaultSkin();
     }
 
-    /**
-     * Creates a default skin for TextButtons using a JSON file for configuration.
-     *
-     * @return The default Skin object.
-     */
-    private Skin createDefaultSkin() {
+    private static Skin createDefaultSkin() {
         Skin skin = new Skin(Gdx.files.internal("configs/text.json"));
 
         // Load the background image for the default button style
-       TextureRegionDrawable buttonBackground = new TextureRegionDrawable(
+        TextureRegionDrawable buttonBackground = new TextureRegionDrawable(
                 new TextureRegion(new Texture("images/ui/Button_Bg.png"))
         );
 
@@ -53,7 +42,7 @@ public class ButtonFactory {
      * @param text The text to display on the button.
      * @return The created TextButton.
      */
-    public TextButton createButton(String text) {
+    public static TextButton createButton(String text) {
         TextButton button = new TextButton(text, defaultSkin);
         button.getLabel().setFontScale(0.8f); // Adjust text size
         button.pad(10f); // Adjust padding
@@ -67,7 +56,7 @@ public class ButtonFactory {
      * @param customImagePath The path to the custom image for the button.
      * @return The created custom TextButton.
      */
-    public TextButton createCustomButton(String text, String customImagePath) {
+    public static TextButton createCustomButton(String text, String customImagePath) {
         // Create a custom button with a PNG image
         Texture customTexture = new Texture(Gdx.files.internal(customImagePath));
         TextureRegionDrawable customDrawable = new TextureRegionDrawable(customTexture);
@@ -90,7 +79,7 @@ public class ButtonFactory {
      * @param atlasPath  The path to the TextureAtlas containing the button image.
      * @return The created custom TextButton.
      */
-    public TextButton createCustomButtonWithAtlas(String text, String atlasPath) {
+    public static TextButton createCustomButtonWithAtlas(String text, String atlasPath) {
         // Create a custom button with a TextureAtlas
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
         Skin customSkin = new Skin(atlas);
