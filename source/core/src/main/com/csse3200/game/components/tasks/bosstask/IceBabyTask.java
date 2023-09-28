@@ -39,7 +39,6 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private static final Logger logger = LoggerFactory.getLogger(IceBabyTask.class);
     private PhysicsEngine physics;
     private GameTime gameTime;
-    private STATE iceBabyState = STATE.IDLE;
     private STATE prevState;
     private AnimationRenderComponent animation;
     private Entity iceBaby;
@@ -63,6 +62,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private enum STATE {
         IDLE, ATK1, ATK2, ATK3, DEATH, INTRO, STAGGER, TAKEHIT, WALK
     }
+    private STATE iceBabyState = STATE.IDLE;
 
     public IceBabyTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -102,9 +102,49 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
 
     }
 
-    private void changeState(STATE iceBabyState) {
+    @Override
+    public void update() {
+        if (!startFlag) {
+            return;
+        }
+        animate();
+        currentPos = iceBaby.getPosition();
+        int health = iceBaby.getComponent(CombatStatsComponent.class).getHealth();
+
+        // handle initial demon transformation
+        if (animation.getCurrentAnimation().equals("intro_or_revive") && animation.isFinished()) {
+            changeState(STATE.IDLE); // start sequence
+        }
+        if (health <= 0) {
+            changeState(STATE.DEATH);
+            iceBaby.setFlagForDelete(true);
+        }
+
+        switch (iceBabyState) {
+            case IDLE -> walk(getWalkPos());
+            case WALK -> {
+                   if (walkComplete()) {
+                       changeState(STATE.IDLE);
+                   } else {
+                       spawnMob();
+                   }
+                }
+            case ATK1, ATK2 -> {
+                if (animation.isFinished()) {
+                    changeState(STATE.ATK3);
+                }
+            }
+            case ATK3 -> {
+                if (animation.isFinished()) {
+                    changeState(STATE.IDLE);
+                }
+            }
+        }
+    }
+
+    private void changeState(STATE state) {
         prevState = this.iceBabyState;
-        this.iceBabyState = iceBabyState;
+        this.iceBabyState = state;
     }
 
     private void animate() {
@@ -128,43 +168,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         prevState = iceBabyState;
     }
 
-    @Override
-    public void update() {
-        if (!startFlag) {
-            return;
-        }
-        animate();
-        currentPos = iceBaby.getPosition();
-        int health = iceBaby.getComponent(CombatStatsComponent.class).getHealth();
-
-        // handle initial demon transformation
-        if (animation.getCurrentAnimation().equals(INTRO) && animation.isFinished()) {
-            changeState(IceBabyTask.STATE.IDLE); // start sequence
-        }
-        if (health <= 0) {
-            changeState(iceBabyState.DEATH);
-            iceBaby.setFlagForDelete(true);
-        }
-
-        switch (iceBabyState) {
-            case IDLE -> walk(getWalkPos());
-            case ATK1 -> {
-                   if (walkComplete()) {
-                       ATK3();
-                   } else {
-                       spawnMob();
-                   }
-                }
-            case ATK2, ATK3-> {
-                if (animation.isFinished()) {
-                    changeState(iceBabyState.IDLE);
-                }
-            }
-        }
-    }
-
     private void walk(Vector2 finalPos) {
-        changeState(IceBabyTask.STATE.ATK1);
+        changeState(STATE.WALK);
+        animate();
         isWalking = true;
 
         walkTask = new MovementTask(finalPos);
@@ -206,8 +212,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
 
     private boolean walkComplete() {
-        changeState(IceBabyTask.STATE.ATK1);
-        if (currentPos.dst(walkPos) <= STOP_DISTANCE && isWalking) {
+        changeState(STATE.ATK1);
+        animate();
+        if (currentPos.dst(walkPos) <= STOP_DISTANCE && isWalking && animation.isFinished()) {
             applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
             isWalking = false;
             walkTask.stop();
@@ -217,7 +224,8 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
 
     private void ATK3() {
-        changeState(IceBabyTask.STATE.ATK3);
+        changeState(STATE.ATK3);
+        animate();
         Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(iceBaby,
                 PhysicsLayer.HUMANS);
         CombatStatsComponent targetCombatStats = target.
@@ -231,7 +239,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
 
     private void spawnMob() {
-        changeState(iceBabyState.ATK2);
+        changeState(STATE.ATK2);
         Entity newMob = NPCFactory.createSplittingWaterSlime();
         newMob.setPosition((float) (iceBaby.getPosition().x + 0.5), (float) (iceBaby.getPosition().y + 0.5));
         ServiceLocator.getEntityService().register(newMob);

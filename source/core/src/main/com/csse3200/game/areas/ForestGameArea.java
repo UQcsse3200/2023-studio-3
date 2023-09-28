@@ -261,6 +261,7 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
     logger.info("Lol");
+    spawnIceBaby();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
     startWaveTimer();
