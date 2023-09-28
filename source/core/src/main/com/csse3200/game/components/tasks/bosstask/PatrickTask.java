@@ -8,6 +8,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -99,16 +100,19 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             }
         }
 
-        System.out.println(patrick.getComponent(CombatStatsComponent.class).getHealth());
         // check if patrick is dead
         if (patrick.getComponent(CombatStatsComponent.class).getHealth() <= 0) {
-            PatrickDeathTask deathTask = new PatrickDeathTask();
-            deathTask.create(owner);
-            deathTask.start();
+            // play patrick death animation
+            Entity deadPatrick = MobBossFactory.patrickDead();
+            deadPatrick.setPosition(patrick.getPosition().x, patrick.getPosition().y);
+            deadPatrick.setScale(4f, 4f);
+            ServiceLocator.getEntityService().register(deadPatrick);
+            patrick.setFlagForDelete(true);
         }
 
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
+        System.out.println(health);
 
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&

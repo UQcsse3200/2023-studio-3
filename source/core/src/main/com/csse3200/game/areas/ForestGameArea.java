@@ -284,8 +284,8 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
 //     spawnDemonBoss();
-//     spawnPatrick();
-     spawnPatrickDeath();
+     spawnPatrick();
+//     spawnPatrickDeath();
   //  spawnFireWorm();
 
     //mobBoss1 = spawnMobBoss1();

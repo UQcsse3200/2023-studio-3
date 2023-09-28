@@ -6,28 +6,28 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.MobBossFactory;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 public class PatrickDeathTask extends DefaultTask implements PriorityTask {
 
+    private boolean startFlag = false;
+
     @Override
     public void start() {
-        Vector2 curPos = owner.getEntity().getPosition();
-        Entity patrick = MobBossFactory.patrickDead();
-        patrick.setPosition(curPos);
-        patrick.setScale(4f,4f);
-        ServiceLocator.getEntityService().register(patrick);
-        patrick.getEvents().trigger("patrick_death");
-        owner.getEntity().setFlagForDelete(true);
-
-        // delete after half a second
-//        Timer.schedule(new Timer.Task() {
-//            @Override
-//            public void run() {
-//                patrick.setFlagForDelete(true);
-//            }
-//        }, 0.5f);
+        super.start();
+        startFlag = true;
+        owner.getEntity().getEvents().trigger("patrick_death");
     }
+
+    @Override
+    public void update() {
+        if (startFlag && owner.getEntity().getComponent(AnimationRenderComponent.class).
+                isFinished()) {
+            owner.getEntity().setFlagForDelete(true);
+        }
+    }
+
     @Override
     public int getPriority() {
         return 3;
