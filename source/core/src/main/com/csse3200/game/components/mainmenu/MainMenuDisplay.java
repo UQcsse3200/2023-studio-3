@@ -54,7 +54,7 @@ public class MainMenuDisplay extends UIComponent {
         Image title =
                 new Image(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/background/background1.png", Texture.class));
+                                .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
         title.setWidth(Gdx.graphics.getWidth());
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0, 0);
@@ -114,7 +114,7 @@ public class MainMenuDisplay extends UIComponent {
 
         table.add(title);
         table1.row();
-        table1.add(startBtn).padTop(30f);
+        table1.add(startBtn).padTop(260f);
         table1.row();
         table1.add(loadBtn).padTop(15f);
         table1.row();
