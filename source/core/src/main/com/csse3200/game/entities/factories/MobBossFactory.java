@@ -6,6 +6,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
 import com.csse3200.game.components.bosses.PatrickAnimationController;
+import com.csse3200.game.components.bosses.IceBabyAnimationController;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.bosstask.*;
@@ -31,6 +32,8 @@ public class MobBossFactory {
     private static final int DEMON_ATTACK = 0;
     private static final int PATRICK_ATTACK = 0;
     private static final int PATRICK_HEALTH = 2500;
+    private static final int ICEBABY_ATTACK = 0;
+    private static final int ICEBABY_HEALTH = 3000;
 
     /**
      * Creates the demon boss
@@ -171,6 +174,38 @@ public class MobBossFactory {
         patrick.scaleHeight(4f);
         patrick.scaleWidth(4f);
         return patrick;
+    }
+
+    public static Entity createIceBoss() {
+        Entity iceBaby = createBaseBoss();
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new IceBabyTask());
+
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset("images/mobboss/iceBaby.atlas", TextureAtlas.class));
+        animator.addAnimation("idle", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("1_atk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("2_atk", 0.1f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("3_atk", 0.1f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("death", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("intro_or_revive", 0.1f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("stagger", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("walk", 0.2f, Animation.PlayMode.NORMAL);
+
+        iceBaby.addComponent(aiTaskComponent);
+
+        iceBaby
+                .addComponent(animator)
+                .addComponent(new IceBabyAnimationController())
+                .addComponent(aiTaskComponent)
+                .addComponent(new CombatStatsComponent(ICEBABY_HEALTH, ICEBABY_ATTACK));
+
+        iceBaby.getComponent(AnimationRenderComponent.class).scaleEntity();
+        iceBaby.scaleHeight(4f);
+        iceBaby.scaleWidth(4f);
+
+        return iceBaby;
     }
 
     /**

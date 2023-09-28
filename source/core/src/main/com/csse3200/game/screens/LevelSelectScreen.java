@@ -103,16 +103,17 @@ public class LevelSelectScreen extends ScreenAdapter {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
                     GameLevelData.setSelectedLevel(planet[4]);
-                    if (planet[4] == 0) {
-                        handleDesertPlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    } else if (planet[4] == 1) {
-                        handleIcePlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    } else if (planet[4] == 2) {
-                        handleLavaPlanetClick();
-                        game.setScreen(new TurretSelectionScreen(game));
-                    }
+                    game.setScreen(new TurretSelectionScreen(game));
+//                    if (planet[4] == 0) {
+//                        handleDesertPlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    } else if (planet[4] == 1) {
+//                        handleIcePlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    } else if (planet[4] == 2) {
+//                        handleLavaPlanetClick();
+//                        game.setScreen(new TurretSelectionScreen(game));
+//                    }
                 }
             }
         }

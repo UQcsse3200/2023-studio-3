@@ -53,7 +53,6 @@ public class DeflectingComponent extends Component {
   @Override
   public void create() {
     entity.getEvents().addListener("collisionStart", this::deflectProj);
-    System.out.println("CREATED");
     hitboxComponent = entity.getComponent(HitboxComponent.class);
     maxHealth = entity.getComponent(CombatStatsComponent.class)
         .getMaxHealth();
