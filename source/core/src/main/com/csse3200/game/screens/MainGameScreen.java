@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,7 +42,24 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
-  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png"};
+  private static final String[] mainGameTextures = {
+          "images/heart.png",
+          "images/ice_bg.png",
+          "images/lava_bg.png",
+          "images/desert_bg.png"
+  };
+
+  private static final String ICE_BACKDROP = mainGameTextures[1];
+  private static final String LAVA_BACKDROP = mainGameTextures[2];
+  private static final String DESERT_BACKDROP = mainGameTextures[3];
+  private static final String[] backgroundMusic = {
+          "sounds/background/ice/ice_bgm.ogg",
+          "sounds/background/lava/lava_bgm.ogg",
+          "sounds/background/desert/desert_bgm.ogg"
+  };
+  private static final String ICE_BGM = backgroundMusic[0];
+  private static final String LAVA_BGM = backgroundMusic[1];
+  private static final String DESERT_BGM = backgroundMusic[2];
   private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
@@ -63,6 +81,7 @@ public class MainGameScreen extends ScreenAdapter {
   private SpriteBatch batch;
 
   private Texture backgroundTexture;
+  private Music music;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -125,14 +144,17 @@ public class MainGameScreen extends ScreenAdapter {
     switch (selectedLevel) {
       // Desert
       case 1: // Ice
-        background = ServiceLocator.getResourceService().getAsset("images/ice_bg.png", Texture.class);
+        background = ServiceLocator.getResourceService().getAsset(ICE_BACKDROP, Texture.class);
+        music = ServiceLocator.getResourceService().getAsset(ICE_BGM, Music.class);
         break;
       case 2: // Lava
-        background = ServiceLocator.getResourceService().getAsset("images/lava_bg.png", Texture.class);
+        background = ServiceLocator.getResourceService().getAsset(LAVA_BACKDROP, Texture.class);
+        music = ServiceLocator.getResourceService().getAsset(LAVA_BGM, Music.class);
         break;
       default:
         // Use a default background for other levels or planets
-        background = ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class);
+        background = ServiceLocator.getResourceService().getAsset(DESERT_BACKDROP, Texture.class);
+        music = ServiceLocator.getResourceService().getAsset(DESERT_BGM, Music.class);
         break;
     }
     return background;
@@ -203,6 +225,7 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
+    ServiceLocator.getResourceService().loadMusic(backgroundMusic);
     ServiceLocator.getResourceService().loadAll();
     backgroundTexture = getBackgroundTexture(); // Load the background image
   }
@@ -234,5 +257,9 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new TerminalDisplay());
 
     ServiceLocator.getEntityService().register(ui);
+
+    music.setLooping(true);
+    music.setVolume(0.3f);
+    music.play();
   }
 }

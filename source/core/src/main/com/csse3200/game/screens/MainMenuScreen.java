@@ -32,7 +32,13 @@ public class MainMenuScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
-  private static final String[] mainMenuTextures = {"images/background/background1.png"};
+  private static final String[] mainMenuTextures = {
+          "images/background/background1.png",
+          "images/ui/buttons/button_lg.png"
+  };
+  private static final String[] mainMenuAtlases = {
+          "images/ui/buttons/button_lg.atlas"
+  };
   private static final String[] titleMusic = {"sounds/background/title_screen/ScifiAmbient.ogg"};
 
   public MainMenuScreen(GdxGame game) {
@@ -99,6 +105,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
+    resourceService.loadTextureAtlases(mainMenuAtlases);
     backgroundTexture = new Texture("images/background/background1.png");
     ServiceLocator.getResourceService().loadMusic(titleMusic);
     ServiceLocator.getResourceService().loadAll();
@@ -108,6 +115,7 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.unloadAssets(mainMenuTextures);
+    resourceService.unloadAssets(mainMenuAtlases);
     resourceService.unloadAssets(titleMusic);
   }
 

@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
+import com.csse3200.game.services.ServiceLocator;
 
 public class LosingScreen extends ScreenAdapter {
     private final GdxGame game;
