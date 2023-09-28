@@ -483,6 +483,11 @@ public class ForestGameArea extends GameArea {
     spawnEntity(Projectile);
   }
 
+  /**
+   * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
+   * @param entity mob to be spawned
+   * @param randomPos position to be spawned at
+   */
   public void spawnMob(String entity, GridPoint2 randomPos) {
     Entity mob;
     switch (entity) {

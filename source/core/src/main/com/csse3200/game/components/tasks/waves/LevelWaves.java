@@ -22,6 +22,10 @@ public class LevelWaves extends Entity {
     private int waveIndex;
     private int numWaves;
 
+    /**
+     * Constructor for the LevelWaves class
+     * @param spawnDelay time to elapse between each wave
+     */
     public LevelWaves(int spawnDelay) {
         this.spawnDelay = spawnDelay;
         this.gameTime = ServiceLocator.getTimeSource();
@@ -31,15 +35,27 @@ public class LevelWaves extends Entity {
         this.numWaves = 0;
     }
 
+    /**
+     * Add a wave to the level and increment the total number of waves
+     * @param wave to be added
+     */
     public void addWave(WaveClass wave) {
         this.numWaves++;
         this.waves.add(wave);
     }
 
+    /**
+     * Retrieve a wave at an index in the list
+     * @param index wave number to be retireved
+     * @return instance of a wave class
+     */
     public WaveClass getWave(int index) {
         return this.waves.get(index);
     }
 
+    /**
+     * Spawn the wave and all the associated mobs for that wave
+     */
     public void spawnWave() {
         if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
             do {
@@ -57,10 +73,18 @@ public class LevelWaves extends Entity {
         }
     }
 
+    /**
+     * Set the wave index
+     * @param index
+     */
     public void setWaveIndex(int index) {
         this.waveIndex = index;
     }
 
+    /**
+     * Get the total number of waves in this level
+     * @return number of waves in the level
+     */
     public int getNumWaves() {
         return this.numWaves;
     }
