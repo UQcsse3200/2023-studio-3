@@ -266,20 +266,20 @@ public class ForestGameArea extends GameArea {
     player = spawnPlayer();
     logger.info("Lol");
     spawnIceBaby();
-//    player.getEvents().addListener("spawnWave", this::spawnWave);
-//    playMusic();
-//    startWaveTimer();
-//    spawnScrap();
-//    logger.info("Lol");
-//    // spawnDeflectXenoGrunt(15, 5);
-//    // spawnSplittingXenoGrunt(15, 4);
-//    spawnScrap();
-//    spawnTNTTower();
-//    spawnWeaponTower();
-//    logger.info("Lol");
-//    spawnGapScanners();
-//    spawnDroidTower();
-//    logger.info("Lol");
+    player.getEvents().addListener("spawnWave", this::spawnWave);
+    playMusic();
+    startWaveTimer();
+    spawnScrap();
+    logger.info("Lol");
+    // spawnDeflectXenoGrunt(15, 5);
+    // spawnSplittingXenoGrunt(15, 4);
+    spawnScrap();
+    spawnTNTTower();
+    spawnWeaponTower();
+    logger.info("Lol");
+    spawnGapScanners();
+    spawnDroidTower();
+    logger.info("Lol");
   }
   
   private void displayUI() {
