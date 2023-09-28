@@ -219,9 +219,9 @@ public class MainMenuScreen extends ScreenAdapter {
     // MM_Star1
     MM_Star1_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_Star1.png"));
 
-    int MM_Star1_totalColumns=10;
+    int MM_Star1_totalColumns=60;
     MM_Star1_frameWidth = MM_Star1_Texture.getWidth() / MM_Star1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-    int MM_Star1_totalRows=6;
+    int MM_Star1_totalRows=1;
     MM_Star1_frameHeight = MM_Star1_Texture.getHeight() / MM_Star1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
 
     TextureRegion[][] MM_Star1_Frames = TextureRegion.split(MM_Star1_Texture, MM_Star1_frameWidth, MM_Star1_frameHeight);
@@ -230,15 +230,15 @@ public class MainMenuScreen extends ScreenAdapter {
 
     System.arraycopy(MM_Star1_Frames[0], 0, MM_Star1_animationFrames, 0, MM_Star1_totalColumns);
 
-    MM_Star1_animation = new Animation<>(0.1f, MM_Star1_animationFrames);
+    MM_Star1_animation = new Animation<>(0.17f, MM_Star1_animationFrames);
 
 
     // MM_Galaxy1
     MM_Galaxy1_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_Galaxy1.png"));
 
-    int MM_Galaxy1_totalColumns=10;
+    int MM_Galaxy1_totalColumns=60;
     MM_Galaxy1_frameWidth = MM_Galaxy1_Texture.getWidth() / MM_Galaxy1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-    int MM_Galaxy1_totalRows=6;
+    int MM_Galaxy1_totalRows=1;
     MM_Galaxy1_frameHeight = MM_Galaxy1_Texture.getHeight() / MM_Galaxy1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
 
     TextureRegion[][] MM_Galaxy1_Frames = TextureRegion.split(MM_Galaxy1_Texture, MM_Galaxy1_frameWidth, MM_Galaxy1_frameHeight);
@@ -247,15 +247,15 @@ public class MainMenuScreen extends ScreenAdapter {
 
     System.arraycopy(MM_Galaxy1_Frames[0], 0, MM_Galaxy1_animationFrames, 0, MM_Galaxy1_totalColumns);
 
-    MM_Galaxy1_animation = new Animation<>(0.1f, MM_Galaxy1_animationFrames);
+    MM_Galaxy1_animation = new Animation<>(0.17f, MM_Galaxy1_animationFrames);
 
 
     // MM_Planet1
     MM_Planet1_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_Planet1.png"));
 
-    int MM_Planet1_totalColumns=10;
+    int MM_Planet1_totalColumns=60;
     MM_Planet1_frameWidth = MM_Planet1_Texture.getWidth() / MM_Planet1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-    int MM_Planet1_totalRows=6;
+    int MM_Planet1_totalRows=1;
     MM_Planet1_frameHeight = MM_Planet1_Texture.getHeight() / MM_Planet1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
 
     TextureRegion[][] MM_Planet1_Frames = TextureRegion.split(MM_Planet1_Texture, MM_Planet1_frameWidth, MM_Planet1_frameHeight);
@@ -264,15 +264,15 @@ public class MainMenuScreen extends ScreenAdapter {
 
     System.arraycopy(MM_Planet1_Frames[0], 0, MM_Planet1_animationFrames, 0, MM_Planet1_totalColumns);
 
-    MM_Planet1_animation = new Animation<>(0.1f, MM_Planet1_animationFrames);
+    MM_Planet1_animation = new Animation<>(0.17f, MM_Planet1_animationFrames);
 
 
     // MM_Planet2
     MM_Planet2_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_Planet2.png"));
 
-    int MM_Planet2_totalColumns=10;
+    int MM_Planet2_totalColumns=60;
     MM_Planet2_frameWidth = MM_Planet2_Texture.getWidth() / MM_Planet2_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-    int MM_Planet2_totalRows=6;
+    int MM_Planet2_totalRows=1;
     MM_Planet2_frameHeight = MM_Planet2_Texture.getHeight() / MM_Planet2_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
 
     TextureRegion[][] MM_Planet2_Frames = TextureRegion.split(MM_Planet2_Texture, MM_Planet2_frameWidth, MM_Planet2_frameHeight);
@@ -281,15 +281,15 @@ public class MainMenuScreen extends ScreenAdapter {
 
     System.arraycopy(MM_Planet2_Frames[0], 0, MM_Planet2_animationFrames, 0, MM_Planet2_totalColumns);
 
-    MM_Planet2_animation = new Animation<>(0.1f, MM_Planet2_animationFrames);
+    MM_Planet2_animation = new Animation<>(0.17f, MM_Planet2_animationFrames);
 
 
     // MM_Planet3
     MM_Planet3_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_Planet3.png"));
 
-    int MM_Planet3_totalColumns=10;
+    int MM_Planet3_totalColumns=54;
     MM_Planet3_frameWidth = MM_Planet3_Texture.getWidth() / MM_Planet3_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-    int MM_Planet3_totalRows=6;
+    int MM_Planet3_totalRows=1;
     MM_Planet3_frameHeight = MM_Planet3_Texture.getHeight() / MM_Planet3_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
 
     TextureRegion[][] MM_Planet3_Frames = TextureRegion.split(MM_Planet3_Texture, MM_Planet3_frameWidth, MM_Planet3_frameHeight);
@@ -298,7 +298,7 @@ public class MainMenuScreen extends ScreenAdapter {
 
     System.arraycopy(MM_Planet3_Frames[0], 0, MM_Planet3_animationFrames, 0, MM_Planet3_totalColumns);
 
-    MM_Planet3_animation = new Animation<>(0.1f, MM_Planet3_animationFrames);
+    MM_Planet3_animation = new Animation<>(0.17f, MM_Planet3_animationFrames);
 
 
 //    // MM_MonitorFace1
