@@ -212,7 +212,7 @@ public class MobBossFactory {
      * Create base boss entity that all boss mobs will inherit
      * @return base mob boss entity
      */
-    private static Entity createBaseBoss() {
+    public static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
                 .addComponent(new ColliderComponent())
