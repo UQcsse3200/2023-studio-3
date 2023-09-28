@@ -119,7 +119,6 @@ public class SplitMoblings extends Component {
    * @param initialScaleY Initial vertical scale of the entity
    */
   public void spawnAdditionalMob(float positionX, float positionY, float initialScaleX, float initialScaleY) {
-    // ? ENTITY PARAM KINDA USELESS?
     Entity waterSlime = NPCFactory.createBaseWaterSlime();
     waterSlime.setPosition(positionX, positionY);
 
