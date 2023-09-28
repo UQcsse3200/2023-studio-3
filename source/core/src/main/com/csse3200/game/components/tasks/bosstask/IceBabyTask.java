@@ -148,14 +148,14 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
 
         switch (iceBabyState) {
             case IDLE -> walk(getWalkPos());
-            case ATK1 -> {
+            case WALK -> {
                    if (walkComplete()) {
-                       ATK3();
+                       changeState(iceBabyState.ATK1);
                    } else {
                        spawnMob();
                    }
                 }
-            case ATK2, ATK3-> {
+            case ATK1, ATK2, ATK3-> {
                 if (animation.isFinished()) {
                     changeState(iceBabyState.IDLE);
                 }
@@ -164,7 +164,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
 
     private void walk(Vector2 finalPos) {
-        changeState(IceBabyTask.STATE.ATK1);
+        changeState(IceBabyTask.STATE.WALK);
         isWalking = true;
 
         walkTask = new MovementTask(finalPos);
