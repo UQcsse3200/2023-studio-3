@@ -41,8 +41,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.currentWaveIndex = 0;
     this.waveInProgress = false;
     loadSounds();
-    this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);
-    this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);
+    //this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);
+    //this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);
   }
 
   public void loadSounds() {
@@ -72,7 +72,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
     logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
-    this.waveStart.play();
+    //this.waveStart.play();
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
@@ -89,6 +89,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       this.waveInProgress = true;
       logger.info("No enemies remaining, begin next wave");
       currentWaveIndex++;
+      this.level.setWaveIndex(currentWaveIndex);
       this.currentWave = this.level.getWave(currentWaveIndex);
       ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
       //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time

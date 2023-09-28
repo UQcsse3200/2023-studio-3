@@ -174,6 +174,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
   
   private Entity player;
+  private Entity waves;
   
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
@@ -262,13 +263,17 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
+
     playMusic();
-    spawnXenoGrunts();
-    startWaveTimer();
+    //spawnXenoGrunts();
+    //startWaveTimer();
     spawnScrap();
-    spawnDeflectXenoGrunt(15, 5);
-    spawnSplittingXenoGrunt(15, 4);
+    //spawnDeflectXenoGrunt(15, 5);
+    //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
@@ -476,17 +481,29 @@ public class ForestGameArea extends GameArea {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
-  }  
-  
-  private void spawnXenoGrunts() {
-    int[] pickedLanes = random.ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity xenoGrunt = NPCFactory.createXenoGrunt();
-      xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, false);
+  }
+
+  public void spawnMob(String entity, GridPoint2 randomPos) {
+    Entity mob;
+    logger.info("Spawning Xeno {}");
+    switch (entity) {
+      case "Xeno":
+        mob = NPCFactory.createXenoGrunt();
+        break;
+      case "SplittingXeno":
+        mob = NPCFactory.createSplittingXenoGrunt();
+        break;
+      case "DodgingDragon":
+        mob = NPCFactory.createDodgingDragonKnight();
+        break;
+      case "DeflectXeno":
+        mob = NPCFactory.createDeflectXenoGrunt();
+        break;
+      default:
+        mob = NPCFactory.createBaseNPC();
     }
+    mob.setScale(1.5f, 1.5f);
+    spawnEntityAt(mob, randomPos, true, false);
   }
 
   // * TEMPORARY FOR TESTING

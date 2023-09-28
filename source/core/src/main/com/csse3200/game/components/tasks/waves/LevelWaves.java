@@ -42,7 +42,6 @@ public class LevelWaves extends Entity {
             do {
                 currentRandom = rand.nextInt(1, 7);
             } while (currentRandom == previousRandom);
-            previousRandom = currentRandom;
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
             this.getEvents().trigger("spawnWave", waves.get(waveIndex)
                     .getMobs().get(mobIndex), randomPos);
@@ -51,6 +50,11 @@ public class LevelWaves extends Entity {
             previousRandom = currentRandom;
         } else if (mobIndex == waves.get(waveIndex).getSize()) {
             this.getEvents().trigger("waveFinishedSpawning");
+            mobIndex = 0;
         }
+    }
+
+    public void setWaveIndex(int index) {
+        this.waveIndex = index;
     }
 }

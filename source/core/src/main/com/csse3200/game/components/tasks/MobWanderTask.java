@@ -75,6 +75,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
       this.owner.getEntity().getEvents().trigger("dieStart");
       currentTask.stop();
       isDead = true;
+      ServiceLocator.getWaveService().updateEnemyCount();
     }
 
     // Check if the mob has finished death animation
@@ -85,8 +86,6 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
       ServiceLocator.getEntityService().register(scrap);
 
       // Delete the mob and update count for number of mobs remaining in the wave
-      ServiceLocator.getWaveService().updateEnemyCount();
-      logger.info("Number of enemies remaining: {}", ServiceLocator.getWaveService().getEnemyCount());
       owner.getEntity().setFlagForDelete(true);
 
     }

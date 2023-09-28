@@ -16,7 +16,8 @@ public class WaveFactory {
      */
     public static Entity createWaves() {
         HashMap<String, Integer> mobs = new HashMap<>();
-        mobs.put("Xeno", 0);
+        mobs.put("Xeno", 3);
+        mobs.put("DodgingDragon", 4);
         HashMap<String, Integer> mobs2 = new HashMap<>();
         mobs2.put("Xeno", 3);
         WaveClass wave1 = new WaveClass(mobs);

@@ -89,6 +89,7 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
       Entity scrap = DropFactory.createScrapDrop();
       scrap.setPosition(mobPosition.x,mobPosition.y);
       ServiceLocator.getEntityService().register(scrap);
+      ServiceLocator.getWaveService().updateEnemyCount();
 
       // Delete the mob.
       owner.getEntity().setFlagForDelete(true);
