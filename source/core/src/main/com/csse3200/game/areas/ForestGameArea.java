@@ -485,7 +485,6 @@ public class ForestGameArea extends GameArea {
 
   public void spawnMob(String entity, GridPoint2 randomPos) {
     Entity mob;
-    logger.info("Spawning Xeno {}");
     switch (entity) {
       case "Xeno":
         mob = NPCFactory.createXenoGrunt();

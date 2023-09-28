@@ -20,6 +20,7 @@ public class LevelWaves extends Entity {
     private int previousRandom = 0;
     private int mobIndex;
     private int waveIndex;
+    private int numWaves;
 
     public LevelWaves(int spawnDelay) {
         this.spawnDelay = spawnDelay;
@@ -27,9 +28,11 @@ public class LevelWaves extends Entity {
         this.startTime = this.gameTime.getTime();
         this.mobIndex = 0;
         this.waveIndex = 0;
+        this.numWaves = 0;
     }
 
     public void addWave(WaveClass wave) {
+        this.numWaves++;
         this.waves.add(wave);
     }
 
@@ -56,5 +59,9 @@ public class LevelWaves extends Entity {
 
     public void setWaveIndex(int index) {
         this.waveIndex = index;
+    }
+
+    public int getNumWaves() {
+        return this.numWaves;
     }
 }
