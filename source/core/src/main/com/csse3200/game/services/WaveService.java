@@ -10,15 +10,15 @@ public class WaveService {
 
 
     /**
-     * Constructor for the Game End Service
+     * Constructor for the Wave Service
      */
     public WaveService() {
         this.enemyCount = 0;
     }
 
     /**
-     * Set the enemy limit. During instantiation, limit defaults to 5.
-     * @param newLimit as an integer representing the maximum number of engineer deaths
+     * Set the enemy limit. During instantiation, limit defaults to 0.
+     * @param newLimit as an integer representing the maximum number of enemy deaths
      */
     public void setEnemyCount(int newLimit) {
         if (newLimit > 0) {
@@ -28,7 +28,7 @@ public class WaveService {
 
     /**
      * Returns the number of enemy left
-     * @return (int) engineer count
+     * @return (int) enemy count
      */
 
     public int getEnemyCount() {
