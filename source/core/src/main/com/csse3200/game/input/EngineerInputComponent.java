@@ -30,18 +30,23 @@ public class EngineerInputComponent extends InputComponent {
         camera.unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity engineer = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
-        logger.info("Clicked entity: " + engineer);
+        //logger.info("Clicked entity: " + engineer);
 
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
             return false;
         }
+
         // Case when engineer is clicked
-        engineer.removeComponent(AnimationRenderComponent.class);
-        logger.info("Engineer has animation render component " + engineer.getComponent(AnimationRenderComponent.class));
-        AnimationRenderComponent animator = EngineerFactory.createAnimationRenderComponent(true);
-        engineer.addComponent(animator);
-        logger.info("Engineer has animation render component " + engineer.getComponent(AnimationRenderComponent.class));
+        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
+        String currentAnimation = animator.getCurrentAnimation();
+
+        // outline image if it is not already outlined and vice versa
+        if (currentAnimation.contains("_outline")) {
+            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
+        } else {
+            animator.startAnimation(currentAnimation + "_outline");
+        }
 
         return true;
     }
