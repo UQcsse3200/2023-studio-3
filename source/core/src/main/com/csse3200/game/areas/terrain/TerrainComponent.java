@@ -141,6 +141,25 @@ public class TerrainComponent extends RenderComponent {
     }, 0, interval, (int) (duration / interval) - 1); // Scheduling the task
   }
 
+  /**
+   * Highlights the tile under the mouse cursor by changing its texture region.
+   *
+   * <p>When hovering over a tile on the terrain, this method performs the following:
+   * <ol>
+   *   <li>Unprojects the mouse's screen position to the world position using the camera.</li>
+   *   <li>Calculates the tile's coordinates based on the world position and tile size.</li>
+   *   <li>If there was a previously highlighted tile, it restores its original texture region.</li>
+   *   <li>If the current tile under the mouse is different from the last hovered tile, it updates
+   *       the tile's texture region to a highlight texture.</li>
+   *   <li>Updates the reference to the last hovered tile.</li>
+   * </ol>
+   * </p>
+   *
+   * @see TiledMapTileLayer
+   * @see TiledMapTileLayer.Cell
+   * @see TextureRegion
+   */
+
   public void hoverHighlight() {
     Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
     camera.unproject(mousePos);
