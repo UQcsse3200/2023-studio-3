@@ -70,7 +70,8 @@ public class AssetLoader {
             "images/projectiles/stun_effect.png",
             "images/projectiles/firework_anim.png",
             "images/projectiles/pierce_anim.png",
-            "images/projectiles/snow_ball.png"
+            "images/projectiles/snow_ball.png",
+            "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png"
     };
 
     public static final String[] textureAtlases = {
