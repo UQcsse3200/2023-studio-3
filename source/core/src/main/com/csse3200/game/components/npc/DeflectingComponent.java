@@ -105,6 +105,7 @@ public class DeflectingComponent extends Component {
     // Change target layer of projectile.
     projectile.getComponent(TouchAttackComponent.class)
         .setTargetLayer(dmgLayer);
+    entity.getEvents().trigger("shootStart");
 
     // Make sure projectile is not deleted in the next frame.
     projectile.setFlagForDelete(false);

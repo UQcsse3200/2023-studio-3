@@ -18,6 +18,10 @@ public class WaterQueenAnimationController extends Component {
     AnimationRenderComponent animator;
     private SecureRandom rand = new SecureRandom();
 
+    private static final String ATTACK_SOUND = "sounds/mobs/waterQueenSpell.mp3";
+    Sound attackSound = ServiceLocator.getResourceService().getAsset(
+            ATTACK_SOUND, Sound.class);
+
     @Override
     public void create() {
         super.create();
@@ -33,6 +37,7 @@ public class WaterQueenAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("water_queen_attack");
+        attackSound.play();
     }
 
     void animateDeath() {

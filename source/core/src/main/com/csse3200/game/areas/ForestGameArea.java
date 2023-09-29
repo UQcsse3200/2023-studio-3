@@ -165,7 +165,11 @@ public class ForestGameArea extends GameArea {
           "sounds/projectiles/explosion.mp3",
           "sounds/mobBoss/iceBabySound.mp3",
           "sounds/mobBoss/mobSpawnStomp.mp3",
-          "sounds/mobBoss/iceBabyAOE.mp3"
+          "sounds/mobBoss/iceBabyAOE.mp3",
+          "sounds/mobs/wizardSpell.mp3",
+          "sounds/mobs/waterQueenSpell.mp3",
+          "sounds/mobs/boneBreak.mp3",
+          "sounds/mobs/fireWormRoar.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -217,25 +221,27 @@ public class ForestGameArea extends GameArea {
       case 2:
       spawnWaterQueen();
       spawnWaterSlime();
-      spawnIceBaby();
       logger.info("Lol");
       
       break;
       case 3:
-        logger.info("Lol");
-      spawnWizard();
-      // spawnDragonKnight();
-      spawnSkeleton();
+      spawnIceBaby();
+      logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
-        logger.info("Lol");
       spawnFireWorm();
       spawnDragonKnight();
-        // mobBoss2 = spawnMobBoss2();
-        break;
+      logger.info("Lol");
+      // mobBoss2 = spawnMobBoss2();
+      break;
       case 5:
-        spawnDemonBoss();
+      case 6:
+      spawnWizard();
+      spawnSkeleton();
+      case 7:
+      spawnDemonBoss();
+      spawnPatrick();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -275,11 +281,11 @@ public class ForestGameArea extends GameArea {
 
   //  spawnDragonKnight();
     // spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnFireTowerTowerAt(3, 1);
-    spawnFireTowerTowerAt(3, 2);
-    spawnFireTowerTowerAt(3, 3);
-    spawnFireTowerTowerAt(3, 4);
-    spawnFireTowerTowerAt(3, 5);
+    // spawnFireTowerTowerAt(3, 1);
+    // spawnFireTowerTowerAt(3, 2);
+    // spawnFireTowerTowerAt(3, 3);
+    // spawnFireTowerTowerAt(3, 4);
+    // spawnFireTowerTowerAt(3, 5);
 //    spawnDroidTowerAt(3, 1);
 //    spawnDroidTowerAt(3, 2);
 //    spawnDroidTowerAt(3, 3);
@@ -290,9 +296,9 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
-    spawnDemonBoss();
-    spawnPatrick();
-    spawnIceBaby();
+    // spawnDemonBoss();
+    // spawnPatrick();
+    // spawnIceBaby();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
     startWaveTimer();

@@ -18,6 +18,12 @@ public class WizardAnimationController extends Component {
     AnimationRenderComponent animator;
     private SecureRandom rand = new SecureRandom();
 
+    /** Sound variables */
+    private static final String ATTACK_SOUND = "sounds/mobs/wizardSpell.mp3";
+    Sound attackSound = ServiceLocator.getResourceService().getAsset(
+            ATTACK_SOUND, Sound.class);
+    
+
     @Override
     public void create() {
         super.create();
@@ -25,6 +31,8 @@ public class WizardAnimationController extends Component {
         entity.getEvents().addListener("wanderStart", this::animateWalk);
         entity.getEvents().addListener("shootStart", this::animateAttack);
         entity.getEvents().addListener("dieStart", this::animateDeath);
+
+
     }
 
     void animateWalk() {
@@ -33,6 +41,7 @@ public class WizardAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("wizard_attack");
+        attackSound.play();
     }
 
     void animateDeath() {

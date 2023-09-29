@@ -170,7 +170,7 @@ public class NPCFactory {
     return wizard;
   }
   /**
-   * Creates a wizard entity.
+   * Creates a water queen entity.
    *
    * @return entity
    */
@@ -200,7 +200,7 @@ public class NPCFactory {
     return wizard;
   }
   /**
-   * Creates a wizard entity.
+   * Creates a water slime entity.
    *
    * @return entity
    */
@@ -217,7 +217,7 @@ public class NPCFactory {
                     ServiceLocator.getResourceService().getAsset("images/mobs/water_slime.atlas", TextureAtlas.class));
     animator.addAnimation("water_slime_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_slime_attack", 0.1f);
-    animator.addAnimation("water_slime_death", 0.1f);
+    animator.addAnimation("water_slime_death", 0.2f);
     animator.addAnimation("default", 0.1f);
     waterSlime
             .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
@@ -335,6 +335,7 @@ public class NPCFactory {
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
             .addTask(new MobMeleeAttackTask(2, 2f));
+        //     .addTask(new MobAttackTask(2, 2f));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
             // .addTask(new MobAttackTask(2, 40));
@@ -358,6 +359,7 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+        //     .addTask(new MobAttackTask(2, 2f));
             .addTask(new MobRangedAttackTask(2, 2f));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
@@ -378,19 +380,25 @@ public class NPCFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 
-  // * COW'S TESTING ARENA DONT TOUCH
+  /**
+   * Create Splitting water slime 
+   * 
+   * @return
+   */
   public static Entity createSplittingWaterSlime() {
     Entity splitWaterSlime = createBaseWaterSlime()
-        // add the scaling yourself. can also scale the X and Y component,
-        // leading to some very interesting mob designs.
+
         .addComponent(new SplitMoblings(7, 0.5f));
-        // .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+        
     
-    // * TEMPORARY TESTING FOR PROJECTILE DODGING
-//     splitWaterSlime.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
     return splitWaterSlime;
   }
 
+  /**
+   * Create a dodging Dragon Knight
+   * 
+   * @return
+   */
   public static Entity createDodgingDragonKnight() {
     Entity fireWorm = createDragonKnight();
 
@@ -400,12 +408,16 @@ public class NPCFactory {
     return fireWorm;
   }
 
+  /**
+   * Creates a wizard that can deflect bullets
+   * @return
+   */
   public static Entity createDeflectWizard() {
-    Entity deflectXenoGrunt = createWizard();
-    deflectXenoGrunt.addComponent(new DeflectingComponent(
+    Entity deflectWizard = createWizard();
+    deflectWizard.addComponent(new DeflectingComponent(
         PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
 
-    return deflectXenoGrunt;
+    return deflectWizard;
   }
 }
 
