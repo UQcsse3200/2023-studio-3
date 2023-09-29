@@ -27,9 +27,8 @@ public class DodgingComponent extends Component {
   private final RaycastHit hit = new RaycastHit();
   private short targetLayer;
   private float rangeDetection;
-  private float dodgeSpeed = 1.75f;
-  // Original entity y's speed
-  private float originalSpeed;
+  private float dodgeSpeed = 1.75f; 
+  private float originalSpeed; // Original entity vertical speed
   private PhysicsEngine physics;
 
   // Sometimes the raycast mechanic doesn't detect the other entity because of the
