@@ -166,7 +166,9 @@ public class ForestGameArea extends GameArea {
           "sounds/engineers/firing_auto.mp3",
           "sounds/engineers/firing_single.mp3",
           "sounds/projectiles/on_collision.mp3",
-          "sounds/projectiles/explosion.mp3"
+          "sounds/projectiles/explosion.mp3",
+          "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+          "sounds/waves/wave-end/Wave_Over_01.ogg"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -483,9 +485,13 @@ public class ForestGameArea extends GameArea {
     spawnEntity(Projectile);
   }
 
+  /**
+   * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
+   * @param entity mob to be spawned
+   * @param randomPos position to be spawned at
+   */
   public void spawnMob(String entity, GridPoint2 randomPos) {
     Entity mob;
-    logger.info("Spawning Xeno {}");
     switch (entity) {
       case "Xeno":
         mob = NPCFactory.createXenoGrunt();
