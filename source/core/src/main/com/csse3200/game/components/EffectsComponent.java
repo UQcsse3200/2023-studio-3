@@ -74,8 +74,6 @@ public class EffectsComponent extends Component {
             return;
         }
 
-        System.out.println("target layer: " + otherEntity.getLayer());
-
         // Apply effect
         if (effect == ProjectileEffects.FIREBALL) {
             if (aoe) {

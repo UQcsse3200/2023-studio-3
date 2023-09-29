@@ -3,18 +3,10 @@ package com.csse3200.game.entities.factories;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.components.*;
+import com.csse3200.game.components.MobProjectileAnimationController;
 import com.csse3200.game.components.tasks.TrajectTask;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.EffectsComponent;
-import com.csse3200.game.components.ProjectileEffects;
-import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.RicochetComponent;
-import com.csse3200.game.components.SplitFireworksComponent;
 import com.csse3200.game.components.projectile.*;
-import com.csse3200.game.components.tasks.TrajectTask;
-import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.DeleteOnMapEdgeComponent;
 import com.csse3200.game.entities.configs.BaseEntityConfig;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
@@ -298,27 +290,27 @@ public class ProjectileFactory {
   }
 
   /**
-   * Creates a projectile to be used by the MobKing
+   * Creates a projectile to be used by the MobBoss
    *
    * @param targetLayer The enemy layer that the projectile collides with.
    * @param destination The destination the projectile heads towards.
    * @param speed The speed of the projectile.
    * @return Returns a new fireball projectile entity.
    */
-  public static Entity createMobKingBall(short targetLayer, Vector2 destination, Vector2 speed) {
+  public static Entity createMobBossBall(short targetLayer, Vector2 destination, Vector2 speed) {
     Entity projectile = createBaseProjectile(targetLayer, destination, speed);
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService()
-                            .getAsset("images/projectiles/mobKing_projectile.atlas", TextureAtlas.class));
+                            .getAsset("images/projectiles/mobBoss_projectile.atlas", TextureAtlas.class));
     animator.addAnimation("mob_boss", 0.17f, Animation.PlayMode.NORMAL);
     animator.addAnimation("mob_bossFinal", 0.17f, Animation.PlayMode.NORMAL);
 
 
     projectile
             .addComponent(animator)
-            .addComponent(new MobKingProjectAnimController());
+            .addComponent(new MobBossProjectAnimController());
 
     projectile
             .getComponent(AnimationRenderComponent.class).scaleEntity();

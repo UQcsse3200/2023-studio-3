@@ -1,6 +1,5 @@
 package com.csse3200.game.entities;
 
-import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.entities.configs.ProjectileConfig;
 
 public class PredefinedWeapons {

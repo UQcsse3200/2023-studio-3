@@ -28,7 +28,7 @@ public class UIElementsDisplay extends UIComponent {
 
     private void addActors() {
         table = new Table();
-        table.top().right();
+        table.top();
         table.setFillParent(true);
 
         TextButton remainingMobsButton = new ButtonFactory().createButton("Remaining mobs:");
@@ -44,8 +44,8 @@ public class UIElementsDisplay extends UIComponent {
                     }
                 });
 
-        table.add(remainingMobsButton).padTop(0f).padRight(10f);
-        table.add(testSlider).padTop(90).padRight(10f);
+        table.add(remainingMobsButton).padTop(0f).padRight(100f);
+        table.add(testSlider).padTop(10).padRight(10f);
 
         stage.addActor(table);
     }
