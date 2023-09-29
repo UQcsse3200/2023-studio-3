@@ -148,5 +148,20 @@ public class AssetLoader {
         resourceService.unloadAssets(music);
     }
 
-    // Add methods to access loaded assets as needed (e.g., getTexture, getSound, etc.)
+    public static Texture getTexture(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Texture.class);
+    }
+
+    public static TextureAtlas getTextureAtlas(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, TextureAtlas.class);
+    }
+
+    public static Sound getSound(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Sound.class);
+    }
+
+    public static Music getMusic(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Music.class);
+    }
 }
+

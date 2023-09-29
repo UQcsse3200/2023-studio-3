@@ -63,7 +63,7 @@ public class MainMenuDisplay extends UIComponent {
         TextButton startBtn = ButtonFactory.createButton("Start");
 
 // Create a "Help" TextButton using the default style
-        TextButton loadBtn = ButtonFactory.createButton("Help");
+        TextButton helpBtn = ButtonFactory.createButton("Help");
 
 // Create a "Settings" TextButton with a custom image
         TextButton settingsBtn =ButtonFactory.createButton("Settings");
@@ -82,12 +82,12 @@ public class MainMenuDisplay extends UIComponent {
                     }
                 });
 
-        loadBtn.addListener(
+        helpBtn.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Load button clicked");
-                        entity.getEvents().trigger("load");
+                        logger.debug("Help button clicked");
+                        entity.getEvents().trigger("help");
                     }
                 });
 
@@ -113,7 +113,7 @@ public class MainMenuDisplay extends UIComponent {
         table1.row();
         table1.add(startBtn).padTop(260f);
         table1.row();
-        table1.add(loadBtn).padTop(15f);
+        table1.add(helpBtn).padTop(15f);
         table1.row();
         table1.add(settingsBtn).padTop(15f);
         table1.row();
