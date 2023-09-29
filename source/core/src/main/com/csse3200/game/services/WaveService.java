@@ -3,6 +3,7 @@ package com.csse3200.game.services;
 public class WaveService {
     private int enemyCount;
     private boolean gameOver = false;
+    private int lane;
 
 
     /**
@@ -41,6 +42,14 @@ public class WaveService {
         if (enemyCount == 0) {
             gameOver = true;
         }
+    }
+
+    public void setNextLane(int lane) {
+        this.lane = lane;
+    }
+
+    public int getNextLane() {
+        return lane;
     }
 
     /**
