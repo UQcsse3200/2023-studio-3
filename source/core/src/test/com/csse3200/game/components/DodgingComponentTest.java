@@ -53,18 +53,23 @@ public class DodgingComponentTest {
     ResourceService resourceService = new ResourceService();
     ServiceLocator.registerResourceService(resourceService);
 
-    baseMob = createDodgeMob(VALID_POSITION_X, VALID_POSITION_Y, DEFAULT_RANGE_DETECTION, 1.75f);
+    baseMob = createDodgeMob(VALID_POSITION_X,
+        VALID_POSITION_Y,
+        DEFAULT_RANGE_DETECTION,
+        1.75f);
     task = new MobDodgeTask(new Vector2(2f, 2f), 2f, 5);
   }
 
   @Test
   public void shouldNotBeNullComponent() {
-    assertNotNull("Dodging combat component should not be null", baseMob.getComponent(DodgingComponent.class));
+    assertNotNull("Dodging combat component should not be null",
+        baseMob.getComponent(DodgingComponent.class));
   }
 
   @Test
   public void shouldNotBeNullTask() {
-    assertNotNull("Mob dodging tasks should not be null", baseMob.getComponent(AITaskComponent.class));
+    assertNotNull("Mob dodging tasks should not be null",
+        baseMob.getComponent(AITaskComponent.class));
   }
 
   @Test
@@ -74,7 +79,9 @@ public class DodgingComponentTest {
     baseMob.getEvents().addListener(DodgingComponent.DODGE_EVENT, dodgeProj);
     Vector2 mobPos = baseMob.getCenterPosition();
     task.start();
-    Entity projectile = createProjectile(VALID_POSITION_X - (DEFAULT_RANGE_DETECTION / 2), VALID_POSITION_Y);
+    Entity projectile = createProjectile(VALID_POSITION_X -
+        (DEFAULT_RANGE_DETECTION / 2),
+        VALID_POSITION_Y);
 
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
@@ -93,7 +100,8 @@ public class DodgingComponentTest {
     return mob;
   }
 
-  Entity createDodgeMob(float posX, float posY, float rangeDetection, float dodgeSpeed) {
+  Entity createDodgeMob(float posX, float posY, float rangeDetection,
+      float dodgeSpeed) {
     Entity mob = NPCFactory.createRangedBaseNPC();
     mob.addComponent(new CombatStatsComponent(10, 10));
     mob.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, rangeDetection, dodgeSpeed));
@@ -105,8 +113,10 @@ public class DodgingComponentTest {
   }
 
   Entity createProjectile(float posX, float posY) {
-    Entity projectile = ProjectileFactory.createBaseProjectile(baseMob.getComponent(ColliderComponent.class).getLayer(),
+    Entity projectile = ProjectileFactory.createBaseProjectile(baseMob
+        .getComponent(ColliderComponent.class).getLayer(),
         new Vector2(100, VALID_POSITION_Y), new Vector2(2f, 2f));
+
     projectile.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(projectile);
     projectile.setPosition(posX, posY);

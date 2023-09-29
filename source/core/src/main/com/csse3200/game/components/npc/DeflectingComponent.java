@@ -69,12 +69,12 @@ public class DeflectingComponent extends Component {
    * @param other Colliding projectile fixture.
    */
   private void deflectProj(Fixture me, Fixture other) {
-    // If self fixture does not match or the colliding target
+    // If self fixture does not match to the colliding target return;
     if (hitboxComponent.getFixture() != me
         || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits))
       return;
-
-    if (deflectLimitAmount-- <= 0) {
+    
+    if (deflectLimitAmount-- <= 0) { // Reached deflect limit amt, return.
       entity.getComponent(this.getClass()).setEnabled(false);
       // reset health
       resetHealth();
@@ -83,8 +83,6 @@ public class DeflectingComponent extends Component {
 
     // Obtain projectile entity.
     Entity projectile = ((BodyUserData) other.getBody().getUserData()).entity;
-
-    // projectile.getComponent(TouchAttackComponent.class).setEnabled(false);
 
     // Disposes all tasks for the curr projectile. At this curr time, it assumes
     // projectile only has one significant task, and that is the TrajectTask.

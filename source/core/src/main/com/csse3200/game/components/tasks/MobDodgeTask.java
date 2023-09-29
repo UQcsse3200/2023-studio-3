@@ -61,8 +61,10 @@ public class MobDodgeTask extends MobWanderTask {
   public void update() {
     super.update();
     if (timeSource.getTime() >= endTime) {
-      owner.getEntity().getEvents().trigger("dodgeIncomingEntity", owner.getEntity().getCenterPosition());
-      endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
+      owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
+          owner.getEntity().getCenterPosition());
+
+      endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
     }
   }
 

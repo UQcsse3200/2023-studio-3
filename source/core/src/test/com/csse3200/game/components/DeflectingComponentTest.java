@@ -4,14 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -71,12 +67,15 @@ public class DeflectingComponentTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
-    baseMob = createDeflectMob(DEFAULT_DEFLECT_AMOUNT, VALID_POSITION_X, VALID_POSITION_Y);
+    baseMob = createDeflectMob(DEFAULT_DEFLECT_AMOUNT,
+        VALID_POSITION_X,
+        VALID_POSITION_Y);
   }
 
   @Test
   public void shouldNotBeNull() {
-    assertNotNull("Deflecting component does not exist", baseMob.getComponent(DeflectingComponent.class));
+    assertNotNull("Deflecting component does not exist",
+        baseMob.getComponent(DeflectingComponent.class));
   }
 
   @Test
@@ -87,7 +86,8 @@ public class DeflectingComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertFalse("disposed flag should be false after collision start", projectile.getFlagForDelete());
+    assertFalse("disposed flag should be false after collision start",
+        projectile.getFlagForDelete());
   }
 
   @Test
@@ -99,7 +99,7 @@ public class DeflectingComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertFalse("disposed flag should be true after collision start when component is disabled",
+    assertFalse("collision set disposed flag to true",
         projectile.getFlagForDelete());
   }
 
@@ -125,9 +125,12 @@ public class DeflectingComponentTest {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
     Entity projectile2 = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
     Entity projectile3 = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
-    projectile.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+
+    projectile.getComponent(TouchAttackComponent.class)
+        .setDisposeOnHit(false);
 
     mob.getEvents().addListener("collisionStart", deflectProj);
+
     triggerCollisionStart(mob, projectile);
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
@@ -138,11 +141,16 @@ public class DeflectingComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    verify(deflectProj, atLeastOnce()).handle(mob.getComponent(ColliderComponent.class).getFixture(),
+    verify(deflectProj, atLeastOnce()).handle(
+        mob.getComponent(ColliderComponent.class).getFixture(),
         projectile.getComponent(ColliderComponent.class).getFixture());
-    verify(deflectProj, atLeastOnce()).handle(mob.getComponent(ColliderComponent.class).getFixture(),
+
+    verify(deflectProj, atLeastOnce()).handle(
+        mob.getComponent(ColliderComponent.class).getFixture(),
         projectile2.getComponent(ColliderComponent.class).getFixture());
-    verify(deflectProj, atLeastOnce()).handle(mob.getComponent(ColliderComponent.class).getFixture(),
+
+    verify(deflectProj, atLeastOnce()).handle(
+        mob.getComponent(ColliderComponent.class).getFixture(),
         projectile3.getComponent(ColliderComponent.class).getFixture());
   }
 
@@ -151,7 +159,9 @@ public class DeflectingComponentTest {
     EventListener2<Fixture, Fixture> deflectProj = mock(EventListener2.class);
     Entity mob = createDeflectMob(1, VALID_POSITION_Y, VALID_POSITION_X);
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
-    projectile.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+
+    projectile.getComponent(TouchAttackComponent.class)
+        .setDisposeOnHit(false);
 
     mob.getEvents().addListener("collisionStart", deflectProj);
     triggerCollisionStart(mob, projectile);
@@ -161,7 +171,8 @@ public class DeflectingComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    verify(deflectProj, atMostOnce()).handle(mob.getComponent(ColliderComponent.class).getFixture(),
+    verify(deflectProj, atMostOnce()).handle(
+        mob.getComponent(ColliderComponent.class).getFixture(),
         projectile.getComponent(ColliderComponent.class).getFixture());
   }
 
@@ -175,13 +186,15 @@ public class DeflectingComponentTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("image should be reversed horizontally", -initialX, projectile.getScale().x, 0.1f);
+    assertEquals("image should be reversed horizontally",
+        -initialX, projectile.getScale().x, 0.1f);
   }
 
   @Test
   public void shouldRemainSameHealth() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
-    int health = baseMob.getComponent(CombatStatsComponent.class).getHealth();
+    int health = baseMob.getComponent(CombatStatsComponent.class)
+        .getHealth();
 
     triggerCollisionStart(baseMob, projectile);
     ServiceLocator.getPhysicsService().getPhysics().update();
@@ -208,7 +221,8 @@ public class DeflectingComponentTest {
 
   Entity createDeflectMob(int amount, float posX, float posY) {
     Entity mob = NPCFactory.createRangedBaseNPC();
-    mob.addComponent(new DeflectingComponent(PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, amount));
+    mob.addComponent(new DeflectingComponent(PhysicsLayer.PROJECTILE,
+        PhysicsLayer.TOWER, amount));
     mob.addComponent(new CombatStatsComponent(DEFAULT_ATTACK, DEFAULT_DEFENSE));
 
     mob.setPosition(posX, posY);
@@ -218,10 +232,12 @@ public class DeflectingComponentTest {
   }
 
   Entity createProjectile(float posX, float posY) {
-    Entity projectile = ProjectileFactory.createBaseProjectile(baseMob.getComponent(ColliderComponent.class).getLayer(),
+    Entity projectile = ProjectileFactory.createBaseProjectile(
+        baseMob.getComponent(ColliderComponent.class).getLayer(),
         new Vector2(100, BASE_Y_COORD), new Vector2(2f, 2f));
 
-    projectile.getComponent(PhysicsMovementComponent.class).setTarget(new Vector2(100, BASE_Y_COORD));
+    projectile.getComponent(PhysicsMovementComponent.class)
+        .setTarget(new Vector2(100, BASE_Y_COORD));
 
     projectile.setPosition(posX, posY);
     ServiceLocator.getEntityService().register(projectile);
