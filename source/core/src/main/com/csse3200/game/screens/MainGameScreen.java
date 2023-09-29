@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
@@ -68,7 +67,7 @@ public class MainGameScreen extends ScreenAdapter {
     this.game = game;
     camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
-    camera.position.set((float) (viewportWidth / 2), (float) (viewportHeight / 2), 0);
+    camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
 

@@ -1,26 +1,20 @@
 package com.csse3200.game.areas;
 
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
-import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
-import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.gamearea.GameAreaDisplay;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -36,7 +30,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_MOBBOSS2=3;
   private static final int NUM_MOBBOSS1=1;
 
-  private Random random = new Random();
+  private SecureRandom rand = new SecureRandom();
 
   private int wave = 0;
   private Timer waveTimer;
@@ -264,7 +258,40 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    logger.info("Lol");
+    //player.getEvents().addListener("spawnWave", this::spawnWave);
+    //playMusic();
+    
+    // Types of projectile
+//    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
+//    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
+//    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
+//    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
+//    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
+//    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
+//    spawnXenoGrunts();
+  //  spawnWeaponTower();
+
+  //  spawnDragonKnight();
+    // spawnFireWorm(19, 5); // * TEMPORARY for testing
+    spawnFireTowerTowerAt(3, 1);
+    spawnFireTowerTowerAt(3, 2);
+    spawnFireTowerTowerAt(3, 3);
+    spawnFireTowerTowerAt(3, 4);
+    spawnFireTowerTowerAt(3, 5);
+//    spawnDroidTowerAt(3, 1);
+//    spawnDroidTowerAt(3, 2);
+//    spawnDroidTowerAt(3, 3);
+//    spawnDroidTowerAt(3, 4);
+//    spawnDroidTowerAt(3, 5);
+    // spawnSplittingXenoGrunt(15, 5);
+//    spawnDeflectXenoGrunt(15, 5);
+    // spawnSplittingXenoGrunt(15, 4);
+    // spawnSplittingXenoGrunt(15, 5);
+    // spawnDodgingDragonKnight(15, 3);
+    spawnDemonBoss();
+    spawnPatrick();
     spawnIceBaby();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
@@ -276,10 +303,19 @@ public class ForestGameArea extends GameArea {
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
-    logger.info("Lol");
     spawnGapScanners();
     spawnDroidTower();
-    logger.info("Lol");
+//     spawnPatrickDeath();
+  //  spawnFireWorm();
+
+  //  startWaveTimer();
+////    spawnIncome();
+//    spawnScrap();
+    spawnTNTTower();
+//
+//    spawnGapScanners();
+//    spawnDroidTower();
+//
   }
   
   private void displayUI() {
@@ -421,29 +457,19 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnPatrick() {
-    Entity patrick = MobBossFactory.createPatrickBoss(2500);
+    Entity patrick = MobBossFactory.createPatrickBoss(3000);
     spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+  }
+
+  private void spawnPatrickDeath() {
+    Entity patrickDeath = MobBossFactory.patrickDead();
+    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
   }
 
   private void spawnIceBaby() {
     Entity iceBaby = MobBossFactory.createIceBoss();
     spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
   }
-
-  private Entity spawnMobBoss1() {
-    int[] pickedLanes = random.ints(0, 8)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_MOBBOSS1; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      mobBoss1 = MobBossFactory.createMobBoss1(pickedLanes[i]);
-      spawnEntityAt(mobBoss1,
-              randomPos,
-              true,
-              false);
-    }
-    return mobBoss1;
-  }
-
 
   /**
    * Spawns a projectile that only heads towards the enemies in its lane.
@@ -489,7 +515,7 @@ public class ForestGameArea extends GameArea {
   }  
   
   private void spawnXenoGrunts() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -524,7 +550,7 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnFireWorm() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -535,7 +561,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnSkeleton() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -546,7 +572,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDragonKnight() {
-    int[] pickedLanes = random.ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -557,7 +583,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWizard() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -568,7 +594,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterQueen() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -579,7 +605,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterSlime() {
-    int[] pickedLanes = new Random().ints(1, 7)
+    int[] pickedLanes = rand.ints(1, 7)
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -600,6 +626,91 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //
 //  }
+
+  /**
+   * Creates multiple projectiles that travel simultaneous. They all have same
+   * the starting point but different destinations.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction   The direction the projectile should head towards.
+   * @param space       The space between the projectiles' destination.
+   * @param speed       The speed of the projectiles.
+   * @param quantity    The amount of projectiles to spawn.
+   */
+  private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
+    int half = quantity / 2;
+    for (int i = 0; i < quantity; i++) {
+      spawnProjectile(position, targetLayer, space * half, direction, speed);
+      --half;
+    }
+  }
+  
+  /**
+   * Returns projectile that can do an area of effect damage
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   * @param effect      Type of effect.
+   * @param aoe         Whether it is an aoe projectile.
+   */
+  private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
+                                     ProjectileEffects effect, boolean aoe) {
+    Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);
+    Projectile.setPosition(position);
+    spawnEntity(Projectile);
+  }
+  
+  /**
+   * Spawns a pierce fireball.
+   * Pierce fireball can go through targetlayers without disappearing but damage
+   * will still be applied.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnPierceFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    Entity projectile = ProjectileFactory.createPierceFireBall(targetLayer, new Vector2(direction, position.y), speed);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
+  }
+  
+  /**
+   * Spawns a ricochet fireball
+   * Ricochet fireballs bounce off targets with a specified maximum count of 3
+   * Possible extensions: Make the bounce count flexible with a param.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnRicochetFireball(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    // Bounce count set to 0.
+    Entity projectile = ProjectileFactory.createRicochetFireball(targetLayer, new Vector2(direction, position.y), speed, 0);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
+  }
+  
+  /**
+   * Spawns a split firework fireball.
+   * Splits into mini projectiles that spreads out after collision.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the "shooter".
+   * @param direction   The direction the projectile should towards.
+   * @param speed       The speed of the projectiles.
+   * @param amount      The amount of projectiles appearing after collision.
+   */
+  private void spawnSplitFireWorksFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed, int amount) {
+    Entity projectile = ProjectileFactory.createSplitFireWorksFireball(targetLayer, new Vector2(direction, position.y), speed, amount);
+    projectile.setPosition(position);
+    spawnEntity(projectile);
+  }
   
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 2);

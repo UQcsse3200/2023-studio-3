@@ -5,7 +5,6 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
