@@ -98,12 +98,12 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       // Check if level has been completed - no more waves remaining
       if (currentWaveIndex == this.level.getNumWaves()) {
         logger.info("No waves remaining, level completed");
-        this.waveEnd.play();
         ServiceLocator.getWaveService().setLevelCompleted();
 
       } else {
         // Spawn the next wave
         logger.info("No enemies remaining, begin next wave");
+        this.waveEnd.play();
         this.waveInProgress = true;
         this.level.setWaveIndex(currentWaveIndex);
         this.currentWave = this.level.getWave(currentWaveIndex);
