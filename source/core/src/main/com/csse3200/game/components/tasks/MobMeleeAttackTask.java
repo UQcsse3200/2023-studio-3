@@ -129,13 +129,13 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
             this.owner.getEntity().getEvents().trigger("shootStart");
           } else {
-            // Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            // newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            // newProjectile.setScale(-1f, 1f);
-            // ServiceLocator.getEntityService().register(newProjectile);
+            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile.setScale(-0.0f, 0.0f);
+            ServiceLocator.getEntityService().register(newProjectile);
 
 //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
-            // this.owner.getEntity().getEvents().trigger(FIRING);
+            this.owner.getEntity().getEvents().trigger(FIRING);
             mobState = STATE.STOW;
           }
         }
