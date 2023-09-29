@@ -27,8 +27,8 @@ public class WaveClass {
   }
 
   /**
-   *
-   * @return
+   * Get the entities that are part of this wave and randomise the order they are spawned
+   * @return mobs for the wave
    */
   private List<String> entitiesToWave() {
     List<String> enemies = new ArrayList<>();
