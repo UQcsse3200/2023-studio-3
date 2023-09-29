@@ -35,7 +35,7 @@ public class SplitFireworksComponentTest {
   private final String[] atlas = {
       "images/projectiles/mobProjectile.atlas",
       "images/projectiles/basic_projectile.atlas",
-      "images/projectiles/mobKing_projectile.atlas",
+      "images/projectiles/mobBoss_projectile.atlas",
       "images/projectiles/engineer_projectile.atlas",
       "images/projectiles/firework_anim.atlas"
   };
