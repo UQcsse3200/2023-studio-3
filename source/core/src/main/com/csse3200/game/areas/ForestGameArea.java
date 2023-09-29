@@ -220,11 +220,12 @@ public class ForestGameArea extends GameArea {
       case 1:
       case 2:
       spawnWaterQueen();
-      spawnWaterSlime();
+      spawnWizard();
       logger.info("Lol");
       
       break;
       case 3:
+      spawnWaterSlime();
       spawnIceBaby();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
@@ -237,7 +238,6 @@ public class ForestGameArea extends GameArea {
       break;
       case 5:
       case 6:
-      spawnWizard();
       spawnSkeleton();
       case 7:
       spawnDemonBoss();

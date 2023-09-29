@@ -42,6 +42,7 @@ public class SkeletonAnimationController extends Component {
 
     void animateDeath() {
         animator.startAnimation("skeleton_death");
+        deathSound.setVolume(1000, 5.5f);
         deathSound.play();
     }
 }

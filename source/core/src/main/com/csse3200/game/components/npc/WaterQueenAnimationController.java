@@ -37,6 +37,7 @@ public class WaterQueenAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("water_queen_attack");
+        attackSound.setVolume(1000, 5.5f);
         attackSound.play();
     }
 

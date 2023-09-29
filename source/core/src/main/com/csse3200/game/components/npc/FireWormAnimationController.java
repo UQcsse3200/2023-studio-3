@@ -38,6 +38,7 @@ public class FireWormAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("fire_worm_attack");
+        attackSound.setVolume(1000, 5.5f);
         attackSound.play();
     }
 

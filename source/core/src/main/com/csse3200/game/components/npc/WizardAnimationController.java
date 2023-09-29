@@ -41,6 +41,7 @@ public class WizardAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("wizard_attack");
+        attackSound.setVolume(1000, 5.5f);
         attackSound.play();
     }
 
