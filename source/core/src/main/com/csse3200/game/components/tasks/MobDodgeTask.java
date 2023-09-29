@@ -49,7 +49,8 @@ public class MobDodgeTask extends MobWanderTask {
     super.start();
     owner.getEntity().getEvents().trigger("wanderStart");
 
-    endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
+    // endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
+    endTime = timeSource.getTime();
   }
 
   /**
@@ -63,7 +64,6 @@ public class MobDodgeTask extends MobWanderTask {
       owner.getEntity().getEvents().trigger("dodgeIncomingEntity", owner.getEntity().getCenterPosition());
       endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
     }
-
   }
 
   /**
