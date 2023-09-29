@@ -219,29 +219,29 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-      spawnWizard();
-      spawnSkeleton();
+        spawnWizard();
+        spawnSkeleton();
       logger.info("Lol");
       
       break;
       case 3:
-      spawnWaterQueen();
-      spawnWaterSlime();
+        spawnPatrick();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
+        spawnWaterQueen();
+        spawnWaterSlime();
       logger.info("Lol");
-      spawnFireWorm();
-      spawnDragonKnight();
       // mobBoss2 = spawnMobBoss2();
       break;
       case 5:
         spawnIceBaby();
       case 6:
-        spawnDemonBoss();
+        spawnFireWorm();
+        spawnDragonKnight();
       case 7:
-        spawnPatrick();
+        spawnDemonBoss();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -298,7 +298,7 @@ public class ForestGameArea extends GameArea {
     // spawnDodgingDragonKnight(15, 3);
     // spawnDemonBoss();
     // spawnPatrick();
-    spawnIceBaby();
+    // spawnIceBaby();
     player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
     startWaveTimer();
