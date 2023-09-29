@@ -2,6 +2,9 @@ package com.csse3200.game.services;
 
 public class WaveService {
     private int enemyCount;
+
+    private int waveCount = 1;
+
     private boolean gameOver = false;
 
 
@@ -49,5 +52,13 @@ public class WaveService {
      */
     public boolean hasGameEnded() {
         return gameOver;
+    }
+
+    public int getWaveCount() {
+        return this.waveCount;
+    }
+
+    public void setWaveCount(int waveCount) {
+        this.waveCount += waveCount;
     }
 }

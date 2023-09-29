@@ -89,6 +89,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       this.waveInProgress = true;
       logger.info("No enemies remaining, begin next wave");
       currentWaveIndex++;
+      // Set the service wave count to the current wave index.
+      ServiceLocator.getWaveService().setWaveCount(currentWaveIndex);
       this.level.setWaveIndex(currentWaveIndex);
       this.currentWave = this.level.getWave(currentWaveIndex);
       ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
