@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.areas.terrain.TerrainComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
@@ -114,7 +115,15 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/demon.png",
           "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png",
-          "images/mobboss/patrick.png"
+          "images/mobboss/patrick.png",
+          "images/GrassTile/grass_tile_1.png",
+          "images/GrassTile/grass_tile_2.png",
+          "images/GrassTile/grass_tile_3.png",
+          "images/GrassTile/grass_tile_4.png",
+          "images/GrassTile/grass_tile_5.png",
+          "images/GrassTile/grass_tile_6.png",
+          "images/GrassTile/grass_tile_7.png",
+          "images/highlight_tile.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -285,7 +294,9 @@ public class ForestGameArea extends GameArea {
   private void spawnTerrain() {
 
     terrain = terrainFactory.createTerrain(TerrainType.ALL_DEMO);
-    spawnEntity(new Entity().addComponent(terrain));
+    // TODO: We might need a MapService
+    Entity entity = new Entity().addComponent(terrain);
+    spawnEntity(entity);
     
     // Terrain walls
     float tileSize = terrain.getTileSize();
