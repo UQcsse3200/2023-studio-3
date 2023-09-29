@@ -150,19 +150,19 @@ class MobBossFactoryTest {
     }
     @Test
     public void testPatrickCreation() {
-        Entity Patrick = MobBossFactory.createPatrickBoss();
+        Entity Patrick = MobBossFactory.createPatrickBoss(3000);
         assertNotNull(Patrick);
     }
 
     @Test
     public void testPatrickAnimationRenderComponent() {
-        Entity Patrick = MobBossFactory.createPatrickBoss();
+        Entity Patrick = MobBossFactory.createPatrickBoss(3000);
         assertNotNull(Patrick.getComponent(AnimationRenderComponent.class),
                 "Patrick does not have an AnimationRenderComponent");
     }
     @Test
     public void testPatrickAnimationController() {
-        Entity Patrick = MobBossFactory.createPatrickBoss();
+        Entity Patrick = MobBossFactory.createPatrickBoss(3000);
         assertNotNull(Patrick.getComponent(PatrickAnimationController.class),
                 "Patrick does not have an Animation Controller");
     }
