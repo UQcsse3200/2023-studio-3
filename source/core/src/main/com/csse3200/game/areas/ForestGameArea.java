@@ -219,29 +219,29 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-        spawnWizard();
-        spawnSkeleton();
+      spawnWaterQueen();
+      spawnWaterSlime();
       logger.info("Lol");
       
       break;
       case 3:
-        spawnPatrick();
+      spawnIceBaby();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
-        spawnWaterQueen();
-        spawnWaterSlime();
+      spawnFireWorm();
+      spawnDragonKnight();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
       case 5:
-        spawnIceBaby();
       case 6:
-        spawnFireWorm();
-        spawnDragonKnight();
+      spawnWizard();
+      spawnSkeleton();
       case 7:
-        spawnDemonBoss();
+      spawnDemonBoss();
+      spawnPatrick();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -281,11 +281,11 @@ public class ForestGameArea extends GameArea {
 
   //  spawnDragonKnight();
     // spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnFireTowerTowerAt(3, 1);
-    spawnFireTowerTowerAt(3, 2);
-    spawnFireTowerTowerAt(3, 3);
-    spawnFireTowerTowerAt(3, 4);
-    spawnFireTowerTowerAt(3, 5);
+    // spawnFireTowerTowerAt(3, 1);
+    // spawnFireTowerTowerAt(3, 2);
+    // spawnFireTowerTowerAt(3, 3);
+    // spawnFireTowerTowerAt(3, 4);
+    // spawnFireTowerTowerAt(3, 5);
 //    spawnDroidTowerAt(3, 1);
 //    spawnDroidTowerAt(3, 2);
 //    spawnDroidTowerAt(3, 3);

@@ -335,6 +335,7 @@ public class NPCFactory {
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
             .addTask(new MobMeleeAttackTask(2, 2f));
+        //     .addTask(new MobAttackTask(2, 2f));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
             // .addTask(new MobAttackTask(2, 40));
@@ -358,6 +359,7 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+        //     .addTask(new MobAttackTask(2, 2f));
             .addTask(new MobRangedAttackTask(2, 2f));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
