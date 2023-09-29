@@ -24,7 +24,7 @@ public class WaveFactory {
   private static Random rand = new Random();
 
   public static Entity createWaves() {
-    Integer chosenLevel = 1;
+    int chosenLevel = 3;
     int difficulty = 1;
     int maxWaves = 1;
     switch (chosenLevel) {
@@ -52,30 +52,58 @@ public class WaveFactory {
 //    LevelWaves level = new LevelWaves(10);
 //    level.addWave(wave1);
 //    level.addWave(wave2);
-    LevelWaves level = createLevel(difficulty, maxWaves);
+    LevelWaves level = createLevel(difficulty, maxWaves, chosenLevel);
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WaveTask());
     return level.addComponent(aiComponent);
   }
 
-  public static LevelWaves createLevel(int maxDiff, int maxWaves) {
+  public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
     int minMobs = 3 + maxDiff;
 //    int minMobs = maxDiff;
-    ArrayList<String> possibleMobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno"));
+//    ArrayList<String> possibleMobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno"));
+    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "WaterSlime", "DeflectXeno"));
+    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectXeno", "Wizard"));
+    ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno", "FireWorm"));
+    String boss1 = "WaterBoss";
+    String boss2 = "MagicBoss";
+    String boss3 = "FireBoss";
     LevelWaves level = new LevelWaves(5);
     for (int i = 1; i < maxWaves; i++) {
-      String mob1 = possibleMobs.get(rand.nextInt(4));
-      String mob2 = possibleMobs.get(rand.nextInt(4));
+      HashMap<String, Integer> mobs = new HashMap<>();
+      ArrayList<String> possibleMobs;
+
+      String boss = "";
+      switch (chosenLevel) {
+        case 2:
+          boss = boss2;
+          possibleMobs = level2Mobs;
+          break;
+        case 3:
+          boss = boss3;
+          possibleMobs = level3Mobs;
+          break;
+        default:
+          boss = boss1;
+          possibleMobs = level1Mobs;
+          break;
+      }
+
+      if (i % 5 == 0) {
+        mobs.put(boss, 1/5);
+      }
+
+      String mob1 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
+      String mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
 
       while (mob2 == mob1) {
-        mob2 = possibleMobs.get(rand.nextInt(4));
+        mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
       }
 
       int mob1Num = rand.nextInt(minMobs - 1);
       int mob2Num = minMobs - mob1Num;
 
-      HashMap<String, Integer> mobs = new HashMap<>();
       mobs.put(mob1, mob1Num);
       mobs.put(mob2, mob2Num);
 

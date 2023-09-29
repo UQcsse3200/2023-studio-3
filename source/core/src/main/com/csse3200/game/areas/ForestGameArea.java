@@ -274,6 +274,14 @@ public class ForestGameArea extends GameArea {
     //spawnXenoGrunts();
     //startWaveTimer();
     spawnScrap();
+
+//    spawnFireWorm();
+//    spawnDragonKnight();
+//    spawnSkeleton();
+//    spawnWizard();
+//    spawnWaterQueen();
+//    spawnWaterSlime();
+//    spawnDemonBoss();
     //spawnDeflectXenoGrunt(15, 5);
     //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
@@ -505,6 +513,29 @@ public class ForestGameArea extends GameArea {
       case "DeflectXeno":
         mob = NPCFactory.createDeflectXenoGrunt();
         break;
+      case "WaterSlime":
+        mob = NPCFactory.createWaterSlime();
+        break;
+      case "FireWorm":
+        mob = NPCFactory.createFireWorm();
+        break;
+      case "Skeleton":
+        mob = NPCFactory.createSkeleton();
+        break;
+      case "Wizard":
+        mob = NPCFactory.createWizard();
+        break;
+      case "MagicBoss":
+        mob = MobBossFactory.createPatrickBoss(2500);
+        break;
+      case "WaterBoss":
+        mob = NPCFactory.createWaterQueen();
+        break;
+      case "FireBoss":
+        mob = MobBossFactory.createDemonBoss();
+        break;
+      case "boss":
+        spawnDemonBoss();
       default:
         mob = NPCFactory.createBaseNPC();
     }
