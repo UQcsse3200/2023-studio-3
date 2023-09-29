@@ -26,6 +26,7 @@ import java.io.Serial;
 import java.text.DecimalFormat;
 
 public class IceBabyTask extends DefaultTask implements PriorityTask {
+    /** Constant names */
     private static final int PRIORITY = 3;
     private static final Vector2 ICEBABY_SPEED = new Vector2(1f, 1f);
     private static final int MOVE_FORWARD_DELAY = 30;
@@ -37,6 +38,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private static final int Y_TOP_BOUNDARY = 6;
     private static final int Y_BOT_BOUNDARY = 1;
     private static final Logger logger = LoggerFactory.getLogger(IceBabyTask.class);
+    /** Variable names */
     private PhysicsEngine physics;
     private GameTime gameTime;
     private STATE prevState;
@@ -50,6 +52,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private boolean aoe = true;
     private boolean startFlag = false;
     private boolean isWalking;
+    /** Animation constants */
     private static final String IDLE = "startIdle";
     private static final String ATK1 = "start1_atk";
     private static final String ATK2 = "start2_atk";
@@ -64,6 +67,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
     private STATE iceBabyState = STATE.IDLE;
 
+    /**
+     * Constructor for IceBabyTask
+     */
     public IceBabyTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
         gameTime = ServiceLocator.getTimeSource();
@@ -73,6 +79,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     //ice baby can also do aoe attack based on the animation
     //ice baby does punches to towers once it is close
 
+    /**
+     * Starts the Task and triggers for Ice Baby to be spawned
+     */
     @Override
     public void start() {
         super.start();
@@ -102,6 +111,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
 
     }
 
+    /**
+     * Updates the boss to start attacking and spawning new mobs
+     */
     @Override
     public void update() {
         if (!startFlag) {
@@ -131,7 +143,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
                 }
             case ATK1, ATK2 -> {
                 if (animation.isFinished()) {
-                    changeState(STATE.ATK3);
+                    ATK3();
                 }
             }
             case ATK3 -> {
@@ -142,11 +154,18 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Changes the state of animation
+     * @param state - the new animation
+     */
     private void changeState(STATE state) {
         prevState = this.iceBabyState;
         this.iceBabyState = state;
     }
 
+    /**
+     * Trigger the specific animation to play
+     */
     private void animate() {
         // Check if same animation is being called
         if (prevState.equals(iceBabyState)) {
@@ -168,6 +187,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         prevState = iceBabyState;
     }
 
+    /**
+     * Changes state of Ice Baby and moves it to the desired position.
+     *
+     * @param finalPos position for demon to jump to
+     */
     private void walk(Vector2 finalPos) {
         changeState(STATE.WALK);
         animate();
@@ -181,9 +205,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Returns a random position 3 units away for the demon to jump to.
+     * Returns a random position 3 units away for the ice Baby to walk to.
      *
-     * @return a position 3 units away from the demon to jump to
+     * @return a position 3 units away
      */
     private Vector2 getWalkPos() {
         // check if boundary has shifted causing demon to be out of bounds
@@ -211,6 +235,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         return walkPos;
     }
 
+    /**
+     * Returns a boolean to confirm whether the ice baby has completed a walk or not.
+     *
+     * @return true if demon has completed walk or not
+     */
     private boolean walkComplete() {
         changeState(STATE.ATK1);
         animate();
@@ -223,6 +252,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         return false;
     }
 
+    /**
+     * Changes the state of the animation and deals damage to nearby humans
+     */
     private void ATK3() {
         changeState(STATE.ATK3);
         animate();
@@ -238,6 +270,9 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         }, 2f);
     }
 
+    /**
+     * Creates a new mob triggered with the correct animation
+     */
     private void spawnMob() {
         changeState(STATE.ATK2);
         Entity newMob = NPCFactory.createSplittingWaterSlime();
@@ -245,6 +280,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         ServiceLocator.getEntityService().register(newMob);
     }
 
+    /**
+     * Applies aoe damage to nearby human entities.
+     *
+     * @param targets array of human entities to deal damage to
+     */
     private void applyAoeDamage(Array<Entity> targets, int damage) {
         for (int i = 0; i < targets.size; i++) {
             Entity targetEntity = targets.get(i);
@@ -257,6 +297,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
+     *
+     * @return nearby entities with the PhysicsLayer of HUMAN
+     */
     private Array<Entity> getNearbyHumans(int radius) {
         Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
                 getNearbyEntities(iceBaby, radius);
@@ -281,7 +326,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         return nearbyHumans;
     }
 
-
+    /**
+     * Returns the priority of this task.
+     *
+     * @return priority of task
+     */
     @Override
     public int getPriority() {
         return PRIORITY;

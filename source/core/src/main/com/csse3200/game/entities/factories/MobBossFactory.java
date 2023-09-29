@@ -31,7 +31,11 @@ public class MobBossFactory {
     private static final int ICEBABY_ATTACK = 0;
     private static final int ICEBABY_HEALTH = 3000;
 
-    // Create Demon Boss
+    /**
+     * Creates new Demon boss with its correlating tasks and animations
+     *
+     * @return Demon boss
+     */
     public static Entity createDemonBoss() {
         Entity demon = createBaseBoss();
 
@@ -67,6 +71,11 @@ public class MobBossFactory {
         return demon;
     }
 
+    /**
+     * Creates end state of demon boss
+     *
+     * @return Slimey Boy
+     */
     public static Entity createSlimeyBoy() {
         Entity slimeyBoy = createBaseBoss();
 
@@ -99,6 +108,12 @@ public class MobBossFactory {
         return slimeyBoy;
     }
 
+    /**
+     * Creates new Patrick boss with correlating tasks and animations
+     *
+     * @param health - health of the boss
+     * @return Patrick Boss
+     */
     public static Entity createPatrickBoss(int health) {
         Entity demon = createBaseBoss();
 
@@ -131,6 +146,11 @@ public class MobBossFactory {
         return demon;
     }
 
+    /**
+     * Creates a new ice boss and adds its correlating animations and tasks
+     *
+     * @return - Ice Baby Boss
+     */
     public static Entity createIceBoss() {
         Entity iceBaby = createBaseBoss();
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -220,7 +240,11 @@ public class MobBossFactory {
         return mobBoss2;
     }
 
-    // Create the base boss entity
+    /**
+     * Creates the base boss with the reqired components
+     *
+     * @return - boss
+     */
     public static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
