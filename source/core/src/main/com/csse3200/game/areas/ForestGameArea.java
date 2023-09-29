@@ -165,7 +165,11 @@ public class ForestGameArea extends GameArea {
           "sounds/projectiles/explosion.mp3",
           "sounds/mobBoss/iceBabySound.mp3",
           "sounds/mobBoss/mobSpawnStomp.mp3",
-          "sounds/mobBoss/iceBabyAOE.mp3"
+          "sounds/mobBoss/iceBabyAOE.mp3",
+          "sounds/mobs/wizardSpell.mp3",
+          "sounds/mobs/waterQueenSpell.mp3",
+          "sounds/mobs/boneBreak.mp3",
+          "sounds/mobs/fireWormRoar.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -215,15 +219,15 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-      spawnWaterSlime();
-      spawnWaterQueen();
+      spawnWizard();
+      spawnSkeleton();
       logger.info("Lol");
       
       break;
       case 3:
+      spawnWaterQueen();
+      spawnWaterSlime();
       logger.info("Lol");
-      spawnWizard();
-      spawnSkeleton();
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:

@@ -18,6 +18,11 @@ public class SkeletonAnimationController extends Component {
     AnimationRenderComponent animator;
     private SecureRandom rand = new SecureRandom();
 
+     /** Sound variables */
+     private static final String ATTACK_SOUND = "sounds/mobs/boneBreak.mp3";
+     Sound deathSound = ServiceLocator.getResourceService().getAsset(
+             ATTACK_SOUND, Sound.class);
+
     @Override
     public void create() {
         super.create();
@@ -37,6 +42,7 @@ public class SkeletonAnimationController extends Component {
 
     void animateDeath() {
         animator.startAnimation("skeleton_death");
+        deathSound.play();
     }
 }
 
