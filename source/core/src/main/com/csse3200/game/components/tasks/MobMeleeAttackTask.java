@@ -100,7 +100,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -146,7 +146,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
           owner.getEntity().getEvents().trigger(IDLE);

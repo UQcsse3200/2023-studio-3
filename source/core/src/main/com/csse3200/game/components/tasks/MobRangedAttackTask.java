@@ -100,7 +100,7 @@ public class MobRangedAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -127,7 +127,6 @@ public class MobRangedAttackTask extends DefaultTask implements PriorityTask {
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
-            this.owner.getEntity().getEvents().trigger("shootStart");
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
             newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
             newProjectile.setScale(-1f, 1f);
@@ -153,7 +152,7 @@ public class MobRangedAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
           owner.getEntity().getEvents().trigger(IDLE);
