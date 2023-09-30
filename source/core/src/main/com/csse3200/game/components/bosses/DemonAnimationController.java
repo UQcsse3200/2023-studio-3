@@ -10,7 +10,16 @@ public class DemonAnimationController extends Component {
 //    private static final String DEMON_JUMP = "sounds/mobBoss/demonBreath.mp3";
     Sound demonBreath = ServiceLocator.getResourceService().getAsset(
             "sounds/mobBoss/demonBreath.mp3", Sound.class);
-    
+    Sound demonSpawn = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonSpawn.wav", Sound.class);
+    Sound demonAttack = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonAttack.wav", Sound.class);
+    Sound demonBreathIn = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonBreathIn.mp3", Sound.class);
+    Sound demonLand = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonLand.mp3", Sound.class);
+    Sound demonRoar = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonJump.mp3", Sound.class);
 
     /**
      * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
@@ -34,8 +43,13 @@ public class DemonAnimationController extends Component {
         entity.getEvents().addListener("projectile_idle", this::projectileIdle);
         entity.getEvents().addListener("take_hit", this::takeHit);
         entity.getEvents().addListener("transform", this::transform);
+        entity.getEvents().addListener("demon_spawn_sound", this::demonSpawnSound);
+        entity.getEvents().addListener("demon_attack_sound", this::demonAttackSound);
+        entity.getEvents().addListener("demon_breath_in_sound", this::demonBreathInSound);
+        entity.getEvents().addListener("demon_landing_sound", this::demonLandSound);
+        entity.getEvents().addListener("demon_roar_sound", this::demonRoarSound);
     }
-    
+
     private void demonWalk() {
         animator.startAnimation("demon_walk");
     }
@@ -79,5 +93,25 @@ public class DemonAnimationController extends Component {
     }
     private void transform() {
         animator.startAnimation("transform");
+    }
+    private void demonSpawnSound() {
+        demonSpawn.setVolume(1000,5.5f);
+        demonSpawn.play();
+    }
+    private void demonAttackSound() {
+        demonAttack.setVolume(1000,5.5f);
+        demonAttack.play();
+    }
+    private void demonBreathInSound() {
+        demonBreathIn.setVolume(1000,5.5f);
+        demonBreathIn.play();
+    }
+    private void demonLandSound() {
+        demonLand.setVolume(1000,5.5f);
+        demonLand.play();
+    }
+    private void demonRoarSound() {
+        demonRoar.setVolume(1000,5.5f);
+        demonRoar.play();
     }
 }
