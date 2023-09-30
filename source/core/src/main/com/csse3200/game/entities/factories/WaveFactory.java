@@ -28,15 +28,14 @@ public class WaveFactory {
     int difficulty = 1;
     int maxWaves = 1;
     switch (chosenLevel) {
-      case 1:
-        difficulty = 2;
-        maxWaves = 5;
       case 2:
         difficulty = 3;
         maxWaves = 10;
+        break;
       case 3:
         difficulty = 5;
         maxWaves = 15;
+        break;
       default:
         difficulty = 2;
         maxWaves = 5;
@@ -60,6 +59,7 @@ public class WaveFactory {
   }
 
   public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
+    System.out.println("creating level difficulty: " + maxDiff + " maxWaves: " + maxWaves + " chosenLevel: " + chosenLevel);
     int minMobs = 3 + maxDiff;
 //    int minMobs = maxDiff;
 //    ArrayList<String> possibleMobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno"));
@@ -70,25 +70,30 @@ public class WaveFactory {
     String boss2 = "MagicBoss";
     String boss3 = "FireBoss";
     LevelWaves level = new LevelWaves(5);
-    for (int i = 1; i < maxWaves; i++) {
-      HashMap<String, Integer> mobs = new HashMap<>();
-      ArrayList<String> possibleMobs;
 
-      String boss = "";
-      switch (chosenLevel) {
-        case 2:
-          boss = boss2;
-          possibleMobs = level2Mobs;
-          break;
-        case 3:
-          boss = boss3;
-          possibleMobs = level3Mobs;
-          break;
-        default:
-          boss = boss1;
-          possibleMobs = level1Mobs;
-          break;
-      }
+    ArrayList<String> possibleMobs;
+
+    String boss = "";
+    switch (chosenLevel) {
+      case 2:
+        boss = boss2;
+        possibleMobs = level2Mobs;
+        System.out.println("level 2");
+        break;
+      case 3:
+        boss = boss3;
+        possibleMobs = level3Mobs;
+        System.out.println("level 3");
+        break;
+      default:
+        boss = boss1;
+        possibleMobs = level1Mobs;
+        break;
+    }
+
+    for (int i = 1; i <= maxWaves; i++) {
+      System.out.println("adding another mob: " + i);
+      HashMap<String, Integer> mobs = new HashMap<>();
 
       if (i % 5 == 0) {
         mobs.put(boss, 1/5);
