@@ -17,13 +17,10 @@ import com.csse3200.game.components.npc.WaterQueenAnimationController;
 import com.csse3200.game.components.npc.WaterSlimeAnimationController;
 import com.csse3200.game.components.npc.WizardAnimationController;
 import com.csse3200.game.components.npc.XenoAnimationController;
-import com.csse3200.game.components.tasks.MobAttackTask;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobMeleeAttackTask;
 import com.csse3200.game.components.tasks.MobRangedAttackTask;
-import com.csse3200.game.components.tasks.MobShootTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
-
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -38,7 +35,6 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
