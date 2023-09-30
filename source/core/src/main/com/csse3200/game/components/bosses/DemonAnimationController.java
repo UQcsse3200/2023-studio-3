@@ -20,6 +20,8 @@ public class DemonAnimationController extends Component {
             "sounds/mobBoss/demonLand.mp3", Sound.class);
     Sound demonRoar = ServiceLocator.getResourceService().getAsset(
             "sounds/mobBoss/demonJump.mp3", Sound.class);
+    Sound demonHeal = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonHeal.mp3", Sound.class);
 
     /**
      * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
@@ -48,6 +50,7 @@ public class DemonAnimationController extends Component {
         entity.getEvents().addListener("demon_breath_in_sound", this::demonBreathInSound);
         entity.getEvents().addListener("demon_landing_sound", this::demonLandSound);
         entity.getEvents().addListener("demon_roar_sound", this::demonRoarSound);
+        entity.getEvents().addListener("demon_heal_sound", this::demonHealSound);
     }
 
     private void demonWalk() {
@@ -113,5 +116,9 @@ public class DemonAnimationController extends Component {
     private void demonRoarSound() {
         demonRoar.setVolume(1000,5.5f);
         demonRoar.play();
+    }
+    private void demonHealSound() {
+        demonHeal.setVolume(1000,5.5f);
+        demonHeal.play();
     }
 }

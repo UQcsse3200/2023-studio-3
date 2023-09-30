@@ -438,13 +438,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             public void run() {
                 isHealing = false;
             }
-        }, HEAL_TIMES);
+        }, (float) HEAL_TIMES / 2);
 
         // add health every 10s
         for (int i = 0; i < HEAL_TIMES; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
+                    demon.getEvents().trigger("demon_heal_sound");
                     demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);
                 }
             }, (float) i /2);
