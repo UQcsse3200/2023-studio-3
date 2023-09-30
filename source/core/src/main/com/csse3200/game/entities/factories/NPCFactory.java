@@ -109,7 +109,6 @@ public class NPCFactory {
   /**
    * Creates a fire worm entity.
    *
-   * @param target entity to chase
    * @return entity
    */
   public static Entity createSkeleton() {
@@ -141,7 +140,6 @@ public class NPCFactory {
   /**
    * Creates a wizard entity.
    *
-   * @param target entity to chase
    * @return entity
    */
   public static Entity createWizard() {
@@ -172,7 +170,6 @@ public class NPCFactory {
   /**
    * Creates a wizard entity.
    *
-   * @param target entity to chase
    * @return entity
    */
   public static Entity createWaterQueen() {
@@ -203,7 +200,6 @@ public class NPCFactory {
   /**
    * Creates a wizard entity.
    *
-   * @param target entity to chase
    * @return entity
    */
   public static Entity createWaterSlime() {

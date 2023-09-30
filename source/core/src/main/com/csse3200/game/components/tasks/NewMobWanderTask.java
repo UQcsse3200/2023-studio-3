@@ -37,8 +37,6 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
   private final RaycastHit hit = new RaycastHit();
   
   /**
-   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
-   *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
   public NewMobWanderTask(float waitTime) {
@@ -91,6 +89,7 @@ public class NewMobWanderTask extends DefaultTask implements PriorityTask {
       Entity scrap = DropFactory.createScrapDrop();
       scrap.setPosition(mobPosition.x,mobPosition.y);
       ServiceLocator.getEntityService().register(scrap);
+      ServiceLocator.getWaveService().updateEnemyCount();
 
       // Delete the mob.
       owner.getEntity().setFlagForDelete(true);
