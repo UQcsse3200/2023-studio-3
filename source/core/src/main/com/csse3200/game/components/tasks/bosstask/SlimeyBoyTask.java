@@ -2,6 +2,7 @@ package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -61,6 +62,12 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed
         changeState(SlimeState.TRANSFORM);
         slimey.getEvents().trigger("demon_death_sound");
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                slimey.getEvents().trigger("slime_pop_sound");
+            }
+        }, 6f);
     }
 
     /**
@@ -86,8 +93,6 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
                     changeState(SlimeState.TAKE_HIT);
                 }
                 if (gameTime.getTime() - lastTimeBounced >= BOUNCE_TIME) {
-                    System.out.println(gameTime.getTime());
-                    System.out.println(lastTimeBounced);
                     lastTimeBounced = gameTime.getTime();
                     slimey.getEvents().trigger("slime_jump_sound");
                 }
