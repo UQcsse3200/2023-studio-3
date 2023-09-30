@@ -18,7 +18,8 @@ import org.w3c.dom.Text;
 public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
     private static final float Z_INDEX = 2f;
-    private Table table;
+    private Table buttonTable;
+    private Table sliderTable;
 
     @Override
     public void create() {
@@ -27,9 +28,12 @@ public class UIElementsDisplay extends UIComponent {
     }
 
     private void addActors() {
-        table = new Table();
-        table.top();
-        table.setFillParent(true);
+        buttonTable = new Table();
+        sliderTable = new Table();
+        buttonTable.top().right();
+        sliderTable.top();
+        buttonTable.setFillParent(true);
+        sliderTable.setFillParent(true);
 
         TextButton remainingMobsButton = new ButtonFactory().createButton("Remaining mobs:");
         TextButton testSlider = new ButtonFactory().createButton("Test slider");
@@ -44,10 +48,11 @@ public class UIElementsDisplay extends UIComponent {
                     }
                 });
 
-        table.add(remainingMobsButton).padTop(0f).padRight(100f);
-        table.add(testSlider).padTop(10).padRight(10f);
+        buttonTable.add(remainingMobsButton).padRight(50f);
+        sliderTable.add(testSlider).padTop(200f);
 
-        stage.addActor(table);
+        stage.addActor(buttonTable);
+        stage.addActor(sliderTable);
     }
 
     @Override
@@ -62,7 +67,8 @@ public class UIElementsDisplay extends UIComponent {
 
     @Override
     public void dispose() {
-        table.clear();
+        buttonTable.clear();
+        sliderTable.clear();
         super.dispose();
     }
 }
