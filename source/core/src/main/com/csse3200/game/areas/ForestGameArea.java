@@ -198,15 +198,15 @@ public class ForestGameArea extends GameArea {
   /**
    * Add this method to start the wave spawning timer when the game starts.
    */
-  private void startWaveTimer() {
-    waveTimer = new Timer();
-    waveTimer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        spawnWave();
-      }
-    }, 0, 10000); // 10000 milliseconds = 10 seconds
-  }
+//  private void startWaveTimer() {
+//    waveTimer = new Timer();
+//    waveTimer.scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        spawnWave();
+//      }
+//    }, 0, 10000); // 10000 milliseconds = 10 seconds
+//  }
 
   /**
    * Add this method to stop the wave timer when the game ends or as needed.
@@ -221,33 +221,33 @@ public class ForestGameArea extends GameArea {
   /**
    * Cases to spawn a wave
    */
-  private void spawnWave() {
-    wave++;
-    switch (wave) {
-      case 1:
-      case 2:
-        spawnFireWorm();
-        spawnDragonKnight();
-        
-        break;
-      case 3:
-        spawnSkeleton();
-        spawnWizard();
-        // mobBoss2 = spawnMobBoss2();
-        break;
-      case 4:
-        spawnWaterQueen();
-        spawnWaterSlime();
-        // mobBoss2 = spawnMobBoss2();
-        
-        break;
-      case 5:
-        spawnDemonBoss();
-      default:
-        // Handle other wave scenarios if needed
-        break;
-    }
-  }
+//  private void spawnWave() {
+//    wave++;
+//    switch (wave) {
+//      case 1:
+//      case 2:
+//        spawnFireWorm();
+//        spawnDragonKnight();
+//
+//        break;
+//      case 3:
+//        spawnSkeleton();
+//        spawnWizard();
+//        // mobBoss2 = spawnMobBoss2();
+//        break;
+//      case 4:
+//        spawnWaterQueen();
+//        spawnWaterSlime();
+//        // mobBoss2 = spawnMobBoss2();
+//
+//        break;
+//      case 5:
+//        spawnDemonBoss();
+//      default:
+//        // Handle other wave scenarios if needed
+//        break;
+//    }
+//  }
 
 
   /**
@@ -425,15 +425,15 @@ public class ForestGameArea extends GameArea {
 //    return ghostKing;
 //  }
 
-  private void spawnDemonBoss() {
-    Entity demon = MobBossFactory.createDemonBoss();
-    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
-  }
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
 
-  private void spawnPatrick() {
-    Entity patrick = MobBossFactory.createPatrickBoss(2500);
-    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
-  }
+//  private void spawnPatrick() {
+//    Entity patrick = MobBossFactory.createPatrickBoss(2500);
+//    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+//  }
 
   private Entity spawnMobBoss1() {
     int[] pickedLanes = random.ints(0, 8)
@@ -498,140 +498,139 @@ public class ForestGameArea extends GameArea {
    * @param entity mob to be spawned
    * @param randomPos position to be spawned at
    */
-  public void spawnMob(String entity, GridPoint2 randomPos) {
+  public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
       case "Xeno":
-        mob = NPCFactory.createXenoGrunt();
+        mob = NPCFactory.createXenoGrunt(health);
         break;
       case "SplittingXeno":
-        mob = NPCFactory.createSplittingXenoGrunt();
+        mob = NPCFactory.createSplittingXenoGrunt(health);
         break;
       case "DodgingDragon":
-        mob = NPCFactory.createDodgingDragonKnight();
+        mob = NPCFactory.createDodgingDragonKnight(health);
         break;
       case "DeflectXeno":
-        mob = NPCFactory.createDeflectXenoGrunt();
+        mob = NPCFactory.createDeflectXenoGrunt(health);
         break;
       case "WaterSlime":
-        mob = NPCFactory.createWaterSlime();
+        mob = NPCFactory.createWaterSlime(health);
         break;
       case "FireWorm":
-        mob = NPCFactory.createFireWorm();
+        mob = NPCFactory.createFireWorm(health);
         break;
       case "Skeleton":
-        mob = NPCFactory.createSkeleton();
+        mob = NPCFactory.createSkeleton(health);
         break;
       case "Wizard":
-        mob = NPCFactory.createWizard();
+        mob = NPCFactory.createWizard(health);
         break;
       case "MagicBoss":
-        mob = MobBossFactory.createPatrickBoss(2500);
+        mob = MobBossFactory.createPatrickBoss(health);
         break;
       case "WaterBoss":
-        mob = NPCFactory.createWaterQueen();
+        mob = NPCFactory.createWaterQueen(health);
         break;
       case "FireBoss":
-        mob = MobBossFactory.createDemonBoss();
+        mob = MobBossFactory.createDemonBoss(health);
         break;
-      case "boss":
-        spawnDemonBoss();
       default:
         mob = NPCFactory.createBaseNPC();
+        break;
     }
     mob.setScale(1.5f, 1.5f);
     spawnEntityAt(mob, randomPos, true, false);
   }
 
   // * TEMPORARY FOR TESTING
-  private void spawnSplittingXenoGrunt(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
-    xenoGrunt.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrunt, pos, true, true);
-  }
+//  private void spawnSplittingXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
 
   // * TEMPORARY FOR TESTING
-  private void spawnDodgingDragonKnight(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity fireworm = NPCFactory.createDodgingDragonKnight();
-    fireworm.setScale(1.5f, 1.5f);
-    spawnEntityAt(fireworm, pos, true, true);
-  }
+//  private void spawnDodgingDragonKnight(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+//    fireworm.setScale(1.5f, 1.5f);
+//    spawnEntityAt(fireworm, pos, true, true);
+//  }
+//
+//  // * TEMPORARY FOR TESTING
+//  private void spawnDeflectXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+//
+//  private void spawnFireWorm() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createFireWorm();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnSkeleton() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity skeleton = NPCFactory.createSkeleton();
+//      skeleton.setScale(1.5f, 1.5f);
+//      spawnEntityAt(skeleton, randomPos, true, false);
+//    }
+//  }
 
-  // * TEMPORARY FOR TESTING
-  private void spawnDeflectXenoGrunt(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
-    xenoGrunt.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrunt, pos, true, true);
-  }
-  
-  private void spawnFireWorm() {
-    int[] pickedLanes = random.ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity fireWorm = NPCFactory.createFireWorm();
-      fireWorm.setScale(1.5f, 1.5f);
-      spawnEntityAt(fireWorm, randomPos, true, false);
-    }
-  }
-
-  private void spawnSkeleton() {
-    int[] pickedLanes = new Random().ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity skeleton = NPCFactory.createSkeleton();
-      skeleton.setScale(1.5f, 1.5f);
-      spawnEntityAt(skeleton, randomPos, true, false);
-    }
-  }
-
-  private void spawnDragonKnight() {
-    int[] pickedLanes = random.ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity fireWorm = NPCFactory.createDragonKnight();
-      fireWorm.setScale(1.5f, 1.5f);
-      spawnEntityAt(fireWorm, randomPos, true, false);
-    }
-  }
-
-  private void spawnWizard() {
-    int[] pickedLanes = new Random().ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity wizard = NPCFactory.createWizard();
-      wizard.setScale(1.5f, 1.5f);
-      spawnEntityAt(wizard, randomPos, true, false);
-    }
-  }
-
-  private void spawnWaterQueen() {
-    int[] pickedLanes = new Random().ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity waterQueen = NPCFactory.createWaterQueen();
-      waterQueen.setScale(1.5f, 1.5f);
-      spawnEntityAt(waterQueen, randomPos, true, false);
-    }
-  }
-
-  private void spawnWaterSlime() {
-    int[] pickedLanes = new Random().ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity waterSlime = NPCFactory.createWaterSlime();
-      waterSlime.setScale(1.5f, 1.5f);
-      spawnEntityAt(waterSlime, randomPos, true, false);
-    }
-  }
+//  private void spawnDragonKnight() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createDragonKnight();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWizard() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity wizard = NPCFactory.createWizard();
+//      wizard.setScale(1.5f, 1.5f);
+//      spawnEntityAt(wizard, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterQueen() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterQueen = NPCFactory.createWaterQueen();
+//      waterQueen.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterQueen, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterSlime() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterSlime = NPCFactory.createWaterSlime();
+//      waterSlime.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterSlime, randomPos, true, false);
+//    }
+//  }
 
 //  private Entity spawnGhostKing() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);

@@ -29,7 +29,7 @@ public class MobBossFactory {
     private static final int PATRICK_ATTACK = 0;
 
     // Create Demon Boss
-    public static Entity createDemonBoss() {
+    public static Entity createDemonBoss(int health) {
         Entity demon = createBaseBoss();
 
         // Animation addition
@@ -55,7 +55,8 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
+                .addComponent(new CombatStatsComponent(health, DEMON_ATTACK));
+//                .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
 
         // Scale demon
         demon.getComponent(AnimationRenderComponent.class).scaleEntity();

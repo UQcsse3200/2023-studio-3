@@ -111,7 +111,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createSkeleton() {
+  public static Entity createSkeleton(int health) {
     Entity skeleton = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -127,7 +127,8 @@ public class NPCFactory {
     animator.addAnimation("skeleton_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     skeleton
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new SkeletonAnimationController());
 
@@ -142,7 +143,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createWizard() {
+  public static Entity createWizard(int health) {
     Entity wizard = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -158,7 +159,8 @@ public class NPCFactory {
     animator.addAnimation("wizard_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     wizard
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new WizardAnimationController());
 
@@ -172,7 +174,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createWaterQueen() {
+  public static Entity createWaterQueen(int health) {
     Entity wizard = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -188,7 +190,8 @@ public class NPCFactory {
     animator.addAnimation("water_queen_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     wizard
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new WaterQueenAnimationController());
 
@@ -202,7 +205,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createWaterSlime() {
+  public static Entity createWaterSlime(int health) {
     Entity waterSlime = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -218,7 +221,8 @@ public class NPCFactory {
     animator.addAnimation("water_slime_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     waterSlime
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new WaterSlimeAnimationController());
 
@@ -232,7 +236,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createFireWorm() {
+  public static Entity createFireWorm(int health) {
     Entity fireWorm = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -248,7 +252,8 @@ public class NPCFactory {
     animator.addAnimation("fire_worm_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     fireWorm
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new FireWormAnimationController());
 
@@ -262,7 +267,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createDragonKnight() {
+  public static Entity createDragonKnight(int health) {
     Entity dragonKnight = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -278,7 +283,7 @@ public class NPCFactory {
     animator.addAnimation("dragon_knight_death", 0.1f);
     animator.addAnimation("default", 0.1f);
     dragonKnight
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new DragonKnightAnimationController());
 
@@ -294,7 +299,7 @@ public class NPCFactory {
    *
    * @return entity
    */
-  public static Entity createXenoGrunt() {
+  public static Entity createXenoGrunt(int health) {
     Entity xenoGrunt = createBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
     ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
@@ -313,7 +318,8 @@ public class NPCFactory {
     animator.addAnimation("xeno_die", 0.1f);
     animator.addAnimation("default", 0.1f);
     xenoGrunt
-            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
@@ -354,8 +360,8 @@ public class NPCFactory {
   }
 
   // * COW'S TESTING ARENA DONT TOUCH
-  public static Entity createSplittingXenoGrunt() {
-    Entity splitXenoGrunt = createXenoGrunt()
+  public static Entity createSplittingXenoGrunt(int health) {
+    Entity splitXenoGrunt = createXenoGrunt(health)
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
         .addComponent(new SplitMoblings(7, 0.5f))
@@ -366,8 +372,8 @@ public class NPCFactory {
     return splitXenoGrunt;
   }
 
-  public static Entity createDodgingDragonKnight() {
-    Entity fireWorm = createDragonKnight();
+  public static Entity createDodgingDragonKnight(int health) {
+    Entity fireWorm = createDragonKnight(health);
 
     fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
 
@@ -376,8 +382,8 @@ public class NPCFactory {
     return fireWorm;
   }
 
-  public static Entity createDeflectXenoGrunt() {
-    Entity deflectXenoGrunt = createXenoGrunt();
+  public static Entity createDeflectXenoGrunt(int health) {
+    Entity deflectXenoGrunt = createXenoGrunt(health);
     deflectXenoGrunt.addComponent(new DeflectingComponent(
         PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
 

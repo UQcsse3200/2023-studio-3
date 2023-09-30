@@ -59,11 +59,11 @@ public class LevelWaves extends Entity {
     public void spawnWave() {
         if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
             do {
-                currentRandom = rand.nextInt(1, 7);
+                currentRandom = rand.nextInt(6);
             } while (currentRandom == previousRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
-            this.getEvents().trigger("spawnWave", waves.get(waveIndex)
-                    .getMobs().get(mobIndex), randomPos);
+            Tuple mobStats = waves.get(waveIndex).getMobs().get(mobIndex);
+            this.getEvents().trigger("spawnWave", mobStats.mob, randomPos, mobStats.health);
             startTime = gameTime.getTime();
             mobIndex++;
             previousRandom = currentRandom;

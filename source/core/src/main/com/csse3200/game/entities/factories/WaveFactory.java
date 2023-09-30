@@ -23,6 +23,10 @@ public class WaveFactory {
 
   private static Random rand = new Random();
 
+  private static int BASE_HEALTH = 60;
+
+  private static int BOSS_BASE_HEALTH = 80;
+
   public static Entity createWaves() {
     int chosenLevel = 3;
     int difficulty = 1;
@@ -93,10 +97,13 @@ public class WaveFactory {
 
     for (int i = 1; i <= maxWaves; i++) {
       System.out.println("adding another mob: " + i);
-      HashMap<String, Integer> mobs = new HashMap<>();
+//      HashMap<String, Integer> mobs = new HashMap<>();
+      HashMap<String, int[]> mobs = new HashMap<>();
 
       if (i % 5 == 0) {
-        mobs.put(boss, 1/5);
+        int[] bossStats = {i/5, 80 + (chosenLevel * i)};
+//        mobs.put(boss, i/5);
+        mobs.put(boss, bossStats);
       }
 
       String mob1 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
@@ -109,8 +116,15 @@ public class WaveFactory {
       int mob1Num = rand.nextInt(minMobs - 1);
       int mob2Num = minMobs - mob1Num;
 
-      mobs.put(mob1, mob1Num);
-      mobs.put(mob2, mob2Num);
+      int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};
+      int[] mob2Stats = {mob2Num, BASE_HEALTH + (chosenLevel * i)};
+
+      System.out.println("mob1 health: " + mob1Stats[1] + " mob2 health: " + mob2Stats[1]);
+
+      mobs.put(mob1, mob1Stats);
+      mobs.put(mob2, mob2Stats);
+//      mobs.put(mob1, mob1Num);
+//      mobs.put(mob2, mob2Num);
 
       System.out.println(mobs);
       level.addWave(new WaveClass(mobs));
