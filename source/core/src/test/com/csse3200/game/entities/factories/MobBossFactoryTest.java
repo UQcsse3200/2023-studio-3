@@ -128,32 +128,9 @@ class MobBossFactoryTest {
     }
 
     @Test
-    public void testDemonBoss() {
-        assertNotNull(demon, "Demon Boss should not be null.");
-        assertNotNull(demon.getComponent(PhysicsComponent.class),
-                "Demon Boss does not have physics component.");
-        assertNotNull(demon.getComponent(ColliderComponent.class),
-                "Demon Boss does not have collider component.");
-        assertNotNull(demon.getComponent(PhysicsMovementComponent.class),
-                "Demon Boss does not have physics movement component.");
-        assertNotNull(demon.getComponent(HitboxComponent.class),
-                "Demon Boss does not have hitbox component.");
-        assertNotNull(demon.getComponent(TouchAttackComponent.class),
-                "Base Boss does not have touch attack component.");
-        assertEquals(5000, demon.getComponent(CombatStatsComponent.class).getHealth(),
-                "Demon Boss health should be 5000.");
-        assertEquals(0, demon.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "Demon Boss base attack should be 0.");
-        assertNotNull(demon.getComponent(AnimationRenderComponent.class),
-                "Demon Boss does not have an animation render component.");
-        assertNotNull(demon.getComponent(DemonAnimationController.class),
-                "Demon Boss does not have an animation controller.");
-    }
-
-    @Test
     public void testCreateMobBossNotNull() {
         assertNotNull(baseBoss, "Base Boss should not be null.");
-        // assertNotNull(demon, "Demon Boss should not be null.");
+        assertNotNull(demon, "Demon Boss should not be null.");
         assertNotNull(slimeyBoy, "Slimey Boy should not be null.");
         assertNotNull(patrick, "Patrick Boss should not be null.");
         assertNotNull(deadPatrick, "Dead Patrick Boss should not be null.");
@@ -164,8 +141,8 @@ class MobBossFactoryTest {
     public void testMobBossPhysicsComponent() {
         assertNotNull(baseBoss.getComponent(PhysicsComponent.class),
                 "Base Boss does not have physics component.");
-        // assertNotNull(demon.getComponent(PhysicsComponent.class),
-        //         "Demon Boss does not have physics component.");
+        assertNotNull(demon.getComponent(PhysicsComponent.class),
+                "Demon Boss does not have physics component.");
         assertNotNull(slimeyBoy.getComponent(PhysicsComponent.class),
                 "Slimey Boy does not have physics component.");
         assertNotNull(patrick.getComponent(PhysicsComponent.class),
@@ -180,8 +157,8 @@ class MobBossFactoryTest {
     public void testMobBossColliderComponent() {
         assertNotNull(baseBoss.getComponent(ColliderComponent.class),
                 "Base Boss does not have collider component.");
-        // assertNotNull(demon.getComponent(ColliderComponent.class),
-        //         "Demon Boss does not have collider component.");
+        assertNotNull(demon.getComponent(ColliderComponent.class),
+                "Demon Boss does not have collider component.");
         assertNotNull(slimeyBoy.getComponent(ColliderComponent.class),
                 "Slimey Boy does not have collider component.");
         assertNotNull(patrick.getComponent(ColliderComponent.class),
@@ -196,8 +173,8 @@ class MobBossFactoryTest {
     public void testMobBossPhysicsMovementComponent() {
         assertNotNull(baseBoss.getComponent(PhysicsMovementComponent.class),
                 "Base Boss does not have physics movement component.");
-        // assertNotNull(demon.getComponent(PhysicsMovementComponent.class),
-        //         "Demon Boss does not have physics movement component.");
+        assertNotNull(demon.getComponent(PhysicsMovementComponent.class),
+                "Demon Boss does not have physics movement component.");
         assertNotNull(slimeyBoy.getComponent(PhysicsMovementComponent.class),
                 "Slimey Boy does not have physics movement component.");
         assertNotNull(patrick.getComponent(PhysicsMovementComponent.class),
@@ -212,8 +189,8 @@ class MobBossFactoryTest {
     public void testMobBossHitboxComponent() {
         assertNotNull(baseBoss.getComponent(HitboxComponent.class),
                 "Base Boss does not have hitbox component.");
-        // assertNotNull(demon.getComponent(HitboxComponent.class),
-        //         "Demon Boss does not have hitbox component.");
+        assertNotNull(demon.getComponent(HitboxComponent.class),
+                "Demon Boss does not have hitbox component.");
         assertNotNull(slimeyBoy.getComponent(HitboxComponent.class),
                 "Slimey Boy does not have hitbox component.");
         assertNotNull(patrick.getComponent(HitboxComponent.class),
@@ -227,8 +204,8 @@ class MobBossFactoryTest {
     public void testMobBossTouchAttackComponent() {
         assertNotNull(baseBoss.getComponent(TouchAttackComponent.class),
                 "Base Boss does not have touch attack component.");
-        // assertNotNull(demon.getComponent(TouchAttackComponent.class),
-        //         "Base Boss does not have touch attack component.");
+        assertNotNull(demon.getComponent(TouchAttackComponent.class),
+                "Base Boss does not have touch attack component.");
         assertNotNull(slimeyBoy.getComponent(TouchAttackComponent.class),
                 "Slimey Boy does not have touch attack component.");
         assertNotNull(patrick.getComponent(TouchAttackComponent.class),
@@ -241,10 +218,10 @@ class MobBossFactoryTest {
 
     @Test
     public void testMobBossCombatStats(){
-        // assertEquals(5000, demon.getComponent(CombatStatsComponent.class).getHealth(),
-        //         "Demon Boss health should be 5000.");
-        // assertEquals(0, demon.getComponent(CombatStatsComponent.class).getBaseAttack(),
-        //         "Demon Boss base attack should be 0.");
+        assertEquals(5000, demon.getComponent(CombatStatsComponent.class).getHealth(),
+                "Demon Boss health should be 5000.");
+        assertEquals(0, demon.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Demon Boss base attack should be 0.");
         assertEquals(500, slimeyBoy.getComponent(CombatStatsComponent.class).getHealth(),
                 "Slimey Boy health should be 500.");
         assertEquals(0, slimeyBoy.getComponent(CombatStatsComponent.class).getBaseAttack(),
@@ -265,8 +242,8 @@ class MobBossFactoryTest {
 
     @Test
     public void testMobBossAnimationRenderComponent() {
-        // assertNotNull(demon.getComponent(AnimationRenderComponent.class),
-        //         "Demon Boss does not have an animation render component.");
+        assertNotNull(demon.getComponent(AnimationRenderComponent.class),
+                "Demon Boss does not have an animation render component.");
         assertNotNull(slimeyBoy.getComponent(AnimationRenderComponent.class),
                 "Slimey Boy does not have an animation render component.");
         assertNotNull(patrick.getComponent(AnimationRenderComponent.class),
@@ -279,8 +256,8 @@ class MobBossFactoryTest {
     
     @Test
     public void testMobBossAnimationController() {
-        // assertNotNull(demon.getComponent(DemonAnimationController.class),
-        //         "Demon Boss does not have an animation controller.");
+        assertNotNull(demon.getComponent(DemonAnimationController.class),
+                "Demon Boss does not have an animation controller.");
         assertNotNull(slimeyBoy.getComponent(DemonAnimationController.class),
                 "Slimey Boy does not have an animation controller.");
         assertNotNull(patrick.getComponent(PatrickAnimationController.class),
