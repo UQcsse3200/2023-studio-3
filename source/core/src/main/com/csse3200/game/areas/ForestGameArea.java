@@ -243,7 +243,7 @@ public class ForestGameArea extends GameArea {
       break;
       case 4:
       spawnFireWorm();
-      spawnDragonKnight();
+      // spawnDragonKnight();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
@@ -308,25 +308,28 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
      spawnDemonBoss();
-//     spawnPatrick();
+     spawnPatrick();
     // spawnIceBaby();
     // player.getEvents().addListener("spawnWave", this::spawnWave);
-//    playMusic();
-//    // startWaveTimer();
-//    spawnScrap();
-//    logger.info("Lol");
-//    spawnWaterQueen();
-//    spawnWaterSlime();
-//    spawnFireWorm();
-//    spawnDragonKnight();
-//    spawnWizard();
-//    spawnSkeleton();
-//
-//    spawnScrap();
-//    spawnTNTTower();
-//    spawnWeaponTower();
-//    spawnGapScanners();
-//    spawnDroidTower();
+    playMusic();
+    // startWaveTimer();
+    spawnScrap();
+    logger.info("Lol");
+    spawnWaterQueen();
+    spawnWaterSlime();
+    spawnFireWorm();
+    spawnDragonKnight();
+    spawnWizard();
+    spawnSkeleton();
+    spawnIceBaby();
+    spawnDemonBoss();
+    spawnPatrick();
+
+    spawnScrap();
+    spawnTNTTower();
+    spawnWeaponTower();
+    spawnGapScanners();
+    spawnDroidTower();
 //     spawnPatrickDeath();
   //  spawnFireWorm();
 
