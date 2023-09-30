@@ -314,9 +314,9 @@ public class ForestGameArea extends GameArea {
     spawnDemonBoss();
     spawnPatrick();
 
-    spawnScrap();
+    // spawnScrap();
     spawnTNTTower();
-    spawnWeaponTower();
+    // spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
 //     spawnPatrickDeath();
