@@ -32,6 +32,8 @@ import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.security.Provider;
+
 /**
  * The game screen containing the main game.
  *
@@ -95,7 +97,9 @@ public class MainGameScreen extends ScreenAdapter {
 
     /* Input components */
     InputComponent dropInputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    InputComponent upgradeInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(dropInputHandler);
+    ServiceLocator.getInputService().register(upgradeInputHandler);
 
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(engineerInputHandler);

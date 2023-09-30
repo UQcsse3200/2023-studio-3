@@ -271,6 +271,10 @@ public class ForestGameArea extends GameArea {
 //    spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
+    spawnScrap();
+    spawnDroidTower();
+    spawnTNTTower();
+    spawnIncome();
 
   }
   

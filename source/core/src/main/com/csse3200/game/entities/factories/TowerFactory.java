@@ -24,7 +24,7 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
+import com.csse3200.game.input.UpgradeUIComponent;
 /**
  * Factory to create a tower entity.
  *
@@ -315,7 +315,7 @@ public class TowerFactory {
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
                 .addComponent(new TowerUpgraderComponent());
-
+        tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
         return tower;
     }
 }
