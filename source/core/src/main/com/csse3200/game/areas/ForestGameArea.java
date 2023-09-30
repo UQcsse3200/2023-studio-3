@@ -299,13 +299,18 @@ public class ForestGameArea extends GameArea {
     // spawnDemonBoss();
     // spawnPatrick();
     // spawnIceBaby();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+    // player.getEvents().addListener("spawnWave", this::spawnWave);
     playMusic();
-    startWaveTimer();
+    // startWaveTimer();
     spawnScrap();
     logger.info("Lol");
-    // spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
+    spawnWaterQueen();
+    spawnWaterSlime();
+    spawnFireWorm();
+    spawnDragonKnight();
+    spawnWizard();
+    spawnSkeleton();
+
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
