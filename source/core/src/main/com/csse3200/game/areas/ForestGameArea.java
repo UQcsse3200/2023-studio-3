@@ -169,7 +169,19 @@ public class ForestGameArea extends GameArea {
           "sounds/mobs/wizardSpell.mp3",
           "sounds/mobs/waterQueenSpell.mp3",
           "sounds/mobs/boneBreak.mp3",
-          "sounds/mobs/fireWormRoar.mp3"
+          "sounds/mobs/fireWormRoar.mp3",
+          "sounds/mobBoss/demonBreath.mp3",
+          "sounds/mobBoss/demonSpawn.wav",
+          "sounds/mobBoss/demonAttack.wav",
+          "sounds/mobBoss/demonBreathIn.mp3",
+          "sounds/mobBoss/demonLand.mp3",
+          "sounds/mobBoss/demonJump.mp3",
+          "sounds/mobBoss/demonHeal.mp3",
+          "sounds/mobBoss/demonCleave.mp3",
+          "sounds/mobBoss/demonDeath.mp3",
+          "sounds/mobBoss/slimeySplat.mp3",
+          "sounds/mobBoss/slimeJump.mp3",
+          "sounds/mobBoss/slimePop.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -232,7 +244,7 @@ public class ForestGameArea extends GameArea {
       break;
       case 4:
       spawnFireWorm();
-      spawnDragonKnight();
+      // spawnDragonKnight();
       logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
@@ -296,28 +308,36 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
-    // spawnDemonBoss();
-    // spawnPatrick();
+     spawnDemonBoss();
+//     spawnPatrick();
     // spawnIceBaby();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
-    playMusic();
-    startWaveTimer();
-    spawnScrap();
-    logger.info("Lol");
-    // spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
-    spawnScrap();
-    spawnTNTTower();
-    spawnWeaponTower();
-    spawnGapScanners();
-    spawnDroidTower();
+    // player.getEvents().addListener("spawnWave", this::spawnWave);
+//    playMusic();
+    // startWaveTimer();
+//    spawnScrap();
+//    logger.info("Lol");
+//    spawnWaterQueen();
+//    spawnWaterSlime();
+//    spawnFireWorm();
+//    spawnDragonKnight();
+//    spawnWizard();
+//    spawnSkeleton();
+//    spawnIceBaby();
+//    spawnDemonBoss();
+//    spawnPatrick();
+//
+//    spawnScrap();
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    spawnGapScanners();
+//    spawnDroidTower();
 //     spawnPatrickDeath();
   //  spawnFireWorm();
 
   //  startWaveTimer();
 ////    spawnIncome();
 //    spawnScrap();
-    spawnTNTTower();
+//    spawnTNTTower();
 //
 //    spawnGapScanners();
 //    spawnDroidTower();

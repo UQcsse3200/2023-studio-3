@@ -386,7 +386,6 @@ public class NPCFactory {
 
         .addComponent(new SplitMoblings(7, 0.5f));
         
-    
     return splitWaterSlime;
   }
 
