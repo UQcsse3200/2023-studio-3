@@ -596,8 +596,8 @@ public class ForestGameArea extends GameArea {
 //  }
   
   private void spawnWeaponTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
@@ -625,8 +625,8 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
     
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
@@ -637,8 +637,8 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDroidTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
