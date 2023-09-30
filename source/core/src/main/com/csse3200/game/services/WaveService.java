@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 public class WaveService {
     private static final Logger logger = LoggerFactory.getLogger(WaveService.class);
     private int enemyCount;
+    private boolean gameOver = false;
+    private int lane;
+
+    private int waveCount = 1;
+
     private boolean levelCompleted = false;
 
 
@@ -53,11 +58,27 @@ public class WaveService {
         }
     }
 
+    public void setNextLane(int lane) {
+        this.lane = lane;
+    }
+
+    public int getNextLane() {
+        return lane;
+    }
+
     /**
      * Returns the game over state
      * @return (boolean) true if the game is over; false otherwise
      */
     public boolean isLevelCompleted() {
         return levelCompleted;
+    }
+
+    public int getWaveCount() {
+        return this.waveCount;
+    }
+
+    public void setWaveCount(int waveCount) {
+        this.waveCount += waveCount;
     }
 }

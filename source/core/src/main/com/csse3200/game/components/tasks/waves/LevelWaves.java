@@ -61,6 +61,7 @@ public class LevelWaves extends Entity {
             do {
                 currentRandom = rand.nextInt(1, 7);
             } while (currentRandom == previousRandom);
+            ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
             this.getEvents().trigger("spawnWave", waves.get(waveIndex)
                     .getMobs().get(mobIndex), randomPos);
