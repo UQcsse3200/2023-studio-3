@@ -18,8 +18,10 @@ import org.w3c.dom.Text;
 public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
     private static final float Z_INDEX = 2f;
-    private Table buttonTable;
-    private Table sliderTable;
+    private Table buttonTable = new Table();
+    private Table sliderTable = new Table();
+    private Table timerTable = new Table();
+
 
     @Override
     public void create() {
@@ -28,30 +30,35 @@ public class UIElementsDisplay extends UIComponent {
     }
 
     private void addActors() {
-        buttonTable = new Table();
-        sliderTable = new Table();
         buttonTable.top().right();
+        timerTable.top().right();
         sliderTable.top();
+
         buttonTable.setFillParent(true);
+        timerTable.setFillParent(true);
         sliderTable.setFillParent(true);
 
-        TextButton remainingMobsButton = new ButtonFactory().createButton("Remaining mobs:");
+        TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
+        TextButton timerButton = new ButtonFactory().createButton("Next wave:");
         TextButton testSlider = new ButtonFactory().createButton("Test slider");
 
-        // Triggers an event when the button is pressed.
-        remainingMobsButton.addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Wave counter button clicked");
-                        entity.getEvents().trigger("wave counter");
-                    }
-                });
+        //Not sure if we need a listened for a label
+//        // Triggers an event when the button is pressed.
+//        remainingMobsButton.addListener(
+//                new ChangeListener() {
+//                    @Override
+//                    public void changed(ChangeEvent changeEvent, Actor actor) {
+//                        logger.debug("Wave counter button clicked");
+//                        entity.getEvents().trigger("wave counter");
+//                    }
+//                });
 
-        buttonTable.add(remainingMobsButton).padRight(50f);
+        buttonTable.add(remainingMobsButton).padTop(20f).padRight(10f);
+        timerTable.add(timerButton).padTop(70f).padRight(10f);
         sliderTable.add(testSlider).padTop(200f);
 
         stage.addActor(buttonTable);
+        stage.addActor(timerTable);
         stage.addActor(sliderTable);
     }
 
@@ -68,6 +75,7 @@ public class UIElementsDisplay extends UIComponent {
     @Override
     public void dispose() {
         buttonTable.clear();
+        timerTable.clear();
         sliderTable.clear();
         super.dispose();
     }
