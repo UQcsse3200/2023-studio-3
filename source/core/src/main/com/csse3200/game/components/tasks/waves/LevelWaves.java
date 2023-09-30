@@ -33,6 +33,12 @@ public class LevelWaves extends Entity {
         this.mobIndex = 0;
         this.waveIndex = 0;
         this.numWaves = 0;
+
+        long currentTime = ServiceLocator.getTimeSource().getTime();
+        // Setting the timestamp for when the next mobs will spawn.
+        // Currently, the delay of mobs spawning after wave start
+        // is hardcoded but will fix in the next push.
+        ServiceLocator.getWaveService().setNextWaveTime(currentTime + 10000);
     }
 
     /**
@@ -89,4 +95,13 @@ public class LevelWaves extends Entity {
     public int getNumWaves() {
         return this.numWaves;
     }
+
+    public float getSpawnDelay() {
+        return this.spawnDelay;
+    }
+
+    public long getStartTime() {
+        return this.startTime;
+    }
 }
+

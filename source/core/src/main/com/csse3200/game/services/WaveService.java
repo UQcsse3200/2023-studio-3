@@ -13,6 +13,8 @@ public class WaveService {
 
     private boolean levelCompleted = false;
 
+    private long nextWaveTime;
+
 
     /**
      * Constructor for the Wave Service
@@ -58,10 +60,18 @@ public class WaveService {
         }
     }
 
+    /**
+     * Sets the waveCount
+     * @param lane as an integer representing the next lane of a mob.
+     */
     public void setNextLane(int lane) {
         this.lane = lane;
     }
 
+    /**
+     * Returns the next lane number of a mob
+     * @return (int) lane number
+     */
     public int getNextLane() {
         return lane;
     }
@@ -74,11 +84,36 @@ public class WaveService {
         return levelCompleted;
     }
 
+    /**
+     * Returns the game over state
+     * @return (boolean) true if the game is over; false otherwise
+     */
     public int getWaveCount() {
         return this.waveCount;
     }
 
+    /**
+     * Sets the waveCount
+     * @param waveCount as an integer representing the current wave number.
+     *                  This will be added to the current wave number.
+     */
     public void setWaveCount(int waveCount) {
         this.waveCount += waveCount;
+    }
+
+    /**
+     * Returns time of the next wave.
+     * @return (long) A timestamp of when the next mobs will spawn. Used for UI elements.
+     */
+    public long getNextWaveTime() {
+        return this.nextWaveTime;
+    }
+
+    /**
+     * Sets the next wave timestamp
+     * @param nextWaveTime as a long which is the time when then next mobs will spawn.
+     */
+    public void setNextWaveTime(long nextWaveTime) {
+        this.nextWaveTime = nextWaveTime;
     }
 }
