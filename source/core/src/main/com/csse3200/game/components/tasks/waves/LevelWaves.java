@@ -89,4 +89,21 @@ public class LevelWaves extends Entity {
     public int getNumWaves() {
         return this.numWaves;
     }
+
+    /**
+     * Get the current mob index
+     * @return mob index
+     */
+    public int getMobIndex() {
+        return this.mobIndex;
+    }
+
+    /**
+     * Get the current wave index
+     * @return wave index
+     */
+    public int getWaveIndex() {
+        return this.waveIndex;
+    }
+
 }
