@@ -1,10 +1,16 @@
 package com.csse3200.game.components.bosses;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 public class DemonAnimationController extends Component {
     AnimationRenderComponent animator;
+//    private static final String DEMON_JUMP = "sounds/mobBoss/demonBreath.mp3";
+    Sound demonBreath = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonBreath.mp3", Sound.class);
+    
 
     /**
      * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
@@ -14,31 +20,64 @@ public class DemonAnimationController extends Component {
     public void create() {
         super.create();
         animator = entity.getComponent(AnimationRenderComponent.class);
-        registerAnimationListener("demon_walk");
-        registerAnimationListener("demon_cleave");
-        registerAnimationListener("demon_take_hit");
-        registerAnimationListener("demon_idle");
-        registerAnimationListener("demon_death");
-        registerAnimationListener("demon_cast_spell");
-        registerAnimationListener("demon_fire_breath");
-        registerAnimationListener("demon_smash");
-        registerAnimationListener("demon_take_hit");
-        registerAnimationListener("idle");
-        registerAnimationListener("move");
-        registerAnimationListener("projectile_explosion");
-        registerAnimationListener("projectile_idle");
-        registerAnimationListener("take_hit");
-        registerAnimationListener("transform");
-        registerAnimationListener("transform_reverse");
+        entity.getEvents().addListener("demon_walk", this::demonWalk);
+        entity.getEvents().addListener("demon_cleave", this::demonCleave);
+        entity.getEvents().addListener("demon_idle", this::demonIdle);
+        entity.getEvents().addListener("demon_death", this::demonDeath);
+        entity.getEvents().addListener("demon_cast_spell", this::demonCastSpell);
+        entity.getEvents().addListener("demon_fire_breath", this::demonFireBreath);
+        entity.getEvents().addListener("demon_smash", this::demonSmash);
+        entity.getEvents().addListener("demon_take_hit", this::demonTakeHit);
+        entity.getEvents().addListener("idle", this::idle);
+        entity.getEvents().addListener("move", this::move);
+        entity.getEvents().addListener("projectile_explosion", this::projectileExplosion);
+        entity.getEvents().addListener("projectile_idle", this::projectileIdle);
+        entity.getEvents().addListener("take_hit", this::takeHit);
+        entity.getEvents().addListener("transform", this::transform);
     }
-
-    private void registerAnimationListener(String animationName) {
-        if (animationName.equals("transform_reverse")) {
-            entity.getEvents().addListener(animationName, () ->
-                    animator.startAnimation("transform"));
-        } else {
-            entity.getEvents().addListener(animationName, () ->
-                    animator.startAnimation(animationName));
-        }
+    
+    private void demonWalk() {
+        animator.startAnimation("demon_walk");
+    }
+    private void demonCleave() {
+        animator.startAnimation("demon_cleave");
+    }
+    private void demonIdle() {
+        animator.startAnimation("demon_idle");
+    }
+    private void demonDeath() {
+        animator.startAnimation("demon_death");
+    }
+    private void demonCastSpell() {
+        animator.startAnimation("demon_cast_spell");
+    }
+    private void demonFireBreath() {
+        animator.startAnimation("demon_fire_breath");
+        demonBreath.setVolume(1000,5.5f);
+        demonBreath.play();
+    }
+    private void demonSmash() {
+        animator.startAnimation("demon_smash");
+    }
+    private void demonTakeHit() {
+        animator.startAnimation("demon_take_hit");
+    }
+    private void idle() {
+        animator.startAnimation("idle");
+    }
+    private void move() {
+        animator.startAnimation("move");
+    }
+    private void projectileExplosion() {
+        animator.startAnimation("projectile_explosion");
+    }
+    private void projectileIdle() {
+        animator.startAnimation("projectile_idle");
+    }
+    private void takeHit() {
+        animator.startAnimation("take_hit");
+    }
+    private void transform() {
+        animator.startAnimation("transform");
     }
 }
