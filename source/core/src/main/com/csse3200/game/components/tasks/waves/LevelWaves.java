@@ -103,5 +103,22 @@ public class LevelWaves extends Entity {
     public long getStartTime() {
         return this.startTime;
     }
+
+    /**
+     * Get the current mob index
+     * @return mob index
+     */
+    public int getMobIndex() {
+        return this.mobIndex;
+    }
+
+    /**
+     * Get the current wave index
+     * @return wave index
+     */
+    public int getWaveIndex() {
+        return this.waveIndex;
+    }
+
 }
 

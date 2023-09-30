@@ -30,8 +30,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
           "sounds/waves/wave-end/Wave_Over_01.ogg"
   };
 
-  private Sound waveStart;
-  private Sound waveEnd;
+  private final Sound waveStart;
+  private final Sound waveEnd;
 
   /**
    * Constructor for the WaveTask
@@ -71,7 +71,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
 
   /**
    * Starts the WaveTask and initialises all relevant attributes.
-   * Sets the current count of enmies to be the size of the current wave.
+   * Sets the current count of enemies to be the size of the current wave.
    */
   @Override
   public void start() {
@@ -129,4 +129,12 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       }
     }
   }
-}
+
+  /**
+   * Checks if the current wave is in progress
+   * @return true if the wave is in progress, false otherwise
+   */
+  public boolean isWaveInProgress() {
+    return waveInProgress;
+    }
+  }
