@@ -1,6 +1,5 @@
 package com.csse3200.game.entities.factories;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.npc.DeflectingComponent;
@@ -12,7 +11,6 @@ import com.csse3200.game.components.npc.SplitMoblings;
 import com.csse3200.game.components.npc.WaterQueenAnimationController;
 import com.csse3200.game.components.npc.WaterSlimeAnimationController;
 import com.csse3200.game.components.npc.WizardAnimationController;
-import com.csse3200.game.components.tasks.MobRangedAttackTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;

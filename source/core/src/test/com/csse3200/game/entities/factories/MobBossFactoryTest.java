@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
 import com.csse3200.game.components.bosses.IceBabyAnimationController;
@@ -35,10 +36,17 @@ class MobBossFactoryTest {
     private Entity deadPatrick;
     private Entity iceBaby;
     
+    private final String[] texture = {
+        "images/towers/turret_deployed.png",
+        "images/towers/turret01.png",
+        "images/towers/wallTower.png"
+    };
+
     private final String[] atlas = {
             "images/mobboss/demon.atlas",
             "images/mobboss/patrick.atlas",
             "images/mobboss/iceBaby.atlas",
+            "images/towers/turret01.atlas"
     };
 
     private final String[] animations = {
@@ -93,9 +101,12 @@ class MobBossFactoryTest {
         ServiceLocator.registerRenderService(render);
         ResourceService resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
+        resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
         resourceService.loadSounds(sounds);
         resourceService.loadAll();
+        ServiceLocator.getResourceService()
+                .getAsset("images/towers/turret01.atlas", TextureAtlas.class);
         baseBoss = MobBossFactory.createBaseBoss();
         demon = MobBossFactory.createDemonBoss();
         slimeyBoy = MobBossFactory.createSlimeyBoy();
