@@ -137,7 +137,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             changeState(DemonState.IDLE); // start sequence
         }
 
-        // detect death stages
+        // detect death stage
         if (health <= 0) {
             // spawn slimey boy
             Entity slimey = MobBossFactory.createSlimeyBoy();
@@ -421,7 +421,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
-                demon.getEvents().trigger("demon_attack_sound");
+                demon.getEvents().trigger("demon_cleave_sound");
                 targetCombatStats.hit(CLEAVE_DAMAGE);
             }
         }, 2f);

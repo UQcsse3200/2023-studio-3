@@ -22,6 +22,14 @@ public class DemonAnimationController extends Component {
             "sounds/mobBoss/demonJump.mp3", Sound.class);
     Sound demonHeal = ServiceLocator.getResourceService().getAsset(
             "sounds/mobBoss/demonHeal.mp3", Sound.class);
+    Sound demonCleave = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonCleave.mp3", Sound.class);
+    Sound demonDeath = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/demonDeath.mp3", Sound.class);
+    Sound slimeySplat = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/slimeySplat.mp3", Sound.class);
+    Sound slimeJump = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/slimeJump.mp3", Sound.class);
 
     /**
      * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
@@ -51,6 +59,10 @@ public class DemonAnimationController extends Component {
         entity.getEvents().addListener("demon_landing_sound", this::demonLandSound);
         entity.getEvents().addListener("demon_roar_sound", this::demonRoarSound);
         entity.getEvents().addListener("demon_heal_sound", this::demonHealSound);
+        entity.getEvents().addListener("demon_cleave_sound", this::demonCleaveSound);
+        entity.getEvents().addListener("demon_death_sound", this::demonDeathSound);
+        entity.getEvents().addListener("slimey_splat_sound", this::slimeySplatSound);
+        entity.getEvents().addListener("slime_jump_sound", this::slimeJumpSound);
     }
 
     private void demonWalk() {
@@ -120,5 +132,21 @@ public class DemonAnimationController extends Component {
     private void demonHealSound() {
         demonHeal.setVolume(1000,5.5f);
         demonHeal.play();
+    }
+    private void demonCleaveSound() {
+        demonCleave.setVolume(1000,5.5f);
+        demonCleave.play();
+    }
+    private void demonDeathSound() {
+        demonDeath.setVolume(1000,5.5f);
+        demonDeath.play();
+    }
+    private void slimeySplatSound() {
+        slimeySplat.setVolume(1000,5.5f);
+        slimeySplat.play();
+    }
+    private void slimeJumpSound() {
+        slimeJump.setVolume(1000,5.5f);
+        slimeJump.play();
     }
 }

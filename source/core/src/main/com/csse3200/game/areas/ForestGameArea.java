@@ -176,7 +176,11 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/demonBreathIn.mp3",
           "sounds/mobBoss/demonLand.mp3",
           "sounds/mobBoss/demonJump.mp3",
-          "sounds/mobBoss/demonHeal.mp3"
+          "sounds/mobBoss/demonHeal.mp3",
+          "sounds/mobBoss/demonCleave.mp3",
+          "sounds/mobBoss/demonDeath.mp3",
+          "sounds/mobBoss/slimeySplat.mp3",
+          "sounds/mobBoss/slimeJump.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};

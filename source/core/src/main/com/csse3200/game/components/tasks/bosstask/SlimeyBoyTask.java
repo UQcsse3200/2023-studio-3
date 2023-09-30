@@ -10,6 +10,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,12 +31,22 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     private SlimeState state = SlimeState.IDLE; // set initial state to random unused state
     private SlimeState prevState;
     private Entity targetEntity;
+    private final GameTime gameTime;
+    private long lastTimeBounced;
+    private static final long BOUNCE_TIME = 1600;
 
     /**
      * States that the slime cycles through
      */
     private enum SlimeState {
         IDLE, MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, TAKE_HIT, TRANSFORM
+    }
+
+    /**
+     * Constructor for this task
+     */
+    public SlimeyBoyTask() {
+        gameTime = ServiceLocator.getTimeSource();
     }
 
     /**
@@ -49,6 +60,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         currentPos = owner.getEntity().getPosition(); // get current position
         slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed
         changeState(SlimeState.TRANSFORM);
+        slimey.getEvents().trigger("demon_death_sound");
     }
 
     /**
@@ -73,8 +85,15 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
                             slimey, MAX_RADIUS, PhysicsLayer.HUMANS), health);
                     changeState(SlimeState.TAKE_HIT);
                 }
+                if (gameTime.getTime() - lastTimeBounced >= BOUNCE_TIME) {
+                    System.out.println(gameTime.getTime());
+                    System.out.println(lastTimeBounced);
+                    lastTimeBounced = gameTime.getTime();
+                    slimey.getEvents().trigger("slime_jump_sound");
+                }
             }
             case TAKE_HIT -> {
+                slimey.getEvents().trigger("slimey_splat_sound");
                 slimey.setFlagForDelete(true);
             }
         }
@@ -114,7 +133,9 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
      * Find the closest human entity and start moving towards them
      */
     private void seekAndDestroy() {
+        lastTimeBounced = gameTime.getTime() - BOUNCE_TIME;
         changeState(SlimeState.MOVE);
+
         targetEntity = ServiceLocator.getEntityService().getClosestEntityOfLayer(
                 slimey, PhysicsLayer.HUMANS);
         Vector2 targetPos;
