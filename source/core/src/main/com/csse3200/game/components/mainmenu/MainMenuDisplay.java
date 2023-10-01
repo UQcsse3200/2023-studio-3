@@ -61,15 +61,16 @@ public class MainMenuDisplay extends UIComponent {
 
         // Create an instance of the ButtonFactory class
         ButtonFactory buttonFactory = new ButtonFactory();
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 
 // Create a "Start" TextButton using the default style
-        TextButton startBtn = new TextButton("Start", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        TextButton startBtn = new TextButton("Start", skin);
 // Create a "Help" TextButton using the default style
-        TextButton loadBtn = new TextButton("Help", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        TextButton loadBtn = new TextButton("Help", skin);
 // Create a "Settings" TextButton with a custom image
-        TextButton settingsBtn = new TextButton("Settings", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        TextButton settingsBtn = new TextButton("Settings", skin);
 // Create a "Quit" TextButton with a custom image
-        TextButton exitBtn = new TextButton("Quit", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        TextButton exitBtn = new TextButton("Quit", skin);
 
         // Triggers an event when the button is pressed
         startBtn.addListener(
