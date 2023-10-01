@@ -14,13 +14,12 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
-
 /**
- * The FireworksTowerCombatTask runs the AI for the FireworksTower class. The tower scans for mobs and targets in a
- * straight line from its centre coordinate and executes the trigger phrases for animations depeending on the current
- * state of tower.
+ * The PierceTowerCombatTask runs the AI for the PierceTower class. The tower scans for mobs and targets in a straight
+ * line from its centre coordinate and executes the trigger phrases for animations depeending on the current state of
+ * tower.
  */
-public class FireworksTowerCombatTask extends DefaultTask implements PriorityTask {
+public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     // constants
     // Time interval (in seconds) to scan for enemies
     private static final int INTERVAL = 1;
@@ -49,7 +48,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
      * @param priority Task priority when targets are detected (0 when nothing is present)
      * @param maxRange Maximum effective range of the StunTower.
      */
-    public FireworksTowerCombatTask(int priority, float maxRange) {
+    public PierceTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
         physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -96,7 +95,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
 
         switch (towerState) {
             case IDLE -> {
-                if(isTargetVisible()) {
+                if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
                     towerState = STATE.ATTACK;
                 }
@@ -107,6 +106,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
                     towerState = STATE.IDLE;
                 } else {
                     owner.getEntity().getEvents().trigger(ATTACK);
+                    // NEED TO CHANGE THAT
                     Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
                             // double check if this is the correct projectile to call
                             new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),

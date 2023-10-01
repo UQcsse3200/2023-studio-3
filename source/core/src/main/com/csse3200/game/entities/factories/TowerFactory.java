@@ -7,6 +7,7 @@ import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.components.tasks.FireTowerCombatTask;
 import com.csse3200.game.components.tasks.StunTowerCombatTask;
 import com.csse3200.game.components.tasks.FireworksTowerCombatTask;
+import com.csse3200.game.components.tasks.PierceTowerCombatTask;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -305,6 +306,10 @@ public class TowerFactory {
         return stunTower;
     }
 
+    /**
+     * Creates the FireworksTower entity which shoots at mobs traversing in a straight line.
+     * @return FireworksTower entity with relevant components.
+     */
     public static Entity createFireworksTower() {
         Entity fireworksTower = createBaseTower();
         FireworksTowerConfig config = configs.fireworksTower;
@@ -329,6 +334,28 @@ public class TowerFactory {
         fireworksTower.setScale(1.5f, 1.5f);
         PhysicsUtils.setScaledCollider(fireworksTower, 0.5f, 0.5f);
         return fireworksTower;
+    }
+
+    /**
+     * Creates the PierceTower entity which shoots at mobs traversing in a straight line.
+     * @return PierceTower entity with relevant components.
+     */
+    public static Entity createPierceTower() {
+        Entity pierceTower = createBaseTower();
+        PierceTowerConfig config = configs.pierceTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        pierceTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent);
+                // ADD ANIMATION COMPONENTS
+
+        pierceTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);
+        return pierceTower;
     }
 
     /**
