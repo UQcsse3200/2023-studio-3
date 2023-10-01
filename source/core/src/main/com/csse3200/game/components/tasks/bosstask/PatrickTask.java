@@ -267,7 +267,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
         projectile.setScale(-1f, 1f);
         ServiceLocator.getEntityService().register(projectile);
-        shotsFired++;
     }
 
     /**
@@ -286,6 +285,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private void rangeAttack() {
         randomTeleport();
         spawnRandProjectile(new Vector2(0f, patrick.getPosition().y), false);
+        shotsFired++;
     }
 
     /**
