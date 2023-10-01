@@ -31,6 +31,18 @@ public class HumanAnimationController extends Component {
     private static final String FIRE_SINGLE_ANIM = "firing_single";
     private static final String HIT_ANIM = "hit";
     private static final String DEATH_ANIM = "death";
+
+    private static final String IDLEL_ANIM_OUTLINE = "idle_left_outline";
+    private static final String IDLER_ANIM_OUTLINE = "idle_right_outline";
+    private static final String WALKL_ANIM_OUTLINE = "walk_left_outline";
+    private static final String WALKR_ANIM_OUTLINE = "walk_right_outline";
+    private static final String WALK_PREP_ANIM_OUTLINE = "walk_prep_outline";
+    private static final String FIRE_AUTO_ANIM_OUTLINE = "firing_auto_outline";
+    private static final String FIRE_SINGLE_ANIM_OUTLINE = "firing_single_outline";
+    private static final String PREP_ANIM_OUTLINE = "prep_outline";
+    private static final String HIT_ANIM_OUTLINE = "hit_outline";
+    private static final String DEATH_ANIM_OUTLINE = "death_outline";
+
     // Sound effects constants
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
     private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
@@ -40,6 +52,9 @@ public class HumanAnimationController extends Component {
             FIRE_AUTO_SFX, Sound.class);
     private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
             FIRE_SINGLE_SFX, Sound.class);
+
+    private boolean clicked = false;
+
 
     /**
      * Instantiates a HumanAnimationController and adds all the event listeners for the
@@ -65,21 +80,33 @@ public class HumanAnimationController extends Component {
      * Callback that starts the idle animation facing left
      */
     void animateIdleLeft() {
-        animator.startAnimation(IDLEL_ANIM);
+        if (clicked) {
+            animator.startAnimation(IDLEL_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(IDLEL_ANIM);
+        }
     }
 
     /**
      * Callback that starts the idle animation facing right
      */
     void animateIdleRight() {
-        animator.startAnimation(IDLER_ANIM);
+        if (clicked) {
+            animator.startAnimation(IDLER_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(IDLER_ANIM);
+        }
     }
 
     /**
      * Callback that starts the walk animation for left movement
      */
     void animateLeftWalk() {
-        animator.startAnimation(WALKL_ANIM);
+        if (clicked) {
+            animator.startAnimation(WALKL_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(WALKL_ANIM);
+        }
 //        runSound.play();
     }
 
@@ -87,7 +114,11 @@ public class HumanAnimationController extends Component {
      * Callback that starts the walk animation for right movement
      */
     void animateRightWalk() {
-        animator.startAnimation(WALKR_ANIM);
+        if (clicked) {
+            animator.startAnimation(WALKR_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(WALKR_ANIM);
+        }
     }
 
     /**
@@ -95,14 +126,22 @@ public class HumanAnimationController extends Component {
      * unused, but intended to be incorporated as engineer functionality expands
      */
     void animatePrepWalk() {
-        animator.startAnimation(WALK_PREP_ANIM);
+        if (clicked) {
+            animator.startAnimation(WALK_PREP_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(WALK_PREP_ANIM);
+        }
     }
 
     /**
      * Callback that starts the shoot animation in single fire mode, and plays the single fire sound
      */
     void animateSingleFiring() {
-        animator.startAnimation(FIRE_SINGLE_ANIM);
+        if (clicked) {
+            animator.startAnimation(FIRE_SINGLE_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(FIRE_SINGLE_ANIM);
+        }
         fireSingleSound.play();
     }
 
@@ -111,7 +150,11 @@ public class HumanAnimationController extends Component {
      * Currently unused, but intended to be incorporated as engineer functionality expands.
      */
     void animateFiringAuto() {
-        animator.startAnimation(FIRE_AUTO_ANIM);
+        if (clicked) {
+            animator.startAnimation(FIRE_AUTO_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(FIRE_AUTO_ANIM);
+        }
         fireAutoSound.play();
     }
 
@@ -119,20 +162,47 @@ public class HumanAnimationController extends Component {
      * Callback that starts the 'prep' animation, i.e., raising weapon in preparation for firing
      */
     void animatePrep() {
-        animator.startAnimation(PREP);
+        if (clicked) {
+            animator.startAnimation(PREP_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(PREP);
+        }
     }
 
     /**
      * Callback that starts the 'hit' animation when engineer is damaged
      */
     void animateHit() {
-        animator.startAnimation(HIT_ANIM);
+        if (clicked) {
+            animator.startAnimation(HIT_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(HIT_ANIM);
+        }
     }
 
     /**
      * Callback that starts the 'death' animation when the engineer entity's health reaches zero.
      */
     void animateDeath() {
-        animator.startAnimation(DEATH_ANIM);
+        if (clicked) {
+            animator.startAnimation(DEATH_ANIM_OUTLINE);
+        } else {
+            animator.startAnimation(DEATH_ANIM);
+        }
+    }
+
+    /**
+     * @return true if the entity has been clicked/selected, false otherwise
+     */
+    public boolean isClicked() {
+        return clicked;
+    }
+
+    /**
+     * Sets the clicked state of the entity
+     * @param clicked true if the entity has been clicked/selected, false otherwise
+     */
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
     }
 }

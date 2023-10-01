@@ -3,6 +3,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
@@ -40,12 +41,17 @@ public class EngineerInputComponent extends InputComponent {
         // Case when engineer is clicked
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
         String currentAnimation = animator.getCurrentAnimation();
-
+        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
+        EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);
         // outline image if it is not already outlined and vice versa
         if (currentAnimation.contains("_outline")) {
             animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
+            menu.removeMenu();
+            controller.setClicked(false);
         } else {
             animator.startAnimation(currentAnimation + "_outline");
+            menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
+            controller.setClicked(true);
         }
 
         return true;

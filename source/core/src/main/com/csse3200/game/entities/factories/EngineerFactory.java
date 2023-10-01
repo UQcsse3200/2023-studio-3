@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
@@ -57,6 +58,7 @@ public class EngineerFactory {
             .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
             .addComponent(animator)
             .addComponent(new HumanAnimationController())
+            .addComponent(new EngineerMenuComponent())
             .addComponent(aiComponent);
     
     engineer.getComponent(AITaskComponent.class).addTask(new HumanWanderTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));

@@ -50,8 +50,8 @@ public class PlayerFactory {
             .addComponent(new CombatStatsComponent(1000, 5000))
             .addComponent(new InventoryComponent(stats.gold))
             .addComponent(inputComponent)
-            .addComponent(aiComponent)
-            .addComponent(new PlayerStatsDisplay());
+            .addComponent(aiComponent);
+            //.addComponent(new PlayerStatsDisplay());
 
     PhysicsUtils.setScaledCollider(player, 0.6f, 0.3f);
     player.getComponent(ColliderComponent.class).setDensity(1.5f);
