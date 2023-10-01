@@ -304,6 +304,13 @@ public class TowerFactory {
         return stunTower;
     }
 
+    public static Entity createFireworksTower() {
+        Entity fireworksTower = createBaseTower();
+        FireworksTowerConfig config = configs.fireworksTower;
+
+        return fireworksTower;
+    }
+
     /**
      * Creates a generic tower entity to be used as a base entity by more specific tower creation methods.
      * @return entity

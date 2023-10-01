@@ -11,4 +11,5 @@ public class baseTowerConfigs {
     public StunTowerConfig stunTower = new StunTowerConfig();
     public TNTTowerConfigs TNTTower = new TNTTowerConfigs();
     public DroidTowerConfig DroidTower = new DroidTowerConfig();
+    public FireworksTowerConfig fireworksTower = new FireworksTowerConfig();
 }
