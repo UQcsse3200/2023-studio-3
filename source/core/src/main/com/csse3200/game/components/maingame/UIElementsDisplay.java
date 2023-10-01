@@ -21,8 +21,7 @@ import org.w3c.dom.Text;
 public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
     private static final float Z_INDEX = 2f;
-    private final Table mobsButtonTable = new Table();
-    private final Table timerTable = new Table();
+    private final Table buttonTable = new Table();
     private final Table towerTable = new Table();
     Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
     private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
@@ -38,12 +37,10 @@ public class UIElementsDisplay extends UIComponent {
      * This method creates the buttons, adds them to the respective tables and draws them on the screen.
      */
     private void addActors() {
-        mobsButtonTable.top().right();
-        timerTable.top().right();
+        buttonTable.top().right();
         towerTable.top();
 
-        mobsButtonTable.setFillParent(true);
-        timerTable.setFillParent(true);
+        buttonTable.setFillParent(true);
         towerTable.setFillParent(true);
 
         towerTable.setDebug(true);
@@ -66,8 +63,9 @@ public class UIElementsDisplay extends UIComponent {
 //                    }
 //                });
 
-        mobsButtonTable.add(remainingMobsButton).padTop(20f).padRight(10f);
-        timerTable.add(timerButton).padTop(70f).padRight(10f);
+        buttonTable.add(remainingMobsButton).padTop(10f).padRight(10f);
+        buttonTable.row();
+        buttonTable.add(timerButton).padRight(10f);
 
         towerTable.add(tower1).padRight(10f);
         towerTable.add(tower2).padRight(10f);
@@ -75,8 +73,7 @@ public class UIElementsDisplay extends UIComponent {
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
 
-        stage.addActor(mobsButtonTable);
-        stage.addActor(timerTable);
+        stage.addActor(buttonTable);
         stage.addActor(towerTable);
     }
 
@@ -106,7 +103,7 @@ public class UIElementsDisplay extends UIComponent {
     @Override
     public void dispose() {
         super.dispose();
-        mobsButtonTable.clear();
-        timerTable.clear();
+        buttonTable.clear();
+        towerTable.clear();
     }
 }
