@@ -97,7 +97,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     /* Input components */
     InputComponent dropInputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent upgradeInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera());
+    InputComponent upgradeInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     ServiceLocator.getInputService().register(dropInputHandler);
     ServiceLocator.getInputService().register(upgradeInputHandler);
 
