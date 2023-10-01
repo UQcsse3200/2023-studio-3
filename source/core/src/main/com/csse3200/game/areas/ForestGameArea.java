@@ -307,7 +307,7 @@ public class ForestGameArea extends GameArea {
     //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
-    spawnWeaponTower();
+    // spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
 
@@ -520,19 +520,42 @@ public class ForestGameArea extends GameArea {
       case "Xeno":
         mob = NPCFactory.createXenoGrunt();
         break;
-      case "SplittingXeno":
-        mob = NPCFactory.createSplittingXenoGrunt();
+      case "SplittingWaterSlime":
+        mob = NPCFactory.createSplittingWaterSlime();
         break;
       case "DodgingDragon":
         mob = NPCFactory.createDodgingDragonKnight();
         break;
-      case "DeflectXeno":
-        mob = NPCFactory.createDeflectXenoGrunt();
+      case "DeflectWizard":
+        mob = NPCFactory.createDeflectWizard();
+        break;
+      case "WaterQueen":
+        mob = NPCFactory.createWaterQueen();
+        break;
+      case "FireWorm":
+        mob = NPCFactory.createFireWorm();
+        break;
+      case "Skeleton":
+        mob = NPCFactory.createSkeleton();
+        break;
+      case "IceBoss":
+        mob = MobBossFactory.createIceBoss();
+        break;
+      case "DemonBoss":
+        mob = MobBossFactory.createDemonBoss();
+        break;
+      case "PatrickBoss":
+        mob = MobBossFactory.createPatrickBoss(100);
         break;
       default:
-        mob = NPCFactory.createBaseNPC();
+        mob = NPCFactory.createXenoGrunt();
     }
-    mob.setScale(1.5f, 1.5f);
+    if (entity.contains("Boss")) {
+      mob.scaleHeight(5f);
+      mob.scaleWidth(5f);
+    } else {
+      mob.setScale(1.5f, 1.5f);
+    }
     spawnEntityAt(mob, randomPos, true, false);
   }
 
@@ -727,7 +750,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 3; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       Entity wallTower = TowerFactory.createWallTower();
