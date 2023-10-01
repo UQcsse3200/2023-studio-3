@@ -9,10 +9,8 @@ import java.util.*;
 
 public class WaveClass {
   private HashMap<String, int[]> entities;
-//  private HashMap<String, Integer> entities;
   private GameTime gameTime;
   private long startTime;
-//  private List<String> wave;
   private List<Tuple> wave;
   private Random rand = new Random();
   private int mobIndex;
@@ -21,7 +19,6 @@ public class WaveClass {
    * Constructor for the WaveClass
    * @param entities: HashMap of entities and the quantity of them to be spawned in this wave
    */
-//  public WaveClass(HashMap<String, Integer> entities) {
   public WaveClass(HashMap<String, int[]> entities) {
     this.entities = entities;
     this.wave = entitiesToWave();
@@ -30,14 +27,12 @@ public class WaveClass {
 
   /**
    * Get the entities that are part of this wave and randomise the order they are spawned
-   * @return mobs for the wave
+   * @return mobs for the wave in form of (mob name, mob health)
    */
   private List<Tuple> entitiesToWave() {
-//  private List<String> entitiesToWave() {
     List<Tuple> enemies = new ArrayList<>();
     for (Map.Entry<String, int[]> set : entities.entrySet()) {
       for (int i = 0; i < set.getValue()[0]; i++) {
-//        enemies.add(Map.of(set.getKey(), set.getValue()[1]));
         enemies.add(new Tuple(set.getKey(), set.getValue()[1]));
       }
     }
@@ -58,7 +53,6 @@ public class WaveClass {
    * @return list of mobs in the current wave
    */
   public List<Tuple> getMobs() {
-//  public List<String> getMobs() {
     return this.wave;
   }
 

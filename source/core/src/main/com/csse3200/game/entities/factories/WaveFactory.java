@@ -23,14 +23,22 @@ public class WaveFactory {
 
   private static Random rand = new Random();
 
+  // Base health of the mobs
   private static int BASE_HEALTH = 60;
 
+  // Base health of the boss
   private static int BOSS_BASE_HEALTH = 80;
 
+  /**
+   * The function will create the waves depending on the level selected by the user.
+   * TODO - UI has to be implemented to allow the user to select the level.
+   * To currently change the level set the chosenLevel variable to 1, 2, or 3.
+   * */
   public static Entity createWaves() {
+
     int chosenLevel = 3;
-    int difficulty = 1;
-    int maxWaves = 1;
+    int difficulty;
+    int maxWaves;
     switch (chosenLevel) {
       case 2:
         difficulty = 3;
@@ -45,16 +53,6 @@ public class WaveFactory {
         maxWaves = 5;
     }
 
-//    HashMap<String, Integer> mobs = new HashMap<>();
-//    mobs.put("Xeno", 3);
-//    mobs.put("DodgingDragon", 4);
-//    HashMap<String, Integer> mobs2 = new HashMap<>();
-//    mobs2.put("Xeno", 3);
-//    WaveClass wave1 = new WaveClass(mobs);
-//    WaveClass wave2 = new WaveClass(mobs2);
-//    LevelWaves level = new LevelWaves(10);
-//    level.addWave(wave1);
-//    level.addWave(wave2);
     LevelWaves level = createLevel(difficulty, maxWaves, chosenLevel);
     AITaskComponent aiComponent =
         new AITaskComponent()
@@ -62,14 +60,34 @@ public class WaveFactory {
     return level.addComponent(aiComponent);
   }
 
+  /**
+   * This function is responsible for creating the level and all the waves associated with it.
+   * It takes in the difficulty, number of waves and level selected by the user. From the level
+   * selected by the user, it will produce the waves for the level.
+   *
+   * Depending on the level selected (1 easy, 2 medium, 3 hard), the number of waves will increase as well as
+   * the number of mobs per wave and the health of the mobs. Based on the level the mobs will change and waves will be
+   * constructed from two random mobs of the possible ones allocated for that level. Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
+   * health will be increased from BASE_HEALTH to BASE_HEALTH + (I * chosen_level) so the difficulty
+   * increases quicker.
+   *
+   * Bosses are spawned every 5 waves and the health of the bosses increases as the level increases.
+   * For every 5 levels another boss is included (5th wave -> 1 boss, 10th wave -> 2 bosses etc.)
+   *
+   * @param maxDiff - the maximum difficulty of the level (the start number of mobs - 3)
+   * @param maxWaves - the maximum number of waves for the level
+   * @param chosenLevel - the level selected by the user
+   *
+   * @return level - the level constructed with all the waves of mobs
+   * */
   public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
-    System.out.println("creating level difficulty: " + maxDiff + " maxWaves: " + maxWaves + " chosenLevel: " + chosenLevel);
     int minMobs = 3 + maxDiff;
-//    int minMobs = maxDiff;
-//    ArrayList<String> possibleMobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno"));
+    // These are the mobs assigned to the associated levels (planets)
     ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "WaterSlime", "DeflectXeno"));
     ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectXeno", "Wizard"));
     ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno", "FireWorm"));
+
+    // The mob bosses assigned to the associated levels (planets)
     String boss1 = "WaterBoss";
     String boss2 = "MagicBoss";
     String boss3 = "FireBoss";
@@ -77,6 +95,7 @@ public class WaveFactory {
 
     ArrayList<String> possibleMobs;
 
+    // set the possible mobs and boss for the level
     String boss = "";
     switch (chosenLevel) {
       case 2:
@@ -95,20 +114,22 @@ public class WaveFactory {
         break;
     }
 
+    // Create mxWaves number of waves with mob stats increasing
     for (int i = 1; i <= maxWaves; i++) {
-      System.out.println("adding another mob: " + i);
-//      HashMap<String, Integer> mobs = new HashMap<>();
       HashMap<String, int[]> mobs = new HashMap<>();
 
+      // add i/5 bosses every 5 waves with increased health where i is the i^th wave
+      // 5/5 -> 1 boss, 10/5 -> 2 bosses etc
       if (i % 5 == 0) {
-        int[] bossStats = {i/5, 80 + (chosenLevel * i)};
-//        mobs.put(boss, i/5);
+        int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};
         mobs.put(boss, bossStats);
       }
 
+      // select 2 random mobs from the possible mobs
       String mob1 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
       String mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
 
+      // ensure the mobs are different
       while (mob2 == mob1) {
         mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
       }
@@ -119,12 +140,9 @@ public class WaveFactory {
       int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};
       int[] mob2Stats = {mob2Num, BASE_HEALTH + (chosenLevel * i)};
 
-      System.out.println("mob1 health: " + mob1Stats[1] + " mob2 health: " + mob2Stats[1]);
 
       mobs.put(mob1, mob1Stats);
       mobs.put(mob2, mob2Stats);
-//      mobs.put(mob1, mob1Num);
-//      mobs.put(mob2, mob2Num);
 
       System.out.println(mobs);
       level.addWave(new WaveClass(mobs));
