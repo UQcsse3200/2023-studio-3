@@ -16,7 +16,6 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-import net.dermetfan.gdx.physics.box2d.PositionController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +85,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             @Override
             public void run() {
                 changeState(PatrickState.APPEAR);
+                patrick.getEvents().trigger("patrick_appear_sound");
+                patrick.getEvents().trigger("patrick_spawn_sound");
                 startFlag = true;
                 spawnFlag = true;
             }
@@ -120,6 +121,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             deadPatrick.setPosition(patrick.getPosition().x, patrick.getPosition().y);
             deadPatrick.setScale(4f, 4f);
             ServiceLocator.getEntityService().register(deadPatrick);
+            patrick.getEvents().trigger("patrick_scream_sound");
             patrick.setFlagForDelete(true);
         }
 
@@ -129,6 +131,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
                 !halfHealthFlag) {
+            patrick.getEvents().trigger("patrick_scream_sound");
             halfHealth();
             halfHealthFlag = true;
         }
@@ -136,17 +139,23 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
-                if (spawnFlag) {
+                if (spawnFlag && animation.isFinished()) {
                     meleeAttack();
                     spawnFlag = false;
                 } else if (meleeFlag) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            patrick.getEvents().trigger("patrick_hit_sound");
+                        }
+                    }, 1f);
                     changeState(PatrickState.ATTACK);
                     meleeFlag = false;
                 } else if (rangeFlag) {
                     // shoot 3 projectiles
                     if (shotsFired > 2) {
                         rangeFlag = false;
-                        spawnFlag = true;
+                        meleeAttack();
                         shotsFired = 0; // reset shots fired
                     } else {
                         changeState(PatrickState.IDLE);
@@ -258,7 +267,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
         projectile.setScale(-1f, 1f);
         ServiceLocator.getEntityService().register(projectile);
-        shotsFired++;
     }
 
     /**
@@ -277,6 +285,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     private void rangeAttack() {
         randomTeleport();
         spawnRandProjectile(new Vector2(0f, patrick.getPosition().y), false);
+        shotsFired++;
     }
 
     /**
