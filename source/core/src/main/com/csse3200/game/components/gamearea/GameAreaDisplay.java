@@ -264,7 +264,7 @@ public class GameAreaDisplay extends UIComponent {
     stage.draw();
   }
   private Dialog createTowerDetailsDialog() {
-    Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+    Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 
     // Register a label style named "default" with the skin
     Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -282,7 +282,7 @@ public class GameAreaDisplay extends UIComponent {
     return dialog;
   }
   private void addActors() {
-    title = new Label(this.gameAreaName, skin, "large");
+    title = new Label(this.gameAreaName, skin, "default");
     stage.addActor(title);
   }
 
