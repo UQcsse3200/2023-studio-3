@@ -1,8 +1,10 @@
 package com.csse3200.game.components.maingame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -21,7 +23,8 @@ public class UIElementsDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private final Table mobsButtonTable = new Table();
     private final Table timerTable = new Table();
-    private final TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
+    Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+    private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
     private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");;
 
     @Override
@@ -62,7 +65,7 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the mob count button as mobs die in the game
      */
     public void updateMobCount() {
-        remainingMobsButton.setText("Mobs left:" + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton.getLabel().setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
     }
 
     @Override

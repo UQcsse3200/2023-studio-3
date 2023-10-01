@@ -23,7 +23,7 @@ public class WaveService {
      */
     public WaveService() {
         this.enemyCount = 0;
-        display = new UIElementsDisplay();
+        this.display = new UIElementsDisplay();
     }
 
     /**
@@ -120,5 +120,14 @@ public class WaveService {
      */
     public void setNextWaveTime(long nextWaveTime) {
         this.nextWaveTime = nextWaveTime;
+    }
+
+    /**
+     * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
+     * for this instance of the display.
+     * @return the updating instance of UIElementsDisplay
+     */
+    public UIElementsDisplay getDisplay() {
+        return this.display;
     }
 }
