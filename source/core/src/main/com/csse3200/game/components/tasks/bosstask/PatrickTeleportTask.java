@@ -50,6 +50,11 @@ public class PatrickTeleportTask extends DefaultTask {
             }
             case SPELL -> {
                 if (animation.isFinished()) {
+                    changeState(PatrickState.APPEAR);
+                }
+            }
+            case APPEAR -> {
+                if (animation.isFinished()) {
                     combatStats.setHealth(health); // set health to health before teleport
                     status = Status.FINISHED;
                 }

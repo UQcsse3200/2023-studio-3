@@ -135,22 +135,20 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
-                if (animation.isFinished()) {
-                    if (spawnFlag) {
+                if (spawnFlag && animation.isFinished()) {
+                    meleeAttack();
+                    spawnFlag = false;
+                } else if (meleeFlag) {
+                    changeState(PatrickState.ATTACK);
+                    meleeFlag = false;
+                } else if (rangeFlag) {
+                    // shoot 3 projectiles
+                    if (shotsFired > 2) {
+                        rangeFlag = false;
                         meleeAttack();
-                        spawnFlag = false;
-                    } else if (meleeFlag) {
-                        changeState(PatrickState.ATTACK);
-                        meleeFlag = false;
-                    } else if (rangeFlag) {
-                        // shoot 3 projectiles
-                        if (shotsFired > 2) {
-                            rangeFlag = false;
-                            spawnFlag = true;
-                            shotsFired = 0; // reset shots fired
-                        } else {
-                            changeState(PatrickState.IDLE);
-                        }
+                        shotsFired = 0; // reset shots fired
+                    } else {
+                        changeState(PatrickState.IDLE);
                     }
                 }
             }
