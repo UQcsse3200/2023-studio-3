@@ -1,5 +1,11 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	dot_gothic_16: {
+		file: dot_gothic_16.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
 	Toriko: {
 		file: Toriko.fnt
 		scaledSize: 18
@@ -63,7 +69,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
 		parent: default
-		font: Toriko
+		font: dot_gothic_16
 		fontColor: White
 		downFontColor: Blue
 		overFontColor: White
@@ -83,15 +89,15 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: Toriko
+		font: dot_gothic_16
 		fontColor: White
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: Toriko1
-		fontColorSelected: Blue
-		fontColorUnselected: Black
+		font: dot_gothic_16
+		fontColorSelected: White
+		fontColorUnselected: Grey
 		selection: UI_Glass_Banner_01a
 		down: UI_Glass_Button_Large_Lock_01a3
 		over: UI_Glass_Button_Large_Lock_01a2
@@ -118,11 +124,11 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: Toriko
-		fontColor: Black
-		overFontColor: Blue
+		font: dot_gothic_16
+		fontColor: Grey
+		overFontColor: White
 		disabledFontColor: Grey
-		background: UI_Glass_Banner_01a
+		background: UI_Glass_Button_Large_Press_01a4
 		scrollStyle: default
 		listStyle: default
 		backgroundOver: UI_Glass_Button_Large_Lock_01a2
@@ -138,15 +144,15 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
-		font: Toriko
-		fontColor: White
+		font: dot_gothic_16
+		fontColor: Grey
 		downFontColor: White
-		overFontColor: Blue
+		overFontColor: White
 		focusedFontColor: White
 		disabledFontColor: Grey
 		checkedFontColor: White
 		checkedDownFontColor: White
-		checkedOverFontColor: Blue
+		checkedOverFontColor: White
 		checkedFocusedFontColor: White
 		up: UI_Glass_Button_Large_Press_01a4
 		down: UI_Glass_Button_Large_Press_01a1
@@ -168,8 +174,8 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: UI_Glass_Frame_Standard_01a
-		titleFont: Toriko
-		titleFontColor: Blue
+		titleFont: dot_gothic_16
+		titleFontColor: White
 		stageBackground: UI_Glass_Frame_Standard_01a
 	}
 }
