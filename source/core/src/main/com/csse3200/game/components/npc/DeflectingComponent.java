@@ -65,7 +65,8 @@ public class DeflectingComponent extends Component {
 
   /**
    * Deflects projectile to the opposite direction
-   * @param me Self entity fixture
+   * 
+   * @param me    Self entity fixture
    * @param other Colliding projectile fixture.
    */
   private void deflectProj(Fixture me, Fixture other) {
@@ -73,7 +74,7 @@ public class DeflectingComponent extends Component {
     if (hitboxComponent.getFixture() != me
         || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits))
       return;
-    
+
     if (deflectLimitAmount-- <= 0) { // Reached deflect limit amt, return.
       entity.getComponent(this.getClass()).setEnabled(false);
       // reset health
@@ -86,16 +87,18 @@ public class DeflectingComponent extends Component {
 
     // Disposes all tasks for the curr projectile. At this curr time, it assumes
     // projectile only has one significant task, and that is the TrajectTask.
+    projectile.getComponent(AITaskComponent.class).dispose(); // stop task
     projectile.getComponent(AITaskComponent.class).disposeAll();
 
     // Obtain current direction of projectile
     Vector2 direction = projectile.getComponent(
         PhysicsMovementComponent.class).getTarget();
-    
-    // Rare occurence that the direction is null if target isn't set.
-    if(direction == null) return;
 
-    // Add new traject task with the target in the opposite x-direction.
+    // Rare occurence that the direction is null if target isn't set.
+    if (direction == null)
+      return;
+
+    // // Add new traject task with the target in the opposite x-direction.
     projectile.getComponent(AITaskComponent.class)
         .addTask(new TrajectTask(new Vector2(-direction.x, direction.y)));
 
