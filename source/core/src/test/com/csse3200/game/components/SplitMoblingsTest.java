@@ -33,6 +33,7 @@ import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.services.WaveService;
 
 @ExtendWith(GameExtension.class)
 public class SplitMoblingsTest {
@@ -62,6 +63,9 @@ public class SplitMoblingsTest {
     ServiceLocator.registerResourceService(resourceService);
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
+
+    WaveService waveService = new WaveService();
+    ServiceLocator.registerWaveService(waveService);
 
     baseMob = createSplitMob(BASE_AMOUNT);
   }
