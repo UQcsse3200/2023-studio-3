@@ -135,6 +135,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
+                if (!animation.isFinished()) {
+                    return;
+                }
                 if (spawnFlag) {
                     meleeAttack();
                     spawnFlag = false;

@@ -308,8 +308,8 @@ public class ForestGameArea extends GameArea {
     // spawnSplittingXenoGrunt(15, 4);
     // spawnSplittingXenoGrunt(15, 5);
     // spawnDodgingDragonKnight(15, 3);
-     spawnDemonBoss();
-//     spawnPatrick();
+//     spawnDemonBoss();
+     spawnPatrick();
     // spawnIceBaby();
     // player.getEvents().addListener("spawnWave", this::spawnWave);
 //    playMusic();

@@ -48,11 +48,6 @@ public class PatrickTeleportTask extends DefaultTask {
             }
             case SPELL -> {
                 if (animation.isFinished()) {
-                    changeState(PatrickState.APPEAR);
-                }
-            }
-            case APPEAR -> {
-                if (animation.isFinished()) {
                     status = Status.FINISHED;
                 }
             }
