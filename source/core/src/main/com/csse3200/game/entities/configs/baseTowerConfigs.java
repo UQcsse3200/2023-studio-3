@@ -13,4 +13,5 @@ public class baseTowerConfigs {
     public DroidTowerConfig DroidTower = new DroidTowerConfig();
     public FireworksTowerConfig fireworksTower = new FireworksTowerConfig();
     public PierceTowerConfig pierceTower = new PierceTowerConfig();
+    public RicochetTowerConfig ricochetTower = new RicochetTowerConfig();
 }

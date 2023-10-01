@@ -14,22 +14,24 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+
 /**
- * The PierceTowerCombatTask runs the AI for the PierceTower class. The tower scans for mobs and targets in a straight
- * line from its centre coordinate and executes the trigger phrases for animations depeending on the current state of
- * tower.
+ * The RicochetTowerCombatTask runs the AI for the RicochetTower class. The tower scans for mobs and targets in a
+ * straight line from its centre coordinate and executes the trigger phrases for animations depending on the current
+ * state of tower.
  */
-public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
-    // constants
+public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask {
+    //constants
     // Time interval (in seconds) to scan for enemies
     private static final int INTERVAL = 1;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
-    private static final String IDLE = "startIdle";
+    // Following constants are names of events that will be triggered in the state machine
+    public static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";
 
-    // Class attributes
+    // Class constants
     private final int priority;
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10);
@@ -39,6 +41,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
 
+    //enums for the state triggers
     public enum STATE {
         IDLE, ATTACK, DEATH
     }
@@ -48,7 +51,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
      * @param priority Task priority when targets are detected (0 when nothing is present)
      * @param maxRange Maximum effective range of the StunTower.
      */
-    public PierceTowerCombatTask(int priority, float maxRange) {
+    public RicochetTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
         physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -95,7 +98,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
 
         switch (towerState) {
             case IDLE -> {
-                if (isTargetVisible()) {
+                if(isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
                     towerState = STATE.ATTACK;
                 }
@@ -106,8 +109,9 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
                     towerState = STATE.IDLE;
                 } else {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                    Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC,
+                            // NEED TO DO USER TESTING TO FIGURE OUT THE BOUNCE COUNT
+                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
@@ -121,10 +125,6 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
         }
     }
 
-    /**
-     * Returns the state that the tower is currently in
-     * @return this.towerState
-     */
     public STATE getState() {
         return this.towerState;
     }

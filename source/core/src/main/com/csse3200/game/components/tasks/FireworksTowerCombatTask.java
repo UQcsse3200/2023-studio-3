@@ -26,6 +26,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private static final int INTERVAL = 1;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
+    //Following constants are names of events that will be triggered in the state machine
     private static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";

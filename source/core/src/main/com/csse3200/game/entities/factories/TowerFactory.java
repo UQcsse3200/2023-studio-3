@@ -8,6 +8,7 @@ import com.csse3200.game.components.tasks.FireTowerCombatTask;
 import com.csse3200.game.components.tasks.StunTowerCombatTask;
 import com.csse3200.game.components.tasks.FireworksTowerCombatTask;
 import com.csse3200.game.components.tasks.PierceTowerCombatTask;
+import com.csse3200.game.components.tasks.RicochetTowerCombatTask;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -347,6 +348,8 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
+        // ADD AnimationRenderComponent
+
         pierceTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
@@ -356,6 +359,30 @@ public class TowerFactory {
         pierceTower.setScale(1.5f, 1.5f);
         PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);
         return pierceTower;
+    }
+
+    /**
+     * Creates the RicochetTower entity which shoots at mobs traversing in a straight line.
+     * @return RicochetTower entity with relevant components.
+     */
+    public static Entity createRicochetTower() {
+        Entity ricochetTower = createBaseTower();
+        RicochetTowerConfig config = configs.ricochetTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        // ADD AnimationRenderComponent
+
+        ricochetTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent);
+                // ADD ANIMATION COMPONENTS
+
+        ricochetTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
+        return ricochetTower;
     }
 
     /**
