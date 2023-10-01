@@ -20,6 +20,8 @@ public class EngineerInputComponent extends InputComponent {
     private Camera camera;
     private EntityService entityService;
 
+    private Entity selectedEngineer = null;
+
     public EngineerInputComponent(Game game, Camera camera) {
         this.game = game;
         this.camera = camera;
@@ -35,8 +37,14 @@ public class EngineerInputComponent extends InputComponent {
 
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
-            return false;
+            if (selectedEngineer == null) {
+                return false;
+            }
+            // TODO: handle moving the engineer to cursorPosition
+
         }
+
+        this.selectedEngineer = engineer;
 
         // Case when engineer is clicked
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
