@@ -54,7 +54,7 @@ public class EngineerMenuComponent extends UIComponent {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 controller.deselectEngineer(animator.getCurrentAnimation());
-                logger.info("Move button clicked");
+                //logger.info("Move button clicked");
             }
         });
 
@@ -62,7 +62,7 @@ public class EngineerMenuComponent extends UIComponent {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 controller.deselectEngineer(animator.getCurrentAnimation());
-                logger.info("Repair button clicked");
+                //logger.info("Repair button clicked");
             }
         });
 

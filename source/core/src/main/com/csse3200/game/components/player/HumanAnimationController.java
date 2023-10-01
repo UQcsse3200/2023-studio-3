@@ -207,6 +207,11 @@ public class HumanAnimationController extends Component {
         this.clicked = clicked;
     }
 
+    /**
+     * Deseelects the engineer entity by starting the appropriate animation without an outline
+     * and removes the engineer menu from the stage
+     * @param currentAnimation the current animation of the entity
+     */
     public void deselectEngineer(String currentAnimation) {
         AnimationRenderComponent animator = this.entity.getComponent(AnimationRenderComponent.class);
         EngineerMenuComponent menu = this.entity.getComponent(EngineerMenuComponent.class);
