@@ -23,9 +23,10 @@ public class UIElementsDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private final Table mobsButtonTable = new Table();
     private final Table timerTable = new Table();
+    private final Table towerTable = new Table();
     Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
     private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
-    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");;
+    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
 
     @Override
     public void create() {
@@ -39,9 +40,20 @@ public class UIElementsDisplay extends UIComponent {
     private void addActors() {
         mobsButtonTable.top().right();
         timerTable.top().right();
+        towerTable.top();
 
         mobsButtonTable.setFillParent(true);
         timerTable.setFillParent(true);
+        towerTable.setFillParent(true);
+
+        towerTable.setDebug(true);
+        towerTable.padTop(50f);
+
+        TextButton tower1 = new TextButton("Tower 1", skin);
+        TextButton tower2 = new TextButton("Tower 2", skin);
+        TextButton tower3 = new TextButton("Tower 3", skin);
+        TextButton tower4 = new TextButton("Tower 4", skin);
+        TextButton tower5 = new TextButton("Tower 5", skin);
 
         //Not sure if we need a listened for a label
 //        // Triggers an event when the button is pressed.
@@ -57,8 +69,15 @@ public class UIElementsDisplay extends UIComponent {
         mobsButtonTable.add(remainingMobsButton).padTop(20f).padRight(10f);
         timerTable.add(timerButton).padTop(70f).padRight(10f);
 
+        towerTable.add(tower1).padRight(10f);
+        towerTable.add(tower2).padRight(10f);
+        towerTable.add(tower3).padRight(10f);
+        towerTable.add(tower4).padRight(10f);
+        towerTable.add(tower5).padRight(10f);
+
         stage.addActor(mobsButtonTable);
         stage.addActor(timerTable);
+        stage.addActor(towerTable);
     }
 
     /**
