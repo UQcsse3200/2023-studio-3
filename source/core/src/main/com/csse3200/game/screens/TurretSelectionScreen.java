@@ -77,6 +77,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
         confirmButton.getStyle().down = pressDrawable;
+        confirmButton.pad(0,0,6,0);
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -104,8 +105,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 Table turretTable = new Table();
                 turretTable.center(); // Center the contents of the nested table
 
-                TextButton button = createButton("images/turret-select/imageedit_2_8132799771.png",
-                        "images/ui/Sprites/UI_Glass_Frame_Lite_01a.png", turret.getPrice());
+                TextButton button = createButton(turret.getDefaultImage(),
+                        turret.getClickedImage(), turret.getPrice());
+
+                button.pad(103, 15, 0, 0);
                 button.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
