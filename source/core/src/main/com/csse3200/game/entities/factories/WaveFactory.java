@@ -18,13 +18,21 @@ public class WaveFactory {
      */
     public static Entity createWaves() {
         HashMap<String, Integer> mobs = new HashMap<>();
-        mobs.put("Xeno", 3);
-        mobs.put("DodgingDragon", 4);
+        // mobs.put("Xeno", 1);
+        mobs.put("DodgingDragon", 3);
+        mobs.put("SplittingWaterSlime", 3);
+        mobs.put("DeflectWizard", 3);
+        mobs.put("WaterQueen", 3);
+        mobs.put("FireWorm", 3);
+        mobs.put("Skeleton", 3);
+        // mobs.put("DemonBoss", 1);
+        mobs.put("PatrickBoss", 1);
+        mobs.put("IceBoss", 1);
         HashMap<String, Integer> mobs2 = new HashMap<>();
-        mobs2.put("Xeno", 3);
+        // mobs2.put("Xeno", 3);
         WaveClass wave1 = new WaveClass(mobs);
         WaveClass wave2 = new WaveClass(mobs2);
-        LevelWaves level = new LevelWaves(10);
+        LevelWaves level = new LevelWaves(3);
         level.addWave(wave1);
         level.addWave(wave2);
         AITaskComponent aiComponent =
