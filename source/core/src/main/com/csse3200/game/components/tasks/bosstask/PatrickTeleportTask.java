@@ -1,6 +1,7 @@
 package com.csse3200.game.components.tasks.bosstask;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
@@ -35,6 +36,14 @@ public class PatrickTeleportTask extends DefaultTask {
         combatStats = owner.getEntity().getComponent(CombatStatsComponent.class);
         health = combatStats.getHealth();
         changeState(PatrickState.CAST);
+        patrick.getEvents().trigger("patrick_thunder_sound");
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                patrick.getEvents().trigger(
+                        "patrick_cast_sound");
+            }
+        }, 0.3f);
     }
 
     @Override
@@ -44,6 +53,7 @@ public class PatrickTeleportTask extends DefaultTask {
         switch (state) {
             case CAST -> {
                 if (animation.isFinished()) {
+                    health = combatStats.getHealth();
                     patrick.setPosition(location);
                     changeState(PatrickState.SPELL);
                 }
@@ -51,11 +61,12 @@ public class PatrickTeleportTask extends DefaultTask {
             case SPELL -> {
                 if (animation.isFinished()) {
                     changeState(PatrickState.APPEAR);
+                    combatStats.setHealth(health);
+                    patrick.getEvents().trigger("patrick_appear_sound");
                 }
             }
             case APPEAR -> {
                 if (animation.isFinished()) {
-                    combatStats.setHealth(health); // set health to health before teleport
                     status = Status.FINISHED;
                 }
             }

@@ -85,6 +85,8 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             @Override
             public void run() {
                 changeState(PatrickState.APPEAR);
+                patrick.getEvents().trigger("patrick_appear_sound");
+                patrick.getEvents().trigger("patrick_spawn_sound");
                 startFlag = true;
                 spawnFlag = true;
             }
@@ -119,6 +121,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             deadPatrick.setPosition(patrick.getPosition().x, patrick.getPosition().y);
             deadPatrick.setScale(4f, 4f);
             ServiceLocator.getEntityService().register(deadPatrick);
+            patrick.getEvents().trigger("patrick_scream_sound");
             patrick.setFlagForDelete(true);
         }
 
@@ -128,6 +131,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
                 !halfHealthFlag) {
+            patrick.getEvents().trigger("patrick_scream_sound");
             halfHealth();
             halfHealthFlag = true;
         }
@@ -139,6 +143,12 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                     meleeAttack();
                     spawnFlag = false;
                 } else if (meleeFlag) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            patrick.getEvents().trigger("patrick_hit_sound");
+                        }
+                    }, 1f);
                     changeState(PatrickState.ATTACK);
                     meleeFlag = false;
                 } else if (rangeFlag) {
