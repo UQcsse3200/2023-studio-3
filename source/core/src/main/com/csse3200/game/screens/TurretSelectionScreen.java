@@ -72,13 +72,18 @@ public class TurretSelectionScreen extends ScreenAdapter {
         message = new Label("Select your turrets", skin);
         turretsPicked = new Label("Turrets picked: ", skin);
 
-        confirmButton = new TextButton("Continue", skin);
+        confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
+                "images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png", "Continue");
+        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
+                new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
+        confirmButton.getStyle().down = pressDrawable;
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
+
 
         // Centered the message and turrets label
         table.add(message).center().colspan(4).row();
@@ -99,20 +104,44 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 Table turretTable = new Table();
                 turretTable.center(); // Center the contents of the nested table
 
-                Pixmap pixmap200 = new Pixmap(Gdx.files.internal(String.valueOf(Gdx.files.internal(turret.getImagePath()))));
-                Pixmap pixmap100 = new Pixmap(150, 150, pixmap200.getFormat());
-                pixmap100.drawPixmap(pixmap200,
-                        0, 0, pixmap200.getWidth(), pixmap200.getHeight(),
-                        0, 0, pixmap100.getWidth(), pixmap100.getHeight()
-                );
-
-                // Load the turret image
-                Texture turretTexture = new Texture(pixmap100);
-                Image turretImage = new Image(turretTexture);
                 TextButton button = createButton("images/turret-select/imageedit_2_8132799771.png",
-                        "images/ui/Sprites/UI_Glass_Frame_Lite_01a.png", 100);
+                        "images/ui/Sprites/UI_Glass_Frame_Lite_01a.png", turret.getPrice());
+                button.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        logger.info(String.valueOf(selectedTurrets.size()));
+                        if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
+                            message.setText("You can only select up to 5 turrets.");
+                        } else {
+                            message.setText("Select your turrets");
+                        }
+                        if (selectedTurrets.contains(turret)) {
+                            // Turret is already selected, unselect it
+                            selectedTurrets.remove(turret);
+                            // You can also change the button appearance to indicate unselection
+                            logger.info(selectedTurrets.toString());
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                        } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {
+                            // Turret is not selected, but the max number of turrets has been reached
+                            message.setText("You can only select up to 5 turrets.");
+                        } else if (selectedTurrets.size() < MAX_SELECTED_TURRETS) {
+                            // Turret is not selected, select it
+                            selectedTurrets.add(turret);
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                            logger.info(selectedTurrets.toString());
+                        }
+                        else {
+                            // Turret is not selected, select it
+                            selectedTurrets.add(turret);
+                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
+                            //logger.info(selectedTurrets.toString());
+
+                            // You can change the button appearance to indicate selection
+                        }
+                    }
+                });
+
                 // Add the image to the nested table
-                //turretTable.add(turretImage).pad(10).row();
                 turretTable.add(button).pad(10).row();
 
                 // Add the nested table to the main table
@@ -148,7 +177,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         stage.draw();
     }
 
-    private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, int cost) {
+    private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, String cost) {
         Drawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(defaultImageFilePath)));
         Drawable alternateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(alternateImageFilePath)));
 
@@ -157,7 +186,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         buttonStyle.up = defaultDrawable; // Default state
 
         // Create button
-        TextButton tb = new TextButton(String.format("%d", cost), buttonStyle);
+        TextButton tb = new TextButton(String.format(cost), buttonStyle);
 
         // Add click listener to toggle the image
         final boolean[] isDefaultImage = {true}; // Keep track of the image state
