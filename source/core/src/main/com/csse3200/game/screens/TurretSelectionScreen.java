@@ -61,7 +61,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         message = new Label("Select your turrets", skin);
         turretsPicked = new Label("Turrets picked: ", skin);
 

@@ -33,11 +33,10 @@ public class MainMenuScreen extends ScreenAdapter {
   private Texture backgroundTexture;
   private final SpriteBatch batch;
   private static final String[] mainMenuTextures = {
-          "images/background/background1.png",
-          "images/ui/buttons/button_lg.png"
+          "images/background/background1.png"
   };
   private static final String[] mainMenuAtlases = {
-          "images/ui/buttons/button_lg.atlas"
+          "images/ui/buttons/glass.atlas"
   };
   private static final String[] titleMusic = {"sounds/background/title_screen/ScifiAmbient.ogg"};
 
