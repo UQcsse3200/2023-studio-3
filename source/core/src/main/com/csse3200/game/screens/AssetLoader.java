@@ -64,13 +64,25 @@ public class AssetLoader {
             "images/projectiles/basic_projectile.png",
             "images/projectiles/mobProjectile.png",
             "images/projectiles/engineer_projectile.png",
-            "images/projectiles/mobKing_projectile.png",
+            "images/projectiles/mobBoss_projectile.png",
             "images/projectiles/snow_ball.png",
             "images/projectiles/burn_effect.png",
             "images/projectiles/stun_effect.png",
             "images/projectiles/firework_anim.png",
             "images/projectiles/pierce_anim.png",
-            "images/projectiles/snow_ball.png"
+            "images/projectiles/snow_ball.png",
+            "images/mobboss/demon.png",
+            "images/mobboss/demon2.png",
+            "images/mobs/fire_worm.png",
+            "images/mobboss/patrick.png",
+            "images/GrassTile/grass_tile_1.png",
+            "images/GrassTile/grass_tile_2.png",
+            "images/GrassTile/grass_tile_3.png",
+            "images/GrassTile/grass_tile_4.png",
+            "images/GrassTile/grass_tile_5.png",
+            "images/GrassTile/grass_tile_6.png",
+            "images/GrassTile/grass_tile_7.png",
+            "images/highlight_tile.png"
     };
 
     public static final String[] textureAtlases = {
@@ -97,13 +109,21 @@ public class AssetLoader {
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/engineer_projectile.atlas",
-            "images/projectiles/mobKing_projectile.atlas",
+            "images/projectiles/mobBoss_projectile.atlas",
             "images/projectiles/snow_ball.atlas",
             "images/projectiles/pierce_anim.atlas",
             "images/projectiles/burn_effect.atlas",
             "images/projectiles/firework_anim.atlas",
             "images/projectiles/mobProjectile.atlas",
-            "images/projectiles/stun_effect.atlas"
+            "images/projectiles/stun_effect.atlas",
+            "images/mobboss/demon.atlas",
+            "images/mobs/fire_worm.atlas",
+            "images/mobs/dragon_knight.atlas",
+            "images/mobs/skeleton.atlas",
+            "images/mobs/wizard.atlas",
+            "images/mobs/water_queen.atlas",
+            "images/mobs/water_slime.atlas",
+            "images/mobboss/patrick.atlas"
     };
 
 
@@ -122,6 +142,22 @@ public class AssetLoader {
             "sounds/engineers/firing_single.mp3",
             "sounds/projectiles/on_collision.mp3",
             "sounds/projectiles/explosion.mp3",
+            "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
+            "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg",
+            "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg",
+            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
+            "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg",
+            "sounds/background/desert/Elements.ogg",
+            "sounds/background/desert/Rocks1.ogg",
+            "sounds/background/desert/Rocks2.ogg",
+            "sounds/background/ice/Sequences1.ogg",
+            "sounds/background/ice/Sequences2.ogg",
+            "sounds/background/ice/Sequences3.ogg",
+            "sounds/background/lava/Burst.ogg",
+            "sounds/background/lava/Glitch_ripples.ogg",
+            "sounds/background/lava/Sizzling.ogg",
+            "sounds/background/lava/Swoosh.ogg",
+            "sounds/background/loss/RisingScreams.ogg"
     };
 
 
