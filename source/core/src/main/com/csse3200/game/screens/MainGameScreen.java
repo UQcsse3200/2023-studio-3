@@ -3,14 +3,15 @@ package com.csse3200.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
@@ -57,6 +58,29 @@ public class MainGameScreen extends ScreenAdapter {
           "sounds/background/lava/lava_bgm.ogg",
           "sounds/background/desert/desert_bgm.ogg"
   };
+  private static final String[] uiSounds = {
+          "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
+          "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg",
+          "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg",
+          "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
+          "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg"
+  };
+  private static final String[] desertSounds = {
+          "sounds/background/desert/Elements.ogg",
+          "sounds/background/desert/Rocks1.ogg",
+          "sounds/background/desert/Rocks2.ogg"
+  };
+  private static final String[] iceSounds = {
+          "sounds/background/ice/Sequences1.ogg",
+          "sounds/background/ice/Sequences2.ogg",
+          "sounds/background/ice/Sequences3.ogg"
+  };
+  private static final String[] lavaSounds = {
+          "sounds/background/lava/Burst.ogg",
+          "sounds/background/lava/Glitch_ripples.ogg",
+          "sounds/background/lava/Sizzling.ogg",
+          "sounds/background/lava/Swoosh.ogg"
+  };
   private static final String ICE_BGM = backgroundMusic[0];
   private static final String LAVA_BGM = backgroundMusic[1];
   private static final String DESERT_BGM = backgroundMusic[2];
@@ -69,10 +93,8 @@ public class MainGameScreen extends ScreenAdapter {
   private final Stage stage;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
-
   private Entity ui;
-
-
+  private int random = 0;
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
   int selectedLevel = GameLevelData.getSelectedLevel();
@@ -82,6 +104,7 @@ public class MainGameScreen extends ScreenAdapter {
 
   private Texture backgroundTexture;
   private Music music;
+  private Array<String> ambientSounds = new Array<>(false, 5, String.class);
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -146,15 +169,18 @@ public class MainGameScreen extends ScreenAdapter {
       case 1: // Ice
         background = ServiceLocator.getResourceService().getAsset(ICE_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(ICE_BGM, Music.class);
+        ambientSounds.addAll(iceSounds);
         break;
       case 2: // Lava
         background = ServiceLocator.getResourceService().getAsset(LAVA_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(LAVA_BGM, Music.class);
+        ambientSounds.addAll(lavaSounds);
         break;
       default:
         // Use a default background for other levels or planets
         background = ServiceLocator.getResourceService().getAsset(DESERT_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(DESERT_BGM, Music.class);
+        ambientSounds.addAll(desertSounds);
         break;
     }
     return background;
@@ -226,6 +252,10 @@ public class MainGameScreen extends ScreenAdapter {
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
     ServiceLocator.getResourceService().loadMusic(backgroundMusic);
+    ServiceLocator.getResourceService().loadSounds(iceSounds);
+    ServiceLocator.getResourceService().loadSounds(desertSounds);
+    ServiceLocator.getResourceService().loadSounds(lavaSounds);
+    ServiceLocator.getResourceService().loadSounds(uiSounds);
     ServiceLocator.getResourceService().loadAll();
     backgroundTexture = getBackgroundTexture(); // Load the background image
   }
@@ -234,6 +264,11 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.unloadAssets(mainGameTextures);
+    ServiceLocator.getResourceService().unloadAssets(backgroundMusic);
+    ServiceLocator.getResourceService().unloadAssets(iceSounds);
+    ServiceLocator.getResourceService().unloadAssets(desertSounds);
+    ServiceLocator.getResourceService().unloadAssets(lavaSounds);
+    ServiceLocator.getResourceService().unloadAssets(uiSounds);
   }
 
   /**
@@ -261,5 +296,14 @@ public class MainGameScreen extends ScreenAdapter {
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();
+    playAmbientSound();
+  }
+
+  /**
+   * Plays one of the ambient sounds for the level at random
+   */
+  private void playAmbientSound() {
+
+     ServiceLocator.getResourceService().getAsset(ambientSounds.random(), Sound.class).play(0.2f);
   }
 }
