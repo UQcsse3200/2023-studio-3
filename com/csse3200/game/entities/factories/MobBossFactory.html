@@ -77,6 +77,7 @@ loadScripts(document, 'script');</script>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">MobBossFactory</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></span></div>
+<div class="block">Where all entities of mob bosses are created</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -92,8 +93,20 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDemonBoss()" class="member-name-link">createDemonBoss</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createBaseBoss()" class="member-name-link">createBaseBoss</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Create base boss entity that all boss mobs will inherit</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createDemonBoss()" class="member-name-link">createDemonBoss</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates new Demon boss with its correlating tasks and animations</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createIceBoss()" class="member-name-link">createIceBoss</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a new ice boss and adds its correlating animations and tasks</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createMobBoss1(int)" class="member-name-link">createMobBoss1</a><wbr>(int&nbsp;numLane)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
@@ -102,10 +115,19 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createPatrickBoss(int)" class="member-name-link">createPatrickBoss</a><wbr>(int&nbsp;health)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates new Patrick boss with correlating tasks and animations</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createSlimeyBoy()" class="member-name-link">createSlimeyBoy</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates end state of demon boss</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#patrickDead()" class="member-name-link">patrickDead</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Creates a patrick entity whose sole purpose is to display death animation</div>
+</div>
 </div>
 </div>
 </div>
@@ -127,18 +149,57 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createDemonBoss()">
 <h3>createDemonBoss</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createDemonBoss</span>()</div>
+<div class="block">Creates new Demon boss with its correlating tasks and animations</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Demon boss</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="createSlimeyBoy()">
 <h3>createSlimeyBoy</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createSlimeyBoy</span>()</div>
+<div class="block">Creates end state of demon boss</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>Slimey Boy</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="createPatrickBoss(int)">
 <h3>createPatrickBoss</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createPatrickBoss</span><wbr><span class="parameters">(int&nbsp;health)</span></div>
+<div class="block">Creates new Patrick boss with correlating tasks and animations</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>health</code> - - health of the boss</dd>
+<dt>Returns:</dt>
+<dd>Patrick Boss</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="patrickDead()">
+<h3>patrickDead</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">patrickDead</span>()</div>
+<div class="block">Creates a patrick entity whose sole purpose is to display death animation</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>patrick death entity</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="createIceBoss()">
+<h3>createIceBoss</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createIceBoss</span>()</div>
+<div class="block">Creates a new ice boss and adds its correlating animations and tasks</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>- Ice Baby Boss</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -151,6 +212,17 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createMobBoss2()">
 <h3>createMobBoss2</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createMobBoss2</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createBaseBoss()">
+<h3>createBaseBoss</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createBaseBoss</span>()</div>
+<div class="block">Create base boss entity that all boss mobs will inherit</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>base mob boss entity</dd>
+</dl>
 </section>
 </li>
 </ul>

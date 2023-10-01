@@ -369,6 +369,10 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">HumanWanderTask is the entry point for the engineer entity's behaviour.</div>
 </div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/bosses/IceBabyAnimationController.html" title="class in com.csse3200.game.components.bosses">IceBabyAnimationController</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/bosstask/IceBabyTask.html" title="class in com.csse3200.game.components.tasks.bosstask">IceBabyTask</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/screens/IceGameScreen.html" title="class in com.csse3200.game.screens">IceGameScreen</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/configs/IncomeTowerConfig.html" title="class in com.csse3200.game.entities.configs">IncomeTowerConfig</a></div>
@@ -478,7 +482,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Task that prints a message to the terminal whenever it is called.</div>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/factories/MobBossFactory.html" title="class in com.csse3200.game.entities.factories">MobBossFactory</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Where all entities of mob bosses are created</div>
+</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/projectile/MobBossProjectAnimController.html" title="class in com.csse3200.game.components.projectile">MobBossProjectAnimController</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/MobDeathTask.html" title="class in com.csse3200.game.components.tasks">MobDeathTask</a></div>
@@ -490,10 +496,18 @@ loadScripts(document, 'script');</script>
 <div class="block">This task runs the AI that adds a dodge mechanic/functionality for the mobs
  in the MobsFactory.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/MobProjectileAnimationController.html" title="class in com.csse3200.game.components">MobProjectileAnimationController</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/projectile/MobProjectileAnimationController.html" title="class in com.csse3200.game.components.projectile">MobProjectileAnimationController</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/MobMeleeAttackTask.html" title="class in com.csse3200.game.components.tasks">MobMeleeAttackTask</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Task that allows mobs to shoot projectiles or melee attack towers</div>
+</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/MobProjectileAnimationController.html" title="class in com.csse3200.game.components">MobProjectileAnimationController</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/projectile/MobProjectileAnimationController.html" title="class in com.csse3200.game.components.projectile">MobProjectileAnimationController</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/MobRangedAttackTask.html" title="class in com.csse3200.game.components.tasks">MobRangedAttackTask</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Task that allows mobs to shoot projectiles or melee attack towers</div>
+</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/MobShootTask.html" title="class in com.csse3200.game.components.tasks">MobShootTask</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Task that allows mobs to shoot projectiles or melee attack towers</div>
@@ -512,28 +526,29 @@ loadScripts(document, 'script');</script>
 </div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/MoveToMiddleTask.html" title="class in com.csse3200.game.components.tasks">MoveToMiddleTask</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/NewMobWanderTask.html" title="class in com.csse3200.game.components.tasks">NewMobWanderTask</a></div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/configs/NPCConfigs.html" title="class in com.csse3200.game.entities.configs">NPCConfigs</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">
-<div class="block">Wander around by moving a random position within a range of the starting position.</div>
-</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/configs/NPCConfigs.html" title="class in com.csse3200.game.entities.configs">NPCConfigs</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Defines all NPC configs to be loaded by the NPC Factory.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/factories/NPCFactory.html" title="class in com.csse3200.game.entities.factories">NPCFactory</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/factories/NPCFactory.html" title="class in com.csse3200.game.entities.factories">NPCFactory</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Factory to create non-playable character (NPC) entities with predefined components.</div>
 </div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/factories/ObstacleFactory.html" title="class in com.csse3200.game.entities.factories">ObstacleFactory</a></div>
-<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/entities/factories/ObstacleFactory.html" title="class in com.csse3200.game.entities.factories">ObstacleFactory</a></div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
 <div class="block">Factory to create obstacle entities.</div>
 </div>
-<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/projectile/OnCollisionAnimationController.html" title="class in com.csse3200.game.components.projectile">OnCollisionAnimationController</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/projectile/OnCollisionAnimationController.html" title="class in com.csse3200.game.components.projectile">OnCollisionAnimationController</a></div>
+<div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/bosses/PatrickAnimationController.html" title="class in com.csse3200.game.components.bosses">PatrickAnimationController</a></div>
 <div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
-<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/bosses/PatrickAnimationController.html" title="class in com.csse3200.game.components.bosses">PatrickAnimationController</a></div>
+<div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/bosstask/PatrickDeathTask.html" title="class in com.csse3200.game.components.tasks.bosstask">PatrickDeathTask</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/bosstask/PatrickTask.html" title="class in com.csse3200.game.components.tasks.bosstask">PatrickTask</a></div>
-<div class="col-last even-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
+<div class="col-last even-row-color all-classes-table all-classes-table-tab2">
+<div class="block">Patrick boss task that controls the boss' sequence and actions based on a predetermined sequence
+ and the boss' current hp</div>
+</div>
 <div class="col-first odd-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/tasks/bosstask/PatrickTeleportTask.html" title="class in com.csse3200.game.components.tasks.bosstask">PatrickTeleportTask</a></div>
 <div class="col-last odd-row-color all-classes-table all-classes-table-tab2">&nbsp;</div>
 <div class="col-first even-row-color all-classes-table all-classes-table-tab2"><a href="com/csse3200/game/components/gamearea/PerformanceDisplay.html" title="class in com.csse3200.game.components.gamearea">PerformanceDisplay</a></div>

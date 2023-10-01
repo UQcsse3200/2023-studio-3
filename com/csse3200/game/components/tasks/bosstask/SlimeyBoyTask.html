@@ -114,7 +114,9 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
 <div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E()" class="member-name-link">SlimeyBoyTask</a>()</code></div>
-<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-last even-row-color">
+<div class="block">Constructor for this task</div>
+</div>
 </div>
 </section>
 </li>
@@ -135,12 +137,12 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Start running this task.</div>
+<div class="block">What is called when task is assigned</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Run one frame of the task.</div>
+<div class="block">What is run every frame update</div>
 </div>
 </div>
 </div>
@@ -169,6 +171,7 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <section class="detail" id="&lt;init&gt;()">
 <h3>SlimeyBoyTask</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SlimeyBoyTask</span>()</div>
+<div class="block">Constructor for this task</div>
 </section>
 </li>
 </ul>
@@ -183,8 +186,7 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <section class="detail" id="start()">
 <h3>start</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">start</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../ai/tasks/Task.html#start()">Task</a></code></span></div>
-<div class="block">Start running this task. This will usually be called by an AI controller.</div>
+<div class="block">What is called when task is assigned</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../ai/tasks/Task.html#start()">start</a></code>&nbsp;in interface&nbsp;<code><a href="../../../ai/tasks/Task.html" title="interface in com.csse3200.game.ai.tasks">Task</a></code></dd>
@@ -197,8 +199,7 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <section class="detail" id="update()">
 <h3>update</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span>()</div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../../../ai/tasks/Task.html#update()">Task</a></code></span></div>
-<div class="block">Run one frame of the task. Similar to the update() in Components.</div>
+<div class="block">What is run every frame update</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../ai/tasks/Task.html#update()">update</a></code>&nbsp;in interface&nbsp;<code><a href="../../../ai/tasks/Task.html" title="interface in com.csse3200.game.ai.tasks">Task</a></code></dd>
@@ -214,6 +215,8 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../../../ai/tasks/PriorityTask.html#getPriority()">getPriority</a></code>&nbsp;in interface&nbsp;<code><a href="../../../ai/tasks/PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a></code></dd>
+<dt>Returns:</dt>
+<dd>priority of class</dd>
 </dl>
 </section>
 </li>
