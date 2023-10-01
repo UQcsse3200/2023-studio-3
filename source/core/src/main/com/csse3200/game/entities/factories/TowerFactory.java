@@ -312,7 +312,22 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
+        // NEED TO MAKE FIREWORKS_TOWER_ATLAS
+//        AnimationRenderComponent animator =
+//                new AnimationRenderComponent(
+//                        ServiceLocator.getResourceService()
+//                                .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
 
+        fireworksTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent);
+                // NEED TO ADD ANIMATIONS
+//                .addComponent(animator)
+//                .addComponent(new FireworksTowerAnimationController());
+
+        fireworksTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(fireworksTower, 0.5f, 0.5f);
         return fireworksTower;
     }
 
