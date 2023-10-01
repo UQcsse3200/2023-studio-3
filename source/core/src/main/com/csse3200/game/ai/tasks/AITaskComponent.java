@@ -1,6 +1,7 @@
 package com.csse3200.game.ai.tasks;
 
 import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ComponentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,24 @@ public class AITaskComponent extends Component implements TaskRunner {
     task.create(this);
 
     return this;
+  }
+
+  /**
+   * Get a task from the list of tasks. This can be used to get a reference to
+   * a task to modify it. This is inspired from Entity.getComponent().
+   *
+   * @param task The task to get
+   * @return A reference to a task with the given class
+   * @param <T> The type of task to get
+   */
+  public <T extends PriorityTask> T getTask(Class<T> task) {
+    for (PriorityTask priorityTask : priorityTasks) {
+      if (priorityTask.getClass() == task) {
+        return (T) priorityTask;
+      }
+    }
+    logger.info("Task {} not found", task);
+    return null;
   }
 
   /**
