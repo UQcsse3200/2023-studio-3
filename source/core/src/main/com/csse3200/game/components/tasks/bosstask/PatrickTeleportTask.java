@@ -17,6 +17,7 @@ public class PatrickTeleportTask extends DefaultTask {
     private PatrickState prevState;
     private AnimationRenderComponent animation;
     private Status status = Status.INACTIVE;
+    private CombatStatsComponent combatStats;
     private int health;
     private enum PatrickState {
         CAST, APPEAR, SPELL, IDLE
@@ -31,7 +32,8 @@ public class PatrickTeleportTask extends DefaultTask {
     public void start() {
         super.start();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class);
-        health = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();
+        combatStats = owner.getEntity().getComponent(CombatStatsComponent.class);
+        health = combatStats.getHealth();
         changeState(PatrickState.CAST);
     }
 
@@ -48,6 +50,7 @@ public class PatrickTeleportTask extends DefaultTask {
             }
             case SPELL -> {
                 if (animation.isFinished()) {
+                    combatStats.setHealth(health); // set health to health before teleport
                     status = Status.FINISHED;
                 }
             }
