@@ -65,7 +65,7 @@ public class LevelWaves extends Entity {
     public void spawnWave() {
         if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
             do {
-                currentRandom = rand.nextInt(0, ServiceLocator.getMapService().getHeight() + 1);
+                currentRandom = rand.nextInt(0, ServiceLocator.getMapService().getHeight());
             } while (currentRandom == previousRandom);
             ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);

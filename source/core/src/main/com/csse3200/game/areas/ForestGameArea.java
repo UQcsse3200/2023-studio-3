@@ -527,7 +527,7 @@ public class ForestGameArea extends GameArea {
   
   private void spawnFireWorm() {
 
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
 
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
@@ -540,7 +540,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnSkeleton() {
 
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -552,7 +552,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnDragonKnight() {
 
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
 
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
@@ -565,7 +565,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnWizard() {
 
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
 
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
@@ -578,7 +578,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnWaterQueen() {
 
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
 
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
@@ -591,7 +591,7 @@ public class ForestGameArea extends GameArea {
 
   private void spawnWaterSlime() {
 
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() + 1)
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
 
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
@@ -705,7 +705,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 10 ; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 7 ; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       Entity wallTower = TowerFactory.createWallTower();
@@ -734,7 +734,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
     
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 15; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createTNTTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
@@ -746,7 +746,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 15; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createDroidTower();
       spawnEntityAt(weaponTower, randomPos, true, false);
