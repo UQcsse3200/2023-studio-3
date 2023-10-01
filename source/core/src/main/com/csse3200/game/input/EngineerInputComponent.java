@@ -3,8 +3,12 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.tasks.human.HumanMovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.EngineerFactory;
@@ -41,7 +45,8 @@ public class EngineerInputComponent extends InputComponent {
                 return false;
             }
             // TODO: handle moving the engineer to cursorPosition
-
+            moveEngineer(cursorPosition);
+            return true;
         }
 
         this.selectedEngineer = engineer;
@@ -63,6 +68,16 @@ public class EngineerInputComponent extends InputComponent {
         }
 
         return true;
+    }
+
+    private void moveEngineer(Vector2 cursorPosition) {
+        if (selectedEngineer == null) {
+            logger.info("Trying to move an engineer that is not selected");
+        }
+        AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);
+        HumanMovementTask task = new HumanMovementTask(cursorPosition);
+        movementTask.addTask(task);
+        logger.info("Moving engineer to {}", cursorPosition);
     }
 
 }
