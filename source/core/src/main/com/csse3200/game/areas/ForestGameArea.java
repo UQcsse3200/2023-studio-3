@@ -114,7 +114,8 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/demon.png",
           "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png",
-          "images/mobboss/patrick.png"
+          "images/mobboss/patrick.png",
+          "images/towers/fireworks_tower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -154,7 +155,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/wizard.atlas", 
           "images/mobs/water_queen.atlas",
           "images/mobs/water_slime.atlas",
-          "images/mobboss/patrick.atlas"
+          "images/mobboss/patrick.atlas",
+          "images/towers/fireworks_tower.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -274,13 +276,14 @@ public class ForestGameArea extends GameArea {
     //spawnXenoGrunts();
     //startWaveTimer();
     spawnScrap();
-    //spawnDeflectXenoGrunt(15, 5);
-    //spawnSplittingXenoGrunt(15, 4);
+    spawnDeflectXenoGrunt(15, 5);
+    spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
+    spawnFireWorksTower();
 
   }
   
@@ -653,6 +656,17 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
     
+  }
+  private void spawnFireWorksTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity FireWorksTower = TowerFactory.createFireworksTower();
+      spawnEntityAt(FireWorksTower, randomPos, true, true);
+    }
+
   }
 
   private void spawnDroidTower() {

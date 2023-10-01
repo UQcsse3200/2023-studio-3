@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -27,9 +26,12 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
-    private static final String IDLE = "startIdle";
-    public static final String ATTACK = "startAttack";
-    public static final String DEATH = "startDeath";
+    private static final String IDLE = "idleStart";
+    public static final String ATTACK = "attackStart";
+    public static final String DEATH = "deathStart";
+    public static final String CHARGE_END = "chargeEnd";
+    public static final String CHARGE_START = "chargeStart";
+
 
     // Class attributes
     private final int priority;
@@ -42,9 +44,9 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private final RaycastHit hit = new RaycastHit();
 
     public enum STATE {
-        IDLE, ATTACK, DEATH
+        Idle,Attack, Death, Charge_start, Charge_end
     }
-    public STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.Idle;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -89,35 +91,53 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
      */
     public void updateTowerState() {
 
-        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.Death) {
             owner.getEntity().getEvents().trigger(DEATH);
-            towerState = STATE.DEATH;
+            towerState = STATE.Death;
             return;
         }
 
         switch (towerState) {
-            case IDLE -> {
+            case Idle -> {
                 if(isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    towerState = STATE.ATTACK;
+                    owner.getEntity().getEvents().trigger(CHARGE_START);
+                    towerState = STATE.Charge_start;
                 }
             }
-            case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
+            case Charge_start -> {
+                if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
-                            // double check if this is the correct projectile to call
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
-                            3);
+                    towerState = STATE.Attack;
+                } else {
+                    owner.getEntity().getEvents().trigger(CHARGE_END);
+                    towerState = STATE.Charge_end;
+                }
+            }
+
+            case Charge_end -> {
+                if (isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger(ATTACK);
+                    towerState = STATE.Attack;
+                } else {
+                    owner.getEntity().getEvents().trigger(IDLE);
+                    towerState = STATE.Idle;
+                }
+            }
+
+            case Attack -> {
+                if (isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger(ATTACK);
+                    Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
+                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
+                } else {
+                    owner.getEntity().getEvents().trigger(IDLE);
+                    towerState=STATE.Idle;
                 }
             }
-            case DEATH -> {
+            case Death -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
                     owner.getEntity().setFlagForDelete(true);
                 }

@@ -46,6 +46,7 @@ public class TowerFactory {
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
+    private static final String FIREWORKS_TOWER_ATLAS = "images/towers/fireworks_tower.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
     private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
     private static final float DROID_SPEED = 0.25f;
@@ -83,6 +84,12 @@ public class TowerFactory {
     private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
     private static final String STUN_TOWER_DEATH_ANIM = "death";
     private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
+    private static final String FIREWORKS_TOWER_DEATH_ANIM ="DEATH";
+    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.4f;
+    private static final String FIREWORKS_TOWER_CHARGE_START_ANIM ="Charge";
+    private static final String FIREWORKS_TOWER_CHARGE_END_ANIM ="Charge_end";
+    private static final String FIREWORKS_TOWER_IDLE_ANIM ="Idle";
+    private static final String FIREWORKS_TOWER_ATTACK_ANIM ="Attack";
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
@@ -318,22 +325,26 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
-        // NEED TO MAKE FIREWORKS_TOWER_ATLAS
-//        AnimationRenderComponent animator =
-//                new AnimationRenderComponent(
-//                        ServiceLocator.getResourceService()
-//                                .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_CHARGE_END_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIREWORKS_TOWER_CHARGE_START_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
 
         fireworksTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
-                .addComponent(aiTaskComponent);
-                // NEED TO ADD ANIMATIONS
-//                .addComponent(animator)
-//                .addComponent(new FireworksTowerAnimationController());
+                .addComponent(aiTaskComponent)
+                .addComponent(animator)
+                .addComponent(new FireworksTowerAnimationController());
 
         fireworksTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(fireworksTower, 0.5f, 0.5f);
+        PhysicsUtils.setScaledCollider(fireworksTower, 0.2f, 0.2f);
         return fireworksTower;
     }
 
@@ -379,6 +390,25 @@ public class TowerFactory {
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
                 // ADD ANIMATION COMPONENTS
+
+        ricochetTower.setScale(1.5f, 1.5f);
+        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
+        return ricochetTower;
+    }
+    public static Entity createHealTower() {
+        Entity ricochetTower = createBaseTower();
+        HealTowerConfig config = configs.HealTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
+        // ADD AnimationRenderComponent
+
+        ricochetTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
+                .addComponent(aiTaskComponent);
+        // ADD ANIMATION COMPONENTS
 
         ricochetTower.setScale(1.5f, 1.5f);
         PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
