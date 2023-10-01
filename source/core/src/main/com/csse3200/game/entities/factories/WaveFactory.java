@@ -5,6 +5,7 @@ import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.screens.GameLevelData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,20 +32,18 @@ public class WaveFactory {
 
   /**
    * The function will create the waves depending on the level selected by the user.
-   * TODO - UI has to be implemented to allow the user to select the level.
-   * To currently change the level set the chosenLevel variable to 1, 2, or 3.
    * */
   public static Entity createWaves() {
 
-    int chosenLevel = 3;
+    int chosenLevel = GameLevelData.getSelectedLevel();
     int difficulty;
     int maxWaves;
     switch (chosenLevel) {
-      case 2:
+      case 0:
         difficulty = 3;
         maxWaves = 10;
         break;
-      case 3:
+      case 2:
         difficulty = 5;
         maxWaves = 15;
         break;
@@ -123,6 +122,7 @@ public class WaveFactory {
       if (i % 5 == 0) {
         int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};
         mobs.put(boss, bossStats);
+        System.out.println(boss + " " + bossStats[0] + " " + bossStats[1]);
       }
 
       // select 2 random mobs from the possible mobs
@@ -134,7 +134,7 @@ public class WaveFactory {
         mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
       }
 
-      int mob1Num = rand.nextInt(minMobs - 1);
+      int mob1Num = rand.nextInt(minMobs - 3) + 2;
       int mob2Num = minMobs - mob1Num;
 
       int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};
@@ -142,9 +142,11 @@ public class WaveFactory {
 
 
       mobs.put(mob1, mob1Stats);
+      System.out.println(mob1 + " " + mob1Stats[0] + " " + mob1Stats[1]);
       mobs.put(mob2, mob2Stats);
+      System.out.println(mob2 + " " + mob2Stats[0] + " " + mob2Stats[1]);
 
-      System.out.println(mobs);
+//      System.out.println(mobs);
       level.addWave(new WaveClass(mobs));
       minMobs ++;
     }
