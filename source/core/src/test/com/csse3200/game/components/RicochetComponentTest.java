@@ -19,6 +19,7 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
@@ -33,7 +34,7 @@ public class RicochetComponentTest {
   private final String[] atlas = {
       "images/projectiles/mobProjectile.atlas",
       "images/projectiles/basic_projectile.atlas",
-      "images/projectiles/mobBoss_projectile.atlas",
+      "images/projectiles/mobKing_projectile.atlas",
       "images/projectiles/engineer_projectile.atlas"
   };
 

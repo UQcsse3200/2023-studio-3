@@ -1,5 +1,5 @@
 {
-  "mobBoss": {
+  "BossKing": {
     "health": 100,
     "baseAttack": 25,
     "spookyFactor": 7

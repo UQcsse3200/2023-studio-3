@@ -40,7 +40,7 @@ public class TrajectTask extends DefaultTask implements PriorityTask {
     this.owner.getEntity().getEvents().trigger(START);
     this.owner.getEntity().getEvents().trigger("rotate");
     this.owner.getEntity().getEvents().trigger("start");
-    this.owner.getEntity().getEvents().trigger("startMobBoss");
+    this.owner.getEntity().getEvents().trigger("startMobKing");
   }
 
   public void switchProjectileState() {

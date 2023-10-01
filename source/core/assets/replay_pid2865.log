@@ -53,7 +53,7 @@ instanceKlass  @bci com/csse3200/game/components/npc/Boss1AnimationController cr
 instanceKlass  @bci com/csse3200/game/components/npc/Boss1AnimationController create ()V 66 <appendix> member <vmtarget> ; # com/csse3200/game/components/npc/Boss1AnimationController$$Lambda$104+0x0000000800ceca98
 instanceKlass  @bci com/csse3200/game/components/npc/Boss1AnimationController create ()V 48 <appendix> member <vmtarget> ; # com/csse3200/game/components/npc/Boss1AnimationController$$Lambda$103+0x0000000800cec888
 instanceKlass  @bci com/csse3200/game/components/npc/Boss1AnimationController create ()V 30 <appendix> member <vmtarget> ; # com/csse3200/game/components/npc/Boss1AnimationController$$Lambda$102+0x0000000800cec678
-instanceKlass com/csse3200/game/entities/factories/MobBossFactory
+instanceKlass com/csse3200/game/entities/factories/BossKingFactory
 instanceKlass java/util/stream/AbstractSpinedBuffer
 instanceKlass java/util/stream/Node$Builder$OfInt
 instanceKlass java/util/stream/Node$Builder

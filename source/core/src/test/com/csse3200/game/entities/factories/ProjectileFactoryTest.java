@@ -4,7 +4,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.projectile.*;
 import com.csse3200.game.entities.Entity;
@@ -21,9 +26,14 @@ import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+
+import java.security.Provider;
+import java.util.Arrays;
 
 @ExtendWith(GameExtension.class)
 class ProjectileFactoryTest {
@@ -31,7 +41,7 @@ class ProjectileFactoryTest {
     private final String[] atlas = {
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/basic_projectile.atlas",
-            "images/projectiles/mobBoss_projectile.atlas",
+            "images/projectiles/mobKing_projectile.atlas",
             "images/projectiles/engineer_projectile.atlas",
             "images/projectiles/stun_effect.atlas",
             "images/projectiles/burn_effect.atlas",
@@ -150,30 +160,30 @@ class ProjectileFactoryTest {
                 "Mob Ball Projectile does not have an AnimationRenderComponent");
     }
 
-//     @Test
-//     public void testMobBallProjectileAnimationController() {
-//         Entity mobBallProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
-//         assertNotNull(mobBallProjectile.getComponent(MobProjectileAnimationController.class), 
-//                 "Mob Ball Projectile does not have an AnimationController");
-//     }
+    @Test
+    public void testMobBallProjectileAnimationController() {
+        Entity mobBallProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(mobBallProjectile.getComponent(MobProjectileAnimationController.class), 
+                "Mob Ball Projectile does not have an AnimationController");
+    }
 
     @Test
-    public void testMobBossBallCreation() {
-        Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
-        assertNotNull(mobBossBall, "Mob King Ball is null");
+    public void testMobKingBallCreation() {
+        Entity mobKingBall = ProjectileFactory.createMobKingBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(mobKingBall, "Mob King Ball is null");
     }
     
     @Test
-    public void testMobBossBallAnimationRenderComponent() {
-        Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
-        assertNotNull(mobBossBall.getComponent(AnimationRenderComponent.class),
+    public void testMobKingBallAnimationRenderComponent() {
+        Entity mobKingBall = ProjectileFactory.createMobKingBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(mobKingBall.getComponent(AnimationRenderComponent.class),
                 "Mob King Ball does not have AnimationRenderComponent");
     }
 
     @Test
-    public void testMobBossBallAnimationController() {
-        Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
-        assertNotNull(mobBossBall.getComponent(MobBossProjectAnimController.class),
+    public void testMobKingBallAnimationController() {
+        Entity mobKingBall = ProjectileFactory.createMobKingBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
+        assertNotNull(mobKingBall.getComponent(MobKingProjectAnimController.class),
                 "Mob King Ball does not have Animation Controller");
     }
 

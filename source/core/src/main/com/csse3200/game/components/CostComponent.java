@@ -1,10 +1,15 @@
 package com.csse3200.game.components;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Component used to store information related to cost.
  * Any entities that necessitate a cost should register an instance of this class.
  */
 public class CostComponent extends Component {
+
+
     private int cost;
 
     public CostComponent(int cost) {

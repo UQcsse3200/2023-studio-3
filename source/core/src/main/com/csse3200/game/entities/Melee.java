@@ -1,5 +1,7 @@
 package com.csse3200.game.entities;
 
+import java.util.ArrayList;
+
 /**
  * Melee is a Weapon which has a minimum range to be used at
  *

@@ -6,6 +6,8 @@ import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.ProjectileConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.Random;
@@ -39,7 +41,6 @@ public class CombatStatsComponent extends Component {
   private ArrayList<Currency> drops;
   private ArrayList<Melee> closeRangeAbilities;
   private ArrayList<ProjectileConfig> longRangeAbilities; //TODO change String to Projectiles
-  private Random rand = new Random();
 
   public CombatStatsComponent(int health, int baseAttack) {
     setHealth(health);
@@ -170,9 +171,10 @@ public class CombatStatsComponent extends Component {
   }
 
   /**
-   * Picks a random number from range 0 to the size of the list provided.
-   */
+   * pick a random number from range 0 to the size of the list provided
+   * */
   public int pickRandom(ArrayList pickFrom) {
+      Random rand = new Random();
       return rand.nextInt(pickFrom.size());
   }
 
