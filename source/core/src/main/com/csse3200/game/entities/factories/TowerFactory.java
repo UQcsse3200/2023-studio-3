@@ -6,6 +6,7 @@ import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.components.tasks.FireTowerCombatTask;
 import com.csse3200.game.components.tasks.StunTowerCombatTask;
+import com.csse3200.game.components.tasks.FireworksTowerCombatTask;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -307,6 +308,10 @@ public class TowerFactory {
     public static Entity createFireworksTower() {
         Entity fireworksTower = createBaseTower();
         FireworksTowerConfig config = configs.fireworksTower;
+
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
 
         return fireworksTower;
     }
