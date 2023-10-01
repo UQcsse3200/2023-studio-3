@@ -1,0 +1,6 @@
+{
+  "bombship": {
+    "health": 100,
+    "baseAttack": 55
+  }
+}
