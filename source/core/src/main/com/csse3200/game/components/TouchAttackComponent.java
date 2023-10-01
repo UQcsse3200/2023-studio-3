@@ -151,8 +151,17 @@ public class TouchAttackComponent extends Component {
     }
   }
 
+  /**
+   * Choose the weapon to use against the given fixture.
+   *
+   * If the fixture has been removed (died) return null, else return the weapon to use.
+   * */
   public Weapon chooseWeapon(Fixture other) {
-    Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
+    BodyUserData data = ((BodyUserData) other.getBody().getUserData());
+    if (data == null) {
+      return null;
+    }
+    Entity target = data.entity;
     Weapon weapon = null;
     if (target.getComponent(CombatStatsComponent.class) != null) {
       weapon = combatStats.getWeapon(target);
