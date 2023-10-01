@@ -108,6 +108,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Add a priority task to the list of tasks.</div>
 </dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#addWave(com.csse3200.game.components.tasks.waves.WaveClass)" class="member-name-link">addWave(WaveClass)</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Add a wave to the level and increment the total number of waves</div>
+</dd>
 <dt><a href="com/csse3200/game/ai/tasks/AITaskComponent.html" class="type-name-link" title="class in com.csse3200.game.ai.tasks">AITaskComponent</a> - Class in <a href="com/csse3200/game/ai/tasks/package-summary.html">com.csse3200.game.ai.tasks</a></dt>
 <dd>
 <div class="block">Task-based AI component.</div>
@@ -317,7 +321,9 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/physics/PhysicsEngine.html#checkAndDeleteBodies()" class="member-name-link">checkAndDeleteBodies()</a> - Method in class com.csse3200.game.physics.<a href="com/csse3200/game/physics/PhysicsEngine.html" title="class in com.csse3200.game.physics">PhysicsEngine</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/TouchAttackComponent.html#chooseWeapon(com.badlogic.gdx.physics.box2d.Fixture)" class="member-name-link">chooseWeapon(Fixture)</a> - Method in class com.csse3200.game.components.<a href="com/csse3200/game/components/TouchAttackComponent.html" title="class in com.csse3200.game.components">TouchAttackComponent</a></dt>
-<dd>&nbsp;</dd>
+<dd>
+<div class="block">Choose the weapon to use against the given fixture.</div>
+</dd>
 <dt><a href="com/csse3200/game/files/FileLoader.Location.html#CLASSPATH" class="member-name-link">CLASSPATH</a> - Enum constant in enum class com.csse3200.game.files.<a href="com/csse3200/game/files/FileLoader.Location.html" title="enum class in com.csse3200.game.files">FileLoader.Location</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/services/ServiceLocator.html#clear()" class="member-name-link">clear()</a> - Static method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ServiceLocator.html" title="class in com.csse3200.game.services">ServiceLocator</a></dt>
@@ -373,6 +379,8 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/components/tasks/human/package-summary.html">com.csse3200.game.components.tasks.human</a> - package com.csse3200.game.components.tasks.human</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/scanner/package-summary.html">com.csse3200.game.components.tasks.scanner</a> - package com.csse3200.game.components.tasks.scanner</dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/package-summary.html">com.csse3200.game.components.tasks.waves</a> - package com.csse3200.game.components.tasks.waves</dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tower/package-summary.html">com.csse3200.game.components.tower</a> - package com.csse3200.game.components.tower</dt>
 <dd>&nbsp;</dd>
@@ -866,6 +874,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/entities/factories/NPCFactory.html#createWaterSlime()" class="member-name-link">createWaterSlime()</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/NPCFactory.html" title="class in com.csse3200.game.entities.factories">NPCFactory</a></dt>
 <dd>
 <div class="block">Creates a wizard entity.</div>
+</dd>
+<dt><a href="com/csse3200/game/entities/factories/WaveFactory.html#createWaves()" class="member-name-link">createWaves()</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/WaveFactory.html" title="class in com.csse3200.game.entities.factories">WaveFactory</a></dt>
+<dd>
+<div class="block">Create a Wave entity.</div>
 </dd>
 <dt><a href="com/csse3200/game/entities/factories/TowerFactory.html#createWeaponTower()" class="member-name-link">createWeaponTower()</a> - Static method in class com.csse3200.game.entities.factories.<a href="com/csse3200/game/entities/factories/TowerFactory.html" title="class in com.csse3200.game.entities.factories">TowerFactory</a></dt>
 <dd>
@@ -1613,6 +1625,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/entities/Melee.html#getElement()" class="member-name-link">getElement()</a> - Method in class com.csse3200.game.entities.<a href="com/csse3200/game/entities/Melee.html" title="class in com.csse3200.game.entities">Melee</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#getEnemyCount()" class="member-name-link">getEnemyCount()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Returns the number of enemy left</div>
+</dd>
 <dt><a href="com/csse3200/game/services/GameEndService.html#getEngineerCount()" class="member-name-link">getEngineerCount()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/GameEndService.html" title="class in com.csse3200.game.services">GameEndService</a></dt>
 <dd>
 <div class="block">Returns the number of engineers left</div>
@@ -1711,6 +1727,14 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Returns the entity's fullHealth value (note that this does not influence the ability to set its actual health)</div>
 </dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getMobIndex()" class="member-name-link">getMobIndex()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Get the current mob index</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveClass.html#getMobs()" class="member-name-link">getMobs()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveClass.html" title="class in com.csse3200.game.components.tasks.waves">WaveClass</a></dt>
+<dd>
+<div class="block">Gets the current entities that have spawned in the wave</div>
+</dd>
 <dt><a href="com/csse3200/game/ai/movement/MovementController.html#getMoving()" class="member-name-link">getMoving()</a> - Method in interface com.csse3200.game.ai.movement.<a href="com/csse3200/game/ai/movement/MovementController.html" title="interface in com.csse3200.game.ai.movement">MovementController</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html#getMoving()" class="member-name-link">getMoving()</a> - Method in class com.csse3200.game.physics.components.<a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html" title="class in com.csse3200.game.physics.components">PhysicsMovementComponent</a></dt>
@@ -1722,6 +1746,18 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/entities/EntityService.html#getNearbyEntities(com.csse3200.game.entities.Entity,float)" class="member-name-link">getNearbyEntities(Entity, float)</a> - Method in class com.csse3200.game.entities.<a href="com/csse3200/game/entities/EntityService.html" title="class in com.csse3200.game.entities">EntityService</a></dt>
 <dd>
 <div class="block">Get entities within a certain radius of a given entity.</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#getNextLane()" class="member-name-link">getNextLane()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Returns the next lane number of a mob</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#getNextWaveTime()" class="member-name-link">getNextWaveTime()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Returns time of the next wave.</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getNumWaves()" class="member-name-link">getNumWaves()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Get the total number of waves in this level</div>
 </dd>
 <dt><a href="com/csse3200/game/areas/terrain/TerrainTile.html#getObjects()" class="member-name-link">getObjects()</a> - Method in class com.csse3200.game.areas.terrain.<a href="com/csse3200/game/areas/terrain/TerrainTile.html" title="class in com.csse3200.game.areas.terrain">TerrainTile</a></dt>
 <dd>
@@ -1819,6 +1855,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/TrajectTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/TrajectTask.html" title="class in com.csse3200.game.components.tasks">TrajectTask</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Gets the priority of the current task</div>
+</dd>
 <dt><a href="com/csse3200/game/input/InputComponent.html#getPriority()" class="member-name-link">getPriority()</a> - Method in class com.csse3200.game.input.<a href="com/csse3200/game/input/InputComponent.html" title="class in com.csse3200.game.input">InputComponent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/services/ResourceService.html#getProgress()" class="member-name-link">getProgress()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ResourceService.html" title="class in com.csse3200.game.services">ResourceService</a></dt>
@@ -1849,11 +1889,23 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Get the currently selected game level.</div>
 </dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveClass.html#getSize()" class="member-name-link">getSize()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveClass.html" title="class in com.csse3200.game.components.tasks.waves">WaveClass</a></dt>
+<dd>
+<div class="block">Gets the current number of entities spawned in the wave</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#getSounds()" class="member-name-link">getSounds()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Get the sounds to be played when a wave starts or ends</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getSpawnDelay()" class="member-name-link">getSpawnDelay()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html#getSpeed()" class="member-name-link">getSpeed()</a> - Method in class com.csse3200.game.physics.components.<a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html" title="class in com.csse3200.game.physics.components">PhysicsMovementComponent</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/rendering/Renderer.html#getStage()" class="member-name-link">getStage()</a> - Method in class com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/Renderer.html" title="class in com.csse3200.game.rendering">Renderer</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/rendering/RenderService.html#getStage()" class="member-name-link">getStage()</a> - Method in class com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/RenderService.html" title="class in com.csse3200.game.rendering">RenderService</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getStartTime()" class="member-name-link">getStartTime()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/CombatStatsComponent.html#getState()" class="member-name-link">getState()</a> - Method in class com.csse3200.game.components.<a href="com/csse3200/game/components/CombatStatsComponent.html" title="class in com.csse3200.game.components">CombatStatsComponent</a></dt>
 <dd>
@@ -1905,6 +1957,20 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/screens/TurretSelectionScreen.html#getTurretList()" class="member-name-link">getTurretList()</a> - Method in class com.csse3200.game.screens.<a href="com/csse3200/game/screens/TurretSelectionScreen.html" title="class in com.csse3200.game.screens">TurretSelectionScreen</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/npc/DropComponent.html#getValue()" class="member-name-link">getValue()</a> - Method in class com.csse3200.game.components.npc.<a href="com/csse3200/game/components/npc/DropComponent.html" title="class in com.csse3200.game.components.npc">DropComponent</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getWave(int)" class="member-name-link">getWave(int)</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Retrieve a wave at an index in the list</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#getWaveCount()" class="member-name-link">getWaveCount()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Returns the game over state</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#getWaveIndex()" class="member-name-link">getWaveIndex()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Get the current wave index</div>
+</dd>
+<dt><a href="com/csse3200/game/services/ServiceLocator.html#getWaveService()" class="member-name-link">getWaveService()</a> - Static method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ServiceLocator.html" title="class in com.csse3200.game.services">ServiceLocator</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/CombatStatsComponent.html#getWeapon(com.csse3200.game.entities.Entity)" class="member-name-link">getWeapon(Entity)</a> - Method in class com.csse3200.game.components.<a href="com/csse3200/game/components/CombatStatsComponent.html" title="class in com.csse3200.game.components">CombatStatsComponent</a></dt>
 <dd>
@@ -2151,6 +2217,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/screens/text/AnimatedText.html#isFinished()" class="member-name-link">isFinished()</a> - Method in class com.csse3200.game.screens.text.<a href="com/csse3200/game/screens/text/AnimatedText.html" title="class in com.csse3200.game.screens.text">AnimatedText</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#isLevelCompleted()" class="member-name-link">isLevelCompleted()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Returns the game over state</div>
+</dd>
 <dt><a href="com/csse3200/game/areas/terrain/TerrainComponent.TerrainOrientation.html#ISOMETRIC" class="member-name-link">ISOMETRIC</a> - Enum constant in enum class com.csse3200.game.areas.terrain.<a href="com/csse3200/game/areas/terrain/TerrainComponent.TerrainOrientation.html" title="enum class in com.csse3200.game.areas.terrain">TerrainComponent.TerrainOrientation</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/ui/terminal/Terminal.html#isOpen()" class="member-name-link">isOpen()</a> - Method in class com.csse3200.game.ui.terminal.<a href="com/csse3200/game/ui/terminal/Terminal.html" title="class in com.csse3200.game.ui.terminal">Terminal</a></dt>
@@ -2176,6 +2246,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/components/tasks/TNTTowerCombatTask.html#isTargetVisible()" class="member-name-link">isTargetVisible()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/TNTTowerCombatTask.html" title="class in com.csse3200.game.components.tasks">TNTTowerCombatTask</a></dt>
 <dd>
 <div class="block">Uses a raycast to determine whether there are any targets in detection range</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#isWaveInProgress()" class="member-name-link">isWaveInProgress()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Checks if the current wave is in progress</div>
 </dd>
 <dt><a href="com/csse3200/game/utils/SortedIntMap.html#iterator()" class="member-name-link">iterator()</a> - Method in class com.csse3200.game.utils.<a href="com/csse3200/game/utils/SortedIntMap.html" title="class in com.csse3200.game.utils">SortedIntMap</a></dt>
 <dd>&nbsp;</dd>
@@ -2313,6 +2387,12 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/screens/LevelSelectScreen.html#%3Cinit%3E(com.csse3200.game.GdxGame)" class="member-name-link">LevelSelectScreen(GdxGame)</a> - Constructor for class com.csse3200.game.screens.<a href="com/csse3200/game/screens/LevelSelectScreen.html" title="class in com.csse3200.game.screens">LevelSelectScreen</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a> - Class in <a href="com/csse3200/game/components/tasks/waves/package-summary.html">com.csse3200.game.components.tasks.waves</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#%3Cinit%3E(int)" class="member-name-link">LevelWaves(int)</a> - Constructor for class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Constructor for the LevelWaves class</div>
+</dd>
 <dt><a href="com/csse3200/game/services/ResourceService.html#loadAll()" class="member-name-link">loadAll()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ResourceService.html" title="class in com.csse3200.game.services">ResourceService</a></dt>
 <dd>
 <div class="block">Blocking call to load all assets.</div>
@@ -2324,6 +2404,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/services/ResourceService.html#loadMusic(java.lang.String%5B%5D)" class="member-name-link">loadMusic(String[])</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ResourceService.html" title="class in com.csse3200.game.services">ResourceService</a></dt>
 <dd>
 <div class="block">Loads a list of music assets into the asset manager.</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#loadSounds()" class="member-name-link">loadSounds()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Load the sounds to be played when a wave starts or ends</div>
 </dd>
 <dt><a href="com/csse3200/game/services/ResourceService.html#loadSounds(java.lang.String%5B%5D)" class="member-name-link">loadSounds(String[])</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ResourceService.html" title="class in com.csse3200.game.services">ResourceService</a></dt>
 <dd>
@@ -2882,6 +2966,8 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/services/ServiceLocator.html#registerTimeSource(com.csse3200.game.services.GameTime)" class="member-name-link">registerTimeSource(GameTime)</a> - Static method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ServiceLocator.html" title="class in com.csse3200.game.services">ServiceLocator</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/ServiceLocator.html#registerWaveService(com.csse3200.game.services.WaveService)" class="member-name-link">registerWaveService(WaveService)</a> - Static method in class com.csse3200.game.services.<a href="com/csse3200/game/services/ServiceLocator.html" title="class in com.csse3200.game.services">ServiceLocator</a></dt>
+<dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/TNTTowerCombatTask.STATE.html#REMOVE" class="member-name-link">REMOVE</a> - Enum constant in enum class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/TNTTowerCombatTask.STATE.html" title="enum class in com.csse3200.game.components.tasks">TNTTowerCombatTask.STATE</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/rendering/AnimationRenderComponent.html#removeAnimation(java.lang.String)" class="member-name-link">removeAnimation(String)</a> - Method in class com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/AnimationRenderComponent.html" title="class in com.csse3200.game.rendering">AnimationRenderComponent</a></dt>
@@ -3148,6 +3234,10 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/physics/components/PhysicsComponent.html#setEnabled(boolean)" class="member-name-link">setEnabled(boolean)</a> - Method in class com.csse3200.game.physics.components.<a href="com/csse3200/game/physics/components/PhysicsComponent.html" title="class in com.csse3200.game.physics.components">PhysicsComponent</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#setEnemyCount(int)" class="member-name-link">setEnemyCount(int)</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Set the enemy limit.</div>
+</dd>
 <dt><a href="com/csse3200/game/services/GameEndService.html#setEngineerCount(int)" class="member-name-link">setEngineerCount(int)</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/GameEndService.html" title="class in com.csse3200.game.services">GameEndService</a></dt>
 <dd>
 <div class="block">Set the engineer limit.</div>
@@ -3188,6 +3278,10 @@ loadScripts(document, 'script');</script>
 <dd>
 <div class="block">Set the collider layer, used in collision logic</div>
 </dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#setLevelCompleted()" class="member-name-link">setLevelCompleted()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Set the level to be completed.</div>
+</dd>
 <dt><a href="com/csse3200/game/components/CombatStatsComponent.html#setMaxHealth(int)" class="member-name-link">setMaxHealth(int)</a> - Method in class com.csse3200.game.components.<a href="com/csse3200/game/components/CombatStatsComponent.html" title="class in com.csse3200.game.components">CombatStatsComponent</a></dt>
 <dd>
 <div class="block">Sets the entity's fullHealth variable.</div>
@@ -3197,6 +3291,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html#setMoving(boolean)" class="member-name-link">setMoving(boolean)</a> - Method in class com.csse3200.game.physics.components.<a href="com/csse3200/game/physics/components/PhysicsMovementComponent.html" title="class in com.csse3200.game.physics.components">PhysicsMovementComponent</a></dt>
 <dd>
 <div class="block">Enable/disable movement for the controller.</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#setNextLane(int)" class="member-name-link">setNextLane(int)</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Sets the waveCount</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#setNextWaveTime(long)" class="member-name-link">setNextWaveTime(long)</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Sets the next wave timestamp</div>
 </dd>
 <dt><a href="com/csse3200/game/areas/terrain/TerrainTile.html#setOffsetX(float)" class="member-name-link">setOffsetX(float)</a> - Method in class com.csse3200.game.areas.terrain.<a href="com/csse3200/game/areas/terrain/TerrainTile.html" title="class in com.csse3200.game.areas.terrain">TerrainTile</a></dt>
 <dd>&nbsp;</dd>
@@ -3291,6 +3393,14 @@ loadScripts(document, 'script');</script>
 </dd>
 <dt><a href="com/csse3200/game/screens/SettingsScreen.html#%3Cinit%3E(com.csse3200.game.GdxGame)" class="member-name-link">SettingsScreen(GdxGame)</a> - Constructor for class com.csse3200.game.screens.<a href="com/csse3200/game/screens/SettingsScreen.html" title="class in com.csse3200.game.screens">SettingsScreen</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#setWaveCount(int)" class="member-name-link">setWaveCount(int)</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Sets the waveCount</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#setWaveIndex(int)" class="member-name-link">setWaveIndex(int)</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Set the wave index</div>
+</dd>
 <dt><a href="com/csse3200/game/components/tasks/DroidCombatTask.STATE.html#SHOOT_DOWN" class="member-name-link">SHOOT_DOWN</a> - Enum constant in enum class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/DroidCombatTask.STATE.html" title="enum class in com.csse3200.game.components.tasks">DroidCombatTask.STATE</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/DroidCombatTask.html#SHOOT_DOWN" class="member-name-link">SHOOT_DOWN</a> - Static variable in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/DroidCombatTask.html" title="class in com.csse3200.game.components.tasks">DroidCombatTask</a></dt>
@@ -3357,6 +3467,14 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/areas/GameArea.html#spawnEntityAt(com.csse3200.game.entities.Entity,com.badlogic.gdx.math.GridPoint2,boolean,boolean)" class="member-name-link">spawnEntityAt(Entity, GridPoint2, boolean, boolean)</a> - Method in class com.csse3200.game.areas.<a href="com/csse3200/game/areas/GameArea.html" title="class in com.csse3200.game.areas">GameArea</a></dt>
 <dd>
 <div class="block">Spawn entity on a given tile.</div>
+</dd>
+<dt><a href="com/csse3200/game/areas/ForestGameArea.html#spawnMob(java.lang.String,com.badlogic.gdx.math.GridPoint2)" class="member-name-link">spawnMob(String, GridPoint2)</a> - Method in class com.csse3200.game.areas.<a href="com/csse3200/game/areas/ForestGameArea.html" title="class in com.csse3200.game.areas">ForestGameArea</a></dt>
+<dd>
+<div class="block">Spawn an entity on the map.</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/LevelWaves.html#spawnWave()" class="member-name-link">spawnWave()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></dt>
+<dd>
+<div class="block">Spawn the wave and all the associated mobs for that wave</div>
 </dd>
 <dt><a href="com/csse3200/game/components/tasks/SpawnWaveTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks">SpawnWaveTask</a> - Class in <a href="com/csse3200/game/components/tasks/package-summary.html">com.csse3200.game.components.tasks</a></dt>
 <dd>&nbsp;</dd>
@@ -3498,6 +3616,10 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/components/tasks/WaitTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/WaitTask.html" title="class in com.csse3200.game.components.tasks">WaitTask</a></dt>
 <dd>
 <div class="block">Start waiting from now until duration has passed.</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#start()" class="member-name-link">start()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Starts the WaveTask and initialises all relevant attributes.</div>
 </dd>
 <dt><a href="com/csse3200/game/rendering/AnimationRenderComponent.html#startAnimation(java.lang.String)" class="member-name-link">startAnimation(String)</a> - Method in class com.csse3200.game.rendering.<a href="com/csse3200/game/rendering/AnimationRenderComponent.html" title="class in com.csse3200.game.rendering">AnimationRenderComponent</a></dt>
 <dd>
@@ -4048,6 +4170,10 @@ loadScripts(document, 'script');</script>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/components/tasks/WaitTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/WaitTask.html" title="class in com.csse3200.game.components.tasks">WaitTask</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Checks if the current wave has finished (i.e.</div>
+</dd>
 <dt><a href="com/csse3200/game/entities/Entity.html#update()" class="member-name-link">update()</a> - Method in class com.csse3200.game.entities.<a href="com/csse3200/game/entities/Entity.html" title="class in com.csse3200.game.entities">Entity</a></dt>
 <dd>
 <div class="block">Perform an update on all components.</div>
@@ -4075,6 +4201,11 @@ loadScripts(document, 'script');</script>
 <dt><a href="com/csse3200/game/components/tasks/CurrencyTask.html#updateCurrency()" class="member-name-link">updateCurrency()</a> - Method in class com.csse3200.game.components.tasks.<a href="com/csse3200/game/components/tasks/CurrencyTask.html" title="class in com.csse3200.game.components.tasks">CurrencyTask</a></dt>
 <dd>
 <div class="block">Updates the currency based on time intervals.</div>
+</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#updateEnemyCount()" class="member-name-link">updateEnemyCount()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Updates enemy count
+ If enemy count is 0, the game is over.</div>
 </dd>
 <dt><a href="com/csse3200/game/services/GameEndService.html#updateEngineerCount()" class="member-name-link">updateEngineerCount()</a> - Method in class com.csse3200.game.services.<a href="com/csse3200/game/services/GameEndService.html" title="class in com.csse3200.game.services">GameEndService</a></dt>
 <dd>
@@ -4338,6 +4469,26 @@ the order they are declared.</div>
 </dd>
 <dt><a href="com/csse3200/game/components/npc/WaterSlimeAnimationController.html#%3Cinit%3E()" class="member-name-link">WaterSlimeAnimationController()</a> - Constructor for class com.csse3200.game.components.npc.<a href="com/csse3200/game/components/npc/WaterSlimeAnimationController.html" title="class in com.csse3200.game.components.npc">WaterSlimeAnimationController</a></dt>
 <dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveClass.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.waves">WaveClass</a> - Class in <a href="com/csse3200/game/components/tasks/waves/package-summary.html">com.csse3200.game.components.tasks.waves</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveClass.html#%3Cinit%3E(java.util.HashMap)" class="member-name-link">WaveClass(HashMap&lt;String, Integer&gt;)</a> - Constructor for class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveClass.html" title="class in com.csse3200.game.components.tasks.waves">WaveClass</a></dt>
+<dd>
+<div class="block">Constructor for the WaveClass</div>
+</dd>
+<dt><a href="com/csse3200/game/entities/factories/WaveFactory.html" class="type-name-link" title="class in com.csse3200.game.entities.factories">WaveFactory</a> - Class in <a href="com/csse3200/game/entities/factories/package-summary.html">com.csse3200.game.entities.factories</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html" class="type-name-link" title="class in com.csse3200.game.services">WaveService</a> - Class in <a href="com/csse3200/game/services/package-summary.html">com.csse3200.game.services</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/services/WaveService.html#%3Cinit%3E()" class="member-name-link">WaveService()</a> - Constructor for class com.csse3200.game.services.<a href="com/csse3200/game/services/WaveService.html" title="class in com.csse3200.game.services">WaveService</a></dt>
+<dd>
+<div class="block">Constructor for the Wave Service</div>
+</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html" class="type-name-link" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a> - Class in <a href="com/csse3200/game/components/tasks/waves/package-summary.html">com.csse3200.game.components.tasks.waves</a></dt>
+<dd>&nbsp;</dd>
+<dt><a href="com/csse3200/game/components/tasks/waves/WaveTask.html#%3Cinit%3E()" class="member-name-link">WaveTask()</a> - Constructor for class com.csse3200.game.components.tasks.waves.<a href="com/csse3200/game/components/tasks/waves/WaveTask.html" title="class in com.csse3200.game.components.tasks.waves">WaveTask</a></dt>
+<dd>
+<div class="block">Constructor for the WaveTask</div>
+</dd>
 <dt><a href="com/csse3200/game/entities/configs/baseTowerConfigs.html#weapon" class="member-name-link">weapon</a> - Variable in class com.csse3200.game.entities.configs.<a href="com/csse3200/game/entities/configs/baseTowerConfigs.html" title="class in com.csse3200.game.entities.configs">baseTowerConfigs</a></dt>
 <dd>&nbsp;</dd>
 <dt><a href="com/csse3200/game/entities/Weapon.html" class="type-name-link" title="interface in com.csse3200.game.entities">Weapon</a> - Interface in <a href="com/csse3200/game/entities/package-summary.html">com.csse3200.game.entities</a></dt>
