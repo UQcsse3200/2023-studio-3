@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
@@ -13,15 +14,15 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
 
 /**
- * Displays a button to exit the Main Game screen to the Main Menu screen.
+ * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
  */
 public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
     private static final float Z_INDEX = 2f;
-    private Table buttonTable = new Table();
-    private Table sliderTable = new Table();
-    private Table timerTable = new Table();
-
+    private final Table mobsButtonTable = new Table();
+    private final Table timerTable = new Table();
+    private final TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
+    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");;
 
     @Override
     public void create() {
@@ -29,18 +30,15 @@ public class UIElementsDisplay extends UIComponent {
         addActors();
     }
 
+    /**
+     * This method creates the buttons, adds them to the respective tables and draws them on the screen.
+     */
     private void addActors() {
-        buttonTable.top().right();
+        mobsButtonTable.top().right();
         timerTable.top().right();
-        sliderTable.top();
 
-        buttonTable.setFillParent(true);
+        mobsButtonTable.setFillParent(true);
         timerTable.setFillParent(true);
-        sliderTable.setFillParent(true);
-
-        TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
-        TextButton timerButton = new ButtonFactory().createButton("Next wave:");
-        TextButton testSlider = new ButtonFactory().createButton("Test slider");
 
         //Not sure if we need a listened for a label
 //        // Triggers an event when the button is pressed.
@@ -53,13 +51,18 @@ public class UIElementsDisplay extends UIComponent {
 //                    }
 //                });
 
-        buttonTable.add(remainingMobsButton).padTop(20f).padRight(10f);
+        mobsButtonTable.add(remainingMobsButton).padTop(20f).padRight(10f);
         timerTable.add(timerButton).padTop(70f).padRight(10f);
-        sliderTable.add(testSlider).padTop(200f);
 
-        stage.addActor(buttonTable);
+        stage.addActor(mobsButtonTable);
         stage.addActor(timerTable);
-        stage.addActor(sliderTable);
+    }
+
+    /**
+     * This method updates the mob count button as mobs die in the game
+     */
+    public void updateMobCount() {
+        remainingMobsButton.setText("Mobs left:" + ServiceLocator.getWaveService().getEnemyCount());
     }
 
     @Override
@@ -67,16 +70,21 @@ public class UIElementsDisplay extends UIComponent {
         // drawing is handled by the stage
     }
 
+    /**
+     * @return returns the Z_INDEX for this display
+     */
     @Override
     public float getZIndex() {
         return Z_INDEX;
     }
 
+    /**
+     * Disposes off the tables and buttons created using this display
+     */
     @Override
     public void dispose() {
-        buttonTable.clear();
-        timerTable.clear();
-        sliderTable.clear();
         super.dispose();
+        mobsButtonTable.clear();
+        timerTable.clear();
     }
 }

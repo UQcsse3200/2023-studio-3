@@ -12,7 +12,6 @@ import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.screens.AssetLoader;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
@@ -23,12 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Random;
 import java.util.Timer;
-
-
-import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
-import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
-
-import java.util.ArrayList;
 import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -38,7 +31,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-  private AssetLoader assetLoader;
+
 
   private static final int NUM_MOBBOSS2=3;
   private static final int NUM_MOBBOSS1=1;
@@ -173,13 +166,16 @@ public class ForestGameArea extends GameArea {
           "sounds/engineers/firing_auto.mp3",
           "sounds/engineers/firing_single.mp3",
           "sounds/projectiles/on_collision.mp3",
-          "sounds/projectiles/explosion.mp3"
+          "sounds/projectiles/explosion.mp3",
+          "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+          "sounds/waves/wave-end/Wave_Over_01.ogg"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
-
+  private static final String[] forestMusic = {backgroundMusic};
   private final TerrainFactory terrainFactory;
   
   private Entity player;
+  private Entity waves;
   
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
@@ -197,11 +193,10 @@ public class ForestGameArea extends GameArea {
     super();
     this.terrainFactory = terrainFactory;
   }
-  public void setAssetLoader(AssetLoader assetLoader) {
-    this.assetLoader = assetLoader;
-  }
 
-  // Add this method to start the wave spawning timer when the game starts.
+  /**
+   * Add this method to start the wave spawning timer when the game starts.
+   */
   private void startWaveTimer() {
     waveTimer = new Timer();
     waveTimer.scheduleAtFixedRate(new TimerTask() {
@@ -212,7 +207,9 @@ public class ForestGameArea extends GameArea {
     }, 0, 10000); // 10000 milliseconds = 10 seconds
   }
 
-  // Add this method to stop the wave timer when the game ends or as needed.
+  /**
+   * Add this method to stop the wave timer when the game ends or as needed.
+   */
   private void stopWaveTimer() {
     if (waveTimer != null) {
       waveTimer.cancel();
@@ -220,6 +217,9 @@ public class ForestGameArea extends GameArea {
     }
   }
 
+  /**
+   * Cases to spawn a wave
+   */
   private void spawnWave() {
     wave++;
     switch (wave) {
@@ -255,7 +255,7 @@ public class ForestGameArea extends GameArea {
   @Override
   public void create() {
     // Load game assets
-    loadAllAssets();
+    loadAssets();
     logger.info("Lol");
     displayUI();
     logger.info("Lol");
@@ -264,13 +264,18 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+
+
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
+
     playMusic();
-    spawnXenoGrunts();
-    startWaveTimer();
+    //spawnXenoGrunts();
+    //startWaveTimer();
     spawnScrap();
-    spawnDeflectXenoGrunt(15, 5);
-    spawnSplittingXenoGrunt(15, 4);
+    //spawnDeflectXenoGrunt(15, 5);
+    //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
     spawnWeaponTower();
@@ -478,17 +483,33 @@ public class ForestGameArea extends GameArea {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
-  }  
-  
-  private void spawnXenoGrunts() {
-    int[] pickedLanes = random.ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity xenoGrunt = NPCFactory.createXenoGrunt();
-      xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, false);
+  }
+
+  /**
+   * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
+   * @param entity mob to be spawned
+   * @param randomPos position to be spawned at
+   */
+  public void spawnMob(String entity, GridPoint2 randomPos) {
+    Entity mob;
+    switch (entity) {
+      case "Xeno":
+        mob = NPCFactory.createXenoGrunt();
+        break;
+      case "SplittingXeno":
+        mob = NPCFactory.createSplittingXenoGrunt();
+        break;
+      case "DodgingDragon":
+        mob = NPCFactory.createDodgingDragonKnight();
+        break;
+      case "DeflectXeno":
+        mob = NPCFactory.createDeflectXenoGrunt();
+        break;
+      default:
+        mob = NPCFactory.createBaseNPC();
     }
+    mob.setScale(1.5f, 1.5f);
+    spawnEntityAt(mob, randomPos, true, false);
   }
 
   // * TEMPORARY FOR TESTING
@@ -652,16 +673,29 @@ public class ForestGameArea extends GameArea {
     music.setVolume(0.3f);
     music.play();
   }
-  
 
+
+  private void loadAssets() {
+    logger.debug("Loading assets");
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.loadTextures(forestTextures);
+    resourceService.loadTextureAtlases(forestTextureAtlases);
+    resourceService.loadSounds(forestSounds);
+    resourceService.loadMusic(forestMusic);
+
+    while (!resourceService.loadForMillis(10)) {
+      // This could be upgraded to a loading screen
+      logger.info("Loading... {}%", resourceService.getProgress());
+    }
+  }
 
   private void unloadAssets() {
     logger.debug("Unloading assets");
-    if (assetLoader != null) {
-      AssetLoader.unloadAllAssets(); // Use the AssetLoader to unload assets if it's not null
-    } else {
-      logger.error("AssetLoader is not set. Cannot unload assets.");
-    }
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.unloadAssets(forestTextures);
+    resourceService.unloadAssets(forestTextureAtlases);
+    resourceService.unloadAssets(forestSounds);
+    resourceService.unloadAssets(forestMusic);
   }
   
   @Override
