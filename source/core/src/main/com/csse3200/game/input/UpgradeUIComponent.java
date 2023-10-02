@@ -151,7 +151,7 @@ public class UpgradeUIComponent extends InputComponent {
         });
 
         // Create an Image for the health icon
-        Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/heart.png")));
+        Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/health.png")));
         Image healthIconImage = new Image(healthIconDrawable);
 
 
@@ -229,7 +229,7 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeTable.row();
 
         innerUpgradeTable.row();
-        innerUpgradeTable.add(healthIconImage).padRight(5);  // Add health icon
+        innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
         if (attack != 0) {
