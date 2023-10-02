@@ -238,4 +238,5 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public float getFireRateInterval() {
         return fireRateInterval;
     }
+
 }

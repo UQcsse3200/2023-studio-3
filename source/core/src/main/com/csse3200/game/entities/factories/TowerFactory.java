@@ -35,8 +35,6 @@ public class TowerFactory {
 
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
-
-    private static final int BASE_FIRE_RATE = 1;
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
@@ -236,6 +234,7 @@ public class TowerFactory {
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());

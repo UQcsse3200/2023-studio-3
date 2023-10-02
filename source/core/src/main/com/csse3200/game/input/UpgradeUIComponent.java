@@ -16,6 +16,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
@@ -132,8 +134,10 @@ public class UpgradeUIComponent extends InputComponent {
         int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
         turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
+
         Label healthLabel = new Label(String.format("Health:%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
+//        Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
         closeButton.addListener(new ClickListener() {
             @Override
@@ -203,8 +207,10 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.row();
         if (attack != 0) {
             innerUpgradeTable.add(attackLabel).expandX().left();
+            innerUpgradeTable.add(fireRateLabel).expandX().right();
+            innerUpgradeTable.row();
+
         }
-        innerUpgradeTable.row();
         innerUpgradeTable.add(upgradeHealth).expandX().fillX();
         if (attack != 0) {
             innerUpgradeTable.add(upgradeAttack).expandX().fillX();
