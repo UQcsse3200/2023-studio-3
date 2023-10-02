@@ -7,6 +7,7 @@
 //import com.csse3200.game.components.maingame.UIElementsDisplay;
 //import com.csse3200.game.rendering.RenderService;
 //import com.csse3200.game.screens.MainGameScreen;
+//import com.csse3200.game.services.ResourceService;
 //import com.csse3200.game.services.ServiceLocator;
 //import com.csse3200.game.services.WaveService;
 //import com.csse3200.game.ui.ButtonFactory;
@@ -26,14 +27,18 @@
 //
 //    @Before
 //    public void setUp() {
-//        ServiceLocator.registerRenderService(new RenderService());
-//        WaveService waveService = new WaveService();
+//        RenderService renderService = mock(RenderService.class);
+//        ResourceService resourceService = mock(ResourceService.class);
+//        WaveService waveService = mock(WaveService.class);
+//
+//        ServiceLocator.registerRenderService(renderService);
+//        ServiceLocator.registerResourceService(resourceService);
 //        ServiceLocator.registerWaveService(waveService);
 //
 //        when(ServiceLocator.getWaveService().getEnemyCount()).thenReturn(10);
 //        when(ServiceLocator.getWaveService().getNextWaveTime()).thenReturn(10000L); // Example time
 //
-//        display = new UIElementsDisplay();
+//        display = waveService.getDisplay();
 //        display.create();
 //    }
 //
