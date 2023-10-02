@@ -125,7 +125,6 @@ public class WaveFactory {
       if (i % 5 == 0) {
         int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};
         mobs.put(boss, bossStats);
-        System.out.println(boss + " " + bossStats[0] + " " + bossStats[1]);
       }
 
       // select 2 random mobs from the possible mobs
