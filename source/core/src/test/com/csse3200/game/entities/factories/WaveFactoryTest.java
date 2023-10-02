@@ -123,14 +123,14 @@ class WaveFactoryTest {
 
         // check the number of mobs in a wave
         if (waveNum % 5 != 0) {
-          assertEquals(2, wave.getEntities().size());
+          assertEquals(2, wave.getEntities().size(), "Wave should contain 2 mobs.");
         } else {
-          assertEquals(3, wave.getEntities().size());
+          assertEquals(3, wave.getEntities().size(), "Wave should contain 3 mobs: 2 general and 1 boss.");
         }
 
         // check if the boss is in the wave if it is a boss wave
         if (waveNum % 5 == 0) {
-          assertTrue(wave.getEntities().containsKey(LVL1_BOSS));
+          assertTrue(wave.getEntities().containsKey(LVL1_BOSS), "This wave should contain a boss.");
         }
 
         // check the health of the mobs and ensure the mobs are the correct type
@@ -139,18 +139,18 @@ class WaveFactoryTest {
             int[] spawn = entry.getValue();
 
             if (waveNum % 5 != 0) {
-                assertTrue(LVL1_MOBS.contains(mob));
-                assertEquals(MIN_HEALTH + waveNum, spawn[1]);
+                assertTrue(LVL1_MOBS.contains(mob), "This mob is not assigned to this level.");
+                assertEquals(MIN_HEALTH + waveNum, spawn[1], "The health of the mob should be " + MIN_HEALTH + waveNum + " .");
             } else {
               if (mob == LVL1_BOSS) {
-                assertEquals(MIN_BOSS_HEALTH + waveNum, spawn[1]);
+                assertEquals(MIN_BOSS_HEALTH + waveNum, spawn[1], "The health of the boss should be " + MIN_BOSS_HEALTH + waveNum + " .");
               }
             }
         }
 
         waveNum++;
       }
-      assertEquals(6, waveNum);
+      assertEquals(6, waveNum, "The should be 5 waves making numWave 6.");
     }
     @Test
     void testLevel2Creation() {
@@ -162,14 +162,14 @@ class WaveFactoryTest {
 
         // check the number of mobs in a wave
         if (waveNum % 5 != 0) {
-          assertEquals(2, wave.getEntities().size());
+          assertEquals(2, wave.getEntities().size(), "Wave should contain 2 mobs.");
         } else {
-          assertEquals(3, wave.getEntities().size());
+          assertEquals(3, wave.getEntities().size(), "Wave should contain 3 mobs: 2 general and 1 boss.");
         }
 
         // check if the boss is in the wave if it is a boss wave
         if (waveNum % 5 == 0) {
-          assertTrue(wave.getEntities().containsKey(LVL2_BOSS));
+          assertTrue(wave.getEntities().containsKey(LVL2_BOSS), "This wave should contain a boss.");
         }
 
         for (Map.Entry<String, int[]> entry : wave.getEntities().entrySet()) {
@@ -178,17 +178,17 @@ class WaveFactoryTest {
 
             if (waveNum % 5 != 0) {
                 assertTrue(LVL2_MOBS.contains(mob));
-                assertEquals(MIN_HEALTH + (waveNum * 2), spawn[1]);
+                assertEquals(MIN_HEALTH + (waveNum * 2), spawn[1], "The health of the mob should be " + MIN_HEALTH + (waveNum * 2) + " .");
             } else {
               if (mob == LVL2_BOSS) {
-                assertEquals(MIN_BOSS_HEALTH + (waveNum * 2), spawn[1]);
+                assertEquals(MIN_BOSS_HEALTH + (waveNum * 2), spawn[1], "The health of the boss should be " + MIN_BOSS_HEALTH + (waveNum * 2) + " .");
               }
             }
         }
 
         waveNum++;
       }
-      assertEquals(11, waveNum);
+      assertEquals(11, waveNum, "There should be 10 waves making numWave 11.");
     }
     @Test
     void testLevel3Creation() {
@@ -199,14 +199,14 @@ class WaveFactoryTest {
       for (WaveClass wave : lvl1Mobs) {
         // check the number of mobs in a wave
         if (waveNum % 5 != 0) {
-          assertEquals(2, wave.getEntities().size());
+          assertEquals(2, wave.getEntities().size(), "Wave should contain 2 mobs.");
         } else {
-          assertEquals(3, wave.getEntities().size());
+          assertEquals(3, wave.getEntities().size(), "Wave should contain 3 mobs: 2 general and 1 boss.");
         }
 
         // check if the boss is in the wave if it is a boss wave
         if (waveNum % 5 == 0) {
-          assertTrue(wave.getEntities().containsKey(LVL3_BOSS));
+          assertTrue(wave.getEntities().containsKey(LVL3_BOSS), "This wave should contain a boss.");
         }
 
         // check the health of the mobs and ensure the mobs are the correct type
@@ -216,16 +216,16 @@ class WaveFactoryTest {
 
             if (waveNum % 5 != 0) {
                 assertTrue(LVL3_MOBS.contains(mob));
-                assertEquals(MIN_HEALTH + (waveNum * 3), spawn[1]);
+                assertEquals(MIN_HEALTH + (waveNum * 3), spawn[1], "The health of the mob should be " + MIN_HEALTH + (waveNum * 3) + " .");
             } else {
               if (mob == LVL3_BOSS) {
-                assertEquals(MIN_BOSS_HEALTH + (waveNum * 3), spawn[1]);
+                assertEquals(MIN_BOSS_HEALTH + (waveNum * 3), spawn[1], "The health of the boss should be " + MIN_BOSS_HEALTH + (waveNum * 3) + " .");
               }
             }
         }
         waveNum++;
       }
-      assertEquals(16, waveNum);
+      assertEquals(16, waveNum, "There should be 15 waves making numWave 16.");
     }
 
 }
