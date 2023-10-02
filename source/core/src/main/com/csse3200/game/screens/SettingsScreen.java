@@ -50,6 +50,11 @@ public class SettingsScreen extends ScreenAdapter {
     createUI();
   }
 
+  /**
+   * Renders the main gameplay screen.
+   *
+   * @param delta The time elapsed since the last frame in seconds.
+   */
   @Override
   public void render(float delta) {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -66,12 +71,26 @@ public class SettingsScreen extends ScreenAdapter {
     renderer.render();
   }
 
+  /**
+   * Called when the game window is resized.
+   *
+   * @param width  The new width of the window.
+   * @param height The new height of the window.
+   */
   @Override
   public void resize(int width, int height) {
+    renderer.resize(width, height);
+    // Add the below line to update the stage's viewport
+    ServiceLocator.getRenderService().getStage().getViewport().update(width, height, true);
     logger.trace("Resized renderer: ({} x {})", width, height);
     renderer.resize(width, height);
   }
 
+  /**
+   * Disposes of resources and services associated with the main menu screen.
+   * This method performs cleanup tasks such as disposing of the renderer, unloading assets, disposing of the render service,
+   * disposing of the entity service, disposing of the batch, and clearing the service locator.
+   */
   @Override
   public void dispose() {
     logger.debug("Disposing main menu screen");
@@ -84,6 +103,10 @@ public class SettingsScreen extends ScreenAdapter {
     ServiceLocator.clear();
   }
 
+  /**
+   * Loads the assets required for the settings screen.
+   * This method initializes and loads textures, including the background texture and any other assets specified in SettingsTextures.
+   */
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -92,6 +115,10 @@ public class SettingsScreen extends ScreenAdapter {
     ServiceLocator.getResourceService().loadAll();
   }
 
+  /**
+   * Unloads the assets that were previously loaded for the settings screen.
+   * This method disposes of textures and assets specified in SettingsTextures to release resources.
+   */
   private void unloadAssets() {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();

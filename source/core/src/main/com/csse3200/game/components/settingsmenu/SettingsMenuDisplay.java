@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Scaling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +50,10 @@ public class SettingsMenuDisplay extends UIComponent {
     addActors();
   }
 
+  /**
+   * Adds various actors to the stage for the settings screen.
+   * This method sets up and adds elements such as a custom cursor, background image, title label, settings table, and menu buttons.
+   */
   private void addActors() {
     // Load the custom cursor image
     Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("images/ui/mouse_effect.png"));
@@ -58,9 +63,8 @@ public class SettingsMenuDisplay extends UIComponent {
 
     Image background = new Image(ServiceLocator.getResourceService()
             .getAsset("images/background/settings/settings_bg.png", Texture.class));
-    background.setWidth(Gdx.graphics.getWidth());
-    background.setHeight(Gdx.graphics.getHeight());
-    background.setPosition(0, 0);
+    background.setScaling(Scaling.stretch);
+    background.setFillParent(true);
 
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
