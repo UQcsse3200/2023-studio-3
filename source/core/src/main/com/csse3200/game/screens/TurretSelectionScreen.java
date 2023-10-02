@@ -107,7 +107,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
                 TextButton button = createButton(turret.getDefaultImage(),
                         turret.getClickedImage(), turret.getPrice());
-
+                
                 button.pad(103, 15, 0, 0);
                 button.addListener(new ClickListener() {
                     @Override
