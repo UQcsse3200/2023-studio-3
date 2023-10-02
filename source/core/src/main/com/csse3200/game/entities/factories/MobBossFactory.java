@@ -2,6 +2,7 @@ package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+<<<<<<< Updated upstream
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
@@ -10,6 +11,20 @@ import com.csse3200.game.components.bosses.IceBabyAnimationController;
 import com.csse3200.game.components.npc.Boss1AnimationController;
 import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.bosstask.*;
+=======
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Shape;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.*;
+import com.csse3200.game.components.bosses.DemonAnimationController;
+import com.csse3200.game.components.npc.Boss1AnimationController;
+import com.csse3200.game.components.npc.Boss2AnimationController;
+import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
+import com.csse3200.game.components.tasks.bosstask.FinalBossMovementTask;
+import com.csse3200.game.components.tasks.bosstask.RangeBossTask;
+import com.csse3200.game.components.tasks.bosstask.MobBossDeathTask;
+>>>>>>> Stashed changes
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.MobBossConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
@@ -20,14 +35,18 @@ import com.csse3200.game.physics.components.*;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
+<<<<<<< Updated upstream
 /**
  * Where all entities of mob bosses are created
  */
+=======
+>>>>>>> Stashed changes
 public class MobBossFactory {
 
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
     private static final int PRIORITY = 1;
     private static final int BOSS_MOB_AGRO_RANGE = 10;
+<<<<<<< Updated upstream
     private static final int DEMON_HEALTH = 5000;
     private static final int DEMON_ATTACK = 0;
     private static final int PATRICK_ATTACK = 0;
@@ -41,10 +60,19 @@ public class MobBossFactory {
      * @return Demon boss
      */
     public static Entity createDemonBoss() {
+=======
+    private static final int DEMON_HEALTH = 10000;
+    private static final int DEMON_ATTACK = 50;
+
+    // Create Demon Boss
+    public static Entity createDemonBoss() {
+        MobBossConfigs config = configs.MobBoss;
+>>>>>>> Stashed changes
         Entity demon = createBaseBoss();
 
         // Animation addition
         AnimationRenderComponent animator = new AnimationRenderComponent(
+<<<<<<< Updated upstream
                 ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas",
                         TextureAtlas.class));
         animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
@@ -56,6 +84,23 @@ public class MobBossFactory {
         animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
+=======
+                ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas", TextureAtlas.class));
+        animator.addAnimation("demon_cast_spell", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_cleave", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_death", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_fire_breath", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_smash", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("move", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_explosion", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("projectile_idle", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
+        animator.addAnimation("transform", 0.2f, Animation.PlayMode.LOOP);
+>>>>>>> Stashed changes
 
         // AI task addition
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -75,6 +120,7 @@ public class MobBossFactory {
         return demon;
     }
 
+<<<<<<< Updated upstream
     /**
      * Creates end state of demon boss
      *
@@ -220,6 +266,11 @@ public class MobBossFactory {
     // Create Boss King 1
     public static Entity createMobBoss1(int numLane) {
         MobBossConfigs config = configs.mobBoss;
+=======
+    // Create Boss King 1
+    public static Entity createMobBoss1(int numLane) {
+        MobBossConfigs config = configs.MobBoss;
+>>>>>>> Stashed changes
         Entity mobBoss1 = createBaseBoss();
 
         AITaskComponent aiTaskComponent1 = new AITaskComponent()
@@ -244,7 +295,11 @@ public class MobBossFactory {
 
     // Create Boss King 2
     public static Entity createMobBoss2() {
+<<<<<<< Updated upstream
         MobBossConfigs config = configs.mobBoss;
+=======
+        MobBossConfigs config = configs.MobBoss;
+>>>>>>> Stashed changes
         Entity mobBoss2 = createBaseBoss();
 
         AITaskComponent aiTaskComponent2 = new AITaskComponent()
@@ -274,12 +329,17 @@ public class MobBossFactory {
         return mobBoss2;
     }
 
+<<<<<<< Updated upstream
 
     /**
      * Create base boss entity that all boss mobs will inherit
      * @return base mob boss entity
      */
     public static Entity createBaseBoss() {
+=======
+    // Create the base boss entity
+    private static Entity createBaseBoss() {
+>>>>>>> Stashed changes
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
                 .addComponent(new ColliderComponent())
@@ -287,14 +347,22 @@ public class MobBossFactory {
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                 .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));
 
+<<<<<<< Updated upstream
         PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
+=======
+        boss.getComponent(HitboxComponent.class).setAsBox(new Vector2(5, 5)).setAsBoxAligned();
+//        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
+>>>>>>> Stashed changes
 
         return boss;
     }
 
+<<<<<<< Updated upstream
     /**
      * Throw IllegalStateException
      */
+=======
+>>>>>>> Stashed changes
     private MobBossFactory() {
         throw new IllegalStateException("Instantiating static util class");
     }
