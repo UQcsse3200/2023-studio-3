@@ -13,7 +13,6 @@ import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 /**
  * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
@@ -24,8 +23,8 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private final Table towerTable = new Table();
     Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
-    private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
-    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
+    private TextButton remainingMobsButton;
+    private TextButton timerButton;
 
     @Override
     public void create() {
@@ -37,6 +36,9 @@ public class UIElementsDisplay extends UIComponent {
      * This method creates the buttons, adds them to the respective tables and draws them on the screen.
      */
     private void addActors() {
+        remainingMobsButton = new ButtonFactory().createButton("Mobs:"
+                + ServiceLocator.getWaveService().getEnemyCount());
+
         buttonTable.top().right();
         towerTable.top();
 
@@ -51,17 +53,6 @@ public class UIElementsDisplay extends UIComponent {
         TextButton tower3 = new TextButton("Tower 3", skin);
         TextButton tower4 = new TextButton("Tower 4", skin);
         TextButton tower5 = new TextButton("Tower 5", skin);
-
-        //Not sure if we need a listened for a label
-//        // Triggers an event when the button is pressed.
-//        remainingMobsButton.addListener(
-//                new ChangeListener() {
-//                    @Override
-//                    public void changed(ChangeEvent changeEvent, Actor actor) {
-//                        logger.debug("Wave counter button clicked");
-//                        entity.getEvents().trigger("wave counter");
-//                    }
-//                });
 
         buttonTable.add(remainingMobsButton).padTop(10f).padRight(10f);
         buttonTable.row();
@@ -81,7 +72,17 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the mob count button as mobs die in the game
      */
     public void updateMobCount() {
-        remainingMobsButton.getLabel().setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
+            createTimerButton();
+        }
+    }
+
+    public void createTimerButton() {
+        timerButton = new ButtonFactory().createButton("Next wave in:"
+                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+        buttonTable.row();
+        buttonTable.add(timerButton).padRight(10f);
     }
 
     @Override
