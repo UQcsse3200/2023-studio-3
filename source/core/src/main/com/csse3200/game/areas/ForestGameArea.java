@@ -217,9 +217,8 @@ public class ForestGameArea extends GameArea {
       case 2:
       spawnWaterQueen();
       spawnWaterSlime();
-      spawnIceBaby();
       logger.info("Lol");
-      
+
       break;
       case 3:
         logger.info("Lol");
@@ -236,6 +235,8 @@ public class ForestGameArea extends GameArea {
         break;
       case 5:
         spawnDemonBoss();
+      case 6:
+        spawnIceBaby();
       default:
         // Handle other wave scenarios if needed
         break;
