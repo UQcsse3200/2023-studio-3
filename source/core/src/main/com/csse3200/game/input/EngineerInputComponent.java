@@ -13,6 +13,7 @@ import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.EngineerFactory;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -39,7 +40,7 @@ public class EngineerInputComponent extends InputComponent {
         camera.unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         camera.project(worldCoordinates);
-        Entity engineer = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
+        Entity engineer = entityService.getEntityAtPositionLayer(cursorPosition.x, cursorPosition.y, PhysicsLayer.ENGINEER);
         //logger.info("Clicked entity: " + engineer);
 
         // Case when engineer is not clicked
