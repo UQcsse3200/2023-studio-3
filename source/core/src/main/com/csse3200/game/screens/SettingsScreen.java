@@ -16,6 +16,10 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /** The game screen containing the settings. */
 public class SettingsScreen extends ScreenAdapter {
@@ -23,9 +27,14 @@ public class SettingsScreen extends ScreenAdapter {
 
   private final GdxGame game;
   private final Renderer renderer;
+  private Texture backgroundTexture;
+  private final SpriteBatch batch;
+  private static final String[] SettingsTextures = {"images/background/main_menu/main_menu_bg.png"};
 
   public SettingsScreen(GdxGame game) {
     this.game = game;
+    this.batch = new SpriteBatch();
+    backgroundTexture = new Texture("images/background/main_menu/main_menu_bg.png");
 
     logger.debug("Initialising settings screen services");
     ServiceLocator.registerInputService(new InputService());
@@ -37,30 +46,60 @@ public class SettingsScreen extends ScreenAdapter {
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(5f, 5f);
 
+    loadAssets();
     createUI();
   }
 
   @Override
   public void render(float delta) {
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
     ServiceLocator.getEntityService().update();
+
+    // Render the background
+    float screenWidth = Gdx.graphics.getWidth();
+    float screenHeight = Gdx.graphics.getHeight();
+
+    batch.begin();
+    batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);
+    batch.end();
+
+    // Continue with the rest of the rendering
     renderer.render();
   }
 
   @Override
   public void resize(int width, int height) {
     renderer.resize(width, height);
+    logger.trace("Resized renderer: ({} x {})", width, height);
   }
 
   @Override
   public void dispose() {
+    logger.debug("Disposing main menu screen");
+
     renderer.dispose();
+    unloadAssets();
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getEntityService().dispose();
+    batch.dispose();
 
     ServiceLocator.clear();
   }
 
+  private void loadAssets() {
+    logger.debug("Loading assets");
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.loadTextures(SettingsTextures);
+    backgroundTexture = new Texture("images/background/main_menu/main_menu_bg.png");
+    ServiceLocator.getResourceService().loadAll();
+  }
 
+  private void unloadAssets() {
+    logger.debug("Unloading assets");
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.unloadAssets(SettingsTextures);
+  }
 
   /**
    * Creates the setting screen's ui including components for rendering ui elements to the screen

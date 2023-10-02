@@ -3,6 +3,10 @@ package com.csse3200.game.components.settingsmenu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics.DisplayMode;
 import com.badlogic.gdx.Graphics.Monitor;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
@@ -46,6 +50,18 @@ public class SettingsMenuDisplay extends UIComponent {
   }
 
   private void addActors() {
+    // Load the custom cursor image
+    Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("images/ui/mouse_effect.png"));
+    Cursor customCursor = Gdx.graphics.newCursor(cursorPixmap, 0, 0);
+    Gdx.graphics.setCursor(customCursor);
+    cursorPixmap.dispose(); // Dispose of the Pixmap to release resources
+
+    Image background = new Image(ServiceLocator.getResourceService()
+            .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
+    background.setWidth(Gdx.graphics.getWidth());
+    background.setHeight(Gdx.graphics.getHeight());
+    background.setPosition(0, 0);
+
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
     Table menuBtns = makeMenuBtns();
@@ -61,7 +77,8 @@ public class SettingsMenuDisplay extends UIComponent {
     rootTable.row();
     rootTable.add(menuBtns).fillX();
 
-    stage.addActor(rootTable);
+    stage.addActor(background);  // Add background first
+    stage.addActor(rootTable);   // Add rootTable after to ensure it's drawn on top
   }
 
   private Table makeSettingsTable() {
