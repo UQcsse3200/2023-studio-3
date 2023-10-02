@@ -142,7 +142,7 @@ public class UpgradeUIComponent extends InputComponent {
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("%d", attack), createLabelStyle());
-        Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
+        Label fireRateLabel = new Label(String.format("%.2f", fireRate), createLabelStyle());
         Table costDisplay = new Table();
         costDisplay.setWidth(0);
         costDisplay.setBackground(drawableBackground);
@@ -239,7 +239,7 @@ public class UpgradeUIComponent extends InputComponent {
                     value -= 10;
                     ServiceLocator.getCurrencyService().getScrap().setAmount(value);
                     ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 30;
+                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 0.2f;
                     turretEntity.getComponent(UpgradableStatsComponent.class).setAttackRate(newFireRate);
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, (int) newFireRate * 5);
 
@@ -295,7 +295,10 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.row();
         TextButton upgradeIncome = null;
         if (turretEntity.getComponent(IncomeUpgradeComponent.class) != null) {
-            Label incomeLabel = new Label(String.format("Income: %.2f", turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate()), createLabelStyle());
+            Drawable incomeDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrap.png")));
+            Image incomeImage = new Image(incomeDrawable);
+            Label incomeLabel = new Label(String.format("%.2f", turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate()), createLabelStyle());
+            innerUpgradeTable.add(incomeImage).padRight(5).width(32).height(32);
             innerUpgradeTable.add(incomeLabel).expandX().left();
             innerUpgradeTable.row();
 
@@ -304,14 +307,14 @@ public class UpgradeUIComponent extends InputComponent {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     value = ServiceLocator.getCurrencyService().getScrap().getAmount();
-                    if (value >= 10 && turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() >= 5) {
+                    if (value >= 10 && turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() >= 10) {
                         value -= 10;
                         ServiceLocator.getCurrencyService().getScrap().setAmount(value);
                         ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
                         float newIncome = turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() - 5;
                         turretEntity.getComponent(IncomeUpgradeComponent.class).setIncomeRate(newIncome);
                         turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.INCOME, (int) newIncome);
-                        incomeLabel.setText(String.format("Income: %.2f", newIncome));
+                        incomeLabel.setText(String.format("%.2f", newIncome));
                     }
 
                 }
@@ -346,6 +349,7 @@ public class UpgradeUIComponent extends InputComponent {
             innerUpgradeTable.add(upgradeIncome).expandX().fillX();
         }
         innerUpgradeTable.add(repairButton).expandX().fillX();
+        upgradeTable.add(closeButton).right().row();
         upgradeTable.add(innerUpgradeTable).center().expand().row();
 
         upgradeTable.add(costDisplay).left();
