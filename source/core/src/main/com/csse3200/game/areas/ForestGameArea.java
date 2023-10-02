@@ -276,6 +276,7 @@ public class ForestGameArea extends GameArea {
 //    spawnTNTTower();
 //    spawnIncome();
     spawnIncome();
+    spawnDroidTower();
 
   }
 
