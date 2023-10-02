@@ -213,6 +213,7 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
+    ServiceLocator.getWaveService().getDisplay().updateMobCount();
     renderer.render();
   }
 

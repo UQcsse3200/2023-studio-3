@@ -152,7 +152,6 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void updateMobCount() {
         remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
-        updateTimerButton();
     }
 
     /**
@@ -198,5 +197,13 @@ public class UIElementsDisplay extends UIComponent {
         super.dispose();
         buttonTable.clear();
         towerTable.clear();
+    }
+
+    public TextButton getRemainingMobsButton() {
+        return getRemainingMobsButton();
+    }
+
+    public TextButton getTimerButton() {
+        return timerButton;
     }
 }
