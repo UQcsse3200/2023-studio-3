@@ -25,7 +25,7 @@ public class WaveFactory {
         mobs.put("WaterQueen", 3);
         mobs.put("FireWorm", 3);
         mobs.put("Skeleton", 3);
-        // mobs.put("DemonBoss", 1);
+        mobs.put("DemonBoss", 1);
         mobs.put("PatrickBoss", 1);
         mobs.put("IceBoss", 1);
         HashMap<String, Integer> mobs2 = new HashMap<>();
