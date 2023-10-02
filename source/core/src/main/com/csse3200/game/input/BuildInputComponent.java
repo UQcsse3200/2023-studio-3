@@ -1,5 +1,6 @@
 package com.csse3200.game.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -7,6 +8,7 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
+import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +24,7 @@ public class BuildInputComponent extends InputComponent {
     private final EntityService entityService;
     private final Camera camera;
     int value = -100;
-    private Entity tower;
+    private TowerType tower;
 
     /**
      * Constructor for the BuildInputComponent
@@ -56,6 +58,7 @@ public class BuildInputComponent extends InputComponent {
      */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);
         getCamera().unproject(worldCoordinates); // translate from screen to world coordinates
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
@@ -65,29 +68,12 @@ public class BuildInputComponent extends InputComponent {
         logger.info("Tile is occupied: " + tileOccupied );
 
         // check that no entities are occupying the tile
-        if (tileOccupied) {
-            // set the cost of building the selected tower
-//            int value = clickedEntity.getComponent(DropComponent.class).getValue() * -1;
-//            if (Objects.equals(clickedEntity.getComponent(DropComponent.class).getCurrency().getName(), "Scrap")) {
-//                // add the value of the drop to the scrap
-//                ServiceLocator.getCurrencyService().getScrap().modify(value);
-//                ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-//            }
-
-//            if (Objects.equals(clickedEntity.getComponent(DropComponent.class).getCurrency().getName(), "Crystal")) {
-//                // add the value of the drop to the crystal
-//                ServiceLocator.getCurrencyService().getCrystal().modify(value);
-//                ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
-//            }
-
-//            float X = clickedEntity.getCenterPosition().x;
-//            float Y = clickedEntity.getCenterPosition().y;
-
-//            EntityService.removeEntity(clickedEntity);
-            // display a visual indication that currency has been decremented
+        if (!tileOccupied) {
+            Entity tower = TowerFactory.createTNTTower();
+            tower.setPosition((int)cursorPosition.x, (int)cursorPosition.y);
+            ServiceLocator.getEntityService().register(tower);
             ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
-
-            //logger.info("Scrap amount: " + ServiceLocator.getCurrencyService().getScrap().getAmount());
+            logger.info("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return true;
         }
         return false;

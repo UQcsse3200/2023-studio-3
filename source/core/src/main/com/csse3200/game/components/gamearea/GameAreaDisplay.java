@@ -254,8 +254,6 @@ public class GameAreaDisplay extends UIComponent {
 //    stage.addActor(numTowersLabel3);
   }
 
-
-
   public void render(float delta) {
     // ... other rendering logic ...
 
@@ -263,6 +261,7 @@ public class GameAreaDisplay extends UIComponent {
     stage.act(delta);
     stage.draw();
   }
+
   private Dialog createTowerDetailsDialog() {
     Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 

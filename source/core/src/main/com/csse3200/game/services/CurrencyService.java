@@ -4,6 +4,7 @@ import com.csse3200.game.components.gamearea.CurrencyDisplay;
 import com.csse3200.game.currency.Crystal;
 import com.csse3200.game.currency.Scrap;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.csse3200.game.currency.Currency;
 
@@ -11,6 +12,7 @@ public class CurrencyService {
 
     private ArrayList<Currency> currencies;
     private CurrencyDisplay display;
+//    private ArrayList<>
 
     /**
      * Constructor for the CurrencyService class
