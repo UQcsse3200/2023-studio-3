@@ -116,6 +116,7 @@ public class MainMenuDisplay extends UIComponent {
         float padTopStartBtn = 260f / originalScreenHeight * Gdx.graphics.getHeight();
         float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();
 
+
         table.add(title);
         table1.row();
         table1.add(startBtn).padTop(padTopStartBtn);
