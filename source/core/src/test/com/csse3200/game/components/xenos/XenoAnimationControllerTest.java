@@ -24,6 +24,7 @@ import static org.mockito.Mockito.mock;
 public class XenoAnimationControllerTest {
 
     private Entity xenoGrunt;
+    private Entity target;
     private final String[] atlas = {"images/mobs/xenoGrunt.atlas"};
 
     @BeforeEach
@@ -37,7 +38,7 @@ public class XenoAnimationControllerTest {
         resourceService.loadTextureAtlases(atlas);
         resourceService.loadAll();
 
-        xenoGrunt = NPCFactory.createXenoGrunt(); // Replace with actual Droid Tower creation logic
+        xenoGrunt = NPCFactory.createXenoGrunt(target); // Replace with actual Droid Tower creation logic
         xenoGrunt.create();
     }
 

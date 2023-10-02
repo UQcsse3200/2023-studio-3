@@ -3,7 +3,6 @@ package com.csse3200.game.components;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.csse3200.game.components.npc.DeflectingComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.physics.BodyUserData;
@@ -12,17 +11,12 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 
 /**
- * When this entity touches a valid enemy's hitbox, deal damage to them and
- * apply a knockback.
- * Has an optional disposeOnHit property that disposes projectile upon
- * collision.
+ * When this entity touches a valid enemy's hitbox, deal damage to them and apply a knockback.
+ * Has an optional disposeOnHit property that disposes projectile upon collision.
  *
- * <p>
- * Requires CombatStatsComponent, HitboxComponent on this entity.
+ * <p>Requires CombatStatsComponent, HitboxComponent on this entity.
  *
- * <p>
- * Damage is only applied if target entity has a CombatStatsComponent. Knockback
- * is only applied
+ * <p>Damage is only applied if target entity has a CombatStatsComponent. Knockback is only applied
  * if target entity has a PhysicsComponent.
  */
 public class TouchAttackComponent extends Component {
@@ -35,7 +29,6 @@ public class TouchAttackComponent extends Component {
 
   /**
    * Create a component which attacks entities on collision, without knockback.
-   * 
    * @param targetLayer The physics layer of the target's collider.
    */
   public TouchAttackComponent(short targetLayer) {
@@ -44,9 +37,8 @@ public class TouchAttackComponent extends Component {
 
   /**
    * Create a component which attacks entities on collision, with knockback.
-   * 
    * @param targetLayer The physics layer of the target's collider.
-   * @param knockback   The magnitude of the knockback applied to the entity.
+   * @param knockback The magnitude of the knockback applied to the entity.
    */
   public TouchAttackComponent(short targetLayer, float knockback) {
     this.targetLayer = targetLayer;
@@ -54,11 +46,9 @@ public class TouchAttackComponent extends Component {
   }
 
   /**
-   * Create a component which attacks entities on collision, with knockback and
-   * self-dispose.
-   * 
-   * @param targetLayer  The physics layer of the target's collider.
-   * @param knockback    The magnitude of the knockback applied to the entity.
+   * Create a component which attacks entities on collision, with knockback and self-dispose.
+   * @param targetLayer The physics layer of the target's collider.
+   * @param knockback The magnitude of the knockback applied to the entity.
    * @param disposeOnHit Whether this entity should be disposed on hit.
    */
   public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit) {
@@ -88,21 +78,14 @@ public class TouchAttackComponent extends Component {
 
     // Try to attack target.
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
-
-    // If enemy has deflecting component, don't delete it.
-    Component deflectComponent = target.getComponent(DeflectingComponent.class);
-    if (deflectComponent != null && deflectComponent.enabled)
-      return;
-
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
-      // If entity has abilities, pick one at random and apply it else use baseAttack
-      // damage
-      if (combatStats.getWeapon(target) != null) {
-        targetStats.hit(combatStats.getWeapon(target).getDamage());
-      } else {
-        targetStats.hit(combatStats.getBaseAttack());
-      }
+        // If entity has abilities, pick one at random and apply it else use baseAttack damage
+        if (combatStats.getWeapon(target) != null) {
+            targetStats.hit(combatStats.getWeapon(target).getDamage());
+        } else {
+            targetStats.hit(combatStats.getBaseAttack());
+        }
     }
     // Apply knockback
     PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);
@@ -123,6 +106,7 @@ public class TouchAttackComponent extends Component {
     this.disposeOnHit = disposeOnHit;
   }
 
+
   public void setKnockBack(float knockback) {
     this.knockbackForce = knockback;
   }
@@ -139,12 +123,6 @@ public class TouchAttackComponent extends Component {
       return;
     }
 
-    Entity otherEntity = ((BodyUserData) other.getBody().getUserData()).entity;
-
-    // If enemy has enabled deflection component, don't dispose it.
-    if (otherEntity.getComponent(DeflectingComponent.class) != null)
-      return;
-
     if (disposeOnHit) {
       Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
       projectile.setFlagForDelete(true);
@@ -160,13 +138,5 @@ public class TouchAttackComponent extends Component {
     return weapon;
   }
 
-  /**
-   * Sets the target layer of this component, changing which entity to "attack"
-   * and/or apply knockback to.
-   * 
-   * @param targetLayer
-   */
-  public void setTargetLayer(short targetLayer) {
-    this.targetLayer = targetLayer;
-  }
 }
+

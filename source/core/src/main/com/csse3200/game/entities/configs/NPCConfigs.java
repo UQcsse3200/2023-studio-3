@@ -23,6 +23,6 @@ public class NPCConfigs {
           new ArrayList<Weapon>(),
           10);
 
-  public MobBossConfigs mobBoss = new MobBossConfigs();
+  public BossKingConfigs BossKing = new BossKingConfigs();
 
 }

@@ -1,15 +1,26 @@
 package com.csse3200.game.input;
 
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.csse3200.game.entities.factories.DropFactory;
+import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.Provider;
 import java.util.Objects;
 
 public class DropInputComponent extends InputComponent {

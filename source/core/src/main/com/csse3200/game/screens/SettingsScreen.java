@@ -60,6 +60,8 @@ public class SettingsScreen extends ScreenAdapter {
     ServiceLocator.clear();
   }
 
+
+
   /**
    * Creates the setting screen's ui including components for rendering ui elements to the screen
    * and capturing and handling ui input.
