@@ -24,7 +24,6 @@ public class BuildInputComponent extends InputComponent {
     private final EntityService entityService;
     private final Camera camera;
     int value = -100;
-    private TowerType tower;
 
     /**
      * Constructor for the BuildInputComponent
@@ -76,52 +75,48 @@ public class BuildInputComponent extends InputComponent {
         return false;
     }
 
+    /**
+     * Instantiates and spawns the selected tower at the given x y coordinates on the tile map. Assumes that the given
+     * x and y coordinate is valid and that the TowerType exists in the CurrencyService.
+     *
+     * @param x x-coordinate int value
+     * @param y y-coordinate int value
+     */
     public void buildTower(int x, int y) {
+        // fetch the currently set TowerType in the currency service, and its associated build cost.
         TowerType tower = ServiceLocator.getCurrencyService().getTower();
-        Entity newTower;
+        int cost = Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice()) * -1;
+        Entity newTower = null;
+
+        // build the selected tower
         if (tower != null) {
             switch (tower) {
                 case WEAPON:
                     newTower = TowerFactory.createWeaponTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
                     break;
                 case INCOME:
                     newTower = TowerFactory.createIncomeTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
                     break;
                 case TNT:
                     newTower = TowerFactory.createTNTTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
                     break;
                 case DROID:
                     newTower = TowerFactory.createDroidTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
                     break;
                 case WALL:
                     newTower = TowerFactory.createWallTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
                     break;
                 case FIRE:
                     newTower = TowerFactory.createFireTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
                     break;
                 case STUN:
                     newTower = TowerFactory.createStunTower();
-                    newTower.setPosition(x, y);
-                    ServiceLocator.getEntityService().register(newTower);
-//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+            }
+            if (newTower != null) {
+                newTower.setPosition(x, y);
+                ServiceLocator.getEntityService().register(newTower);
+                // show a popup that reflects the cost of the build
+                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, cost, 10);
             }
         }
     }

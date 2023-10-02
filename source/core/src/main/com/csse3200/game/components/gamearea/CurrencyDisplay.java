@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.Align;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import org.w3c.dom.Text;
 
 /**
  * A UI component for displaying the currency owned
@@ -29,6 +30,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton crystalsTb;
     private Sound clickSound;
     private Sound buildSound;
+    private TextButton test;
 
     /**
      * Adds actors to stage
@@ -55,9 +57,11 @@ public class CurrencyDisplay extends UIComponent {
                 ServiceLocator.getCurrencyService().getScrap().getAmount());
         crystalsTb = createButton("images/economy/crystalBanner.png",
                 ServiceLocator.getCurrencyService().getCrystal().getAmount());
+        test = createButton("images/ui/Sprites/UI_Glass_Frame_Standard_01a.png", 100);
 
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
+        table.add(test).width(test.getWidth() * 0.5f).height(test.getHeight() * 0.5f);
         stage.addActor(table);
     }
 
@@ -71,7 +75,7 @@ public class CurrencyDisplay extends UIComponent {
         tb.setDisabled(true);
         tb.getLabel().setAlignment(Align.right);
 
-        tb.pad(0, 0, 0, 50);
+        tb.pad(0, 0, 0, 0);
         tb.setTransform(true);
 
         return tb;
