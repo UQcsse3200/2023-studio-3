@@ -29,7 +29,6 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
-    private Sound buildSound;
     private TextButton test;
 
     /**
@@ -39,7 +38,6 @@ public class CurrencyDisplay extends UIComponent {
     public void create() {
         super.create();
         clickSound = ServiceLocator.getResourceService().getAsset("sounds/economy/click.wav", Sound.class);
-        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
         addActors();
     }
 
@@ -120,9 +118,6 @@ public class CurrencyDisplay extends UIComponent {
             clickSound.setVolume(soundId, 0.4f);
             label = new Label(String.format("+%d", amount), skin);
         } else {
-            // play sound and set the volume
-            long soundId = buildSound.play();
-            buildSound.setVolume(soundId, 0.4f);
             label = new Label(String.format("%d", amount), skin);
         }
 
