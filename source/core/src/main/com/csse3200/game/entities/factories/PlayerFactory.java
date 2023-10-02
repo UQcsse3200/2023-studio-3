@@ -2,10 +2,11 @@ package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.player.InventoryComponent;
 import com.csse3200.game.components.player.PlayerActions;
 import com.csse3200.game.components.player.PlayerStatsDisplay;
-import com.csse3200.game.components.tasks.SpawnWaveTask;
+import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.PlayerConfig;
 import com.csse3200.game.files.FileLoader;
@@ -35,20 +36,17 @@ public class PlayerFactory {
   public static Entity createPlayer() {
     InputComponent inputComponent =
         ServiceLocator.getInputService().getInputFactory().createForPlayer();
-    AITaskComponent aiComponent =
-            new AITaskComponent()
-                    .addTask(new SpawnWaveTask());
     Entity player =
         new Entity()
             .addComponent(new TextureRenderComponent("images/box_boy_leaf.png"))
             .addComponent(new PhysicsComponent())
             .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.ENGINEER))
+            .addComponent(new TouchAttackComponent(PhysicsLayer.NPC))
+            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS))
             .addComponent(new PlayerActions())
-            .addComponent(new CombatStatsComponent(stats.health, stats.baseAttack))
+            .addComponent(new CombatStatsComponent(1000, 0))
             .addComponent(new InventoryComponent(stats.gold))
             .addComponent(inputComponent)
-            .addComponent(aiComponent)
             .addComponent(new PlayerStatsDisplay());
 
     PhysicsUtils.setScaledCollider(player, 0.6f, 0.3f);

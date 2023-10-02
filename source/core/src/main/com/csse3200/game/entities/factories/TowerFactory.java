@@ -260,7 +260,7 @@ public class TowerFactory {
                                 .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
@@ -289,7 +289,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
