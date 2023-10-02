@@ -1,6 +1,7 @@
 package com.csse3200.game.components.mainmenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,11 +23,16 @@ public class MainMenuDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table;
     private Table table1;
+    private Sound clickSound;
 
     @Override
     public void create() {
         super.create();
         addActors();
+        loadSounds();
+    }
+    private void loadSounds() {
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/Modern4.ogg"));
     }
 
     private void addActors() {
@@ -79,6 +85,7 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Start button clicked");
                         entity.getEvents().trigger("start");
+                        clickSound.play();
                     }
                 });
 
@@ -88,6 +95,7 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Help button clicked");
                         entity.getEvents().trigger("help");
+                        clickSound.play();
                     }
                 });
 
@@ -97,6 +105,7 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Settings button clicked");
                         entity.getEvents().trigger("settings");
+                        clickSound.play();
                     }
                 });
 
@@ -106,6 +115,7 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Exit button clicked");
                         entity.getEvents().trigger("exit");
+                        clickSound.play();
                     }
                 });
 
@@ -145,5 +155,6 @@ public class MainMenuDisplay extends UIComponent {
     public void dispose() {
         table.clear();
         super.dispose();
+        clickSound.dispose();
     }
 }
