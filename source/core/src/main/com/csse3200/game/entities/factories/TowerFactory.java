@@ -85,9 +85,8 @@ public class TowerFactory {
     private static final String STUN_TOWER_DEATH_ANIM = "death";
     private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
     private static final String FIREWORKS_TOWER_DEATH_ANIM ="DEATH";
-    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.4f;
-    private static final String FIREWORKS_TOWER_CHARGE_START_ANIM ="Charge";
-    private static final String FIREWORKS_TOWER_CHARGE_END_ANIM ="Charge_end";
+    private static final float FIREWORKS_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.06f;
     private static final String FIREWORKS_TOWER_IDLE_ANIM ="Idle";
     private static final String FIREWORKS_TOWER_ATTACK_ANIM ="Attack";
     private static final int INCOME_INTERVAL = 300;
@@ -299,7 +298,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
@@ -330,11 +329,9 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIREWORKS_TOWER_CHARGE_END_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(FIREWORKS_TOWER_CHARGE_START_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
 
         fireworksTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
