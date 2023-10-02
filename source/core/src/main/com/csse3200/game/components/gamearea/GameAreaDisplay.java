@@ -63,14 +63,14 @@ public class GameAreaDisplay extends UIComponent {
   public void create() {
     super.create();
     addActors();
-    final Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+    final Skin skin = new Skin();
 
 
 
 
-//    Image[] towers1 = new Image[2]; // Create an array for two towers
-//    Image[] towers2 = new Image[2]; // Create an array for two towers
-//    Image[] towers3 = new Image[3]; // Create an array for two towers
+    Image[] towers1 = new Image[2]; // Create an array for two towers
+    Image[] towers2 = new Image[2]; // Create an array for two towers
+    Image[] towers3 = new Image[3]; // Create an array for two towers
 
 //    for (int i = 0; i < 2; i++) {
 //      // Use "building1" for the first tower and "building2" for the second tower
