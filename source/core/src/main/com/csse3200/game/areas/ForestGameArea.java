@@ -218,7 +218,6 @@ public class ForestGameArea extends GameArea {
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
-  private final TerrainFactory terrainFactory;
   private static final String[] forestMusic = {backgroundMusic};
   
   private Entity player;
