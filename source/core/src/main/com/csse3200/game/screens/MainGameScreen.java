@@ -1,6 +1,7 @@
 package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -19,10 +20,7 @@ import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.input.DropInputComponent;
-import com.csse3200.game.input.InputComponent;
-import com.csse3200.game.input.InputDecorator;
-import com.csse3200.game.input.InputService;
+import com.csse3200.game.input.*;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
@@ -94,11 +92,16 @@ public class MainGameScreen extends ScreenAdapter {
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
-    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    ServiceLocator.getInputService().register(inputHandler);
+
+    /* Input components */
+    InputComponent dropInputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(dropInputHandler);
+
+    InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(engineerInputHandler);
+
 
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
-
     loadAssets();
     createUI();
 

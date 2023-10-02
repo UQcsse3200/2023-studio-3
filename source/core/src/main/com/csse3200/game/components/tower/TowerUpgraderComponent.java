@@ -58,7 +58,7 @@ public class TowerUpgraderComponent extends Component {
     /**
      * Restores the tower's health to its maximum health.
      */
-    void repairTower() {
+    public void repairTower() {
         int maxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();
         getEntity().getComponent(CombatStatsComponent.class).setHealth(maxHealth);
     }

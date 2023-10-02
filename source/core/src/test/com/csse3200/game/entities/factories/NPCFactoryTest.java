@@ -34,7 +34,7 @@ public class NPCFactoryTest {
     private final String[] texture = {
             "images/towers/turret_deployed.png",
             "images/towers/turret01.png",
-            "images/towers/wallTower.png"
+            "images/towers/WallTower.png"
     };
     private final String[] atlas = {"images/towers/turret01.atlas",
             "images/mobs/xenoGrunt.atlas"};

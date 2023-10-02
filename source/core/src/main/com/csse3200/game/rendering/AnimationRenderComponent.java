@@ -37,6 +37,7 @@ public class AnimationRenderComponent extends RenderComponent {
   private static final Logger logger = LoggerFactory.getLogger(AnimationRenderComponent.class);
   private final GameTime timeSource;
   private final TextureAtlas atlas;
+  private final TextureAtlas atlas2;
   private final Map<String, Animation<TextureRegion>> animations;
   private Animation<TextureRegion> currentAnimation;
   private String currentAnimationName;
@@ -48,6 +49,14 @@ public class AnimationRenderComponent extends RenderComponent {
    */
   public AnimationRenderComponent(TextureAtlas atlas) {
     this.atlas = atlas;
+    this.atlas2 = null;
+    this.animations = new HashMap<>(4);
+    timeSource = ServiceLocator.getTimeSource();
+  }
+
+  public AnimationRenderComponent(TextureAtlas atlas1, TextureAtlas atlas2) {
+    this.atlas = atlas1;
+    this.atlas2 = atlas2;
     this.animations = new HashMap<>(4);
     timeSource = ServiceLocator.getTimeSource();
   }
@@ -73,20 +82,37 @@ public class AnimationRenderComponent extends RenderComponent {
    */
   public boolean addAnimation(String name, float frameDuration, PlayMode playMode) {
     Array<AtlasRegion> regions = atlas.findRegions(name);
+    Array<AtlasRegion> regions2;
+
     if (regions == null || regions.size == 0) {
-      logger.warn("Animation {} not found in texture atlas", name);
-      return false;
+      // check if there is a second atlas file
+      if (atlas2 != null) {
+        regions2 = atlas2.findRegions(name);
+
+        if (regions2 == null || regions2.size == 0) {
+          logger.warn("Animation {} not found in texture atlas 2", name);
+          return false;
+        } else {
+          Animation<TextureRegion> animation = new Animation<>(frameDuration, regions2, playMode);
+          animations.put(name, animation);
+          logger.debug("Adding animation {}", name);
+          return true;
+        }
+      } else {
+        logger.warn("Animation {} not found in texture atlas", name);
+        return false;
+      }
     } else if (animations.containsKey(name)) {
       logger.warn(
-          "Animation {} already added in texture atlas. Animations should only be added once.",
-          name);
+              "Animation {} already added in texture atlas. Animations should only be added once.",
+              name);
       return false;
+    } else {
+      Animation<TextureRegion> animation = new Animation<>(frameDuration, regions, playMode);
+      animations.put(name, animation);
+      logger.debug("Adding animation {}", name);
+      return true;
     }
-
-    Animation<TextureRegion> animation = new Animation<>(frameDuration, regions, playMode);
-    animations.put(name, animation);
-    logger.debug("Adding animation {}", name);
-    return true;
   }
 
   /** Scale the entity to a width of 1 and a height matching the texture's ratio */
