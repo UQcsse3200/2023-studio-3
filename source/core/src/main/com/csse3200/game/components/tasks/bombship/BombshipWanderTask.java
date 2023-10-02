@@ -89,8 +89,7 @@ public class BombshipWanderTask extends DefaultTask implements PriorityTask {
       startDestroying();
     }
 
-    boolean justDied = owner.getEntity().getComponent(CombatStatsComponent.class).isDestroyed();
-    // Check if engineer has died since last update
+    // Check if bombship has destroyed since last update
     if (!isDestroyed) {
       startDestroying();
     } else if (isDestroyed && animator.isFinished()) {
