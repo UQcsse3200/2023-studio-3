@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
@@ -136,7 +137,7 @@ public class UpgradeUIComponent extends InputComponent {
         turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
-        Label healthLabel = new Label(String.format("Health:%d/%d", currentHealth, maxHealth), createLabelStyle());
+        Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
         Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
@@ -148,6 +149,11 @@ public class UpgradeUIComponent extends InputComponent {
                 upgradeTables.remove(turretEntity);
             }
         });
+
+        // Create an Image for the health icon
+        Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/health.png")));
+        Image healthIconImage = new Image(healthIconDrawable);
+
 
         TextButton upgradeHealth = new TextButton("+H", style);
         upgradeHealth.addListener(new ClickListener() {
@@ -162,7 +168,7 @@ public class UpgradeUIComponent extends InputComponent {
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, 10);
                     int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
                     int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
-                    healthLabel.setText(String.format("Health:%d/%d", currentHealth, maxHealth));
+                    healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
                 }
             }
         });
@@ -214,7 +220,7 @@ public class UpgradeUIComponent extends InputComponent {
                     ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.REPAIR, 0);
                     int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
-                    healthLabel.setText(String.format("Health:%d/%d", currentHealth, maxHealth));
+                    healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
                 }
             }
         });
@@ -223,6 +229,7 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeTable.row();
 
         innerUpgradeTable.row();
+        innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
         if (attack != 0) {
