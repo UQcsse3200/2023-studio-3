@@ -61,4 +61,8 @@ public class WaveClass {
     return this.wave.toString();
   }
 
+  public HashMap<String, int[]> getEntities() {
+    return this.entities;
+  }
+
 }

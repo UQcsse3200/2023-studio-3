@@ -1,6 +1,8 @@
 package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.csse3200.game.components.tasks.waves.LevelWaves;
+import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.DebugRenderer;
@@ -22,9 +24,42 @@ import static org.mockito.Mockito.*;
 import com.csse3200.game.entities.Entity;
 
 import java.security.Provider;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
 class WaveFactoryTest {
+
+  private LevelWaves lvl1;
+  private LevelWaves lvl2;
+  private LevelWaves lvl3;
+
+  private final int MIN_HEALTH = 60;
+  private final int MIN_BOSS_HEALTH = 80;
+
+  // level stats for level 1 - water planet
+  private final int LVL1_DIFF = 2;
+  private final int LVL1_WAVES = 5;
+  private final int LVL1_CHOSEN_LVL = 1;
+  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "WaterSlime", "DeflectXeno"));
+  private final String LVL1_BOSS = "WaterBoss";
+
+  // level stats for level 2 - magic planet
+  private final int LVL2_DIFF = 3;
+  private final int LVL2_WAVES = 10;
+  private final int LVL2_CHOSEN_LVL = 0;
+  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectXeno", "Wizard"));
+  private final String LVL2_BOSS = "MagicBoss";
+
+  // level stats for level 3 - fire planet
+  private final int LVL3_DIFF = 5;
+  private final int LVL3_WAVES = 15;
+  private final int LVL3_CHOSEN_LVL = 2;
+  private final ArrayList<String> LVL3_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno", "FireWorm"));
+  private final String LVL3_BOSS = "FireBoss";
 
     private static final String[] waveSounds = {
             "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
@@ -44,6 +79,10 @@ class WaveFactoryTest {
       WaveService waveService = new WaveService();
       ServiceLocator.registerWaveService(waveService);
       ServiceLocator.getResourceService().loadSounds(waveSounds);
+
+      lvl1 = WaveFactory.createLevel(LVL1_DIFF, LVL1_WAVES, LVL1_CHOSEN_LVL);
+      lvl2 = WaveFactory.createLevel(LVL2_DIFF, LVL2_WAVES, LVL2_CHOSEN_LVL);
+      lvl3 = WaveFactory.createLevel(LVL3_DIFF, LVL3_WAVES, LVL3_CHOSEN_LVL);
     }
 
     @Test
@@ -60,4 +99,49 @@ class WaveFactoryTest {
       Entity level3 = WaveFactory.createWaves();
       assertNotNull(level3);
     }
+
+    @Test
+    void testCreateLevel() {
+      assertNotNull(lvl1);
+      assertNotNull(lvl2);
+      assertNotNull(lvl3);
+    }
+
+    @Test
+    void testCorrectMobs() {
+      //TODO incomplete, only tests level 1
+
+      List<WaveClass> lvl1Mobs = lvl1.getWaves();
+
+      int waveNum = 1;
+      for (WaveClass wave : lvl1Mobs) {
+        if (waveNum % 5 != 0) {
+          assertEquals(2, wave.getEntities().size());
+        } else {
+          assertEquals(3, wave.getEntities().size());
+        }
+
+        if (waveNum % 5 == 0) {
+          assertTrue(wave.getEntities().containsKey(LVL1_BOSS));
+        }
+
+        for (Map.Entry<String, int[]> entry : wave.getEntities().entrySet()) {
+            String mob = entry.getKey();
+            int[] spawn = entry.getValue();
+
+            if (waveNum % 5 != 0) {
+                assertTrue(LVL1_MOBS.contains(mob));
+                assertEquals(MIN_HEALTH + waveNum, spawn[1]);
+            } else {
+              if (mob == LVL1_BOSS) {
+                assertEquals(MIN_BOSS_HEALTH + waveNum, spawn[1]);
+              }
+            }
+        }
+
+        waveNum++;
+      }
+      assertEquals(6, waveNum);
+    }
+
 }

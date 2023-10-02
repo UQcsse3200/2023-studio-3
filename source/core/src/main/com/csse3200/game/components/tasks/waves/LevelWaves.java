@@ -120,6 +120,10 @@ public class LevelWaves extends Entity {
         return this.waveIndex;
     }
 
+    public List<WaveClass> getWaves() {
+      return this.waves;
+    }
+
     @Override
     public String toString() {
       String result = "";
