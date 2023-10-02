@@ -18,14 +18,10 @@ import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameLoseDisplay;
-import com.csse3200.game.components.maingame.UIElementsDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.input.DropInputComponent;
-import com.csse3200.game.input.InputComponent;
-import com.csse3200.game.input.InputDecorator;
-import com.csse3200.game.input.InputService;
+import com.csse3200.game.input.*;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
@@ -139,7 +135,9 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
+    ServiceLocator.getInputService().register(buildHandler);
 
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 

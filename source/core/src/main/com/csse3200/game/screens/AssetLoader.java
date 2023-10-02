@@ -157,7 +157,9 @@ public class AssetLoader {
             "sounds/background/lava/Glitch_ripples.ogg",
             "sounds/background/lava/Sizzling.ogg",
             "sounds/background/lava/Swoosh.ogg",
-            "sounds/background/loss/RisingScreams.ogg"
+            "sounds/background/loss/RisingScreams.ogg",
+            "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+            "sounds/waves/wave-end/Wave_Over_01.ogg"
     };
 
 

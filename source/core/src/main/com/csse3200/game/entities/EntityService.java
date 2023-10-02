@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -26,7 +28,6 @@ public class EntityService {
   private static final int INITIAL_CAPACITY = 16;
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
   private static final float MAX_RADIUS = 50f;
-
   public static void removeEntity(Entity clickedEntity) {
     clickedEntity.dispose();
   }
@@ -171,6 +172,26 @@ public class EntityService {
     float entityWidth = entity.getScale().x;
     float entityHeight = entity.getScale().y;
     return (x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight);
+  }
+
+  /**
+   * Determine whether there are any entities within the given tile position (x and y range)
+   * @param x_coord the top right x coordinate of the tile
+   * @param y_coord the top right y coordinate of the tile
+   * @param tileSize float representing the tile size
+   * @return true if the tile is occupied, false otherwise
+   */
+  public boolean entitiesInTile(int x_coord, int y_coord, int tileSize) {
+    Entity entity;
+    for (int x = x_coord; x < x_coord + tileSize; x++) {
+      for (int y = y_coord; y < y_coord + tileSize; y++) {
+        entity = getEntityAtPosition(x, y);
+        if (entity != null) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
 }
