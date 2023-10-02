@@ -85,6 +85,14 @@ public class UIElementsDisplay extends UIComponent {
         buttonTable.add(timerButton).padRight(10f);
     }
 
+    public TextButton getRemainingMobsButton() {
+        return remainingMobsButton;
+    }
+
+    public TextButton getTimerButton() {
+        return timerButton;
+    }
+
     @Override
     public void draw(SpriteBatch batch) {
         // drawing is handled by the stage
