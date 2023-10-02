@@ -282,13 +282,13 @@ public class MainGameScreen extends ScreenAdapter {
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
         .addComponent(new PerformanceDisplay())
-        .addComponent(new MainGameActions(this.game))
-        .addComponent(new MainGameExitDisplay())
-        .addComponent(ServiceLocator.getWaveService().getDisplay())
-        .addComponent(new MainGameLoseDisplay())
-        .addComponent(new Terminal())
-        .addComponent(inputComponent)
-        .addComponent(new TerminalDisplay());
+            .addComponent(new MainGameActions(this.game))
+            .addComponent(new MainGameExitDisplay())
+            .addComponent(new MainGameLoseDisplay())
+            .addComponent(new MainGamePauseDisplay(this.game))
+            .addComponent(new Terminal())
+            .addComponent(inputComponent)
+            .addComponent(new TerminalDisplay());
     ServiceLocator.getEntityService().register(ui);
 
     music.setLooping(true);
