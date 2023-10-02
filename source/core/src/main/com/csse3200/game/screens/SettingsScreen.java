@@ -29,12 +29,12 @@ public class SettingsScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
-  private static final String[] SettingsTextures = {"images/background/main_menu/main_menu_bg.png"};
+  private static final String[] SettingsTextures = {"images/background/settings/settings_bg.png"};
 
   public SettingsScreen(GdxGame game) {
     this.game = game;
     this.batch = new SpriteBatch();
-    backgroundTexture = new Texture("images/background/main_menu/main_menu_bg.png");
+    backgroundTexture = new Texture("images/background/settings/settings_bg.png");
 
     logger.debug("Initialising settings screen services");
     ServiceLocator.registerInputService(new InputService());
@@ -88,7 +88,7 @@ public class SettingsScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(SettingsTextures);
-    backgroundTexture = new Texture("images/background/main_menu/main_menu_bg.png");
+    backgroundTexture = new Texture("images/background/settings/settings_bg.png");
     ServiceLocator.getResourceService().loadAll();
   }
 
