@@ -115,7 +115,9 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png",
           "images/mobboss/patrick.png",
-          "images/towers/fireworks_tower.png"
+          "images/towers/fireworks_tower.png",
+          "images/towers/barrier.png",
+          "images/towers/wall_tower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -156,7 +158,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/water_queen.atlas",
           "images/mobs/water_slime.atlas",
           "images/mobboss/patrick.atlas",
-          "images/towers/fireworks_tower.atlas"
+          "images/towers/fireworks_tower.atlas",
+          "images/towers/barrier.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -629,6 +632,7 @@ public class ForestGameArea extends GameArea {
       Entity stunTower = TowerFactory.createStunTower();
       spawnEntityAt(fireTower, randomPos1, true, true);
       spawnEntityAt(stunTower, randomPos2, true, true);
+      spawnEntityAt(wallTower, randomPos2, true, true);
     }
   }
 

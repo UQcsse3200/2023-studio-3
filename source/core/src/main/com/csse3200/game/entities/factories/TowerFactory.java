@@ -1,22 +1,14 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.components.tasks.DroidCombatTask;
-import com.csse3200.game.components.tasks.TNTTowerCombatTask;
+import com.csse3200.game.components.tasks.*;
 import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
-import com.csse3200.game.components.tasks.FireTowerCombatTask;
-import com.csse3200.game.components.tasks.StunTowerCombatTask;
-import com.csse3200.game.components.tasks.FireworksTowerCombatTask;
-import com.csse3200.game.components.tasks.PierceTowerCombatTask;
-import com.csse3200.game.components.tasks.RicochetTowerCombatTask;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
-import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
@@ -41,13 +33,14 @@ public class TowerFactory {
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
-    private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String WALL_IMAGE = "images/towers/wall_tower.png";
     private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
     private static final String FIREWORKS_TOWER_ATLAS = "images/towers/fireworks_tower.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
+    private static final String WALL_ATLAS = "images/towers/barrier.atlas";
     private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
     private static final float DROID_SPEED = 0.25f;
     private static final String DEFAULT_ANIM = "default";
@@ -79,6 +72,7 @@ public class TowerFactory {
     private static final String FIRE_TOWER_DEATH_ANIM = "death";
     private static final float FIRE_TOWER_DEATH_SPEED = 0.12f;
     private static final String STUN_TOWER_IDLE_ANIM = "idle";
+    private static final String WALL_TOWER_DEATH_ANIM = "Death";
     private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
     private static final String STUN_TOWER_ATTACK_ANIM = "attack";
     private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
@@ -135,11 +129,25 @@ public class TowerFactory {
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(TNT_ATLAS, TextureAtlas.class));
+
+        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.12f, Animation.PlayMode.NORMAL);
 
         wall
+                .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
+                .addComponent(animator)
+                .addComponent(new WallTowerAnimationController())
                 .addComponent(new TextureRenderComponent(WALL_IMAGE));
+
+        wall.setScale(0.5f,0.5f);
         return wall;
     }
 
@@ -154,7 +162,7 @@ public class TowerFactory {
         TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY, TNT_TOWER_MAX_RANGE));
+                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
 
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
