@@ -35,7 +35,6 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void dispose() {
-        PauseMenuFactory.decrementPauseMenuCount();
         for (Entity pauseTarget : freezeList) {
                 pauseTarget.setEnabled(true);
         }
