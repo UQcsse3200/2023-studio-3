@@ -173,7 +173,7 @@ public class UpgradeUIComponent extends InputComponent {
         Image fireRateImage = new Image(fireRateDrawable);
 
 
-        Drawable healthStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/health_upgrade.png")));
+        Drawable healthStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/heart_upgrade.png")));
         ImageButton upgradeHealth = new ImageButton(healthStyle);
         upgradeHealth.setScale(0.8f);
         upgradeHealth.addListener(new ClickListener() {
@@ -203,7 +203,7 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/health_upgrade.png")));
+        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/damage_upgrade.png")));
         ImageButton upgradeAttack = new ImageButton(attackStyle);
         upgradeAttack.addListener(new ClickListener() {
             @Override
@@ -232,7 +232,8 @@ public class UpgradeUIComponent extends InputComponent {
 
 
 
-        TextButton upgradeFireRate = new TextButton("+FR", style);
+        Drawable asStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/hourglass_upgrade.png")));
+        ImageButton upgradeFireRate = new ImageButton(asStyle);
         upgradeFireRate.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -263,7 +264,8 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        TextButton repairButton = new TextButton("R", style);
+        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture("images/hammer.png")));
+        ImageButton repairButton = new ImageButton(repair);
         repairButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -304,8 +306,9 @@ public class UpgradeUIComponent extends InputComponent {
             innerUpgradeTable.add(incomeLabel).expandX().left();
             innerUpgradeTable.row();
 
-            upgradeIncome = new TextButton("+I", style);
-            upgradeIncome.addListener(new ClickListener() {
+            Drawable income = new TextureRegionDrawable(new TextureRegion(new Texture("images/scrap_upgrade.png")));
+            ImageButton attackStyleButton = new ImageButton(asStyle);
+            attackStyleButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     value = ServiceLocator.getCurrencyService().getScrap().getAmount();
