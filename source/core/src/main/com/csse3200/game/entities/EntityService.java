@@ -1,5 +1,6 @@
 package com.csse3200.game.entities;
 
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.Vector3;
@@ -178,13 +179,13 @@ public class EntityService {
    * Determine whether there are any entities within the given tile position (x and y range)
    * @param x_coord the top right x coordinate of the tile
    * @param y_coord the top right y coordinate of the tile
-   * @param tileSize float representing the tile size
    * @return true if the tile is occupied, false otherwise
    */
-  public boolean entitiesInTile(int x_coord, int y_coord, int tileSize) {
+  public boolean entitiesInTile(int x_coord, int y_coord) {
     Entity entity;
-    for (int x = x_coord; x < x_coord + tileSize; x++) {
-      for (int y = y_coord; y < y_coord + tileSize; y++) {
+    GridPoint2 tileSize = new GridPoint2(ServiceLocator.getMapService().getWidth(), ServiceLocator.getMapService().getHeight());
+    for (int x = x_coord; x < x_coord + tileSize.x; x++) {
+      for (int y = y_coord; y < y_coord + tileSize.y; y++) {
         entity = getEntityAtPosition(x, y);
         if (entity != null) {
           return true;

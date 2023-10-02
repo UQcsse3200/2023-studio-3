@@ -61,7 +61,7 @@ public class BuildInputComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
 
         // determine if the tile is unoccupied
-        boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y, 10);
+        boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y);
         logger.info("Tile is occupied: " + tileOccupied );
 
         // check that no entities are occupying the tile
