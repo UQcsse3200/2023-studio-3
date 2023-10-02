@@ -138,7 +138,7 @@ public class UpgradeUIComponent extends InputComponent {
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
-        Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
+        Label attackLabel = new Label(String.format("%d", attack), createLabelStyle());
         Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
         closeButton.addListener(new ClickListener() {
@@ -150,9 +150,12 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        // Create an Image for the health icon
+        // Create an Image for the icons
         Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/health.png")));
         Image healthIconImage = new Image(healthIconDrawable);
+
+        Drawable attackIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/attack.png")));
+        Image attackIconImage = new Image(attackIconDrawable);
 
 
         TextButton upgradeHealth = new TextButton("+H", style);
@@ -185,7 +188,7 @@ public class UpgradeUIComponent extends InputComponent {
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 5);
 
                     int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
-                    attackLabel.setText(String.format("Attack: %d", attack));
+                    attackLabel.setText(String.format("%d", attack));
                 }
             }
         });
@@ -225,19 +228,16 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        upgradeTable.add(closeButton).right().top();
-        upgradeTable.row();
-
         innerUpgradeTable.row();
         innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
         if (attack != 0) {
+            innerUpgradeTable.add(attackIconImage).padRight(5).width(32).height(32);  // Add attack icon
             innerUpgradeTable.add(attackLabel).expandX().left();
             innerUpgradeTable.row();
             innerUpgradeTable.add(fireRateLabel).expandX().right();
             innerUpgradeTable.row();
-
         }
         innerUpgradeTable.add(upgradeHealth).expandX().fillX();
         if (attack != 0) {

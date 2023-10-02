@@ -268,7 +268,7 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(15, 4);
 //    spawnScrap();
 //    spawnTNTTower();
-    // spawnWeaponTower();
+      spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
 //    spawnScrap();
