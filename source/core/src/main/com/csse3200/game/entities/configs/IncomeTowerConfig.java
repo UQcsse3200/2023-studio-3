@@ -9,4 +9,6 @@ public class IncomeTowerConfig {
     public int cost = 1;
 
     public float attackRate = 0;
+    public float incomeRate = 30;
+
 }

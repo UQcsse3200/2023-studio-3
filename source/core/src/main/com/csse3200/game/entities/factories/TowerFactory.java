@@ -97,10 +97,8 @@ public class TowerFactory {
         IncomeTowerConfig config = configs.income;
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, INCOME_INTERVAL);
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.incomeRate);
 
-        int updatedInterval = 1;
-        currencyTask.setInterval(updatedInterval);
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
 
 
@@ -116,6 +114,7 @@ public class TowerFactory {
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
+                .addComponent(new IncomeUpgradeComponent(config.incomeRate))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new EconTowerAnimationController());

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -17,11 +18,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Scaling;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
+import com.csse3200.game.components.tower.IncomeUpgradeComponent;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.components.tower.UpgradableStatsComponent;
 import com.csse3200.game.entities.Entity;
@@ -140,6 +143,17 @@ public class UpgradeUIComponent extends InputComponent {
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
         Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
+        Table costDisplay = new Table();
+        costDisplay.setWidth(0);
+        costDisplay.setBackground(drawableBackground);
+        // Create an Image for the scrap icon
+        Drawable costDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrap.png")));
+        Image costImage = new Image(costDrawable);
+        costDisplay.add(costImage).center();
+        costImage.setScaling(Scaling.none);
+        Label costDisplayLabel = new Label("100", createLabelStyle());
+        costDisplay.add(costDisplayLabel).padLeft(0);
+
         TextButton closeButton = new TextButton("X", style);
         closeButton.addListener(new ClickListener() {
             @Override
@@ -171,6 +185,15 @@ public class UpgradeUIComponent extends InputComponent {
                     healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
                 }
             }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                costDisplayLabel.setText("10");
+                costDisplay.setVisible(true);
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                costDisplay.setVisible(false);
+            }
         });
 
         TextButton upgradeAttack = new TextButton("+A", style);
@@ -188,7 +211,18 @@ public class UpgradeUIComponent extends InputComponent {
                     attackLabel.setText(String.format("Attack: %d", attack));
                 }
             }
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                costDisplayLabel.setText("10");
+                costDisplay.setVisible(true);
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                costDisplay.setVisible(false);
+            }
         });
+
+
 
         TextButton upgradeFireRate = new TextButton("+FR", style);
         upgradeFireRate.addListener(new ClickListener() {
@@ -206,6 +240,18 @@ public class UpgradeUIComponent extends InputComponent {
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
                     fireRateLabel.setText(String.format("Fire Rate: %.2f", fireRate));
                 }
+
+            }
+
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                costDisplayLabel.setText("10");
+                costDisplay.setVisible(true);
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                costDisplay.setVisible(false);
             }
         });
 
@@ -223,6 +269,18 @@ public class UpgradeUIComponent extends InputComponent {
                     healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
                 }
             }
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                costDisplayLabel.setText("10");
+                costDisplay.setVisible(true);
+            }
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                costDisplay.setVisible(false);
+            }
+
+
         });
 
         upgradeTable.add(closeButton).right().top();
@@ -232,6 +290,41 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
+        TextButton upgradeIncome = null;
+        if (turretEntity.getComponent(IncomeUpgradeComponent.class) != null) {
+            Label incomeLabel = new Label(String.format("Income: %.2f", turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate()), createLabelStyle());
+            innerUpgradeTable.add(incomeLabel).expandX().left();
+            innerUpgradeTable.row();
+
+            upgradeIncome = new TextButton("+I", style);
+            upgradeIncome.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                    if (value >= 10 && turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() >= 5) {
+                        value -= 10;
+                        ServiceLocator.getCurrencyService().getScrap().setAmount(value);
+                        ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                        float newIncome = turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() - 5;
+                        turretEntity.getComponent(IncomeUpgradeComponent.class).setIncomeRate(newIncome);
+                        turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.INCOME, (int) newIncome);
+                        incomeLabel.setText(String.format("Income: %.2f", newIncome));
+                    }
+
+                }
+
+
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+                    costDisplayLabel.setText("10");
+                    costDisplay.setVisible(true);
+                }
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                    costDisplay.setVisible(false);
+                }
+            });
+        }
         if (attack != 0) {
             innerUpgradeTable.add(attackLabel).expandX().left();
             innerUpgradeTable.row();
@@ -244,10 +337,16 @@ public class UpgradeUIComponent extends InputComponent {
             innerUpgradeTable.add(upgradeAttack).expandX().fillX();
             innerUpgradeTable.add(upgradeFireRate).expandX().fillX();
         }
+        if (upgradeIncome != null) {
+            innerUpgradeTable.add(upgradeIncome).expandX().fillX();
+        }
         innerUpgradeTable.add(repairButton).expandX().fillX();
         upgradeTable.add(innerUpgradeTable).center().expand().row();
 
+        upgradeTable.add(costDisplay).left();
+        costDisplay.setVisible(false);
         upgradeTable.setVisible(true);
+
         return upgradeTable;
     }
 
