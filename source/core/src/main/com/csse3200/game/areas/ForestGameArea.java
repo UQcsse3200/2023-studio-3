@@ -258,7 +258,9 @@ public class ForestGameArea extends GameArea {
     player.getEvents().addListener("spawnWave", this::spawnWave);
 
     Entity engineer = EngineerFactory.createEngineer();
+    Entity tower = TowerFactory.createDroidTower();
     spawnEntityAt(engineer, new GridPoint2(2, 4), true, true);
+    spawnEntityAt(tower, new GridPoint2(2, 5), true, true);
 
 //    playMusic();
 //    spawnXenoGrunts();

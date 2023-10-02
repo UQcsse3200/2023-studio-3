@@ -13,8 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,6 +122,19 @@ public class EngineerMenuComponent extends UIComponent {
         Drawable downDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(downImageFilePath)));
         TextButton button = new TextButton(text,
                 new TextButton.TextButtonStyle(upDrawable, downDrawable, null, new BitmapFont()));
+        button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                EntityService entityService = ServiceLocator.getEntityService();
+                Array<Entity> tower = entityService.getEntitiesInLayer(getEntity(), 0.1f, PhysicsLayer.TOWER);
+                if (tower.size == 0) {
+                    logger.info("No tower to repair");
+                    return;
+                }
+                logger.info("repairing");
+                tower.get(0).getComponent(TowerUpgraderComponent.class).repairTower();
+            }
+        });
         button.setTransform(true);
         return button;
     }

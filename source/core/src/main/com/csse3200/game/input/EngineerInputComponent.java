@@ -1,5 +1,7 @@
 package com.csse3200.game.input;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -74,6 +76,25 @@ public class EngineerInputComponent extends InputComponent {
             controller.setClicked(true);
         }
         return true;
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        if (selectedEngineer == null) {
+            return false;
+        }
+
+
+        if (Gdx.input.isKeyPressed(Input.Keys.P)) {
+            manualShoot();
+        }
+        return true;
+    }
+
+    private void manualShoot() {
+        HumanWanderTask wander = this.getWanderTask();
+        wander.startWaiting();
+        wander.startCombat();
     }
 
     private HumanWanderTask getWanderTask() {

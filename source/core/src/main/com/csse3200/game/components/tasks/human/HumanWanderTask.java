@@ -168,7 +168,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   /**
    * Starts the combat task.
    */
-  private void startCombat() {
+  public void startCombat() {
     swapTask(combatTask);
   }
 
