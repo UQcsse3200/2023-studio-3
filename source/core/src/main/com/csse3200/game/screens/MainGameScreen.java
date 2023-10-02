@@ -17,6 +17,7 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameLoseDisplay;
+import com.csse3200.game.components.maingame.MainGamePauseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
@@ -288,7 +289,6 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new Terminal())
         .addComponent(inputComponent)
         .addComponent(new TerminalDisplay());
-
     ServiceLocator.getEntityService().register(ui);
 
     music.setLooping(true);
