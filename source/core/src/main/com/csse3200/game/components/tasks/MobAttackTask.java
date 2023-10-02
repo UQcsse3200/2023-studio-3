@@ -14,10 +14,8 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.physics.raycast.RaycastHit;
-import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-
 
 /**
  * Task that allows mobs to shoot projectiles or melee attack towers
@@ -102,7 +100,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -126,7 +124,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           mobState = STATE.STOW;
         } else {
           if (this.meleeOrProjectile() instanceof Melee) {
-            System.out.println("Melee attack");
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
@@ -134,7 +131,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
           } else {
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
             newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-//            newProjectile.setScale(-1f, 0.5f);
+            newProjectile.setScale(-1f, 1f);
             ServiceLocator.getEntityService().register(newProjectile);
 
 //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
@@ -149,7 +146,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
           owner.getEntity().getEvents().trigger(IDLE);

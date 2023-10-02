@@ -3,7 +3,6 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -80,7 +79,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(IDLE);
-        // Set up listener to change firerate
+        // Set up listener to change fire rate
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
 
         endTime = timeSource.getTime() + (INTERVAL * 500);

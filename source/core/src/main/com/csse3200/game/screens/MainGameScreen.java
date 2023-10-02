@@ -1,21 +1,14 @@
 package com.csse3200.game.screens;
-import  com.badlogic.gdx.graphics.Pixmap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
@@ -25,7 +18,6 @@ import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.components.maingame.MainGamePauseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.PlayerFactory;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.input.InputComponent;
@@ -36,11 +28,9 @@ import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.services.*;
-import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
-import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +41,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
-  private static final String[] mainGameTextures = {"images/heart.png"};
+  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png"};
   private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
@@ -67,7 +57,7 @@ public class MainGameScreen extends ScreenAdapter {
 
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
-
+  int selectedLevel = GameLevelData.getSelectedLevel();
 
   private OrthographicCamera camera;
   private SpriteBatch batch;
@@ -78,13 +68,11 @@ public class MainGameScreen extends ScreenAdapter {
     this.game = game;
     camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
-    camera.position.set(viewportWidth / 2, viewportHeight / 2, 0);
+    camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
 
-    Viewport viewport = new ScreenViewport(camera);
-    stage = new Stage(viewport, new SpriteBatch());
-
+    stage = new Stage(new ScreenViewport());
 
 
     logger.debug("Initialising main game screen services");
@@ -102,6 +90,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.registerEntityService(new EntityService());
     ServiceLocator.registerRenderService(new RenderService());
     ServiceLocator.registerGameEndService(new GameEndService());
+    ServiceLocator.registerWaveService(new WaveService());
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
@@ -119,8 +108,57 @@ public class MainGameScreen extends ScreenAdapter {
     ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
     forestGameArea.create();
   }
+
+  /**
+   * Retrieves the background texture based on the currently selected game level.
+   *
+   * <p>The method returns different textures for each game level:
+   * <ul>
+   *     <li>Ice Level: "images/ice_bg.png"</li>
+   *     <li>Lava Level: "images/lava_bg.png"</li>
+   *     <li>Any other level: Default to "images/desert_bg.png"</li>
+   * </ul>
+   *
+   * @return The background {@link Texture} corresponding to the selected level.
+   */
+  public Texture getBackgroundTexture() {
+    Texture background;
+    switch (selectedLevel) {
+      // Desert
+      case 1: // Ice
+        background = ServiceLocator.getResourceService().getAsset("images/ice_bg.png", Texture.class);
+        break;
+      case 2: // Lava
+        background = ServiceLocator.getResourceService().getAsset("images/lava_bg.png", Texture.class);
+        break;
+      default:
+        // Use a default background for other levels or planets
+        background = ServiceLocator.getResourceService().getAsset("images/desert_bg.png", Texture.class);
+        break;
+    }
+    return background;
+  }
+
   @Override
   public void render(float delta) {
+    // Clear the screen
+    Gdx.gl.glClearColor(0, 0, 0, 1);
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+    // Update the camera and set the batch's projection matrix
+    camera.update();
+    batch.setProjectionMatrix(camera.combined);
+
+    // Begin the batch
+    batch.begin();
+
+    // Draw the background texture.
+    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
+
+    // End the batch
+    batch.end();
+
+    // Continue with other rendering logic
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
 
@@ -129,18 +167,8 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     }
 
-    batch.setProjectionMatrix(camera.combined);
-    batch.begin();
-    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);
-    batch.end();
-
     renderer.render();
-    stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-    stage.draw();
   }
-
-
-
 
   @Override
   public void resize(int width, int height) {
@@ -176,8 +204,8 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainGameTextures);
-    backgroundTexture = new Texture("images/Dusty_MoonBG.png"); // Load the background image
     ServiceLocator.getResourceService().loadAll();
+    backgroundTexture = getBackgroundTexture(); // Load the background image
   }
 
   private void unloadAssets() {
