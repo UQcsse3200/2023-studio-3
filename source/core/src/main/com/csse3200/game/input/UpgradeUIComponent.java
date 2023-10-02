@@ -23,6 +23,7 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.IncomeUpgradeComponent;
+import com.csse3200.game.components.tower.TNTDamageComponent;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.components.tower.UpgradableStatsComponent;
 import com.csse3200.game.entities.Entity;
@@ -78,8 +79,8 @@ public class UpgradeUIComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
-        if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null) {
-            logger.info("clicked a turret that is upgradable!");
+        if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
+//            logger.info("clicked a turret that is upgradable!");
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
             Table existingUpgradeTable = upgradeTables.get(clickedEntity);
