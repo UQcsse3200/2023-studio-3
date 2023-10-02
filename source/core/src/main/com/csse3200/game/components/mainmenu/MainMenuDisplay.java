@@ -124,17 +124,17 @@ public class MainMenuDisplay extends UIComponent {
         float originalScreenHeight = 1080; // Replace with the original height if different
 
         float padTopStartBtn = 260f / originalScreenHeight * Gdx.graphics.getHeight();
-        float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();
+        float padTopOtherBtn = 15f / originalScreenHeight * Gdx.graphics.getHeight();
 
         table.add(title);
         table1.row();
         table1.add(startBtn).padTop(padTopStartBtn);
         table1.row();
-        table1.add(helpBtn).padTop(padTopOtherBtns);
+        table1.add(helpBtn).padTop(padTopOtherBtn);
         table1.row();
-        table1.add(settingsBtn).padTop(padTopOtherBtns);
+        table1.add(settingsBtn).padTop(padTopOtherBtn);
         table1.row();
-        table1.add(exitBtn).padTop(padTopOtherBtns);
+        table1.add(exitBtn).padTop(padTopOtherBtn);
 
         stage.addActor(table);
         stage.addActor(table1);

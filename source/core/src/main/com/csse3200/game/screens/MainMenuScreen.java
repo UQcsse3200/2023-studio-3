@@ -77,6 +77,11 @@ public class MainMenuScreen extends ScreenAdapter {
     createUI();
   }
 
+  /**
+   * Loads the assets required for the main menu screen, including textures and animations.
+   * This method initializes and loads sprite sheets for various celestial objects like stars, planets, and galaxies.
+   * Each sprite sheet is divided into individual frames for animation purposes.
+   */
   @Override
   public void render(float delta) {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -191,10 +196,14 @@ public class MainMenuScreen extends ScreenAdapter {
     ServiceLocator.getRenderService().dispose();
     ServiceLocator.getEntityService().dispose();
     batch.dispose();
-
     ServiceLocator.clear();
   }
 
+  /**
+   * Loads the assets required for the main menu screen, including textures and animations.
+   * This method initializes and loads sprite sheets for various celestial objects such as stars, galaxies, and planets.
+   * Each sprite sheet is divided into individual frames for animation purposes.
+   */
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -288,6 +297,10 @@ public class MainMenuScreen extends ScreenAdapter {
     ServiceLocator.getResourceService().loadAll();
   }
 
+  /**
+   * Unloads the assets that were previously loaded for the main menu screen.
+   * This method disposes of textures and sprite sheets used for celestial objects such as stars, galaxies, and planets.
+   */
   private void unloadAssets() {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -297,7 +310,6 @@ public class MainMenuScreen extends ScreenAdapter {
     MM_Planet1_Texture.dispose();
     MM_Planet2_Texture.dispose();
     MM_Planet3_Texture.dispose();
-//    MM_MonitorFace1_Texture.dispose();
   }
 
   /**
