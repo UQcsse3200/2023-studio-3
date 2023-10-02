@@ -72,6 +72,14 @@ public class EngineerMenuComponent extends UIComponent {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 controller.deselectEngineer(animator.getCurrentAnimation());
+                EntityService entityService = ServiceLocator.getEntityService();
+                Array<Entity> tower = entityService.getEntitiesInLayer(getEntity(), 0.1f, PhysicsLayer.TOWER);
+                if (tower.size == 0) {
+                    logger.info("No tower to repair");
+                    return;
+                }
+                logger.info("repairing");
+                tower.get(0).getComponent(TowerUpgraderComponent.class).repairTower();
                 //logger.info("Repair button clicked");
             }
         });
@@ -126,19 +134,7 @@ public class EngineerMenuComponent extends UIComponent {
         Drawable downDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(downImageFilePath)));
         TextButton button = new TextButton(text,
                 new TextButton.TextButtonStyle(upDrawable, downDrawable, null, new BitmapFont()));
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                EntityService entityService = ServiceLocator.getEntityService();
-                Array<Entity> tower = entityService.getEntitiesInLayer(getEntity(), 0.1f, PhysicsLayer.TOWER);
-                if (tower.size == 0) {
-                    logger.info("No tower to repair");
-                    return;
-                }
-                logger.info("repairing");
-                tower.get(0).getComponent(TowerUpgraderComponent.class).repairTower();
-            }
-        });
+
         button.setTransform(true);
         return button;
     }
