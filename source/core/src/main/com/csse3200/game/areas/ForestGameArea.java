@@ -163,9 +163,35 @@ public class ForestGameArea extends GameArea {
           "sounds/engineers/firing_single.mp3",
           "sounds/projectiles/on_collision.mp3",
           "sounds/projectiles/explosion.mp3",
+          "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+          "sounds/waves/wave-end/Wave_Over_01.ogg",
           "sounds/mobBoss/iceBabySound.mp3",
           "sounds/mobBoss/mobSpawnStomp.mp3",
-          "sounds/mobBoss/iceBabyAOE.mp3"
+          "sounds/mobBoss/iceBabyAOE.mp3",
+          "sounds/mobs/wizardSpell.mp3",
+          "sounds/mobs/waterQueenSpell.mp3",
+          "sounds/mobs/boneBreak.mp3",
+          "sounds/mobs/fireWormRoar.mp3",
+          "sounds/mobBoss/demonBreath.mp3",
+          "sounds/mobBoss/demonSpawn.wav",
+          "sounds/mobBoss/demonAttack.wav",
+          "sounds/mobBoss/demonBreathIn.mp3",
+          "sounds/mobBoss/demonLand.mp3",
+          "sounds/mobBoss/demonJump.mp3",
+          "sounds/mobBoss/demonHeal.mp3",
+          "sounds/mobBoss/demonCleave.mp3",
+          "sounds/mobBoss/demonDeath.mp3",
+          "sounds/mobBoss/slimeySplat.mp3",
+          "sounds/mobBoss/slimeJump.mp3",
+          "sounds/mobBoss/slimePop.mp3",
+          "sounds/mobBoss/patrickAttack.mp3",
+          "sounds/mobBoss/patrickAppear.mp3",
+          "sounds/mobBoss/patrickScream.mp3",
+          "sounds/mobBoss/patrickSpell.mp3",
+          "sounds/mobBoss/patrickSpawn.mp3",
+          "sounds/mobBoss/patrickCast.mp3",
+          "sounds/mobBoss/patrickThunder.mp3",
+          "sounds/mobBoss/patrickHit.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
@@ -173,6 +199,7 @@ public class ForestGameArea extends GameArea {
   private final TerrainFactory terrainFactory;
   
   private Entity player;
+  private Entity waves;
   
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
@@ -191,7 +218,9 @@ public class ForestGameArea extends GameArea {
     this.terrainFactory = terrainFactory;
   }
 
-  // Add this method to start the wave spawning timer when the game starts.
+  /**
+   * Add this method to start the wave spawning timer when the game starts.
+   */
   private void startWaveTimer() {
     waveTimer = new Timer();
     waveTimer.scheduleAtFixedRate(new TimerTask() {
@@ -202,7 +231,9 @@ public class ForestGameArea extends GameArea {
     }, 0, 10000); // 10000 milliseconds = 10 seconds
   }
 
-  // Add this method to stop the wave timer when the game ends or as needed.
+  /**
+   * Add this method to stop the wave timer when the game ends or as needed.
+   */
   private void stopWaveTimer() {
     if (waveTimer != null) {
       waveTimer.cancel();
@@ -210,33 +241,34 @@ public class ForestGameArea extends GameArea {
     }
   }
 
+  /**
+   * Cases to spawn a wave
+   */
   private void spawnWave() {
     wave++;
     switch (wave) {
       case 1:
       case 2:
       spawnWaterQueen();
-      spawnWaterSlime();
       logger.info("Lol");
-
       break;
       case 3:
-        logger.info("Lol");
-      spawnWizard();
-      // spawnDragonKnight();
-      spawnSkeleton();
+      spawnWaterSlime();
+      spawnIceBaby();
+      logger.info("Lol");
       // mobBoss2 = spawnMobBoss2();
       break;
       case 4:
-        logger.info("Lol");
       spawnFireWorm();
-      spawnDragonKnight();
-        // mobBoss2 = spawnMobBoss2();
-        break;
-      case 5:
-        spawnDemonBoss();
+      // spawnDragonKnight();
+      logger.info("Lol");
+      // mobBoss2 = spawnMobBoss2();
+      break;
       case 6:
-        spawnIceBaby();
+      spawnSkeleton();
+      case 7:
+      spawnDemonBoss();
+      spawnPatrick();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -259,64 +291,23 @@ public class ForestGameArea extends GameArea {
     
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
-    //player.getEvents().addListener("spawnWave", this::spawnWave);
-    //playMusic();
-    
-    // Types of projectile
-//    spawnAoeProjectile(new Vector2(0, 10), player, towardsMobs, new Vector2(2f, 2f), 1);
-//    spawnProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnMultiProjectile(new Vector2(0, 10), PhysicsLayer.NPC, towardsMobs, 20, new Vector2(2f, 2f), 7);
-//    spawnEffectProjectile(new Vector2(0, 10), PhysicsLayer.HUMANS, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.BURN, true);
-//    spawnPierceFireBall(new Vector2(2, 3), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnRicochetFireball(new Vector2(2, 4), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f));
-//    spawnSplitFireWorksFireBall(new Vector2(2, 5), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), 12);
-//    spawnEffectProjectile(new Vector2(2, 6), PhysicsLayer.NPC, towardsMobs, new Vector2(2f, 2f), ProjectileEffects.SLOW, false);
-//    spawnXenoGrunts();
-  //  spawnWeaponTower();
 
-  //  spawnDragonKnight();
-    // spawnFireWorm(19, 5); // * TEMPORARY for testing
-    spawnFireTowerTowerAt(3, 1);
-    spawnFireTowerTowerAt(3, 2);
-    spawnFireTowerTowerAt(3, 3);
-    spawnFireTowerTowerAt(3, 4);
-    spawnFireTowerTowerAt(3, 5);
-//    spawnDroidTowerAt(3, 1);
-//    spawnDroidTowerAt(3, 2);
-//    spawnDroidTowerAt(3, 3);
-//    spawnDroidTowerAt(3, 4);
-//    spawnDroidTowerAt(3, 5);
-    // spawnSplittingXenoGrunt(15, 5);
-//    spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
-    // spawnSplittingXenoGrunt(15, 5);
-    // spawnDodgingDragonKnight(15, 3);
-    spawnDemonBoss();
-    spawnPatrick();
-    spawnIceBaby();
-    player.getEvents().addListener("spawnWave", this::spawnWave);
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
+
     playMusic();
-    startWaveTimer();
+    //spawnXenoGrunts();
+    //startWaveTimer();
     spawnScrap();
-    logger.info("Lol");
-    // spawnDeflectXenoGrunt(15, 5);
-    // spawnSplittingXenoGrunt(15, 4);
+    //spawnDeflectXenoGrunt(15, 5);
+    //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
-    spawnWeaponTower();
+    // spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
-//     spawnPatrickDeath();
-  //  spawnFireWorm();
 
-  //  startWaveTimer();
-////    spawnIncome();
-//    spawnScrap();
-    spawnTNTTower();
-//
-//    spawnGapScanners();
-//    spawnDroidTower();
-//
   }
   
   private void displayUI() {
@@ -513,17 +504,56 @@ public class ForestGameArea extends GameArea {
     Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);
     Projectile.setPosition(position);
     spawnEntity(Projectile);
-  }  
-  
-  private void spawnXenoGrunts() {
-    int[] pickedLanes = rand.ints(1, 7)
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity xenoGrunt = NPCFactory.createXenoGrunt();
-      xenoGrunt.setScale(1.5f, 1.5f);
-      spawnEntityAt(xenoGrunt, randomPos, true, false);
+  }
+
+  /**
+   * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
+   * @param entity mob to be spawned
+   * @param randomPos position to be spawned at
+   */
+  public void spawnMob(String entity, GridPoint2 randomPos) {
+    Entity mob;
+    switch (entity) {
+      case "Xeno":
+        mob = NPCFactory.createXenoGrunt();
+        break;
+      case "SplittingWaterSlime":
+        mob = NPCFactory.createSplittingWaterSlime();
+        break;
+      case "DodgingDragon":
+        mob = NPCFactory.createDodgingDragonKnight();
+        break;
+      case "DeflectWizard":
+        mob = NPCFactory.createDeflectWizard();
+        break;
+      case "WaterQueen":
+        mob = NPCFactory.createWaterQueen();
+        break;
+      case "FireWorm":
+        mob = NPCFactory.createFireWorm();
+        break;
+      case "Skeleton":
+        mob = NPCFactory.createSkeleton();
+        break;
+      case "IceBoss":
+        mob = MobBossFactory.createIceBoss();
+        break;
+      case "DemonBoss":
+        mob = MobBossFactory.createDemonBoss();
+        break;
+      case "PatrickBoss":
+        mob = MobBossFactory.createPatrickBoss(100);
+        break;
+      default:
+        mob = NPCFactory.createXenoGrunt();
     }
+    if (entity.contains("Boss")) {
+      mob.scaleHeight(5f);
+      mob.scaleWidth(5f);
+    } else {
+      mob.setScale(1.5f, 1.5f);
+    }
+    spawnEntityAt(mob, randomPos, true, false);
   }
 
   // * TEMPORARY FOR TESTING
@@ -717,7 +747,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 2);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 3; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       Entity wallTower = TowerFactory.createWallTower();

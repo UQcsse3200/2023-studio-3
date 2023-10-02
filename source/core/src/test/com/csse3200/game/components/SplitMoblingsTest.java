@@ -33,6 +33,7 @@ import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.services.WaveService;
 
 @ExtendWith(GameExtension.class)
 public class SplitMoblingsTest {
@@ -63,13 +64,17 @@ public class SplitMoblingsTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
+    WaveService waveService = new WaveService();
+    ServiceLocator.registerWaveService(waveService);
+
     baseMob = createSplitMob(BASE_AMOUNT);
   }
 
   @Test
   public void shouldNotBeNull() {
     Entity mob = createSplitMob(5);
-    assertNotNull("Mobling components does not exists", mob.getComponent(SplitMoblings.class));
+    assertNotNull("Mobling components does not exists",
+        mob.getComponent(SplitMoblings.class));
   }
 
   @Test
@@ -101,11 +106,14 @@ public class SplitMoblingsTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("mob health should be 0", 0, baseMob.getComponent(CombatStatsComponent.class).getHealth());
+    assertEquals("mob health should be 0", 0,
+        baseMob.getComponent(CombatStatsComponent.class).getHealth());
 
-    assertTrue("Mob should be dead with a health of 0", baseMob.getComponent(CombatStatsComponent.class).isDead());
+    assertTrue("Mob should be dead with a health of 0",
+        baseMob.getComponent(CombatStatsComponent.class).isDead());
 
-    assertFalse("Mob's deletion flag should be true", baseMob.getFlagForDelete());
+    assertFalse("Mob's deletion flag should be true",
+        baseMob.getFlagForDelete());
   }
 
   @Test
@@ -114,7 +122,8 @@ public class SplitMoblingsTest {
     baseMob.getComponent(CombatStatsComponent.class).setHealth(0);
 
     // mob is dead
-    assertTrue("mob is not dead when health is set to 0", baseMob.getComponent(CombatStatsComponent.class).isDead());
+    assertTrue("mob is not dead when health is set to 0",
+        baseMob.getComponent(CombatStatsComponent.class).isDead());
 
     baseMob.getEvents().addListener(SplitMoblings.DIE_START_EVENT, dieStart);
     ServiceLocator.getEntityService().update();
@@ -127,7 +136,8 @@ public class SplitMoblingsTest {
   public void shouldNotInvokeDieStartEventNoDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
 
-    assertFalse("mob is dead when health is not 0", baseMob.getComponent(CombatStatsComponent.class).isDead());
+    assertFalse("mob is dead when health is not 0",
+        baseMob.getComponent(CombatStatsComponent.class).isDead());
 
     baseMob.getEvents().addListener(SplitMoblings.DIE_START_EVENT, dieStart);
 
@@ -151,7 +161,8 @@ public class SplitMoblingsTest {
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("amount of mobs spawn do not match the correct anount initialised", allEntities + BASE_AMOUNT,
+    assertEquals("amount of mobs spawn do not match the correct anount initialised",
+        allEntities + BASE_AMOUNT,
         ServiceLocator.getEntityService().getEntities().size);
   }
 
@@ -192,9 +203,11 @@ public class SplitMoblingsTest {
 
     // Should spawn with a default offset distance to the left.
     Entity mobling = ServiceLocator.getEntityService().getEntityAtPosition(
-        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE, SplitMoblings.MIN_Y_BOUNDS + 2);
+        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE,
+        SplitMoblings.MIN_Y_BOUNDS + 2);
 
-    assertNotNull("spawned mobling was not spawned at the correct position with a default amount of 1.", mobling);
+    assertNotNull("mobling failed to spawn within range",
+        mobling);
   }
 
   @Test
@@ -216,16 +229,19 @@ public class SplitMoblingsTest {
           SplitMoblings.MIN_X_BOUNDS + 5, SplitMoblings.MIN_Y_BOUNDS + 5);
     }
 
-    projectile.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+    projectile.getComponent(TouchAttackComponent.class)
+        .setDisposeOnHit(false);
 
-    for (Entity entity : initialEntities.subList(0, initialEntities.size() - 1)) {
+    for (Entity entity : initialEntities.subList(0,
+        initialEntities.size() - 1)) {
       triggerCollision(entity, projectile);
     }
 
     ServiceLocator.getPhysicsService().getPhysics().update();
     ServiceLocator.getEntityService().update();
 
-    assertEquals("incorrect number of moblings spawned within range", nearbyEntities + 3 + 5 + 7,
+    assertEquals("incorrect number of moblings spawned within range",
+        nearbyEntities + 3 + 5 + 7,
         ServiceLocator.getEntityService().getNearbyEntities(projectile,
 
             // 0.2f is delta float consideration
@@ -249,10 +265,13 @@ public class SplitMoblingsTest {
     ServiceLocator.getEntityService().update();
 
     Entity mobling = ServiceLocator.getEntityService().getEntityAtPosition(
-        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE, SplitMoblings.MIN_Y_BOUNDS + 2);
+        SplitMoblings.MIN_X_BOUNDS + 2 - (float) SplitMoblings.OFFSET_DISTANCE,
+        SplitMoblings.MIN_Y_BOUNDS + 2);
 
-    assertEquals("Scaling X does not match based on params (1.5f)", initialScaleX * scale, mobling.getScale().x, 0.1);
-    assertEquals("Scaling Y does not match based on params (1.5f)", initialScaleY * scale, mobling.getScale().y, 0.1);
+    assertEquals("Scaling X does not match based on params (1.5f)",
+        initialScaleX * scale, mobling.getScale().x, 0.1);
+    assertEquals("Scaling Y does not match based on params (1.5f)",
+        initialScaleY * scale, mobling.getScale().y, 0.1);
   }
 
   @Test
@@ -277,11 +296,14 @@ public class SplitMoblingsTest {
       if (mobling.equals(projectile))
         continue;
 
-      assertEquals("Scaling X does not match based on params (0.5f)", initialScaleX
-          * scaleX, mobling.getScale().x,
+      assertEquals("Scaling X does not match based on params (0.5f)",
+          initialScaleX * scaleX,
+          mobling.getScale().x,
           0.1);
 
-      assertEquals("Scaling Y does not match based on params (1.75f)", initialScaleY * scaleY, mobling.getScale().y,
+      assertEquals("Scaling Y does not match based on params (1.75f)",
+          initialScaleY * scaleY,
+          mobling.getScale().y,
           0.1);
     }
   }
@@ -311,7 +333,8 @@ public class SplitMoblingsTest {
   }
 
   Entity createDummyProjectile() {
-    Entity projectile = ProjectileFactory.createBaseProjectile(baseMob.getComponent(ColliderComponent.class).getLayer(),
+    Entity projectile = ProjectileFactory.createBaseProjectile(baseMob
+        .getComponent(ColliderComponent.class).getLayer(),
         new Vector2(100, BASE_Y_COORD), new Vector2(2f, 2f));
 
     ServiceLocator.getEntityService().register(projectile);

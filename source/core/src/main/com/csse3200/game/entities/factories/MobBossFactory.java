@@ -194,10 +194,10 @@ public class MobBossFactory {
                 ServiceLocator.getResourceService().getAsset("images/mobboss/iceBaby.atlas", TextureAtlas.class));
         animator.addAnimation("idle", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("1_atk", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("2_atk", 0.1f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("3_atk", 0.1f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("2_atk", 0.2f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("3_atk", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("death", 0.2f, Animation.PlayMode.NORMAL);
-        animator.addAnimation("intro_or_revive", 0.1f, Animation.PlayMode.NORMAL);
+        animator.addAnimation("intro_or_revive", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("stagger", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("walk", 0.2f, Animation.PlayMode.NORMAL);

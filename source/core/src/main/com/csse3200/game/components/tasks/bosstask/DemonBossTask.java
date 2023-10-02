@@ -100,6 +100,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             public void run() {
                 changeState(DemonState.TRANSFORM);
                 animate();
+                demon.getEvents().trigger("demon_spawn_sound");
                 startFlag = true;
             }
         }, 0.1f);
@@ -136,7 +137,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             changeState(DemonState.IDLE); // start sequence
         }
 
-        // detect death stages
+        // detect death stage
         if (health <= 0) {
             // spawn slimey boy
             Entity slimey = MobBossFactory.createSlimeyBoy();
@@ -149,8 +150,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // detect half health
         if (health <= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
                 !halfHealthFlag) {
-            halfHealth();
-            halfHealthFlag = true;
+            changeState(DemonState.TAKE_HIT);
         }
 
         // detect sequence changes and runs the relevant state accordingly
@@ -181,6 +181,12 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     if (animation.isFinished()) {
                         changeState(DemonState.DEATH);
                     }
+                }
+            }
+            case TAKE_HIT -> {
+                if (animation.isFinished()) {
+                    halfHealth();
+                    halfHealthFlag = true;
                 }
             }
         }
@@ -268,6 +274,16 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         changeState(DemonState.SMASH);
         isJumping = true;
 
+        demon.getEvents().trigger("demon_roar_sound");
+
+        // play landing sound
+        Timer.schedule(new Timer.Task() {
+            @Override
+            public void run() {
+                demon.getEvents().trigger("demon_landing_sound");
+            }
+        }, 1.8f);
+
         jumpTask = new MovementTask(finalPos);
         jumpTask.create(owner);
         jumpTask.start();
@@ -345,6 +361,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private void fireBreath() {
         changeState(DemonState.BREATH);
+        demon.getEvents().trigger("demon_breath_in_sound");
 
         float delay = (BREATH_DURATION - BREATH_ANIM_TIME) / numBalls;
 
@@ -396,6 +413,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private void cleave() {
         changeState(DemonState.CLEAVE);
+        demon.getEvents().trigger("demon_roar_sound");
         Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(demon,
                 PhysicsLayer.HUMANS);
         CombatStatsComponent targetCombatStats = target.
@@ -403,6 +421,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
+                demon.getEvents().trigger("demon_cleave_sound");
                 targetCombatStats.hit(CLEAVE_DAMAGE);
             }
         }, 2f);
@@ -419,13 +438,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             public void run() {
                 isHealing = false;
             }
-        }, HEAL_TIMES);
+        }, (float) HEAL_TIMES / 2);
 
         // add health every 10s
         for (int i = 0; i < HEAL_TIMES; i++) {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
+                    demon.getEvents().trigger("demon_heal_sound");
                     demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);
                 }
             }, (float) i /2);

@@ -5,8 +5,10 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -98,7 +100,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
       case IDLE -> {
         if (isTargetVisible()) {
           // targets detected in idle mode - start deployment
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         }
       }
@@ -127,13 +129,13 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
             this.owner.getEntity().getEvents().trigger("shootStart");
           } else {
-            // Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            // newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            // newProjectile.setScale(-1f, 1f);
-            // ServiceLocator.getEntityService().register(newProjectile);
+            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile.setScale(-0.0f, 0.0f);
+            ServiceLocator.getEntityService().register(newProjectile);
 
 //            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
-            // this.owner.getEntity().getEvents().trigger(FIRING);
+            this.owner.getEntity().getEvents().trigger(FIRING);
             mobState = STATE.STOW;
           }
         }
@@ -144,7 +146,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
       case STOW -> {
         // currently stowing
         if (isTargetVisible()) {
-//          owner.getEntity().getEvents().trigger(DEPLOY);
+          owner.getEntity().getEvents().trigger(DEPLOY);
           mobState = STATE.DEPLOY;
         } else {
           owner.getEntity().getEvents().trigger(IDLE);
