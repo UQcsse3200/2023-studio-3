@@ -26,11 +26,11 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
-    private static final String IDLE = "idleStart";
-    public static final String ATTACK = "attackStart";
-    public static final String DEATH = "deathStart";
-    public static final String CHARGE_END = "chargeEnd";
-    public static final String CHARGE_START = "chargeStart";
+    public static final String IDLE = "startIdle";
+    public static final String ATTACK = "startAttack";
+    public static final String DEATH = "startDeath";
+    public static final String CHARGE_END = "endCharge";
+    public static final String CHARGE_START = "startCharge";
 
 
     // Class attributes
@@ -44,9 +44,9 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private final RaycastHit hit = new RaycastHit();
 
     public enum STATE {
-        Idle,Attack, Death, Charge_start, Charge_end
+        IDLE, ATTACK, DEATH, CHARGE_START, CHARGE_END
     }
-    public STATE towerState = STATE.Idle;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -91,40 +91,40 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
      */
     public void updateTowerState() {
 
-        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.Death) {
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
             owner.getEntity().getEvents().trigger(DEATH);
-            towerState = STATE.Death;
+            towerState = STATE.DEATH;
             return;
         }
 
         switch (towerState) {
-            case Idle -> {
+            case IDLE -> {
                 if(isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(CHARGE_START);
-                    towerState = STATE.Charge_start;
+                    towerState = STATE.CHARGE_START;
                 }
             }
-            case Charge_start -> {
+            case CHARGE_START -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    towerState = STATE.Attack;
+                    towerState = STATE.ATTACK;
                 } else {
                     owner.getEntity().getEvents().trigger(CHARGE_END);
-                    towerState = STATE.Charge_end;
+                    towerState = STATE.CHARGE_END;
                 }
             }
 
-            case Charge_end -> {
+            case CHARGE_END -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    towerState = STATE.Attack;
+                    towerState = STATE.ATTACK;
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.Idle;
+                    towerState = STATE.IDLE;
                 }
             }
 
-            case Attack -> {
+            case ATTACK -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
                     Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
@@ -134,10 +134,10 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
                     ServiceLocator.getEntityService().register(newProjectile);
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
-                    towerState=STATE.Idle;
+                    towerState=STATE.IDLE;
                 }
             }
-            case Death -> {
+            case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
                     owner.getEntity().setFlagForDelete(true);
                 }
