@@ -50,6 +50,10 @@ public class SettingsMenuDisplay extends UIComponent {
     addActors();
   }
 
+  /**
+   * Adds various actors to the stage for the settings screen.
+   * This method sets up and adds elements such as a custom cursor, background image, title label, settings table, and menu buttons.
+   */
   private void addActors() {
     // Load the custom cursor image
     Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("images/ui/mouse_effect.png"));
