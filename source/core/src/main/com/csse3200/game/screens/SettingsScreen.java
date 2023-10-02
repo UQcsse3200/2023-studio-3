@@ -70,6 +70,10 @@ public class SettingsScreen extends ScreenAdapter {
   @Override
   public void resize(int width, int height) {
     renderer.resize(width, height);
+    // Add the below line to update the stage's viewport
+    ServiceLocator.getRenderService().getStage().getViewport().update(width, height, true);
+    logger.trace("Resized renderer: ({} x {})", width, height);
+    renderer.resize(width, height);
     logger.trace("Resized renderer: ({} x {})", width, height);
   }
 

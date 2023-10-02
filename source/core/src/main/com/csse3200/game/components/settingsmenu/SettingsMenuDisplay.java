@@ -20,6 +20,7 @@ import com.csse3200.game.files.UserSettings.DisplaySettings;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.utils.StringDecorator;
+import com.badlogic.gdx.utils.Scaling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,9 +58,8 @@ public class SettingsMenuDisplay extends UIComponent {
 
     Image background = new Image(ServiceLocator.getResourceService()
             .getAsset("images/background/settings/settings_bg.png", Texture.class));
-    background.setWidth(Gdx.graphics.getWidth());
-    background.setHeight(Gdx.graphics.getHeight());
-    background.setPosition(0, 0);
+    background.setScaling(Scaling.stretch);
+    background.setFillParent(true);
 
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
