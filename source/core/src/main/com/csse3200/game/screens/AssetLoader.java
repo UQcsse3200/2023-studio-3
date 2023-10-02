@@ -173,7 +173,7 @@ public class AssetLoader {
             "sounds/mobBoss/patrickSpawn.mp3",
             "sounds/mobBoss/patrickCast.mp3",
             "sounds/mobBoss/patrickThunder.mp3",
-            "sounds/mobBoss/patrickHit.mp3"
+            "sounds/mobBoss/patrickHit.mp3",
             "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
             "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg",
             "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg",
