@@ -60,12 +60,8 @@ public class FireworksTowerCombatTaskTest {
         Entity target = createNPC();
         target.setPosition(12, 10);
 
-        EventListener0 chargeStart = mock(EventListener0.class);
         EventListener0 attack = mock(EventListener0.class);
-//        EventListener0 chargeEnd = mock(EventListener0.class);
-        entity.getEvents().addListener(FireworksTowerCombatTask.CHARGE_START, chargeStart);
         entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
-//        entity.getEvents().addListener(FireworksTowerCombatTask.CHARGE_END, chargeEnd);
         //Jump to IDLE state
         fireworksTowerCombatTask.start();
         fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
@@ -75,24 +71,8 @@ public class FireworksTowerCombatTaskTest {
         assertTrue(fireworksTowerCombatTask.isTargetVisible());
 
         fireworksTowerCombatTask.updateTowerState();
-        verify(chargeStart).handle();
-        assertEquals(FireworksTowerCombatTask.STATE.CHARGE_START, fireworksTowerCombatTask.getState());
-
-        ServiceLocator.getPhysicsService().getPhysics().update();
-        entity.update();
-        assertTrue(fireworksTowerCombatTask.isTargetVisible());
-
-        fireworksTowerCombatTask.updateTowerState();
         verify(attack).handle();
         assertEquals(FireworksTowerCombatTask.STATE.ATTACK, fireworksTowerCombatTask.getState());
-
-//        ServiceLocator.getPhysicsService().getPhysics().update();
-//        entity.update();
-//        assertTrue(fireworksTowerCombatTask.isTargetVisible());
-
-//        fireworksTowerCombatTask.updateTowerState();
-//        verify(chargeEnd).handle();
-//        assertEquals(FireworksTowerCombatTask.STATE.CHARGE_END, fireworksTowerCombatTask.getState());
     }
 
     /**
@@ -108,9 +88,9 @@ public class FireworksTowerCombatTaskTest {
         target.setPosition(15, 10);
 
         EventListener0 idle = mock(EventListener0.class);
-        EventListener0 chargeStart = mock(EventListener0.class);
+        EventListener0 attack = mock(EventListener0.class);
         entity.getEvents().addListener(FireworksTowerCombatTask.IDLE, idle);
-        entity.getEvents().addListener(FireworksTowerCombatTask.CHARGE_START, chargeStart);
+        entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
 
         fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
 
@@ -121,7 +101,7 @@ public class FireworksTowerCombatTaskTest {
         fireworksTowerCombatTask.updateTowerState();
 
         verify(idle).handle();
-        verifyNoInteractions(chargeStart);
+        verifyNoInteractions(attack);
         assertEquals(FireworksTowerCombatTask.STATE.IDLE, fireworksTowerCombatTask.getState());
     }
 

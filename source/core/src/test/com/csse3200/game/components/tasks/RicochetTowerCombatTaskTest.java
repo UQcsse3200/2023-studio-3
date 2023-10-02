@@ -68,7 +68,6 @@ public class RicochetTowerCombatTaskTest {
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
-
         assertTrue(ricochetTowerCombatTask.isTargetVisible());
 
         ricochetTowerCombatTask.updateTowerState();

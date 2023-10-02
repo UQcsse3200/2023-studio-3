@@ -29,8 +29,6 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     public static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";
-    public static final String CHARGE_END = "endCharge";
-    public static final String CHARGE_START = "startCharge";
 
 
     // Class attributes
@@ -100,30 +98,10 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
         switch (towerState) {
             case IDLE -> {
                 if(isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(CHARGE_START);
-                    towerState = STATE.CHARGE_START;
-                }
-            }
-            case CHARGE_START -> {
-                if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
                     towerState = STATE.ATTACK;
-                } else {
-                    owner.getEntity().getEvents().trigger(CHARGE_END);
-                    towerState = STATE.CHARGE_END;
                 }
             }
-
-            case CHARGE_END -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    towerState = STATE.ATTACK;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
-            }
-
             case ATTACK -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
