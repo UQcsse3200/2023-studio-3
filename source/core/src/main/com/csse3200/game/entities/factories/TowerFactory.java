@@ -149,7 +149,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(WALL_ATLAS, TextureAtlas.class));
 
-        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.5f, Animation.PlayMode.NORMAL);
+        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.5f, Animation.PlayMode.REVERSED);
         animator.addAnimation(WALL_TOWER_IDLE_ANIM,0.12f, Animation.PlayMode.LOOP);
 
         wall
