@@ -221,7 +221,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
     private void changeFireRateInterval(int newInterval) {
-        fireRateInterval = newInterval;
+        fireRateInterval = (float) newInterval / 5;
     }
 
     /**
