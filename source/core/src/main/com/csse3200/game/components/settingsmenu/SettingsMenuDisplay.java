@@ -16,6 +16,10 @@ import com.csse3200.game.files.UserSettings.DisplaySettings;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.utils.StringDecorator;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.Texture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +50,18 @@ public class SettingsMenuDisplay extends UIComponent {
   }
 
   private void addActors() {
+    // Load the custom cursor image
+    Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("images/ui/mouse_effect.png"));
+    Cursor customCursor = Gdx.graphics.newCursor(cursorPixmap, 0, 0);
+    Gdx.graphics.setCursor(customCursor);
+    cursorPixmap.dispose();
+
+    Image background = new Image(ServiceLocator.getResourceService()
+            .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
+    background.setWidth(Gdx.graphics.getWidth());
+    background.setHeight(Gdx.graphics.getHeight());
+    background.setPosition(0, 0);
+
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
     Table menuBtns = makeMenuBtns();
@@ -61,6 +77,7 @@ public class SettingsMenuDisplay extends UIComponent {
     rootTable.row();
     rootTable.add(menuBtns).fillX();
 
+    stage.addActor(background);
     stage.addActor(rootTable);
   }
 
