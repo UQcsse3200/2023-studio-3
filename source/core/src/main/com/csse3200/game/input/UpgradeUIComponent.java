@@ -202,9 +202,9 @@ public class UpgradeUIComponent extends InputComponent {
                     value -= 10;
                     ServiceLocator.getCurrencyService().getScrap().setAmount(value);
                     ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 0.2f;
+                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 30;
                     turretEntity.getComponent(UpgradableStatsComponent.class).setAttackRate(newFireRate);
-                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 1);
+                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, (int) newFireRate * 5);
 
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
                     fireRateLabel.setText(String.format("Fire Rate: %.2f", fireRate));

@@ -263,7 +263,7 @@ public class ForestGameArea extends GameArea {
 //    playMusic();
 //    spawnXenoGrunts();
 //    startWaveTimer();
-//    spawnScrap();
+    spawnScrap();
 //    spawnDeflectXenoGrunt(15, 5);
 //    spawnSplittingXenoGrunt(15, 4);
 //    spawnScrap();
@@ -274,6 +274,7 @@ public class ForestGameArea extends GameArea {
 //    spawnScrap();
 //    spawnDroidTower();
 //    spawnTNTTower();
+//    spawnIncome();
     spawnIncome();
 
   }
@@ -598,13 +599,10 @@ public class ForestGameArea extends GameArea {
 
     for (int i = 0; i < NUM_WEAPON_TOWERS + 10; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
-      GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
-      Entity wallTower = TowerFactory.createWallTower();
-      Entity fireTower = TowerFactory.createFireTower();
-      Entity stunTower = TowerFactory.createStunTower();
-      spawnEntityAt(fireTower, randomPos1, true, true);
-      spawnEntityAt(stunTower, randomPos2, true, true);
-      spawnEntityAt(wallTower, randomPos2, true, true);
+//      Entity wallTower = TowerFactory.createWallTower();
+      Entity droidTower = TowerFactory.createDroidTower();
+      spawnEntityAt(droidTower, randomPos1, true, true);
+//      spawnEntityAt(stunTower, randomPos2, true, true);
     }
   }
 
