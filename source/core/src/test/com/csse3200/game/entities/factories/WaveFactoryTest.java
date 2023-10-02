@@ -44,21 +44,21 @@ class WaveFactoryTest {
   private final int LVL1_DIFF = 2;
   private final int LVL1_WAVES = 5;
   private final int LVL1_CHOSEN_LVL = 1;
-  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "WaterSlime", "DeflectXeno"));
-  private final String LVL1_BOSS = "WaterBoss";
+  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "SplittingWaterSlime", "WaterQueen"));
+  private final String LVL1_BOSS = "IceBoss";
 
   // level stats for level 2 - magic planet
   private final int LVL2_DIFF = 3;
   private final int LVL2_WAVES = 10;
   private final int LVL2_CHOSEN_LVL = 0;
-  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectXeno", "Wizard"));
-  private final String LVL2_BOSS = "MagicBoss";
+  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectWizard"));
+  private final String LVL2_BOSS = "PatrickBoss";
 
   // level stats for level 3 - fire planet
   private final int LVL3_DIFF = 5;
   private final int LVL3_WAVES = 15;
   private final int LVL3_CHOSEN_LVL = 2;
-  private final ArrayList<String> LVL3_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno", "FireWorm"));
+  private final ArrayList<String> LVL3_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "FireWorm"));
   private final String LVL3_BOSS = "FireBoss";
 
     private static final String[] waveSounds = {

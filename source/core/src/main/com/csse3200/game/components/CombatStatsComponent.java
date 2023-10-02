@@ -6,9 +6,9 @@ import com.csse3200.game.entities.Weapon;
 import com.csse3200.game.entities.configs.ProjectileConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Random;
 
 /**
  * Component used to store information related to combat such as health, attack, etc. Any entities
@@ -39,7 +39,7 @@ public class CombatStatsComponent extends Component {
   private ArrayList<Currency> drops;
   private ArrayList<Melee> closeRangeAbilities;
   private ArrayList<ProjectileConfig> longRangeAbilities; //TODO change String to Projectiles
-  private Random rand = new Random();
+  private SecureRandom rand = new SecureRandom();
 
   public CombatStatsComponent(int health, int baseAttack) {
     setHealth(health);

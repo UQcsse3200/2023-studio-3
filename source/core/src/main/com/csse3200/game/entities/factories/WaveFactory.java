@@ -85,13 +85,13 @@ public class WaveFactory {
   public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
     int minMobs = 3 + maxDiff;
     // These are the mobs assigned to the associated levels (planets)
-    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "WaterSlime", "DeflectXeno"));
-    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectXeno", "Wizard"));
-    ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "DeflectXeno", "FireWorm"));
+    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "SplittingWaterSlime", "WaterQueen"));
+    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "Skeleton", "DeflectWizard"));
+    ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingXeno", "DodgingDragon", "FireWorm"));
 
     // The mob bosses assigned to the associated levels (planets)
-    String boss1 = "WaterBoss";
-    String boss2 = "MagicBoss";
+    String boss1 = "IceBoss";
+    String boss2 = "PatrickBoss";
     String boss3 = "FireBoss";
     LevelWaves level = new LevelWaves(5);
 

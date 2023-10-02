@@ -1,6 +1,7 @@
 package com.csse3200.game.areas.terrain;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.GridPoint2;
 import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.services.ResourceService;
@@ -81,7 +83,7 @@ public class TerrainFactory {
    * @return A TiledMapRenderer instance suitable for the given map and scale.
    */
 
-  private TiledMapRenderer createRenderer(TiledMap tiledMap, float tileScale) {
+  public TiledMapRenderer createRenderer(TiledMap tiledMap, float tileScale) {
     switch (orientation) {
       case ORTHOGONAL:
         return new OrthogonalTiledMapRenderer(tiledMap, tileScale);
@@ -100,9 +102,8 @@ public class TerrainFactory {
   private TiledMap createTiles(GridPoint2 tileSize, TextureRegion terrain) {
     TiledMap tiledMap = new TiledMap();
 
-    TerrainTile Tile = new TerrainTile(terrain);
-    TiledMapTileLayer Layer = new TiledMapTileLayer(20, 8, tileSize.x, tileSize.y);
-    fillInvisibleTiles(Layer, new GridPoint2(20, 8), Tile);
+    TiledMapTileLayer Layer = new TiledMapTileLayer(20, 6, tileSize.x, tileSize.y);
+    fillInvisibleTiles(Layer, new GridPoint2(20, 6), terrain);
     tiledMap.getLayers().add(Layer);
 
     return tiledMap;
@@ -114,11 +115,12 @@ public class TerrainFactory {
    *
    * @param layer The tile layer to fill.
    * @param mapSize The size of the map in tiles.
-   * @param tile The tile used to fill the layer.
+   * @param terrain The tile used to fill the layer.
    */
-  private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TerrainTile tile) {
+  private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TextureRegion terrain) {
     for (int x = 0; x < mapSize.x; x++) {
-      for (int y = 2; y < mapSize.y; y++) {
+      for (int y = 0; y < mapSize.y; y++) {
+        TerrainTile tile = new TerrainTile(terrain);
         Cell cell = new Cell();
         cell.setTile(tile);
         layer.setCell(x, y, cell);

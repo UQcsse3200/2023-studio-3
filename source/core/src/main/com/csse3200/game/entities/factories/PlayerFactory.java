@@ -44,7 +44,7 @@ public class PlayerFactory {
             .addComponent(new TouchAttackComponent(PhysicsLayer.NPC))
             .addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS))
             .addComponent(new PlayerActions())
-            .addComponent(new CombatStatsComponent(1000, 5000))
+            .addComponent(new CombatStatsComponent(1000, 0))
             .addComponent(new InventoryComponent(stats.gold))
             .addComponent(inputComponent)
             .addComponent(new PlayerStatsDisplay());

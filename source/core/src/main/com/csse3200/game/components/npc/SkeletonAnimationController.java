@@ -4,8 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
@@ -17,7 +16,12 @@ public class SkeletonAnimationController extends Component {
     // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
     //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
-    Random rand = new Random();
+    private SecureRandom rand = new SecureRandom();
+
+     /** Sound variables */
+     private static final String ATTACK_SOUND = "sounds/mobs/boneBreak.mp3";
+     Sound deathSound = ServiceLocator.getResourceService().getAsset(
+             ATTACK_SOUND, Sound.class);
 
     @Override
     public void create() {
@@ -38,6 +42,8 @@ public class SkeletonAnimationController extends Component {
 
     void animateDeath() {
         animator.startAnimation("skeleton_death");
+        deathSound.setVolume(1000, 5.5f);
+        deathSound.play();
     }
 }
 
