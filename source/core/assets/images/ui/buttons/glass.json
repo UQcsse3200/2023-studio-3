@@ -1,20 +1,14 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
-	dot_gothic_16: {
+	font_small: {
 		file: dot_gothic_16.fnt
 		scaledSize: -1
 		markupEnabled: false
 		flip: false
 	}
-	Toriko: {
-		file: Toriko.fnt
-		scaledSize: 18
-		markupEnabled: false
-		flip: false
-	}
-	Toriko1: {
-		file: Toriko(1).fnt
-		scaledSize: 18
+	title: {
+		file: dot_gothic_32.fnt
+		scaledSize: -1
 		markupEnabled: false
 		flip: false
 	}
@@ -69,7 +63,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
 		parent: default
-		font: dot_gothic_16
+		font: font_small
 		fontColor: White
 		downFontColor: Blue
 		overFontColor: White
@@ -89,13 +83,18 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: dot_gothic_16
+		font: title
+		fontColor: White
+	}
+	title: {
+		parent: default
+		font: title
 		fontColor: White
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: dot_gothic_16
+		font: font_small
 		fontColorSelected: White
 		fontColorUnselected: Grey
 		selection: UI_Glass_Banner_01a
@@ -124,7 +123,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: dot_gothic_16
+		font: font_small
 		fontColor: Grey
 		overFontColor: White
 		disabledFontColor: Grey
@@ -144,7 +143,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
-		font: dot_gothic_16
+		font: font_small
 		fontColor: Grey
 		downFontColor: White
 		overFontColor: White
@@ -174,7 +173,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: UI_Glass_Frame_Standard_01a
-		titleFont: dot_gothic_16
+		titleFont: font_small
 		titleFontColor: White
 		stageBackground: UI_Glass_Frame_Standard_01a
 	}

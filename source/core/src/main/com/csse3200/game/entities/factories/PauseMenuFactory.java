@@ -5,21 +5,22 @@ import com.csse3200.game.components.pausemenu.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.utils.Array;
 
 /**
  * Factory to create the pause menu and attach its components.
  */
 public class PauseMenuFactory {
-    private static int pauseMenusActive = 0;
+    private static int lastPauseMenuID = -1;
 
     /**
-     * Creates the pause menu
+     * Creates the pause menu, if no previously made pause menu still exists.
      * @param game The Gdx Game that handles screen changes
-     * @param duplicateOverride If false, will not create a pause menu if any currently exist
      * @return entity, or null if no entity was created
      */
-    public static Entity createPauseMenu(GdxGame game, boolean duplicateOverride) {
-        if (pauseMenusActive == 0 || duplicateOverride) {
+    public static Entity createPauseMenu(GdxGame game) {
+        if (!previousPauseActive()) {
+
             Entity pauseMenu = new Entity()
                     .addComponent(new PauseMenuTimeStopComponent())
                     .addComponent(new PauseMenuContinueButton())
@@ -30,16 +31,24 @@ public class PauseMenuFactory {
             pauseMenu.setScale(8, 8);
             pauseMenu.setPosition(6.3f, 2f);
             ServiceLocator.getEntityService().register(pauseMenu);
-            pauseMenusActive++;
+            lastPauseMenuID = pauseMenu.getId();
             return pauseMenu;
+        } else {
+            return null;
         }
-        return null;
     }
 
     /**
-     * Called when a pause menu is disposed to decrement the count of active pause menus.
+     * Function for checking if the last pause menu created is still registered to the entity service.
+     * @return true if the last pause menu's ID is found in the entity service.
      */
-    public static void decrementPauseMenuCount() {
-        pauseMenusActive--;
+    private static boolean previousPauseActive() {
+        Array<Entity> checkList = ServiceLocator.getEntityService().getEntities();
+        for (Entity check : checkList) {
+            if (check.getId() == lastPauseMenuID) {
+                return true;
+            }
+        }
+        return false;
     }
 }

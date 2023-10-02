@@ -1,6 +1,7 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
@@ -34,6 +35,12 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private final Table towerTable = new Table();
     Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+    private String[] sounds = {
+            "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
+            "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg"
+    };
+    private Sound click;
+    private Sound hover;
     private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
     private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
 
@@ -41,6 +48,7 @@ public class UIElementsDisplay extends UIComponent {
     public void create() {
         super.create();
         addActors();
+        loadSounds();
     }
 
     /**
@@ -88,6 +96,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 1 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+                        click.play(0.4f);
                     }
                 });
 
@@ -98,6 +107,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 2 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+                        click.play(0.4f);
                     }
                 });
 
@@ -107,6 +117,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 3 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
+                        click.play(0.4f);
                     }
                 });
 
@@ -116,6 +127,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 4 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
+                        click.play(0.4f);
                     }
                 });
 
@@ -125,6 +137,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 5 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
+                        click.play(0.4f);
                     }
                 });
 
@@ -171,6 +184,13 @@ public class UIElementsDisplay extends UIComponent {
     @Override
     public float getZIndex() {
         return Z_INDEX;
+    }
+
+    private void loadSounds() {
+        ServiceLocator.getResourceService().loadSounds(sounds);
+        ServiceLocator.getResourceService().loadAll();
+        click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
+        hover = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 
     /**
