@@ -22,6 +22,10 @@ public class AnimatedText {
         this.lastCharTime = TimeUtils.nanoTime();
     }
 
+    public AnimatedText(BitmapFont font, float v) {
+
+    }
+
     public void update() {
         long currentTime = TimeUtils.nanoTime();
         float deltaTime = (currentTime - lastCharTime) / 1_000_000_000.0f; // Convert to seconds
