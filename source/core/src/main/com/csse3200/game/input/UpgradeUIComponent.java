@@ -141,7 +141,7 @@ public class UpgradeUIComponent extends InputComponent {
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
-        Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
+        Label attackLabel = new Label(String.format("%d", attack), createLabelStyle());
         Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
         Table costDisplay = new Table();
         costDisplay.setWidth(0);
@@ -164,9 +164,15 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        // Create an Image for the health icon
+        // Create an Image for the icons
         Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/health.png")));
         Image healthIconImage = new Image(healthIconDrawable);
+
+        Drawable attackIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/attack.png")));
+        Image attackIconImage = new Image(attackIconDrawable);
+
+        Drawable fireRateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/glass.png")));
+        Image fireRateImage = new Image(fireRateDrawable);
 
 
         TextButton upgradeHealth = new TextButton("+H", style);
@@ -208,7 +214,7 @@ public class UpgradeUIComponent extends InputComponent {
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 5);
 
                     int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
-                    attackLabel.setText(String.format("Attack: %d", attack));
+                    attackLabel.setText(String.format("%d", attack));
                 }
             }
             @Override
@@ -238,7 +244,7 @@ public class UpgradeUIComponent extends InputComponent {
                     turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, (int) newFireRate * 5);
 
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
-                    fireRateLabel.setText(String.format("Fire Rate: %.2f", fireRate));
+                    fireRateLabel.setText(String.format("%.2f", fireRate));
                 }
 
             }
@@ -283,9 +289,6 @@ public class UpgradeUIComponent extends InputComponent {
 
         });
 
-        upgradeTable.add(closeButton).right().top();
-        upgradeTable.row();
-
         innerUpgradeTable.row();
         innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
@@ -326,11 +329,13 @@ public class UpgradeUIComponent extends InputComponent {
             });
         }
         if (attack != 0) {
+            innerUpgradeTable.add(attackIconImage).padRight(5).width(32).height(32);  // Add attack icon
             innerUpgradeTable.add(attackLabel).expandX().left();
             innerUpgradeTable.row();
+
+            innerUpgradeTable.add(fireRateImage).padRight(5).width(32).height(32);  // Add fire rate icon
             innerUpgradeTable.add(fireRateLabel).expandX().right();
             innerUpgradeTable.row();
-
         }
         innerUpgradeTable.add(upgradeHealth).expandX().fillX();
         if (attack != 0) {
