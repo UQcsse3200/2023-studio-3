@@ -18,6 +18,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 
+/**
+ * Screen that displays a story with images and text.
+ */
 public class StoryScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
@@ -32,7 +35,7 @@ public class StoryScreen extends ScreenAdapter {
     private TextButton continueButton;
     private TextButton skipButton; // Universal Skip button
     private ShapeRenderer shapeRenderer;
-
+    // Image file paths
     private static final String[] IMAGE_PATHS = {
             "images/ui/game screen/1 earth before.png",
             "images/ui/game screen/1.1 earth before.png",
@@ -48,7 +51,7 @@ public class StoryScreen extends ScreenAdapter {
             "images/ui/game screen/6.1 survey.png",
             // Add more image paths as needed
     };
-
+    // Texts to display
     private static final String[] TEXTS = {
             "Over a century ago, a tranquil world basked in an era of serenity. ",
             "Nature's embrace cradled humanity, and life flourished abundantly. ",
@@ -64,7 +67,11 @@ public class StoryScreen extends ScreenAdapter {
             "all seems perfect until we picked up on a looming threat that maybe we aren't alone......",
             // Add more text as needed
     };
-
+    /**
+     * Creates a new StoryScreen.
+     *
+     * @param game The game instance
+     */
     public StoryScreen(GdxGame game) {
         this.game = game;
         this.images = new Texture[IMAGE_PATHS.length];
@@ -80,6 +87,7 @@ public class StoryScreen extends ScreenAdapter {
 
     @Override
     public void show() {
+        // Initialize assets
         batch = new SpriteBatch();
         font = new BitmapFont();
         boldFont = new BitmapFont();
@@ -89,6 +97,7 @@ public class StoryScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         shapeRenderer = new ShapeRenderer();
 
+        // Create UI
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         continueButton = new TextButton("Continue", skin);
         continueButton.addListener(new ClickListener() {
@@ -106,7 +115,7 @@ public class StoryScreen extends ScreenAdapter {
                 next();
             }
         });
-
+        // Add buttons to table
         Table buttonTable = new Table();
         buttonTable.add(continueButton).padRight(10); // Add Continue button
         buttonTable.add(skipButton); // Add Universal Skip button
@@ -159,10 +168,13 @@ public class StoryScreen extends ScreenAdapter {
 
         batch.end();
 
+        // Draw UI
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
-
+    /**
+     * Advances to next image/text.
+     */
     private void next() {
         currentIndex++;
         if (currentIndex < images.length) {
