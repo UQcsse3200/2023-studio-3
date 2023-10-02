@@ -13,9 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,6 +71,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // Store the selected towers in the ServiceLocator for transferring across screens
+                ServiceLocator.setTowerTypes(selectedTurrets);;
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });

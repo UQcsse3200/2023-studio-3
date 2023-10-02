@@ -69,13 +69,60 @@ public class BuildInputComponent extends InputComponent {
 
         // check that no entities are occupying the tile
         if (!tileOccupied) {
-            Entity tower = TowerFactory.createTNTTower();
-            tower.setPosition((int)cursorPosition.x, (int)cursorPosition.y);
-            ServiceLocator.getEntityService().register(tower);
-            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+            buildTower((int)cursorPosition.x, (int)cursorPosition.y);
             logger.info("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return true;
         }
         return false;
+    }
+
+    public void buildTower(int x, int y) {
+        TowerType tower = ServiceLocator.getCurrencyService().getTower();
+        Entity newTower;
+        if (tower != null) {
+            switch (tower) {
+                case WEAPON:
+                    newTower = TowerFactory.createWeaponTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
+                    break;
+                case INCOME:
+                    newTower = TowerFactory.createIncomeTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+                    break;
+                case TNT:
+                    newTower = TowerFactory.createTNTTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
+                    break;
+                case DROID:
+                    newTower = TowerFactory.createDroidTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+                    break;
+                case WALL:
+                    newTower = TowerFactory.createWallTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+                    break;
+                case FIRE:
+                    newTower = TowerFactory.createFireTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);Entity newTower = TowerFactory.createWeaponTower();
+                    break;
+                case STUN:
+                    newTower = TowerFactory.createStunTower();
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+//                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
+            }
+        }
     }
 }

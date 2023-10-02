@@ -301,11 +301,9 @@ public class ForestGameArea extends GameArea {
     // Load game assets
     loadAllAssets();
     loadAssets();
-    logger.info("Lol");
+    logger.info("selected towers in main game are " + ServiceLocator.getTowerTypes());
     displayUI();
-    logger.info("Lol");
     spawnTerrain();
-    logger.info("Lol");
     
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();

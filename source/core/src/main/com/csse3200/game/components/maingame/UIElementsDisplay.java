@@ -11,14 +11,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.TowerFactory;
+import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
@@ -52,11 +57,31 @@ public class UIElementsDisplay extends UIComponent {
         towerTable.setDebug(true);
         towerTable.padTop(50f);
 
-        TextButton tower1 = new TextButton("Tower 1", skin);
-        TextButton tower2 = new TextButton("Tower 2", skin);
-        TextButton tower3 = new TextButton("Tower 3", skin);
-        TextButton tower4 = new TextButton("Tower 4", skin);
-        TextButton tower5 = new TextButton("Tower 5", skin);
+        Array<TowerType> towers = new Array<>();
+        for (TowerType tower : ServiceLocator.getTowerTypes()) {
+            towers.add(tower);
+        }
+
+        TextButton tower1;
+        TextButton tower2;
+        TextButton tower3;
+        TextButton tower4;
+        TextButton tower5;
+
+        if (!towers.isEmpty()) {
+            tower1 = new TextButton(towers.get(0).getTowerName(), skin);
+            tower2 = new TextButton(towers.get(1).getTowerName(), skin);
+            tower3 = new TextButton(towers.get(2).getTowerName(), skin);
+            tower4 = new TextButton(towers.get(3).getTowerName(), skin);
+            tower5 = new TextButton(towers.get(4).getTowerName(), skin);
+        } else {
+            // no selected towers, set default towers
+            tower1 = new TextButton(TowerType.TNT.getTowerName(), skin);
+            tower2 = new TextButton(TowerType.DROID.getTowerName(), skin);
+            tower3 = new TextButton(TowerType.WEAPON.getTowerName(), skin);
+            tower4 = new TextButton(TowerType.INCOME.getTowerName(), skin);
+            tower5 = new TextButton(TowerType.WALL.getTowerName(), skin);
+        }
 
         // Triggers an event when the button is pressed.
         tower1.addListener(
@@ -64,7 +89,49 @@ public class UIElementsDisplay extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 1 build button clicked");
-                        entity.getEvents().trigger("exit");
+                        ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+//                        entity.getEvents().trigger("exit");
+                    }
+                });
+
+        // Triggers an event when the button is pressed.
+        tower2.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        logger.debug("Tower 2 build button clicked");
+                        ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+//                        entity.getEvents().trigger("exit");
+                    }
+                });
+
+        tower3.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        logger.debug("Tower 3 build button clicked");
+                        ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
+//                        entity.getEvents().trigger("exit");
+                    }
+                });
+
+        tower4.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        logger.debug("Tower 4 build button clicked");
+                        ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
+//                        entity.getEvents().trigger("exit");
+                    }
+                });
+
+        tower5.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        logger.debug("Tower 5 build button clicked");
+                        ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
+//                        entity.getEvents().trigger("exit");
                     }
                 });
 
@@ -91,26 +158,6 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
-    }
-
-    public void buildTower() {
-        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-
-        int tileX = (int) mousePos.x;
-        int tileY = (int) mousePos.y;
-        boolean tileOccupied = ServiceLocator.getEntityService().entitiesInTile((int)mousePos.x, (int)mousePos.y);
-        logger.info("Tile is occupied: " + tileOccupied );
-
-        // check that no entities are occupying the tile
-        if (!tileOccupied) {
-            if (Gdx.input.justTouched()) {
-                Entity tower = TowerFactory.createDroidTower();
-                tower.setPosition(tileX, tileY);
-                ServiceLocator.getEntityService().register(tower);
-                logger.info("should be building a tower");
-            }
-        }
-//            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
     }
 
     /**
