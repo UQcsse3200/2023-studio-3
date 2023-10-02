@@ -10,6 +10,7 @@ import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
+import net.dermetfan.gdx.math.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,11 +86,10 @@ public class BuildInputComponent extends InputComponent {
     public void buildTower(int x, int y) {
         // fetch the currently set TowerType in the currency service, and its associated build cost.
         TowerType tower = ServiceLocator.getCurrencyService().getTower();
-        int cost = Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice()) * -1;
-        Entity newTower = null;
-
-        // build the selected tower
         if (tower != null) {
+            int cost = Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice());
+            Entity newTower = null;
+            // build the selected tower
             switch (tower) {
                 case WEAPON:
                     newTower = TowerFactory.createWeaponTower();
@@ -113,11 +113,19 @@ public class BuildInputComponent extends InputComponent {
                     newTower = TowerFactory.createStunTower();
             }
             if (newTower != null) {
-                newTower.setPosition(x, y);
-                ServiceLocator.getEntityService().register(newTower);
-                // show a popup that reflects the cost of the build
-                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, cost, 10);
+                if (cost <= ServiceLocator.getCurrencyService().getScrap().getAmount()) {
+                    newTower.setPosition(x, y);
+                    ServiceLocator.getEntityService().register(newTower);
+                    // Decrement currency and show a popup that reflects the cost of the build
+                    ServiceLocator.getCurrencyService().getScrap().modify(-cost);
+                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                    ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, cost, 10);
+                } else {
+                    // maybe dispose of the tower here?
+                }
             }
         }
+
+
     }
 }

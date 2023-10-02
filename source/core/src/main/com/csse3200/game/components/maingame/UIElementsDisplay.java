@@ -36,7 +36,6 @@ public class UIElementsDisplay extends UIComponent {
     Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
     private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
     private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
-    private short toBuild = 0; // bitmask for the tower selected for building
 
     @Override
     public void create() {
@@ -57,31 +56,30 @@ public class UIElementsDisplay extends UIComponent {
         towerTable.setDebug(true);
         towerTable.padTop(50f);
 
+        TowerType[] defaultTowers = {
+                TowerType.TNT,
+                TowerType.DROID,
+                TowerType.INCOME,
+                TowerType.WALL,
+                TowerType.WEAPON
+        };
+
+        // Fetch the selected tower types if set
         Array<TowerType> towers = new Array<>();
         for (TowerType tower : ServiceLocator.getTowerTypes()) {
             towers.add(tower);
         }
 
-        TextButton tower1;
-        TextButton tower2;
-        TextButton tower3;
-        TextButton tower4;
-        TextButton tower5;
-
-        if (!towers.isEmpty()) {
-            tower1 = new TextButton(towers.get(0).getTowerName(), skin);
-            tower2 = new TextButton(towers.get(1).getTowerName(), skin);
-            tower3 = new TextButton(towers.get(2).getTowerName(), skin);
-            tower4 = new TextButton(towers.get(3).getTowerName(), skin);
-            tower5 = new TextButton(towers.get(4).getTowerName(), skin);
-        } else {
-            // no selected towers, set default towers
-            tower1 = new TextButton(TowerType.TNT.getTowerName(), skin);
-            tower2 = new TextButton(TowerType.DROID.getTowerName(), skin);
-            tower3 = new TextButton(TowerType.WEAPON.getTowerName(), skin);
-            tower4 = new TextButton(TowerType.INCOME.getTowerName(), skin);
-            tower5 = new TextButton(TowerType.WALL.getTowerName(), skin);
+        // If no towers set, populate with default towers
+        if (towers.isEmpty()) {
+            towers.addAll(defaultTowers);
         }
+
+        TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
+        TextButton tower2 = new TextButton(towers.get(1).getTowerName(), skin);
+        TextButton tower3 = new TextButton(towers.get(2).getTowerName(), skin);
+        TextButton tower4 = new TextButton(towers.get(3).getTowerName(), skin);
+        TextButton tower5 = new TextButton(towers.get(4).getTowerName(), skin);
 
         // Triggers an event when the button is pressed.
         tower1.addListener(
@@ -90,7 +88,6 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 1 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
-//                        entity.getEvents().trigger("exit");
                     }
                 });
 
@@ -101,7 +98,6 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 2 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
-//                        entity.getEvents().trigger("exit");
                     }
                 });
 
@@ -111,7 +107,6 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 3 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
-//                        entity.getEvents().trigger("exit");
                     }
                 });
 
@@ -121,7 +116,6 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 4 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
-//                        entity.getEvents().trigger("exit");
                     }
                 });
 
@@ -131,7 +125,6 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 5 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
-//                        entity.getEvents().trigger("exit");
                     }
                 });
 

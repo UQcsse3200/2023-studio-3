@@ -123,7 +123,6 @@ public class ServiceLocator {
   public static void setTowerTypes(Set<TowerType> selectedTowers) {
     towerTypes.clear();
     towerTypes.addAll(selectedTowers);
-    logger.info("selected towers are " + towerTypes);
   }
 
   public static Set<TowerType> getTowerTypes() {
