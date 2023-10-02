@@ -12,7 +12,6 @@ import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import static java.lang.Math.round;
 
-// test
 /**
  * The TowerCombatTask runs the AI for the WeaponTower class. The tower will scan for targets in a straight line
  * from its center point until a point at (x + maxRange, y), where x,y are the cooridinates of the tower's center

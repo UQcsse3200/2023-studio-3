@@ -268,16 +268,16 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(15, 4);
 //    spawnScrap();
 //    spawnTNTTower();
-    spawnWeaponTower();
+    // spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
-    spawnScrap();
-    spawnDroidTower();
-    spawnTNTTower();
+//    spawnScrap();
+//    spawnDroidTower();
+//    spawnTNTTower();
     spawnIncome();
 
   }
-  
+
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
