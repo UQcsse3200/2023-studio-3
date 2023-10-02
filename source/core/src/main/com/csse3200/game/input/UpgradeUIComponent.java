@@ -169,7 +169,7 @@ public class UpgradeUIComponent extends InputComponent {
         Drawable attackIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/attack.png")));
         Image attackIconImage = new Image(attackIconDrawable);
 
-        Drawable fireRateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/glass.png")));
+        Drawable fireRateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/hourglass.png")));
         Image fireRateImage = new Image(fireRateDrawable);
 
 
