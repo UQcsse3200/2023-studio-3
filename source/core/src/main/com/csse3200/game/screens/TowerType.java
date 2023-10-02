@@ -1,19 +1,19 @@
 package com.csse3200.game.screens;
 
 public enum TowerType {
-    WEAPON("images/towers/turret_deployed.png", "Weapon Tower",
+    WEAPON("images/background/turret_screen/towers/turret_deployed.png", "Weapon Tower",
             "The Weapon Tower is a simple and basic turret that fires rapid shots at enemies dealing damage over time."),
-    TNT("images/towers/turret_deployed.png", "TNT Tower",
+    TNT("images/background/turret_screen/towers/turret_TNTTower.png", "TNT Tower",
             "The TNT Tower launches explosive projectiles, dealing area damage to groups of enemies."),
-    DROID("images/towers/turret_deployed.png", "Droid Tower",
+    DROID("images/background/turret_screen/towers/turret_DroidTower.png", "Droid Tower",
             "Droid Towers deploy robotic helpers that assist in combat and provide support to nearby turrets."),
-    WALL("images/towers/turret_deployed.png", "Wall Tower",
+    WALL("images/background/turret_screen/towers/turret_wallTower.png", "Wall Tower",
             "The Wall Tower creates barriers to block enemy paths, slowing down their progress."),
-    FIRE("images/towers/turret_deployed.png", "Fire Tower",
+    FIRE("images/background/turret_screen/towers/turret_fire_tower_atlas.png", "Fire Tower",
             "The Fire Tower emits flames, causing damage over time to enemies caught in its fiery radius."),
-    STUN("images/towers/turret_deployed.png", "Stun Tower",
+    STUN("images/background/turret_screen/towers/turret_stun_tower.png", "Stun Tower",
             "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies."),
-    INCOME("images/towers/turret_deployed.png", "Income Tower",
+    INCOME("images/background/turret_screen/towers/turret_deployed.png", "Income Tower",
             "The Income Tower generates additional in-game currency over time.");
 
     private final String imagePath;
