@@ -87,7 +87,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Hurt.png",
           "images/mobs/Idle.png",
           "images/mobs/rangeBossRight.png",
-          "images/towers/wallTower.png",
+          "images/towers/wall_tower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/Dusty_MoonBG.png",
