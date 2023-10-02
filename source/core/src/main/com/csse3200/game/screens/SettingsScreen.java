@@ -24,7 +24,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 /** The game screen containing the settings. */
 public class SettingsScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(SettingsScreen.class);
-
   private final GdxGame game;
   private final Renderer renderer;
   private Texture backgroundTexture;
