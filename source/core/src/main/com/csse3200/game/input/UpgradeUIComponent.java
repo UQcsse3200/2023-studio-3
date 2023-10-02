@@ -9,14 +9,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
@@ -139,7 +136,7 @@ public class UpgradeUIComponent extends InputComponent {
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("%d", attack), createLabelStyle());
-        Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
+        Label fireRateLabel = new Label(String.format("%.2f", fireRate), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
         closeButton.addListener(new ClickListener() {
             @Override
@@ -161,11 +158,14 @@ public class UpgradeUIComponent extends InputComponent {
         Image fireRateImage = new Image(fireRateDrawable);
 
 
-        TextButton upgradeHealth = new TextButton("+H", style);
+        Drawable healthStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/health_upgrade.png")));
+        ImageButton upgradeHealth = new ImageButton(healthStyle);
+        upgradeHealth.setScale(0.8f);
         upgradeHealth.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                logger.info("clicked");
                 if (value >= 100) {
                     value -= 100;
                     ServiceLocator.getCurrencyService().getScrap().setAmount(value);
@@ -179,7 +179,8 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        TextButton upgradeAttack = new TextButton("+A", style);
+        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/attack_upgrade.png")));
+        ImageButton upgradeAttack = new ImageButton(attackStyle);
         upgradeAttack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
