@@ -40,6 +40,7 @@ public class TowerFactory {
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
     private static final String FIREWORKS_TOWER_ATLAS = "images/towers/fireworks_tower.atlas";
     private static final String PIERCE_TOWER_ATLAS = "images/towers/PierceTower.atlas";
+    private static final String RICOCHET_TOWER_ATLAS = "images/towers/RicochetTower.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
     private static final String WALL_ATLAS = "images/towers/barrier.atlas";
     private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
@@ -88,6 +89,10 @@ public class TowerFactory {
     private static final String PIERCE_TOWER_IDLE_ANIM ="Idle";
     private static final String PIERCE_TOWER_ATTACK_ANIM ="Attack";
     private static final String PIERCE_TOWER_DEATH_ANIM ="Death";
+    private static final String RICOCHET_TOWER_IDLE_ANIM ="Idle";
+    private static final String RICOCHET_TOWER_ATTACK_ANIM ="Attack";
+    private static final String RICOCHET_TOWER_DEATH_ANIM ="Death";
+    private static final float RICOCHET_TOWER_ANIM_ATTACK_SPEED = 0.12f;
     private static final String PIERCE_TOWER_ALERT_ANIM ="Warning";
     private static final float PIERCE_TOWER_ANIM_ATTACK_SPEED = 0.12f;
     private static final int INCOME_INTERVAL = 300;
@@ -144,7 +149,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(WALL_ATLAS, TextureAtlas.class));
 
-        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.10f, Animation.PlayMode.NORMAL);
+        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.5f, Animation.PlayMode.NORMAL);
         animator.addAnimation(WALL_TOWER_IDLE_ANIM,0.12f, Animation.PlayMode.LOOP);
 
         wall
@@ -405,9 +410,14 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
-        // ADD AnimationRenderComponent
-
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset(RICOCHET_TOWER_ATLAS,TextureAtlas.class));
+        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
+        animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);
+        animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
         ricochetTower
+                .addComponent(animator)
+                .addComponent(new RicochetTowerAnimationController())
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);

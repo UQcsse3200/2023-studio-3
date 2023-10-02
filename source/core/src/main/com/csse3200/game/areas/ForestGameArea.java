@@ -118,7 +118,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/fireworks_tower.png",
           "images/towers/barrier.png",
           "images/towers/wall_tower.png",
-          "images/towers/PierceTower.png"
+          "images/towers/PierceTower.png",
+          "images/towers/RicochetTower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -161,7 +162,8 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/patrick.atlas",
           "images/towers/fireworks_tower.atlas",
           "images/towers/barrier.atlas",
-          "images/towers/PierceTower.atlas"
+          "images/towers/PierceTower.atlas",
+          "images/towers/RicochetTower.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -290,6 +292,7 @@ public class ForestGameArea extends GameArea {
     spawnDroidTower();
     spawnFireWorksTower();
     spawnPierceTower();
+    spawnRicochetTower();
 
   }
   
@@ -683,6 +686,17 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity PierceTower = TowerFactory.createPierceTower();
       spawnEntityAt(PierceTower, randomPos, true, true);
+    }
+
+  }
+  private void spawnRicochetTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 3);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity RicochetTower = TowerFactory.createRicochetTower();
+      spawnEntityAt(RicochetTower, randomPos, true, true);
     }
 
   }
