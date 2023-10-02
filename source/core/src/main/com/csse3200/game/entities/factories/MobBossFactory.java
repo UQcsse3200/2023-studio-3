@@ -106,7 +106,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(500, 0));
+                .addComponent(new CombatStatsComponent(80, 0));
 
         // Scale demon
         slimeyBoy.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -144,7 +144,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(PATRICK_HEALTH, PATRICK_ATTACK));
+                .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));
 
         // Scale demon
         patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -211,7 +211,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new IceBabyAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(ICEBABY_HEALTH, ICEBABY_ATTACK));
+                .addComponent(new CombatStatsComponent(health, ICEBABY_ATTACK));
 
         iceBaby.getComponent(AnimationRenderComponent.class).scaleEntity();
         iceBaby.scaleHeight(4f);

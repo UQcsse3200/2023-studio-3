@@ -189,13 +189,13 @@ public class NPCFactoryTest {
         assertNotNull(waterSlime, "Water Slime should not be null");
     }
 
-//    @Test
-//    public void testWaterSlimeCombatStatsComponent() {
-//        assertEquals(100, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testWaterSlimeCombatStatsComponent() {
+        assertEquals(60, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void waterSlimeHasAnimationComponent() {
@@ -226,13 +226,13 @@ public class NPCFactoryTest {
         assertNotNull(waterQueen, "Water Queen should not be null");
     }
 
-//    @Test
-//    public void testWaterQueenCombatStatsComponent() {
-//        assertEquals(100, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testWaterQueenCombatStatsComponent() {
+        assertEquals(60, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void waterQueenHasAnimationComponent() {
@@ -251,13 +251,13 @@ public class NPCFactoryTest {
         assertNotNull(fireWorm, "Fire Worm should not be null");
     }
 
-//    @Test
-//    public void testFireWormCombatStatsComponent() {
-//        assertEquals(100, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testFireWormCombatStatsComponent() {
+        assertEquals(60, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void fireWormHasAnimationComponent() {
@@ -275,13 +275,13 @@ public class NPCFactoryTest {
         assertNotNull(dragonKnight, "Dragon Knight should not be null");
     }
 
-//    @Test
-//    public void testDragonKnightCombatStatsComponent() {
-//        assertEquals(100, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testDragonKnightCombatStatsComponent() {
+        assertEquals(60, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void dragonKnightHasAnimationComponent() {
@@ -306,13 +306,13 @@ public class NPCFactoryTest {
         assertNotNull(wizard, "Wizard should not be null");
     }
 
-//    @Test
-//    public void testWizardCombatStatsComponent() {
-//        assertEquals(100, wizard.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testWizardCombatStatsComponent() {
+        assertEquals(60, wizard.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void wizardHasAnimationComponent() {
@@ -337,13 +337,13 @@ public class NPCFactoryTest {
         assertNotNull(skeleton, "skeleton should not be null");
     }
 
-//    @Test
-//    public void testSkeletonCombatStatsComponent() {
-//        assertEquals(100, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Health should be 100");
-//        assertEquals(10, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "BaseAttack should be 10");
-//    }
+    @Test
+    public void testSkeletonCombatStatsComponent() {
+        assertEquals(60, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 100");
+        assertEquals(10, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 10");
+    }
 
     @Test
     public void skeletonHasAnimationComponent() {

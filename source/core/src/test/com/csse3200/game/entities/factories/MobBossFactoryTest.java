@@ -130,7 +130,7 @@ class MobBossFactoryTest {
         baseBoss = MobBossFactory.createBaseBoss();
         demon = MobBossFactory.createDemonBoss(80);
         slimeyBoy = MobBossFactory.createSlimeyBoy();
-        patrick = MobBossFactory.createPatrickBoss(3000);
+        patrick = MobBossFactory.createPatrickBoss(80);
         deadPatrick = MobBossFactory.patrickDead();
         iceBaby = MobBossFactory.createIceBoss(80);
     }
@@ -224,29 +224,29 @@ class MobBossFactoryTest {
                 "Ice Baby Boss does not have touch attack component.");
     }
 
-//    @Test
-//    public void testMobBossCombatStats(){
-//        assertEquals(5000, demon.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Demon Boss health should be 5000.");
-//        assertEquals(0, demon.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "Demon Boss base attack should be 0.");
-//        assertEquals(500, slimeyBoy.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Slimey Boy health should be 500.");
-//        assertEquals(0, slimeyBoy.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "Slimey Boy base attack should be 0.");
-//        assertEquals(2500, patrick.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Patrick Boss health should be 2500.");
-//        assertEquals(0, patrick.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "Patrick Boss base attack should be 0.");
-//        assertEquals(1, deadPatrick.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Dead Patrick Boss health should be 1.");
-//        assertEquals(0, deadPatrick.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "Dead Patrick Boss base attack should be 0.");
-//        assertEquals(3000, iceBaby.getComponent(CombatStatsComponent.class).getHealth(),
-//                "Ice Baby Boss health should be 3000.");
-//        assertEquals(0, iceBaby.getComponent(CombatStatsComponent.class).getBaseAttack(),
-//                "Ice Baby Boss base attack should be 0.");
-//    }
+    @Test
+    public void testMobBossCombatStats(){
+        assertEquals(80, demon.getComponent(CombatStatsComponent.class).getHealth(),
+                "Demon Boss health should be 5000.");
+        assertEquals(0, demon.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Demon Boss base attack should be 0.");
+        assertEquals(80, slimeyBoy.getComponent(CombatStatsComponent.class).getHealth(),
+                "Slimey Boy health should be 500.");
+        assertEquals(0, slimeyBoy.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Slimey Boy base attack should be 0.");
+        assertEquals(80, patrick.getComponent(CombatStatsComponent.class).getHealth(),
+                "Patrick Boss health should be 2500.");
+        assertEquals(0, patrick.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Patrick Boss base attack should be 0.");
+        assertEquals(1, deadPatrick.getComponent(CombatStatsComponent.class).getHealth(),
+                "Dead Patrick Boss health should be 1.");
+        assertEquals(0, deadPatrick.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Dead Patrick Boss base attack should be 0.");
+        assertEquals(80, iceBaby.getComponent(CombatStatsComponent.class).getHealth(),
+                "Ice Baby Boss health should be 3000.");
+        assertEquals(0, iceBaby.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Ice Baby Boss base attack should be 0.");
+    }
 
     @Test
     public void testMobBossAnimationRenderComponent() {
