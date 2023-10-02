@@ -82,7 +82,7 @@ public class AssetLoader {
             "images/GrassTile/grass_tile_5.png",
             "images/GrassTile/grass_tile_6.png",
             "images/GrassTile/grass_tile_7.png",
-            "images/highlight_tile.png"
+            "images/highlight_tile.png",
             "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png"
     };
 
