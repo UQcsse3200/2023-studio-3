@@ -79,7 +79,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(IDLE);
-        // Set up listener to change firerate
+        // Set up listener to change fire rate
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
 
         endTime = timeSource.getTime() + (INTERVAL * 500);

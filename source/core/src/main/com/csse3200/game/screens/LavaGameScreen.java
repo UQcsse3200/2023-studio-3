@@ -102,7 +102,7 @@ public class LavaGameScreen extends ScreenAdapter {
 
         logger.debug("Initialising main game screen entities");
         TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
-        ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
+        ForestGameArea forestGameArea = new ForestGameArea();
         forestGameArea.create();
     }
 

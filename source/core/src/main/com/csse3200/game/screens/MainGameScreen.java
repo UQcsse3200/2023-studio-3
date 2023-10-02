@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
-import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameLoseDisplay;
@@ -107,7 +106,7 @@ public class MainGameScreen extends ScreenAdapter {
     this.game = game;
     camera = new OrthographicCamera();
     camera.setToOrtho(false, viewportWidth, viewportHeight);
-    camera.position.set((float) (viewportWidth / 2), (float) (viewportHeight / 2), 0);
+    camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
 
@@ -138,15 +137,13 @@ public class MainGameScreen extends ScreenAdapter {
     InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
     ServiceLocator.getInputService().register(buildHandler);
-
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
     createUI();
-
+    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
     logger.debug("Initialising main game screen entities");
-    TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
-    ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
+    ForestGameArea forestGameArea = new ForestGameArea();
     forestGameArea.create();
   }
 
