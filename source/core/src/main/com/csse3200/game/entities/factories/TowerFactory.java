@@ -39,7 +39,6 @@ public class TowerFactory {
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
     private static final String WALL_IMAGE = "images/towers/WallTower.png";
-    private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
@@ -115,6 +114,7 @@ public class TowerFactory {
 
         income
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
@@ -129,6 +129,7 @@ public class TowerFactory {
 
         wall
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TextureRenderComponent(WALL_IMAGE));
         return wall;
@@ -158,6 +159,7 @@ public class TowerFactory {
 
         TNTTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TNTDamageComponent(PhysicsLayer.NPC,TNT_KNOCK_BACK_FORCE,TNT_TOWER_RANGE))
                 .addComponent(aiTaskComponent)
@@ -199,6 +201,7 @@ public class TowerFactory {
 
         DroidTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new DroidAnimationController())
                 .addComponent(animator)
@@ -233,6 +236,7 @@ public class TowerFactory {
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(aiTaskComponent)
@@ -266,6 +270,7 @@ public class TowerFactory {
 
         fireTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
@@ -295,6 +300,7 @@ public class TowerFactory {
 
         stunTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)

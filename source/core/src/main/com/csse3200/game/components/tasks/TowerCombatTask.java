@@ -216,18 +216,12 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Increases the fireRateInterval, changing how frequently the turret fires. Will decrease if the argument is negative.
+     * Changes the tower's fire rate.
      *
-     * @param perMinute The number of times per minute the turret's fire rate should increase
+     * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
-    private void changeFireRateInterval(int perMinute) {
-        float oldFireSpeed = 1/fireRateInterval;
-        float newFireSpeed = oldFireSpeed + perMinute/60f;
-        if (newFireSpeed == 0) {
-            return;
-        } else {
-            fireRateInterval = 1 / newFireSpeed;
-        }
+    private void changeFireRateInterval(int newInterval) {
+        fireRateInterval = newInterval;
     }
 
     /**

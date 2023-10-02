@@ -22,6 +22,7 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
+import com.csse3200.game.components.tower.UpgradableStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.services.ServiceLocator;
@@ -134,10 +135,10 @@ public class UpgradeUIComponent extends InputComponent {
         int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
         turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
-
+        float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("Health:%d/%d", currentHealth, maxHealth), createLabelStyle());
         Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
-//        Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
+        Label fireRateLabel = new Label(String.format("Fire Rate: %.2f", fireRate), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
         closeButton.addListener(new ClickListener() {
             @Override
@@ -183,6 +184,23 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
+        TextButton upgradeFireRate = new TextButton("+FR", style);
+        upgradeFireRate.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                if (value >= 10) {
+                    value -= 10;
+                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 5);
+                    turretEntity.getComponent(UpgradableStatsComponent.class).setAttackRate(5);
+                    float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
+                    fireRateLabel.setText(String.format("Fire Rate: %.2f", fireRate));
+                }
+            }
+        });
+
         TextButton repairButton = new TextButton("R", style);
         repairButton.addListener(new ClickListener() {
             @Override
@@ -207,6 +225,7 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.row();
         if (attack != 0) {
             innerUpgradeTable.add(attackLabel).expandX().left();
+            innerUpgradeTable.row();
             innerUpgradeTable.add(fireRateLabel).expandX().right();
             innerUpgradeTable.row();
 
@@ -214,6 +233,7 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.add(upgradeHealth).expandX().fillX();
         if (attack != 0) {
             innerUpgradeTable.add(upgradeAttack).expandX().fillX();
+            innerUpgradeTable.add(upgradeFireRate).expandX().fillX();
         }
         innerUpgradeTable.add(repairButton).expandX().fillX();
         upgradeTable.add(innerUpgradeTable).center().expand().row();
