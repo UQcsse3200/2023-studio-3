@@ -90,11 +90,11 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeTable = new Table();
         upgradeTable.top();
         upgradeTable.defaults().pad(0).space(0);
-        upgradeTable.setSize(100,100);
+        upgradeTable.setSize(60,60);
         Table innerUpgradeTable = new Table();
         innerUpgradeTable.top();
-        innerUpgradeTable.defaults().pad(0).space(0);
-        innerUpgradeTable.setSize(100,100);
+        innerUpgradeTable.defaults().pad(10).space(0).padBottom(1);
+        innerUpgradeTable.setSize(60,60);
         // set table background
         String imageFilePath = "images/ui/Sprites/UI_Glass_Frame_Standard_01a.png";
         String upgradeButtonFilePath = "images/economy/scrapBanner.png";
@@ -118,11 +118,11 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeTable.row();
 
         innerUpgradeTable.row();
-        innerUpgradeTable.add(health);
+        innerUpgradeTable.add(health).expandX().left();
         innerUpgradeTable.row();
-        innerUpgradeTable.add(attack);
+        innerUpgradeTable.add(attack).expandX().left();
         innerUpgradeTable.row();
-        innerUpgradeTable.add(upgradeButton);
+        innerUpgradeTable.add(upgradeButton).expandX().fillX();
         upgradeTable.add(innerUpgradeTable).center().expand().row();
 
 
