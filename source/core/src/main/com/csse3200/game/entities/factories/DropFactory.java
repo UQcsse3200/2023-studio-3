@@ -2,10 +2,8 @@ package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.currency.Crystal;
-import com.csse3200.game.currency.Currency;
 import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 
 public class DropFactory {

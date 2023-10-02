@@ -60,7 +60,7 @@ public class SplitFireworksComponent extends Component {
       // * RIGHT NOW TARGET IS NPC, SUBJECT TO CHANGE
       // Speed is a bit faster than normal but can change.
       Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
-          new Vector2(100, projectile.getPosition().y + (newDirection - (TOTAL_RANGE/2))), new Vector2(3f, 3f));
+          new Vector2(100, (float) (projectile.getPosition().y + (newDirection - (double) (TOTAL_RANGE/2)))), new Vector2(3f, 3f));
 
       newProjectile.setPosition(newXPosition, (float) projectile.getPosition().y);
 
