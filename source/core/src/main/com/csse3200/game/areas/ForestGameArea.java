@@ -312,15 +312,8 @@ public class ForestGameArea extends GameArea {
     spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 
-
-
     spawnScrap();
     spawnGapScanners();
-
-    // These shouldn't be necessary now
-//    spawnTNTTower();
-//     //spawnWeaponTower();
-//    spawnDroidTower();
 
   }
   
@@ -331,39 +324,39 @@ public class ForestGameArea extends GameArea {
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
   }
-  
+
   private void spawnTerrain() {
 
     terrain = ServiceLocator.getMapService().getComponent();
     spawnEntity(ServiceLocator.getMapService().getEntity());
-    
+
     // Terrain walls
     float tileSize = terrain.getTileSize();
     GridPoint2 tileBounds = terrain.getMapBounds(0);
     Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);
-    
+
     // Left
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
-            new GridPoint2(0, 2),
+            new GridPoint2(0, 0),
             false,
             false);
-    // Right
-    spawnEntityAt(
-            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
-            new GridPoint2(tileBounds.x, 0),
-            false,
-            false);
+//    // Right
+//    spawnEntityAt(
+//            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
+//            new GridPoint2(tileBounds.x, 0),
+//            false,
+//            false);
     // Top
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7),
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0),
             new GridPoint2(0, tileBounds.y),
             false,
             false);
     // Bottom
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
-            new GridPoint2(0, 2),
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0),
+            new GridPoint2(0, 0),
             false,
             false);
   }
