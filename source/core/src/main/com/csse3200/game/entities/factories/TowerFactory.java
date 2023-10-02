@@ -38,7 +38,7 @@ public class TowerFactory {
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
-    private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String WALL_IMAGE = "images/towers/wall_tower.png";
     private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
