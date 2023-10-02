@@ -109,24 +109,31 @@ class WaveFactoryTest {
       assertNotNull(lvl3);
     }
 
+    /**
+     * The three following tests ensure that every wave in the level is created correctly
+     * Since the waves are stored in a hashmap, by definition the mobs are unique and this
+     * quality does not have to be checked.
+     * */
     @Test
-    void testCorrectMobs() {
-      //TODO incomplete, only tests level 1
-
+    void testLevel1Creation() {
       List<WaveClass> lvl1Mobs = lvl1.getWaves();
 
       int waveNum = 1;
       for (WaveClass wave : lvl1Mobs) {
+
+        // check the number of mobs in a wave
         if (waveNum % 5 != 0) {
           assertEquals(2, wave.getEntities().size());
         } else {
           assertEquals(3, wave.getEntities().size());
         }
 
+        // check if the boss is in the wave if it is a boss wave
         if (waveNum % 5 == 0) {
           assertTrue(wave.getEntities().containsKey(LVL1_BOSS));
         }
 
+        // check the health of the mobs and ensure the mobs are the correct type
         for (Map.Entry<String, int[]> entry : wave.getEntities().entrySet()) {
             String mob = entry.getKey();
             int[] spawn = entry.getValue();
@@ -144,6 +151,81 @@ class WaveFactoryTest {
         waveNum++;
       }
       assertEquals(6, waveNum);
+    }
+    @Test
+    void testLevel2Creation() {
+
+      List<WaveClass> lvl1Mobs = lvl2.getWaves();
+
+      int waveNum = 1;
+      for (WaveClass wave : lvl1Mobs) {
+
+        // check the number of mobs in a wave
+        if (waveNum % 5 != 0) {
+          assertEquals(2, wave.getEntities().size());
+        } else {
+          assertEquals(3, wave.getEntities().size());
+        }
+
+        // check if the boss is in the wave if it is a boss wave
+        if (waveNum % 5 == 0) {
+          assertTrue(wave.getEntities().containsKey(LVL2_BOSS));
+        }
+
+        for (Map.Entry<String, int[]> entry : wave.getEntities().entrySet()) {
+            String mob = entry.getKey();
+            int[] spawn = entry.getValue();
+
+            if (waveNum % 5 != 0) {
+                assertTrue(LVL2_MOBS.contains(mob));
+                assertEquals(MIN_HEALTH + (waveNum * 2), spawn[1]);
+            } else {
+              if (mob == LVL2_BOSS) {
+                assertEquals(MIN_BOSS_HEALTH + (waveNum * 2), spawn[1]);
+              }
+            }
+        }
+
+        waveNum++;
+      }
+      assertEquals(11, waveNum);
+    }
+    @Test
+    void testLevel3Creation() {
+
+      List<WaveClass> lvl1Mobs = lvl3.getWaves();
+
+      int waveNum = 1;
+      for (WaveClass wave : lvl1Mobs) {
+        // check the number of mobs in a wave
+        if (waveNum % 5 != 0) {
+          assertEquals(2, wave.getEntities().size());
+        } else {
+          assertEquals(3, wave.getEntities().size());
+        }
+
+        // check if the boss is in the wave if it is a boss wave
+        if (waveNum % 5 == 0) {
+          assertTrue(wave.getEntities().containsKey(LVL3_BOSS));
+        }
+
+        // check the health of the mobs and ensure the mobs are the correct type
+        for (Map.Entry<String, int[]> entry : wave.getEntities().entrySet()) {
+            String mob = entry.getKey();
+            int[] spawn = entry.getValue();
+
+            if (waveNum % 5 != 0) {
+                assertTrue(LVL3_MOBS.contains(mob));
+                assertEquals(MIN_HEALTH + (waveNum * 3), spawn[1]);
+            } else {
+              if (mob == LVL3_BOSS) {
+                assertEquals(MIN_BOSS_HEALTH + (waveNum * 3), spawn[1]);
+              }
+            }
+        }
+        waveNum++;
+      }
+      assertEquals(16, waveNum);
     }
 
 }
