@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -19,12 +20,11 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.physics.PhysicsService;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 import java.util.*;
 
@@ -66,7 +66,6 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretList.addAll(Arrays.asList(TowerType.values()));
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
-
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         message = new Label("Select your turrets", skin);
         turretsPicked = new Label("Turrets picked: ", skin);
@@ -78,6 +77,28 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
+
+        // Create a table for the buttons
+        Table buttonTable = new Table();
+        buttonTable.center().padBottom(20);
+
+        // Add the "Confirm" button to the button table
+        buttonTable.add(confirmButton).padRight(10);
+
+        // Create the "Back" button
+        TextButton backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+            }
+        });
+
+        // Add the "Back" button to the button table
+        buttonTable.add(backButton);
+
+        // Add the button table to the main table
+        table.add(buttonTable).center().colspan(4).padBottom(20).row();
 
         // Centered the message and turrets label
         table.add(message).center().colspan(4).row();
@@ -164,16 +185,18 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         }
 
-        // Centered the "continue" button
-        table.add(confirmButton).center().colspan(4).padBottom(20).row();
-
-        // Center the table within the stage
+        // Centered the table within the stage
         table.center();
         stage.addActor(table);
         table.setFillParent(true);
         Gdx.input.setInputProcessor(stage);
-
     }
+
+    @Override
+    public void show() {
+        Gdx.input.setInputProcessor(stage);
+    }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -181,6 +204,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         batch.begin();
         introSprite.draw(batch);
         batch.end();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
@@ -188,9 +212,12 @@ public class TurretSelectionScreen extends ScreenAdapter {
         return turretList;
     }
 
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
     }
-
 }

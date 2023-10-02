@@ -9,8 +9,15 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.mainmenu.MainMenuDisplay;
 import com.csse3200.game.entities.factories.RenderFactory;
 import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
@@ -20,6 +27,8 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
+
+import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /**
  * The game screen where you can choose a planet to play on.
@@ -31,7 +40,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private int selectedLevel = -1;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
-
+    private Stage stage;
     private AnimatedText text;
     private BitmapFont font;
 
@@ -47,6 +56,27 @@ public class LevelSelectScreen extends ScreenAdapter {
         font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         this.game = game;
+
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+
+        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        TextButton BackButton = new TextButton("Back", skin); // Universal Skip button
+        BackButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.MAIN_MENU);
+
+
+            }
+        });
+        Table buttonTable = new Table();
+        buttonTable.add(BackButton).padRight(10);
+        Table table1 = new Table();
+        table1.setFillParent(true);
+        table1.top().right(); // Align to the top-right corner
+        table1.pad(20); // Add padding to the top-right corner
+        table1.add(buttonTable).row(); // Add button table and move to the next row
+        stage.addActor(table1);
     }
 
     @Override
@@ -54,6 +84,7 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch = new SpriteBatch();
         background = new Sprite(new Texture(BG_PATH));
         ServiceLocator.registerGameEndService(new GameEndService());
+        Gdx.input.setInputProcessor(stage);
     }
 
     /**
@@ -157,10 +188,16 @@ public class LevelSelectScreen extends ScreenAdapter {
         text.update();
         text.draw(batch, 100, 700); // Adjust the position
         batch.end();
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+    }
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
     public void dispose() {
+        stage.dispose();
         batch.dispose();
     }
 }
