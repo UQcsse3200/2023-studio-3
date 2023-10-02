@@ -26,6 +26,7 @@ public class EngineerInputComponent extends InputComponent {
     private EntityService entityService;
 
     private Entity selectedEngineer = null;
+    private boolean moveClicked = false;
 
     public EngineerInputComponent(Game game, Camera camera) {
         this.game = game;
@@ -43,15 +44,19 @@ public class EngineerInputComponent extends InputComponent {
 
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
-            if (selectedEngineer == null) {
+            if (selectedEngineer != null && moveClicked) {
+                moveEngineer(cursorPosition);
+                selectedEngineer = null;
+                moveClicked = false;
+                return true;
+            } else {
                 return false;
             }
-            moveEngineer(cursorPosition);
-            return true;
         } else if (engineer.equals(selectedEngineer)) {
             // Deselect the engineer by clicking on itself
             this.getWanderTask().setSelected(false);
             selectedEngineer = null;
+            moveClicked = false;
             return true;
         }
 
@@ -74,6 +79,7 @@ public class EngineerInputComponent extends InputComponent {
             controller.setClicked(true);
         }
         return true;
+
     }
 
     private HumanWanderTask getWanderTask() {
@@ -92,6 +98,10 @@ public class EngineerInputComponent extends InputComponent {
         Vector2 offset = new Vector2(cursorPosition.x > enggpos.x ? 0.17f : -0.6f , cursorPosition.y > enggpos.y ? 0.0f : -0.5f);
         Vector2 dest = cursorPosition.add(offset);
         wander.startMoving(dest);
+    }
+
+    public void setMoveClicked(boolean moveClicked) {
+        this.moveClicked = moveClicked;
     }
 
 }

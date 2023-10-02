@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.input.EngineerInputComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,11 +51,14 @@ public class EngineerMenuComponent extends UIComponent {
         // add listeners to buttons
         AnimationRenderComponent animator = getEntity().getComponent(AnimationRenderComponent.class);
         HumanAnimationController controller = getEntity().getComponent(HumanAnimationController.class);
+        EngineerInputComponent input = ServiceLocator.getInputService().getEngineerInput();
 
         moveButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                input.setMoveClicked(true);
                 controller.deselectEngineer(animator.getCurrentAnimation());
+
                 //logger.info("Move button clicked");
             }
         });
