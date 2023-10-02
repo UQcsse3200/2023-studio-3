@@ -109,15 +109,22 @@ public class MainMenuDisplay extends UIComponent {
                     }
                 });
 
+        // Proportional padding values based on original screen or background dimensions
+        float originalScreenWidth = 1920;  // Replace with the original width if different
+        float originalScreenHeight = 1080; // Replace with the original height if different
+
+        float padTopStartBtn = 260f / originalScreenHeight * Gdx.graphics.getHeight();
+        float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();
+
         table.add(title);
         table1.row();
-        table1.add(startBtn).padTop(260f);
+        table1.add(startBtn).padTop(padTopStartBtn);
         table1.row();
-        table1.add(helpBtn).padTop(15f);
+        table1.add(helpBtn).padTop(padTopOtherBtns);
         table1.row();
-        table1.add(settingsBtn).padTop(15f);
+        table1.add(settingsBtn).padTop(padTopOtherBtns);
         table1.row();
-        table1.add(exitBtn).padTop(15f);
+        table1.add(exitBtn).padTop(padTopOtherBtns);
 
         stage.addActor(table);
         stage.addActor(table1);

@@ -98,15 +98,15 @@ public class MainMenuScreen extends ScreenAdapter {
     elapsedTime += delta;
 
     // MM_Star1
-    // Fixed offset relative to the background texture
-    float MM_Star1_fixedOffsetX = 830;
-    float MM_Star1_fixedOffsetY = 650;
+    // Determine the proportional offset of the MM_Star1 sprite
+    float MM_Star1_proportionalOffsetX = 830f / backgroundTexture.getWidth();
+    float MM_Star1_proportionalOffsetY = 650f / backgroundTexture.getHeight();
     // Calculate the scaling factor based on how the background is stretched to fit the screen
     float scaleX = screenWidth / backgroundTexture.getWidth();
     float scaleY = screenHeight / backgroundTexture.getHeight();
-    // Scale the fixed offset
-    float MM_Star1_spriteX = MM_Star1_fixedOffsetX * scaleX;
-    float MM_Star1_spriteY = MM_Star1_fixedOffsetY * scaleY;
+    // Calculate the position of the MM_Star1 sprite on the screen
+    float MM_Star1_spriteX = MM_Star1_proportionalOffsetX * screenWidth;
+    float MM_Star1_spriteY = MM_Star1_proportionalOffsetY * screenHeight;
     // Size adjustments
     float MM_Star1_ScaleFactor = 0.3f;
     float MM_Star1_Width = MM_Star1_frameWidth * MM_Star1_ScaleFactor;
@@ -114,12 +114,12 @@ public class MainMenuScreen extends ScreenAdapter {
     batch.draw(MM_Star1_animation.getKeyFrame(elapsedTime, true), MM_Star1_spriteX, MM_Star1_spriteY, MM_Star1_Width, MM_Star1_Height);
 
     // MM_Galaxy1
-    // Fixed offset relative to the background texture
-    float MM_Galaxy1_fixedOffsetX = 2000;
-    float MM_Galaxy1_fixedOffsetY = 1075;
-    // Scale the fixed offset
-    float MM_Galaxy1_spriteX = MM_Galaxy1_fixedOffsetX * scaleX;
-    float MM_Galaxy1_spriteY = MM_Galaxy1_fixedOffsetY * scaleY;
+    // Determine the proportional offset of the MM_Star1 sprite
+    float MM_Galaxy1_proportionalOffsetX = 2000f / backgroundTexture.getWidth();
+    float MM_Galaxy1_proportionalOffsetY = 1075f / backgroundTexture.getHeight();
+    // Calculate the position of the MM_Star1 sprite on the screen
+    float MM_Galaxy1_spriteX = MM_Galaxy1_proportionalOffsetX * screenWidth;
+    float MM_Galaxy1_spriteY = MM_Galaxy1_proportionalOffsetY * screenHeight;
     // Size adjustments
     float MM_Galaxy1_ScaleFactor = 0.95f;
     float MM_Galaxy1_Width = MM_Galaxy1_frameWidth * MM_Galaxy1_ScaleFactor;
@@ -127,12 +127,12 @@ public class MainMenuScreen extends ScreenAdapter {
     batch.draw(MM_Galaxy1_animation.getKeyFrame(elapsedTime, true), MM_Galaxy1_spriteX, MM_Galaxy1_spriteY, MM_Galaxy1_Width, MM_Galaxy1_Height);
 
     // MM_Planet1
-    // Fixed offset relative to the background texture
-    float MM_Planet1_fixedOffsetX = 1630;
-    float MM_Planet1_fixedOffsetY = 800;
-    // Scale the fixed offset
-    float MM_Planet1_spriteX = MM_Planet1_fixedOffsetX * scaleX;
-    float MM_Planet1_spriteY = MM_Planet1_fixedOffsetY * scaleY;
+    // Determine the proportional offset of the MM_Star1 sprite
+    float MM_Planet1_proportionalOffsetX = 1630f / backgroundTexture.getWidth();
+    float MM_Planet1_proportionalOffsetY = 800f / backgroundTexture.getHeight();
+    // Calculate the position of the MM_Star1 sprite on the screen
+    float MM_Planet1_spriteX = MM_Planet1_proportionalOffsetX * screenWidth;
+    float MM_Planet1_spriteY = MM_Planet1_proportionalOffsetY * screenHeight;
     // Size adjustments
     float MM_Planet1_ScaleFactor = 0.5f;
     float MM_Planet1_Width = MM_Planet1_frameWidth * MM_Planet1_ScaleFactor;
@@ -140,12 +140,12 @@ public class MainMenuScreen extends ScreenAdapter {
     batch.draw(MM_Planet1_animation.getKeyFrame(elapsedTime, true), MM_Planet1_spriteX, MM_Planet1_spriteY, MM_Planet1_Width, MM_Planet1_Height);
 
     // MM_Planet2
-    // Fixed offset relative to the background texture
-    float MM_Planet2_fixedOffsetX = 1290;
-    float MM_Planet2_fixedOffsetY = 1200;
-    // Scale the fixed offset
-    float MM_Planet2_spriteX = MM_Planet2_fixedOffsetX * scaleX;
-    float MM_Planet2_spriteY = MM_Planet2_fixedOffsetY * scaleY;
+    // Determine the proportional offset of the MM_Star1 sprite
+    float MM_Planet2_proportionalOffsetX = 1290f / backgroundTexture.getWidth();
+    float MM_Planet2_proportionalOffsetY = 1200f / backgroundTexture.getHeight();
+    // Calculate the position of the MM_Star1 sprite on the screen
+    float MM_Planet2_spriteX = MM_Planet2_proportionalOffsetX * screenWidth;
+    float MM_Planet2_spriteY = MM_Planet2_proportionalOffsetY * screenHeight;
     // Size adjustments
     float MM_Planet2_ScaleFactor = 0.7f;
     float MM_Planet2_Width = MM_Planet2_frameWidth * MM_Planet2_ScaleFactor;
@@ -153,30 +153,17 @@ public class MainMenuScreen extends ScreenAdapter {
     batch.draw(MM_Planet2_animation.getKeyFrame(elapsedTime, true), MM_Planet2_spriteX, MM_Planet2_spriteY, MM_Planet2_Width, MM_Planet2_Height);
 
     // MM_Planet3
-    // Fixed offset relative to the background texture
-    float MM_Planet3_fixedOffsetX = 420;
-    float MM_Planet3_fixedOffsetY = 990;
-    // Scale the fixed offset
-    float MM_Planet3_spriteX = MM_Planet3_fixedOffsetX * scaleX;
-    float MM_Planet3_spriteY = MM_Planet3_fixedOffsetY * scaleY;
+    // Determine the proportional offset of the MM_Star1 sprite
+    float MM_Planet3_proportionalOffsetX = 420f / backgroundTexture.getWidth();
+    float MM_Planet3_proportionalOffsetY = 990f / backgroundTexture.getHeight();
+    // Calculate the position of the MM_Star1 sprite on the screen
+    float MM_Planet3_spriteX = MM_Planet3_proportionalOffsetX * screenWidth;
+    float MM_Planet3_spriteY = MM_Planet3_proportionalOffsetY * screenHeight;
     // Size adjustments
     float MM_Planet3_ScaleFactor = 0.65f;
     float MM_Planet3_Width = MM_Planet3_frameWidth * MM_Planet3_ScaleFactor;
     float MM_Planet3_Height = MM_Planet3_frameHeight * MM_Planet3_ScaleFactor;
     batch.draw(MM_Planet3_animation.getKeyFrame(elapsedTime, true), MM_Planet3_spriteX, MM_Planet3_spriteY, MM_Planet3_Width, MM_Planet3_Height);
-
-//    // MM_MonitorFace1
-//    // Fixed offset relative to the background texture
-//    float MM_MonitorFace1_fixedOffsetX = 1850;
-//    float MM_MonitorFace1_fixedOffsetY = 350;
-//    // Scale the fixed offset
-//    float MM_MonitorFace1_spriteX = MM_MonitorFace1_fixedOffsetX * scaleX;
-//    float MM_MonitorFace1_spriteY = MM_MonitorFace1_fixedOffsetY * scaleY;
-//    // Size adjustments
-//    float MM_MonitorFace1_ScaleFactor = 3.5f;
-//    float MM_MonitorFace1_Width = MM_MonitorFace1_frameWidth * MM_MonitorFace1_ScaleFactor;
-//    float MM_MonitorFace1_Height = MM_MonitorFace1_frameHeight * MM_MonitorFace1_ScaleFactor;
-//    batch.draw(MM_MonitorFace1_animation.getKeyFrame(elapsedTime, true), MM_MonitorFace1_spriteX, MM_MonitorFace1_spriteY, MM_MonitorFace1_Width, MM_MonitorFace1_Height);
 
     batch.end();
   }
@@ -300,23 +287,6 @@ public class MainMenuScreen extends ScreenAdapter {
 
     MM_Planet3_animation = new Animation<>(0.17f, MM_Planet3_animationFrames);
 
-
-//    // MM_MonitorFace1
-//    MM_MonitorFace1_Texture = new Texture(Gdx.files.internal("images/background/main_menu/MM_Objects/MM_MonitorFace1.png"));
-
-//    int MM_MonitorFace1_totalColumns=4;
-//    MM_MonitorFace1_frameWidth = MM_MonitorFace1_Texture.getWidth() / MM_MonitorFace1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet
-//    int MM_MonitorFace1_totalRows=1;
-//    MM_MonitorFace1_frameHeight = MM_MonitorFace1_Texture.getHeight() / MM_MonitorFace1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet
-//
-//    TextureRegion[][] MM_MonitorFace1_Frames = TextureRegion.split(MM_MonitorFace1_Texture, MM_MonitorFace1_frameWidth, MM_MonitorFace1_frameHeight);
-//
-//    TextureRegion[] MM_MonitorFace1_animationFrames = new TextureRegion[MM_MonitorFace1_totalColumns];
-//
-//    System.arraycopy(MM_MonitorFace1_Frames[0], 0, MM_MonitorFace1_animationFrames, 0, MM_MonitorFace1_totalColumns);
-//
-//    MM_MonitorFace1_animation = new Animation<>(0.1f, MM_MonitorFace1_animationFrames);
-
     ServiceLocator.getResourceService().loadAll();
   }
 
@@ -329,7 +299,6 @@ public class MainMenuScreen extends ScreenAdapter {
     MM_Planet1_Texture.dispose();
     MM_Planet2_Texture.dispose();
     MM_Planet3_Texture.dispose();
-//    MM_MonitorFace1_Texture.dispose();
   }
 
   /**
