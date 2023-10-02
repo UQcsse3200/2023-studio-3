@@ -79,6 +79,9 @@ public class UIElementsDisplay extends UIComponent {
         updateTimerButton();
     }
 
+    /**
+     * This method creates the timer button.
+     */
     public void createTimerButton() {
 
         timerButton = new ButtonFactory().createButton("Next wave in:"
@@ -87,27 +90,15 @@ public class UIElementsDisplay extends UIComponent {
         buttonTable.add(timerButton).padRight(10f);
     }
 
-//    @Override
-//    public void render(SpriteBatch batch) {
-//        draw(batch);
-//        logger.info("HAHAHHAHAHAHHAHAHAHAHHAHAHAHAHHAHAHAHHAHAHAHHAHAHAHAHHAHAHHA");
-//        updateTimerButton();
-//    }
-
+    /**
+     * This method updates the text for timer button.
+     */
     public void updateTimerButton() {
         int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
         int seconds = totalSecs % 60;
         int minutes = (totalSecs % 3600) / 60;
         String finalTime = String.format("%02d:%02d", minutes, seconds);
         timerButton.setText("Next wave in:" + finalTime);
-    }
-
-    public TextButton getRemainingMobsButton() {
-        return remainingMobsButton;
-    }
-
-    public TextButton getTimerButton() {
-        return timerButton;
     }
 
     @Override
