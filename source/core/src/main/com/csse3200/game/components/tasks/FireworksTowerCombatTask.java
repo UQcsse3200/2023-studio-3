@@ -105,8 +105,8 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
             case ATTACK -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
+                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);
