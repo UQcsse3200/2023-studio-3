@@ -312,7 +312,7 @@ public class ForestGameArea extends GameArea {
     playMusic();
     spawnScrap();
     spawnTNTTower();
-     spawnWeaponTower();
+     //spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
 
