@@ -1,0 +1,573 @@
+
+glass.png
+size: 512, 512
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+dot_gothic_16
+  rotate: false
+  xy: 1, 321
+  size: 505, 107
+  orig: 505, 107
+  offset: 0, 0
+  index: -1
+UI_Glass_Arrow_Large_01a
+  rotate: false
+  xy: 459, 240
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Arrow_Medium_01a
+  rotate: false
+  xy: 67, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Arrow_Small_01a
+  rotate: false
+  xy: 197, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Banner_01a
+  rotate: false
+  xy: 1, 240
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Banner_01b
+  rotate: false
+  xy: 263, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Textfield_01a
+  rotate: false
+  xy: 263, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Lock_01a1
+  rotate: false
+  xy: 1, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Release_01a3
+  rotate: false
+  xy: 1, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Lock_01a2
+  rotate: false
+  xy: 99, 240
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Release_01a2
+  rotate: false
+  xy: 99, 240
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Lock_01a3
+  rotate: false
+  xy: 1, 172
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Release_01a1
+  rotate: false
+  xy: 1, 172
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Lock_01a4
+  rotate: false
+  xy: 99, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Press_01a1
+  rotate: false
+  xy: 197, 240
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Press_01a2
+  rotate: false
+  xy: 1, 138
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Press_01a3
+  rotate: false
+  xy: 99, 172
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Press_01a4
+  rotate: false
+  xy: 197, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Large_Release_01a4
+  rotate: false
+  xy: 197, 206
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Lock_01a1
+  rotate: false
+  xy: 197, 172
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Release_01a3
+  rotate: false
+  xy: 197, 172
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Lock_01a2
+  rotate: false
+  xy: 295, 206
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Release_01a2
+  rotate: false
+  xy: 295, 206
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Lock_01a3
+  rotate: false
+  xy: 393, 240
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Release_01a1
+  rotate: false
+  xy: 393, 240
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Lock_01a4
+  rotate: false
+  xy: 1, 6
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Press_01a1
+  rotate: false
+  xy: 99, 40
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Press_01a2
+  rotate: false
+  xy: 197, 138
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Press_01a3
+  rotate: false
+  xy: 263, 172
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Press_01a4
+  rotate: false
+  xy: 361, 206
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Medium_Release_01a4
+  rotate: false
+  xy: 361, 206
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Lock_01a1 _1
+  rotate: false
+  xy: 329, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Release_01a3
+  rotate: false
+  xy: 329, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Lock_01a2_2
+  rotate: false
+  xy: 427, 206
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Release_01a2
+  rotate: false
+  xy: 427, 206
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Lock_01a3_3
+  rotate: false
+  xy: 101, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Release_01a1
+  rotate: false
+  xy: 101, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Lock_01a4_4
+  rotate: false
+  xy: 231, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Press_01a1_
+  rotate: false
+  xy: 297, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Press_01a2
+  rotate: false
+  xy: 363, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Press_01a3
+  rotate: false
+  xy: 265, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Press_01a4
+  rotate: false
+  xy: 331, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Button_Small_Release_01a4
+  rotate: false
+  xy: 331, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Checkmark_Large_01a
+  rotate: false
+  xy: 397, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Checkmark_Medium_01a
+  rotate: false
+  xy: 299, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Checkmark_Small_01a
+  rotate: false
+  xy: 365, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Cross_Large_01a
+  rotate: false
+  xy: 333, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Cross_Medium_01a
+  rotate: false
+  xy: 165, 40
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Cross_Small_01a
+  rotate: false
+  xy: 135, 6
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Dropdown_01a
+  rotate: false
+  xy: 461, 206
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Dropdown_Handle_01a
+  rotate: false
+  xy: 431, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Fillbar_01a
+  rotate: false
+  xy: 399, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Fillbar_Filler_01a
+  rotate: false
+  xy: 367, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Frame_Horizontal_01a
+  rotate: false
+  xy: 295, 240
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Frame_Inward_01a
+  rotate: false
+  xy: 1, 40
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+UI_Glass_Frame_Lite_01a
+  rotate: false
+  xy: 433, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Frame_Standard_01a
+  rotate: false
+  xy: 99, 74
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+UI_Glass_Frame_Vertical_01a
+  rotate: false
+  xy: 199, 6
+  size: 32, 96
+  orig: 32, 96
+  offset: 0, 0
+  index: -1
+UI_Glass_Minus_Large_01a
+  rotate: false
+  xy: 401, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Minus_Medium_01a
+  rotate: false
+  xy: 233, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Minus_Small_01a
+  rotate: false
+  xy: 233, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Plus_Large_01a
+  rotate: false
+  xy: 267, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Plus_Medium_01a
+  rotate: false
+  xy: 267, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Plus_Small_01a
+  rotate: false
+  xy: 301, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Scrollbar_01a
+  rotate: false
+  xy: 301, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Scrollbar_Handle_01a
+  rotate: false
+  xy: 335, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Select_01a1
+  rotate: false
+  xy: 335, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Select_01a2
+  rotate: false
+  xy: 369, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Select_01a4
+  rotate: false
+  xy: 369, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Select_01a3
+  rotate: false
+  xy: 369, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slider_01a
+  rotate: false
+  xy: 465, 172
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slider_Filler_01a
+  rotate: false
+  xy: 435, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slider_Handle_01a
+  rotate: false
+  xy: 403, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slot_Available_01a
+  rotate: false
+  xy: 467, 138
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slot_Selected_01a
+  rotate: false
+  xy: 403, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Slot_Unavailable_01a
+  rotate: false
+  xy: 437, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Toggle_Bar_01a
+  rotate: false
+  xy: 437, 36
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Toggle_Cover_01a
+  rotate: false
+  xy: 469, 104
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+UI_Glass_Toggle_Handle_01a
+  rotate: false
+  xy: 471, 70
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Toriko
+  rotate: false
+  xy: 1, 430
+  size: 506, 75
+  orig: 506, 75
+  offset: 0, 0
+  index: -1
+Toriko(1)
+  rotate: false
+  xy: 1, 274
+  size: 503, 45
+  orig: 503, 45
+  offset: 0, 0
+  index: -1

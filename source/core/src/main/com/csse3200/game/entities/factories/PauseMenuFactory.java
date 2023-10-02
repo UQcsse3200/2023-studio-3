@@ -1,13 +1,11 @@
 package com.csse3200.game.entities.factories;
 
-import com.badlogic.gdx.utils.Null;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.components.pausemenu.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.utils.Array;
-
 
 /**
  * Factory to create the pause menu and attach its components.
@@ -22,6 +20,7 @@ public class PauseMenuFactory {
      */
     public static Entity createPauseMenu(GdxGame game) {
         if (!previousPauseActive()) {
+
             Entity pauseMenu = new Entity()
                     .addComponent(new PauseMenuTimeStopComponent())
                     .addComponent(new PauseMenuContinueButton())

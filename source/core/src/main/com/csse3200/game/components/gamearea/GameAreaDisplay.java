@@ -72,7 +72,6 @@ public class GameAreaDisplay extends UIComponent {
     Image[] towers2 = new Image[2]; // Create an array for two towers
     Image[] towers3 = new Image[3]; // Create an array for two towers
 
-
     for (int i = 0; i < 2; i++) {
       // Use "building1" for the first tower and "building2" for the second tower
       skin.add("default", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -241,20 +240,18 @@ public class GameAreaDisplay extends UIComponent {
     }
 
     // Create and add the label for the number of towers
-    numTowersLabel1 = new Label("TowersA: " + numTowers1, skin);
-    numTowersLabel1.setPosition(Gdx.graphics.getWidth() * 41f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
-    //  stage.addActor(numTowersLabel1);
-
-    numTowersLabel2 = new Label("TowersA: " + numTowers2, skin);
-    numTowersLabel2.setPosition(Gdx.graphics.getWidth() * 51f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
-    stage.addActor(numTowersLabel2);
-
-    numTowersLabel3 = new Label("TowersB: " + numTowers3, skin);
-    numTowersLabel3.setPosition(Gdx.graphics.getWidth() * 61f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
-    stage.addActor(numTowersLabel3);
+//    numTowersLabel1 = new Label("TowersA: " + numTowers1, skin);
+//    numTowersLabel1.setPosition(Gdx.graphics.getWidth() * 41f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    //  stage.addActor(numTowersLabel1);
+//
+//    numTowersLabel2 = new Label("TowersA: " + numTowers2, skin);
+//    numTowersLabel2.setPosition(Gdx.graphics.getWidth() * 51f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    stage.addActor(numTowersLabel2);
+//
+//    numTowersLabel3 = new Label("TowersB: " + numTowers3, skin);
+//    numTowersLabel3.setPosition(Gdx.graphics.getWidth() * 61f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    stage.addActor(numTowersLabel3);
   }
-
-
 
   public void render(float delta) {
     // ... other rendering logic ...
@@ -263,8 +260,9 @@ public class GameAreaDisplay extends UIComponent {
     stage.act(delta);
     stage.draw();
   }
+
   private Dialog createTowerDetailsDialog() {
-    Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+    Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 
     // Register a label style named "default" with the skin
     Label.LabelStyle labelStyle = new Label.LabelStyle();
@@ -282,7 +280,7 @@ public class GameAreaDisplay extends UIComponent {
     return dialog;
   }
   private void addActors() {
-    title = new Label(this.gameAreaName, skin, "large");
+    title = new Label(this.gameAreaName, skin, "default");
     stage.addActor(title);
   }
 
