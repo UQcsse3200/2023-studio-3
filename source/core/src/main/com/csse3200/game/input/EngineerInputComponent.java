@@ -52,34 +52,36 @@ public class EngineerInputComponent extends InputComponent {
             } else {
                 return false;
             }
-        } else if (engineer.equals(selectedEngineer)) {
-            // Deselect the engineer by clicking on itself
-            this.getWanderTask().setSelected(false);
-            selectedEngineer = null;
-            moveClicked = false;
-            return true;
         }
-
-        this.selectedEngineer = engineer;
-        this.getWanderTask().setSelected(true);
-        logger.info("Engineer size: {}", engineer.getScale());
-
         // Case when engineer is clicked
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
         String currentAnimation = animator.getCurrentAnimation();
         HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
         EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);
-        // outline image if it is not already outlined and vice versa
-        if (currentAnimation.contains("_outline")) {
-            controller.deselectEngineer(currentAnimation);
-            //logger.info("Engineer deselected");
+
+        if (engineer.equals(selectedEngineer)) {
+            // Deselect the engineer by clicking on itself
+            this.getWanderTask().setSelected(false);
+            selectedEngineer = null;
+            moveClicked = false;
+            if (currentAnimation.contains("_outline")) {
+                controller.deselectEngineer(currentAnimation);
+                //logger.info("Engineer deselected");
+            }
         } else {
-            animator.startAnimation(currentAnimation + "_outline");
-            menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
-            controller.setClicked(true);
+            this.selectedEngineer = engineer;
+            this.getWanderTask().setSelected(true);
+            moveClicked = false;
+            logger.info("Engineer size: {}", engineer.getScale());
+
+            // outline image if it is not already outlined and vice versa
+            if (!currentAnimation.contains("_outline")) {
+                animator.startAnimation(currentAnimation + "_outline");
+                menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
+                controller.setClicked(true);
+            }
         }
         return true;
-
     }
 
     private HumanWanderTask getWanderTask() {
