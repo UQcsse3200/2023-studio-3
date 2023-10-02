@@ -25,7 +25,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
-    private static final String IDLE = "startIdle";
+    public static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";
 
