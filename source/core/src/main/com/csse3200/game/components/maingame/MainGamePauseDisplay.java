@@ -53,7 +53,9 @@ public class MainGamePauseDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Pause button clicked");
                         openSound.play(0.4f);
-                        PauseMenuFactory.createPauseMenu(game, false);
+//                        PauseMenuFactory.createPauseMenu(game, false);
+                        PauseMenuFactory.createPauseMenu(game);
+
                     }
                 });
 

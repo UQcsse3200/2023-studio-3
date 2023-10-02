@@ -10,6 +10,8 @@ import com.csse3200.game.components.maingame.MainGamePauseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
+
+import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,14 +32,15 @@ public class PauseMenuContinueButton extends UIComponent {
     public void create() {
         super.create();
         addActors();
+        loadSounds();
     }
 
     private void addActors() {
         table = new Table();
         table.top().right();
         table.setFillParent(true);
-
-        TextButton pauseMenuBtn = new TextButton("Continue", skin);
+        ButtonFactory buttonFactory = new ButtonFactory();
+        TextButton pauseMenuBtn = buttonFactory.createButton("Continue");
 
         // Triggers an event when the button is pressed.
         pauseMenuBtn.addListener(

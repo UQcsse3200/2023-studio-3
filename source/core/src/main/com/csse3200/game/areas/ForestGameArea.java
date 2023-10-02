@@ -18,6 +18,8 @@ import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.screens.AssetLoader;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -27,7 +29,9 @@ import org.slf4j.LoggerFactory;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.Timer;
+import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -37,7 +41,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-
+  private AssetLoader assetLoader;
 
   private static final int NUM_MOBBOSS2=3;
   private static final int NUM_MOBBOSS1=1;
@@ -213,6 +217,7 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickHit.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+
   private static final String[] forestMusic = {backgroundMusic};
   
   private Entity player;
@@ -231,6 +236,9 @@ public class ForestGameArea extends GameArea {
    */
   public ForestGameArea() {
     super();
+  }
+  public void setAssetLoader(AssetLoader assetLoader) {
+    this.assetLoader = assetLoader;
   }
 
   /**
@@ -721,7 +729,14 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, false);
     }
   }
-
+  
+  private void playMusic() {
+    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
+    music.setLooping(true);
+    music.setVolume(0.3f);
+    music.play();
+  }
+  
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -738,11 +753,11 @@ public class ForestGameArea extends GameArea {
 
   private void unloadAssets() {
     logger.debug("Unloading assets");
-    ResourceService resourceService = ServiceLocator.getResourceService();
-    resourceService.unloadAssets(forestTextures);
-    resourceService.unloadAssets(forestTextureAtlases);
-    resourceService.unloadAssets(forestSounds);
-    resourceService.unloadAssets(forestMusic);
+    if (assetLoader != null) {
+      AssetLoader.unloadAllAssets(); // Use the AssetLoader to unload assets if it's not null
+    } else {
+      logger.error("AssetLoader is not set. Cannot unload assets.");
+    }
   }
   
   @Override
