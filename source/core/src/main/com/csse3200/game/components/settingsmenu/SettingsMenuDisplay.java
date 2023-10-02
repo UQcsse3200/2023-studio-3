@@ -20,6 +20,7 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Scaling;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,9 +59,8 @@ public class SettingsMenuDisplay extends UIComponent {
 
     Image background = new Image(ServiceLocator.getResourceService()
             .getAsset("images/background/settings/settings_bg.png", Texture.class));
-    background.setWidth(Gdx.graphics.getWidth());
-    background.setHeight(Gdx.graphics.getHeight());
-    background.setPosition(0, 0);
+    background.setScaling(Scaling.stretch);
+    background.setFillParent(true);
 
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
