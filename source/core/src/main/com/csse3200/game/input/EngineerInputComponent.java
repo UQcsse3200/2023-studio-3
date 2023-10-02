@@ -9,6 +9,7 @@ import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
 import com.csse3200.game.components.tasks.human.HumanMovementTask;
+import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.EngineerFactory;
@@ -36,6 +37,7 @@ public class EngineerInputComponent extends InputComponent {
         Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);
         camera.unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
+        camera.project(worldCoordinates);
         Entity engineer = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
         //logger.info("Clicked entity: " + engineer);
 
@@ -44,12 +46,18 @@ public class EngineerInputComponent extends InputComponent {
             if (selectedEngineer == null) {
                 return false;
             }
-            // TODO: handle moving the engineer to cursorPosition
             moveEngineer(cursorPosition);
+            return true;
+        } else if (engineer.equals(selectedEngineer)) {
+            // Deselect the engineer by clicking on itself
+            this.getWanderTask().setSelected(false);
+            selectedEngineer = null;
             return true;
         }
 
         this.selectedEngineer = engineer;
+        this.getWanderTask().setSelected(true);
+        logger.info("Engineer size: {}", engineer.getScale());
 
         // Case when engineer is clicked
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
@@ -70,14 +78,22 @@ public class EngineerInputComponent extends InputComponent {
         return true;
     }
 
+    private HumanWanderTask getWanderTask() {
+        AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);
+        return movementTask.getTask(HumanWanderTask.class);
+    }
+
     private void moveEngineer(Vector2 cursorPosition) {
         if (selectedEngineer == null) {
             logger.info("Trying to move an engineer that is not selected");
         }
-        AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);
-        HumanMovementTask task = new HumanMovementTask(cursorPosition);
-        movementTask.addTask(task);
-        logger.info("Moving engineer to {}", cursorPosition);
+
+        HumanWanderTask wander = this.getWanderTask();
+        wander.startWaiting();
+        Vector2 enggpos = selectedEngineer.getPosition();
+        Vector2 offset = new Vector2(cursorPosition.x > enggpos.x ? 0.17f : -0.6f , cursorPosition.y > enggpos.y ? 0.0f : -0.5f);
+        Vector2 dest = cursorPosition.add(offset);
+        wander.startMoving(dest);
     }
 
 }
