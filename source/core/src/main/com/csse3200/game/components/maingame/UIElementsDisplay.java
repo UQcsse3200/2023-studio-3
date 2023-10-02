@@ -198,12 +198,4 @@ public class UIElementsDisplay extends UIComponent {
         buttonTable.clear();
         towerTable.clear();
     }
-
-    public TextButton getRemainingMobsButton() {
-        return getRemainingMobsButton();
-    }
-
-    public TextButton getTimerButton() {
-        return timerButton;
-    }
 }
