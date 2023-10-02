@@ -25,6 +25,7 @@ public class UIElementsDisplay extends UIComponent {
     Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
     private TextButton remainingMobsButton;
     private TextButton timerButton;
+    private final int timer = 110;
 
     @Override
     public void create() {
@@ -66,6 +67,8 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
+
+        createTimerButton();
     }
 
     /**
@@ -73,16 +76,30 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void updateMobCount() {
         remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
-        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
-            createTimerButton();
-        }
+        updateTimerButton();
     }
 
     public void createTimerButton() {
+
         timerButton = new ButtonFactory().createButton("Next wave in:"
                 + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         buttonTable.row();
         buttonTable.add(timerButton).padRight(10f);
+    }
+
+//    @Override
+//    public void render(SpriteBatch batch) {
+//        draw(batch);
+//        logger.info("HAHAHHAHAHAHHAHAHAHAHHAHAHAHAHHAHAHAHHAHAHAHHAHAHAHAHHAHAHHA");
+//        updateTimerButton();
+//    }
+
+    public void updateTimerButton() {
+        int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
+        int seconds = totalSecs % 60;
+        int minutes = (totalSecs % 3600) / 60;
+        String finalTime = String.format("%02d:%02d", minutes, seconds);
+        timerButton.setText("Next wave in:" + finalTime);
     }
 
     public TextButton getRemainingMobsButton() {

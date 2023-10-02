@@ -31,15 +31,16 @@
 //        ResourceService resourceService = mock(ResourceService.class);
 //        WaveService waveService = mock(WaveService.class);
 //
+//        display = new UIElementsDisplay();
+//
 //        ServiceLocator.registerRenderService(renderService);
 //        ServiceLocator.registerResourceService(resourceService);
 //        ServiceLocator.registerWaveService(waveService);
 //
 //        when(ServiceLocator.getWaveService().getEnemyCount()).thenReturn(10);
 //        when(ServiceLocator.getWaveService().getNextWaveTime()).thenReturn(10000L); // Example time
+//        when(ServiceLocator.getWaveService().getDisplay()).thenReturn(display);
 //
-//        display = waveService.getDisplay();
-//        display.create();
 //    }
 //
 //    @Test
