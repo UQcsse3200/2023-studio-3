@@ -268,7 +268,7 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(15, 4);
 //    spawnScrap();
 //    spawnTNTTower();
-//    spawnWeaponTower();
+    spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
     spawnScrap();
@@ -604,6 +604,7 @@ public class ForestGameArea extends GameArea {
       Entity stunTower = TowerFactory.createStunTower();
       spawnEntityAt(fireTower, randomPos1, true, true);
       spawnEntityAt(stunTower, randomPos2, true, true);
+      spawnEntityAt(wallTower, randomPos2, true, true);
     }
   }
 
@@ -704,7 +705,7 @@ public class ForestGameArea extends GameArea {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
     
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
       spawnEntityAt(towerfactory, randomPos, true, true);

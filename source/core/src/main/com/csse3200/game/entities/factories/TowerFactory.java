@@ -35,6 +35,8 @@ public class TowerFactory {
 
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
+
+    private static final int BASE_FIRE_RATE = 1;
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;

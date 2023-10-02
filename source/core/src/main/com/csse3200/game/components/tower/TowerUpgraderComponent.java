@@ -25,7 +25,7 @@ public class TowerUpgraderComponent extends Component {
      * @param upgradeType An enum indicating the type of upgrade to do
      * @param value How much the upgrade should change the tower's stats, if applicable
      */
-    void upgradeTower(UPGRADE upgradeType, int value) {
+    public void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
             case ATTACK -> {upgradeTowerAttack(value);}
             case MAXHP -> {upgradeTowerMaxHealth(value);}

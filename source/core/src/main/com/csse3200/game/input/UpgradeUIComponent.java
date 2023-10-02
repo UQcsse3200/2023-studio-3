@@ -7,15 +7,18 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
@@ -23,16 +26,19 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class UpgradeUIComponent extends InputComponent {
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
     private final EntityService entityService;
     private final Camera camera;
     private final Stage stage;
 
+    private int value;
 
-
-    private Table upgradeTable;
-    int value;
+    // Create a map to store upgrade tables for each turret entity
+    private Map<Entity, Table> upgradeTables = new HashMap<>();
 
     /**
      * Constructor for the UpgradeUIComponent
@@ -43,8 +49,6 @@ public class UpgradeUIComponent extends InputComponent {
         this.entityService = ServiceLocator.getEntityService();
         this.camera = camera;
         this.stage = stage;
-
-
     }
 
     /**
@@ -59,48 +63,63 @@ public class UpgradeUIComponent extends InputComponent {
         return stage;
     }
 
-    /**
-     * When the mouse is clicked, this method is called.
-     *
-     * @param screenX The x coordinate, origin is in the upper left corner
-     * @param screenY The y coordinate, origin is in the upper left corner
-     * @param pointer the pointer for the event.
-     * @param button the button
-     * @return
-     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);
-        getCamera().unproject(worldCoordinates); // translate from screen to world coordinates
+        // Clear all existing upgrade tables
+
+
+        Vector3 worldCoordinates = new Vector3((float) screenX, (float) screenY, 0);
+        getCamera().unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null) {
             logger.info("clicked a turret that is upgradable!");
-            createUpgradeTable(clickedEntity);
-            Vector2 UICoordinates = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
-            upgradeTable.setPosition(UICoordinates.x, UICoordinates.y);
-            stage.addActor(upgradeTable);
+            clearUpgradeTables();
+            // Check if there is an existing upgrade table for this turret entity
+            Table existingUpgradeTable = upgradeTables.get(clickedEntity);
+
+            if (existingUpgradeTable != null) {
+                // If an upgrade table already exists, show it
+                stage.addActor(existingUpgradeTable);
+            } else {
+                // If no upgrade table exists, create and store a new one
+                Table newUpgradeTable = createUpgradeTable(clickedEntity);
+                Vector2 UICoordinates = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
+                newUpgradeTable.setPosition(UICoordinates.x, UICoordinates.y);
+                stage.addActor(newUpgradeTable);
+
+                // Store the new upgrade table in the map
+                upgradeTables.put(clickedEntity, newUpgradeTable);
+            }
+
             return true;
         }
         return false;
     }
 
-    private void createUpgradeTable(Entity turretEntity) {
-        upgradeTable = new Table();
+    // Create a method to clear all existing upgrade tables
+    private void clearUpgradeTables() {
+        for (Table upgradeTable : upgradeTables.values()) {
+            upgradeTable.remove();
+        }
+        upgradeTables.clear();
+    }
+
+    private Table createUpgradeTable(Entity turretEntity) {
+        Table upgradeTable = new Table();
         upgradeTable.top();
         upgradeTable.defaults().pad(0).space(0);
-        upgradeTable.setSize(60,60);
+        upgradeTable.setSize(60, 60);
         Table innerUpgradeTable = new Table();
         innerUpgradeTable.top();
         innerUpgradeTable.defaults().pad(10).space(0).padBottom(1);
-        innerUpgradeTable.setSize(60,60);
+        innerUpgradeTable.setSize(60, 60);
         // set table background
         String imageFilePath = "images/ui/Sprites/UI_Glass_Frame_Standard_01a.png";
         String upgradeButtonFilePath = "images/economy/scrapBanner.png";
         Drawable drawableBackground = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));
         innerUpgradeTable.setBackground(drawableBackground);
-//        upgradeTable.setBackground(drawableBackground);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/ui/Sprites/UI_Glass_Button_Small_Lock_01a2.png")));
         Drawable econDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(upgradeButtonFilePath)));
@@ -110,33 +129,97 @@ public class UpgradeUIComponent extends InputComponent {
                 econDrawable, econDrawable, econDrawable, new BitmapFont());
         // create button
         int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
-        Label health = new Label(String.format("Max Health: %d", maxHealth), createLabelStyle());
-        Label attack = new Label(String.format("Attack: %d", turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack()), createLabelStyle());
+        int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
+        turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
+        int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
+        Label healthLabel = new Label(String.format("Health:%d/%d", currentHealth, maxHealth), createLabelStyle());
+        Label attackLabel = new Label(String.format("Attack: %d", attack), createLabelStyle());
         TextButton closeButton = new TextButton("X", style);
-        TextButton upgradeButton = new TextButton("Upgrade", style);
+        closeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                upgradeTable.remove();
+                // Remove the upgrade table from the map
+                upgradeTables.remove(turretEntity);
+            }
+        });
+
+        TextButton upgradeHealth = new TextButton("+H", style);
+        upgradeHealth.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                if (value >= 100) {
+                    value -= 100;
+                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+
+                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, 10);
+                    int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
+                    int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
+                    healthLabel.setText(String.format("Health:%d/%d", currentHealth, maxHealth));
+                }
+            }
+        });
+
+        TextButton upgradeAttack = new TextButton("+A", style);
+        upgradeAttack.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                if (value >= 10) {
+                    value -= 10;
+                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 5);
+
+                    int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
+                    attackLabel.setText(String.format("Attack: %d", attack));
+                }
+            }
+        });
+
+        TextButton repairButton = new TextButton("R", style);
+        repairButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                if (value >= 100) {
+                    value -= 100;
+                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.REPAIR, 0);
+                    int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
+                    healthLabel.setText(String.format("Health:%d/%d", currentHealth, maxHealth));
+                }
+            }
+        });
+
         upgradeTable.add(closeButton).right().top();
         upgradeTable.row();
 
         innerUpgradeTable.row();
-        innerUpgradeTable.add(health).expandX().left();
+        innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
-        innerUpgradeTable.add(attack).expandX().left();
+        if (attack != 0) {
+            innerUpgradeTable.add(attackLabel).expandX().left();
+        }
         innerUpgradeTable.row();
-        innerUpgradeTable.add(upgradeButton).expandX().fillX();
+        innerUpgradeTable.add(upgradeHealth).expandX().fillX();
+        if (attack != 0) {
+            innerUpgradeTable.add(upgradeAttack).expandX().fillX();
+        }
+        innerUpgradeTable.add(repairButton).expandX().fillX();
         upgradeTable.add(innerUpgradeTable).center().expand().row();
 
-
         upgradeTable.setVisible(true);
+        return upgradeTable;
     }
 
     private LabelStyle createLabelStyle() {
         LabelStyle style = new LabelStyle();
-
         style.font = new BitmapFont();
         style.fontColor = Color.WHITE;
         return style;
     }
-
-
-
 }
