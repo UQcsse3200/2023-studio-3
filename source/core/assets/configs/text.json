@@ -1,7 +1,0 @@
-{
-  "com.badlogic.gdx.graphics.g2d.BitmapFont": {
-    "default": {
-      "file": "images/ui/font.fnt"
-    }
-  }
-}
