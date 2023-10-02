@@ -124,7 +124,10 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         }
         if (health <= 0) {
             changeState(STATE.DEATH);
-            iceBaby.setFlagForDelete(true);
+            animate();
+            if (animation.isFinished()) {
+                iceBaby.setFlagForDelete(true);
+            }
         }
 
         switch (iceBabyState) {
