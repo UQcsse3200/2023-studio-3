@@ -28,6 +28,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
+    private Sound buildSound;
 
     /**
      * Adds actors to stage
@@ -36,6 +37,7 @@ public class CurrencyDisplay extends UIComponent {
     public void create() {
         super.create();
         clickSound = ServiceLocator.getResourceService().getAsset("sounds/economy/click.wav", Sound.class);
+        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
         addActors();
     }
 
@@ -107,11 +109,19 @@ public class CurrencyDisplay extends UIComponent {
      * @param offset value to offset the height of the label by
      */
     public void currencyPopUp(float x , float y, int amount, int offset) {
-        // play sound and set the volume
-        long soundId = clickSound.play();
-        clickSound.setVolume(soundId, 0.4f);
+        Label label;
+        if (amount > 0) {
+            // play sound and set the volume
+            long soundId = clickSound.play();
+            clickSound.setVolume(soundId, 0.4f);
+            label = new Label(String.format("+%d", amount), skin);
+        } else {
+            // play sound and set the volume
+            long soundId = buildSound.play();
+            buildSound.setVolume(soundId, 0.4f);
+            label = new Label(String.format("%d", amount), skin);
+        }
 
-        Label label = new Label(String.format("+%d", amount), skin);
         // remove label after it fades out
         label.addAction(new SequenceAction(Actions.fadeOut(1.5f), Actions.removeActor()));
 

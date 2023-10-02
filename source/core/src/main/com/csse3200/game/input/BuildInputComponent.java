@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.csse3200.game.areas.ForestGameArea;
-import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
@@ -84,12 +83,9 @@ public class BuildInputComponent extends InputComponent {
 //            float X = clickedEntity.getCenterPosition().x;
 //            float Y = clickedEntity.getCenterPosition().y;
 
-            // Add the new entity to the game
-//            Entity newTower = TowerFactory.createDroidTower();
-//
 //            EntityService.removeEntity(clickedEntity);
             // display a visual indication that currency has been decremented
-            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(screenX, screenY, value, 10);
+            ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(cursorPosition.x, cursorPosition.y, value, 10);
 
             //logger.info("Scrap amount: " + ServiceLocator.getCurrencyService().getScrap().getAmount());
             return true;
