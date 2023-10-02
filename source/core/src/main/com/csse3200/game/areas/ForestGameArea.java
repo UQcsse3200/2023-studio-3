@@ -89,7 +89,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Hurt.png",
           "images/mobs/Idle.png",
           "images/mobs/rangeBossRight.png",
-          "images/towers/WallTower.png",
+          "images/towers/wall_tower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/terrain_use.png",
@@ -276,13 +276,22 @@ public class ForestGameArea extends GameArea {
 //    spawnTNTTower();
 //    spawnIncome();
     spawnIncome();
+    playMusic();
+    spawnXenoGrunts();
+    startWaveTimer();
+    spawnScrap();
+    spawnDeflectXenoGrunt(15, 5);
+    spawnSplittingXenoGrunt(15, 4);
+    spawnScrap();
+    spawnTNTTower();
+    spawnWeaponTower();
+    spawnGapScanners();
     spawnDroidTower();
 
   }
 
   private void displayUI() {
     Entity ui = new Entity();
-    ui.addComponent(new GameAreaDisplay("Box Forest"));
     ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);

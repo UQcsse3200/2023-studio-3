@@ -2,22 +2,33 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Text;
 
 
 import java.util.*;
@@ -26,18 +37,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
     private static final int MAX_SELECTED_TURRETS = 5;
     private Stage stage;
+    private Label descText;
     private List<TowerType> turretList;
     private TextButton confirmButton;
+    private String turretDescriptionText;
 
     private GdxGame game;
 
     private SpriteBatch batch;
+    private String turretDescription;
+    private String turretName;
 
+    TextButton turretDescriptionLabel;
     private Sprite introSprite;
 
     private Label message;
-    private Label turretsPicked;
     private Table table;
+    private TextButton descriptionLabel;
     private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
 
@@ -60,12 +76,15 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretList.addAll(Arrays.asList(TowerType.values()));
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
-
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         message = new Label("Select your turrets", skin);
-        turretsPicked = new Label("Turrets picked: ", skin);
 
-        confirmButton = new TextButton("Continue", skin);
+        confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
+                "images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png", "Continue", "", "");
+        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
+                new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
+        confirmButton.getStyle().down = pressDrawable;
+        confirmButton.pad(0,0,6,0);
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -73,9 +92,20 @@ public class TurretSelectionScreen extends ScreenAdapter {
             }
         });
 
+        turretDescriptionLabel = createButton("images/turret-select/imageedit_28_4047785594.png",
+                "images/turret-select/imageedit_28_4047785594.png", "", "", turretDescriptionText);
+
+        BitmapFont font = new BitmapFont();
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;  // Set your desired BitmapFont
+        descText = new Label(turretDescriptionText, labelStyle);
+        descText.setWrap(true);
+        descText.setWidth(190f);
+
+        turretName = "";
+
         // Centered the message and turrets label
         table.add(message).center().colspan(4).row();
-        table.add(turretsPicked).center().colspan(4).row();
         int towersPerRow = 4; // Set the number of towers to display per row
         int numRows = (int) Math.ceil((double)turretList.size() / towersPerRow); // Calculate the number of rows
 
@@ -92,23 +122,19 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 Table turretTable = new Table();
                 turretTable.center(); // Center the contents of the nested table
 
-                // Load the turret image
-                Texture turretTexture = new Texture(Gdx.files.internal(turret.getImagePath()));
-                Image turretImage = new Image(turretTexture);
+                descriptionLabel = createButton("images/turret-select/imageedit_15_5627113584.png",
+                        "images/turret-select/imageedit_15_5627113584.png", "Description: ", turretName, "");
 
-                // Add the image to the nested table
-                turretTable.add(turretImage).pad(10).row();
+                //turretDescriptionText = createButton("images/turret-select/imageedit_20_9050213399.png",
+                       // "images/turret-select/imageedit_20_9050213399.png", )
 
-                // Create a label for the turret description
-                Label turretDescriptionLabel = new Label(turret.getDescription(), skin);
-                turretDescriptionLabel.setWrap(true); // Wrap text if it's too long
 
-                // Add the description label to the nested table
-                turretTable.add(turretDescriptionLabel).center().width(200).pad(10).row(); // Adjust width if needed
+                TextButton button = createButton(turret.getDefaultImage(),
+                        turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());
+                
+                button.pad(103, 15, 0, 0);
+                button.addListener(new ClickListener() {
 
-                // Create a TextButton for the turret name
-                TextButton turretButton = new TextButton(turret.getTowerName(), skin);
-                turretButton.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         logger.info(String.valueOf(selectedTurrets.size()));
@@ -122,20 +148,17 @@ public class TurretSelectionScreen extends ScreenAdapter {
                             selectedTurrets.remove(turret);
                             // You can also change the button appearance to indicate unselection
                             logger.info(selectedTurrets.toString());
-                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
                         } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {
                             // Turret is not selected, but the max number of turrets has been reached
                             message.setText("You can only select up to 5 turrets.");
                         } else if (selectedTurrets.size() < MAX_SELECTED_TURRETS) {
                             // Turret is not selected, select it
                             selectedTurrets.add(turret);
-                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
                             logger.info(selectedTurrets.toString());
                         }
                         else {
                             // Turret is not selected, select it
                             selectedTurrets.add(turret);
-                            turretsPicked.setText("Turrets picked: " + selectedTurrets.toString());
                             //logger.info(selectedTurrets.toString());
 
                             // You can change the button appearance to indicate selection
@@ -143,8 +166,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
                     }
                 });
 
-                // Add the turret name button to the nested table
-                turretTable.add(turretButton).center();
+                // Add the image to the nested table
+                turretTable.add(button).pad(10).row();
 
                 // Add the nested table to the main table
                 table.add(turretTable).pad(10).center();
@@ -161,6 +184,21 @@ public class TurretSelectionScreen extends ScreenAdapter {
         // Centered the "continue" button
         table.add(confirmButton).center().colspan(4).padBottom(20).row();
 
+        descriptionLabel.setPosition(Gdx.graphics.getWidth() - descriptionLabel.getWidth(), Gdx.graphics.getHeight() - descriptionLabel.getHeight());
+        float turretDescriptionLabelX = Gdx.graphics.getWidth() - turretDescriptionLabel.getWidth() - 11;
+        float turretDescriptionLabelY = Gdx.graphics.getHeight() - descriptionLabel.getHeight() - turretDescriptionLabel.getHeight() - 7;  // Adjusted vertical position
+
+// Set the position for turretDescriptionLabel
+        turretDescriptionLabel.setPosition(turretDescriptionLabelX, turretDescriptionLabelY);
+        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 70);
+
+// Add the actors to the stage
+        stage.addActor(turretDescriptionLabel);
+        stage.addActor(descriptionLabel);
+        stage.addActor(descText);
+
+
+
         // Center the table within the stage
         table.center();
         stage.addActor(table);
@@ -172,14 +210,82 @@ public class TurretSelectionScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
         introSprite.draw(batch);
         batch.end();
-        stage.draw();
+
+        stage.act();  // Update the stage
+        stage.draw();  // Draw the stage
     }
 
     public List<TowerType> getTurretList() {
         return turretList;
+    }
+
+    private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, String cost,
+                                    String towerName, String turretDesc) {
+        Drawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(defaultImageFilePath)));
+        Drawable alternateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(alternateImageFilePath)));
+
+        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
+        buttonStyle.font = new BitmapFont(); // Set your desired font
+        buttonStyle.up = defaultDrawable; // Default state
+
+        // Create button
+        TextButton tb = new TextButton(cost, buttonStyle);
+
+        final boolean[] isDefaultImage = {true}; // Keep track of the image state
+
+        tb.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                super.clicked(event, x, y);
+
+                // Toggle the image
+                if (isDefaultImage[0]) {
+                    tb.getStyle().up = alternateDrawable;
+                } else {
+                    tb.getStyle().up = defaultDrawable;
+                }
+
+                // Update the image state
+                isDefaultImage[0] = !isDefaultImage[0];
+            }
+        });
+
+        // Add a hover listener to update turretName when hovered over
+        tb.addListener(new InputListener() {
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
+                super.enter(event, x, y, pointer, fromActor);
+                turretDescription = towerName;  // Update turretDescription when hovering over the button
+                turretDescriptionText = turretDesc;
+                updateDescriptionLabel();
+                updateDescriptionText();
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor toActor) {
+                super.exit(event, x, y, pointer, toActor);
+                turretDescription = "";  // Reset turretDescription when exiting the button
+                turretDescriptionText = "";
+                updateDescriptionLabel();
+                updateDescriptionText();
+            }
+        });
+
+        tb.setDisabled(true);
+
+        return tb;
+    }
+
+    private void updateDescriptionLabel() {
+        descriptionLabel.setText("Description: " + turretDescription);
+    }
+
+    private void updateDescriptionText() {
+        descText.setText(turretDescriptionText);
     }
 
     @Override
