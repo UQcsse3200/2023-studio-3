@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
-  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png"};
+  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png","images/terrain_use.png"};
   private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
@@ -96,15 +96,14 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
-
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
     createUI();
-
+    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
     logger.debug("Initialising main game screen entities");
-    TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
-    ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
+//    TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
+    ForestGameArea forestGameArea = new ForestGameArea();
     forestGameArea.create();
   }
 

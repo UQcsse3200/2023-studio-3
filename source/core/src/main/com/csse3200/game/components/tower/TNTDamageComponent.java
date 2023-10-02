@@ -124,6 +124,7 @@ public class TNTDamageComponent extends Component {
 
             Body targetBody = physicsComponent.getBody();
             Vector2 direction = target.getCenterPosition().sub(entity.getCenterPosition()).nor();
+            direction.y = 0;
             Vector2 impulse = direction.scl(knockbackForce);
             targetBody.applyLinearImpulse(impulse, targetBody.getWorldCenter(), true);
         }

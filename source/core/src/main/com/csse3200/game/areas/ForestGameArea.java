@@ -3,6 +3,9 @@ package com.csse3200.game.areas;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
+
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.ProjectileEffects;
@@ -15,6 +18,7 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.security.SecureRandom;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -86,7 +90,6 @@ public class ForestGameArea extends GameArea {
           "images/towers/wallTower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
-          "images/terrain_use.png",
           "images/Dusty_MoonBG.png",
           "images/economy/scrap.png",
           "images/economy/crystal.png",
@@ -109,7 +112,16 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png",
           "images/mobboss/patrick.png",
+          "images/GrassTile/grass_tile_1.png",
+          "images/GrassTile/grass_tile_2.png",
+          "images/GrassTile/grass_tile_3.png",
+          "images/GrassTile/grass_tile_4.png",
+          "images/GrassTile/grass_tile_5.png",
+          "images/GrassTile/grass_tile_6.png",
+          "images/GrassTile/grass_tile_7.png",
+          "images/highlight_tile.png",
           "images/mobboss/iceBaby.png"
+
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -196,7 +208,7 @@ public class ForestGameArea extends GameArea {
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
   
-  private final TerrainFactory terrainFactory;
+//  private final TerrainFactory terrainFactory;
   
   private Entity player;
   private Entity waves;
@@ -210,12 +222,10 @@ public class ForestGameArea extends GameArea {
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
    *
-   * @param terrainFactory TerrainFactory used to create the terrain for the GameArea.
    * @requires terrainFactory != null
    */
-  public ForestGameArea(TerrainFactory terrainFactory) {
+  public ForestGameArea() {
     super();
-    this.terrainFactory = terrainFactory;
   }
 
   /**
@@ -293,21 +303,16 @@ public class ForestGameArea extends GameArea {
     logger.info("Lol");
     
     // Set up infrastructure for end game tracking
-    player = spawnPlayer();
+//    player = spawnPlayer();
 
     waves = WaveFactory.createWaves();
     spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 
     playMusic();
-    //spawnXenoGrunts();
-    //startWaveTimer();
-    spawnScrap();
-    //spawnDeflectXenoGrunt(15, 5);
-    //spawnSplittingXenoGrunt(15, 4);
     spawnScrap();
     spawnTNTTower();
-    // spawnWeaponTower();
+     //spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
 
@@ -323,8 +328,8 @@ public class ForestGameArea extends GameArea {
   
   private void spawnTerrain() {
 
-    terrain = terrainFactory.createTerrain(TerrainType.ALL_DEMO);
-    spawnEntity(new Entity().addComponent(terrain));
+    terrain = ServiceLocator.getMapService().getComponent();
+    spawnEntity(ServiceLocator.getMapService().getEntity());
     
     // Terrain walls
     float tileSize = terrain.getTileSize();
@@ -357,47 +362,6 @@ public class ForestGameArea extends GameArea {
             false);
   }
 
-
-//  private void spawnBuilding1() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_BUILDINGS; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity building1 = ObstacleFactory.createBuilding1();
-//      spawnEntityAt(building1, randomPos, true, false);
-//    }
-//  }
-//  private void spawnBuilding2() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//
-//    for (int i = 0; i < NUM_BUILDINGS; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity building2 = ObstacleFactory.createBuilding2();
-//      spawnEntityAt(building2, randomPos, true, false);
-//    }
-//  }
-
-
-//  private void spawnMountains() {
-//    ArrayList<GridPoint2> fixedPositions = new ArrayList<>(); //Generating ArrayList
-//
-//    fixedPositions.add(new GridPoint2(5, 8));
-//    fixedPositions.add(new GridPoint2(12, 4));
-//    fixedPositions.add(new GridPoint2(20, 10));
-//    fixedPositions.add(new GridPoint2(33, 17));
-//
-//    for (GridPoint2 fixedPos : fixedPositions) {
-//      Entity tree = ObstacleFactory.createMountain();
-//      spawnEntityAt(tree, fixedPos, true, false);
-//    }
-//    for (int i = 0; i < NUM_BUILDINGS; i++) {
-//      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-//      Entity building1 = ObstacleFactory.createBuilding1();
-//      spawnEntityAt(building1, randomPos, true, false);
-//    }
-//  }
   
   private void spawnBuilding2() {
     GridPoint2 minPos = new GridPoint2(0, 0);
@@ -423,28 +387,6 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
-//  private void spawnGhosts() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 2);
-//
-//    for (int i = 0; i < NUM_GHOSTS; i++) {
-//      int fixedX = terrain.getMapBounds(0).x - 1; // Rightmost x-coordinate
-//      int randomY = MathUtils.random(0, maxPos.y);
-//      GridPoint2 randomPos = new GridPoint2(fixedX, randomY);
-//      Entity ghost = createGhost(player);
-//      spawnEntityAt(ghost, randomPos, true, true);
-//    }
-//  }
-
-//  private Entity spawnMobBoss1() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-//    GridPoint2 randomPos
-//     = new GridPoint2(0, 0);
-//    Entity ghostKing = NPCFactory.createGhostKing(player);
-//    spawnEntityAt(ghostKing, randomPos, true, true);
-//    return ghostKing;
-//  }
 
   private void spawnDemonBoss() {
     Entity demon = MobBossFactory.createDemonBoss();
@@ -584,7 +526,9 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnFireWorm() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -595,7 +539,8 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnSkeleton() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -606,7 +551,9 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDragonKnight() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -617,7 +564,9 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWizard() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -628,7 +577,9 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterQueen() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -639,7 +590,9 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnWaterSlime() {
-    int[] pickedLanes = rand.ints(1, 7)
+
+    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+
             .distinct().limit(5).toArray();
     for (int i = 0; i < NUM_GRUNTS; i++) {
       GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
@@ -648,6 +601,7 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(waterSlime, randomPos, true, false);
     }
   }
+
 
 //  private Entity spawnGhostKing() {
 //    GridPoint2 minPos = new GridPoint2(0, 0);
@@ -745,12 +699,13 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
+
   
   private void spawnWeaponTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 3; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 7 ; i++) {
       GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
       GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
       Entity wallTower = TowerFactory.createWallTower();
@@ -776,10 +731,10 @@ public class ForestGameArea extends GameArea {
   }
   
   private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
     
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createTNTTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
@@ -788,13 +743,13 @@ public class ForestGameArea extends GameArea {
   }
 
   private void spawnDroidTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createDroidTower();
-      spawnEntityAt(weaponTower, randomPos, true, true);
+      spawnEntityAt(weaponTower, randomPos, true, false);
     }
   }
   
