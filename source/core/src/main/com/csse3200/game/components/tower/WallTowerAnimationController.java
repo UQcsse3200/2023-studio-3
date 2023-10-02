@@ -10,9 +10,11 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 public class WallTowerAnimationController extends Component{
     //Event name constants
     private static final String DEATH = "startDeath";
+    private static final String IDLE = "startIdle";
 
     //animation name constants
     private static final String DEATH_ANIM = "Death";
+    private static final String Idle_ANIM = "Idle";
     //here we can add the sounds for the implemented animations
 
     AnimationRenderComponent animator;
@@ -25,11 +27,15 @@ public class WallTowerAnimationController extends Component{
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener(DEATH, this::animateDeath);
+        entity.getEvents().addListener(IDLE, this::animateIdle);
     }
     /**
      * Starts the idle animation.
      */
     void animateDeath() {
         animator.startAnimation(DEATH_ANIM);
+    }
+    void animateIdle(){
+        animator.startAnimation(Idle_ANIM);
     }
 }

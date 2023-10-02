@@ -31,6 +31,41 @@ Death
   orig: 32, 18
   offset: 0, 0
   index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
 Default
   rotate: false
   xy: 32, 17
@@ -38,3 +73,4 @@ Default
   orig: 32, 18
   offset: 0, 0
   index: -1
+

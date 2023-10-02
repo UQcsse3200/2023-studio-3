@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -19,10 +21,12 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class WallTowerDestructionTask extends DefaultTask implements PriorityTask {
     // constants
-
+    // Time interval (in seconds) to scan for enemies
+    private static final int INTERVAL = 1;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
+    public static final String IDLE = "startIdle";
     public static final String DEATH = "startDeath";
 
 
@@ -39,7 +43,6 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
     public enum STATE {
         IDLE, ATTACK, DEATH
     }
-
     public STATE towerState = STATE.IDLE;
 
     /**
@@ -62,29 +65,76 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
         // Get the tower coordinates
         this.towerPosition = owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
+        // Set the default state to IDLE state
+        owner.getEntity().getEvents().trigger(IDLE);
 
-        endTime = timeSource.getTime() + (5000);
+        endTime = timeSource.getTime() + (INTERVAL * 5000);
     }
 
+    /**
+     * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
+     * state is activated and otherwise idle state remains.
+     */
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (1000);
+            endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 
+    /**
+     * This method acts is the state machine for StunTower. Relevant animations are triggered based on relevant state
+     * of the game. If enemies are detected, state of the tower is changed to attack state.
+     */
     public void updateTowerState() {
 
         if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
             owner.getEntity().getEvents().trigger(DEATH);
-            if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                owner.getEntity().setFlagForDelete(true);
+            towerState = STATE.DEATH;
+            return;
+        }
+
+        switch (towerState) {
+            case IDLE -> {
+                owner.getEntity().getEvents().trigger(IDLE);
+                towerState = STATE.ATTACK;
+            }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
             }
         }
     }
+
+    /**
+     * Returns the state that the tower is currently in
+     * @return this.towerState
+     */
+    public STATE getState() {
+        return this.towerState;
+    }
+
+    /**
+     * stops the current animation and switches back the state of the tower to IDLE.
+     */
+    public void stop() {
+        super.stop();
+        owner.getEntity().getEvents().trigger(IDLE);
+    }
+
+    /**
+     * returns the current priority of the task
+     * @return (int) active priority if target is visible and inactive priority otherwise
+     */
     public int getPriority() {
         return !isTargetVisible() ? 0 : priority;
     }
+
+    /**
+     * Searches for enemies/mobs in a straight line from the centre of the tower to maxRange in a straight line.
+     * @return true if targets are detected, false otherwise
+     */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }

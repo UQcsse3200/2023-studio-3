@@ -28,6 +28,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     public static final String IDLE = "startIdle";
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";
+    public static final String ALERT = "startAlert";
 
     // Class attributes
     private final int priority;
@@ -96,6 +97,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
         switch (towerState) {
             case IDLE -> {
                 if (isTargetVisible()) {
+                    owner.getEntity().getEvents().trigger(ALERT);
                     owner.getEntity().getEvents().trigger(ATTACK);
                     towerState = STATE.ATTACK;
                 }
@@ -105,6 +107,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(IDLE);
                     towerState = STATE.IDLE;
                 } else {
+                    owner.getEntity().getEvents().trigger(ALERT);
                     owner.getEntity().getEvents().trigger(ATTACK);
                     Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
                             new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));

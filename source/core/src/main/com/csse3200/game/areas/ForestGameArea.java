@@ -117,7 +117,8 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/patrick.png",
           "images/towers/fireworks_tower.png",
           "images/towers/barrier.png",
-          "images/towers/wall_tower.png"
+          "images/towers/wall_tower.png",
+          "images/towers/PierceTower.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -159,7 +160,8 @@ public class ForestGameArea extends GameArea {
           "images/mobs/water_slime.atlas",
           "images/mobboss/patrick.atlas",
           "images/towers/fireworks_tower.atlas",
-          "images/towers/barrier.atlas"
+          "images/towers/barrier.atlas",
+          "images/towers/PierceTower.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -287,6 +289,7 @@ public class ForestGameArea extends GameArea {
     spawnGapScanners();
     spawnDroidTower();
     spawnFireWorksTower();
+    spawnPierceTower();
 
   }
   
@@ -663,12 +666,23 @@ public class ForestGameArea extends GameArea {
   }
   private void spawnFireWorksTower() {
     GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
 
     for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity FireWorksTower = TowerFactory.createFireworksTower();
       spawnEntityAt(FireWorksTower, randomPos, true, true);
+    }
+
+  }
+  private void spawnPierceTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(3, 3);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity PierceTower = TowerFactory.createPierceTower();
+      spawnEntityAt(PierceTower, randomPos, true, true);
     }
 
   }
