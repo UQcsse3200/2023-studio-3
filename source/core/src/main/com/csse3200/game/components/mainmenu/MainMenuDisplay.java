@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
@@ -61,19 +61,16 @@ public class MainMenuDisplay extends UIComponent {
 
         // Create an instance of the ButtonFactory class
         ButtonFactory buttonFactory = new ButtonFactory();
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 
 // Create a "Start" TextButton using the default style
-        TextButton startBtn = buttonFactory.createButton("Start");
-
+        TextButton startBtn = new TextButton("Start", skin);
 // Create a "Help" TextButton using the default style
-        TextButton loadBtn = buttonFactory.createButton("Help");
-
+        TextButton loadBtn = new TextButton("Help", skin);
 // Create a "Settings" TextButton with a custom image
-        TextButton settingsBtn = buttonFactory.createCustomButton("Settings", "images/ui/Sprites/UI_Glass_Button_Large_Lock_01a2.png");
-
+        TextButton settingsBtn = new TextButton("Settings", skin);
 // Create a "Quit" TextButton with a custom image
-        TextButton exitBtn = buttonFactory.createCustomButton("Quit", "images/ui/Sprites/UI_Glass_Button_Large_Press_01a2.png");
-
+        TextButton exitBtn = new TextButton("Quit", skin);
 
         // Triggers an event when the button is pressed
         startBtn.addListener(

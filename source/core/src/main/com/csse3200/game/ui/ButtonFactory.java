@@ -92,14 +92,15 @@ public class ButtonFactory {
      */
     public TextButton createCustomButtonWithAtlas(String text, String atlasPath) {
         // Create a custom button with a TextureAtlas
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
-        Skin customSkin = new Skin(atlas);
 
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = customSkin.getFont("default"); // for custom font if specified in the atlas
-        style.up = customSkin.getDrawable("button"); // for the button drawable from the atlas
+//        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
+//        Skin customSkin = new Skin(atlas);
+//
+//        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+//        style.font = customSkin.getFont("default"); // for custom font if specified in the atlas
+//        style.up = customSkin.getDrawable("button"); // for the button drawable from the atlas
 
-        TextButton button = new TextButton(text, style);
+        TextButton button = new TextButton(text, new Skin(new TextureAtlas(atlasPath)));
         button.getLabel().setFontScale(0.8f); // Adjust text size
         button.pad(10f); // Adjust padding
 

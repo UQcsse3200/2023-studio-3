@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,9 +17,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
+import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class LosingScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -30,10 +30,11 @@ public class LosingScreen extends ScreenAdapter {
     private static final String INTRO_TEXT = """
             The aliens gained control. You lose!
             """;
-
+    private static final String[] lossSounds = {"sounds/background/loss/RisingScreams.ogg"};
     private BitmapFont font;
     private AnimatedText text;
     private Stage stage;
+    private ResourceService resourceService;
     private TextButton exitButton;
     private TextButton mainMenuButton;
     private TextButton playAgainButton;
@@ -43,6 +44,10 @@ public class LosingScreen extends ScreenAdapter {
         font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         font.getData().setScale(2, 2);
+        resourceService = new ResourceService();
+        ServiceLocator.registerResourceService(resourceService);
+        resourceService.loadSounds(lossSounds);
+        resourceService.loadAll();
     }
 
     @Override
@@ -55,7 +60,7 @@ public class LosingScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         exitButton = new TextButton("Exit Game", skin);
         exitButton.addListener(new ClickListener(){
             public void clicked(InputEvent even, float x, float y) {
@@ -74,16 +79,17 @@ public class LosingScreen extends ScreenAdapter {
         playAgainButton = new TextButton("Play Again", skin);
         playAgainButton.addListener(new ClickListener() {
             public void clicked(InputEvent even, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.MAIN_GAME);
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
             }
         });
-
         Table table = new Table();
         table.setFillParent(true);
         table.add(exitButton).padTop(-100).row();
         table.add(mainMenuButton).padTop(-200).row();
         table.add(playAgainButton).padTop(-300).row();
         stage.addActor(table);
+        // play loss sound
+        resourceService.getAsset(lossSounds[0], Sound.class).play(0.3f);
     }
 
     @Override
