@@ -57,7 +57,7 @@ public class SettingsMenuDisplay extends UIComponent {
     cursorPixmap.dispose(); // Dispose of the Pixmap to release resources
 
     Image background = new Image(ServiceLocator.getResourceService()
-            .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
+            .getAsset("images/background/settings/settings_bg.png", Texture.class));
     background.setWidth(Gdx.graphics.getWidth());
     background.setHeight(Gdx.graphics.getHeight());
     background.setPosition(0, 0);
