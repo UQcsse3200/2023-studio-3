@@ -103,16 +103,17 @@ public class WaveFactory {
       case 0:
         boss = boss2;
         possibleMobs = level2Mobs;
-        System.out.println("level 2");
+        chosenLevel = 2;
         break;
       case 2:
         boss = boss3;
         possibleMobs = level3Mobs;
-        System.out.println("level 3");
+        chosenLevel = 3;
         break;
       default:
         boss = boss1;
         possibleMobs = level1Mobs;
+        chosenLevel = 1;
         break;
     }
 
