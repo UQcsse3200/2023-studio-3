@@ -104,7 +104,16 @@ public class AssetLoader {
             "images/projectiles/burn_effect.atlas",
             "images/projectiles/firework_anim.atlas",
             "images/projectiles/mobProjectile.atlas",
-            "images/projectiles/stun_effect.atlas"
+            "images/projectiles/stun_effect.atlas",
+            "images/mobboss/demon.atlas",
+            "images/mobs/fire_worm.atlas",
+            "images/mobs/dragon_knight.atlas",
+            "images/mobs/skeleton.atlas",
+            "images/mobs/wizard.atlas",
+            "images/mobs/water_queen.atlas",
+            "images/mobs/water_slime.atlas",
+            "images/mobboss/patrick.atlas",
+            "images/mobboss/iceBaby.atlas"
     };
 
 
@@ -123,6 +132,35 @@ public class AssetLoader {
             "sounds/engineers/firing_single.mp3",
             "sounds/projectiles/on_collision.mp3",
             "sounds/projectiles/explosion.mp3",
+            "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+            "sounds/waves/wave-end/Wave_Over_01.ogg",
+            "sounds/mobBoss/iceBabySound.mp3",
+            "sounds/mobBoss/mobSpawnStomp.mp3",
+            "sounds/mobBoss/iceBabyAOE.mp3",
+            "sounds/mobs/wizardSpell.mp3",
+            "sounds/mobs/waterQueenSpell.mp3",
+            "sounds/mobs/boneBreak.mp3",
+            "sounds/mobs/fireWormRoar.mp3",
+            "sounds/mobBoss/demonBreath.mp3",
+            "sounds/mobBoss/demonSpawn.wav",
+            "sounds/mobBoss/demonAttack.wav",
+            "sounds/mobBoss/demonBreathIn.mp3",
+            "sounds/mobBoss/demonLand.mp3",
+            "sounds/mobBoss/demonJump.mp3",
+            "sounds/mobBoss/demonHeal.mp3",
+            "sounds/mobBoss/demonCleave.mp3",
+            "sounds/mobBoss/demonDeath.mp3",
+            "sounds/mobBoss/slimeySplat.mp3",
+            "sounds/mobBoss/slimeJump.mp3",
+            "sounds/mobBoss/slimePop.mp3",
+            "sounds/mobBoss/patrickAttack.mp3",
+            "sounds/mobBoss/patrickAppear.mp3",
+            "sounds/mobBoss/patrickScream.mp3",
+            "sounds/mobBoss/patrickSpell.mp3",
+            "sounds/mobBoss/patrickSpawn.mp3",
+            "sounds/mobBoss/patrickCast.mp3",
+            "sounds/mobBoss/patrickThunder.mp3",
+            "sounds/mobBoss/patrickHit.mp3"
     };
 
 
