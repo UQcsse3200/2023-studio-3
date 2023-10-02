@@ -15,11 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-<<<<<<< HEAD
-=======
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
->>>>>>> cd6213c7d2005b93243b4dd58bf270415c88222f
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
@@ -207,7 +204,7 @@ public class UpgradeUIComponent extends InputComponent {
             }
         });
 
-        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/attack_upgrade.png")));
+        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture("images/health_upgrade.png")));
         ImageButton upgradeAttack = new ImageButton(attackStyle);
         upgradeAttack.addListener(new ClickListener() {
             @Override
