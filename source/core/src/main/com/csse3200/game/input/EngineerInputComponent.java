@@ -66,15 +66,13 @@ public class EngineerInputComponent extends InputComponent {
         EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);
         // outline image if it is not already outlined and vice versa
         if (currentAnimation.contains("_outline")) {
-            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
-            menu.removeMenu();
-            controller.setClicked(false);
+            controller.deselectEngineer(currentAnimation);
+            //logger.info("Engineer deselected");
         } else {
             animator.startAnimation(currentAnimation + "_outline");
             menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
             controller.setClicked(true);
         }
-
         return true;
     }
 
