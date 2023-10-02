@@ -144,16 +144,14 @@ public class TerrainComponent extends RenderComponent {
   /**
    * Highlights the tile under the mouse cursor by changing its texture region.
    *
-   * <p>When hovering over a tile on the terrain, this method performs the following:
-   * <ol>
-   *   <li>Unprojects the mouse's screen position to the world position using the camera.</li>
-   *   <li>Calculates the tile's coordinates based on the world position and tile size.</li>
-   *   <li>If there was a previously highlighted tile, it restores its original texture region.</li>
-   *   <li>If the current tile under the mouse is different from the last hovered tile, it updates
-   *       the tile's texture region to a highlight texture.</li>
-   *   <li>Updates the reference to the last hovered tile.</li>
-   * </ol>
-   * </p>
+   * When hovering over a tile on the terrain, this method performs the following:
+   * 
+   * 1-Unprojects the mouse's screen position to the world position using the camera.
+   * 2-Calculates the tile's coordinates based on the world position and tile size.
+   * 3-If there was a previously highlighted tile, it restores its original texture region.
+   * 4-If the current tile under the mouse is different from the last hovered tile, it updates.
+   * 5-the tile's texture region to a highlight texture.
+   * 6-Updates the reference to the last hovered tile.
    *
    * @see TiledMapTileLayer
    * @see TiledMapTileLayer.Cell
