@@ -30,7 +30,6 @@ import org.slf4j.LoggerFactory;
 public class SettingsMenuDisplay extends UIComponent {
   private static final Logger logger = LoggerFactory.getLogger(SettingsMenuDisplay.class);
   private final GdxGame game;
-
   private Table rootTable;
   private TextField fpsText;
   private CheckBox fullScreenCheck;
