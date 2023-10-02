@@ -283,6 +283,7 @@ public class MainGameScreen extends ScreenAdapter {
     ui.addComponent(new InputDecorator(stage, 10))
         .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
+            .addComponent(ServiceLocator.getWaveService().getDisplay())
             .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
             .addComponent(new MainGamePauseDisplay(this.game))
