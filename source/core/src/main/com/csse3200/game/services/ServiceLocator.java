@@ -26,6 +26,7 @@ public class ServiceLocator {
   private static ResourceService resourceService;
   private static GameEndService gameEndService;
   private static WaveService waveService;
+  private static MapService mapService;
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -60,6 +61,8 @@ public class ServiceLocator {
   }
 
   public static WaveService getWaveService() { return waveService; }
+
+  public static MapService getMapService() { return mapService; }
 
   public static void registerCurrencyService(CurrencyService service) {
     logger.debug("Registering currency service {}", service);
@@ -105,6 +108,11 @@ public class ServiceLocator {
     waveService = source;
   }
 
+  public static void registerMapService(MapService source) {
+    logger.debug("Registering wave service {}", source);
+    mapService = source;
+  }
+
   public static void clear() {
     entityService = null;
     renderService = null;
@@ -113,6 +121,8 @@ public class ServiceLocator {
     inputService = null;
     resourceService = null;
     gameEndService = null;
+    waveService = null;
+    mapService = null;
   }
 
   private ServiceLocator() {
