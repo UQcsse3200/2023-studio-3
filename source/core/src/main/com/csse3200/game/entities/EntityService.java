@@ -1,9 +1,14 @@
 package com.csse3200.game.entities;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.npc.DropComponent;
 import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -26,7 +31,6 @@ public class EntityService {
   private static final int INITIAL_CAPACITY = 16;
   private final Array<Entity> entities = new Array<>(false, INITIAL_CAPACITY);
   private static final float MAX_RADIUS = 50f;
-
   public static void removeEntity(Entity clickedEntity) {
     clickedEntity.dispose();
   }
@@ -173,4 +177,19 @@ public class EntityService {
     return (x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight);
   }
 
+  /**
+   * Determine whether there are any entities within the given tile position (x and y range). Checks for out of bounds
+   * click location
+   * @param x_coord the top right x coordinate of the tile
+   * @param y_coord the top right y coordinate of the tile
+   * @return true if the tile is occupied, false otherwise
+   */
+  public boolean entitiesInTile(int x_coord, int y_coord) {
+    TiledMapTileLayer mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
+    if (mp.getCell(x_coord, y_coord) != null) {
+      Entity entity = getEntityAtPosition(x_coord, y_coord);
+      return entity != null;
+    }
+    return true;
+  }
 }

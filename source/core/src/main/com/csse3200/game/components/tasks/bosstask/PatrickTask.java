@@ -8,6 +8,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -18,6 +19,10 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Patrick boss task that controls the boss' sequence and actions based on a predetermined sequence
+ * and the boss' current hp
+ */
 public class PatrickTask extends DefaultTask implements PriorityTask {
 
     // Constants
@@ -56,11 +61,17 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         IDLE, WALK, ATTACK, HURT, DEATH, SPELL, APPEAR
     }
 
+    /**
+     * Constructor for PatrickTask
+     */
     public PatrickTask() {
         physics = ServiceLocator.getPhysicsService().getPhysics();
         gameTime = ServiceLocator.getTimeSource();
     }
 
+    /**
+     * What is called when the patrick task is assigned
+     */
     @Override
     public void start() {
         super.start();
@@ -74,12 +85,17 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             @Override
             public void run() {
                 changeState(PatrickState.APPEAR);
+                patrick.getEvents().trigger("patrick_appear_sound");
+                patrick.getEvents().trigger("patrick_spawn_sound");
                 startFlag = true;
                 spawnFlag = true;
             }
         }, 0.1f);
     }
 
+    /**
+     * Updates the sequence every frame
+     */
     @Override
     public void update() {
         // give game time to load
@@ -98,12 +114,24 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
             }
         }
 
+        // check if patrick is dead
+        if (patrick.getComponent(CombatStatsComponent.class).getHealth() <= 0) {
+            // play patrick death animation
+            Entity deadPatrick = MobBossFactory.patrickDead();
+            deadPatrick.setPosition(patrick.getPosition().x, patrick.getPosition().y);
+            deadPatrick.setScale(4f, 4f);
+            ServiceLocator.getEntityService().register(deadPatrick);
+            patrick.getEvents().trigger("patrick_scream_sound");
+            patrick.setFlagForDelete(true);
+        }
+
         animate();
         int health = patrick.getComponent(CombatStatsComponent.class).getHealth();
 
         // detect half health
         if (health <= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &&
                 !halfHealthFlag) {
+            patrick.getEvents().trigger("patrick_scream_sound");
             halfHealth();
             halfHealthFlag = true;
         }
@@ -111,17 +139,23 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // handle state switches
         switch (state) {
             case APPEAR -> {
-                if (spawnFlag) {
+                if (spawnFlag && animation.isFinished()) {
                     meleeAttack();
                     spawnFlag = false;
                 } else if (meleeFlag) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            patrick.getEvents().trigger("patrick_hit_sound");
+                        }
+                    }, 1f);
                     changeState(PatrickState.ATTACK);
                     meleeFlag = false;
                 } else if (rangeFlag) {
                     // shoot 3 projectiles
                     if (shotsFired > 2) {
                         rangeFlag = false;
-                        spawnFlag = true;
+                        meleeAttack();
                         shotsFired = 0; // reset shots fired
                     } else {
                         changeState(PatrickState.IDLE);
@@ -173,6 +207,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         prevState = state;
     }
 
+    /**
+     * @return priority of this task
+     */
     @Override
     public int getPriority() {
         return PRIORITY;
@@ -196,6 +233,10 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Teleports patrick to the position given
+     * @param pos position for patrick to teleport to
+     */
     private void teleport(Vector2 pos) {
         teleportTask = new PatrickTeleportTask(patrick, pos);
         teleportTask.create(owner);
@@ -203,6 +244,9 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         teleportFlag = true;
     }
 
+    /**
+     * Patrick teleports to the closest human entity and attacks it
+     */
     private void meleeAttack() {
         initialPos = patrick.getPosition();
         meleeTarget = ServiceLocator.getEntityService().getClosestEntityOfLayer(
@@ -211,17 +255,23 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         meleeFlag = true;
     }
 
-    private void spawnRandProjectile(Vector2 destination) {
+    /**
+     * spawns a random effect projectile and increments the shots fired counter
+     * @param destination destination for projectile to travel to
+     */
+    private void spawnRandProjectile(Vector2 destination, boolean aoe) {
         // spawn random projectile
         Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,
                 destination, new Vector2(2, 2),
-                getEffect(), false);
+                getEffect(), aoe);
         projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);
         projectile.setScale(-1f, 1f);
         ServiceLocator.getEntityService().register(projectile);
-        shotsFired++;
     }
 
+    /**
+     * teleports to a random location within given range
+     */
     private void randomTeleport() {
         // teleport to random position
         float randomX = MathUtils.random(RANGE_MIN_X, RANGE_MAX_X);
@@ -229,25 +279,31 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         teleport(new Vector2(randomX, randomY));
     }
 
+    /**
+     * performs a random teleport and a range attack
+     */
     private void rangeAttack() {
         randomTeleport();
-        spawnRandProjectile(new Vector2(0f, patrick.getPosition().y));
+        spawnRandProjectile(new Vector2(0f, patrick.getPosition().y), false);
+        shotsFired++;
     }
 
+    /**
+     * when patrick is at half health, he spawns a bunch of random aoe effect projectiles
+     */
     private void halfHealth() {
         float startAngle = (float) Math.toRadians(135);
         float endAngle = (float) Math.toRadians(225);
         float angleIncrement = (endAngle - startAngle) / (HALF_HEALTH_ATTACKS - 1);
 
         for (int i = 0; i < HALF_HEALTH_ATTACKS; i++) {
-            randomTeleport();
 
             // calculate unit vectors for projectiles
             float currentAngle = startAngle + i * angleIncrement;
             float x = MathUtils.cos(currentAngle) * 20;
             float y = MathUtils.sin(currentAngle) * 20;
             Vector2 destination = new Vector2(x, y);
-            spawnRandProjectile(destination);
+            spawnRandProjectile(destination, true);
         }
         if (shotsFired == HALF_HEALTH_ATTACKS) {
             meleeFlag = true;

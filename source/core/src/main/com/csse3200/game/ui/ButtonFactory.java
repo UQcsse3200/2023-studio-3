@@ -100,6 +100,7 @@ public class ButtonFactory {
         style.up = customSkin.getDrawable("button"); // for the button drawable from the atlas
 
         TextButton button = new TextButton(text, style);
+
         button.getLabel().setFontScale(0.8f); // Adjust text size
         button.pad(10f); // Adjust padding
 
