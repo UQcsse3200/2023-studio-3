@@ -56,4 +56,9 @@ public class WaveClass {
     return this.wave;
   }
 
+  @Override
+  public String toString(){
+    return this.wave.toString();
+  }
+
 }

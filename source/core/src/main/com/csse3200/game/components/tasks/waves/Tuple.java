@@ -17,4 +17,9 @@ public class Tuple {
     this.mob = mob;
     this.health = health;
   }
+
+  @Override
+  public String toString(){
+    return "Mob: " + mob + " Health: " + health;
+  }
 }

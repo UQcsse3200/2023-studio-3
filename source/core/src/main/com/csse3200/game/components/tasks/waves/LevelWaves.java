@@ -120,5 +120,14 @@ public class LevelWaves extends Entity {
         return this.waveIndex;
     }
 
+    @Override
+    public String toString() {
+      String result = "";
+      for (WaveClass wave : waves) {
+        result += wave.toString() + "\n";
+      }
+      return result;
+    }
+
 }
 

@@ -6,6 +6,8 @@ import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.screens.GameLevelData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +24,7 @@ public class WaveFactory {
    * @return entity
    */
 
+  private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
   private static Random rand = new Random();
 
   // Base health of the mobs
@@ -97,12 +100,12 @@ public class WaveFactory {
     // set the possible mobs and boss for the level
     String boss = "";
     switch (chosenLevel) {
-      case 2:
+      case 0:
         boss = boss2;
         possibleMobs = level2Mobs;
         System.out.println("level 2");
         break;
-      case 3:
+      case 2:
         boss = boss3;
         possibleMobs = level3Mobs;
         System.out.println("level 3");
@@ -142,15 +145,13 @@ public class WaveFactory {
 
 
       mobs.put(mob1, mob1Stats);
-      System.out.println(mob1 + " " + mob1Stats[0] + " " + mob1Stats[1]);
       mobs.put(mob2, mob2Stats);
-      System.out.println(mob2 + " " + mob2Stats[0] + " " + mob2Stats[1]);
 
-//      System.out.println(mobs);
       level.addWave(new WaveClass(mobs));
       minMobs ++;
     }
 
+    logger.info("Level created: " + level);
     return level;
   }
 
