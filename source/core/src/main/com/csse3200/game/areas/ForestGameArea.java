@@ -457,38 +457,17 @@ public class ForestGameArea extends GameArea {
       case "Xeno":
         mob = NPCFactory.createXenoGrunt(health);
         break;
-      case "SplittingXeno":
-        mob = NPCFactory.createSplittingXenoGrunt(health);
-        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
       case "DodgingDragon":
         mob = NPCFactory.createDodgingDragonKnight(health);
         break;
-//      case "DeflectXeno":
-//        mob = NPCFactory.createDeflectXenoGrunt(health);
-//        break;
-//      case "WaterSlime":
-//        mob = NPCFactory.createWaterSlime(health);
-//        break;
       case "FireWorm":
         mob = NPCFactory.createFireWorm(health);
         break;
       case "Skeleton":
         mob = NPCFactory.createSkeleton(health);
-        break;
-//      case "Wizard":
-//        mob = NPCFactory.createWizard(health);
-//        break;
-//      case "MagicBoss":
-//        mob = MobBossFactory.createPatrickBoss(health);
-//        break;
-//      case "WaterBoss":
-//        mob = NPCFactory.createWaterQueen(health);
-//        break;
-      case "FireBoss":
-        mob = MobBossFactory.createDemonBoss(health);
         break;
       case "DeflectWizard":
         mob = NPCFactory.createDeflectWizard(health);
@@ -496,29 +475,21 @@ public class ForestGameArea extends GameArea {
       case "WaterQueen":
         mob = NPCFactory.createWaterQueen(health);
         break;
-//      case "FireWorm":
-//        mob = NPCFactory.createFireWorm(health);
-//        break;
-//      case "Skeleton":
-//        mob = NPCFactory.createSkeleton(health);
+        //TODO implement when boss is ready
+//      case "FireBoss":
+//        mob = MobBossFactory.createDemonBoss(health);
 //        break;
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
-//      case "DemonBoss":
-//        mob = MobBossFactory.createDemonBoss(health);
-//        break;
       case "PatrickBoss":
         mob = MobBossFactory.createPatrickBoss(health);
         break;
       default:
         mob = NPCFactory.createXenoGrunt(health);
-//        mob = NPCFactory.createBaseNPC();
         break;
     }
-//    mob.setScale(1.5f, 1.5f);
-//        mob = NPCFactory.createXenoGrunt(health);
-//    }
+
     if (entity.contains("Boss")) {
       mob.scaleHeight(5f);
       mob.scaleWidth(5f);
