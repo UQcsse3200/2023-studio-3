@@ -49,6 +49,10 @@ public class SettingsMenuDisplay extends UIComponent {
     addActors();
   }
 
+  /**
+   * Adds various actors to the stage for the settings screen.
+   * This method sets up and adds elements such as a custom cursor, background image, title label, settings table, and menu buttons.
+   */
   private void addActors() {
     // Load the custom cursor image
     Pixmap cursorPixmap = new Pixmap(Gdx.files.internal("images/ui/mouse_effect.png"));
@@ -63,7 +67,7 @@ public class SettingsMenuDisplay extends UIComponent {
 
     Label title = new Label("Settings", skin, "title");
     Table settingsTable = makeSettingsTable();
-    Table menuBtns = makeMenuBtns();
+    Table menuBtn = makeMenuBtn();
 
     rootTable = new Table();
     rootTable.setFillParent(true);
@@ -74,7 +78,7 @@ public class SettingsMenuDisplay extends UIComponent {
     rootTable.add(settingsTable).expandX().expandY();
 
     rootTable.row();
-    rootTable.add(menuBtns).fillX();
+    rootTable.add(menuBtn).fillX();
 
     stage.addActor(background);  // Add background first
     stage.addActor(rootTable);   // Add rootTable after to ensure it's drawn on top
@@ -173,7 +177,7 @@ public class SettingsMenuDisplay extends UIComponent {
     return displayMode.width + "x" + displayMode.height + ", " + displayMode.refreshRate + "hz";
   }
 
-  private Table makeMenuBtns() {
+  private Table makeMenuBtn() {
     TextButton exitBtn = new TextButton("Exit", skin);
     TextButton applyBtn = new TextButton("Apply", skin);
 
