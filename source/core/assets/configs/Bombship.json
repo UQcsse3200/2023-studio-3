@@ -1,0 +1,6 @@
+{
+  "Bombship" : {
+  "health": 100,
+  "baseAttack": 20
+}
+}
