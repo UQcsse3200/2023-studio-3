@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,6 +24,7 @@ import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
+import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +47,10 @@ public class LevelSelectScreen extends ScreenAdapter {
     private BitmapFont font;
 
     private Sprite background;
+    private String[] bgm = {
+            "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
+    };
+    private Music music;
 
     // Stores a time to determine the frame of the planet
     // TODO: Account for integer overflow
@@ -77,6 +83,12 @@ public class LevelSelectScreen extends ScreenAdapter {
         table1.pad(20); // Add padding to the top-right corner
         table1.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table1);
+
+        ServiceLocator.registerResourceService(new ResourceService());
+        ServiceLocator.getResourceService().loadMusic(bgm);
+        ServiceLocator.getResourceService().loadAll();
+        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
+
     }
 
     @Override
@@ -85,6 +97,10 @@ public class LevelSelectScreen extends ScreenAdapter {
         background = new Sprite(new Texture(BG_PATH));
         ServiceLocator.registerGameEndService(new GameEndService());
         Gdx.input.setInputProcessor(stage);
+
+        music.setVolume(0.4f);
+        music.setLooping(true);
+        music.play();
     }
 
     /**
@@ -174,5 +190,6 @@ public class LevelSelectScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         batch.dispose();
+        music.dispose();
     }
 }
