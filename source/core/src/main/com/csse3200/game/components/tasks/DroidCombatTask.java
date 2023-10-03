@@ -11,6 +11,8 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+import static java.lang.Math.round;
+
 /**
  * The DroidCombatTask runs the AI for the DroidTower class. The tower will scan for targets in a straight line
  * from its center point until a point at (x + maxRange, y), where x,y are the cooridinates of the tower's center
@@ -35,6 +37,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     // class attributes
     private final int priority;  // The active priority this task will have
     private final float maxRange;
+    private float fireRateInterval;
     private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
@@ -54,6 +57,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     public DroidCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -69,7 +73,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(WALK);
-
+        owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
         endTime = timeSource.getTime() + (INTERVAL * 500);
     }
 
@@ -81,8 +85,12 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (INTERVAL * 1000);
-        }
+            if (towerState == STATE.SHOOT_UP || towerState == STATE.SHOOT_DOWN) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            } else {
+                endTime = timeSource.getTime() + (INTERVAL * 1000);
+            }
+            }
     }
 
     /**
@@ -193,5 +201,17 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
 
+    private void changeFireRateInterval(int newInterval) {
+        fireRateInterval = 1 / ((float) newInterval / 5);
+    }
+
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+        return fireRateInterval;
+    }
 
 }

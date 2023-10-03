@@ -45,10 +45,10 @@ public class ForestGameArea extends GameArea {
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
-  
+
   // Required to load assets before using them
   private static final String[] forestTextures = {
-         "images/desert_bg.png",
+          "images/desert_bg.png",
           "images/ice_bg.png",
           "images/lava_bg.png",
           "images/projectiles/projectile.png",
@@ -87,7 +87,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Hurt.png",
           "images/mobs/Idle.png",
           "images/mobs/rangeBossRight.png",
-          "images/towers/wallTower.png",
+          "images/towers/wall_tower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/Dusty_MoonBG.png",
@@ -158,7 +158,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/fire_worm.atlas",
           "images/mobs/dragon_knight.atlas",
           "images/mobs/skeleton.atlas",
-          "images/mobs/wizard.atlas", 
+          "images/mobs/wizard.atlas",
           "images/mobs/water_queen.atlas",
           "images/mobs/water_slime.atlas",
           "images/mobboss/patrick.atlas",
@@ -207,12 +207,12 @@ public class ForestGameArea extends GameArea {
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
   private static final String[] forestMusic = {backgroundMusic};
-  
+
 //  private final TerrainFactory terrainFactory;
-  
+
   private Entity player;
   private Entity waves;
-  
+
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
@@ -259,29 +259,29 @@ public class ForestGameArea extends GameArea {
     switch (wave) {
       case 1:
       case 2:
-      spawnWaterQueen();
-      spawnWizard();
-      logger.info("Lol");
-      
-      break;
+        spawnWaterQueen();
+        spawnWizard();
+        logger.info("Lol");
+
+        break;
       case 3:
-      spawnWaterSlime();
-      spawnIceBaby();
-      logger.info("Lol");
-      // mobBoss2 = spawnMobBoss2();
-      break;
+        spawnWaterSlime();
+        spawnIceBaby();
+        logger.info("Lol");
+        // mobBoss2 = spawnMobBoss2();
+        break;
       case 4:
-      spawnFireWorm();
-      // spawnDragonKnight();
-      logger.info("Lol");
-      // mobBoss2 = spawnMobBoss2();
-      break;
+        spawnFireWorm();
+        // spawnDragonKnight();
+        logger.info("Lol");
+        // mobBoss2 = spawnMobBoss2();
+        break;
       case 5:
       case 6:
-      spawnSkeleton();
+        spawnSkeleton();
       case 7:
-      spawnDemonBoss();
-      spawnPatrick();
+        spawnDemonBoss();
+        spawnPatrick();
       default:
         // Handle other wave scenarios if needed
         break;
@@ -301,7 +301,7 @@ public class ForestGameArea extends GameArea {
     logger.info("Lol");
     spawnTerrain();
     logger.info("Lol");
-    
+
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
 
@@ -312,12 +312,12 @@ public class ForestGameArea extends GameArea {
     playMusic();
     spawnScrap();
     spawnTNTTower();
-     //spawnWeaponTower();
+    //spawnWeaponTower();
     spawnGapScanners();
     spawnDroidTower();
 
   }
-  
+
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
@@ -325,17 +325,17 @@ public class ForestGameArea extends GameArea {
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
   }
-  
+
   private void spawnTerrain() {
 
     terrain = ServiceLocator.getMapService().getComponent();
     spawnEntity(ServiceLocator.getMapService().getEntity());
-    
+
     // Terrain walls
     float tileSize = terrain.getTileSize();
     GridPoint2 tileBounds = terrain.getMapBounds(0);
     Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);
-    
+
     // Left
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
@@ -362,11 +362,11 @@ public class ForestGameArea extends GameArea {
             false);
   }
 
-  
+
   private void spawnBuilding2() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < NUM_BUILDINGS; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity building2 = ObstacleFactory.createBuilding2();
@@ -379,7 +379,7 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
     return newPlayer;
   }
-  
+
   // Spawn player at a specific position
   private Entity spawnPlayer(GridPoint2 position) {
     Entity newPlayer = PlayerFactory.createPlayer();
@@ -421,7 +421,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a projectile specifically for general mobs/xenohunters
    *
@@ -435,7 +435,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a projectile to be used for multiple projectile function.
    *
@@ -524,7 +524,7 @@ public class ForestGameArea extends GameArea {
     xenoGrunt.setScale(1.5f, 1.5f);
     spawnEntityAt(xenoGrunt, pos, true, true);
   }
-  
+
   private void spawnFireWorm() {
 
     int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
@@ -633,7 +633,7 @@ public class ForestGameArea extends GameArea {
       --half;
     }
   }
-  
+
   /**
    * Returns projectile that can do an area of effect damage
    *
@@ -650,7 +650,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a pierce fireball.
    * Pierce fireball can go through targetlayers without disappearing but damage
@@ -666,7 +666,7 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
-  
+
   /**
    * Spawns a ricochet fireball
    * Ricochet fireballs bounce off targets with a specified maximum count of 3
@@ -683,7 +683,7 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
-  
+
   /**
    * Spawns a split firework fireball.
    * Splits into mini projectiles that spreads out after collision.
@@ -700,7 +700,7 @@ public class ForestGameArea extends GameArea {
     spawnEntity(projectile);
   }
 
-  
+
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
@@ -729,17 +729,17 @@ public class ForestGameArea extends GameArea {
 
     spawnEntityAt(droidTower, pos, true, true);
   }
-  
+
   private void spawnTNTTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-    
+
     for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createTNTTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
-    
+
   }
 
   private void spawnDroidTower() {
@@ -752,15 +752,15 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, false);
     }
   }
-  
-  
+
+
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();
   }
-  
+
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -768,13 +768,13 @@ public class ForestGameArea extends GameArea {
     resourceService.loadTextureAtlases(forestTextureAtlases);
     resourceService.loadSounds(forestSounds);
     resourceService.loadMusic(forestMusic);
-    
+
     while (!resourceService.loadForMillis(10)) {
       // This could be upgraded to a loading screen
       logger.info("Loading... {}%", resourceService.getProgress());
     }
   }
-  
+
   private void unloadAssets() {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -783,7 +783,7 @@ public class ForestGameArea extends GameArea {
     resourceService.unloadAssets(forestSounds);
     resourceService.unloadAssets(forestMusic);
   }
-  
+
   @Override
   public void dispose() {
     super.dispose();
@@ -791,28 +791,28 @@ public class ForestGameArea extends GameArea {
     this.unloadAssets();
     stopWaveTimer();
   }
-  
+
   private void spawnScrap() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
     }
-    
+
     for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity crystal = DropFactory.createCrystalDrop();
       spawnEntityAt(crystal, randomPos, true, false);
     }
   }
-  
+
   private void spawnIncome() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < 50; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();
