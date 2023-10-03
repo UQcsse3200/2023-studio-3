@@ -127,20 +127,29 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.graphics.Camera</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCamera()" class="member-name-link">getCamera</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#checkForDispose()" class="member-name-link">checkForDispose</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update method for the UpgradeUIComponent, checks if the entity is disposed and removes the upgrade table</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.graphics.Camera</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCamera()" class="member-name-link">getCamera</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Getter for the camera</div>
 </div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.scenes.scene2d.Stage</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStage()" class="member-name-link">getStage</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#touchDown(int,int,int,int)" class="member-name-link">touchDown</a><wbr>(int&nbsp;screenX,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>com.badlogic.gdx.scenes.scene2d.Stage</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStage()" class="member-name-link">getStage</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Getter for the stage</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#touchDown(int,int,int,int)" class="member-name-link">touchDown</a><wbr>(int&nbsp;screenX,
  int&nbsp;screenY,
  int&nbsp;pointer,
  int&nbsp;button)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Method to handle the touch down event</div>
+</div>
 </div>
 </div>
 </div>
@@ -199,6 +208,11 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getStage()">
 <h3>getStage</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">com.badlogic.gdx.scenes.scene2d.Stage</span>&nbsp;<span class="element-name">getStage</span>()</div>
+<div class="block">Getter for the stage</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>the stage</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -208,11 +222,17 @@ loadScripts(document, 'script');</script>
  int&nbsp;screenY,
  int&nbsp;pointer,
  int&nbsp;button)</span></div>
+<div class="block">Method to handle the touch down event</div>
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code>touchDown</code>&nbsp;in interface&nbsp;<code>com.badlogic.gdx.InputProcessor</code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="InputComponent.html#touchDown(int,int,int,int)">touchDown</a></code>&nbsp;in class&nbsp;<code><a href="InputComponent.html" title="class in com.csse3200.game.input">InputComponent</a></code></dd>
+<dt>Parameters:</dt>
+<dd><code>screenX</code> - the x coordinate of the touch</dd>
+<dd><code>screenY</code> - the y coordinate of the touch</dd>
+<dd><code>pointer</code> - the pointer</dd>
+<dd><code>button</code> - the button</dd>
 <dt>See Also:</dt>
 <dd>
 <ul class="see-list-long">
@@ -220,6 +240,13 @@ loadScripts(document, 'script');</script>
 </ul>
 </dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="checkForDispose()">
+<h3>checkForDispose</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">checkForDispose</span>()</div>
+<div class="block">Update method for the UpgradeUIComponent, checks if the entity is disposed and removes the upgrade table</div>
 </section>
 </li>
 </ul>
