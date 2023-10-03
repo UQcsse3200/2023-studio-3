@@ -65,12 +65,12 @@ public class LevelWaves extends Entity {
     public void spawnWave() {
         if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
             do {
-                currentRandom = rand.nextInt(1, 7);
+                currentRandom = rand.nextInt(0, ServiceLocator.getMapService().getHeight());
             } while (currentRandom == previousRandom);
             ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
-            this.getEvents().trigger("spawnWave", waves.get(waveIndex)
-                    .getMobs().get(mobIndex), randomPos);
+            Tuple mobStats = waves.get(waveIndex).getMobs().get(mobIndex);
+            this.getEvents().trigger("spawnWave", mobStats.mob, randomPos, mobStats.health);
             startTime = gameTime.getTime();
             mobIndex++;
             previousRandom = currentRandom;
@@ -118,6 +118,19 @@ public class LevelWaves extends Entity {
      */
     public int getWaveIndex() {
         return this.waveIndex;
+    }
+
+    public List<WaveClass> getWaves() {
+      return this.waves;
+    }
+
+    @Override
+    public String toString() {
+      String result = "";
+      for (WaveClass wave : waves) {
+        result += wave.toString() + "\n";
+      }
+      return result;
     }
 
 }

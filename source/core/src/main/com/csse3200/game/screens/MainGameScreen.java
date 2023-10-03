@@ -18,10 +18,7 @@ import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.input.DropInputComponent;
-import com.csse3200.game.input.InputComponent;
-import com.csse3200.game.input.InputDecorator;
-import com.csse3200.game.input.InputService;
+import com.csse3200.game.input.*;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
@@ -40,7 +37,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
-  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png"};
+  private static final String[] mainGameTextures = {"images/heart.png","images/ice_bg.png","images/lava_bg.png","images/desert_bg.png","images/terrain_use.png"};
   private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);
 
   private final GdxGame game;
@@ -95,16 +92,20 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    ServiceLocator.getInputService().register(inputHandler);
+    InputComponent UpgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
 
+    InputComponent engineerInputHnadler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
+    ServiceLocator.getInputService().register(inputHandler);
+    ServiceLocator.getInputService().register(engineerInputHnadler);
+    ServiceLocator.getInputService().register(UpgradedInputHandler);
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
     createUI();
-
+    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
     logger.debug("Initialising main game screen entities");
-    TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
-    ForestGameArea forestGameArea = new ForestGameArea(terrainFactory);
+//    TerrainFactory terrainFactory = new TerrainFactory(renderer.getCamera());
+    ForestGameArea forestGameArea = new ForestGameArea();
     forestGameArea.create();
   }
 
@@ -221,17 +222,17 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Creating ui");
     Stage stage = ServiceLocator.getRenderService().getStage();
     InputComponent inputComponent =
-        ServiceLocator.getInputService().getInputFactory().createForTerminal();
+            ServiceLocator.getInputService().getInputFactory().createForTerminal();
 
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
-        .addComponent(new PerformanceDisplay())
-        .addComponent(new MainGameActions(this.game))
-        .addComponent(new MainGameExitDisplay())
+            .addComponent(new PerformanceDisplay())
+            .addComponent(new MainGameActions(this.game))
+            .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
-        .addComponent(new Terminal())
-        .addComponent(inputComponent)
-        .addComponent(new TerminalDisplay());
+            .addComponent(new Terminal())
+            .addComponent(inputComponent)
+            .addComponent(new TerminalDisplay());
 
     ServiceLocator.getEntityService().register(ui);
   }
