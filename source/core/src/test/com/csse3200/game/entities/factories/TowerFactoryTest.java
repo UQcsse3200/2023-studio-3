@@ -49,7 +49,8 @@ public class TowerFactoryTest {
             "images/towers/stun_tower.atlas",
             "images/towers/fire_tower_atlas.atlas",
             "images/towers/DroidTower.atlas",
-            "images/towers/TNTTower.atlas"
+            "images/towers/TNTTower.atlas",
+            "images/towers/barrier.atlas"
     };
     private static final String[] sounds = {
             "sounds/towers/gun_shot_trimmed.mp3",

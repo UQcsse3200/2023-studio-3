@@ -29,7 +29,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private HumanWaitTask waitTask;
   private EngineerCombatTask combatTask;
   private Task currentTask;
-  private boolean isDead = false;
+  private boolean   isDead = false;
 
   private boolean isSelected = false;
 

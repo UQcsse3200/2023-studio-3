@@ -1,5 +1,6 @@
 package com.csse3200.game.services;
 
+import com.csse3200.game.components.maingame.UIElementsDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ public class WaveService {
     private boolean levelCompleted = false;
 
     private long nextWaveTime;
+    private final UIElementsDisplay display;
 
 
     /**
@@ -21,6 +23,7 @@ public class WaveService {
      */
     public WaveService() {
         this.enemyCount = 0;
+        this.display = new UIElementsDisplay();
     }
 
     /**
@@ -30,6 +33,7 @@ public class WaveService {
     public void setEnemyCount(int newLimit) {
         if (newLimit > 0) {
             enemyCount = newLimit;
+            display.updateMobCount();
         }
     }
 
@@ -115,5 +119,14 @@ public class WaveService {
      */
     public void setNextWaveTime(long nextWaveTime) {
         this.nextWaveTime = nextWaveTime;
+    }
+
+    /**
+     * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
+     * for this instance of the display.
+     * @return the updating instance of UIElementsDisplay
+     */
+    public UIElementsDisplay getDisplay() {
+        return this.display;
     }
 }

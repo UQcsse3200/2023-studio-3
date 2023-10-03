@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -20,15 +19,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 
 import java.util.*;
@@ -56,7 +51,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private TextButton descriptionLabel;
     private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
-
+    private TextButton backButton;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     /**
@@ -80,7 +75,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretList.addAll(Arrays.asList(TowerType.values()));
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+//=======
+//        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Handle the "back" action, e.g., return to the previous screen
+                game.setScreen(GdxGame.ScreenType.MAIN_MENU); // Replace PREVIOUS_SCREEN with the appropriate screen type
+            }
+        });
+        Table topRightTable = new Table();
+        topRightTable.top().right();
+        topRightTable.add(backButton).pad(10);
+
+        stage.addActor(topRightTable);
+
         message = new Label("Select your turrets", skin);
 
         confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
@@ -92,6 +103,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // Store the selected towers in the ServiceLocator for transferring across screens
+                ServiceLocator.setTowerTypes(selectedTurrets);;
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
@@ -135,7 +148,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
                 TextButton button = createButton(turret.getDefaultImage(),
                         turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());
-                
+
                 button.pad(103, 15, 0, 0);
                 button.addListener(new ClickListener() {
 

@@ -103,16 +103,16 @@ public class NPCFactoryTest {
         rangedBaseNpc = NPCFactory.createRangedBaseNPC();
         meleeBaseNpc = NPCFactory.createMeleeBaseNPC();
 
-        waterSlime = NPCFactory.createBaseWaterSlime();
-        waterQueen = NPCFactory.createWaterQueen();
-        dragonKnight = NPCFactory.createDragonKnight();
-        fireWorm = NPCFactory.createFireWorm();
-        skeleton = NPCFactory.createSkeleton();
-        wizard = NPCFactory.createWizard();
+        waterSlime = NPCFactory.createBaseWaterSlime(60);
+        waterQueen = NPCFactory.createWaterQueen(60);
+        dragonKnight = NPCFactory.createDragonKnight(60);
+        fireWorm = NPCFactory.createFireWorm(60);
+        skeleton = NPCFactory.createSkeleton(60);
+        wizard = NPCFactory.createWizard(60);
         
-        splitWaterSlime = NPCFactory.createSplittingWaterSlime();
-        deflectWizard = NPCFactory.createDeflectWizard();
-        dodgingDragonKnight = NPCFactory.createDodgingDragonKnight();
+        splitWaterSlime = NPCFactory.createSplittingWaterSlime(60);
+        deflectWizard = NPCFactory.createDeflectWizard(60);
+        dodgingDragonKnight = NPCFactory.createDodgingDragonKnight(60);
     }
 
     @Test
@@ -191,7 +191,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testWaterSlimeCombatStatsComponent() {
-        assertEquals(100, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
@@ -216,7 +216,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testSplitWaterSlimeHasSplittingComponent() {
-        Entity splitWaterSlime = NPCFactory.createSplittingWaterSlime();
+        Entity splitWaterSlime = NPCFactory.createSplittingWaterSlime(60);
         assertNotNull(splitWaterSlime.getComponent(SplitMoblings.class), 
                 "Split water slimes should have a splitting component");
     }
@@ -228,7 +228,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testWaterQueenCombatStatsComponent() {
-        assertEquals(100, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
@@ -253,7 +253,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testFireWormCombatStatsComponent() {
-        assertEquals(100, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
@@ -277,7 +277,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testDragonKnightCombatStatsComponent() {
-        assertEquals(100, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
@@ -308,7 +308,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testWizardCombatStatsComponent() {
-        assertEquals(100, wizard.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, wizard.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");
@@ -339,7 +339,7 @@ public class NPCFactoryTest {
 
     @Test
     public void testSkeletonCombatStatsComponent() {
-        assertEquals(100, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
+        assertEquals(60, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
         assertEquals(10, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "BaseAttack should be 10");

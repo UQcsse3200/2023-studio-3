@@ -37,7 +37,7 @@ public class XenoAnimationControllerTest {
         resourceService.loadTextureAtlases(atlas);
         resourceService.loadAll();
 
-        xenoGrunt = NPCFactory.createXenoGrunt(); // Replace with actual Droid Tower creation logic
+        xenoGrunt = NPCFactory.createXenoGrunt(60); // Replace with actual Droid Tower creation logic
         xenoGrunt.create();
     }
 

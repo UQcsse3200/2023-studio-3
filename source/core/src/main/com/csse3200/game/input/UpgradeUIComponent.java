@@ -22,10 +22,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tower.IncomeUpgradeComponent;
-import com.csse3200.game.components.tower.TNTDamageComponent;
-import com.csse3200.game.components.tower.TowerUpgraderComponent;
-import com.csse3200.game.components.tower.UpgradableStatsComponent;
+import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.services.ServiceLocator;
@@ -88,12 +85,21 @@ public class UpgradeUIComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
+        //temp fix to prevent upgrading of new towers
+        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
+                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
+                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
+            return false;
+        }
+        //
+
         // If the clicked position contains a turret, and the turret is upgradable and not a TNT tower
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null
                 && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
             // TNT TowerUpgraderComponent can be removed later, but possibly useful for future sprint.
            // Clear all existing upgrade tables
             logger.info("clickedEntity: " + clickedEntity);
+
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
             Table existingUpgradeTable = upgradeTables.get(clickedEntity);
