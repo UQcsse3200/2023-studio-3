@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +54,21 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
     private TextButton backButton;
+    private String[] bgm = {
+            "sounds/background/pre_game/Sci-Fi7Loop.ogg"
+    };
+    private Music music;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     public TurretSelectionScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         table = new Table();
+
+        ServiceLocator.registerResourceService(new ResourceService());
+        ServiceLocator.getResourceService().loadMusic(bgm);
+        ServiceLocator.getResourceService().loadAll();
+        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
 
         // Set up the background
         batch = new SpriteBatch();
@@ -218,6 +229,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
         table.setFillParent(true);
         Gdx.input.setInputProcessor(stage);
 
+        music.setVolume(0.4f);
+        music.setLooping(true);
+        music.play();
+
     }
     @Override
     public void render(float delta) {
@@ -304,6 +319,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     @Override
     public void dispose() {
         stage.dispose();
+        music.dispose();
     }
 
 }
