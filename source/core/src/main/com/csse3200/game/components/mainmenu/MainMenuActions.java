@@ -2,6 +2,7 @@ package com.csse3200.game.components.mainmenu;
 
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.components.Component;
+import com.csse3200.game.screens.HelpScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,7 +21,7 @@ public class MainMenuActions extends Component {
   @Override
   public void create() {
     entity.getEvents().addListener("start", this::onStart);
-    entity.getEvents().addListener("load", this::onLoad);
+    entity.getEvents().addListener("help", this::onHelp);
     entity.getEvents().addListener("exit", this::onExit);
     entity.getEvents().addListener("settings", this::onSettings);
   }
@@ -34,12 +35,9 @@ public class MainMenuActions extends Component {
 //    game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
   }
 
-  /**
-   * Intended for loading a saved game state.
-   * Load functionality is not actually implemented.
-   */
-  private void onLoad() {
-    logger.info("Load game");
+  private void onHelp() {
+    logger.info("Help Menu");
+    game.setScreen(GdxGame.ScreenType.HELP_SCREEN);
   }
 
   /**
