@@ -124,7 +124,10 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         }
         if (health <= 0) {
             changeState(STATE.DEATH);
-            iceBaby.setFlagForDelete(true);
+            animate();
+            if (animation.isFinished()) {
+                iceBaby.setFlagForDelete(true);
+            }
         }
 
         switch (iceBabyState) {
@@ -270,7 +273,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
      */
     private void spawnMob() {
         changeState(STATE.ATK2);
-        Entity newMob = NPCFactory.createSplittingWaterSlime();
+        Entity newMob = NPCFactory.createSplittingWaterSlime(80);
         newMob.setPosition((float) (iceBaby.getPosition().x + 0.5), (float) (iceBaby.getPosition().y + 0.5));
         ServiceLocator.getEntityService().register(newMob);
     }
