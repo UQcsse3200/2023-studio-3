@@ -70,6 +70,20 @@ public class EntityService {
   }
 
   /**
+   * Find an entity by its ID, if it exists return true, else return false
+   * @param id id of entity to find
+   * @return boolean true if entity exists, false if not
+   */
+  public boolean findEntityExistence(int id) {
+    for (Entity entity : entities) {
+      if (entity.getId() == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Get all entities
    */
   public Array<Entity> getEntities() {

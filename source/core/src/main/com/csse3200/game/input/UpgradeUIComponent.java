@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class UpgradeUIComponent extends InputComponent {
@@ -71,16 +72,14 @@ public class UpgradeUIComponent extends InputComponent {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // Clear all existing upgrade tables
-
-
         Vector3 worldCoordinates = new Vector3((float) screenX, (float) screenY, 0);
         getCamera().unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
-//            logger.info("clicked a turret that is upgradable!");
+//          // Clear all existing upgrade tables
+            logger.info("clickedEntity: " + clickedEntity);
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
             Table existingUpgradeTable = upgradeTables.get(clickedEntity);
@@ -97,6 +96,7 @@ public class UpgradeUIComponent extends InputComponent {
 
                 // Store the new upgrade table in the map
                 upgradeTables.put(clickedEntity, newUpgradeTable);
+
             }
 
             return true;
@@ -371,4 +371,29 @@ public class UpgradeUIComponent extends InputComponent {
         style.fontColor = Color.WHITE;
         return style;
     }
+
+
+    /**
+     * Update method for the UpgradeUIComponent, checks if the entity is disposed and removes the upgrade table
+     */
+    public void checkForDispose() {
+        if (!upgradeTables.isEmpty()) {
+            // Iterate over the entries in the upgradeTables map
+            Iterator<Map.Entry<Entity, Table>> iterator = upgradeTables.entrySet().iterator();
+//            logger.info("upgradeTables size: " + upgradeTables.size());
+            while (iterator.hasNext()) {
+                Map.Entry<Entity, Table> entry = iterator.next();
+                Entity entity = entry.getKey();
+//                logger.info("entity: " + entity);
+                // Check if the entity is disposed (use your own disposal condition)
+                if (!ServiceLocator.getEntityService().findEntityExistence(entity.getId())) {
+                    Table upgradeTable = entry.getValue();
+                    upgradeTable.remove();  // Remove the upgrade table
+                    iterator.remove();      // Remove the entry from the map
+                }
+            }
+        }
+    }
+
+
 }

@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
-import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameLoseDisplay;
@@ -44,6 +43,7 @@ public class MainGameScreen extends ScreenAdapter {
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
 
+  private InputComponent upgradedInputHandler;
   private final Stage stage;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
@@ -92,12 +92,11 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent UpgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
-
-    InputComponent engineerInputHnadler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
+    upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
+    InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
-    ServiceLocator.getInputService().register(engineerInputHnadler);
-    ServiceLocator.getInputService().register(UpgradedInputHandler);
+    ServiceLocator.getInputService().register(engineerInputHandler);
+    ServiceLocator.getInputService().register(upgradedInputHandler);
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
@@ -161,6 +160,9 @@ public class MainGameScreen extends ScreenAdapter {
     // Continue with other rendering logic
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
+
+    // Checks if tower selected is dead
+    this.getUpgradedInputHandler().checkForDispose();
 
     // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
@@ -235,5 +237,9 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new TerminalDisplay());
 
     ServiceLocator.getEntityService().register(ui);
+  }
+
+  private UpgradeUIComponent getUpgradedInputHandler() {
+    return (UpgradeUIComponent) upgradedInputHandler;
   }
 }
