@@ -51,7 +51,7 @@ public class BombshipFactory {
     BaseEntityConfig config = configs.bombship;
     
     AnimationRenderComponent animator = new AnimationRenderComponent(
-            new TextureAtlas("images/engineers/bombship.atlas"));
+            new TextureAtlas("images/bombship/bombship.atlas"));
     animator.addAnimation("start", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("destroy", 0.1f, Animation.PlayMode.NORMAL);
     animator.addAnimation("idle", 0.2f, Animation.PlayMode.LOOP);

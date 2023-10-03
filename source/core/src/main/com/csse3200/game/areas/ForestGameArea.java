@@ -125,7 +125,8 @@ public class ForestGameArea extends GameArea {
           "images/GrassTile/grass_tile_6.png",
           "images/GrassTile/grass_tile_7.png",
           "images/highlight_tile.png",
-          "images/mobboss/iceBaby.png"
+          "images/mobboss/iceBaby.png",
+          "images/bombship/bombship.png"
 
   };
   private static final String[] forestTextureAtlases = {
@@ -171,7 +172,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/barrier.atlas",
           "images/towers/PierceTower.atlas",
           "images/towers/RicochetTower.atlas",
-          "images/mobboss/iceBaby.atlas"
+          "images/mobboss/iceBaby.atlas",
+          "images/bombship/bombship.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -327,7 +329,7 @@ public class ForestGameArea extends GameArea {
     spawnFireWorksTower();
     spawnPierceTower();
     spawnRicochetTower();
-
+    //spawnBombship();
   }
 
   private void displayUI() {
@@ -786,6 +788,13 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(RicochetTower, randomPos, true, true);
     }
 
+  }
+
+  private void spawnBombship() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
+    Entity bombship = BombshipFactory.createBombship();
+    spawnEntityAt(bombship, minPos, true, true);
   }
 
   private void spawnDroidTower() {
