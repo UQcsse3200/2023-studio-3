@@ -4,8 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-
-import java.util.Random;
+import java.security.SecureRandom;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
@@ -17,7 +16,13 @@ public class WizardAnimationController extends Component {
     // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
     //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
-    Random rand = new Random();
+    private SecureRandom rand = new SecureRandom();
+
+    /** Sound variables */
+    private static final String ATTACK_SOUND = "sounds/mobs/wizardSpell.mp3";
+    Sound attackSound = ServiceLocator.getResourceService().getAsset(
+            ATTACK_SOUND, Sound.class);
+    
 
     @Override
     public void create() {
@@ -26,6 +31,8 @@ public class WizardAnimationController extends Component {
         entity.getEvents().addListener("wanderStart", this::animateWalk);
         entity.getEvents().addListener("shootStart", this::animateAttack);
         entity.getEvents().addListener("dieStart", this::animateDeath);
+
+
     }
 
     void animateWalk() {
@@ -34,6 +41,8 @@ public class WizardAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("wizard_attack");
+        attackSound.setVolume(1000, 5.5f);
+        attackSound.play();
     }
 
     void animateDeath() {

@@ -26,9 +26,9 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
-    public static final String IDLE = "startIdle";
-    public static final String ATTACK = "startAttack";
-    public static final String DEATH = "startDeath";
+    public static final String IDLE = "idleStart";
+    public static final String ATTACK = "attackStart";
+    public static final String DEATH = "deathStart";
 
 
     // Class attributes
@@ -42,7 +42,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private final RaycastHit hit = new RaycastHit();
 
     public enum STATE {
-        IDLE, ATTACK, DEATH, CHARGE_START, CHARGE_END
+        IDLE, ATTACK, DEATH
     }
     public STATE towerState = STATE.IDLE;
 
@@ -105,8 +105,8 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
             case ATTACK -> {
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
+                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
                     newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
                             (float) (owner.getEntity().getPosition().y + 0.25));
                     ServiceLocator.getEntityService().register(newProjectile);

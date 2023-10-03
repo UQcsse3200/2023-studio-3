@@ -27,9 +27,8 @@ public class DodgingComponent extends Component {
   private final RaycastHit hit = new RaycastHit();
   private short targetLayer;
   private float rangeDetection;
-  private float dodgeSpeed = 1.75f;
-  // Original entity y's speed
-  private float originalSpeed;
+  private float dodgeSpeed = 1.75f; 
+  private float originalSpeed; // Original entity vertical speed
   private PhysicsEngine physics;
 
   // Sometimes the raycast mechanic doesn't detect the other entity because of the
@@ -37,6 +36,7 @@ public class DodgingComponent extends Component {
   // top and bottom detection is also taken care of, ensuring the entity will
   // dodge.
   private static final float Y_OFFSET_MOB_DETECTION = 0.35f;
+  public static final String DODGE_EVENT = "dodgeIncomingEntity";
 
   /**
    * Initialises a component that dodges an incoming entity based on its target
@@ -78,7 +78,7 @@ public class DodgingComponent extends Component {
   @Override
   public void create() {
     physics = ServiceLocator.getPhysicsService().getPhysics();
-    entity.getEvents().addListener("dodgeIncomingEntity", this::changeTraverseDirection);
+    entity.getEvents().addListener(DODGE_EVENT, this::changeTraverseDirection);
     originalSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed().y;
   }
 

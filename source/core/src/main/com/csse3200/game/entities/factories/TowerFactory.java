@@ -1,22 +1,14 @@
 package com.csse3200.game.entities.factories;
 
-import com.csse3200.game.components.tasks.DroidCombatTask;
-import com.csse3200.game.components.tasks.TNTTowerCombatTask;
+import com.csse3200.game.components.tasks.*;
 import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
-import com.csse3200.game.components.tasks.FireTowerCombatTask;
-import com.csse3200.game.components.tasks.StunTowerCombatTask;
-import com.csse3200.game.components.tasks.FireworksTowerCombatTask;
-import com.csse3200.game.components.tasks.PierceTowerCombatTask;
-import com.csse3200.game.components.tasks.RicochetTowerCombatTask;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.CostComponent;
-import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.PhysicsUtils;
@@ -41,13 +33,16 @@ public class TowerFactory {
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
-    private static final String WALL_IMAGE = "images/towers/wallTower.png";
+    private static final String WALL_IMAGE = "images/towers/wall_tower.png";
     private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
     private static final String FIREWORKS_TOWER_ATLAS = "images/towers/fireworks_tower.atlas";
+    private static final String PIERCE_TOWER_ATLAS = "images/towers/PierceTower.atlas";
+    private static final String RICOCHET_TOWER_ATLAS = "images/towers/RicochetTower.atlas";
     private static final String TNT_ATLAS = "images/towers/TNTTower.atlas";
+    private static final String WALL_ATLAS = "images/towers/barrier.atlas";
     private static final String DROID_ATLAS = "images/towers/DroidTower.atlas";
     private static final float DROID_SPEED = 0.25f;
     private static final String DEFAULT_ANIM = "default";
@@ -79,17 +74,27 @@ public class TowerFactory {
     private static final String FIRE_TOWER_DEATH_ANIM = "death";
     private static final float FIRE_TOWER_DEATH_SPEED = 0.12f;
     private static final String STUN_TOWER_IDLE_ANIM = "idle";
+    private static final String WALL_TOWER_DEATH_ANIM = "Death";
+    private static final String WALL_TOWER_IDLE_ANIM = "Idle";
     private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
     private static final String STUN_TOWER_ATTACK_ANIM = "attack";
     private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
     private static final String STUN_TOWER_DEATH_ANIM = "death";
     private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
-    private static final String FIREWORKS_TOWER_DEATH_ANIM ="DEATH";
-    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.4f;
-    private static final String FIREWORKS_TOWER_CHARGE_START_ANIM ="Charge";
-    private static final String FIREWORKS_TOWER_CHARGE_END_ANIM ="Charge_end";
+    private static final String FIREWORKS_TOWER_DEATH_ANIM ="Death";
+    private static final float FIREWORKS_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.06f;
     private static final String FIREWORKS_TOWER_IDLE_ANIM ="Idle";
     private static final String FIREWORKS_TOWER_ATTACK_ANIM ="Attack";
+    private static final String PIERCE_TOWER_IDLE_ANIM ="Idle";
+    private static final String PIERCE_TOWER_ATTACK_ANIM ="Attack";
+    private static final String PIERCE_TOWER_DEATH_ANIM ="Death";
+    private static final String RICOCHET_TOWER_IDLE_ANIM ="Idle";
+    private static final String RICOCHET_TOWER_ATTACK_ANIM ="Attack";
+    private static final String RICOCHET_TOWER_DEATH_ANIM ="Death";
+    private static final float RICOCHET_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final String PIERCE_TOWER_ALERT_ANIM ="Warning";
+    private static final float PIERCE_TOWER_ANIM_ATTACK_SPEED = 0.12f;
     private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
@@ -136,11 +141,26 @@ public class TowerFactory {
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
         WallTowerConfig config = configs.wall;
+        AITaskComponent aiTaskComponent = new AITaskComponent()
+                .addTask(new WallTowerDestructionTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
+
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(WALL_ATLAS, TextureAtlas.class));
+
+        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.5f, Animation.PlayMode.NORMAL);
+        animator.addAnimation(WALL_TOWER_IDLE_ANIM,0.12f, Animation.PlayMode.LOOP);
 
         wall
+                .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new TextureRenderComponent(WALL_IMAGE));
+                .addComponent(animator)
+                .addComponent(new WallTowerAnimationController());
+
+        wall.setScale(0.5f,0.5f);
+        PhysicsUtils.setScaledCollider(wall, 0.5f, 0.5f);
         return wall;
     }
 
@@ -155,7 +175,7 @@ public class TowerFactory {
         TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY, TNT_TOWER_MAX_RANGE));
+                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
 
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
@@ -270,7 +290,7 @@ public class TowerFactory {
                                 .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
@@ -299,7 +319,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
@@ -330,11 +350,9 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIREWORKS_TOWER_CHARGE_END_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(FIREWORKS_TOWER_CHARGE_START_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
 
         fireworksTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -359,13 +377,22 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
-        // ADD AnimationRenderComponent
+        AnimationRenderComponent animator =
+                new AnimationRenderComponent(
+                        ServiceLocator.getResourceService()
+                                .getAsset(PIERCE_TOWER_ATLAS, TextureAtlas.class));
+        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(PIERCE_TOWER_IDLE_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(PIERCE_TOWER_DEATH_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(PIERCE_TOWER_ALERT_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+
 
         pierceTower
+                .addComponent(animator)
+                .addComponent(new PierceTowerAnimationController())
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
-                // ADD ANIMATION COMPONENTS
 
         pierceTower.setScale(1.5f, 1.5f);
         PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);
@@ -383,9 +410,14 @@ public class TowerFactory {
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
 
-        // ADD AnimationRenderComponent
-
+        AnimationRenderComponent animator = new AnimationRenderComponent(
+                ServiceLocator.getResourceService().getAsset(RICOCHET_TOWER_ATLAS,TextureAtlas.class));
+        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
+        animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);
+        animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
         ricochetTower
+                .addComponent(animator)
+                .addComponent(new RicochetTowerAnimationController())
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);

@@ -19,27 +19,11 @@ public class FireworksTowerAnimationController extends Component {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener("idleStart", this::animateDefault);
-        entity.getEvents().addListener("chargeStart", this::animateChargeStart);
-        entity.getEvents().addListener("chargeEnd", this::animateChargeEnd);
         entity.getEvents().addListener("attackStart", this::animateAttack);
         entity.getEvents().addListener("deathStart", this::animateDeath);
 
     }
 
-    /**
-     * the towers starts charging to shoot a projectile
-     */
-    void animateChargeStart() {
-        animator.startAnimation("Charge");
-    }
-
-    /**
-     * the towers starts charging to shoot a projectile and after that this
-     * animation is the wind down of that charging up of the tower
-     */
-    void animateChargeEnd() {
-        animator.startAnimation("Charge_end");
-    }
 
     /**
      * THIS IS TO SHOW THE TOWER DEATH IN THIS SITUATION THE TOWER GETS BLASTED
