@@ -137,6 +137,17 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Called when the entity is created and registered.</div>
 </div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#repairTower()" class="member-name-link">repairTower</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Restores the tower's health to its maximum health.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#upgradeTower(com.csse3200.game.components.tower.TowerUpgraderComponent.UPGRADE,int)" class="member-name-link">upgradeTower</a><wbr>(<a href="TowerUpgraderComponent.UPGRADE.html" title="enum class in com.csse3200.game.components.tower">TowerUpgraderComponent.UPGRADE</a>&nbsp;upgradeType,
+ int&nbsp;value)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Determines which type of upgrade to perform based on arguments provided by the event trigger.</div>
+</div>
 </div>
 </div>
 </div>
@@ -182,6 +193,27 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="../Component.html#create()">create</a></code>&nbsp;in class&nbsp;<code><a href="../Component.html" title="class in com.csse3200.game.components">Component</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="upgradeTower(com.csse3200.game.components.tower.TowerUpgraderComponent.UPGRADE,int)">
+<h3>upgradeTower</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">upgradeTower</span><wbr><span class="parameters">(<a href="TowerUpgraderComponent.UPGRADE.html" title="enum class in com.csse3200.game.components.tower">TowerUpgraderComponent.UPGRADE</a>&nbsp;upgradeType,
+ int&nbsp;value)</span></div>
+<div class="block">Determines which type of upgrade to perform based on arguments provided by the event trigger.
+ Note: The fire rate upgrade is in shots per minute.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>upgradeType</code> - An enum indicating the type of upgrade to do</dd>
+<dd><code>value</code> - How much the upgrade should change the tower's stats, if applicable</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="repairTower()">
+<h3>repairTower</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">repairTower</span>()</div>
+<div class="block">Restores the tower's health to its maximum health.</div>
 </section>
 </li>
 </ul>

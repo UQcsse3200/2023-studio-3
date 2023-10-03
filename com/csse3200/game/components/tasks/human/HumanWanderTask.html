@@ -141,9 +141,27 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <div class="block">Fetches the priority of this task.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setSelected(boolean)" class="member-name-link">setSelected</a><wbr>(boolean&nbsp;isSelected)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#start()" class="member-name-link">start</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Starts the HumanWanderTask instance and instantiates subtasks (HumanWaitTask, HumanWanderTask, EngineerCombatTask).</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startCombat()" class="member-name-link">startCombat</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Starts the combat task.</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startMoving(com.badlogic.gdx.math.Vector2)" class="member-name-link">startMoving</a><wbr>(com.badlogic.gdx.math.Vector2&nbsp;destination)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Starts the movement task, to a particular destination</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#startWaiting()" class="member-name-link">startWaiting</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Starts the wait task.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#update()" class="member-name-link">update</a>()</code></div>
@@ -236,6 +254,37 @@ implements <a href="../../../ai/tasks/PriorityTask.html" title="interface in com
 <dt>Overrides:</dt>
 <dd><code><a href="../../../ai/tasks/DefaultTask.html#update()">update</a></code>&nbsp;in class&nbsp;<code><a href="../../../ai/tasks/DefaultTask.html" title="class in com.csse3200.game.ai.tasks">DefaultTask</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="startWaiting()">
+<h3>startWaiting</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startWaiting</span>()</div>
+<div class="block">Starts the wait task.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="startMoving(com.badlogic.gdx.math.Vector2)">
+<h3>startMoving</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startMoving</span><wbr><span class="parameters">(com.badlogic.gdx.math.Vector2&nbsp;destination)</span></div>
+<div class="block">Starts the movement task, to a particular destination</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>destination</code> - the Vector2 position to which the entity needs to move</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="startCombat()">
+<h3>startCombat</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">startCombat</span>()</div>
+<div class="block">Starts the combat task.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="setSelected(boolean)">
+<h3>setSelected</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setSelected</span><wbr><span class="parameters">(boolean&nbsp;isSelected)</span></div>
 </section>
 </li>
 </ul>

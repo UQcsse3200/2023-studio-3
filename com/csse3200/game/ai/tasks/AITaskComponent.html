@@ -144,6 +144,14 @@ implements <a href="TaskRunner.html" title="interface in com.csse3200.game.ai.ta
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Empties the priorityTasks List.</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getHighestPriorityTask()" class="member-name-link">getHighestPriorityTask</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T extends <a href="PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>&gt;<br>T</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getTask(java.lang.Class)" class="member-name-link">getTask</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;task)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Get a task from the list of tasks.</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#restore()" class="member-name-link">restore</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -206,6 +214,22 @@ implements <a href="TaskRunner.html" title="interface in com.csse3200.game.ai.ta
 </section>
 </li>
 <li>
+<section class="detail" id="getTask(java.lang.Class)">
+<h3>getTask</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a>&gt;</span>&nbsp;<span class="return-type">T</span>&nbsp;<span class="element-name">getTask</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Class.html" title="class or interface in java.lang" class="external-link">Class</a>&lt;T&gt;&nbsp;task)</span></div>
+<div class="block">Get a task from the list of tasks. This can be used to get a reference to
+ a task to modify it. This is inspired from Entity.getComponent().</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - The type of task to get</dd>
+<dt>Parameters:</dt>
+<dd><code>task</code> - The task to get</dd>
+<dt>Returns:</dt>
+<dd>A reference to a task with the given class</dd>
+</dl>
+</section>
+</li>
+<li>
 <section class="detail" id="update()">
 <h3>update</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">update</span>()</div>
@@ -242,6 +266,12 @@ implements <a href="TaskRunner.html" title="interface in com.csse3200.game.ai.ta
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">restore</span>()</div>
 <div class="block">Restores the priorityTasks List. Adds all of the entity's disposed tasks 
  back into priorityTasks.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getHighestPriorityTask()">
+<h3>getHighestPriorityTask</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="PriorityTask.html" title="interface in com.csse3200.game.ai.tasks">PriorityTask</a></span>&nbsp;<span class="element-name">getHighestPriorityTask</span>()</div>
 </section>
 </li>
 <li>
