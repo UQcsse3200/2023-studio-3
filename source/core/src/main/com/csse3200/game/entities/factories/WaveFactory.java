@@ -98,9 +98,9 @@ public class WaveFactory {
     String boss1 = "IceBoss";
 //    String boss1 = "PatrickBoss";
     String boss2 = "PatrickBoss";
-    String boss3 = "IceBoss";
-    //TODO change this to a fire boss in sprint 4
-//    String boss3 = "FireBoss";
+    //String boss3 = "IceBoss";
+
+    String boss3 = "FireBoss";
 
     int spawnDelay = 5;
 
