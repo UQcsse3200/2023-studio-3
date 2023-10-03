@@ -1,5 +1,12 @@
 package com.csse3200.game.areas;
 
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.areas.terrain.TerrainFactory;
+import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.*;
+import com.csse3200.game.physics.PhysicsLayer;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +18,10 @@ import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.screens.AssetLoader;
+
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -20,6 +31,11 @@ import org.slf4j.LoggerFactory;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.Timer;
+
+import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
+import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
+import java.util.ArrayList;
+
 import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -39,8 +55,6 @@ public class ForestGameArea extends GameArea {
   private int wave = 0;
   private Timer waveTimer;
 
-  private Timer bossSpawnTimer;
-  private int bossSpawnInterval = 10000; // 1 minute in milliseconds
   private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
   // Temporary spawn point for testing
@@ -64,6 +78,7 @@ public class ForestGameArea extends GameArea {
           "images/ghost_1.png",
           "images/terrain 2 normal.png",
           "images/terrain 2 hex.png",
+          "images/terrain_use.png",
           "images/hex_grass_2.png",
           "images/hex_grass_3.png",
           "images/iso_grass_1.png",
@@ -124,10 +139,8 @@ public class ForestGameArea extends GameArea {
           "images/GrassTile/grass_tile_5.png",
           "images/GrassTile/grass_tile_6.png",
           "images/GrassTile/grass_tile_7.png",
-          "images/highlight_tile.png",
           "images/mobboss/iceBaby.png",
           "images/bombship/bombship.png"
-
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -217,10 +230,8 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickHit.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+
   private static final String[] forestMusic = {backgroundMusic};
-
-//  private final TerrainFactory terrainFactory;
-
   private Entity player;
   private Entity waves;
 
@@ -293,19 +304,18 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 
-
   /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
   @Override
   public void create() {
     // Load game assets
+
+    loadAllAssets();
     loadAssets();
-    logger.info("Lol");
+    logger.info("selected towers in main game are " + ServiceLocator.getTowerTypes());
     displayUI();
-    logger.info("Lol");
     spawnTerrain();
-    logger.info("Lol");
 
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
@@ -314,15 +324,16 @@ public class ForestGameArea extends GameArea {
     spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 
-    playMusic();
     spawnScrap();
+    spawnGapScanners();
+
 //    spawnTNTTower();
 //    spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
-    spawnFireWorksTower();
-    spawnPierceTower();
-    spawnRicochetTower();
+//     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
+//     spawnPierceTower();
+//     spawnRicochetTower();
 //    spawnBombship();
   }
 
@@ -347,7 +358,7 @@ public class ForestGameArea extends GameArea {
     // Left
     spawnEntityAt(
             ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),
-            new GridPoint2(0, 2),
+            new GridPoint2(0, 0),
             false,
             false);
     // Right
@@ -358,28 +369,15 @@ public class ForestGameArea extends GameArea {
             false);
     // Top
     spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 7),
+            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0),
             new GridPoint2(0, tileBounds.y),
             false,
             false);
     // Bottom
-    spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
-            new GridPoint2(0, 2),
-            false,
-            false);
-  }
+    Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);
+    wall.setPosition(0,-0.1f);
+    ServiceLocator.getEntityService().register(wall);
 
-
-  private void spawnBuilding2() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < NUM_BUILDINGS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity building2 = ObstacleFactory.createBuilding2();
-      spawnEntityAt(building2, randomPos, true, false);
-    }
   }
 
   private Entity spawnPlayer() {
@@ -395,6 +393,26 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
+  // commented 383 - 386 out as there was a missing arg?
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
+
+  private void spawnPatrick() {
+    Entity patrick = MobBossFactory.createPatrickBoss(3000);
+    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+  }
+
+  private void spawnPatrickDeath() {
+    Entity patrickDeath = MobBossFactory.patrickDead();
+    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
+  }
+  // commented 398 - 401 out as there was a missing arg?
+//  private void spawnIceBaby() {
+//    Entity iceBaby = MobBossFactory.createIceBoss();
+//    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+//  }
 
 //  private void spawnDemonBoss() {
 //    Entity demon = MobBossFactory.createDemonBoss();
@@ -702,19 +720,6 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 
-
-//  private Entity spawnGhostKing() {
-//    GridPoint2 minPos = new GridPoint2(0, 0);
-//    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 0);
-//    GridPoint2 randomPos
-//            = RandomUtils.random(minPos, maxPos);
-//    // = new GridPoint2(26, 26);
-//    Entity ghostKing = NPCFactory.createGhostKing(player);
-//    spawnEntityAt(ghostKing, randomPos, true, true);
-//    return ghostKing;
-//
-//  }
-
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same
    * the starting point but different destinations.
@@ -800,7 +805,6 @@ public class ForestGameArea extends GameArea {
     spawnEntity(projectile);
   }
 
-
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
@@ -818,7 +822,7 @@ public class ForestGameArea extends GameArea {
   }
 
   // * TEMPORARY FOR TESTING
-  private void spawnFireTowerTowerAt(int x, int y) {
+  private void spawnFireTowerAt(int x, int y) {
     GridPoint2 pos = new GridPoint2(x, y);
     Entity fireTower = TowerFactory.createFireTower();
 
@@ -894,7 +898,6 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
     music.setLooping(true);
@@ -928,7 +931,6 @@ public class ForestGameArea extends GameArea {
   @Override
   public void dispose() {
     super.dispose();
-    ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class).stop();
     this.unloadAssets();
     stopWaveTimer();
   }

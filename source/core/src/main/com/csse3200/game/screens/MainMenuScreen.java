@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.csse3200.game.GdxGame;
@@ -33,6 +34,10 @@ public class MainMenuScreen extends ScreenAdapter {
   private final Renderer renderer;
   private Texture backgroundTexture;
   private final SpriteBatch batch;
+  private static final String[] mainMenuAtlases = {
+          "images/ui/buttons/glass.atlas"
+  };
+  private static final String[] titleMusic = {"sounds/background/title_screen/ScifiAmbient.ogg"};
   private Animation<TextureRegion> MM_Star1_animation;
   private Animation<TextureRegion> MM_Galaxy1_animation;
   private Animation<TextureRegion> MM_Planet1_animation;
@@ -211,6 +216,8 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(mainMenuTextures);
+    resourceService.loadTextureAtlases(mainMenuAtlases);
+    ServiceLocator.getResourceService().loadMusic(titleMusic);
     backgroundTexture = new Texture("images/background/main_menu/main_menu_bg.png");
 
     // MM_Star1
@@ -308,6 +315,8 @@ public class MainMenuScreen extends ScreenAdapter {
     logger.debug("Unloading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.unloadAssets(mainMenuTextures);
+    resourceService.unloadAssets(mainMenuAtlases);
+    resourceService.unloadAssets(titleMusic);
     MM_Star1_Texture.dispose();
     MM_Galaxy1_Texture.dispose();
     MM_Planet1_Texture.dispose();
@@ -327,5 +336,9 @@ public class MainMenuScreen extends ScreenAdapter {
             .addComponent(new InputDecorator(stage, 10))
             .addComponent(new MainMenuActions(game));
     ServiceLocator.getEntityService().register(ui);
+    Music music = ServiceLocator.getResourceService().getAsset(titleMusic[0], Music.class);
+    music.setLooping(true);
+    music.setVolume(0.3f);
+    music.play();
   }
 }

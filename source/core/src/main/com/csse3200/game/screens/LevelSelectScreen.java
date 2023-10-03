@@ -59,7 +59,7 @@ public class LevelSelectScreen extends ScreenAdapter {
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         TextButton BackButton = new TextButton("Back", skin); // Universal Skip button
         BackButton.addListener(new ClickListener() {
             @Override

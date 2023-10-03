@@ -1,0 +1,198 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	font_small: {
+		file: dot_gothic_16.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	title: {
+		file: dot_gothic_32.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+}
+com.badlogic.gdx.graphics.Color: {
+	Black: {
+		r: 0
+		g: 0
+		b: 0
+		a: 1
+	}
+	Blue: {
+		r: 0.2901961
+		g: 0.34509805
+		b: 1
+		a: 1
+	}
+	Grey: {
+		r: 0.73333335
+		g: 0.73333335
+		b: 0.73333335
+		a: 1
+	}
+	White: {
+		r: 1
+		g: 1
+		b: 1
+		a: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: UI_Glass_Button_Large_Press_01a4
+		down: UI_Glass_Button_Large_Press_01a1
+		over: UI_Glass_Button_Medium_Lock_01a1
+		focused: UI_Glass_Button_Large_Release_01a2
+		disabled: UI_Glass_Banner_01a
+		checked: UI_Glass_Button_Large_Release_01a1
+		checkedOver: UI_Glass_Button_Large_Release_01a2
+		checkedDown: UI_Glass_Button_Large_Release_01a3
+		checkedFocused: UI_Glass_Button_Large_Release_01a4
+		pressedOffsetY: -2
+		unpressedOffsetY: 1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		parent: default
+		checkboxOn: UI_Glass_Slot_Available_01a
+		checkboxOff: UI_Glass_Slot_Available_01a
+		checkboxOnOver: UI_Glass_Slot_Selected_01a
+		checkboxOver: UI_Glass_Slot_Unavailable_01a
+		checkboxOnDisabled: UI_Glass_Slot_Unavailable_01a
+		font: font_small
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
+	default: {
+		parent: default
+		pressedOffsetY: -1
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
+	default: {
+		parent: default
+		font: font_small
+		fontColor: White
+		downFontColor: Blue
+		overFontColor: White
+		focusedFontColor: White
+		disabledFontColor: Grey
+		up: UI_Glass_Button_Large_Press_01a4
+		down: UI_Glass_Button_Large_Press_01a1
+		over: UI_Glass_Button_Large_Press_01a3
+		focused: UI_Glass_Button_Large_Press_01a2
+		disabled: UI_Glass_Banner_01a
+		checked: UI_Glass_Button_Large_Press_01a2
+		checkedOver: UI_Glass_Button_Large_Press_01a3
+		checkedDown: UI_Glass_Button_Large_Press_01a1
+		checkedFocused: UI_Glass_Button_Large_Press_01a2
+		pressedOffsetY: -2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: title
+		fontColor: White
+	}
+	title: {
+		parent: default
+		font: title
+		fontColor: White
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
+	default: {
+		font: font_small
+		fontColorSelected: White
+		fontColorUnselected: Grey
+		selection: UI_Glass_Banner_01a
+		down: UI_Glass_Button_Large_Lock_01a3
+		over: UI_Glass_Button_Large_Lock_01a2
+		background: UI_Glass_Frame_Standard_01a
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: UI_Glass_Fillbar_01a
+		disabledBackground: UI_Glass_Fillbar_01a
+		knob: UI_Glass_Scrollbar_Handle_01a
+		disabledKnob: UI_Glass_Slider_Handle_01a
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		background: UI_Glass_Frame_Standard_01a
+		corner: UI_Glass_Scrollbar_01a
+		hScroll: UI_Glass_Banner_01a
+		hScrollKnob: UI_Glass_Scrollbar_Handle_01a
+		vScroll: UI_Glass_Frame_Vertical_01a
+		vScrollKnob: UI_Glass_Scrollbar_Handle_01a
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
+	default: {
+		font: font_small
+		fontColor: Grey
+		overFontColor: White
+		disabledFontColor: Grey
+		background: UI_Glass_Button_Large_Press_01a4
+		scrollStyle: default
+		listStyle: default
+		backgroundOver: UI_Glass_Button_Large_Lock_01a2
+		backgroundOpen: UI_Glass_Button_Large_Lock_01a4
+		backgroundDisabled: UI_Glass_Banner_01a
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
+	default-horizontal: {
+		parent: default-horizontal
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		parent: default
+		font: font_small
+		fontColor: Grey
+		downFontColor: White
+		overFontColor: White
+		focusedFontColor: White
+		disabledFontColor: Grey
+		checkedFontColor: White
+		checkedDownFontColor: White
+		checkedOverFontColor: White
+		checkedFocusedFontColor: White
+		up: UI_Glass_Button_Large_Press_01a4
+		down: UI_Glass_Button_Large_Press_01a1
+		over: UI_Glass_Button_Large_Press_01a3
+		focused: UI_Glass_Button_Large_Press_01a3
+		disabled: UI_Glass_Banner_01a
+		checked: UI_Glass_Button_Large_Press_01a1
+		checkedOver: UI_Glass_Button_Large_Press_01a3
+		checkedDown: UI_Glass_Button_Large_Press_01a1
+		checkedFocused: UI_Glass_Button_Large_Press_01a3
+		pressedOffsetY: -2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: font_small
+		fontColor: White
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+	default: {
+		background: UI_Glass_Frame_Standard_01a
+		titleFont: font_small
+		titleFontColor: White
+		stageBackground: UI_Glass_Frame_Standard_01a
+	}
+}
+}

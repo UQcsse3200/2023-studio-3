@@ -4,13 +4,16 @@ import com.csse3200.game.components.gamearea.CurrencyDisplay;
 import com.csse3200.game.currency.Crystal;
 import com.csse3200.game.currency.Scrap;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import com.csse3200.game.currency.Currency;
+import com.csse3200.game.screens.TowerType;
 
 public class CurrencyService {
 
     private ArrayList<Currency> currencies;
     private CurrencyDisplay display;
+    private TowerType tower = null;
 
     /**
      * Constructor for the CurrencyService class
@@ -44,5 +47,17 @@ public class CurrencyService {
 
     public CurrencyDisplay getDisplay() {
         return display;
+    }
+
+    public void setTowerType(TowerType newTower) {
+        if (tower == newTower) {
+            tower = null;
+        } else {
+            tower = newTower;
+        }
+    }
+
+    public TowerType getTower() {
+        return tower;
     }
 }
