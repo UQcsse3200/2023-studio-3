@@ -1,4 +1,3 @@
-//BombshipController
 package com.csse3200.game.components.npc;
 
 import com.csse3200.game.components.Component;
