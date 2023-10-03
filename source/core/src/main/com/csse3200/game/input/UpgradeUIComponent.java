@@ -332,7 +332,7 @@ public class UpgradeUIComponent extends InputComponent {
         innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon
         innerUpgradeTable.add(healthLabel).expandX().left();
         innerUpgradeTable.row();
-        TextButton upgradeIncome = null;
+        ImageButton upgradeIncome = null;
         // if the turret has an income upgrade component, add the income upgrade button
         if (turretEntity.getComponent(IncomeUpgradeComponent.class) != null) {
 
@@ -345,8 +345,8 @@ public class UpgradeUIComponent extends InputComponent {
             innerUpgradeTable.row();
 
             Drawable income = new TextureRegionDrawable(new TextureRegion(new Texture("images/scrap_upgrade.png")));
-            ImageButton attackStyleButton = new ImageButton(asStyle);
-            attackStyleButton.addListener(new ClickListener() {
+            upgradeIncome = new ImageButton(income);
+            upgradeIncome.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     value = ServiceLocator.getCurrencyService().getScrap().getAmount();
