@@ -60,7 +60,7 @@ class TowerUpgraderComponentTest {
         entity.create();
         entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
         verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
-        assertEquals(0.5, towerCombatTask.getFireRateInterval());
+        assertEquals(((float) 1 /12), towerCombatTask.getFireRateInterval());
     }
 
     @Test
@@ -74,8 +74,8 @@ class TowerUpgraderComponentTest {
         entity.addComponent(aiTaskComponent);
         towerCombatTask.start();
         entity.create();
-        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -60);
-        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, -60);
-        assertEquals(1., towerCombatTask.getFireRateInterval());
+        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
+        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
+        assertEquals((1/12f), towerCombatTask.getFireRateInterval());
     }
 }

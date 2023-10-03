@@ -27,10 +27,12 @@ public class InputService implements InputProcessor, GestureDetector.GestureList
 
   private final List<InputComponent> inputHandlers = new ArrayList<>();
   private final InputFactory inputFactory;
+  private EngineerInputComponent engineerInputComponent;
 
   public InputService() {
     this(InputFactory.createFromInputType(inputType));
   }
+
 
   public InputService(InputFactory inputFactory) {
     this.inputFactory = inputFactory;
@@ -46,6 +48,10 @@ public class InputService implements InputProcessor, GestureDetector.GestureList
     return inputFactory;
   }
 
+  public EngineerInputComponent getEngineerInput() {
+    return engineerInputComponent;
+  }
+
   /**
    * Register an input handler based on its priority and reorder inputHandlers.
    *
@@ -53,6 +59,9 @@ public class InputService implements InputProcessor, GestureDetector.GestureList
    */
   public void register(InputComponent inputHandler) {
     logger.debug("Registering input handler {}", inputHandler);
+    if (inputHandler instanceof EngineerInputComponent) {
+      engineerInputComponent = (EngineerInputComponent) inputHandler;
+    }
     inputHandlers.add(inputHandler);
     inputHandlers.sort(comparator);
   }
