@@ -91,10 +91,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createWaves()" class="member-name-link">createWaves</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createLevel(int,int,int)" class="member-name-link">createLevel</a><wbr>(int&nbsp;maxDiff,
+ int&nbsp;maxWaves,
+ int&nbsp;chosenLevel)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Create a Wave entity.</div>
+<div class="block">This function is responsible for creating the level and all the waves associated with it.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#createWaves()" class="member-name-link">createWaves</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">The function will create the waves depending on the level selected by the user.</div>
 </div>
 </div>
 </div>
@@ -117,12 +124,34 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="createWaves()">
 <h3>createWaves</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../Entity.html" title="class in com.csse3200.game.entities">Entity</a></span>&nbsp;<span class="element-name">createWaves</span>()</div>
-<div class="block">Create a Wave entity.
- Each wave class represents a single wave, then they are appended to a level.
- Cases can be written in here to set what happens for each level.</div>
+<div class="block">The function will create the waves depending on the level selected by the user.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="createLevel(int,int,int)">
+<h3>createLevel</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../components/tasks/waves/LevelWaves.html" title="class in com.csse3200.game.components.tasks.waves">LevelWaves</a></span>&nbsp;<span class="element-name">createLevel</span><wbr><span class="parameters">(int&nbsp;maxDiff,
+ int&nbsp;maxWaves,
+ int&nbsp;chosenLevel)</span></div>
+<div class="block">This function is responsible for creating the level and all the waves associated with it.
+ It takes in the difficulty, number of waves and level selected by the user. From the level
+ selected by the user, it will produce the waves for the level.
+
+ Depending on the level selected (1 easy, 2 medium, 3 hard), the number of waves will increase as well as
+ the number of mobs per wave and the health of the mobs. Based on the level the mobs will change and waves will be
+ constructed from two random mobs of the possible ones allocated for that level. Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
+ health will be increased from BASE_HEALTH to BASE_HEALTH + (I * chosen_level) so the difficulty
+ increases quicker.
+
+ Bosses are spawned every 5 waves and the health of the bosses increases as the level increases.
+ For every 5 levels another boss is included (5th wave -> 1 boss, 10th wave -> 2 bosses etc.)</div>
 <dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>maxDiff</code> - - the maximum difficulty of the level (the start number of mobs - 3)</dd>
+<dd><code>maxWaves</code> - - the maximum number of waves for the level</dd>
+<dd><code>chosenLevel</code> - - the level selected by the user</dd>
 <dt>Returns:</dt>
-<dd>entity</dd>
+<dd>level - the level constructed with all the waves of mobs</dd>
 </dl>
 </section>
 </li>

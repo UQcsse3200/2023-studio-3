@@ -133,8 +133,9 @@ loadScripts(document, 'script');</script>
 <div class="block">Dispose of all internal entities in the area</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#spawnMob(java.lang.String,com.badlogic.gdx.math.GridPoint2)" class="member-name-link">spawnMob</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entity,
- com.badlogic.gdx.math.GridPoint2&nbsp;randomPos)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#spawnMob(java.lang.String,com.badlogic.gdx.math.GridPoint2,int)" class="member-name-link">spawnMob</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entity,
+ com.badlogic.gdx.math.GridPoint2&nbsp;randomPos,
+ int&nbsp;health)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Spawn an entity on the map.</div>
 </div>
@@ -189,15 +190,17 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="spawnMob(java.lang.String,com.badlogic.gdx.math.GridPoint2)">
+<section class="detail" id="spawnMob(java.lang.String,com.badlogic.gdx.math.GridPoint2,int)">
 <h3>spawnMob</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">spawnMob</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;entity,
- com.badlogic.gdx.math.GridPoint2&nbsp;randomPos)</span></div>
+ com.badlogic.gdx.math.GridPoint2&nbsp;randomPos,
+ int&nbsp;health)</span></div>
 <div class="block">Spawn an entity on the map. Is called during a wave. Add cases here for each mob type</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>entity</code> - mob to be spawned</dd>
 <dd><code>randomPos</code> - position to be spawned at</dd>
+<dd><code>health</code> - health of the mob</dd>
 </dl>
 </section>
 </li>

@@ -214,9 +214,14 @@ loadScripts(document, 'script');</script>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Sets the entity's fullHealth variable.</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="../entities/Melee.html" title="class in com.csse3200.game.entities">Melee</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withinRange(com.csse3200.game.entities.Entity)" class="member-name-link">withinRange</a><wbr>(<a href="../entities/Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateHealth(int)" class="member-name-link">updateHealth</a><wbr>(int&nbsp;setTo)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Update the health of the enemy.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/ArrayList.html" title="class or interface in java.util" class="external-link">ArrayList</a>&lt;<a href="../entities/Melee.html" title="class in com.csse3200.game.entities">Melee</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#withinRange(com.csse3200.game.entities.Entity)" class="member-name-link">withinRange</a><wbr>(<a href="../entities/Entity.html" title="class in com.csse3200.game.entities">Entity</a>&nbsp;target)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Check if the target is within range of any of the close range attacks.</div>
 </div>
 </div>
@@ -418,6 +423,14 @@ loadScripts(document, 'script');</script>
  fullHealth: above 66% of full health
  midHealth: above 33% of full health
  lowHealth: below 33% of full health</div>
+</section>
+</li>
+<li>
+<section class="detail" id="updateHealth(int)">
+<h3>updateHealth</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateHealth</span><wbr><span class="parameters">(int&nbsp;setTo)</span></div>
+<div class="block">Update the health of the enemy.
+ Used in WaveFactory to increase difficulty of enemies</div>
 </section>
 </li>
 </ul>
