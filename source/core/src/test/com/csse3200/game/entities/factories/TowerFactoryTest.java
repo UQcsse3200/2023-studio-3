@@ -38,7 +38,7 @@ public class TowerFactoryTest {
     private String[] texture = {
             "images/towers/turret_deployed.png",
             "images/towers/turret01.png",
-            "images/towers/wallTower.png",
+            "images/towers/wall_tower.png",
             "images/towers/fire_tower_atlas.png",
             "images/towers/stun_tower.png",
             "images/towers/DroidTower.png",

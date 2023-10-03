@@ -26,36 +26,36 @@ import com.csse3200.game.services.ServiceLocator;
  * the properties stores in 'PlayerConfig'.
  */
 public class PlayerFactory {
-  private static final PlayerConfig stats =
-      FileLoader.readClass(PlayerConfig.class, "configs/player.json");
+    private static final PlayerConfig stats =
+            FileLoader.readClass(PlayerConfig.class, "configs/player.json");
 
-  /**
-   * Create a player entity.
-   * @return entity
-   */
-  public static Entity createPlayer() {
-    InputComponent inputComponent =
-        ServiceLocator.getInputService().getInputFactory().createForPlayer();
-    Entity player =
-        new Entity()
-            .addComponent(new TextureRenderComponent("images/box_boy_leaf.png"))
-            .addComponent(new PhysicsComponent())
-            .addComponent(new ColliderComponent())
-            .addComponent(new TouchAttackComponent(PhysicsLayer.NPC))
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS))
-            .addComponent(new PlayerActions())
-            .addComponent(new CombatStatsComponent(1000, 0))
-            .addComponent(new InventoryComponent(stats.gold))
-            .addComponent(inputComponent)
-            .addComponent(new PlayerStatsDisplay());
+    /**
+     * Create a player entity.
+     * @return entity
+     */
+    public static Entity createPlayer() {
+        InputComponent inputComponent =
+                ServiceLocator.getInputService().getInputFactory().createForPlayer();
+        Entity player =
+                new Entity()
+                        .addComponent(new TextureRenderComponent("images/box_boy_leaf.png"))
+                        .addComponent(new PhysicsComponent())
+                        .addComponent(new ColliderComponent())
+                        .addComponent(new TouchAttackComponent(PhysicsLayer.NPC))
+                        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS))
+                        .addComponent(new PlayerActions())
+                        .addComponent(new CombatStatsComponent(1000, 0))
+                        .addComponent(new InventoryComponent(stats.gold))
+                        .addComponent(inputComponent)
+                        .addComponent(new PlayerStatsDisplay());
 
-    PhysicsUtils.setScaledCollider(player, 0.6f, 0.3f);
-    player.getComponent(ColliderComponent.class).setDensity(1.5f);
-    player.getComponent(TextureRenderComponent.class).scaleEntity();
-    return player;
-  }
+        PhysicsUtils.setScaledCollider(player, 0.6f, 0.3f);
+        player.getComponent(ColliderComponent.class).setDensity(1.5f);
+        player.getComponent(TextureRenderComponent.class).scaleEntity();
+        return player;
+    }
 
-  private PlayerFactory() {
-    throw new IllegalStateException("Instantiating static util class");
-  }
+    private PlayerFactory() {
+        throw new IllegalStateException("Instantiating static util class");
+    }
 }
