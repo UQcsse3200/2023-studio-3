@@ -59,6 +59,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
+    /**
+     * Constructor for the TurretSelectionScreen
+     * @param game The game object
+     */
     public TurretSelectionScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
@@ -219,10 +223,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
         stage.draw();  // Draw the stage
     }
 
+    /**
+     * Returns the list of selected turrets
+     * @return The list of selected turrets
+     */
     public List<TowerType> getTurretList() {
         return turretList;
     }
 
+    /**
+     * Creates a button with the specified images and text
+     * @param defaultImageFilePath The file path to the default image
+     * @param alternateImageFilePath The file path to the alternate image
+     * @param cost The cost of the turret
+     * @param towerName The name of the turret
+     * @param turretDesc The description of the turret
+     * @return The created button
+     */
     private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, String cost,
                                     String towerName, String turretDesc) {
         Drawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(defaultImageFilePath)));
@@ -280,14 +297,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
         return tb;
     }
 
+    /**
+     * Updates the description label
+     */
     private void updateDescriptionLabel() {
         descriptionLabel.setText("Description: " + turretDescription);
     }
 
+    /**
+     * Updates the description text
+     */
     private void updateDescriptionText() {
         descText.setText(turretDescriptionText);
     }
 
+    /**
+     * Disposes of the stage
+     */
     @Override
     public void dispose() {
         stage.dispose();
