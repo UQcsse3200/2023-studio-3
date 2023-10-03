@@ -37,11 +37,11 @@ public class HelpScreen extends ScreenAdapter {
         stage.addActor(table);
 
         Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
-        TextButton BackButton = new TextButton("Back", skin); // Universal Skip button
+        TextButton BackButton = new TextButton("Back", skin);
         BackButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.MAIN_MENU); // Skip to the end
+                game.setScreen(GdxGame.ScreenType.MAIN_MENU);
 
             }
         });
@@ -74,12 +74,6 @@ public class HelpScreen extends ScreenAdapter {
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void hide() {
-        // Remove this screen as the input processor
-        Gdx.input.setInputProcessor(null);
     }
 
     @Override
