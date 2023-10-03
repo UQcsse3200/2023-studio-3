@@ -322,14 +322,14 @@ public class ForestGameArea extends GameArea {
 
     playMusic();
     spawnScrap();
-    spawnTNTTower();
-    spawnWeaponTower();
-    spawnGapScanners();
-    spawnDroidTower();
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    spawnGapScanners();
+//    spawnDroidTower();
     spawnFireWorksTower();
     spawnPierceTower();
     spawnRicochetTower();
-    //spawnBombship();
+//    spawnBombship();
   }
 
   private void displayUI() {
