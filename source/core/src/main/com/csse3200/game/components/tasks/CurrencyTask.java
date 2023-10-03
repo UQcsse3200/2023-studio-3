@@ -99,4 +99,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void setInterval(int interval) {
         this.interval = interval;
     }
+
+    public int getInterval() {
+        return interval;
+    }
 }
