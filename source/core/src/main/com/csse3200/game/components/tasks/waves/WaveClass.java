@@ -7,12 +7,11 @@ import com.csse3200.game.services.ServiceLocator;
 
 import java.util.*;
 
-
 public class WaveClass {
-  private HashMap<String, Integer> entities;
+  private HashMap<String, int[]> entities;
   private GameTime gameTime;
   private long startTime;
-  private List<String> wave;
+  private List<Tuple> wave;
   private Random rand = new Random();
   private int mobIndex;
 
@@ -20,7 +19,7 @@ public class WaveClass {
    * Constructor for the WaveClass
    * @param entities: HashMap of entities and the quantity of them to be spawned in this wave
    */
-  public WaveClass(HashMap<String, Integer> entities) {
+  public WaveClass(HashMap<String, int[]> entities) {
     this.entities = entities;
     this.wave = entitiesToWave();
     this.mobIndex = 0;
@@ -28,13 +27,14 @@ public class WaveClass {
 
   /**
    * Get the entities that are part of this wave and randomise the order they are spawned
-   * @return mobs for the wave
+   * @return mobs for the wave in form of (mob name, mob health)
    */
-  public List<String> entitiesToWave() {
-    List<String> enemies = new ArrayList<>();
-    for (Map.Entry<String, Integer> set : entities.entrySet()) {
-      for (int i = 0; i < set.getValue(); i++) {
-        enemies.add(set.getKey());
+
+  public List<Tuple> entitiesToWave() {
+    List<Tuple> enemies = new ArrayList<>();
+    for (Map.Entry<String, int[]> set : entities.entrySet()) {
+      for (int i = 0; i < set.getValue()[0]; i++) {
+        enemies.add(new Tuple(set.getKey(), set.getValue()[1]));
       }
     }
     Collections.shuffle(enemies);
@@ -53,8 +53,17 @@ public class WaveClass {
    * Gets the current entities that have spawned in the wave
    * @return list of mobs in the current wave
    */
-  public List<String> getMobs() {
+  public List<Tuple> getMobs() {
     return this.wave;
+  }
+
+  @Override
+  public String toString(){
+    return this.wave.toString();
+  }
+
+  public HashMap<String, int[]> getEntities() {
+    return this.entities;
   }
 
 }

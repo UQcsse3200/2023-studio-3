@@ -173,4 +173,17 @@ public class EntityService {
     return (x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight);
   }
 
+  public Entity getEntityAtPositionLayer(float x, float y, short layer) {
+    for (int i = 0; i < entities.size; i++) {
+      Entity entity = entities.get(i);
+      if (entityContainsPosition(entity, x, y)) {
+        HitboxComponent hitBox = entity.getComponent(HitboxComponent.class);
+        if (hitBox != null && PhysicsLayer.contains(layer, hitBox.getLayer())) {
+          return entity;
+        }
+      }
+    }
+    return null;
+  }
+
 }

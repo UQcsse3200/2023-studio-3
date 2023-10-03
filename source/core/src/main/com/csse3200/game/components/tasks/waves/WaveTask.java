@@ -120,10 +120,10 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       }
 
     } else {
-      logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
-      logger.info("WAVE SERVICE NUMBER: Wave Number {}",ServiceLocator.getWaveService().getWaveCount());
-      logger.info("NEXT WAVE AT {}", ServiceLocator.getWaveService().getNextWaveTime());
-      logger.info("TIME IS {}", ServiceLocator.getTimeSource().getTime());
+//      logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
+//      logger.info("WAVE SERVICE NUMBER: Wave Number {}",ServiceLocator.getWaveService().getWaveCount());
+//      logger.info("NEXT WAVE AT {}", ServiceLocator.getWaveService().getNextWaveTime());
+//      logger.info("TIME IS {}", ServiceLocator.getTimeSource().getTime());
       if (waveInProgress) {
         this.level.spawnWave();
       }
