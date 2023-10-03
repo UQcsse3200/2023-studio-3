@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks;
+package com.csse3200.game.components.tasks.waves;
 
 import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class WaveTaskTest {
+class WaveTaskTest {
 
     WaveTask waveTask;
     ResourceService resourceService;

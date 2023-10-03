@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.extensions.GameExtension;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +12,6 @@ class WaveFactoryTest {
 
     @BeforeEach
     void setUp() {
-
+        LevelWaves levelWaves = (LevelWaves) WaveFactory.createWaves();
     }
 }

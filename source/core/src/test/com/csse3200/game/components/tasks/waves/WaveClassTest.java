@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks;
+package com.csse3200.game.components.tasks.waves;
 
 import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.extensions.GameExtension;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class WaveClassTest {
+class WaveClassTest {
 
     HashMap<String, Integer> waveContents;
     WaveClass waveClass;

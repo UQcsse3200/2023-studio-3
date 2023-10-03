@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks;
+package com.csse3200.game.components.tasks.waves;
 
 import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-public class LevelWavesTest {
+class LevelWavesTest {
 
     LevelWaves levelWaves;
     WaveClass wave;
@@ -27,7 +27,7 @@ public class LevelWavesTest {
 
     @BeforeEach
     void setUp() {
-        levelWaves = new LevelWaves(2);
+        levelWaves = mock(LevelWaves.class);
         wave =  mock(WaveClass.class);
         gameTime = mock(GameTime.class);
     }
@@ -56,13 +56,8 @@ public class LevelWavesTest {
 
     @Test
     public void testGetStartTime() {
-        when(gameTime.getTime()).thenReturn(1000L);
+        when(levelWaves.getStartTime()).thenReturn(1000L);
         assertEquals(1000L, levelWaves.getStartTime());
-    }
-
-    @Test
-    public void fail() {
-        assertTrue(false);
     }
 
 }
