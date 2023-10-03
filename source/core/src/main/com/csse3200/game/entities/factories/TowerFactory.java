@@ -323,10 +323,9 @@ public class TowerFactory {
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
                 .addComponent(new TowerUpgraderComponent());
-<<<<<<< HEAD
-=======
+
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
->>>>>>> main
+
         return tower;
     }
 }
