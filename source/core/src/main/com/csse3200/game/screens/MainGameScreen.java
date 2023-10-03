@@ -136,9 +136,11 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
+    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
+    ServiceLocator.getInputService().register(buildHandler);
     ServiceLocator.getInputService().register(engineerInputHandler);
     ServiceLocator.getInputService().register(upgradedInputHandler);
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
