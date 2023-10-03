@@ -27,7 +27,7 @@ public class BombshipWaitTask extends DefaultTask {
   @Override
   public void start() {
     super.start();
-    endTime = totalTime.getTime() + (int)(duration * 1200);
+    endTime = totalTime.getTime() + (int)(duration * 1000);
   }
 
   @Override

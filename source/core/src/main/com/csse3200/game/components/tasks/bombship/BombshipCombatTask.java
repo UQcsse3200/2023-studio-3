@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks.bombship;
 
+
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -10,6 +11,7 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+
 
 import java.util.ArrayList;
 
@@ -33,17 +35,17 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the bombship.
 
-    private Vector2 bombShipPosition = new Vector2(0, 0); // Placeholder value for the Engineer's position.
+    private Vector2 bombShipPosition = new Vector2(0, 0); // Placeholder value for the Bombship's position.
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
     private long reloadTime;
-
+/**
     private ArrayList<RaycastHit> hits = new ArrayList<>();
     private final RaycastHit hit = new RaycastHit();
     private ArrayList<Vector2> targets = new ArrayList<>();
-
+*/
     /** The Engineer's states. */
     private enum STATE {
         IDLE, START , DESTROY
@@ -66,7 +68,7 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
         this.maxRangePosition.set(bombShipPosition.x + maxRange, bombShipPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(IDLE);
-        endTime = timeSource.getTime() + (INTERVAL * 600);
+        endTime = timeSource.getTime() + (INTERVAL * 500);
     }
 
     /**
@@ -77,7 +79,7 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateBombshipState();
-            endTime = timeSource.getTime() + (INTERVAL * 1200);
+            endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 
@@ -139,25 +141,17 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
      * @return true if a target is detected, false otherwise
      */
     public boolean isEngineerDied() {
-        // If there is an obstacle in the path to the max range point, mobs visible.
-        Vector2 position = owner.getEntity().getCenterPosition();
-        hits.clear();
-        for (int i = 8; i > -8; i--) {
-            if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET1, hit)
-                    || physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET2, hit)) {
-                hits.add(hit);
-                targets.add(new Vector2(position.x + maxRange, position.y + i));
-            }
-        }
-        return !hits.isEmpty();
+        //if (engineerCount < maxEngineers) {
+            return true;
+        //}
     }
 
     /**
      * Fetches the nearest target from the array of detected target positions created during the last call of
-     * isTargetVisible
+     * this could be done in the next sprint , the scan doesnt work as of now !
      * @return a Vector2 position of the nearest mob detected.
      */
-    public Vector2 fetchTarget() {
+   /** public Vector2 fetchTarget() {
         // Initial nearest position for comparison
         int lowest = 10;
 
@@ -173,4 +167,6 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
         }
         return nearest;
     }
+    */
 }
+
