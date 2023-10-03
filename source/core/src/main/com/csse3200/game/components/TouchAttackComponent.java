@@ -157,6 +157,9 @@ public class TouchAttackComponent extends Component {
    * If the fixture has been removed (died) return null, else return the weapon to use.
    * */
   public Weapon chooseWeapon(Fixture other) {
+    if (other == null) {
+      return null;
+    }
     BodyUserData data = ((BodyUserData) other.getBody().getUserData());
     if (data == null) {
       return null;

@@ -246,4 +246,12 @@ public class CombatStatsComponent extends Component {
     public String getState() {
         return this.state;
     }
+
+    /**
+     * Update the health of the enemy.
+     * Used in WaveFactory to increase difficulty of enemies
+     * */
+    public void updateHealth(int setTo) {
+      this.health = setTo;
+    }
 }

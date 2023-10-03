@@ -177,6 +177,7 @@ public class EntityService {
     return (x >= entityX && x <= entityX + entityWidth && y >= entityY && y <= entityY + entityHeight);
   }
 
+<<<<<<< HEAD
   /**
    * Determine whether there are any entities within the given tile position (x and y range). Checks for out of bounds
    * click location
@@ -198,4 +199,19 @@ public class EntityService {
     }
     return true;
   }
+=======
+  public Entity getEntityAtPositionLayer(float x, float y, short layer) {
+    for (int i = 0; i < entities.size; i++) {
+      Entity entity = entities.get(i);
+      if (entityContainsPosition(entity, x, y)) {
+        HitboxComponent hitBox = entity.getComponent(HitboxComponent.class);
+        if (hitBox != null && PhysicsLayer.contains(layer, hitBox.getLayer())) {
+          return entity;
+        }
+      }
+    }
+    return null;
+  }
+
+>>>>>>> main
 }

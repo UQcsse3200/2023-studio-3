@@ -39,7 +39,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        endTime = timeSource.getTime() + (30 * 1000);
+        owner.getEntity().getEvents().addListener("addIncome",this::changeInterval);
+        endTime = timeSource.getTime() + (30 * 1000L);
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
@@ -53,7 +54,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
         if (timeSource.getTime() >= endTime) {
             owner.getEntity().getEvents().trigger(MOVE);
             updateCurrency(); // update currency
-            endTime = timeSource.getTime() + (30 * 1000); // reset end time
+            logger.info(String.format("Interval: %d", interval));
+            endTime = timeSource.getTime() + (interval * 1000L); // reset end time
 
         }
     }
@@ -87,6 +89,11 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return priority;
+    }
+
+    public void changeInterval(int newInterval) {
+        interval = newInterval;
+        logger.info("Interval changed to: " + interval);
     }
 
     public void setInterval(int interval) {

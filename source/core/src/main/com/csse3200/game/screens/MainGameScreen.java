@@ -134,10 +134,17 @@ public class MainGameScreen extends ScreenAdapter {
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
+
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    InputComponent UpgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
+    InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
+
     ServiceLocator.getInputService().register(inputHandler);
     ServiceLocator.getInputService().register(buildHandler);
+    ServiceLocator.getInputService().register(engineerInputHandler);
+    ServiceLocator.getInputService().register(UpgradedInputHandler);
+
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
@@ -279,10 +286,11 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Creating ui");
     Stage stage = ServiceLocator.getRenderService().getStage();
     InputComponent inputComponent =
-        ServiceLocator.getInputService().getInputFactory().createForTerminal();
+            ServiceLocator.getInputService().getInputFactory().createForTerminal();
 
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
+
         .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
@@ -292,6 +300,8 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new Terminal())
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
+
+
     ServiceLocator.getEntityService().register(ui);
 
     music.setLooping(true);
