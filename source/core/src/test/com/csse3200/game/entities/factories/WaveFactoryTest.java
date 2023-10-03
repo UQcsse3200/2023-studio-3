@@ -59,7 +59,7 @@ class WaveFactoryTest {
   private final int LVL3_WAVES = 15;
   private final int LVL3_CHOSEN_LVL = 2;
   private final ArrayList<String> LVL3_MOBS = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
-  private final String LVL3_BOSS = "IceBoss";
+  private final String LVL3_BOSS = "FireBoss";
 //  private final String LVL3_BOSS = "FireBoss";
   //TODO: make this a fire boss in sprint 4
 

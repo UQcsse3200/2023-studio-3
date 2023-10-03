@@ -57,9 +57,10 @@ public class UIElementsDisplay extends UIComponent {
      * This method creates the buttons, adds them to the respective tables and draws them on the screen.
      */
     private void addActors() {
-        remainingMobsButton = new ButtonFactory().createButton("Mobs:"
-                + ServiceLocator.getWaveService().getEnemyCount());
-
+//        remainingMobsButton = new ButtonFactory().createButton("Mobs:"
+//                + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton = new TextButton("Mobs:"
+                + ServiceLocator.getWaveService().getEnemyCount(), skin);
         buttonTable.top().right();
         towerTable.top();
 
@@ -174,8 +175,10 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void createTimerButton() {
 
-        timerButton = new ButtonFactory().createButton("Next wave in:"
-                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+//        timerButton = new ButtonFactory().createButton("Next wave in:"
+//                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+        timerButton = new TextButton("Next wave in:"
+                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000), skin);
         buttonTable.row();
         buttonTable.add(timerButton).padRight(10f);
     }

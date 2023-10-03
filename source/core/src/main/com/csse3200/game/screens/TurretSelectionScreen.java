@@ -51,7 +51,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private TextButton descriptionLabel;
     private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
-
+    private TextButton backButton;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
     public TurretSelectionScreen(GdxGame game) {
@@ -72,6 +72,22 @@ public class TurretSelectionScreen extends ScreenAdapter {
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+//=======
+//        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        backButton = new TextButton("Back", skin);
+        backButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Handle the "back" action, e.g., return to the previous screen
+                game.setScreen(GdxGame.ScreenType.MAIN_MENU); // Replace PREVIOUS_SCREEN with the appropriate screen type
+            }
+        });
+        Table topRightTable = new Table();
+        topRightTable.top().right();
+        topRightTable.add(backButton).pad(10);
+
+        stage.addActor(topRightTable);
+
         message = new Label("Select your turrets", skin);
 
         confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
@@ -128,7 +144,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
                 TextButton button = createButton(turret.getDefaultImage(),
                         turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());
-                
+
                 button.pad(103, 15, 0, 0);
                 button.addListener(new ClickListener() {
 
