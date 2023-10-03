@@ -14,6 +14,8 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+import static java.lang.Math.round;
+
 /**
  * The FireTowerCombatTask runs the AI for the FireTower class. The tower implementing this task will scan for enemies
  * in a straight line from the current position to a maxRange, and change the state of the tower.
@@ -28,10 +30,12 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public static final String ATTACK = "startAttack";
     public static final String DEATH = "startDeath";
 
+
     //Class attributes
     private final int priority;
     private final float maxRange;
 
+    private float fireRateInterval;
     private Vector2 towerPosition = new Vector2(10, 10);
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
@@ -50,6 +54,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public FireTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -63,6 +68,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         // get the tower coordinates
         this.towerPosition = owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(towerPosition.x  + maxRange, towerPosition.y);
+        owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
         //default to idle state
         owner.getEntity().getEvents().trigger(IDLE);
 
@@ -76,7 +82,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public void update()  {
         if  (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (INTERVAL * 1000);
+            if (towerState == STATE.ATTACK) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            } else
+                endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 
@@ -172,4 +181,18 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
     }
+
+    private void changeFireRateInterval(int newInterval) {
+        fireRateInterval = 1 / ((float) newInterval / 5);
+    }
+
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+        return fireRateInterval;
+    }
+
 }
