@@ -355,14 +355,9 @@ public class ForestGameArea extends GameArea {
             false,
             false);
     // Bottom
-        Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);
-        wall.setPosition(0,-0.1f);
-        ServiceLocator.getEntityService().register(wall);
-    spawnEntityAt(
-            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH ),
-            new GridPoint2(0, 2),
-            false,
-            false);
+    Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);
+    wall.setPosition(0,-0.1f);
+    ServiceLocator.getEntityService().register(wall);
 
   }
 
