@@ -86,11 +86,16 @@ public class WaveFactory {
     int minMobs = 3 + maxDiff;
     // These are the mobs assigned to the associated levels (planets)
     ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
+    // TODO switch to hashed to demo the bosses and make sure to do this for mobs as well
+    // TODO hash out level1 test in NPCFactory when doing this. 
+//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "PatrickBoss", "WaterQueen"));
+//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "IceBoss", "WaterQueen"));
     ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "Skeleton", "DeflectWizard"));
     ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
 
     // The mob bosses assigned to the associated levels (planets)
     String boss1 = "IceBoss";
+//    String boss1 = "PatrickBoss";
     String boss2 = "PatrickBoss";
     String boss3 = "IceBoss";
     //TODO change this to a fire boss in sprint 4
