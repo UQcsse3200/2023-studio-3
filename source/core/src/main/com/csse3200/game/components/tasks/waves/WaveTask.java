@@ -98,8 +98,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       long currentTime = ServiceLocator.getTimeSource().getTime();
       // Setting the timestamp for when the next mobs will spawn.
       // Currently, the delay of mobs spawning after wave start
-      // is hardcoded but will fix in the next push.
-      ServiceLocator.getWaveService().setNextWaveTime(currentTime + 10000);
+      int spawnDelay = ServiceLocator.getWaveService().getSpawnDelay();
+      ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
       if (currentWaveIndex == this.level.getNumWaves()) {
@@ -120,10 +120,10 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       }
 
     } else {
-//      logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
-//      logger.info("WAVE SERVICE NUMBER: Wave Number {}",ServiceLocator.getWaveService().getWaveCount());
-//      logger.info("NEXT WAVE AT {}", ServiceLocator.getWaveService().getNextWaveTime());
-//      logger.info("TIME IS {}", ServiceLocator.getTimeSource().getTime());
+        //logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
+        //logger.info("WAVE SERVICE NUMBER: Wave Number {}",ServiceLocator.getWaveService().getWaveCount());
+        //logger.info("NEXT WAVE AT {}", ServiceLocator.getWaveService().getNextWaveTime());
+        //logger.info("TIME IS {}", ServiceLocator.getTimeSource().getTime());
       if (waveInProgress) {
         this.level.spawnWave();
       }
@@ -136,5 +136,13 @@ public class WaveTask extends DefaultTask implements PriorityTask {
    */
   public boolean isWaveInProgress() {
     return waveInProgress;
+    }
+
+    /**
+     * Gets the current wave index
+     * @return current wave index
+     */
+    public int getCurrentWaveIndex() {
+        return currentWaveIndex;
     }
   }
