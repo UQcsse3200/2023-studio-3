@@ -212,6 +212,8 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     }
 
+    ServiceLocator.getWaveService().getDisplay().updateTimerButton();
+    ServiceLocator.getWaveService().getDisplay().updateMobCount();
     renderer.render();
   }
 

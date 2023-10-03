@@ -3,6 +3,8 @@ package com.csse3200.game.input;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.services.ServiceLocator;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -13,6 +15,17 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(GameExtension.class)
 class BuildInputComponentTest {
+
+    @BeforeEach
+    void setup() {
+
+    }
+
+    @AfterEach
+    void tearDown() {
+
+    }
+
   @Test
   void shouldUpdatePriority() {
     int newPriority = 100;

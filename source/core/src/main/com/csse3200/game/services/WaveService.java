@@ -52,7 +52,6 @@ public class WaveService {
      */
     public void updateEnemyCount() {
         enemyCount -= 1;
-        display.updateMobCount();
         logger.info("{} enemies remaining in wave", getEnemyCount());
     }
 

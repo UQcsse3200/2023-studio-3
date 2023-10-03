@@ -185,7 +185,13 @@ public class EntityService {
    * @return true if the tile is occupied, false otherwise
    */
   public boolean entitiesInTile(int x_coord, int y_coord) {
-    TiledMapTileLayer mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
+    TiledMapTileLayer mp;
+    try {
+      mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
+    } catch (NullPointerException e) {
+      // MapService is not running
+      return true;
+    }
     if (mp.getCell(x_coord, y_coord) != null) {
       Entity entity = getEntityAtPosition(x_coord, y_coord);
       return entity != null;
