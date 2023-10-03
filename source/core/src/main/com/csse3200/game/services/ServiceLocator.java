@@ -1,11 +1,16 @@
 package com.csse3200.game.services;
 
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.input.InputService;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.screens.TowerType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A simplified implementation of the Service Locator pattern:
@@ -27,6 +32,8 @@ public class ServiceLocator {
   private static GameEndService gameEndService;
   private static WaveService waveService;
   private static MapService mapService;
+
+  private static Set<TowerType> towerTypes = new HashSet<>();
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -111,6 +118,15 @@ public class ServiceLocator {
   public static void registerMapService(MapService source) {
     logger.debug("Registering wave service {}", source);
     mapService = source;
+  }
+
+  public static void setTowerTypes(Set<TowerType> selectedTowers) {
+    towerTypes.clear();
+    towerTypes.addAll(selectedTowers);
+  }
+
+  public static Set<TowerType> getTowerTypes() {
+    return towerTypes;
   }
 
   public static void clear() {

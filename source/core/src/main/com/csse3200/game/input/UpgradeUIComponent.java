@@ -22,10 +22,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
-import com.csse3200.game.components.tower.IncomeUpgradeComponent;
-import com.csse3200.game.components.tower.TNTDamageComponent;
-import com.csse3200.game.components.tower.TowerUpgraderComponent;
-import com.csse3200.game.components.tower.UpgradableStatsComponent;
+import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.services.ServiceLocator;
@@ -78,6 +75,15 @@ public class UpgradeUIComponent extends InputComponent {
         getCamera().unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
+
+        //temp fix to prevent upgrading of new towers
+        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
+                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
+                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
+            return false;
+        }
+        //
+
 
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
 //            logger.info("clicked a turret that is upgradable!");

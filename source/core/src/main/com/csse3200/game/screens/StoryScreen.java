@@ -97,8 +97,10 @@ public class StoryScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         shapeRenderer = new ShapeRenderer();
 
-        // Create UI
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+//
+//        // Create UI
+//        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         continueButton = new TextButton("Continue", skin);
         continueButton.addListener(new ClickListener() {
             @Override

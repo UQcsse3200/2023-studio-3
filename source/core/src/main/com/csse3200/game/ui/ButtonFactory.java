@@ -79,9 +79,10 @@ public class ButtonFactory {
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal(atlasPath));
         Skin customSkin = new Skin(atlas);
 
-        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
-        style.font = defaultSkin.getFont("default"); // Use the default font
-        TextButton button = new TextButton(text, style);
+//        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+//        style.font = defaultSkin.getFont("default"); // Use the default font
+        TextButton button = new TextButton(text, customSkin);
+
         button.getLabel().setFontScale(0.8f); // Adjust text size
         button.pad(10f); // Adjust padding
 

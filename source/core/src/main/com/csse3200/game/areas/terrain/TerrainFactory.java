@@ -50,6 +50,8 @@ public class TerrainFactory {
    */
   public TerrainComponent createTerrain(TerrainType terrainType) {
     ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.loadTextures(new String[]{"images/terrain_use.png"});
+    resourceService.loadAll();
     switch (terrainType) {
       case ALL_DEMO:
         TextureRegion orthogonal =

@@ -81,7 +81,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.level = (LevelWaves) this.owner.getEntity();
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
+//    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
     this.waveStart.play();
     // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }

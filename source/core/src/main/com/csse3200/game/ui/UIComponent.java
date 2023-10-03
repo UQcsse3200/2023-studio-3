@@ -13,7 +13,8 @@ import com.csse3200.game.services.ServiceLocator;
 public abstract class UIComponent extends RenderComponent implements Renderable {
   private static final int UI_LAYER = 2;
   protected static final Skin skin =
-      new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+//      new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+      new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
   protected Stage stage;
 
   @Override
