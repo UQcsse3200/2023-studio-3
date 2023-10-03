@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+
 import com.csse3200.game.components.tasks.*;
 import com.csse3200.game.components.tower.*;
 import com.csse3200.game.entities.configs.*;
@@ -19,7 +20,9 @@ import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.input.UpgradeUIComponent;
+import com.csse3200.game.input.UpgradeUIComponent;import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Factory to create a tower entity.
  *
@@ -27,6 +30,8 @@ import com.csse3200.game.input.UpgradeUIComponent;
  * the properties stores in 'baseTowerConfigs'.
  */
 public class TowerFactory {
+    // Define a set to keep track of occupied lanes
+    private static final Set<Integer> occupiedLanes = new HashSet<>();
 
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
@@ -467,5 +472,28 @@ public class TowerFactory {
                 .addComponent(new TowerUpgraderComponent());
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
         return tower;
+    }
+    public static Entity createAndPlaceTower(int lane) {
+        if (isLaneOccupied(lane)) {
+            System.out.println("Lane " + lane + " is already occupied by a tower");
+            return null;
+        }
+
+        Entity tower = createBaseTower();
+        // Customize the tower creation here based on the chosen tower type
+
+        // Add the lane to the set of occupied lanes
+        occupiedLanes.add(lane);
+
+        return tower;
+    }
+
+    /**
+     * Checks if a lane is already occupied by a tower.
+     * @param lane The lane to check.
+     * @return True if the lane is occupied, false otherwise.
+     */
+    public static boolean isLaneOccupied(int lane) {
+        return occupiedLanes.contains(lane);
     }
 }
