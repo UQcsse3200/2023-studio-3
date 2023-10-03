@@ -14,6 +14,8 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+import static java.lang.Math.round;
+
 
 /**
  * The StunTowerCombatTask runs the AI for the StunTower class. The tower scans for mobs and targets in a straight line
@@ -31,6 +33,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     //Following are the class constants
     private final int priority;
     private final float maxRange;
+    private float fireRateInterval;
     private Vector2 towerPosition = new Vector2(10, 10);
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
@@ -51,6 +54,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     public StunTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -64,6 +68,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         //get the tower coordinates
         this.towerPosition = owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
+        owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
         //set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
 
@@ -77,7 +82,11 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (INTERVAL * 1000);
+            if (towerState == STATE.ATTACK) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            } else {
+                endTime = timeSource.getTime() + (INTERVAL * 1000);
+            }
         }
     }
 
@@ -159,5 +168,18 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+    }
+
+    private void changeFireRateInterval(int newInterval) {
+        fireRateInterval = 1 / ((float) newInterval / 5);
+    }
+
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+        return fireRateInterval;
     }
 }

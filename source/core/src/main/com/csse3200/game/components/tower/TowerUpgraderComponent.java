@@ -3,13 +3,15 @@ package com.csse3200.game.components.tower;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
 
+import static com.csse3200.game.screens.TowerType.INCOME;
+
 /**
  * Listens for an event from the popup menu to upgrade
  *     the turret entity this component is attached to.
  */
 public class TowerUpgraderComponent extends Component {
     public enum UPGRADE {
-        ATTACK, MAXHP, FIRERATE, REPAIR
+        ATTACK, MAXHP, FIRERATE, REPAIR, INCOME
     }
 
     @Override
@@ -25,12 +27,14 @@ public class TowerUpgraderComponent extends Component {
      * @param upgradeType An enum indicating the type of upgrade to do
      * @param value How much the upgrade should change the tower's stats, if applicable
      */
-    void upgradeTower(UPGRADE upgradeType, int value) {
+    public void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
+            case INCOME -> {getEntity().getEvents().trigger("addIncome", value);}
             case ATTACK -> {upgradeTowerAttack(value);}
-            case MAXHP -> {upgradeTowerMaxHealth(value);}
+            case MAXHP -> {upgradeTowerMaxHealth( value);}
             case FIRERATE -> {getEntity().getEvents().trigger("addFireRate", value);}
             case REPAIR -> {repairTower();}
+
         }
     }
 
@@ -58,7 +62,7 @@ public class TowerUpgraderComponent extends Component {
     /**
      * Restores the tower's health to its maximum health.
      */
-    void repairTower() {
+    public void repairTower() {
         int maxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();
         getEntity().getComponent(CombatStatsComponent.class).setHealth(maxHealth);
     }
