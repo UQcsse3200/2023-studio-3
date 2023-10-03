@@ -80,13 +80,22 @@ public class UIElementsDisplay extends UIComponent {
 
         // Fetch the selected tower types if set
         Array<TowerType> towers = new Array<>();
+
         for (TowerType tower : ServiceLocator.getTowerTypes()) {
             towers.add(tower);
         }
 
         // If no towers set, populate with default towers
-        if (towers.isEmpty()) {
-            towers.addAll(defaultTowers);
+        if (towers.isEmpty() || towers.size < 5) {
+            if (towers.isEmpty()) {
+                towers.addAll(defaultTowers);
+            } else {
+                for (TowerType tower : defaultTowers) {
+                    if (towers.size < 5 && !towers.contains(tower, false)) {
+                        towers.add(tower);
+                    }
+                }
+            }
         }
 
         TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
