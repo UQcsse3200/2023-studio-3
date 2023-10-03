@@ -34,8 +34,8 @@ public class BombshipFactory {
   
   private static final int COMBAT_TASK_PRIORITY = 2;
   private static final int BOMBSHIP_RANGE = 30;
-  private static final EngineerConfigs configs =
-          FileLoader.readClass(EngineerConfigs.class, "configs/Bombship.json");
+  private static final BombshipConfigs configs =
+          FileLoader.readClass(BombshipConfigs.class, "configs/Bombship.json");
   
   private static final float HUMAN_SCALE_X = 1f;
   private static final float HUMAN_SCALE_Y = 0.8f;
@@ -46,7 +46,7 @@ public class BombshipFactory {
    *
    * @return entity
    */
-  public static Entity createEngineer() {
+  public static Entity createBombship() {
     Entity bombship = createBaseshipNPC();
     BaseEntityConfig config = configs.bombship;
     
