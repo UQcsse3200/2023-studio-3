@@ -19,6 +19,7 @@ public class MobProjectileAnimationController extends Component {
     }
 
     void animateStartRotate() {
+
         animator.startAnimation("rotate");
     }
 }

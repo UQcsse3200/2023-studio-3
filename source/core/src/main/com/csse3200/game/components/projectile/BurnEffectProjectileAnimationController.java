@@ -1,7 +1,9 @@
 package com.csse3200.game.components.projectile;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 public class BurnEffectProjectileAnimationController extends Component {
     /** Event name constants */
@@ -11,9 +13,12 @@ public class BurnEffectProjectileAnimationController extends Component {
     /** Animation name constants */
     private static final String START_ANIM = "projectile";
     private static final String FINAL_ANIM = "projectileFinal";
+
     AnimationRenderComponent animator;
 
-
+    private static final String BURN_SFX = "sounds/projectiles/Fireball_throw_sound.mp3";
+    Sound burnSound = ServiceLocator.getResourceService().getAsset(
+            BURN_SFX, Sound.class);
     @Override
     public void create() {
         super.create();
@@ -24,7 +29,8 @@ public class BurnEffectProjectileAnimationController extends Component {
     }
 
     void animateStart() {
-        animator.startAnimation(START_ANIM);
+      animator.startAnimation(START_ANIM);
+        burnSound.play();
     }
 
     void animateFinal() {
