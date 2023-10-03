@@ -3,6 +3,7 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -10,6 +11,9 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static java.lang.Math.round;
 
 /**
@@ -37,6 +41,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
   
     private enum STATE {
         IDLE, DEPLOY, FIRING, STOW
@@ -48,6 +53,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
      */
     public TowerCombatTask(int priority, float maxRange) {
+
         this.priority = priority;
         this.maxRange = maxRange;
         this.fireRateInterval = 1;
@@ -56,6 +62,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * THIS IS REDUNDANT AND NOT USED
      * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
      * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
      * @param fireRate The number of times per second this tower should fire its weapon
@@ -81,7 +88,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         owner.getEntity().getEvents().trigger(IDLE);
         // Set up listener to change fire rate
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
-
+        logger.info("TowerCombatTask started");
         endTime = timeSource.getTime() + (INTERVAL * 500);
     }
 
@@ -216,18 +223,13 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Increases the fireRateInterval, changing how frequently the turret fires. Will decrease if the argument is negative.
+     * Changes the tower's fire rate.
      *
-     * @param perMinute The number of times per minute the turret's fire rate should increase
+     * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
-    private void changeFireRateInterval(int perMinute) {
-        float oldFireSpeed = 1/fireRateInterval;
-        float newFireSpeed = oldFireSpeed + perMinute/60f;
-        if (newFireSpeed == 0) {
-            return;
-        } else {
-            fireRateInterval = 1 / newFireSpeed;
-        }
+    private void changeFireRateInterval(int newInterval) {
+        logger.info("Changing fire rate to: " + newInterval);
+        fireRateInterval = 1 / ((float) newInterval / 5);
     }
 
     /**
@@ -238,4 +240,5 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     public float getFireRateInterval() {
         return fireRateInterval;
     }
+
 }
