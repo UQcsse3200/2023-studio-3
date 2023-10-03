@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.human;
+package com.csse3200.game.components.tasks.bombship;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
@@ -12,36 +12,33 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
 /**
- * HumanWanderTask is the entry point for the engineer entity's behaviour. Instantiates subtasks HumanWaitTask,
- * HumanMovementTask and EngineerCombatTask, and manages transitions between the tasks. Engineer damage and death
+ * BombshipWanderTask is the entry point for the engineer entity's behaviour. Instantiates subtasks HumanWaitTask,
+ * BombshipMovementTask and BombshipCombatTask, and manages transitions between the tasks. Bombship damage and destruction is
  * handled in this class.
  */
-public class HumanWanderTask extends DefaultTask implements PriorityTask {
+public class BombshipWanderTask extends DefaultTask implements PriorityTask {
   private static final int TOLERANCE = 1;
   private static final float STOP_DISTANCE = 0.5f;
   private static final int DEFAULT_PRIORITY = 1;
-  private static final String DEATH_EVENT = "deathStart";
-  private static final String IDLE_EVENT = "idleRight";
+  private static final String START = "start";
+  private static final String DESTROY = "destroy";
+  private static final String IDLE = "idle";
   private AnimationRenderComponent animator;
   private final float maxRange;
   private final float waitTime;
-  private HumanMovementTask movementTask;
-  private HumanWaitTask waitTask;
-  private EngineerCombatTask combatTask;
+  private BombshipMovementTask movementTask;
+  private BombshipWaitTask waitTask;
+  private BombshipCombatTask combatTask;
   private Task currentTask;
-  private boolean   isDead = false;
-
-  private boolean isSelected = false;
-
-  private boolean hasDied = false;
+  private boolean isDestroyed = false;
 
   /**
-   * Constructor of HumanWanderTask
+   * Constructor of BombshipWanderTask
    *
    * @param waitTime How long in seconds to wait between wandering.
-   * @param maxRange Maximum detection and fighting range of the entity
+   * @param maxRange Maximum of the entity to fight
    */
-  public HumanWanderTask(float waitTime, float maxRange) {
+  public BombshipWanderTask(float waitTime, float maxRange) {
     this.waitTime = waitTime;
     this.maxRange = maxRange;
   }
@@ -56,20 +53,20 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   }
 
   /**
-   * Starts the HumanWanderTask instance and instantiates subtasks (HumanWaitTask, HumanWanderTask, EngineerCombatTask).
+   * Starts the BombshipWanderTask instance and instantiates subtasks (BombshipWaitTask, BombshipWanderTask, BombshipCombatTask).
    */
   @Override
   public void start() {
     super.start();
     Vector2 startPos = owner.getEntity().getCenterPosition();
-    waitTask = new HumanWaitTask(waitTime);
+    waitTask = new BombshipWaitTask(waitTime);
     waitTask.create(owner);
 
-    movementTask = new HumanMovementTask(startPos, STOP_DISTANCE);
+    movementTask = new BombshipMovementTask(startPos, STOP_DISTANCE);
     movementTask.create(owner);
     movementTask.start();
 
-    combatTask = new EngineerCombatTask(maxRange);
+    combatTask = new BombshipCombatTask(maxRange);
     combatTask.create(owner);
     combatTask.start();
 
@@ -88,71 +85,55 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
-    hasDied =  owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
-    // Check if engineer has died since last update
-    if (!isDead && hasDied) {
-      startDying();
+    if (!isDestroyed) {
+      startDestroying();
     }
 
-    boolean justDied = owner.getEntity().getComponent(CombatStatsComponent.class).isDead();
-    // Check if engineer has died since last update
-    if (!isDead && justDied) {
-      startDying();
-    } else if (isDead && animator.isFinished()) {
+    // Check if bombship has destroyed since last update
+    if (!isDestroyed) {
+      startDestroying();
+    } else if (isDestroyed && animator.isFinished()) {
       owner.getEntity().setFlagForDelete(true);
-      // Decrement the engineer count
-      ServiceLocator.getGameEndService().updateEngineerCount();
     }
 
     // otherwise doing engineer things since engineer is alive
-    else if (!isDead){
-      doEngineerThings();
+    else if (!isDestroyed){
+      doBombshipThings();
+
       currentTask.update();
     }
   }
 
-  private void doEngineerThings() {
-    if (currentTask.getStatus() == Status.ACTIVE) {
-      return;
-    }
+  private void doBombshipThings() {
+    if (currentTask.getStatus() != Status.ACTIVE) {
 
-    // if the engineer is in move state and update has been called, engineer has arrived at destination
-    if (currentTask == movementTask) {
-      startWaiting();
-      owner.getEntity().getEvents().trigger(IDLE_EVENT);
-    } else if (combatTask.isTargetVisible()) {
-      float engY = owner.getEntity().getCenterPosition().y;
-      float targetY = combatTask.fetchTarget().y;
-      // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
-      if (engY <  targetY + TOLERANCE &&
-              engY > targetY - TOLERANCE) {
-        startCombat();
+      // if the engineer is in move state and update has been called, engineer has arrived at destination
+      if (currentTask == movementTask) {
+        startWaiting();
+        owner.getEntity().getEvents().trigger(IDLE);
 
-        // move into position for targeting mob
-      } else if (!this.isSelected()) {
-        Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
-        startMoving(newPos);
+      } else if (combatTask.isEngineerDied()) {
+        owner.getEntity().getEvents().trigger(START);
       }
     }
   }
-
   /**
    * Handle the dying phase of the entity. Triggers an event to play the appropriate media,
    * sets HitBox and Collider components to ignore contact (stops the body being pushed around)
    * and stops the current task.
    */
-  private void startDying() {
-    owner.getEntity().getEvents().trigger(DEATH_EVENT);
+  private void startDestroying() {
+    owner.getEntity().getEvents().trigger(DESTROY);
     owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);
     owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
     currentTask.stop();
-    isDead = true;
+    isDestroyed = true;
   }
 
   /**
    * Starts the wait task.
    */
-  public void startWaiting() {
+  private void startWaiting() {
     swapTask(waitTask);
   }
 
@@ -160,7 +141,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    * Starts the movement task, to a particular destination
    * @param destination the Vector2 position to which the entity needs to move
    */
-  public void startMoving(Vector2 destination) {
+  private void startMoving(Vector2 destination) {
     movementTask.setTarget(destination);
     swapTask(movementTask);
   }
@@ -168,7 +149,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   /**
    * Starts the combat task.
    */
-  public void startCombat() {
+  private void startCombat() {
     swapTask(combatTask);
   }
 
@@ -182,13 +163,5 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     }
     currentTask = newTask;
     currentTask.start();
-  }
-
-  private boolean isSelected() {
-    return isSelected;
-  }
-
-  public void setSelected(boolean isSelected) {
-    this.isSelected = isSelected;
   }
 }
