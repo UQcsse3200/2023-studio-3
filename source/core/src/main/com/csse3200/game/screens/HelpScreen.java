@@ -18,6 +18,7 @@ public class HelpScreen extends ScreenAdapter {
     private Stage stage;
     private SpriteBatch spriteBatch;
 
+
     public HelpScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
