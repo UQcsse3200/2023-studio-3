@@ -30,7 +30,7 @@ public class WaveClass {
    * Get the entities that are part of this wave and randomise the order they are spawned
    * @return mobs for the wave
    */
-  private List<String> entitiesToWave() {
+  public List<String> entitiesToWave() {
     List<String> enemies = new ArrayList<>();
     for (Map.Entry<String, Integer> set : entities.entrySet()) {
       for (int i = 0; i < set.getValue(); i++) {

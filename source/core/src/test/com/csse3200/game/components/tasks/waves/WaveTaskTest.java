@@ -1,9 +1,13 @@
-package com.csse3200.game.components.tasks.waves;
+package com.csse3200.game.components.tasks;
 
 import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.areas.terrain.TerrainFactory;
 import com.csse3200.game.components.tasks.DroidCombatTask;
+import com.csse3200.game.components.tasks.waves.LevelWaves;
+import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
@@ -22,7 +26,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
-class WaveTaskTest {
+public class WaveTaskTest {
 
     WaveTask waveTask;
     ResourceService resourceService;
@@ -51,10 +55,34 @@ class WaveTaskTest {
     }
 
     @Test
-    public void testStartWave() {
+    public void testStartFirstWave() {
         waveTask.start();
-        assertEquals(1, waveTask.getPriority());
+        assertEquals(10, waveTask.getPriority());
         assertTrue(waveTask.isWaveInProgress());
+        assertEquals(1, waveTask.getCurrentWaveIndex());
+    }
+
+    @Test
+    public void testIsWaveInProgress() {
+        waveTask.start();
+        assertTrue(waveTask.isWaveInProgress());
+    }
+
+    @Test
+    public void testUpdateOnEmptyWaveAndNoNextWave() {
+        waveTask.start();
+        ServiceLocator.getWaveService().setEnemyCount(0);
+        waveTask.update();
+        assertTrue(ServiceLocator.getWaveService().isLevelCompleted());
+    }
+
+    @Test
+    public void testUpdateOnEmptyWaveAndNextWave() {
+        waveTask.start();
+        int waveNumber = waveTask.getCurrentWaveIndex();
+        ServiceLocator.getWaveService().setEnemyCount(0);
+        waveTask.update();
+        assertTrue(waveNumber + 1 == waveTask.getCurrentWaveIndex());
     }
 
 }

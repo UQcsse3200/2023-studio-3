@@ -137,4 +137,12 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   public boolean isWaveInProgress() {
     return waveInProgress;
     }
+
+    /**
+     * Gets the current wave index
+     * @return current wave index
+     */
+    public int getCurrentWaveIndex() {
+        return currentWaveIndex;
+    }
   }
