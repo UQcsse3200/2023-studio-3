@@ -86,20 +86,21 @@ public class WaveFactory {
   public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
     int minMobs = 3 + maxDiff;
     // These are the mobs assigned to the associated levels (planets)
-    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
-    // TODO switch to hashed to demo the bosses and make sure to do this for mobs as well
-    // TODO hash out level1 test in NPCFactory when doing this. 
-//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "PatrickBoss", "WaterQueen"));
-//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "IceBoss", "WaterQueen"));
+    // TODO to demo you must use the BLUE planet. Any other planet will NOT work
+    // TODO: DEMO IceBoss and PatrickBoss
+    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("IceBoss", "PatrickBoss"));
+    // TODO: Demo FireBoss and PatrickBoss hash 91, unhash 93, unhash ForestGameArea line 511 to 513
+//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("PatrickBoss", "FireBoss"));
+
+
+//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
     ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "Skeleton", "DeflectWizard"));
     ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
 
     // The mob bosses assigned to the associated levels (planets)
-    String boss1 = "IceBoss";
-//    String boss1 = "PatrickBoss";
+//    String boss1 = "IceBoss";
+    String boss1 = "FireBoss";
     String boss2 = "PatrickBoss";
-    //String boss3 = "IceBoss";
-
     String boss3 = "FireBoss";
 
     int spawnDelay = 5;
