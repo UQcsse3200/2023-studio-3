@@ -115,8 +115,9 @@ public class WaveTask extends DefaultTask implements PriorityTask {
           nextWaveAt = globalTime.getTime() + 10000;
           ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);
         } else {
-          if (globalTime.getTime() >= nextWaveAt) {
+          if (globalTime.getTime() >= nextWaveAt || ServiceLocator.getWaveService().shouldSkip()) {
             logger.info("Next wave starting");
+            ServiceLocator.getWaveService().toggleDelay();
             currentWaveIndex++;
             ServiceLocator.getWaveService().setNextWaveTime(0);
             nextWaveAt = 0;
