@@ -113,10 +113,12 @@ public class WaveTask extends DefaultTask implements PriorityTask {
         if (nextWaveAt == 0) {
           logger.info("Next wave in 10 seconds");
           nextWaveAt = globalTime.getTime() + 10000;
+          ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);
         } else {
           if (globalTime.getTime() >= nextWaveAt) {
-            currentWaveIndex++;
             logger.info("Next wave starting");
+            currentWaveIndex++;
+            ServiceLocator.getWaveService().setNextWaveTime(0);
             nextWaveAt = 0;
             this.waveEnd.play();
             this.waveInProgress = true;
