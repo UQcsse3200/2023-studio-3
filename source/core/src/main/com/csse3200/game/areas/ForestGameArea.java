@@ -508,9 +508,9 @@ public class ForestGameArea extends GameArea {
         mob = NPCFactory.createWaterQueen(health);
         break;
         //TODO implement when boss is ready
-//      case "FireBoss":
-//        mob = MobBossFactory.createDemonBoss(health);
-//        break;
+      case "FireBoss":
+        mob = MobBossFactory.createDemonBoss(health);
+        break;
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
