@@ -27,13 +27,13 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final long RANGE_ATTACK_SPEED = 5000;
 
     // Private variables
-    MobType mobType;
-    State state = State.DEFAULT;
-    State prevState;
-    Entity mob;
-    AnimationRenderComponent animation;
-    MovementTask movementTask;
-    Entity target;
+    private final MobType mobType;
+    private State state = State.DEFAULT;
+    private State prevState;
+    private Entity mob;
+    private AnimationRenderComponent animation;
+    private MovementTask movementTask;
+    private Entity target;
     private GameTime gameTime;
     private long lastTimeAttacked;
 
@@ -44,6 +44,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     boolean targetInRange = false;
     boolean rangeAttackFlag = false;
     boolean meleeAttackFlag = false;
+    boolean deathFlag = false;
 
     // Enums
     private enum State {
@@ -135,8 +136,11 @@ public class MobTask extends DefaultTask implements PriorityTask {
                 }
             }
             case DEATH -> {
-                animate();
-                if (animation.isFinished()) {
+                if (deathFlag) {
+                    animate();
+                    deathFlag = false;
+                }
+                if (animation.isFinished() && !deathFlag) {
                     mob.setFlagForDelete(true);
                 }
             }
