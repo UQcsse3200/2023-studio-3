@@ -20,7 +20,10 @@ import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobMeleeAttackTask;
 import com.csse3200.game.components.tasks.MobRangedAttackTask;
+import com.csse3200.game.components.tasks.MobTask.MobMeleeTask;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.components.tasks.MobWanderTask;
+import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -296,6 +299,7 @@ public class NPCFactory {
   public static Entity createGregMob(int health) {
     Entity dragonKnight = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
+
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
                     ServiceLocator.getResourceService().getAsset("images/mobs/dragon_knight.atlas", TextureAtlas.class));
@@ -303,6 +307,10 @@ public class NPCFactory {
     animator.addAnimation("dragon_knight_attack", 0.1f);
     animator.addAnimation("dragon_knight_death", 0.1f);
     animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobMeleeTask(MobType.DRAGON_KNIGHT));
+
     dragonKnight
             .addComponent(new CombatStatsComponent(health, 10, drops))
             .addComponent(animator)
