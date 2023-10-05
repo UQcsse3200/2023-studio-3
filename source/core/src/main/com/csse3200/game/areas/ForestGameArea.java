@@ -320,10 +320,11 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
 
-    waves = WaveFactory.createWaves();
-    spawnEntity(waves);
-    waves.getEvents().addListener("spawnWave", this::spawnMob);
+//    waves = WaveFactory.createWaves();
+//    spawnEntity(waves);
+//    waves.getEvents().addListener("spawnWave", this::spawnMob);
 //    spawnGregMob();
+    spawnDemonBoss();
 
     spawnScrap();
     spawnGapScanners();
@@ -395,10 +396,10 @@ public class ForestGameArea extends GameArea {
   }
 
   // commented 383 - 386 out as there was a missing arg?
-//  private void spawnDemonBoss() {
-//    Entity demon = MobBossFactory.createDemonBoss();
-//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
-//  }
+  private void spawnDemonBoss() {
+    Entity demon = MobBossFactory.createDemonBoss(5000);
+    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+  }
 
   private void spawnPatrick() {
     Entity patrick = MobBossFactory.createPatrickBoss(3000);

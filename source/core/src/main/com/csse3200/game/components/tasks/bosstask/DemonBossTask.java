@@ -338,12 +338,18 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      * @return if demon has completed jump or not
      */
     private boolean jumpComplete() {
-        if (currentPos.dst(jumpPos) <= STOP_DISTANCE && isJumping) {
+        if (animation.isFinished() && isJumping) {
             applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;
         }
+//        if (currentPos.dst(jumpPos) <= STOP_DISTANCE && isJumping) {
+//            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
+//            isJumping = false;
+//            jumpTask.stop();
+//            return true;
+//        }
         return false;
     }
 
