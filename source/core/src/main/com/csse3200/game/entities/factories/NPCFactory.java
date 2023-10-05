@@ -294,7 +294,7 @@ public class NPCFactory {
   }
 
   public static Entity createGregMob(int health) {
-    Entity dragonKnight = createMeleeBaseNPC();
+    Entity dragonKnight = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
@@ -348,6 +348,18 @@ public class NPCFactory {
     xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
 
     return xenoGrunt;
+  }
+
+  public static Entity createBaseNPC() {
+    Entity npc =
+            new Entity()
+                    .addComponent(new PhysicsComponent())
+                    .addComponent(new PhysicsMovementComponent())
+                    .addComponent(new ColliderComponent())
+                    .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+                    .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS));
+    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
+    return npc;
   }
 
   /**
