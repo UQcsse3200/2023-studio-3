@@ -16,6 +16,11 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+/**
+ * The AI Task for all general mobs. This task handles the sequencing for melee
+ * and ranged mobs as well as animations for all mobs. Its sequence is based on
+ * whether the mob is a melee or ranged mob which dictates its attack method.
+ */
 public class MobTask extends DefaultTask implements PriorityTask {
 
     // Constants
@@ -51,11 +56,19 @@ public class MobTask extends DefaultTask implements PriorityTask {
         RUN, ATTACK, DEATH, DEFAULT
     }
 
+    /**
+     * constructor for the mob
+     * @param mobType type of mob it is
+     */
     public MobTask(MobType mobType) {
         this.mobType = mobType;
         gameTime = ServiceLocator.getTimeSource();
     }
 
+    /**
+     * starts general mob sequence, starts its movement task and initialises
+     * some of its variables
+     */
     @Override
     public void start() {
         super.start();
@@ -78,6 +91,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * handles the sequencing of melee and range mobs and detects death state
+     */
     @Override
     public void update() {
 
@@ -147,6 +163,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * handles animation for all states and all possible mobs
+     */
     private void animate() {
         switch (mobType) {
             case SKELETON -> {
@@ -191,9 +210,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
             }
             case DRAGON_KNIGHT -> {
                 switch (state) {
-                    case RUN -> {
-                        owner.getEntity().getEvents().trigger("dragon_knight_run");
-                    }
+                    case RUN -> owner.getEntity().getEvents().trigger("dragon_knight_run");
                     case ATTACK -> owner.getEntity().getEvents().trigger("dragon_knight_attack");
                     case DEATH -> owner.getEntity().getEvents().trigger("dragon_knight_death");
                     case DEFAULT -> owner.getEntity().getEvents().trigger("default");
@@ -202,11 +219,19 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * changes state of the mob
+     * @param state state to change current state to
+     */
     private void changeState(State state) {
         prevState = this.state;
         this.state = state;
     }
 
+    /**
+     * detects if there's an enemy within range of 1 to the left of it
+     * @return if there's an enemy in front of the mob or not
+     */
     private boolean enemyDetected() {
         // if there's an entity within x of - 1 of mob
         Entity target = ServiceLocator.getEntityService().getEntityAtPosition(
@@ -227,6 +252,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
         return false;
     }
 
+    /**
+     * hits the target directly in front of it
+     */
     private void meleeAttack() {
         // toggle melee flag off
         meleeFlag = false;
@@ -248,6 +276,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }, MELEE_ATTACK_SPEED);
     }
 
+    /**
+     * Shoots a fireball projectile and updates lastTimeAttacked
+     */
     private void rangeAttack() {
         Vector2 destination = new Vector2(0, mob.getPosition().y);
         Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
@@ -258,6 +289,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
         lastTimeAttacked = gameTime.getTime();
     }
 
+    /**
+     * @return priority of task
+     */
     @Override
     public int getPriority() {
         return PRIORITY;

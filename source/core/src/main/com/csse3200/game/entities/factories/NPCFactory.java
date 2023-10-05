@@ -487,7 +487,7 @@ public class NPCFactory {
     Entity fireWorm = createDragonKnight(health);
 
     fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-   fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
 
     return fireWorm;
   }
