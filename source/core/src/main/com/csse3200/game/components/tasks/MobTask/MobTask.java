@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -12,6 +13,7 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
 public class MobTask extends DefaultTask implements PriorityTask {
@@ -22,6 +24,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final Vector2 MELEE_RANGE_SPEED = new Vector2(0.7f,0.7f);
     private static final int MELEE_DAMAGE = 10;
     private static final float MELEE_ATTACK_SPEED = 1.5f;
+    private static final long RANGE_ATTACK_SPEED = 5000;
 
     // Private variables
     MobType mobType;
@@ -31,12 +34,15 @@ public class MobTask extends DefaultTask implements PriorityTask {
     AnimationRenderComponent animation;
     MovementTask movementTask;
     Entity target;
+    private GameTime gameTime;
+    private long lastTimeShot;
 
     // Flags
     boolean melee;
     boolean runFlag = false;
     boolean meleeFlag = false;
     boolean targetInRange = false;
+    boolean rangeAttackFlag = false;
 
     // Enums
     private enum State {
@@ -45,6 +51,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
     public MobTask(MobType mobType) {
         this.mobType = mobType;
+        gameTime = ServiceLocator.getTimeSource();
     }
 
     @Override
@@ -79,6 +86,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         switch (state) {
             case RUN -> {
                 if (runFlag) {
+                    movementTask.start();
                     animate();
                     runFlag = false;
                 }
@@ -91,18 +99,35 @@ public class MobTask extends DefaultTask implements PriorityTask {
                         targetInRange = false;
                     }
                 } else {
-                    rangeAttack();
+                    if (gameTime.getTime() - lastTimeShot >= RANGE_ATTACK_SPEED) {
+                        changeState(State.ATTACK);
+                        rangeAttackFlag = true;
+                    }
                 }
             }
             case ATTACK -> {
                 if (meleeFlag) {
                     if (!targetInRange) {
+                        movementTask.start();
                         changeState(State.RUN);
                         meleeFlag = false;
                         runFlag = true;
                     }
+                    movementTask.stop();
                     meleeAttack();
                     animate();
+                }
+                if (!melee) {
+                    if (rangeAttackFlag) {
+                        movementTask.stop();
+                        animate();
+                        rangeAttack();
+                        rangeAttackFlag = false;
+                    }
+                    if (animation.isFinished()) {
+                        movementTask.start();
+                        changeState(State.RUN);
+                    }
                 }
             }
             case DEATH -> {
@@ -215,7 +240,15 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }, MELEE_ATTACK_SPEED);
     }
 
-
+    private void rangeAttack() {
+        Vector2 destination = new Vector2(0, mob.getPosition().y);
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
+                new Vector2(2, 2), ProjectileEffects.FIREBALL, false);
+        projectile.setPosition(mob.getPosition());
+        projectile.setScale(-1f, 1f);
+        ServiceLocator.getEntityService().register(projectile);
+        lastTimeShot = gameTime.getTime();
+    }
 
     @Override
     public int getPriority() {

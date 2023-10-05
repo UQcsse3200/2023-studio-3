@@ -722,7 +722,7 @@ public class ForestGameArea extends GameArea {
 //  }
 
   private void spawnGregMob() {
-    Entity gregMob = NPCFactory.createGregMob(100);
+    Entity gregMob = NPCFactory.createGregRangeMob(100);
     gregMob.setScale(1.5f, 1.5f);
     spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
   }
