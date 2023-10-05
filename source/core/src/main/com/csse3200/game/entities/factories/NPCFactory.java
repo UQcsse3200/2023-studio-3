@@ -311,7 +311,7 @@ public class NPCFactory {
             .addTask(new MobTask(MobType.DRAGON_KNIGHT));
 
     dragonKnight
-            .addComponent(new CombatStatsComponent(health, 10, drops))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
             .addComponent(new DragonKnightAnimationController())
             .addComponent(aiTaskComponent);
