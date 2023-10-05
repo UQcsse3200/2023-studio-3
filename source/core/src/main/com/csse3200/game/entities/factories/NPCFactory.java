@@ -114,11 +114,7 @@ public class NPCFactory {
 //  public static Entity createSkeleton(int health) {
 //    Entity skeleton = createBaseNPC(int health);
   public static Entity createSkeleton(int health) {
-    Entity skeleton = createMeleeBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity skeleton = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -128,11 +124,15 @@ public class NPCFactory {
     animator.addAnimation("skeleton_attack", 0.1f);
     animator.addAnimation("skeleton_death", 0.1f);
     animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.SKELETON));
+
     skeleton
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new SkeletonAnimationController());
+            .addComponent(new SkeletonAnimationController())
+            .addComponent(aiTaskComponent);
 
     skeleton.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
     skeleton.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -146,11 +146,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createWizard(int health) {
-    Entity wizard = createRangedBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity wizard = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -160,11 +156,14 @@ public class NPCFactory {
     animator.addAnimation("wizard_attack", 0.1f);
     animator.addAnimation("wizard_death", 0.1f);
     animator.addAnimation("default", 0.1f);
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.WIZARD));
+
     wizard
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new WizardAnimationController());
+            .addComponent(new WizardAnimationController())
+            .addComponent(aiTaskComponent);
 
     wizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
     wizard.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -177,11 +176,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createWaterQueen(int health) {
-    Entity wizard = createRangedBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity waterQueen = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -191,16 +186,20 @@ public class NPCFactory {
     animator.addAnimation("water_queen_attack", 0.1f);
     animator.addAnimation("water_queen_death", 0.1f);
     animator.addAnimation("default", 0.1f);
-    wizard
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.WATER_QUEEN));
+
+    waterQueen
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new WaterQueenAnimationController());
+            .addComponent(new WaterQueenAnimationController())
+            .addComponent(aiTaskComponent);
 
-    wizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
-    wizard.getComponent(AnimationRenderComponent.class).scaleEntity();
+    waterQueen.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
+    waterQueen.getComponent(AnimationRenderComponent.class).scaleEntity();
 
-    return wizard;
+    return waterQueen;
   }
   /**
    * Creates a water slime entity.
@@ -208,11 +207,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createBaseWaterSlime(int health) {
-    Entity waterSlime = createMeleeBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity waterSlime = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -222,11 +217,15 @@ public class NPCFactory {
     animator.addAnimation("water_slime_attack", 0.1f);
     animator.addAnimation("water_slime_death", 0.2f);
     animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.WATER_SLIME));
+
     waterSlime
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new WaterSlimeAnimationController());
+            .addComponent(new WaterSlimeAnimationController())
+            .addComponent(aiTaskComponent);
 
     waterSlime.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
     waterSlime.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -239,11 +238,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createFireWorm(int health) {
-    Entity fireWorm = createRangedBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity fireWorm = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -253,11 +248,15 @@ public class NPCFactory {
     animator.addAnimation("fire_worm_attack", 0.1f);
     animator.addAnimation("fire_worm_death", 0.1f);
     animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.FIRE_WORM));
+
     fireWorm
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new FireWormAnimationController());
+            .addComponent(new FireWormAnimationController())
+            .addComponent(aiTaskComponent);
 
     fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
     fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
@@ -270,11 +269,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createDragonKnight(int health) {
-    Entity dragonKnight = createMeleeBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    Entity dragonKnight = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -284,10 +279,15 @@ public class NPCFactory {
     animator.addAnimation("dragon_knight_attack", 0.1f);
     animator.addAnimation("dragon_knight_death", 0.1f);
     animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.DRAGON_KNIGHT));
+
     dragonKnight
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+            .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new DragonKnightAnimationController());
+            .addComponent(new DragonKnightAnimationController())
+            .addComponent(aiTaskComponent);
 
     dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     dragonKnight.getComponent(AnimationRenderComponent.class).scaleEntity();
