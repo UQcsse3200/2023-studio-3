@@ -293,6 +293,27 @@ public class NPCFactory {
     return dragonKnight;
   }
 
+  public static Entity createGregMob(int health) {
+    Entity dragonKnight = createMeleeBaseNPC();
+    ArrayList<Currency> drops = new ArrayList<>();
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/dragon_knight.atlas", TextureAtlas.class));
+    animator.addAnimation("dragon_knight_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("dragon_knight_attack", 0.1f);
+    animator.addAnimation("dragon_knight_death", 0.1f);
+    animator.addAnimation("default", 0.1f);
+    dragonKnight
+            .addComponent(new CombatStatsComponent(health, 10, drops))
+            .addComponent(animator)
+            .addComponent(new DragonKnightAnimationController());
+
+    dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    dragonKnight.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return dragonKnight;
+  }
+
 
   /**
    * Creates a xeno grunt entity.

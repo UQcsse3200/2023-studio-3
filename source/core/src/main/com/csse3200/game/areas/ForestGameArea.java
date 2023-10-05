@@ -320,9 +320,10 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
 
-    waves = WaveFactory.createWaves();
-    spawnEntity(waves);
-    waves.getEvents().addListener("spawnWave", this::spawnMob);
+//    waves = WaveFactory.createWaves();
+//    spawnEntity(waves);
+//    waves.getEvents().addListener("spawnWave", this::spawnMob);
+    spawnGregMob();
 
     spawnScrap();
     spawnGapScanners();
@@ -719,6 +720,12 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(waterSlime, randomPos, true, false);
 //    }
 //  }
+
+  private void spawnGregMob() {
+    Entity gregMob = NPCFactory.createGregMob(100);
+    gregMob.setScale(1.5f, 1.5f);
+    spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
+  }
 
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same
