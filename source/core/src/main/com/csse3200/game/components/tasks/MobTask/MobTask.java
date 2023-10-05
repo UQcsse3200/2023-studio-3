@@ -1,16 +1,15 @@
 package com.csse3200.game.components.tasks.MobTask;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.tasks.MovementTask;
-import com.csse3200.game.components.tasks.bosstask.PatrickTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
-public class MobMeleeTask extends DefaultTask implements PriorityTask {
+public class MobTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
@@ -24,6 +23,8 @@ public class MobMeleeTask extends DefaultTask implements PriorityTask {
     Entity mob;
     AnimationRenderComponent animation;
     MovementTask movementTask;
+
+    // Flags
     boolean melee;
 
     // Enums
@@ -31,12 +32,13 @@ public class MobMeleeTask extends DefaultTask implements PriorityTask {
         RUN, ATTACK, DEATH, DEFAULT
     }
 
-    public MobMeleeTask(MobType mobType) {
+    public MobTask(MobType mobType) {
         this.mobType = mobType;
     }
 
     @Override
     public void start() {
+        System.out.println("harrypotter");
         super.start();
         mob = owner.getEntity();
         animation = mob.getComponent(AnimationRenderComponent.class);
@@ -46,6 +48,7 @@ public class MobMeleeTask extends DefaultTask implements PriorityTask {
         movementTask = new MovementTask(new Vector2(0f, mob.getPosition().y));
         movementTask.create(owner);
         movementTask.start();
+        changeState(State.RUN);
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
@@ -60,6 +63,11 @@ public class MobMeleeTask extends DefaultTask implements PriorityTask {
 
         switch (state) {
             case RUN -> {
+                if (enemyDetected()) {
+                    changeState(State.ATTACK);
+                }
+            }
+            case ATTACK -> {
 
             }
         }
@@ -121,6 +129,11 @@ public class MobMeleeTask extends DefaultTask implements PriorityTask {
     private void changeState(State state) {
         prevState = this.state;
         this.state = state;
+    }
+
+    private boolean enemyDetected() {
+        return ServiceLocator.getEntityService().getEntityAtPosition(mob.getPosition().x - 1,
+                mob.getPosition().y) != null; // if theres an entity within x of - 1 of mob
     }
 
     @Override

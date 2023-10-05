@@ -20,10 +20,9 @@ import com.csse3200.game.components.npc.XenoAnimationController;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobMeleeAttackTask;
 import com.csse3200.game.components.tasks.MobRangedAttackTask;
-import com.csse3200.game.components.tasks.MobTask.MobMeleeTask;
+import com.csse3200.game.components.tasks.MobTask.MobTask;
 import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.components.tasks.MobWanderTask;
-import com.csse3200.game.components.tasks.bosstask.DemonBossTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -309,12 +308,13 @@ public class NPCFactory {
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
-            .addTask(new MobMeleeTask(MobType.DRAGON_KNIGHT));
+            .addTask(new MobTask(MobType.DRAGON_KNIGHT));
 
     dragonKnight
             .addComponent(new CombatStatsComponent(health, 10, drops))
             .addComponent(animator)
-            .addComponent(new DragonKnightAnimationController());
+            .addComponent(new DragonKnightAnimationController())
+            .addComponent(aiTaskComponent);
 
     dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
     dragonKnight.getComponent(AnimationRenderComponent.class).scaleEntity();
