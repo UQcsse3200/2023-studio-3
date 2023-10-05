@@ -23,7 +23,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final Vector2 MELEE_MOB_SPEED = new Vector2(1f,1f);
     private static final Vector2 MELEE_RANGE_SPEED = new Vector2(0.7f,0.7f);
     private static final int MELEE_DAMAGE = 10;
-    private static final float MELEE_ATTACK_SPEED = 1.5f;
+    private static final long MELEE_ATTACK_SPEED = 2000;
     private static final long RANGE_ATTACK_SPEED = 5000;
 
     // Private variables
@@ -35,7 +35,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     MovementTask movementTask;
     Entity target;
     private GameTime gameTime;
-    private long lastTimeShot;
+    private long lastTimeAttacked;
 
     // Flags
     boolean melee;
@@ -43,6 +43,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     boolean meleeFlag = false;
     boolean targetInRange = false;
     boolean rangeAttackFlag = false;
+    boolean meleeAttackFlag = false;
 
     // Enums
     private enum State {
@@ -67,6 +68,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         movementTask.start();
         runFlag = true;
         changeState(State.RUN);
+        lastTimeAttacked = gameTime.getTime();
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
@@ -92,30 +94,31 @@ public class MobTask extends DefaultTask implements PriorityTask {
                 }
                 if (melee) {
                     if (enemyDetected()) {
-                        targetInRange = true;
-                        changeState(State.ATTACK);
-                        meleeFlag = true;
-                    } else {
-                        targetInRange = false;
+                        if (gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
+                            changeState(State.ATTACK);
+                            meleeAttackFlag = true;
+                        }
                     }
                 } else {
-                    if (gameTime.getTime() - lastTimeShot >= RANGE_ATTACK_SPEED) {
+                    if (gameTime.getTime() - lastTimeAttacked >= RANGE_ATTACK_SPEED) {
                         changeState(State.ATTACK);
                         rangeAttackFlag = true;
                     }
                 }
             }
             case ATTACK -> {
-                if (meleeFlag) {
-                    if (!targetInRange) {
+                if (melee) {
+                    if (meleeAttackFlag) {
+                        movementTask.stop();
+                        animate();
+                        meleeAttack();
+                        meleeAttackFlag = false;
+                    }
+                    if (animation.isFinished()) {
                         movementTask.start();
                         changeState(State.RUN);
-                        meleeFlag = false;
                         runFlag = true;
                     }
-                    movementTask.stop();
-                    meleeAttack();
-                    animate();
                 }
                 if (!melee) {
                     if (rangeAttackFlag) {
@@ -127,6 +130,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     if (animation.isFinished()) {
                         movementTask.start();
                         changeState(State.RUN);
+                        runFlag = true;
                     }
                 }
             }
@@ -247,7 +251,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         projectile.setPosition(mob.getPosition());
         projectile.setScale(-1f, 1f);
         ServiceLocator.getEntityService().register(projectile);
-        lastTimeShot = gameTime.getTime();
+        lastTimeAttacked = gameTime.getTime();
     }
 
     @Override
