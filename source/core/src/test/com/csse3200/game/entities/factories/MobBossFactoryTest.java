@@ -129,7 +129,7 @@ class MobBossFactoryTest {
                 .getAsset("images/mobboss/demon.atlas", TextureAtlas.class);
         baseBoss = MobBossFactory.createBaseBoss();
         demon = MobBossFactory.createDemonBoss(80);
-        slimeyBoy = MobBossFactory.createSlimeyBoy();
+        slimeyBoy = MobBossFactory.createSlimeyBoy(80);
         patrick = MobBossFactory.createPatrickBoss(80);
         deadPatrick = MobBossFactory.patrickDead();
         iceBaby = MobBossFactory.createIceBoss(80);

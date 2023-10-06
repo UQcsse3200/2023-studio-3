@@ -83,7 +83,7 @@ public class MobBossFactory {
      *
      * @return Slimey Boy
      */
-    public static Entity createSlimeyBoy() {
+    public static Entity createSlimeyBoy(int health) {
         Entity slimeyBoy = createBaseBoss();
 
         // Animation
@@ -106,7 +106,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(80, 0));
+                .addComponent(new CombatStatsComponent(health, 0));
 
         // Scale demon
         slimeyBoy.getComponent(AnimationRenderComponent.class).scaleEntity();

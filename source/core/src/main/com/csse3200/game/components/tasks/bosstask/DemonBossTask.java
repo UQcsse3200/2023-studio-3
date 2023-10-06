@@ -34,8 +34,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final Vector2 DEMON_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final float JUMP_DISTANCE = 3.0f;
-    private static final int Y_TOP_BOUNDARY = 6;
-    private static final int Y_BOT_BOUNDARY = 1;
+    private static final double Y_TOP_BOUNDARY = 5.5;
+    private static final double Y_BOT_BOUNDARY = 0.5;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_RADIUS = 3;
     private static final int MOVE_FORWARD_DELAY = 15;
@@ -44,6 +44,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int CLEAVE_DAMAGE = 50;
     private static final int HEAL_TIMES = 10;
     private static final int HEALTH_TO_ADD = 10;
+    private static final int SLIMEY_BOY_HEALTH = 500;
+    private static final int SLIMES_SPAWNED = 1;
+    private static final int SPAWN_RADIUS = 2;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -67,6 +70,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private boolean isJumping;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
+    private boolean isSpawning = false;
 
     /**
      * The different demon states.
@@ -144,7 +148,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // detect death stage
         if (health <= 0) {
             // spawn slimey boy
-            Entity slimey = MobBossFactory.createSlimeyBoy();
+            Entity slimey = MobBossFactory.createSlimeyBoy(SLIMEY_BOY_HEALTH);
             slimey.setPosition(demon.getPosition().x, demon.getPosition().y);
             slimey.setScale(5f, 5f);
             ServiceLocator.getEntityService().register(slimey);
@@ -172,11 +176,13 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             }
             case BREATH, CLEAVE -> {
                 if (animation.isFinished()) {
-                    changeState(DemonState.IDLE);
+                    changeState(DemonState.CAST);
+                    isSpawning = true;
+                    spawnDemonSlimes();
                 }
             }
             case CAST -> {
-                if (!isHealing) {
+                if (!isHealing && !isSpawning) {
                     changeState(DemonState.IDLE);
                 }
             }
@@ -456,6 +462,31 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 public void run() {
                     demon.getEvents().trigger("demon_heal_sound");
                     demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);
+                }
+            }, (float) i /2);
+        }
+    }
+
+    private void spawnDemonSlimes() {
+        for (int i = 0; i < SLIMES_SPAWNED; i++) {
+            int finalI = i;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                Entity slime = MobBossFactory.createSlimeyBoy(100);
+                float angle = MathUtils.random(0f, MathUtils.PI2);
+                float distance = MathUtils.random(0f, SPAWN_RADIUS);
+
+                float x = demon.getPosition().x + distance * MathUtils.cos(angle);
+                float y = demon.getPosition().y + distance * MathUtils.sin(angle);
+
+                Vector2 spawnLocation = new Vector2(x, y);
+                slime.setPosition(spawnLocation);
+                ServiceLocator.getEntityService().register(slime);
+
+                if (finalI == SLIMES_SPAWNED - 1) {
+                    isSpawning = false;
+                }
                 }
             }, (float) i /2);
         }
