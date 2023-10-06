@@ -285,12 +285,12 @@ public class MobBossFactory {
     public static Entity createBaseBoss() {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
-                .addComponent(new ColliderComponent())
+//                .addComponent(new ColliderComponent())
                 .addComponent(new PhysicsMovementComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                 .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));
 
-        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
+//        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
 
         return boss;
     }
