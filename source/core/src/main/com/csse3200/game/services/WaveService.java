@@ -19,6 +19,8 @@ public class WaveService {
 
     private int spawnDelay;
 
+    private boolean skipDelay = false;
+
 
     /**
      * Constructor for the Wave Service
@@ -136,11 +138,26 @@ public class WaveService {
     public int getSpawnDelay() {return this.spawnDelay;}
 
 
-     /* Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
+    /**
+     * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
      * for this instance of the display.
      * @return the updating instance of UIElementsDisplay
      */
     public UIElementsDisplay getDisplay() {
         return this.display;
+    }
+
+    /**
+     * This will invert the value of the skipDelay boolean
+     * */
+    public void toggleDelay() {
+        this.skipDelay = !this.skipDelay;
+    }
+
+    /**
+     * retrieve the skipDelay condition
+     * */
+    public boolean shouldSkip() {
+      return this.skipDelay;
     }
 }
