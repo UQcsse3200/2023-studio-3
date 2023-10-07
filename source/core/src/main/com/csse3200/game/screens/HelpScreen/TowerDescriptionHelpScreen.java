@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 
@@ -79,8 +80,8 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
         imageTextTable.setFillParent(true);
         imageTextTable.center();
 
-        // Add spacing to the left of the table
-        imageTextTable.padLeft(20);
+        float leftPadding = 30f;
+        imageTextTable.padLeft(leftPadding);
 
         // Create an array of image file names
         String[] imageFileNames = {
@@ -108,7 +109,7 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
         for (int i = 0; i < imageFileNames.length; i++) {
             // Create an image from the file
             Image image = new Image(new Texture( imageFileNames[i]));
-            float imageSize = 150f;
+            float imageSize = 200f;
             image.setSize(imageSize, imageSize);
 
             // Create a label for text description
@@ -118,11 +119,16 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
             labelStyle.font = customFont;
 
             Label label = new Label(textDescriptions[i], labelStyle);
+            label.setWrap(true);
 
             // Add the image and label to the table in two columns
-            imageTextTable.add(image).expandX().pad(10); // Add spacing around the image
-            imageTextTable.add(label).expandX().pad(10);
+            Cell<Image> imageCell = imageTextTable.add(image).expandX().pad(10); // Add spacing around the image
+            Cell<Label> labelCell = imageTextTable.add(label).expandX().pad(5);
 
+            float maxCellWidth = 1100f; // Adjust the width as needed
+            labelCell.width(maxCellWidth);
+
+            labelCell.left();
             // Move to the next row
             imageTextTable.row();
         }
