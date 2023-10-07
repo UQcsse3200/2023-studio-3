@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 
-public class MobsDescriptionHelpScreen extends ScreenAdapter {
+public class BossDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
 
 
-    public MobsDescriptionHelpScreen(GdxGame game) {
+    public BossDescriptionHelpScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         spriteBatch = new SpriteBatch();
@@ -43,32 +43,18 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.MAIN_MENU);
+
             }
         });
 
-        TextButton TowersButton = new TextButton("Towers", skin);
-        TowersButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.HELP_TOWER_SCREEN);
-            }
-        });
-
-        TextButton BossButton = new TextButton("BossMobs", skin);
-        BossButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.HELP_BOSS_SCREEN);
-            }
-        });
-
-        Texture imageTexture = new Texture("images/ui/Sprites/UI_Glass_Arrow_Large_01a.png");
+        Texture imageTexture = new Texture("images/ui/Sprites/UI_Glass_Arrow_Large_01a - Copy.png");
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(imageTexture));
-        ImageButton GameDescButton = new ImageButton(drawable);
-        GameDescButton.addListener(new ClickListener() {
+        ImageButton MobsButton = new ImageButton(drawable);
+        MobsButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.HELP_SCREEN);
+                game.setScreen(GdxGame.ScreenType.HELP_MOBS_SCREEN);
+
             }
         });
 
@@ -81,34 +67,15 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
         table1.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table1);
 
-        Table buttonTable2 = new Table();
-        buttonTable2.add(TowersButton).padRight(10);
+        Table buttonTable1 = new Table();
+        buttonTable1.add(MobsButton).padRight(10);
         Table table2 = new Table();
         table2.setFillParent(true);
-        table2.center().right(); // Align to the top-right corner
-        table2.pad(20); // Add padding to the top-right corner
-        table2.add(buttonTable2).row(); // Add button table and move to the next row
+        table2.center().top(); // Align to the middle-right corner
+        table2.pad(20); // Add padding to the middle-right corner
+        table2.add(buttonTable1).row(); // Add button table and move to the next row
         stage.addActor(table2);
-
-        Table buttonTable3 = new Table();
-        buttonTable3.add(GameDescButton).padRight(10);
-        Table table3 = new Table();
-        table3.setFillParent(true);
-        table3.center().left(); // Align to the top-right corner
-        table3.pad(20); // Add padding to the top-right corner
-        table3.add(buttonTable3).row(); // Add button table and move to the next row
-        stage.addActor(table3);
-
-        Table buttonTable4 = new Table();
-        buttonTable4.add(BossButton).padRight(10);
-        Table table4 = new Table();
-        table4.setFillParent(true);
-        table4.center().bottom(); // Align to the top-right corner
-        table4.pad(20); // Add padding to the top-right corner
-        table4.add(buttonTable4).row(); // Add button table and move to the next row
-        stage.addActor(table4);
     }
-
     @Override
     public void show() {
         // Set this screen as the input processor

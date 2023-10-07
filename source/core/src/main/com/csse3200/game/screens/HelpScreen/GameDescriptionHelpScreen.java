@@ -29,7 +29,7 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         table.setFillParent(true); // Makes the table the size of the stage
 
         // Create one image placeholder
-        Image image = new Image(new Texture("images/background/HelpScreenBG.png"));
+        Image image = new Image(new Texture("images/lose-screen/desktop-wallpaper-simple-stars-video-background-loop-black-and-white-aesthetic-space.jpg"));
 
         // Add the image placeholder to the table
         table.add(image).expand().fill();
