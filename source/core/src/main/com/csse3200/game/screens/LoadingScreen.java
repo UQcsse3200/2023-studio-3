@@ -1,52 +1,84 @@
 package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.async.AsyncTask;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.screens.MainGameScreen;
-//TODO make the loading animation fit in with all aspects
-//public class LoadingScreen {
-// Object monitor = new Object();
-//GdxGame game;
-//TurretSelectionScreen turretSelectionScreen;
-//public void Loading(GdxGame game, TurretSelectionScreen turretSelectionScreen) {
-// Create a shared monitor object
-//  this.game=game;
-//this.turretSelectionScreen = turretSelectionScreen;
-// First thread
-//Thread thread1 = new Thread(new Runnable() {
-// @Override
-//  public void run() {
-//    synchronized (monitor) {
-//      try {
-//        turretSelectionScreen.toggleLoadingCircle(true);
-//      monitor.wait(); // Wait for a signal from thread 2
-//} catch (InterruptedException e) {
-//             e.printStackTrace();
-//}
+import com.csse3200.game.screens.AssetLoader;
+import com.csse3200.game.services.ServiceLocator;
 
-//       game.setScreen(GdxGame.ScreenType.MAIN_GAME);
-//    }
-//}
-//});
+public class LoadingScreen implements Screen {
+    private final GdxGame game;
+    private SpriteBatch spriteBatch;
+    private Texture backgroundTexture; // Background image
+    private Texture loadingTexture; // Loading animation
+    private AsyncExecutor asyncExecutor = new AsyncExecutor(1);
 
-// Second thread
-//Thread thread2 = new Thread(new Runnable() {
-//  @Override
-//public void run() {
-//System.out.println("Thread 2 is running.");
-//  try {
-// Simulate some work
-//  Thread.sleep(2000);
-//} catch (InterruptedException e) {
-//  e.printStackTrace();
-//}
-//synchronized (monitor) {
-//  MainGameScreen.loadAssets();
-//monitor.notify(); // Notify thread 1 that it can proceed
-//     }
-//  }
-//});
+    public LoadingScreen(GdxGame game) {
+        this.game = game;
+        spriteBatch = new SpriteBatch();
+        backgroundTexture = new Texture("planets/background.png"); // Replace with your background image
+        loadingTexture = new Texture("images/ui/Sprites/UI_Glass_Scrollbar_01a.png");
+    }
 
-// Start both threads
-//thread1.start();
-//thread2.start();//
-// }
-//}
+    @Override
+    public void show() {
+        // Start loading assets in the background thread
+        asyncExecutor.submit(new AsyncTask<Void>() {
+            @Override
+            public Void call() {
+                AssetLoader.loadAllAssets();
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public void render(float delta) {
+        // Clear the screen
+        spriteBatch.begin();
+
+        // Draw the background image
+        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        // Draw the loading animation on top of the background
+        spriteBatch.draw(loadingTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        spriteBatch.end();
+
+        if (ServiceLocator.getResourceService().loadForMillis(2000)) {
+            game.setScreen(GdxGame.ScreenType.MAIN_GAME);
+        }
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        // Resize any necessary assets or elements here
+    }
+
+    @Override
+    public void pause() {
+        // Handle pause if needed
+    }
+
+    @Override
+    public void resume() {
+        // Handle resume if needed
+    }
+
+    @Override
+    public void hide() {
+        // Hide any elements when the screen is not visible
+    }
+
+    @Override
+    public void dispose() {
+        spriteBatch.dispose();
+        backgroundTexture.dispose();
+        loadingTexture.dispose();
+    }
+}
