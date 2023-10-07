@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.async.AsyncExecutor;
 import com.badlogic.gdx.utils.async.AsyncTask;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.screens.AssetLoader;
 import com.csse3200.game.services.ServiceLocator;
 
 public class LoadingScreen implements Screen {
@@ -21,20 +20,13 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(GdxGame game) {
         this.game = game;
         spriteBatch = new SpriteBatch();
-        backgroundTexture = new Texture("planets/background.png"); // Replace with your background image
+        backgroundTexture = new Texture("planets/background.png");
         loadingTexture = new Texture("images/ui/Sprites/UI_Glass_Scrollbar_01a.png");
     }
 
     @Override
     public void show() {
-        // Start loading assets in the background thread
-        asyncExecutor.submit(new AsyncTask<Void>() {
-            @Override
-            public Void call() {
-                AssetLoader.loadAllAssets();
-                return null;
-            }
-        });
+        AssetLoader.loadAllAssets();
     }
 
     @Override
@@ -50,7 +42,8 @@ public class LoadingScreen implements Screen {
 
         spriteBatch.end();
 
-        if (ServiceLocator.getResourceService().loadForMillis(2000)) {
+        if (AssetLoader.areAllAssetsLoaded()) {
+            // Asset loading is complete, transition to the main game screen
             game.setScreen(GdxGame.ScreenType.MAIN_GAME);
         }
     }

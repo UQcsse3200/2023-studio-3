@@ -9,15 +9,10 @@ import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
-public class AssetLoader {
-    private final AsyncExecutor asyncExecutor = new AsyncExecutor(1);
+import java.util.*;
 
-    public  void loadAllAssetsInBackground() {
-        asyncExecutor.submit((AsyncTask<Void>) () -> {
-            loadAllAssets();
-            return null;
-        });
-    }
+public class AssetLoader {
+    private static final Set<String> loadedAssets = new HashSet<>();
     // Define your asset file paths here
     public static final String[] textures = {
             "images/desert_bg.png",
@@ -210,12 +205,21 @@ public class AssetLoader {
     public static void loadAllAssets() {
         ResourceService resourceService = ServiceLocator.getResourceService();
 
-        resourceService.loadTextures(textures);
-        resourceService.loadTextureAtlases(textureAtlases);
-        resourceService.loadSounds(Sounds);
-        resourceService.loadMusic(music);
+        for (String assetPath : textures) {
+            resourceService.loadAsset(assetPath, Texture.class);
+        }
 
-        // Wait for the assets to finish loading (you can implement a loading screen)
+        for (String assetPath : textureAtlases) {
+            resourceService.loadAsset(assetPath, TextureAtlas.class);
+        }
+
+        for (String assetPath : Sounds) {
+            resourceService.loadAsset(assetPath, Sound.class);
+        }
+
+        for (String assetPath : music) {
+            resourceService.loadAsset(assetPath, Music.class);
+        }
         while (!resourceService.loadForMillis(10)) {
             // Display loading progress if needed
         }
@@ -230,20 +234,19 @@ public class AssetLoader {
         resourceService.unloadAssets(music);
     }
 
-    public static Texture getTexture(String assetPath) {
-        return ServiceLocator.getResourceService().getAsset(assetPath, Texture.class);
+    public static boolean areAllAssetsLoaded() {
+        ResourceService resourceService = ServiceLocator.getResourceService();
+
+        return loadedAssets.containsAll(Arrays.asList(textures)) &&
+                loadedAssets.containsAll(Arrays.asList(textureAtlases)) &&
+                loadedAssets.containsAll(Arrays.asList(Sounds)) &&
+                loadedAssets.containsAll(Arrays.asList(music));
     }
 
-    public static TextureAtlas getTextureAtlas(String assetPath) {
-        return ServiceLocator.getResourceService().getAsset(assetPath, TextureAtlas.class);
+    public static void onAssetLoaded(String assetPath) {
+        loadedAssets.add(assetPath);
     }
 
-    public static Sound getSound(String assetPath) {
-        return ServiceLocator.getResourceService().getAsset(assetPath, Sound.class);
-    }
 
-    public static Music getMusic(String assetPath) {
-        return ServiceLocator.getResourceService().getAsset(assetPath, Music.class);
-    }
 }
 
