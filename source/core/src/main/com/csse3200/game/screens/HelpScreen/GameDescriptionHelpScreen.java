@@ -1,4 +1,4 @@
-package com.csse3200.game.screens;
+package com.csse3200.game.screens.HelpScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -13,13 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 
-public class HelpScreen extends ScreenAdapter {
+public class GameDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
 
 
-    public HelpScreen(GdxGame game) {
+    public GameDescriptionHelpScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         spriteBatch = new SpriteBatch();
@@ -37,7 +37,7 @@ public class HelpScreen extends ScreenAdapter {
         // Add the table to the stage
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         TextButton BackButton = new TextButton("Back", skin);
         BackButton.addListener(new ClickListener() {
             @Override

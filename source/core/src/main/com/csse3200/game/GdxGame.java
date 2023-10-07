@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.csse3200.game.files.UserSettings;
 import com.csse3200.game.screens.*;
+import com.csse3200.game.screens.HelpScreen.GameDescriptionHelpScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,7 @@ public class GdxGame extends Game {
       case TURRET_SELECTION:
         return new TurretSelectionScreen(this);
       case HELP_SCREEN:
-        return new HelpScreen(this);
+        return new GameDescriptionHelpScreen(this);
       case LOAD_SCREEN:
         return new LoadingScreen(this);
       default:
