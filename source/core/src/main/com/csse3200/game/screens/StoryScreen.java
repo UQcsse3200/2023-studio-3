@@ -60,13 +60,13 @@ public class StoryScreen extends ScreenAdapter {
             "Nature's embrace cradled humanity, and life flourished abundantly. ",
             "However, this harmony soon succumbed to the relentless grip of human greed. ",
             "As desires grew insatiable, the delicate balance fractured, and the world's vitality waned",
-            "as everything was about to be lost a group of people cam together to save humanity and an idea was born",
+            "as everything was about to be lost a group of people came together to save humanity and an idea was born",
             "to set out towards the stars and conquer planets",
             "humanity pooled its resources together and made giant ships called ARKs that would carry us onto the stars",
             "we set out with our iron will and firm resolve to not fade away ",
             "we arrived at planets and built outposts that would help us survive this harsh environment ",
             "we terraformed and procured resources that would help the future generations survive ",
-            "the brightest and best began researching anf evaluating the newly found planets",
+            "the brightest and best began researching and evaluating the newly found planets",
             "all seems perfect until we picked up on a looming threat that maybe we aren't alone......",
             // Add more text as needed
     };
