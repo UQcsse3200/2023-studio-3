@@ -46,6 +46,16 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
 
             }
         });
+
+        TextButton MobsButton = new TextButton("Mobs", skin);
+        MobsButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.HELP_MOBS_SCREEN);
+
+            }
+        });
+
         Table buttonTable = new Table();
         buttonTable.add(BackButton).padRight(10);
         Table table1 = new Table();
@@ -54,6 +64,15 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         table1.pad(20); // Add padding to the top-right corner
         table1.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table1);
+
+        Table buttonTable1 = new Table();
+        buttonTable1.add(MobsButton).padRight(10);
+        Table table2 = new Table();
+        table2.setFillParent(true);
+        table2.center().right(); // Align to the middle-right corner
+        table2.pad(20); // Add padding to the middle-right corner
+        table2.add(buttonTable1).row(); // Add button table and move to the next row
+        stage.addActor(table2);
     }
     @Override
     public void show() {

@@ -40,12 +40,20 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         TextButton BackButton = new TextButton("Back", skin);
         BackButton.addListener(new ClickListener() {
-            @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.MAIN_MENU);
 
             }
         });
+
+        TextButton MobsButton = new TextButton("Mobs", skin);
+        MobsButton.addListener(new ClickListener() {
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.HELP_MOBS_SCREEN);
+
+            }
+        });
+
         Table buttonTable = new Table();
         buttonTable.add(BackButton).padRight(10);
         Table table1 = new Table();
@@ -54,6 +62,15 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
         table1.pad(20); // Add padding to the top-right corner
         table1.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table1);
+
+        Table buttonTable1 = new Table();
+        buttonTable1.add(MobsButton).padRight(10);
+        Table table2 = new Table();
+        table2.setFillParent(true);
+        table2.center().left(); // Align to the top-right corner
+        table2.pad(20); // Add padding to the top-right corner
+        table2.add(buttonTable1).row(); // Add button table and move to the next row
+        stage.addActor(table2);
     }
 
     @Override

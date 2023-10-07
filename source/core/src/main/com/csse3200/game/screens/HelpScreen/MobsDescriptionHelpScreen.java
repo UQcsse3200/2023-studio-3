@@ -43,9 +43,25 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.MAIN_MENU);
-
             }
         });
+
+        TextButton TowersButton = new TextButton("Towers", skin);
+        TowersButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.HELP_TOWER_SCREEN);
+            }
+        });
+
+        TextButton GameDescButton = new TextButton("GameDesc", skin);
+        GameDescButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.HELP_SCREEN);
+            }
+        });
+
         Table buttonTable = new Table();
         buttonTable.add(BackButton).padRight(10);
         Table table1 = new Table();
@@ -54,6 +70,24 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
         table1.pad(20); // Add padding to the top-right corner
         table1.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table1);
+
+        Table buttonTable2 = new Table();
+        buttonTable2.add(TowersButton).padRight(10);
+        Table table2 = new Table();
+        table2.setFillParent(true);
+        table2.center().right(); // Align to the top-right corner
+        table2.pad(20); // Add padding to the top-right corner
+        table2.add(buttonTable2).row(); // Add button table and move to the next row
+        stage.addActor(table2);
+
+        Table buttonTable3 = new Table();
+        buttonTable3.add(GameDescButton).padRight(10);
+        Table table3 = new Table();
+        table3.setFillParent(true);
+        table3.center().left(); // Align to the top-right corner
+        table3.pad(20); // Add padding to the top-right corner
+        table3.add(buttonTable3).row(); // Add button table and move to the next row
+        stage.addActor(table3);
     }
 
     @Override

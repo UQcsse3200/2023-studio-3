@@ -6,6 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.csse3200.game.files.UserSettings;
 import com.csse3200.game.screens.*;
 import com.csse3200.game.screens.HelpScreen.GameDescriptionHelpScreen;
+import com.csse3200.game.screens.HelpScreen.MobsDescriptionHelpScreen;
+import com.csse3200.game.screens.HelpScreen.TowerDescriptionHelpScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +83,10 @@ public class GdxGame extends Game {
         return new TurretSelectionScreen(this);
       case HELP_SCREEN:
         return new GameDescriptionHelpScreen(this);
+      case HELP_MOBS_SCREEN:
+        return new MobsDescriptionHelpScreen(this);
+        case HELP_TOWER_SCREEN:
+        return new TowerDescriptionHelpScreen(this);
       case LOAD_SCREEN:
         return new LoadingScreen(this);
       default:
@@ -89,7 +95,8 @@ public class GdxGame extends Game {
   }
 
   public enum ScreenType {
-    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN
+    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN,
+    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN
   }
 
   /**
