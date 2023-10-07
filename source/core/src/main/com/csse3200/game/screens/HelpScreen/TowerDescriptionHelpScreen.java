@@ -5,9 +5,12 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 
@@ -44,7 +47,9 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
             }
         });
 
-        TextButton MobsButton = new TextButton("Mobs", skin);
+        Texture imageTexture = new Texture("images/ui/Sprites/UI_Glass_Arrow_Large_01a.png");
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(imageTexture));
+        ImageButton MobsButton = new ImageButton(drawable);
         MobsButton.addListener(new ClickListener() {
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.HELP_MOBS_SCREEN);
