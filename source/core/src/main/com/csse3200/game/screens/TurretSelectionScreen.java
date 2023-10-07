@@ -116,7 +116,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
             public void clicked(InputEvent event, float x, float y) {
                 // Store the selected towers in the ServiceLocator for transferring across screens
                 ServiceLocator.setTowerTypes(selectedTurrets);;
-                game.setScreen(GdxGame.ScreenType.MAIN_GAME);
+                game.setScreen(GdxGame.ScreenType.LOAD_SCREEN);
             }
         });
 
