@@ -3,11 +3,21 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.async.AsyncExecutor;
+import com.badlogic.gdx.utils.async.AsyncTask;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 public class AssetLoader {
+    private final AsyncExecutor asyncExecutor = new AsyncExecutor(1);
+
+    public  void loadAllAssetsInBackground() {
+        asyncExecutor.submit((AsyncTask<Void>) () -> {
+            loadAllAssets();
+            return null;
+        });
+    }
     // Define your asset file paths here
     public static final String[] textures = {
             "images/desert_bg.png",
@@ -23,7 +33,6 @@ public class AssetLoader {
             "images/hex_grass_1.png",
             "images/background/mountain.png",
             "images/ghost_king.png",
-            "images/ghost_1.png",
             "images/terrain 2 normal.png",
             "images/terrain 2 hex.png",
             "images/hex_grass_2.png",
@@ -50,8 +59,6 @@ public class AssetLoader {
             "images/mobs/Idle.png",
             "images/mobs/rangeBossRight.png",
             "images/towers/wallTower.png",
-            "images/background/building2.png",
-            "images/iso_grass_3.png",
             "images/terrain_use.png",
             "images/Dusty_MoonBG.png",
             "images/economy/scrap.png",
@@ -70,7 +77,6 @@ public class AssetLoader {
             "images/projectiles/stun_effect.png",
             "images/projectiles/firework_anim.png",
             "images/projectiles/pierce_anim.png",
-            "images/projectiles/snow_ball.png",
             "images/mobboss/demon.png",
             "images/mobboss/demon2.png",
             "images/mobs/fire_worm.png",
@@ -83,7 +89,14 @@ public class AssetLoader {
             "images/GrassTile/grass_tile_6.png",
             "images/GrassTile/grass_tile_7.png",
             "images/highlight_tile.png",
-            "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png"
+            "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png",
+            "images/towers/wall_tower.png",
+            "images/towers/fireworks_tower.png",
+            "images/towers/barrier.png",
+            "images/towers/PierceTower.png",
+            "images/towers/RicochetTower.png",
+            "images/mobboss/iceBaby.png",
+            "images/bombship/bombship.png"
     };
 
     public static final String[] textureAtlases = {
@@ -102,12 +115,9 @@ public class AssetLoader {
             "images/mobs/robot.atlas",
             "images/mobs/rangeBossRight.atlas",
             "images/towers/DroidTower.atlas",
-            "images/mobs/robot.atlas",
-            "images/mobs/rangeBossRight.atlas",
             "images/towers/TNTTower.atlas",
             "images/projectiles/basic_projectile.atlas",
             "images/projectiles/bossProjectile.atlas",
-            "images/projectiles/mobProjectile.atlas",
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/engineer_projectile.atlas",
             "images/projectiles/mobBoss_projectile.atlas",
@@ -115,7 +125,6 @@ public class AssetLoader {
             "images/projectiles/pierce_anim.atlas",
             "images/projectiles/burn_effect.atlas",
             "images/projectiles/firework_anim.atlas",
-            "images/projectiles/mobProjectile.atlas",
             "images/projectiles/stun_effect.atlas",
             "images/mobboss/demon.atlas",
             "images/mobs/fire_worm.atlas",
@@ -125,7 +134,12 @@ public class AssetLoader {
             "images/mobs/water_queen.atlas",
             "images/mobs/water_slime.atlas",
             "images/mobboss/patrick.atlas",
-            "images/mobboss/iceBaby.atlas"
+            "images/mobboss/iceBaby.atlas",
+            "images/towers/fireworks_tower.atlas",
+            "images/towers/barrier.atlas",
+            "images/towers/PierceTower.atlas",
+            "images/towers/RicochetTower.atlas",
+            "images/bombship/bombship.atlas"
     };
 
 
@@ -190,8 +204,6 @@ public class AssetLoader {
             "sounds/background/lava/Sizzling.ogg",
             "sounds/background/lava/Swoosh.ogg",
             "sounds/background/loss/RisingScreams.ogg",
-            "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
-            "sounds/waves/wave-end/Wave_Over_01.ogg"
     };
 
 
