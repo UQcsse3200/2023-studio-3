@@ -63,12 +63,11 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         titlelabelcell.center();
         contentTable.row();
 
-// Define your image file paths and text data
         String[] imagePaths = {
-                "images/GrassTile/grass_tile_1.png", // Replace with your image file paths
-                "images/GrassTile/grass_tile_1.png",
-                "images/GrassTile/grass_tile_1.png",
-                "images/GrassTile/grass_tile_1.png"
+                "images/HelpScreen/Engineer.png",
+                "images/HelpScreen/Turret.png",
+                "images/HelpScreen/Mob.png",
+                "images/HelpScreen/Econ.png"
         };
 
         String[] textData = {
@@ -82,8 +81,8 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         for (int i = 0; i < imagePaths.length; i++) {
             // Create an image placeholder for each row
             Image image1 = new Image(new Texture(imagePaths[i])); // Use the appropriate image path
-            float imageWidth = 500f; // Change this to your desired width
-            float imageHeight = 500f; // Change this to your desired height
+            float imageWidth = 150f; // Change this to your desired width
+            float imageHeight = 150f; // Change this to your desired height
 
             image1.setWidth(imageWidth);
             image1.setHeight(imageHeight);
@@ -93,6 +92,9 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
             textLabel.setFontScale(1.2f);
 
             Table rowTable = new Table();
+            float rowHeight = 500f; // Change this to your desired row height
+            rowTable.setHeight(rowHeight);
+
             rowTable.add(image1).pad(10);
             rowTable.add(textLabel).width(stage.getWidth() / 2).pad(10).row();
 
