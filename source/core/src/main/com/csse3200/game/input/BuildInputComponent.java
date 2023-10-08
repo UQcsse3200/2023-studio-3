@@ -109,7 +109,7 @@ public class BuildInputComponent extends InputComponent {
                 // Decrement currency and show a popup that reflects the cost of the build
                 ServiceLocator.getCurrencyService().getScrap().modify(-cost);
                 ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, cost, 10);
+                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, -cost, 10);
 
                 long soundId = buildSound.play();
                 buildSound.setVolume(soundId, 0.4f);

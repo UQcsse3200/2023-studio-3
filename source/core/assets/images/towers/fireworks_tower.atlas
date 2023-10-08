@@ -1,0 +1,355 @@
+fireworks_tower.png
+size: 1700, 420
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Attack
+  rotate: false
+  xy: 0, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 100, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 200, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 300, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 400, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 500, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 600, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 700, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 800, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 900, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1000, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1100, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1200, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1300, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1400, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1500, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 1600, 0
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 0, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 100, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 200, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 300, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 400, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 500, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 600, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Attack
+  rotate: false
+  xy: 700, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 800, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 900, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1000, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1100, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1200, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1300, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1400, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1500, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 1600, 140
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 0, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 100, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Death
+  rotate: false
+  xy: 200, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 300, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 400, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 500, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 600, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 700, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 800, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 900, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 1000, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 1100, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 1200, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 1300, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 1400, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1
+Default
+  rotate: false
+  xy: 1400, 280
+  size: 100, 140
+  orig: 100, 140
+  offset: 0, 0
+  index: -1

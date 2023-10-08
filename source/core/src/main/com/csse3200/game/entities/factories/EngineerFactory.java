@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
@@ -50,8 +51,27 @@ public class EngineerFactory {
     Entity engineer = createBaseHumanNPC();
     BaseEntityConfig config = configs.engineer;
     
+    AITaskComponent aiComponent = new AITaskComponent();
+    AnimationRenderComponent animator = createAnimationRenderComponent();
+    
+    engineer
+            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+            .addComponent(animator)
+            .addComponent(new HumanAnimationController())
+            .addComponent(new EngineerMenuComponent())
+            .addComponent(aiComponent);
+    
+    engineer.getComponent(AITaskComponent.class).addTask(new HumanWanderTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
+    engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
+    engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
+    return engineer;
+  }
+  
+  public static AnimationRenderComponent createAnimationRenderComponent() {
+    String atlasPath = "images/engineers/engineer.atlas";
+    String atlasOutlinePath = "images/engineers/engineer_outline.atlas";
     AnimationRenderComponent animator = new AnimationRenderComponent(
-            new TextureAtlas("images/engineers/engineer.atlas"));
+            new TextureAtlas(atlasPath), new TextureAtlas(atlasOutlinePath));
     animator.addAnimation("walk_left", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_right", 0.2f, Animation.PlayMode.LOOP);
     animator.addAnimation("walk_prep", 0.2f, Animation.PlayMode.LOOP);
@@ -61,19 +81,17 @@ public class EngineerFactory {
     animator.addAnimation("prep", 0.05f, Animation.PlayMode.NORMAL);
     animator.addAnimation("hit", 0.01f, Animation.PlayMode.NORMAL);
     animator.addAnimation("death", 0.1f, Animation.PlayMode.NORMAL);
-    
-    AITaskComponent aiComponent = new AITaskComponent();
-    
-    engineer
-            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-            .addComponent(animator)
-            .addComponent(new HumanAnimationController())
-            .addComponent(aiComponent);
-    
-    engineer.getComponent(AITaskComponent.class).addTask(new HumanWanderTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));
-    engineer.getComponent(AnimationRenderComponent.class).scaleEntity();
-    engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);
-    return engineer;
+
+    animator.addAnimation("walk_left_outline", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("walk_right_outline", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("walk_prep_outline", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("idle_right_outline", 0.2f, Animation.PlayMode.LOOP);
+    animator.addAnimation("firing_auto_outline", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("firing_single_outline", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("prep_outline", 0.05f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("hit_outline", 0.01f, Animation.PlayMode.NORMAL);
+    animator.addAnimation("death_outline", 0.1f, Animation.PlayMode.NORMAL);
+    return animator;
   }
   
   /**

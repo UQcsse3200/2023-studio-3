@@ -123,6 +123,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public void update() {
+      // * Don't know if this is actually needed.
+      if(ServiceLocator.getGameEndService().hasGameEnded()) {
+        stop();
+      }
         // give game time to load in then start
         if (!startFlag) {
             return;
@@ -381,6 +385,11 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             Timer.schedule(new Timer.Task() {
                 @Override
                 public void run() {
+                  // service locator getting a service could be anything here.
+                  if(ServiceLocator.getTimeSource() == null) {
+                    stop();
+                    return; // prevent current iteration from running.
+                  }
                     Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,
                             new Vector2(2, 2), effect, aoe);
                     projectile.setPosition(demon.getPosition().x, demon.getPosition().y);

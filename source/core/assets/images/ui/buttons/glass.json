@@ -54,6 +54,17 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		unpressedOffsetY: 1
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		parent: default
+		checkboxOn: UI_Glass_Slot_Available_01a
+		checkboxOff: UI_Glass_Slot_Available_01a
+		checkboxOnOver: UI_Glass_Slot_Selected_01a
+		checkboxOver: UI_Glass_Slot_Unavailable_01a
+		checkboxOnDisabled: UI_Glass_Slot_Unavailable_01a
+		font: font_small
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 	default: {
 		parent: default
@@ -163,6 +174,12 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 		checkedDown: UI_Glass_Button_Large_Press_01a1
 		checkedFocused: UI_Glass_Button_Large_Press_01a3
 		pressedOffsetY: -2
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
+	default: {
+		font: font_small
+		fontColor: White
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {

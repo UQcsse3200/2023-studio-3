@@ -2,6 +2,7 @@ package com.csse3200.game.components.tower;
 
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.extensions.GameExtension;
@@ -60,7 +61,7 @@ class TowerUpgraderComponentTest {
         entity.create();
         entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
         verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
-        assertEquals(0.5, towerCombatTask.getFireRateInterval());
+        assertEquals(((float) 1 /12), towerCombatTask.getFireRateInterval());
     }
 
     @Test
@@ -74,8 +75,23 @@ class TowerUpgraderComponentTest {
         entity.addComponent(aiTaskComponent);
         towerCombatTask.start();
         entity.create();
-        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -60);
-        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, -60);
-        assertEquals(1., towerCombatTask.getFireRateInterval());
+        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
+        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, 60);
+        assertEquals((1/12f), towerCombatTask.getFireRateInterval());
+    }
+
+    @Test
+    void incomeRate() {
+        entity.addComponent(towerUpgraderComponent);
+        AITaskComponent aiTaskComponent = new AITaskComponent();
+        ServiceLocator.registerTimeSource(mock(GameTime.class));
+        CurrencyTask currencyTask = new CurrencyTask(10, 10);
+        aiTaskComponent.addTask(currencyTask);
+        entity.addComponent(aiTaskComponent);
+        currencyTask.start();
+        entity.create();
+        entity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.INCOME, 60);
+        verify(towerUpgraderComponent).upgradeTower(TowerUpgraderComponent.UPGRADE.INCOME, 60);
+        assertEquals(60, currencyTask.getInterval());
     }
 }

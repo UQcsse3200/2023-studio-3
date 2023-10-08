@@ -1,6 +1,7 @@
 package com.csse3200.game.components.mainmenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,11 +23,16 @@ public class MainMenuDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table;
     private Table table1;
+    private Sound clickSound;
 
     @Override
     public void create() {
         super.create();
         addActors();
+        loadSounds();
+    }
+    private void loadSounds() {
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("sounds/Modern4.ogg"));
     }
 
     private void addActors() {
@@ -54,25 +60,26 @@ public class MainMenuDisplay extends UIComponent {
         Image title =
                 new Image(
                         ServiceLocator.getResourceService()
-                                .getAsset("images/background/background1.png", Texture.class));
+                                .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
         title.setWidth(Gdx.graphics.getWidth());
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0, 0);
 
-        // Create an instance of the ButtonFactory class
-        ButtonFactory buttonFactory = new ButtonFactory();
-
 // Create a "Start" TextButton using the default style
-        TextButton startBtn = buttonFactory.createButton("Start");
+//        TextButton startBtn = ButtonFactory.createButton("Start");
+        TextButton startBtn = new TextButton("Start", skin);
 
 // Create a "Help" TextButton using the default style
-        TextButton loadBtn = buttonFactory.createButton("Help");
+//        TextButton helpBtn = ButtonFactory.createButton("Help");
+        TextButton helpBtn = new TextButton("Help", skin);
 
 // Create a "Settings" TextButton with a custom image
-        TextButton settingsBtn = buttonFactory.createCustomButton("Settings", "images/ui/Sprites/UI_Glass_Button_Large_Lock_01a2.png");
+//        TextButton settingsBtn =ButtonFactory.createButton("Settings");
+        TextButton settingsBtn =new TextButton("Settings", skin);
 
 // Create a "Quit" TextButton with a custom image
-        TextButton exitBtn = buttonFactory.createCustomButton("Quit", "images/ui/Sprites/UI_Glass_Button_Large_Press_01a2.png");
+//        TextButton exitBtn = ButtonFactory.createButton("Quit");
+        TextButton exitBtn = new TextButton("Quit", skin);
 
         // Triggers an event when the button is pressed
         startBtn.addListener(
@@ -81,15 +88,17 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Start button clicked");
                         entity.getEvents().trigger("start");
+                        clickSound.play();
                     }
                 });
 
-        loadBtn.addListener(
+        helpBtn.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Load button clicked");
-                        entity.getEvents().trigger("load");
+                        logger.debug("Help button clicked");
+                        entity.getEvents().trigger("help");
+                        clickSound.play();
                     }
                 });
 
@@ -99,6 +108,7 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Settings button clicked");
                         entity.getEvents().trigger("settings");
+                        clickSound.play();
                     }
                 });
 
@@ -108,18 +118,27 @@ public class MainMenuDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Exit button clicked");
                         entity.getEvents().trigger("exit");
+                        clickSound.play();
                     }
                 });
 
+        // Proportional padding values based on original screen or background dimensions
+        float originalScreenWidth = 1920;  // Replace with the original width if different
+        float originalScreenHeight = 1080; // Replace with the original height if different
+
+        float padTopStartBtn = 260f / originalScreenHeight * Gdx.graphics.getHeight();
+        float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();
+
+
         table.add(title);
         table1.row();
-        table1.add(startBtn).padTop(30f);
+        table1.add(startBtn).padTop(padTopStartBtn);
         table1.row();
-        table1.add(loadBtn).padTop(15f);
+        table1.add(helpBtn).padTop(padTopOtherBtns);
         table1.row();
-        table1.add(settingsBtn).padTop(15f);
+        table1.add(settingsBtn).padTop(padTopOtherBtns);
         table1.row();
-        table1.add(exitBtn).padTop(15f);
+        table1.add(exitBtn).padTop(padTopOtherBtns);
 
         stage.addActor(table);
         stage.addActor(table1);
@@ -139,5 +158,6 @@ public class MainMenuDisplay extends UIComponent {
     public void dispose() {
         table.clear();
         super.dispose();
+        clickSound.dispose();
     }
 }
