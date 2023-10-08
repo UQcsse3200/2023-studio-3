@@ -71,10 +71,10 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         };
 
         String[] textData = {
-                "Img1, text",
-                "Img2, text",
-                "Img3, text",
-                "Img4, text"
+                "Save the engineers from foreign creatures",
+                "Strategically place towers to stop the aliens",
+                "Aliens, all they want is you off of their planet",
+                "Strategically place towers to stop the aliens"
         };
 
 // Create and add the rows with images and text
