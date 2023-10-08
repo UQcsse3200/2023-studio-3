@@ -121,6 +121,15 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
             }
         });
 
+        TextButton HTPButton = new TextButton("HowToPlay", skin);
+        HTPButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+                game.setScreen(GdxGame.ScreenType.HOW_TO_PLAY);
+
+            }
+        });
+
         Table buttonTable = new Table();
         buttonTable.add(BackButton).padRight(10);
         Table table1 = new Table();
@@ -138,6 +147,15 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         table2.pad(20); // Add padding to the middle-right corner
         table2.add(buttonTable1).row(); // Add button table and move to the next row
         stage.addActor(table2);
+
+        Table buttonTable2 = new Table();
+        buttonTable2.add(HTPButton).padRight(10);
+        Table table3 = new Table();
+        table3.setFillParent(true);
+        table3.center().bottom(); // Align to the middle-right corner
+        table3.pad(20); // Add padding to the middle-right corner
+        table3.add(buttonTable2).row(); // Add button table and move to the next row
+        stage.addActor(table3);
 
     }
     @Override
