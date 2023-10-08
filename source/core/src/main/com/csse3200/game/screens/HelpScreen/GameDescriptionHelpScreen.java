@@ -2,16 +2,17 @@ package com.csse3200.game.screens.HelpScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
+
 
 public class GameDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -23,6 +24,11 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         spriteBatch = new SpriteBatch();
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        BitmapFont customFont = new BitmapFont(Gdx.files.internal("images/ui/buttons/dot_gothic_16.fnt"));
+        labelStyle.font = customFont;
 
         // Create a table to organize the image placeholder
         Table table = new Table();
@@ -37,7 +43,64 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         // Add the table to the stage
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+
+        Table contentTable = new Table();
+        contentTable.center(); // Center the content table
+        contentTable.pad(20); // Makes the table the size of the stage
+        contentTable.setFillParent(true);
+        stage.addActor(contentTable);
+
+// Create and add the text label in the first row
+        Label titleLabel = new Label("In a peaceful past, nature thrived, but human greed disrupted harmony. To save humanity, they set out to conquer planets in massive ARKs. They built outposts, terraformed, and researched, only to uncover a looming, unknown threat in the cosmos.", labelStyle);
+        titleLabel.setAlignment(Align.left);
+        titleLabel.setWrap(true);
+        contentTable.add(titleLabel).colspan(2).pad(10).row(); // colspan makes it span two columns
+
+        Cell<Label> titlelabelcell = contentTable.add(titleLabel).expandX().pad(5);
+        float maxCellWidth = 1100f; // Adjust the width as needed
+        titlelabelcell.width(maxCellWidth);
+
+        titlelabelcell.center();
+        contentTable.row();
+
+// Define your image file paths and text data
+        String[] imagePaths = {
+                "images/GrassTile/grass_tile_1.png", // Replace with your image file paths
+                "images/GrassTile/grass_tile_1.png",
+                "images/GrassTile/grass_tile_1.png",
+                "images/GrassTile/grass_tile_1.png"
+        };
+
+        String[] textData = {
+                "Img1, text",
+                "Img2, text",
+                "Img3, text",
+                "Img4, text"
+        };
+
+// Create and add the rows with images and text
+        for (int i = 0; i < imagePaths.length; i++) {
+            // Create an image placeholder for each row
+            Image image1 = new Image(new Texture(imagePaths[i])); // Use the appropriate image path
+            float imageWidth = 500f; // Change this to your desired width
+            float imageHeight = 500f; // Change this to your desired height
+
+            image1.setWidth(imageWidth);
+            image1.setHeight(imageHeight);
+            // Create a label for text
+            Label textLabel = new Label(textData[i], labelStyle);
+            textLabel.setAlignment(Align.left);
+            textLabel.setFontScale(1.2f);
+
+            Table rowTable = new Table();
+            rowTable.add(image1).pad(10);
+            rowTable.add(textLabel).width(stage.getWidth() / 2).pad(10).row();
+
+            // Add the rowTable to the contentTable
+            contentTable.add(rowTable).colspan(2).expandX().fillX().pad(5).row();
+        }
+
+
         TextButton BackButton = new TextButton("Back", skin);
         BackButton.addListener(new ClickListener() {
             @Override
@@ -73,6 +136,7 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         table2.pad(20); // Add padding to the middle-right corner
         table2.add(buttonTable1).row(); // Add button table and move to the next row
         stage.addActor(table2);
+
     }
     @Override
     public void show() {
