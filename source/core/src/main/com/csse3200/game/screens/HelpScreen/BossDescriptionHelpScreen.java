@@ -3,6 +3,7 @@ package com.csse3200.game.screens.HelpScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -75,6 +76,55 @@ public class BossDescriptionHelpScreen extends ScreenAdapter {
         table2.pad(20); // Add padding to the middle-right corner
         table2.add(buttonTable1).row(); // Add button table and move to the next row
         stage.addActor(table2);
+
+        Table imageTextTable = new Table();
+        imageTextTable.setFillParent(true);
+        imageTextTable.center();
+
+        float leftPadding = 30f;
+        imageTextTable.padLeft(leftPadding);
+
+        // Create an array of image file names
+        String[] imageFileNames = {
+                        "images/HelpScreen/Patrickbosshelp.png",
+                        "images/HelpScreen/IceBosshelp.png",
+                        "images/HelpScreen/Demonbosshelp.png"
+        };
+
+        // Create an array of text descriptions
+        String[] textDescriptions = {
+                "Patrick is able to teleport to the closest entity and do damage as well as shoot projectiles and melee attack. Once Patrick hits half health, it will shoot 5 projectiles of random effect.",
+                "The Ice Baby is able to spawn water mobs and do AOE damage.",
+                "Demon boss is able to shoot burn projectiles and do AOE damage. Demon boss is also able to regenerate health once it hits half health.",
+        };
+
+        // Add images and text to the table
+        for (int i = 0; i < imageFileNames.length; i++) {
+            // Create an image from the file
+            Image imager = new Image(new Texture(imageFileNames[i]));
+            float imageSize = 200f;
+            imager.setSize(imageSize, imageSize);
+
+            // Create a label for text description
+            Label.LabelStyle labelStyle = new Label.LabelStyle();
+            BitmapFont customFont = new BitmapFont(Gdx.files.internal("images/ui/buttons/dot_gothic_16.fnt")); // Replace "your-font.fnt" with your font file path
+            customFont.getData().setScale(1.2f); // Adjust the scale factor to change the text size
+            labelStyle.font = customFont;
+
+            Label label = new Label(textDescriptions[i], labelStyle);
+            label.setWrap(true);
+
+            // Add the image and label to the table in two columns
+            Cell<Image> imageCell = imageTextTable.add(imager).expandX().pad(10); // Add spacing around the image
+            Cell<Label> labelCell = imageTextTable.add(label).expandX().pad(5);
+
+            float maxCellWidth = 1100f; // Adjust the width as needed
+            labelCell.width(maxCellWidth);
+
+            labelCell.left();
+            // Move to the next row
+            imageTextTable.row();
+        }
     }
     @Override
     public void show() {
