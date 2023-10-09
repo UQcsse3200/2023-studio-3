@@ -326,7 +326,7 @@ public class ForestGameArea extends GameArea {
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
     spawnGregMob(18, 2);
 //    spawnDemonBoss();
-    spawnEffectProjectile(new Vector2(5f,2f), PhysicsLayer.HUMANS, -1, new Vector2(1f,1f), ProjectileEffects.SLOW, false);
+    spawnEffectProjectile(new Vector2(5f,2f), PhysicsLayer.HUMANS, 20, new Vector2(1f,1f), ProjectileEffects.STUN, false);
 
     spawnScrap();
     spawnGapScanners();
@@ -829,7 +829,7 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(stunTower, randomPos2, true, true);
 //      spawnEntityAt(wallTower, randomPos2, true, true);
 //    }
-    Entity fireTower = TowerFactory.createWeaponTower();
+    Entity fireTower = TowerFactory.createStunTower();
     spawnEntityAt(fireTower, pos, true, true);
   }
 

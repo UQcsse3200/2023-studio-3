@@ -1,6 +1,7 @@
 package com.csse3200.game.components;
 
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.components.ProjectileEffects;
@@ -20,6 +21,7 @@ public class EffectComponent extends Component {
     private boolean slowFlag;
     private boolean isSlowed;
     private boolean stunFlag;
+    private boolean isStunned;
     private Entity host;
     private Entity target;
     private long lastTimeBurned;
@@ -58,6 +60,12 @@ public class EffectComponent extends Component {
             slowEffect(5);
         }
 
+        // apply stun effect
+        if (stunFlag && !isStunned) {
+            stunEffect(true);
+        } else if (!stunFlag && isStunned) {
+            stunEffect(false);
+        }
     }
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
         this.host = host;
@@ -108,7 +116,18 @@ public class EffectComponent extends Component {
         }
     }
 
-    private void stunEffect() {
+    private void stunEffect(boolean stunned) {
+        isStunned = true;
+        AITaskComponent targetAI = target.getComponent(AITaskComponent.class);
+        if (targetAI == null) {
+            return;
+        }
 
+        if (stunned) {
+            targetAI.disposeAll();
+            targetAI.dispose();
+        } else {
+            targetAI.restore();
+        }
     }
 }

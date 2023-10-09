@@ -98,7 +98,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public void update() {
-
         // death check
         if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag) {
             changeState(State.DEATH);
