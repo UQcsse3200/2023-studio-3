@@ -335,7 +335,7 @@ public class ForestGameArea extends GameArea {
     spawnGapScanners();
 
 //    spawnTNTTower();
-//    spawnWeaponTower();
+    spawnWeaponTower(new GridPoint2(10, 4));
 //    spawnGapScanners();
 //    spawnDroidTower();
 //     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
@@ -818,7 +818,7 @@ public class ForestGameArea extends GameArea {
     spawnEntity(projectile);
   }
 
-  private void spawnWeaponTower() {
+  private void spawnWeaponTower(GridPoint2 pos) {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
@@ -832,6 +832,8 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(stunTower, randomPos2, true, true);
       spawnEntityAt(wallTower, randomPos2, true, true);
     }
+//    Entity fireTower = TowerFactory.createDroidTower();
+//    spawnEntityAt(fireTower, pos, true, true);
   }
 
   // * TEMPORARY FOR TESTING
