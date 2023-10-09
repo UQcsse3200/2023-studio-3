@@ -1,8 +1,11 @@
 //package com.csse3200.game.input;
 //
+//import com.badlogic.gdx.Gdx;
+//import com.badlogic.gdx.Graphics;
 //import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 //import com.badlogic.gdx.maps.tiled.TiledMap;
 //import com.badlogic.gdx.math.Vector2;
+//import com.csse3200.game.GdxGame;
 //import com.csse3200.game.components.CameraComponent;
 //import com.csse3200.game.currency.Currency;
 //import com.csse3200.game.entities.Entity;
@@ -58,6 +61,9 @@
 //
 //    @BeforeEach
 //    void setup() {
+//        Gdx.graphics = mock(Graphics.class);
+//        when(Gdx.graphics.getDeltaTime()).thenReturn(10f);
+//
 //        GameTime gameTime = mock(GameTime.class);
 //        CameraComponent camera = mock(CameraComponent.class);
 //        when(gameTime.getDeltaTime()).thenReturn(0.02f);
@@ -69,7 +75,8 @@
 //
 //        CurrencyService currencyService = new CurrencyService();
 //        ResourceService resourceService = new ResourceService();
-//        MapService mapService = new MapService(camera);
+//        MapService mapService = mock(MapService.class);
+//        when(mapService.getComponent().tileToWorldPosition(0,0)).thenReturn(new Vector2(0,0));
 //        EntityService entityService = new EntityService();
 //
 //        ServiceLocator.registerResourceService(resourceService);

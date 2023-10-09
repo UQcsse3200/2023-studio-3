@@ -113,6 +113,9 @@ public class BuildInputComponent extends InputComponent {
 
                 long soundId = buildSound.play();
                 buildSound.setVolume(soundId, 0.4f);
+
+                // deselect the tower after building
+                ServiceLocator.getCurrencyService().setTowerType(null);
             } else {
                 // play a sound to indicate an invalid action
                 long soundId = errorSound.play();
