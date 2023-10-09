@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.npc.MobEffectComponent;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.BodyUserData;
@@ -24,7 +23,7 @@ import com.badlogic.gdx.utils.Array;
  * slow, and stun. Component also handles the targeting of specific layers and an area of effect
  * application of effects.
  */
-public class EffectsComponent extends Component {
+public class ProjectileEffectsComponent extends Component {
     private final float radius;
     private final ProjectileEffects effect;
     private final boolean aoe;
@@ -38,7 +37,7 @@ public class EffectsComponent extends Component {
      *
      * @param radius The radius of the area-of-effect.
      */
-    public EffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
+    public ProjectileEffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
         this.targetLayer = targetLayer;
         this.radius = radius;
         this.effect = effect;
@@ -88,6 +87,7 @@ public class EffectsComponent extends Component {
      * @param effect effect to be applied to entity
      */
     public void applySingleEffect(ProjectileEffects effect, Entity targetEntity) {
+        System.out.println("apply");
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
@@ -97,7 +97,7 @@ public class EffectsComponent extends Component {
         }
 
         // apply effect
-        targetEntity.getComponent(MobEffectComponent.class).applyEffect(
+        targetEntity.getComponent(EffectComponent.class).applyEffect(
                 effect, hostEntity, targetEntity);
     }
     /**
@@ -127,7 +127,7 @@ public class EffectsComponent extends Component {
             }
 
             // apply effect
-            targetEntity.getComponent(MobEffectComponent.class).applyEffect(
+            targetEntity.getComponent(EffectComponent.class).applyEffect(
                     effect, hostEntity, targetEntity);
         }
     }

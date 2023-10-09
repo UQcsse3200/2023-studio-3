@@ -1,4 +1,4 @@
-package com.csse3200.game.components.npc;
+package com.csse3200.game.components;
 
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
@@ -7,19 +7,22 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
-public class MobEffectComponent extends Component {
+public class EffectComponent extends Component {
     private static final long EFFECT_DURATION = 5000;
     private GameTime gameTime;
     // effect flags
     private boolean burnFlag;
     private boolean slowFlag;
     private boolean stunFlag;
+    private Entity host;
+    private Entity target;
+    private long lastTimeBurned;
     private long burnTime;
     private long slowTime;
     private long stunTime;
     private static long BURN_TICK = 1000;
 
-    public MobEffectComponent() {
+    public EffectComponent() {
         this.gameTime = ServiceLocator.getTimeSource();
     }
 
@@ -32,49 +35,42 @@ public class MobEffectComponent extends Component {
     @Override
     public void update() {
         // update effect flags
-        if (burnTime > gameTime.getTime()) {
-            burnFlag = true;
-        } else {
-            burnFlag = false;
-        }
-        if (slowTime > gameTime.getTime()) {
-            slowFlag = true;
-        } else {
-            slowFlag = false;
-        }
-        if (stunTime > gameTime.getTime()) {
-            stunFlag = true;
-        } else {
-            stunFlag = false;
+        burnFlag = burnTime > gameTime.getTime();
+        slowFlag = slowTime > gameTime.getTime();
+        stunFlag = stunTime > gameTime.getTime();
+
+        // apply effects
+        if (burnFlag && gameTime.getTime() > lastTimeBurned + BURN_TICK) {
+            burnEffect();
         }
     }
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
+        this.host = host;
+        this.target = target;
         switch (effect) {
             case BURN -> {
+                burnFlag = true;
                 burnTime = gameTime.getTime() + EFFECT_DURATION;
-                burnEffect(host, target);
+                lastTimeBurned = gameTime.getTime();
             }
             case SLOW -> {
+                slowFlag = true;
                 slowTime = gameTime.getTime() + EFFECT_DURATION;
                 slowEffect(host, target);
             }
             case STUN -> {
+                stunFlag = true;
                 stunTime = gameTime.getTime() + EFFECT_DURATION;
                 stunEffect(host, target);
             }
         }
     }
 
-    private void burnEffect(Entity host, Entity target) {
-        long lastTimeHit = gameTime.getTime();
-        while(burnFlag) {
-            CombatStatsComponent hostCombat = host.getComponent(CombatStatsComponent.class);
-            CombatStatsComponent targetCombat = target.getComponent(CombatStatsComponent.class);
-            if (gameTime.getTime() > lastTimeHit + BURN_TICK) {
-                lastTimeHit = gameTime.getTime();
-                targetCombat.hit(hostCombat);
-            }
-        }
+    private void burnEffect() {
+        CombatStatsComponent hostCombat = this.host.getComponent(CombatStatsComponent.class);
+        CombatStatsComponent targetCombat = this.target.getComponent(CombatStatsComponent.class);
+        targetCombat.hit(hostCombat);
+        lastTimeBurned = gameTime.getTime();
     }
 
     private void slowEffect(Entity host, Entity target) {

@@ -5,17 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.EffectComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.*;
 import com.csse3200.game.components.tasks.MobDodgeTask;
-import com.csse3200.game.components.tasks.MobMeleeAttackTask;
-import com.csse3200.game.components.tasks.MobRangedAttackTask;
 import com.csse3200.game.components.tasks.MobTask.MobTask;
 import com.csse3200.game.components.tasks.MobTask.MobType;
-import com.csse3200.game.components.tasks.MobWanderTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.Melee;
-import com.csse3200.game.entities.PredefinedWeapons;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -28,7 +24,6 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Currency;
 
 /**
@@ -381,7 +376,7 @@ public class NPCFactory {
                     .addComponent(new PhysicsComponent())
                     .addComponent(new PhysicsMovementComponent())
                     .addComponent(new ColliderComponent())
-                    .addComponent(new MobEffectComponent())
+                    .addComponent(new EffectComponent())
                     .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                     .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS));
     PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);

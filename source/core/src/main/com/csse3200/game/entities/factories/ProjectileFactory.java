@@ -51,7 +51,7 @@ public class ProjectileFactory {
 
     switch (effect) {
       case FIREBALL -> {
-        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));
+        projectile.addComponent(new ProjectileEffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -64,7 +64,7 @@ public class ProjectileFactory {
                 .addComponent(new ProjectileAnimationController());
       }
       case BURN -> {
-        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
+        projectile.addComponent(new ProjectileEffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -77,7 +77,7 @@ public class ProjectileFactory {
                 .addComponent(new BurnEffectProjectileAnimationController());
       }
       case SLOW -> {
-        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
+        projectile.addComponent(new ProjectileEffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
@@ -95,7 +95,7 @@ public class ProjectileFactory {
         return projectile;
       }
       case STUN -> {
-        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
+        projectile.addComponent(new ProjectileEffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()

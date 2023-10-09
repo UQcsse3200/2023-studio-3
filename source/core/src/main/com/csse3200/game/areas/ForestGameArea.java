@@ -326,12 +326,13 @@ public class ForestGameArea extends GameArea {
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
 //    spawnGregMob();
 //    spawnDemonBoss();
+    spawnEffectProjectile(new Vector2(2f,2f), PhysicsLayer.HUMANS, -1, new Vector2(1f,1f), ProjectileEffects.BURN, false);
 
     spawnScrap();
     spawnGapScanners();
 
 //    spawnTNTTower();
-    spawnWeaponTower(new GridPoint2(10, 4));
+//    spawnWeaponTower(new GridPoint2(10, 4));
 //    spawnGapScanners();
 //    spawnDroidTower();
 //     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
@@ -489,9 +490,9 @@ public class ForestGameArea extends GameArea {
   public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
-      case "Xeno":
-        mob = NPCFactory.createXenoGrunt(health);
-        break;
+//      case "Xeno":
+//        mob = NPCFactory.createDragonKnight(health);
+//        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
@@ -521,7 +522,7 @@ public class ForestGameArea extends GameArea {
         mob = MobBossFactory.createPatrickBoss(health);
         break;
       default:
-        mob = NPCFactory.createXenoGrunt(health);
+        mob = NPCFactory.createDragonKnight(health);
         break;
     }
 
@@ -623,12 +624,12 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(waterSlime, randomPos, true, false);
 //    }
 //  }
-   private void spawnSplittingXenoGrunt(int x, int y) {
-     GridPoint2 pos = new GridPoint2(x, y);
-     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt(100);
-     xenoGrunt.setScale(1.5f, 1.5f);
-     spawnEntityAt(xenoGrunt, pos, true, true);
-   }
+//   private void spawnSplittingXenoGrunt(int x, int y) {
+//     GridPoint2 pos = new GridPoint2(x, y);
+//     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt(100);
+//     xenoGrunt.setScale(1.5f, 1.5f);
+//     spawnEntityAt(xenoGrunt, pos, true, true);
+//   }
 
   // * TEMPORARY FOR TESTING
   private void spawnDodgingDragonKnight(int x, int y) {
