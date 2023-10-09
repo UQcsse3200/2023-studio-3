@@ -4,154 +4,161 @@ size: 1024, 64
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
-coat_attack1
+coat_attack
   rotate: false
   xy: 498, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack10
+coat_attack
   rotate: false
   xy: 98, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack2
+coat_attack
   rotate: false
   xy: 218, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack3
+coat_attack
   rotate: false
   xy: 2, 25
   size: 54, 37
   orig: 54, 37
   offset: 0, 0
   index: -1
-coat_attack4
+coat_attack
   rotate: false
   xy: 378, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack5
+coat_attack
   rotate: false
   xy: 138, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack6
+coat_attack
   rotate: false
   xy: 618, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack7
+coat_attack
   rotate: false
   xy: 258, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack8
+coat_attack
   rotate: false
   xy: 698, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_attack9
+coat_attack
   rotate: false
   xy: 418, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_death1
+coat_death
   rotate: false
   xy: 578, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_death2
+coat_death
   rotate: false
   xy: 298, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_death3
+coat_death
   rotate: false
   xy: 738, 32
   size: 33, 30
   orig: 33, 30
   offset: 0, 0
   index: -1
-coat_death4
+coat_death
   rotate: false
   xy: 773, 36
   size: 31, 26
   orig: 31, 26
   offset: 0, 0
   index: -1
-coat_death5
+coat_death
   rotate: false
   xy: 2, 2
   size: 30, 21
   orig: 30, 21
   offset: 0, 0
   index: -1
-coat_death6
+coat_death
   rotate: false
   xy: 806, 44
   size: 25, 18
   orig: 25, 18
   offset: 0, 0
   index: -1
-coat_run1
+coat_run
   rotate: false
   xy: 458, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_run2
+coat_run
   rotate: false
   xy: 178, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_run3
+coat_run
   rotate: false
   xy: 658, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_run4
+coat_run
   rotate: false
   xy: 338, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_run5
+coat_run
   rotate: false
   xy: 58, 24
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
-coat_run6
+coat_run
+  rotate: false
+  xy: 538, 24
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+default
   rotate: false
   xy: 538, 24
   size: 38, 38

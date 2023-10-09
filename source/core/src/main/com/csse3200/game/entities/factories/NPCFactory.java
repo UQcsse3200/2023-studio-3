@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.CoatAnimationController;
 import com.csse3200.game.components.npc.DeflectingComponent;
 import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
@@ -301,10 +302,10 @@ public class NPCFactory {
 
     AnimationRenderComponent animator =
             new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/mobs/dragon_knight.atlas", TextureAtlas.class));
-    animator.addAnimation("dragon_knight_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("dragon_knight_attack", 0.1f);
-    animator.addAnimation("dragon_knight_death", 0.1f);
+                    ServiceLocator.getResourceService().getAsset("images/mobs/coat.atlas", TextureAtlas.class));
+    animator.addAnimation("coat_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("coat_attack", 0.1f);
+    animator.addAnimation("coat_death", 0.1f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -313,7 +314,7 @@ public class NPCFactory {
     dragonKnight
             .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
-            .addComponent(new DragonKnightAnimationController())
+            .addComponent(new CoatAnimationController())
             .addComponent(aiTaskComponent);
 
     dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
