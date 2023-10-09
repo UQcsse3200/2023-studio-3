@@ -87,7 +87,6 @@ public class ProjectileEffectsComponent extends Component {
      * @param effect effect to be applied to entity
      */
     public void applySingleEffect(ProjectileEffects effect, Entity targetEntity) {
-        System.out.println("apply");
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 

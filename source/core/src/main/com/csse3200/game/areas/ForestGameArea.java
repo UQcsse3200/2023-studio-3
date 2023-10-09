@@ -324,9 +324,9 @@ public class ForestGameArea extends GameArea {
 //    waves = WaveFactory.createWaves();
 //    spawnEntity(waves);
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
-//    spawnGregMob();
+    spawnGregMob(18, 2);
 //    spawnDemonBoss();
-    spawnEffectProjectile(new Vector2(10f,2f), PhysicsLayer.HUMANS, -1, new Vector2(1f,1f), ProjectileEffects.BURN, false);
+    spawnEffectProjectile(new Vector2(5f,2f), PhysicsLayer.HUMANS, -1, new Vector2(1f,1f), ProjectileEffects.SLOW, false);
 
     spawnScrap();
     spawnGapScanners();
@@ -724,10 +724,10 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 
-  private void spawnGregMob() {
+  private void spawnGregMob(int x, int y) {
     Entity gregMob = NPCFactory.createBaseWaterSlime(100);
     gregMob.setScale(1.5f, 1.5f);
-    spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
+    spawnEntityAt(gregMob, new GridPoint2(x, y), false, false);
   }
 
   /**
@@ -829,7 +829,7 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(stunTower, randomPos2, true, true);
 //      spawnEntityAt(wallTower, randomPos2, true, true);
 //    }
-    Entity fireTower = TowerFactory.createDroidTower();
+    Entity fireTower = TowerFactory.createWeaponTower();
     spawnEntityAt(fireTower, pos, true, true);
   }
 

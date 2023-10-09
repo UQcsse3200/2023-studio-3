@@ -83,7 +83,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public void update() {
-        System.out.println(owner.getEntity().getComponent(CombatStatsComponent.class).getHealth());
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
             if (towerState == STATE.SHOOT_UP || towerState == STATE.SHOOT_DOWN) {
@@ -91,7 +90,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             } else {
                 endTime = timeSource.getTime() + (INTERVAL * 1000);
             }
-            }
+        }
     }
 
     /**

@@ -1,9 +1,14 @@
 package com.csse3200.game.components;
 
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -13,6 +18,7 @@ public class EffectComponent extends Component {
     // effect flags
     private boolean burnFlag;
     private boolean slowFlag;
+    private boolean isSlowed;
     private boolean stunFlag;
     private Entity host;
     private Entity target;
@@ -22,7 +28,7 @@ public class EffectComponent extends Component {
     private long stunTime;
     private static long BURN_TICK = 1000;
 
-    public EffectComponent() {
+    public EffectComponent(boolean mob) {
         this.gameTime = ServiceLocator.getTimeSource();
     }
 
@@ -39,10 +45,19 @@ public class EffectComponent extends Component {
         slowFlag = slowTime > gameTime.getTime();
         stunFlag = stunTime > gameTime.getTime();
 
-        // apply effects
+        // apply burn effect
         if (burnFlag && gameTime.getTime() > lastTimeBurned + BURN_TICK) {
             burnEffect();
         }
+
+        // apply slow effect
+        if (slowFlag && !isSlowed) {
+            slowEffect(2);
+        } else if (!slowFlag && isSlowed) {
+            isSlowed = false;
+            slowEffect(5);
+        }
+
     }
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
         this.host = host;
@@ -56,12 +71,10 @@ public class EffectComponent extends Component {
             case SLOW -> {
                 slowFlag = true;
                 slowTime = gameTime.getTime() + EFFECT_DURATION;
-                slowEffect(host, target);
             }
             case STUN -> {
                 stunFlag = true;
                 stunTime = gameTime.getTime() + EFFECT_DURATION;
-                stunEffect(host, target);
             }
         }
     }
@@ -73,11 +86,29 @@ public class EffectComponent extends Component {
         lastTimeBurned = gameTime.getTime();
     }
 
-    private void slowEffect(Entity host, Entity target) {
+    private void slowEffect(int amount) {
+        isSlowed = true;
+        if (PhysicsLayer.contains(PhysicsLayer.HUMANS,
+                target.getComponent(HitboxComponent.class).getLayer())) {
+            // if slowing human
+            target.getEvents().trigger("upgradeTower",
+                    TowerUpgraderComponent.UPGRADE.FIRERATE, amount);
+        } else if (PhysicsLayer.contains(PhysicsLayer.NPC,
+                target.getComponent(HitboxComponent.class).getLayer())) {
+            // if slowing npc
+            PhysicsMovementComponent targetPhysics = target.getComponent(
+                    PhysicsMovementComponent.class);
+            if (targetPhysics == null) {
+                return;
+            }
 
+            // Halve the mob speed
+            targetPhysics.setSpeed(new Vector2(targetPhysics.getSpeed().x/2,
+                    targetPhysics.getSpeed().y/2));
+        }
     }
 
-    private void stunEffect(Entity host, Entity target) {
+    private void stunEffect() {
 
     }
 }
