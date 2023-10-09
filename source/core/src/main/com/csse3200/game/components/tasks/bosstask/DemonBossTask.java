@@ -469,6 +469,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
 
     private void spawnDemonSlimes() {
         for (int i = 0; i < SLIMES_SPAWNED; i++) {
+            demon.getEvents().trigger("spawn_demon_slime");
             int finalI = i;
             Timer.schedule(new Timer.Task() {
                 @Override
@@ -488,7 +489,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     y = demon.getPosition().y;
                 }
 
-                demon.getEvents().trigger("spawn_demon_slime");
                 Vector2 spawnLocation = new Vector2(x, y);
                 slime.setPosition(spawnLocation);
                 ServiceLocator.getEntityService().register(slime);
