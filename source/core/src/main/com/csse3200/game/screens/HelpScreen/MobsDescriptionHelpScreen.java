@@ -3,6 +3,7 @@ package com.csse3200.game.screens.HelpScreen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -107,6 +108,64 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
         table4.pad(20); // Add padding to the top-right corner
         table4.add(buttonTable4).row(); // Add button table and move to the next row
         stage.addActor(table4);
+
+        Table imageTextTable = new Table();
+        imageTextTable.setFillParent(true);
+        imageTextTable.center();
+
+        float leftPadding = 30f;
+        imageTextTable.padLeft(leftPadding);
+
+        // Create an array of image file names
+        String[] imageFileNames = {
+                "images/turret-select/droid-tower-default.png",
+                "images/turret-select/fire-tower-default.png",
+                "images/turret-select/mine-tower-default.png",
+                "images/turret-select/stun-tower-default.png",
+                "images/turret-select/tnt-tower-default.png",
+                "images/turret-select/wall-tower-default.png",
+        };
+
+        // Create an array of text descriptions
+        String[] textDescriptions = {
+                "Fire Worm is able to shoot projectiles towards the towers.",
+                "DragonKnight is able to dodge projectiles.",
+                "Water slimes are able to split once dead",
+                "Water Queens are able to shoot towards the towers",
+                "Skeletons are able to do close range attack damage.",
+                "Wizards are able to deflect projectiles.",
+        };
+
+        // Add images and text to the table
+        for (int i = 0; i < imageFileNames.length; i++) {
+            // Create an image from the file
+            Image imager = new Image(new Texture( imageFileNames[i]));
+            float imageSize = 200f;
+            imager.setSize(imageSize, imageSize);
+
+            // Create a label for text description
+            Label.LabelStyle labelStyle = new Label.LabelStyle();
+            BitmapFont customFont = new BitmapFont(Gdx.files.internal("images/ui/buttons/dot_gothic_16.fnt")); // Replace "your-font.fnt" with your font file path
+            customFont.getData().setScale(1.2f); // Adjust the scale factor to change the text size
+            labelStyle.font = customFont;
+
+            Label label = new Label(textDescriptions[i], labelStyle);
+            label.setWrap(true);
+
+            // Add the image and label to the table in two columns
+            Cell<Image> imageCell = imageTextTable.add(imager).expandX().pad(10); // Add spacing around the image
+            Cell<Label> labelCell = imageTextTable.add(label).expandX().pad(5);
+
+            float maxCellWidth = 1100f; // Adjust the width as needed
+            labelCell.width(maxCellWidth);
+
+            labelCell.left();
+            // Move to the next row
+            imageTextTable.row();
+        }
+
+        // Add the table to the stage
+        stage.addActor(imageTextTable);
     }
 
     @Override
