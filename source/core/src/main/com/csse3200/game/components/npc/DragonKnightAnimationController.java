@@ -22,9 +22,9 @@ public class DragonKnightAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("wanderStart", this::animateWalk);
-        entity.getEvents().addListener("shootStart", this::animateAttack);
-        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("dragon_knight_run", this::animateWalk);
+        entity.getEvents().addListener("dragon_knight_attack", this::animateAttack);
+        entity.getEvents().addListener("dragon_knight_death", this::animateDeath);
     }
 
     void animateWalk() {

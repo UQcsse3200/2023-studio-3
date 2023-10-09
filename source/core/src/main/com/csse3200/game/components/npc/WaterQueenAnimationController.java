@@ -26,9 +26,9 @@ public class WaterQueenAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("wanderStart", this::animateWalk);
-        entity.getEvents().addListener("shootStart", this::animateAttack);
-        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("water_queen_walk", this::animateWalk);
+        entity.getEvents().addListener("water_queen_attack", this::animateAttack);
+        entity.getEvents().addListener("water_queen_death", this::animateDeath);
     }
 
     void animateWalk() {

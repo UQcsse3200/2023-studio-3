@@ -27,9 +27,9 @@ public class SkeletonAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("wanderStart", this::animateWalk);
-        entity.getEvents().addListener("shootStart", this::animateAttack);
-        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("skeleton_walk", this::animateWalk);
+        entity.getEvents().addListener("skeleton_attack", this::animateAttack);
+        entity.getEvents().addListener("skeleton_death", this::animateDeath);
     }
 
     void animateWalk() {
