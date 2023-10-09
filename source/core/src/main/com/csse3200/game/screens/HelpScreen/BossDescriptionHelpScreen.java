@@ -125,6 +125,8 @@ public class BossDescriptionHelpScreen extends ScreenAdapter {
             // Move to the next row
             imageTextTable.row();
         }
+        stage.addActor(imageTextTable);
+
     }
     @Override
     public void show() {
