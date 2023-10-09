@@ -97,8 +97,11 @@ public class ProjectileEffectsComponent extends Component {
         }
 
         // apply effect
-        targetEntity.getComponent(EffectComponent.class).applyEffect(
-                effect, hostEntity, targetEntity);
+        EffectComponent effectComponent = targetEntity.getComponent(EffectComponent.class);
+        if (effectComponent == null) {
+            return;
+        }
+        effectComponent.applyEffect(effect, hostEntity, targetEntity);
     }
     /**
      * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
@@ -127,8 +130,11 @@ public class ProjectileEffectsComponent extends Component {
             }
 
             // apply effect
-            targetEntity.getComponent(EffectComponent.class).applyEffect(
-                    effect, hostEntity, targetEntity);
+            EffectComponent effectComponent = targetEntity.getComponent(EffectComponent.class);
+            if (effectComponent == null) {
+                return;
+            }
+            effectComponent.applyEffect(effect, hostEntity, targetEntity);
         }
     }
 
