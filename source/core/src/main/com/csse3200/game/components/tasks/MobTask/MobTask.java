@@ -25,11 +25,12 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
     // Constants
     private static final int PRIORITY = 3;
-    private static final Vector2 MELEE_MOB_SPEED = new Vector2(1f,1f);
-    private static final Vector2 MELEE_RANGE_SPEED = new Vector2(0.7f,0.7f);
+    private static final Vector2 MELEE_MOB_SPEED = new Vector2(0.7f,0.7f);
+    private static final Vector2 MELEE_RANGE_SPEED = new Vector2(0.5f,0.5f);
     private static final int MELEE_DAMAGE = 10;
     private static final long MELEE_ATTACK_SPEED = 2000;
     private static final long RANGE_ATTACK_SPEED = 5000;
+    private static final int MELEE_ATTACK_RANGE = 1;
 
     // Private variables
     private final MobType mobType;
@@ -98,8 +99,13 @@ public class MobTask extends DefaultTask implements PriorityTask {
     public void update() {
 
         // death check
-        if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0) {
+        if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag) {
             changeState(State.DEATH);
+            animate();
+            movementTask.stop();
+            deathFlag = true;
+        } else if (deathFlag && animation.isFinished()) {
+            mob.setFlagForDelete(true);
         }
 
         switch (state) {
@@ -151,15 +157,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     }
                 }
             }
-            case DEATH -> {
-                if (deathFlag) {
-                    animate();
-                    deathFlag = false;
-                }
-                if (animation.isFinished() && !deathFlag) {
-                    mob.setFlagForDelete(true);
-                }
-            }
         }
     }
 
@@ -196,7 +193,10 @@ public class MobTask extends DefaultTask implements PriorityTask {
                 switch (state) {
                     case RUN -> owner.getEntity().getEvents().trigger("water_slime_walk");
                     case ATTACK -> owner.getEntity().getEvents().trigger("water_slime_attack");
-                    case DEATH -> owner.getEntity().getEvents().trigger("water_slime_death");
+                    case DEATH -> {
+                        System.out.println("hi");
+                        owner.getEntity().getEvents().trigger("water_slime_death");
+                    }
                     case DEFAULT -> owner.getEntity().getEvents().trigger("default");
                 }
             }
@@ -235,7 +235,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private boolean enemyDetected() {
         // if there's an entity within x of - 1 of mob
         Entity target = ServiceLocator.getEntityService().getEntityAtPosition(
-                mob.getPosition().x - 1, mob.getPosition().y);
+                mob.getPosition().x - MELEE_ATTACK_RANGE, mob.getPosition().y);
         if (target == null) {
             return false;
         }
