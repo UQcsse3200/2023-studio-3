@@ -121,7 +121,7 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
                 "images/HelpScreen/Firewormhelp.png",
                 "images/HelpScreen/Dragonknighthelp.png",
                 "images/HelpScreen/Waterslimehelp.png",
-                "WaterQueenhelp.png",
+                "images/HelpScreen/WaterQueenhelp.png",
                 "images/HelpScreen/Skeletonhelp.png",
                 "images/HelpScreen/Wizardhelp.png",
         };
