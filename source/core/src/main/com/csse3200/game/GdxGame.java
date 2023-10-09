@@ -91,6 +91,8 @@ public class GdxGame extends Game {
         return new HowToPlay(this);
       case LOAD_SCREEN:
         return new LoadingScreen(this);
+      case TUTORIAL_SCREEN:
+        return new Tutorial(this);
       default:
         return null;
     }
@@ -98,7 +100,7 @@ public class GdxGame extends Game {
 
   public enum ScreenType {
     MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN,
-    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, HOW_TO_PLAY
+    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, HOW_TO_PLAY, TUTORIAL_SCREEN
   }
 
   /**

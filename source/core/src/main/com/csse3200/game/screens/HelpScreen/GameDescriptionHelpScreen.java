@@ -134,7 +134,7 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
         TutorialButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.HOW_TO_PLAY);
+                game.setScreen(GdxGame.ScreenType.TUTORIAL_SCREEN);
 
             }
         });
