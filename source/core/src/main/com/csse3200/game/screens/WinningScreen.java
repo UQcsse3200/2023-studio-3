@@ -53,7 +53,7 @@ public class WinningScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("path_to_ui_skin.json")); // Set the path to your UI skin JSON
+        Skin skin = new Skin(Gdx.files.internal("configs/text.json"));
         TextButton exitButton = new TextButton("Exit Game", skin);
         exitButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
