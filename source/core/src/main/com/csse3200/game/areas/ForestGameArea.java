@@ -227,7 +227,8 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickSpawn.mp3",
           "sounds/mobBoss/patrickCast.mp3",
           "sounds/mobBoss/patrickThunder.mp3",
-          "sounds/mobBoss/patrickHit.mp3"
+          "sounds/mobBoss/patrickHit.mp3",
+          "sounds/mobBoss/spawnDemonSlime.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
@@ -324,13 +325,13 @@ public class ForestGameArea extends GameArea {
 //    spawnEntity(waves);
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
 //    spawnGregMob();
-    spawnDemonBoss();
+//    spawnDemonBoss();
 
     spawnScrap();
     spawnGapScanners();
 
 //    spawnTNTTower();
-//    spawnWeaponTower();
+    spawnWeaponTower(new GridPoint2(10, 4));
 //    spawnGapScanners();
 //    spawnDroidTower();
 //     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
@@ -622,28 +623,28 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(waterSlime, randomPos, true, false);
 //    }
 //  }
-  // private void spawnSplittingXenoGrunt(int x, int y) {
-  //   GridPoint2 pos = new GridPoint2(x, y);
-  //   Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
-  //   xenoGrunt.setScale(1.5f, 1.5f);
-  //   spawnEntityAt(xenoGrunt, pos, true, true);
-  // }
+   private void spawnSplittingXenoGrunt(int x, int y) {
+     GridPoint2 pos = new GridPoint2(x, y);
+     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt(100);
+     xenoGrunt.setScale(1.5f, 1.5f);
+     spawnEntityAt(xenoGrunt, pos, true, true);
+   }
 
   // * TEMPORARY FOR TESTING
-//  private void spawnDodgingDragonKnight(int x, int y) {
-//    GridPoint2 pos = new GridPoint2(x, y);
-//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
-//    fireworm.setScale(1.5f, 1.5f);
-//    spawnEntityAt(fireworm, pos, true, true);
-//  }
+  private void spawnDodgingDragonKnight(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity fireworm = NPCFactory.createDodgingDragonKnight(100);
+    fireworm.setScale(1.5f, 1.5f);
+    spawnEntityAt(fireworm, pos, true, true);
+  }
 //
 //  // * TEMPORARY FOR TESTING
-//  private void spawnDeflectWizard(int x, int y) {
-//    GridPoint2 pos = new GridPoint2(x, y);
-//    Entity xenoGrunt = NPCFactory.createDeflectWizard();
-//    xenoGrunt.setScale(1.5f, 1.5f);
-//    spawnEntityAt(xenoGrunt, pos, true, true);
-//  }
+  private void spawnDeflectWizard(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity xenoGrunt = NPCFactory.createDeflectWizard(100);
+    xenoGrunt.setScale(1.5f, 1.5f);
+    spawnEntityAt(xenoGrunt, pos, true, true);
+  }
 //
 //  private void spawnFireWorm() {
 //
@@ -723,7 +724,7 @@ public class ForestGameArea extends GameArea {
 //  }
 
   private void spawnGregMob() {
-    Entity gregMob = NPCFactory.createGregMeleeMob(100);
+    Entity gregMob = NPCFactory.createBaseWaterSlime(100);
     gregMob.setScale(1.5f, 1.5f);
     spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
   }
@@ -813,7 +814,7 @@ public class ForestGameArea extends GameArea {
     spawnEntity(projectile);
   }
 
-  private void spawnWeaponTower() {
+  private void spawnWeaponTower(GridPoint2 pos) {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
 
@@ -827,6 +828,8 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(stunTower, randomPos2, true, true);
       spawnEntityAt(wallTower, randomPos2, true, true);
     }
+//    Entity fireTower = TowerFactory.createDroidTower();
+//    spawnEntityAt(fireTower, pos, true, true);
   }
 
   // * TEMPORARY FOR TESTING

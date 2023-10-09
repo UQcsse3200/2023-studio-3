@@ -6,17 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
-import com.csse3200.game.components.npc.DeflectingComponent;
-import com.csse3200.game.components.npc.DodgingComponent;
-import com.csse3200.game.components.npc.DragonKnightAnimationController;
-import com.csse3200.game.components.npc.FireWormAnimationController;
-import com.csse3200.game.components.npc.GhostAnimationController;
-import com.csse3200.game.components.npc.SkeletonAnimationController;
-import com.csse3200.game.components.npc.SplitMoblings;
-import com.csse3200.game.components.npc.WaterQueenAnimationController;
-import com.csse3200.game.components.npc.WaterSlimeAnimationController;
-import com.csse3200.game.components.npc.WizardAnimationController;
-import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.components.npc.*;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobMeleeAttackTask;
 import com.csse3200.game.components.tasks.MobRangedAttackTask;
@@ -61,7 +51,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhost() {
-    Entity ghost = createMeleeBaseNPC();
+    Entity ghost = createBaseNPC();
     BaseEntityConfig config = configs.ghost;
     /**
     AnimationRenderComponent animator =
@@ -87,7 +77,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhostKing() {
-    Entity ghostKing = createMeleeBaseNPC();
+    Entity ghostKing = createBaseNPC();
     GhostKingConfig config = configs.ghostKing;
 
     AnimationRenderComponent animator =
@@ -350,40 +340,40 @@ public class NPCFactory {
   }
 
 
-  /**
-   * Creates a xeno grunt entity.
-   *
-   * @return entity
-   */
-  public static Entity createXenoGrunt(int health) {
-    Entity xenoGrunt = createMeleeBaseNPC();
-    BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
-    // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
-    ArrayList<Currency> drops = new ArrayList<>();
-
-    AnimationRenderComponent animator =
-            new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
-    animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("xeno_shoot", 0.1f);
-    animator.addAnimation("xeno_melee_1", 0.1f);
-    animator.addAnimation("xeno_melee_2", 0.1f);
-    animator.addAnimation("xeno_die", 0.1f);
-    animator.addAnimation("default", 0.1f);
-    xenoGrunt
-            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
-            .addComponent(animator)
-            .addComponent(new XenoAnimationController());
-
-    xenoGrunt.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
-    xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
-
-    return xenoGrunt;
-  }
+//  /**
+//   * Creates a xeno grunt entity.
+//   *
+//   * @return entity
+//   */
+//  public static Entity createXenoGrunt(int health) {
+//    Entity xenoGrunt = createMeleeBaseNPC();
+//    BaseEnemyConfig config = configs.xenoGrunt;
+//    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+//    // tester projectiles
+//    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+//    ArrayList<Currency> drops = new ArrayList<>();
+//
+//    AnimationRenderComponent animator =
+//            new AnimationRenderComponent(
+//                    ServiceLocator.getResourceService().getAsset("images/mobs/xenoGrunt.atlas", TextureAtlas.class));
+//    animator.addAnimation("xeno_run", 0.1f, Animation.PlayMode.LOOP);
+//    animator.addAnimation("xeno_hurt", 0.1f, Animation.PlayMode.LOOP);
+//    animator.addAnimation("xeno_shoot", 0.1f);
+//    animator.addAnimation("xeno_melee_1", 0.1f);
+//    animator.addAnimation("xeno_melee_2", 0.1f);
+//    animator.addAnimation("xeno_die", 0.1f);
+//    animator.addAnimation("default", 0.1f);
+//    xenoGrunt
+//            .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
+////            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
+//            .addComponent(animator)
+//            .addComponent(new XenoAnimationController());
+//
+//    xenoGrunt.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+//    xenoGrunt.getComponent(AnimationRenderComponent.class).scaleEntity();
+//
+//    return xenoGrunt;
+//  }
 
   public static Entity createBaseNPC() {
     Entity npc =
@@ -391,79 +381,80 @@ public class NPCFactory {
                     .addComponent(new PhysicsComponent())
                     .addComponent(new PhysicsMovementComponent())
                     .addComponent(new ColliderComponent())
+                    .addComponent(new MobEffectComponent())
                     .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                     .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS));
     PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
     return npc;
   }
 
-  /**
-   * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
-   *
-   * @return entity
-   */
-  public static Entity createMeleeBaseNPC() {
-    AITaskComponent aiComponent =
-        new AITaskComponent()
-            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobMeleeAttackTask(2, 2f));
-        //     .addTask(new MobAttackTask(2, 2f));
-        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
-
-            // .addTask(new MobAttackTask(2, 40));
-    Entity npc =
-        new Entity()
-            .addComponent(new PhysicsComponent())
-            .addComponent(new PhysicsMovementComponent())
-            .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
-            .addComponent(aiComponent);
-    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
-    return npc;
-  }
-  /**
-   * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
-   *
-   * @return entity
-   */
-  public static Entity createRangedBaseNPC() {
-    AITaskComponent aiComponent =
-        new AITaskComponent()
-            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
-        //     .addTask(new MobAttackTask(2, 2f));
-            .addTask(new MobRangedAttackTask(2, 2f));
-        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
-
-            // .addTask(new MobAttackTask(2, 40));
-    Entity npc =
-        new Entity()
-            .addComponent(new PhysicsComponent())
-            .addComponent(new PhysicsMovementComponent())
-            .addComponent(new ColliderComponent())
-            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
-            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
-            .addComponent(aiComponent);
-    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
-    return npc;
-  }
+//  /**
+//   * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
+//   *
+//   * @return entity
+//   */
+//  public static Entity createMeleeBaseNPC() {
+//    AITaskComponent aiComponent =
+//        new AITaskComponent()
+//            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+//            .addTask(new MobMeleeAttackTask(2, 2f));
+//        //     .addTask(new MobAttackTask(2, 2f));
+//        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
+//
+//            // .addTask(new MobAttackTask(2, 40));
+//    Entity npc =
+//        new Entity()
+//            .addComponent(new PhysicsComponent())
+//            .addComponent(new PhysicsMovementComponent())
+//            .addComponent(new ColliderComponent())
+//            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+//            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
+//            .addComponent(aiComponent);
+//    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
+//    return npc;
+//  }
+//  /**
+//   * Creates a generic NPC to be used as a base entity by more specific NPC creation methods.
+//   *
+//   * @return entity
+//   */
+//  public static Entity createRangedBaseNPC() {
+//    AITaskComponent aiComponent =
+//        new AITaskComponent()
+//            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+//        //     .addTask(new MobAttackTask(2, 2f));
+//            .addTask(new MobRangedAttackTask(2, 2f));
+//        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
+//
+//            // .addTask(new MobAttackTask(2, 40));
+//    Entity npc =
+//        new Entity()
+//            .addComponent(new PhysicsComponent())
+//            .addComponent(new PhysicsMovementComponent())
+//            .addComponent(new ColliderComponent())
+//            .addComponent(new HitboxComponent().setLayer(PhysicsLayer.XENO))
+//            .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS))
+//            .addComponent(aiComponent);
+//    PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
+//    return npc;
+//  }
 
   private NPCFactory() {
     throw new IllegalStateException("Instantiating static util class");
   }
 
   // * COW'S TESTING ARENA DONT TOUCH
-  public static Entity createSplittingXenoGrunt(int health) {
-    Entity splitXenoGrunt = createXenoGrunt(health)
-        // add the scaling yourself. can also scale the X and Y component,
-        // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 0.5f))
-        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-
-    // * TEMPORARY TESTING FOR PROJECTILE DODGING
-    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    return splitXenoGrunt;
-  }
+//  public static Entity createSplittingXenoGrunt(int health) {
+//    Entity splitXenoGrunt = createXenoGrunt(health)
+//        // add the scaling yourself. can also scale the X and Y component,
+//        // leading to some very interesting mob designs.
+//        .addComponent(new SplitMoblings(7, 0.5f))
+//        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+//
+//    // * TEMPORARY TESTING FOR PROJECTILE DODGING
+//    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+//    return splitXenoGrunt;
+//  }
 
   /**
    * Create Splitting water slime 
@@ -487,7 +478,7 @@ public class NPCFactory {
     Entity fireWorm = createDragonKnight(health);
 
     fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-   fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
 
     return fireWorm;
   }
