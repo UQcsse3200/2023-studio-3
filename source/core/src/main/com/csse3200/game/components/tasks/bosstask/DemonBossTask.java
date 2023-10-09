@@ -45,7 +45,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int HEAL_TIMES = 10;
     private static final int HEALTH_TO_ADD = 10;
     private static final int SLIMEY_BOY_HEALTH = 500;
-    private static final int SLIMES_SPAWNED = 1;
+    private static final int SLIMES_SPAWNED = 2;
     private static final int SPAWN_RADIUS = 2;
 
     // Private variables
@@ -480,6 +480,15 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 float x = demon.getPosition().x + distance * MathUtils.cos(angle);
                 float y = demon.getPosition().y + distance * MathUtils.sin(angle);
 
+                // boundary check
+                if (x > xRightBoundary || x < xLeftBoundary) {
+                    x = demon.getPosition().x;
+                }
+                if (y > Y_TOP_BOUNDARY || y < Y_BOT_BOUNDARY) {
+                    y = demon.getPosition().y;
+                }
+
+                demon.getEvents().trigger("spawn_demon_slime");
                 Vector2 spawnLocation = new Vector2(x, y);
                 slime.setPosition(spawnLocation);
                 ServiceLocator.getEntityService().register(slime);
@@ -488,7 +497,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     isSpawning = false;
                 }
                 }
-            }, (float) i /2);
+            }, (float) (i + 1) * 2);
         }
     }
 }
