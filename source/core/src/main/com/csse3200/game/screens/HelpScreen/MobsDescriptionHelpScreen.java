@@ -118,12 +118,12 @@ public class MobsDescriptionHelpScreen extends ScreenAdapter {
 
         // Create an array of image file names
         String[] imageFileNames = {
-                "images/turret-select/droid-tower-default.png",
-                "images/turret-select/fire-tower-default.png",
-                "images/turret-select/mine-tower-default.png",
-                "images/turret-select/stun-tower-default.png",
-                "images/turret-select/tnt-tower-default.png",
-                "images/turret-select/wall-tower-default.png",
+                "images/HelpScreen/Firewormhelp.png",
+                "images/HelpScreen/Dragonknighthelp.png",
+                "images/HelpScreen/Waterslimehelp.png",
+                "WaterQueenhelp.png",
+                "images/HelpScreen/Skeletonhelp.png",
+                "images/HelpScreen/Wizardhelp.png",
         };
 
         // Create an array of text descriptions
