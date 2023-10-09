@@ -321,10 +321,15 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
 
-    waves = WaveFactory.createWaves();
-    spawnEntity(waves);
-    waves.getEvents().addListener("spawnWave", this::spawnMob);
+//    waves = WaveFactory.createWaves();
+//    spawnEntity(waves);
+//    waves.getEvents().addListener("spawnWave", this::spawnMob);
 //    spawnGregMob();
+//    spawnDodgingDragonKnight(17,4);
+//    spawnDeflectWizard(17, 3);
+//    spawnSplittingXenoGrunt(17, 2);
+//    spawnPatrick();
+    spawnDemonBoss();
 
     spawnScrap();
     spawnGapScanners();
@@ -396,10 +401,10 @@ public class ForestGameArea extends GameArea {
   }
 
   // commented 383 - 386 out as there was a missing arg?
-//  private void spawnDemonBoss() {
-//    Entity demon = MobBossFactory.createDemonBoss();
-//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
-//  }
+  private void spawnDemonBoss() {
+    Entity demon = MobBossFactory.createDemonBoss(5000);
+    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+  }
 
   private void spawnPatrick() {
     Entity patrick = MobBossFactory.createPatrickBoss(3000);
@@ -627,28 +632,28 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(waterSlime, randomPos, true, false);
 //    }
 //  }
-  // private void spawnSplittingXenoGrunt(int x, int y) {
-  //   GridPoint2 pos = new GridPoint2(x, y);
-  //   Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
-  //   xenoGrunt.setScale(1.5f, 1.5f);
-  //   spawnEntityAt(xenoGrunt, pos, true, true);
-  // }
+   private void spawnSplittingXenoGrunt(int x, int y) {
+     GridPoint2 pos = new GridPoint2(x, y);
+     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt(100);
+     xenoGrunt.setScale(1.5f, 1.5f);
+     spawnEntityAt(xenoGrunt, pos, true, true);
+   }
 
   // * TEMPORARY FOR TESTING
-//  private void spawnDodgingDragonKnight(int x, int y) {
-//    GridPoint2 pos = new GridPoint2(x, y);
-//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
-//    fireworm.setScale(1.5f, 1.5f);
-//    spawnEntityAt(fireworm, pos, true, true);
-//  }
+  private void spawnDodgingDragonKnight(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity fireworm = NPCFactory.createDodgingDragonKnight(100);
+    fireworm.setScale(1.5f, 1.5f);
+    spawnEntityAt(fireworm, pos, true, true);
+  }
 //
 //  // * TEMPORARY FOR TESTING
-//  private void spawnDeflectWizard(int x, int y) {
-//    GridPoint2 pos = new GridPoint2(x, y);
-//    Entity xenoGrunt = NPCFactory.createDeflectWizard();
-//    xenoGrunt.setScale(1.5f, 1.5f);
-//    spawnEntityAt(xenoGrunt, pos, true, true);
-//  }
+  private void spawnDeflectWizard(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity xenoGrunt = NPCFactory.createDeflectWizard(100);
+    xenoGrunt.setScale(1.5f, 1.5f);
+    spawnEntityAt(xenoGrunt, pos, true, true);
+  }
 //
 //  private void spawnFireWorm() {
 //
