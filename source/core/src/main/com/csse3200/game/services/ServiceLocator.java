@@ -33,7 +33,7 @@ public class ServiceLocator {
   private static WaveService waveService;
   private static MapService mapService;
 
-  private static Set<TowerType> towerTypes = new HashSet<>();
+  private static Array<TowerType> towerTypes = new Array<>();
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -120,12 +120,24 @@ public class ServiceLocator {
     mapService = source;
   }
 
-  public static void setTowerTypes(Set<TowerType> selectedTowers) {
-    towerTypes.clear();
-    towerTypes.addAll(selectedTowers);
+  public static void setTowerTypes(Array<TowerType> selectedTowers) {
+    if (towerTypes.isEmpty()) {
+      // set default towers
+      TowerType[] defaultTowers = {
+              TowerType.TNT,
+              TowerType.DROID,
+              TowerType.INCOME,
+              TowerType.WALL,
+              TowerType.WEAPON
+      };
+      towerTypes.addAll(defaultTowers);
+    } else{
+      towerTypes.clear();
+      towerTypes.addAll(selectedTowers);
+    }
   }
 
-  public static Set<TowerType> getTowerTypes() {
+  public static Array<TowerType> getTowerTypes() {
     return towerTypes;
   }
 

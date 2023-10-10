@@ -1,15 +1,19 @@
 package com.csse3200.game.input;
 
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.utils.math.Vector2Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,6 +32,7 @@ public class BuildInputComponent extends InputComponent {
     };
     private Sound buildSound;
     private Sound errorSound;
+    private Array<TowerType> towers = new Array<>();
 
     /**
      * Constructor for the BuildInputComponent
@@ -37,6 +42,7 @@ public class BuildInputComponent extends InputComponent {
         this.entityService = ServiceLocator.getEntityService();
         this.camera = camera;
         loadSounds();
+        towers.addAll(ServiceLocator.getTowerTypes());
     }
 
     /**
@@ -77,6 +83,35 @@ public class BuildInputComponent extends InputComponent {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Triggers player events on specific keycodes.
+     *
+     * @return whether the input was processed
+     * @see InputProcessor#keyDown(int)
+     */
+    @Override
+    public boolean keyDown(int keycode) {
+        switch (keycode) {
+            case Input.Keys.NUM_1:
+                ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+                return true;
+            case Input.Keys.NUM_2:
+                ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+                return true;
+            case Input.Keys.NUM_3:
+                ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
+                return true;
+            case Input.Keys.NUM_4:
+                ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
+                return true;
+            case Input.Keys.NUM_5:
+                ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
+                return true;
+            default:
+                return false;
+        }
     }
 
     /**

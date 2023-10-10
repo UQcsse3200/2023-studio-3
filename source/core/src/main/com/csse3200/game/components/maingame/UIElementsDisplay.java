@@ -87,6 +87,11 @@ public class UIElementsDisplay extends UIComponent {
             }
         }
 
+        // Update the centrally located towerTypes list -
+        logger.info("In UIElementsDisplay, the towers being sent to ServiceLocator are " + towers);
+        ServiceLocator.setTowerTypes(towers);
+
+        // Create the buttons - TODO This needs overhauling to pretty buttons
         TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
         TextButton tower2 = new TextButton(towers.get(1).getTowerName(), skin);
         TextButton tower3 = new TextButton(towers.get(2).getTowerName(), skin);
