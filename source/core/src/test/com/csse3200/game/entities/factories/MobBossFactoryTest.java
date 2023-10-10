@@ -107,7 +107,8 @@ class MobBossFactoryTest {
             "sounds/mobBoss/patrickSpawn.mp3",
             "sounds/mobBoss/patrickCast.mp3",
             "sounds/mobBoss/patrickThunder.mp3",
-            "sounds/mobBoss/patrickHit.mp3"
+            "sounds/mobBoss/patrickHit.mp3",
+            "sounds/mobBoss/spawnDemonSlime.mp3"
     };
 
     @BeforeEach

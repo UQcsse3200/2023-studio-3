@@ -322,10 +322,10 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
 
-//    waves = WaveFactory.createWaves();
-//    spawnEntity(waves);
-//    waves.getEvents().addListener("spawnWave", this::spawnMob);
-    spawnGregMob();
+   waves = WaveFactory.createWaves();
+   spawnEntity(waves);
+   waves.getEvents().addListener("spawnWave", this::spawnMob);
+    // spawnCoat();
 //    spawnDodgingDragonKnight(17,4);
 //    spawnDeflectWizard(17, 3);
 //    spawnSplittingXenoGrunt(17, 2);
@@ -524,7 +524,7 @@ public class ForestGameArea extends GameArea {
         break;
 
       case "Coat":
-        mob = NPCFactory.createGregMeleeMob(health);
+        mob = NPCFactory.createCoat(health);
         break;
 
       case "PatrickBoss":
@@ -727,8 +727,8 @@ public class ForestGameArea extends GameArea {
 //    }
 //  }
 
-  private void spawnGregMob() {
-    Entity gregMob = NPCFactory.createGregMeleeMob(100);
+  private void spawnCoat() {
+    Entity gregMob = NPCFactory.createCoat(100);
     gregMob.setScale(1.5f, 1.5f);
     spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
   }

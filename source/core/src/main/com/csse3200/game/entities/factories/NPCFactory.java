@@ -296,8 +296,8 @@ public class NPCFactory {
     return dragonKnight;
   }
 
-  public static Entity createGregMeleeMob(int health) {
-    Entity dragonKnight = createBaseNPC();
+  public static Entity createCoat(int health) {
+    Entity coat = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -309,18 +309,18 @@ public class NPCFactory {
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
-            .addTask(new MobTask(MobType.DRAGON_KNIGHT));
+            .addTask(new MobTask(MobType.COAT));
 
-    dragonKnight
+    coat
             .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
             .addComponent(new CoatAnimationController())
             .addComponent(aiTaskComponent);
 
-    dragonKnight.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
-    dragonKnight.getComponent(AnimationRenderComponent.class).scaleEntity();
+    coat.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    coat.getComponent(AnimationRenderComponent.class).scaleEntity();
 
-    return dragonKnight;
+    return coat;
   }
 
   public static Entity createGregRangeMob(int health) {

@@ -44,14 +44,14 @@ class WaveFactoryTest {
   private final int LVL1_DIFF = 2;
   private final int LVL1_WAVES = 5;
   private final int LVL1_CHOSEN_LVL = 1;
-  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
+  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Coat", "SplittingWaterSlime", "WaterQueen"));
   private final String LVL1_BOSS = "IceBoss";
 
   // level stats for level 2 - magic planet
   private final int LVL2_DIFF = 3;
   private final int LVL2_WAVES = 10;
   private final int LVL2_CHOSEN_LVL = 0;
-  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Xeno", "Skeleton", "DeflectWizard"));
+  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Skeleton", "DeflectWizard"));
   private final String LVL2_BOSS = "PatrickBoss";
 
   // level stats for level 3 - fire planet
