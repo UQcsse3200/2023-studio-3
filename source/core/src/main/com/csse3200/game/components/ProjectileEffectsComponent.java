@@ -23,7 +23,7 @@ import com.badlogic.gdx.utils.Array;
  * slow, and stun. Component also handles the targeting of specific layers and an area of effect
  * application of effects.
  */
-public class EffectsComponent extends Component {
+public class ProjectileEffectsComponent extends Component {
     private final float radius;
     private final ProjectileEffects effect;
     private final boolean aoe;
@@ -37,7 +37,7 @@ public class EffectsComponent extends Component {
      *
      * @param radius The radius of the area-of-effect.
      */
-    public EffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
+    public ProjectileEffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {
         this.targetLayer = targetLayer;
         this.radius = radius;
         this.effect = effect;
@@ -75,16 +75,10 @@ public class EffectsComponent extends Component {
         }
 
         // Apply effect
-        if (effect == ProjectileEffects.FIREBALL) {
-            if (aoe) {
-                applyAoeEffect(ProjectileEffects.FIREBALL);
-            }
+        if (aoe) {
+            applyAoeEffect(effect);
         } else {
-            if (aoe) {
-                applyAoeEffect(effect);
-            } else {
-                applySingleEffect(effect, otherCombatStats, otherEntity);
-            }
+            applySingleEffect(effect, otherEntity);
         }
     }
 
@@ -92,7 +86,7 @@ public class EffectsComponent extends Component {
      * Used for singe targeting projectiles to apply effects entity it collides with.
      * @param effect effect to be applied to entity
      */
-    public void applySingleEffect(ProjectileEffects effect, CombatStatsComponent targetCombatStats, Entity targetEntity) {
+    public void applySingleEffect(ProjectileEffects effect, Entity targetEntity) {
         Entity hostEntity = getEntity();
         CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);
 
@@ -101,15 +95,12 @@ public class EffectsComponent extends Component {
             return;
         }
 
-        // Apply effect
-        switch (effect) {
-            case FIREBALL -> {}
-            case BURN -> {
-                burnEffect(targetCombatStats, hostCombatStats);
-            }
-            case SLOW -> {slowEffect(targetEntity);}
-            case STUN -> {stunEffect(targetEntity);}
+        // apply effect
+        EffectComponent effectComponent = targetEntity.getComponent(EffectComponent.class);
+        if (effectComponent == null) {
+            return;
         }
+        effectComponent.applyEffect(effect, hostEntity, targetEntity);
     }
     /**
      * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
@@ -137,19 +128,12 @@ public class EffectsComponent extends Component {
                 return;
             }
 
-            CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
-            if (targetCombatStats != null) {
-                switch (effect) {
-                    case FIREBALL -> {fireballEffect(targetCombatStats, hostCombatStats);}
-                    case BURN -> {burnEffect(targetCombatStats, hostCombatStats);}
-                    case SLOW -> {slowEffect(targetEntity);}
-                    case STUN -> {
-                        stunEffect(targetEntity);
-                    }
-                }
-            } else {
+            // apply effect
+            EffectComponent effectComponent = targetEntity.getComponent(EffectComponent.class);
+            if (effectComponent == null) {
                 return;
             }
+            effectComponent.applyEffect(effect, hostEntity, targetEntity);
         }
     }
 
@@ -162,35 +146,35 @@ public class EffectsComponent extends Component {
         target.hit(host);
     }
 
-    /**
-     * Applies 5 ticks of damage from hosts' CombatStatsComponent over 5 seconds
-     * @param target CombatStatsComponent of entity hit by projectile
-     * @param host CombatStatsComponent of projectile
-     */
-    private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
-        // Ensure burn effects aren't applied multiple times by same projectile
-        if (burnEntities.contains(target, false)) {
-            return;
-        }
-        burnEntities.add(target);
-        // Create a timer task to apply the effect repeatedly
-        int numberOfTicks = 5;
-        long delay = 1;
-        Timer.schedule(new Timer.Task() {
-            private int count = 0;
-
-            @Override
-            public void run() {
-                if (count < numberOfTicks) {
-                    target.hit(host);
-                    count++;
-                } else {
-                    // Ensure to cancel the task when it's done
-                    this.cancel();
-                }
-            }
-        }, delay, delay);
-    }
+//    /**
+//     * Applies 5 ticks of damage from hosts' CombatStatsComponent over 5 seconds
+//     * @param target CombatStatsComponent of entity hit by projectile
+//     * @param host CombatStatsComponent of projectile
+//     */
+//    private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
+//        // Ensure burn effects aren't applied multiple times by same projectile
+//        if (burnEntities.contains(target, false)) {
+//            return;
+//        }
+//        burnEntities.add(target);
+//        // Create a timer task to apply the effect repeatedly
+//        int numberOfTicks = 5;
+//        long delay = 1;
+//        Timer.schedule(new Timer.Task() {
+//            private int count = 0;
+//
+//            @Override
+//            public void run() {
+//                if (count < numberOfTicks) {
+//                    target.hit(host);
+//                    count++;
+//                } else {
+//                    // Ensure to cancel the task when it's done
+//                    this.cancel();
+//                }
+//            }
+//        }, delay, delay);
+//    }
 
     /**
      * Applies slow effect to targetEntity. If entity is a mob, speed

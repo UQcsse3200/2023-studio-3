@@ -90,7 +90,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             } else {
                 endTime = timeSource.getTime() + (INTERVAL * 1000);
             }
-            }
+        }
     }
 
     /**

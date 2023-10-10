@@ -1,6 +1,7 @@
 package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.physics.box2d.Filter;
+import com.csse3200.game.components.EffectComponent;
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
 import com.csse3200.game.components.tasks.*;
@@ -471,7 +472,8 @@ public class TowerFactory {
                 .addComponent(new ColliderComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
-                .addComponent(new TowerUpgraderComponent());
+                .addComponent(new TowerUpgraderComponent())
+                .addComponent(new EffectComponent(false));
 
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
 

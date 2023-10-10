@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.EffectComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.CoatAnimationController;
 import com.csse3200.game.components.npc.DeflectingComponent;
@@ -62,7 +63,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhost() {
-    Entity ghost = createMeleeBaseNPC();
+    Entity ghost = createBaseNPC();
     BaseEntityConfig config = configs.ghost;
     /**
     AnimationRenderComponent animator =
@@ -88,7 +89,7 @@ public class NPCFactory {
    * @return entity
    */
   public static Entity createGhostKing() {
-    Entity ghostKing = createMeleeBaseNPC();
+    Entity ghostKing = createBaseNPC();
     GhostKingConfig config = configs.ghostKing;
 
     AnimationRenderComponent animator =
@@ -392,6 +393,7 @@ public class NPCFactory {
                     .addComponent(new PhysicsComponent())
                     .addComponent(new PhysicsMovementComponent())
                     .addComponent(new ColliderComponent())
+                    .addComponent(new EffectComponent(true))
                     .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                     .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS));
     PhysicsUtils.setScaledCollider(npc, 0.3f, 0.5f);
@@ -454,17 +456,17 @@ public class NPCFactory {
   }
 
   // * COW'S TESTING ARENA DONT TOUCH
-  public static Entity createSplittingXenoGrunt(int health) {
-    Entity splitXenoGrunt = createXenoGrunt(health)
-        // add the scaling yourself. can also scale the X and Y component,
-        // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 0.5f))
-        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-
-    // * TEMPORARY TESTING FOR PROJECTILE DODGING
-    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    return splitXenoGrunt;
-  }
+//  public static Entity createSplittingXenoGrunt(int health) {
+//    Entity splitXenoGrunt = createXenoGrunt(health)
+//        // add the scaling yourself. can also scale the X and Y component,
+//        // leading to some very interesting mob designs.
+//        .addComponent(new SplitMoblings(7, 0.5f))
+//        .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+//
+//    // * TEMPORARY TESTING FOR PROJECTILE DODGING
+//    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+//    return splitXenoGrunt;
+//  }
 
   /**
    * Create Splitting water slime 
