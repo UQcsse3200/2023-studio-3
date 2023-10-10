@@ -228,7 +228,8 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickSpawn.mp3",
           "sounds/mobBoss/patrickCast.mp3",
           "sounds/mobBoss/patrickThunder.mp3",
-          "sounds/mobBoss/patrickHit.mp3"
+          "sounds/mobBoss/patrickHit.mp3",
+          "sounds/mobBoss/spawnDemonSlime.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
@@ -324,12 +325,12 @@ public class ForestGameArea extends GameArea {
 //    waves = WaveFactory.createWaves();
 //    spawnEntity(waves);
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
-//    spawnGregMob();
+    spawnGregMob();
 //    spawnDodgingDragonKnight(17,4);
 //    spawnDeflectWizard(17, 3);
 //    spawnSplittingXenoGrunt(17, 2);
 //    spawnPatrick();
-    spawnDemonBoss();
+//    spawnDemonBoss();
 
     spawnScrap();
     spawnGapScanners();
@@ -733,7 +734,7 @@ public class ForestGameArea extends GameArea {
 //  }
 
   private void spawnGregMob() {
-    Entity gregMob = NPCFactory.createGregMeleeMob(100);
+    Entity gregMob = NPCFactory.createBaseWaterSlime(100);
     gregMob.setScale(1.5f, 1.5f);
     spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
   }
