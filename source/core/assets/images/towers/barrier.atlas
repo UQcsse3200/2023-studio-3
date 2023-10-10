@@ -1,0 +1,76 @@
+barrier.png
+size: 64, 35
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Death
+  rotate: false
+  xy: 0, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: 2
+Death
+  rotate: false
+  xy: 32, 0
+  size: 32, 17
+  orig: 32, 17
+  offset: 0, 0
+  index: 3
+Death
+  rotate: false
+  xy: 0, 0
+  size: 32, 12
+  orig: 32, 12
+  offset: 0, 0
+  index: 4
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Idle
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+Default
+  rotate: false
+  xy: 32, 17
+  size: 32, 18
+  orig: 32, 18
+  offset: 0, 0
+  index: -1
+

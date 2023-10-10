@@ -2,6 +2,7 @@ package com.csse3200.game.components.tasks.human;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
@@ -10,13 +11,15 @@ import com.csse3200.game.services.ServiceLocator;
  * Move a human entity to a given position, finishing when you get close enough. Requires an entity with a
  * PhysicsMovementComponent.
  */
-public class HumanMovementTask extends DefaultTask {
+public class HumanMovementTask extends DefaultTask implements PriorityTask {
   private final GameTime gameTime;
   private Vector2 target;
   private float stopDistance = 0.01f;
   private long lastTimeMoved;
   private Vector2 lastPos;
   private PhysicsMovementComponent movementComponent;
+
+  private int priority = 1000; // default priority
 
   public HumanMovementTask(Vector2 target) {
     this.target = target;
@@ -84,5 +87,10 @@ public class HumanMovementTask extends DefaultTask {
 
   private boolean didMove() {
     return owner.getEntity().getPosition().dst2(lastPos) > 0.001f;
+  }
+
+  @Override
+  public int getPriority() {
+    return priority;
   }
 }

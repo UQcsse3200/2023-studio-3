@@ -87,6 +87,7 @@ public class MainGameScreen extends ScreenAdapter {
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
 
+  private InputComponent upgradedInputHandler;
   private final Stage stage;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
@@ -136,8 +137,12 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
+    InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
     ServiceLocator.getInputService().register(buildHandler);
+    ServiceLocator.getInputService().register(engineerInputHandler);
+    ServiceLocator.getInputService().register(upgradedInputHandler);
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
 
     loadAssets();
@@ -207,11 +212,16 @@ public class MainGameScreen extends ScreenAdapter {
     physicsEngine.update();
     ServiceLocator.getEntityService().update();
 
+    // Checks if tower selected is dead
+    this.getUpgradedInputHandler().checkForDispose();
+
     // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
     }
 
+    ServiceLocator.getWaveService().getDisplay().updateTimerButton();
+    ServiceLocator.getWaveService().getDisplay().updateMobCount();
     renderer.render();
   }
 
@@ -277,18 +287,22 @@ public class MainGameScreen extends ScreenAdapter {
     logger.debug("Creating ui");
     Stage stage = ServiceLocator.getRenderService().getStage();
     InputComponent inputComponent =
-        ServiceLocator.getInputService().getInputFactory().createForTerminal();
+            ServiceLocator.getInputService().getInputFactory().createForTerminal();
 
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
+
         .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
+            .addComponent(ServiceLocator.getWaveService().getDisplay())
             .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
             .addComponent(new MainGamePauseDisplay(this.game))
             .addComponent(new Terminal())
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
+
+
     ServiceLocator.getEntityService().register(ui);
 
     music.setLooping(true);
@@ -303,5 +317,9 @@ public class MainGameScreen extends ScreenAdapter {
   private void playAmbientSound() {
 
      ServiceLocator.getResourceService().getAsset(ambientSounds.random(), Sound.class).play(0.2f);
+  }
+
+  private UpgradeUIComponent getUpgradedInputHandler() {
+    return (UpgradeUIComponent) upgradedInputHandler;
   }
 }

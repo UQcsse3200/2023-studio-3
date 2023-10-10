@@ -208,7 +208,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
    * @return true if a target is visible, false otherwise
    */
   private boolean isTargetVisible() {
-    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 100f, owner.getEntity().getPosition().y - 2f);
     return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);
   }
 
@@ -236,7 +236,7 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
   }
 
   private void setTarget() {
-    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 100f, owner.getEntity().getPosition().y - 2f);
     target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
   }
 }

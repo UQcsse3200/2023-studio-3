@@ -78,13 +78,15 @@ public class GdxGame extends Game {
         return new LosingScreen(this);
       case TURRET_SELECTION:
         return new TurretSelectionScreen(this);
+      case HELP_SCREEN:
+        return new HelpScreen(this);
       default:
         return null;
     }
   }
 
   public enum ScreenType {
-    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN
+    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN
   }
 
   /**

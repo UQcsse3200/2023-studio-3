@@ -1,6 +1,7 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
@@ -20,7 +21,6 @@ import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,19 +34,33 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private final Table towerTable = new Table();
     Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-    private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
-    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
+    private String[] sounds = {
+            "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
+            "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg"
+    };
+    private Sound click;
+    private Sound hover;
+//    private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
+//    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
+    private TextButton remainingMobsButton;
+    private TextButton timerButton;
+    private final int timer = 110;
 
     @Override
     public void create() {
         super.create();
         addActors();
+        loadSounds();
     }
 
     /**
      * This method creates the buttons, adds them to the respective tables and draws them on the screen.
      */
     private void addActors() {
+//        remainingMobsButton = new ButtonFactory().createButton("Mobs:"
+//                + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton = new TextButton("Mobs:"
+                + ServiceLocator.getWaveService().getEnemyCount(), skin);
         buttonTable.top().right();
         towerTable.top();
 
@@ -66,13 +80,22 @@ public class UIElementsDisplay extends UIComponent {
 
         // Fetch the selected tower types if set
         Array<TowerType> towers = new Array<>();
+
         for (TowerType tower : ServiceLocator.getTowerTypes()) {
             towers.add(tower);
         }
 
         // If no towers set, populate with default towers
-        if (towers.isEmpty()) {
-            towers.addAll(defaultTowers);
+        if (towers.isEmpty() || towers.size < 5) {
+            if (towers.isEmpty()) {
+                towers.addAll(defaultTowers);
+            } else {
+                for (TowerType tower : defaultTowers) {
+                    if (towers.size < 5 && !towers.contains(tower, false)) {
+                        towers.add(tower);
+                    }
+                }
+            }
         }
 
         TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
@@ -88,6 +111,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 1 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+                        click.play(0.4f);
                     }
                 });
 
@@ -98,6 +122,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 2 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+                        click.play(0.4f);
                     }
                 });
 
@@ -107,6 +132,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 3 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
+                        click.play(0.4f);
                     }
                 });
 
@@ -116,6 +142,7 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 4 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
+                        click.play(0.4f);
                     }
                 });
 
@@ -125,19 +152,9 @@ public class UIElementsDisplay extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Tower 5 build button clicked");
                         ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
+                        click.play(0.4f);
                     }
                 });
-
-        //Not sure if we need a listened for a label
-//        // Triggers an event when the button is pressed.
-//        remainingMobsButton.addListener(
-//                new ChangeListener() {
-//                    @Override
-//                    public void changed(ChangeEvent changeEvent, Actor actor) {
-//                        logger.debug("Wave counter button clicked");
-//                        entity.getEvents().trigger("wave counter");
-//                    }
-//                });
 
         buttonTable.add(remainingMobsButton).padTop(10f).padRight(10f);
         buttonTable.row();
@@ -151,13 +168,39 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
+
+        createTimerButton();
     }
 
     /**
      * This method updates the mob count button as mobs die in the game
      */
     public void updateMobCount() {
-        remainingMobsButton.getLabel().setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+    }
+
+    /**
+     * This method creates the timer button.
+     */
+    public void createTimerButton() {
+
+//        timerButton = new ButtonFactory().createButton("Next wave in:"
+//                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+        timerButton = new TextButton("Next wave in:"
+                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000), skin);
+        buttonTable.row();
+        buttonTable.add(timerButton).padRight(10f);
+    }
+
+    /**
+     * This method updates the text for timer button.
+     */
+    public void updateTimerButton() {
+        int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
+        int seconds = totalSecs % 60;
+        int minutes = (totalSecs % 3600) / 60;
+        String finalTime = String.format("%02d:%02d", minutes, seconds);
+        timerButton.setText("Next wave in:" + finalTime);
     }
 
     @Override
@@ -171,6 +214,13 @@ public class UIElementsDisplay extends UIComponent {
     @Override
     public float getZIndex() {
         return Z_INDEX;
+    }
+
+    private void loadSounds() {
+        ServiceLocator.getResourceService().loadSounds(sounds);
+        ServiceLocator.getResourceService().loadAll();
+        click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
+        hover = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 
     /**

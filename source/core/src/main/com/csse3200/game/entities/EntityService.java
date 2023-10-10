@@ -74,6 +74,20 @@ public class EntityService {
   }
 
   /**
+   * Find an entity by its ID, if it exists return true, else return false
+   * @param id id of entity to find
+   * @return boolean true if entity exists, false if not
+   */
+  public boolean findEntityExistence(int id) {
+    for (Entity entity : entities) {
+      if (entity.getId() == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Get all entities
    */
   public Array<Entity> getEntities() {
@@ -185,11 +199,31 @@ public class EntityService {
    * @return true if the tile is occupied, false otherwise
    */
   public boolean entitiesInTile(int x_coord, int y_coord) {
-    TiledMapTileLayer mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
+    TiledMapTileLayer mp;
+    try {
+      mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
+    } catch (NullPointerException e) {
+      // MapService is not running
+      return true;
+    }
     if (mp.getCell(x_coord, y_coord) != null) {
       Entity entity = getEntityAtPosition(x_coord, y_coord);
       return entity != null;
     }
     return true;
   }
+
+  public Entity getEntityAtPositionLayer(float x, float y, short layer) {
+    for (int i = 0; i < entities.size; i++) {
+      Entity entity = entities.get(i);
+      if (entityContainsPosition(entity, x, y)) {
+        HitboxComponent hitBox = entity.getComponent(HitboxComponent.class);
+        if (hitBox != null && PhysicsLayer.contains(layer, hitBox.getLayer())) {
+          return entity;
+        }
+      }
+    }
+    return null;
+  }
+
 }

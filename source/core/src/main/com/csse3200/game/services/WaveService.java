@@ -17,6 +17,8 @@ public class WaveService {
     private long nextWaveTime;
     private final UIElementsDisplay display;
 
+    private int spawnDelay;
+
 
     /**
      * Constructor for the Wave Service
@@ -52,7 +54,6 @@ public class WaveService {
      */
     public void updateEnemyCount() {
         enemyCount -= 1;
-        display.updateMobCount();
         logger.info("{} enemies remaining in wave", getEnemyCount());
     }
 
@@ -123,7 +124,19 @@ public class WaveService {
     }
 
     /**
-     * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
+     * Sets the spawn delay between levels
+     * @param spawnDelay representing the spawnDelay between levels.
+     */
+    public void setSpawnDelay(int spawnDelay) {this.spawnDelay = spawnDelay;}
+
+    /**
+     * Returns the spawn delay between levels
+     * @return (int) The spawn delay between levels.
+     */
+    public int getSpawnDelay() {return this.spawnDelay;}
+
+
+     /* Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
      * for this instance of the display.
      * @return the updating instance of UIElementsDisplay
      */

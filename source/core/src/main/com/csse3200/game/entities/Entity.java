@@ -206,6 +206,16 @@ public class Entity {
     return this;
   }
 
+  public void removeComponent(Class<? extends Component> componentClass) {
+    ComponentType componentType = ComponentType.getFrom(componentClass);
+    int id = componentType.getId();
+
+    if (components.containsKey(id)) {
+      Component removedComponent = components.remove(id);
+      removedComponent.dispose();
+    }
+  }
+
   /** Dispose of the entity. This will dispose of all components on this entity. */
   public void dispose() {
     for (Component component : createdComponents) {

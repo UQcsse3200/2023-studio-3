@@ -36,9 +36,8 @@ public class LevelWaves extends Entity {
 
         long currentTime = ServiceLocator.getTimeSource().getTime();
         // Setting the timestamp for when the next mobs will spawn.
-        // Currently, the delay of mobs spawning after wave start
-        // is hardcoded but will fix in the next push.
-        ServiceLocator.getWaveService().setNextWaveTime(currentTime + 10000);
+        // Currently, the delay of mobs spawning after wave start.
+        ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
     }
 
     /**
@@ -69,8 +68,8 @@ public class LevelWaves extends Entity {
             } while (currentRandom == previousRandom);
             ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
-            this.getEvents().trigger("spawnWave", waves.get(waveIndex)
-                    .getMobs().get(mobIndex), randomPos);
+            Tuple mobStats = waves.get(waveIndex).getMobs().get(mobIndex);
+            this.getEvents().trigger("spawnWave", mobStats.mob, randomPos, mobStats.health);
             startTime = gameTime.getTime();
             mobIndex++;
             previousRandom = currentRandom;
@@ -118,6 +117,19 @@ public class LevelWaves extends Entity {
      */
     public int getWaveIndex() {
         return this.waveIndex;
+    }
+
+    public List<WaveClass> getWaves() {
+      return this.waves;
+    }
+
+    @Override
+    public String toString() {
+      String result = "";
+      for (WaveClass wave : waves) {
+        result += wave.toString() + "\n";
+      }
+      return result;
     }
 
 }

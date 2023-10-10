@@ -18,8 +18,10 @@ import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.screens.AssetLoader;
+
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -29,9 +31,11 @@ import org.slf4j.LoggerFactory;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.Timer;
+
 import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 import java.util.ArrayList;
+
 import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -41,7 +45,7 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-  private AssetLoader assetLoader;
+
 
   private static final int NUM_MOBBOSS2=3;
   private static final int NUM_MOBBOSS1=1;
@@ -58,7 +62,7 @@ public class ForestGameArea extends GameArea {
 
   // Required to load assets before using them
   private static final String[] forestTextures = {
-         "images/desert_bg.png",
+          "images/desert_bg.png",
           "images/ice_bg.png",
           "images/lava_bg.png",
           "images/projectiles/projectile.png",
@@ -98,7 +102,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/Hurt.png",
           "images/mobs/Idle.png",
           "images/mobs/rangeBossRight.png",
-          "images/towers/wallTower.png",
+          "images/towers/wall_tower.png",
           "images/background/building2.png",
           "images/iso_grass_3.png",
           "images/Dusty_MoonBG.png",
@@ -123,7 +127,11 @@ public class ForestGameArea extends GameArea {
           "images/mobboss/demon2.png",
           "images/mobs/fire_worm.png",
           "images/mobboss/patrick.png",
-          "images/mobboss/patrick.png",
+          "images/towers/fireworks_tower.png",
+          "images/towers/barrier.png",
+          "images/towers/wall_tower.png",
+          "images/towers/PierceTower.png",
+          "images/towers/RicochetTower.png",
           "images/GrassTile/grass_tile_1.png",
           "images/GrassTile/grass_tile_2.png",
           "images/GrassTile/grass_tile_3.png",
@@ -131,8 +139,8 @@ public class ForestGameArea extends GameArea {
           "images/GrassTile/grass_tile_5.png",
           "images/GrassTile/grass_tile_6.png",
           "images/GrassTile/grass_tile_7.png",
-          "images/highlight_tile.png",
-          "images/mobboss/iceBaby.png"
+          "images/mobboss/iceBaby.png",
+          "images/bombship/bombship.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -173,7 +181,12 @@ public class ForestGameArea extends GameArea {
           "images/mobs/water_queen.atlas",
           "images/mobs/water_slime.atlas",
           "images/mobboss/patrick.atlas",
-          "images/mobboss/iceBaby.atlas"
+          "images/towers/fireworks_tower.atlas",
+          "images/towers/barrier.atlas",
+          "images/towers/PierceTower.atlas",
+          "images/towers/RicochetTower.atlas",
+          "images/mobboss/iceBaby.atlas",
+          "images/bombship/bombship.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -219,10 +232,9 @@ public class ForestGameArea extends GameArea {
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
   private static final String[] forestMusic = {backgroundMusic};
-  
   private Entity player;
   private Entity waves;
-  
+
   // Variables to be used with spawn projectile methods. This is the variable
   // that should occupy the direction param.
   private static final int towardsMobs = 100;
@@ -237,22 +249,19 @@ public class ForestGameArea extends GameArea {
   public ForestGameArea() {
     super();
   }
-  public void setAssetLoader(AssetLoader assetLoader) {
-    this.assetLoader = assetLoader;
-  }
 
   /**
    * Add this method to start the wave spawning timer when the game starts.
    */
-  private void startWaveTimer() {
-    waveTimer = new Timer();
-    waveTimer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        spawnWave();
-      }
-    }, 0, 10000); // 10000 milliseconds = 10 seconds
-  }
+//  private void startWaveTimer() {
+//    waveTimer = new Timer();
+//    waveTimer.scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        spawnWave();
+//      }
+//    }, 0, 10000); // 10000 milliseconds = 10 seconds
+//  }
 
   /**
    * Add this method to stop the wave timer when the game ends or as needed.
@@ -267,39 +276,33 @@ public class ForestGameArea extends GameArea {
   /**
    * Cases to spawn a wave
    */
-  private void spawnWave() {
-    wave++;
-    switch (wave) {
-      case 1:
-      case 2:
-      spawnWaterQueen();
-      spawnWizard();
-      logger.info("Lol");
-      
-      break;
-      case 3:
-      spawnWaterSlime();
-      spawnIceBaby();
-      logger.info("Lol");
-      // mobBoss2 = spawnMobBoss2();
-      break;
-      case 4:
-      spawnFireWorm();
-      // spawnDragonKnight();
-      logger.info("Lol");
-      // mobBoss2 = spawnMobBoss2();
-      break;
-      case 5:
-      case 6:
-      spawnSkeleton();
-      case 7:
-      spawnDemonBoss();
-      spawnPatrick();
-      default:
-        // Handle other wave scenarios if needed
-        break;
-    }
-  }
+//  private void spawnWave() {
+//    wave++;
+//    switch (wave) {
+//      case 1:
+//      case 2:
+//        spawnFireWorm();
+//        spawnDragonKnight();
+//
+//        break;
+//      case 3:
+//        spawnSkeleton();
+//        spawnWizard();
+//        // mobBoss2 = spawnMobBoss2();
+//        break;
+//      case 4:
+//        spawnWaterQueen();
+//        spawnWaterSlime();
+//        // mobBoss2 = spawnMobBoss2();
+//
+//        break;
+//      case 5:
+//        spawnDemonBoss();
+//      default:
+//        // Handle other wave scenarios if needed
+//        break;
+//    }
+//  }
 
   /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
@@ -307,12 +310,13 @@ public class ForestGameArea extends GameArea {
   @Override
   public void create() {
     // Load game assets
+
     loadAllAssets();
     loadAssets();
     logger.info("selected towers in main game are " + ServiceLocator.getTowerTypes());
     displayUI();
     spawnTerrain();
-    
+
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
 
@@ -323,8 +327,16 @@ public class ForestGameArea extends GameArea {
     spawnScrap();
     spawnGapScanners();
 
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    spawnGapScanners();
+//    spawnDroidTower();
+//     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
+//     spawnPierceTower();
+//     spawnRicochetTower();
+//    spawnBombship();
   }
-  
+
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
@@ -362,9 +374,10 @@ public class ForestGameArea extends GameArea {
             false,
             false);
     // Bottom
-        Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);
-        wall.setPosition(0,-0.1f);
-        ServiceLocator.getEntityService().register(wall);
+    Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);
+    wall.setPosition(0,-0.1f);
+    ServiceLocator.getEntityService().register(wall);
+
   }
 
   private Entity spawnPlayer() {
@@ -372,7 +385,7 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
     return newPlayer;
   }
-  
+
   // Spawn player at a specific position
   private Entity spawnPlayer(GridPoint2 position) {
     Entity newPlayer = PlayerFactory.createPlayer();
@@ -380,10 +393,11 @@ public class ForestGameArea extends GameArea {
     return newPlayer;
   }
 
-  private void spawnDemonBoss() {
-    Entity demon = MobBossFactory.createDemonBoss();
-    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
-  }
+  // commented 383 - 386 out as there was a missing arg?
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
 
   private void spawnPatrick() {
     Entity patrick = MobBossFactory.createPatrickBoss(3000);
@@ -394,11 +408,32 @@ public class ForestGameArea extends GameArea {
     Entity patrickDeath = MobBossFactory.patrickDead();
     spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
   }
+  // commented 398 - 401 out as there was a missing arg?
+//  private void spawnIceBaby() {
+//    Entity iceBaby = MobBossFactory.createIceBoss();
+//    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+//  }
 
-  private void spawnIceBaby() {
-    Entity iceBaby = MobBossFactory.createIceBoss();
-    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
-  }
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
+
+//  private void spawnPatrick() {
+//    Entity patrick = MobBossFactory.createPatrickBoss(3000);
+//    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+//  }
+//
+//  private void spawnPatrickDeath() {
+//    Entity patrickDeath = MobBossFactory.patrickDead();
+//    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
+//  }
+//
+//  private void spawnIceBaby() {
+//    Entity iceBaby = MobBossFactory.createIceBoss();
+//    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+//  }
+
   /**
    * Spawns a projectile that only heads towards the enemies in its lane.
    *
@@ -412,7 +447,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a projectile specifically for general mobs/xenohunters
    *
@@ -426,7 +461,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a projectile to be used for multiple projectile function.
    *
@@ -446,43 +481,47 @@ public class ForestGameArea extends GameArea {
    * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
    * @param entity mob to be spawned
    * @param randomPos position to be spawned at
+   * @param health health of the mob
    */
-  public void spawnMob(String entity, GridPoint2 randomPos) {
+  public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
       case "Xeno":
-        mob = NPCFactory.createXenoGrunt();
+        mob = NPCFactory.createXenoGrunt(health);
         break;
       case "SplittingWaterSlime":
-        mob = NPCFactory.createSplittingWaterSlime();
+        mob = NPCFactory.createSplittingWaterSlime(health);
         break;
       case "DodgingDragon":
-        mob = NPCFactory.createDodgingDragonKnight();
-        break;
-      case "DeflectWizard":
-        mob = NPCFactory.createDeflectWizard();
-        break;
-      case "WaterQueen":
-        mob = NPCFactory.createWaterQueen();
+        mob = NPCFactory.createDodgingDragonKnight(health);
         break;
       case "FireWorm":
-        mob = NPCFactory.createFireWorm();
+        mob = NPCFactory.createFireWorm(health);
         break;
       case "Skeleton":
-        mob = NPCFactory.createSkeleton();
+        mob = NPCFactory.createSkeleton(health);
         break;
+      case "DeflectWizard":
+        mob = NPCFactory.createDeflectWizard(health);
+        break;
+      case "WaterQueen":
+        mob = NPCFactory.createWaterQueen(health);
+        break;
+        //TODO implement when boss is ready
+//      case "FireBoss":
+//        mob = MobBossFactory.createDemonBoss(health);
+//        break;
       case "IceBoss":
-        mob = MobBossFactory.createIceBoss();
-        break;
-      case "DemonBoss":
-        mob = MobBossFactory.createDemonBoss();
+        mob = MobBossFactory.createIceBoss(health);
         break;
       case "PatrickBoss":
-        mob = MobBossFactory.createPatrickBoss(100);
+        mob = MobBossFactory.createPatrickBoss(health);
         break;
       default:
-        mob = NPCFactory.createXenoGrunt();
+        mob = NPCFactory.createXenoGrunt(health);
+        break;
     }
+
     if (entity.contains("Boss")) {
       mob.scaleHeight(5f);
       mob.scaleWidth(5f);
@@ -493,6 +532,94 @@ public class ForestGameArea extends GameArea {
   }
 
   // * TEMPORARY FOR TESTING
+//  private void spawnSplittingXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+
+  // * TEMPORARY FOR TESTING
+//  private void spawnDodgingDragonKnight(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+//    fireworm.setScale(1.5f, 1.5f);
+//    spawnEntityAt(fireworm, pos, true, true);
+//  }
+//
+//  // * TEMPORARY FOR TESTING
+//  private void spawnDeflectXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+//
+//  private void spawnFireWorm() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createFireWorm();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnSkeleton() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity skeleton = NPCFactory.createSkeleton();
+//      skeleton.setScale(1.5f, 1.5f);
+//      spawnEntityAt(skeleton, randomPos, true, false);
+//    }
+//  }
+
+//  private void spawnDragonKnight() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createDragonKnight();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWizard() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity wizard = NPCFactory.createWizard();
+//      wizard.setScale(1.5f, 1.5f);
+//      spawnEntityAt(wizard, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterQueen() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterQueen = NPCFactory.createWaterQueen();
+//      waterQueen.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterQueen, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterSlime() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterSlime = NPCFactory.createWaterSlime();
+//      waterSlime.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterSlime, randomPos, true, false);
+//    }
+//  }
   // private void spawnSplittingXenoGrunt(int x, int y) {
   //   GridPoint2 pos = new GridPoint2(x, y);
   //   Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
@@ -501,97 +628,97 @@ public class ForestGameArea extends GameArea {
   // }
 
   // * TEMPORARY FOR TESTING
-  private void spawnDodgingDragonKnight(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity fireworm = NPCFactory.createDodgingDragonKnight();
-    fireworm.setScale(1.5f, 1.5f);
-    spawnEntityAt(fireworm, pos, true, true);
-  }
-
-  // * TEMPORARY FOR TESTING
-  private void spawnDeflectWizard(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity xenoGrunt = NPCFactory.createDeflectWizard();
-    xenoGrunt.setScale(1.5f, 1.5f);
-    spawnEntityAt(xenoGrunt, pos, true, true);
-  }
-  
-  private void spawnFireWorm() {
-
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
-
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity fireWorm = NPCFactory.createFireWorm();
-      fireWorm.setScale(1.5f, 1.5f);
-      spawnEntityAt(fireWorm, randomPos, true, false);
-    }
-  }
-
-  private void spawnSkeleton() {
-
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity skeleton = NPCFactory.createSkeleton();
-      skeleton.setScale(1.5f, 1.5f);
-      spawnEntityAt(skeleton, randomPos, true, false);
-    }
-  }
-
-  private void spawnDragonKnight() {
-
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
-
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity fireWorm = NPCFactory.createDodgingDragonKnight();
-      fireWorm.setScale(1.5f, 1.5f);
-      spawnEntityAt(fireWorm, randomPos, true, false);
-    }
-  }
-
-  private void spawnWizard() {
-
-    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
-
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity wizard = NPCFactory.createDeflectWizard();
-      wizard.setScale(1.5f, 1.5f);
-      spawnEntityAt(wizard, randomPos, true, false);
-    }
-  }
-
-  private void spawnWaterQueen() {
-
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
-
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity waterQueen = NPCFactory.createWaterQueen();
-      waterQueen.setScale(1.5f, 1.5f);
-      spawnEntityAt(waterQueen, randomPos, true, false);
-    }
-  }
-
-  private void spawnWaterSlime() {
-
-    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
-
-            .distinct().limit(5).toArray();
-    for (int i = 0; i < NUM_GRUNTS; i++) {
-      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
-      Entity waterSlime = NPCFactory.createSplittingWaterSlime();
-      waterSlime.setScale(1.5f, 1.5f);
-      spawnEntityAt(waterSlime, randomPos, true, false);
-    }
-  }
+//  private void spawnDodgingDragonKnight(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+//    fireworm.setScale(1.5f, 1.5f);
+//    spawnEntityAt(fireworm, pos, true, true);
+//  }
+//
+//  // * TEMPORARY FOR TESTING
+//  private void spawnDeflectWizard(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createDeflectWizard();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+//
+//  private void spawnFireWorm() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createFireWorm();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnSkeleton() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity skeleton = NPCFactory.createSkeleton();
+//      skeleton.setScale(1.5f, 1.5f);
+//      spawnEntityAt(skeleton, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnDragonKnight() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createDodgingDragonKnight();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWizard() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity wizard = NPCFactory.createDeflectWizard();
+//      wizard.setScale(1.5f, 1.5f);
+//      spawnEntityAt(wizard, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterQueen() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterQueen = NPCFactory.createWaterQueen();
+//      waterQueen.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterQueen, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterSlime() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i < NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterSlime = NPCFactory.createSplittingWaterSlime();
+//      waterSlime.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterSlime, randomPos, true, false);
+//    }
+//  }
 
   /**
    * Creates multiple projectiles that travel simultaneous. They all have same
@@ -611,7 +738,7 @@ public class ForestGameArea extends GameArea {
       --half;
     }
   }
-  
+
   /**
    * Returns projectile that can do an area of effect damage
    *
@@ -628,7 +755,7 @@ public class ForestGameArea extends GameArea {
     Projectile.setPosition(position);
     spawnEntity(Projectile);
   }
-  
+
   /**
    * Spawns a pierce fireball.
    * Pierce fireball can go through targetlayers without disappearing but damage
@@ -644,7 +771,7 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
-  
+
   /**
    * Spawns a ricochet fireball
    * Ricochet fireballs bounce off targets with a specified maximum count of 3
@@ -661,7 +788,7 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
-  
+
   /**
    * Spawns a split firework fireball.
    * Splits into mini projectiles that spreads out after collision.
@@ -677,7 +804,7 @@ public class ForestGameArea extends GameArea {
     projectile.setPosition(position);
     spawnEntity(projectile);
   }
-  
+
   private void spawnWeaponTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
@@ -690,6 +817,7 @@ public class ForestGameArea extends GameArea {
       Entity stunTower = TowerFactory.createStunTower();
       spawnEntityAt(fireTower, randomPos1, true, true);
       spawnEntityAt(stunTower, randomPos2, true, true);
+      spawnEntityAt(wallTower, randomPos2, true, true);
     }
   }
 
@@ -706,17 +834,57 @@ public class ForestGameArea extends GameArea {
 
     spawnEntityAt(droidTower, pos, true, true);
   }
-  
+
   private void spawnTNTTower() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-    
+
     for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity weaponTower = TowerFactory.createTNTTower();
       spawnEntityAt(weaponTower, randomPos, true, true);
     }
-    
+
+  }
+  private void spawnFireWorksTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity FireWorksTower = TowerFactory.createFireworksTower();
+      spawnEntityAt(FireWorksTower, randomPos, true, true);
+    }
+
+  }
+  private void spawnPierceTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(3, 3);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity PierceTower = TowerFactory.createPierceTower();
+      spawnEntityAt(PierceTower, randomPos, true, true);
+    }
+
+  }
+  private void spawnRicochetTower() {
+    GridPoint2 minPos = new GridPoint2(0, 2);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 3);
+
+    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
+      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
+      Entity RicochetTower = TowerFactory.createRicochetTower();
+      spawnEntityAt(RicochetTower, randomPos, true, true);
+    }
+
+  }
+
+  private void spawnBombship() {
+    GridPoint2 minPos = new GridPoint2(0, 0);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
+    Entity bombship = BombshipFactory.createBombship();
+    spawnEntityAt(bombship, minPos, true, true);
   }
 
   private void spawnDroidTower() {
@@ -729,14 +897,14 @@ public class ForestGameArea extends GameArea {
       spawnEntityAt(weaponTower, randomPos, true, false);
     }
   }
-  
+
   private void playMusic() {
     Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();
   }
-  
+
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -753,41 +921,41 @@ public class ForestGameArea extends GameArea {
 
   private void unloadAssets() {
     logger.debug("Unloading assets");
-    if (assetLoader != null) {
-      AssetLoader.unloadAllAssets(); // Use the AssetLoader to unload assets if it's not null
-    } else {
-      logger.error("AssetLoader is not set. Cannot unload assets.");
-    }
+    ResourceService resourceService = ServiceLocator.getResourceService();
+    resourceService.unloadAssets(forestTextures);
+    resourceService.unloadAssets(forestTextureAtlases);
+    resourceService.unloadAssets(forestSounds);
+    resourceService.unloadAssets(forestMusic);
   }
-  
+
   @Override
   public void dispose() {
     super.dispose();
     this.unloadAssets();
     stopWaveTimer();
   }
-  
+
   private void spawnScrap() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity scrap = DropFactory.createScrapDrop();
       spawnEntityAt(scrap, randomPos, true, false);
     }
-    
+
     for (int i = 0; i < 5; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity crystal = DropFactory.createCrystalDrop();
       spawnEntityAt(crystal, randomPos, true, false);
     }
   }
-  
+
   private void spawnIncome() {
     GridPoint2 minPos = new GridPoint2(0, 0);
     GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-    
+
     for (int i = 0; i < 50; i++) {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity towerfactory = TowerFactory.createIncomeTower();

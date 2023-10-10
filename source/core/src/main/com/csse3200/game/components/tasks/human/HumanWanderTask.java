@@ -29,7 +29,9 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   private HumanWaitTask waitTask;
   private EngineerCombatTask combatTask;
   private Task currentTask;
-  private boolean isDead = false;
+  private boolean   isDead = false;
+
+  private boolean isSelected = false;
 
   private boolean hasDied = false;
 
@@ -105,35 +107,35 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     // otherwise doing engineer things since engineer is alive
     else if (!isDead){
       doEngineerThings();
-
       currentTask.update();
     }
   }
 
   private void doEngineerThings() {
-    if (currentTask.getStatus() != Status.ACTIVE) {
+    if (currentTask.getStatus() == Status.ACTIVE) {
+      return;
+    }
 
-      // if the engineer is in move state and update has been called, engineer has arrived at destination
-      if (currentTask == movementTask) {
-        startWaiting();
-        owner.getEntity().getEvents().trigger(IDLE_EVENT);
+    // if the engineer is in move state and update has been called, engineer has arrived at destination
+    if (currentTask == movementTask) {
+      startWaiting();
+      owner.getEntity().getEvents().trigger(IDLE_EVENT);
+    } else if (combatTask.isTargetVisible()) {
+      float engY = owner.getEntity().getCenterPosition().y;
+      float targetY = combatTask.fetchTarget().y;
+      // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
+      if (engY <  targetY + TOLERANCE &&
+              engY > targetY - TOLERANCE) {
+        startCombat();
 
-      } else if (combatTask.isTargetVisible()) {
-        float engY = owner.getEntity().getCenterPosition().y;
-        float targetY = combatTask.fetchTarget().y;
-        // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
-        if (engY <  targetY + TOLERANCE &&
-                engY > targetY - TOLERANCE) {
-          startCombat();
-
-          // move into position for targeting mob
-        } else {
-          Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
-          startMoving(newPos);
-        }
+        // move into position for targeting mob
+      } else if (!this.isSelected()) {
+        Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
+        startMoving(newPos);
       }
     }
   }
+
   /**
    * Handle the dying phase of the entity. Triggers an event to play the appropriate media,
    * sets HitBox and Collider components to ignore contact (stops the body being pushed around)
@@ -150,7 +152,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   /**
    * Starts the wait task.
    */
-  private void startWaiting() {
+  public void startWaiting() {
     swapTask(waitTask);
   }
 
@@ -158,7 +160,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
    * Starts the movement task, to a particular destination
    * @param destination the Vector2 position to which the entity needs to move
    */
-  private void startMoving(Vector2 destination) {
+  public void startMoving(Vector2 destination) {
     movementTask.setTarget(destination);
     swapTask(movementTask);
   }
@@ -166,7 +168,7 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
   /**
    * Starts the combat task.
    */
-  private void startCombat() {
+  public void startCombat() {
     swapTask(combatTask);
   }
 
@@ -180,5 +182,13 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
     }
     currentTask = newTask;
     currentTask.start();
+  }
+
+  private boolean isSelected() {
+    return isSelected;
+  }
+
+  public void setSelected(boolean isSelected) {
+    this.isSelected = isSelected;
   }
 }
