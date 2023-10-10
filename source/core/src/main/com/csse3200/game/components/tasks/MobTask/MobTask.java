@@ -195,6 +195,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     case ATTACK -> owner.getEntity().getEvents().trigger("water_slime_attack");
                     case DEATH -> {
                         owner.getEntity().getEvents().trigger("water_slime_death");
+                        owner.getEntity().getEvents().trigger("splitDeath");
                     }
                     case DEFAULT -> owner.getEntity().getEvents().trigger("default");
                 }

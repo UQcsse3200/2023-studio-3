@@ -469,6 +469,7 @@ public class NPCFactory {
   /**
    * Create Splitting water slime 
    * 
+   * @require Entity to have a "splitDeath"
    * @return
    */
   public static Entity createSplittingWaterSlime(int health) {

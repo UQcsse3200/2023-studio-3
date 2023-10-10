@@ -25,7 +25,7 @@ public class SplitMoblings extends Component {
   public static final float MAX_X_BOUNDS = (float) 18.5;
   public static final float MIN_Y_BOUNDS = 0;
   public static final float MAX_Y_BOUNDS = 8;
-  public static final String DIE_START_EVENT = "dieStart";
+  public static final String DIE_START_EVENT = "splitDeath";
 
   /**
    * Initialises a component that splits mob into multiple moblings. Amount of
