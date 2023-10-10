@@ -215,6 +215,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     case DEFAULT -> owner.getEntity().getEvents().trigger("default");
                 }
             }
+            case COAT -> {
+                switch (state) {
+                    case RUN -> owner.getEntity().getEvents().trigger("coat_run");
+                    case ATTACK -> owner.getEntity().getEvents().trigger("coat_attack");
+                    case DEATH -> owner.getEntity().getEvents().trigger("coat_death");
+                    case DEFAULT -> owner.getEntity().getEvents().trigger("default");
+                }
+            }
         }
     }
 

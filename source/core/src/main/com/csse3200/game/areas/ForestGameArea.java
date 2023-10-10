@@ -633,12 +633,6 @@ public class ForestGameArea extends GameArea {
 //      spawnEntityAt(waterSlime, randomPos, true, false);
 //    }
 //  }
-   private void spawnSplittingXenoGrunt(int x, int y) {
-     GridPoint2 pos = new GridPoint2(x, y);
-     Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt(100);
-     xenoGrunt.setScale(1.5f, 1.5f);
-     spawnEntityAt(xenoGrunt, pos, true, true);
-   }
 
   // * TEMPORARY FOR TESTING
   private void spawnDodgingDragonKnight(int x, int y) {
@@ -734,7 +728,7 @@ public class ForestGameArea extends GameArea {
 //  }
 
   private void spawnGregMob() {
-    Entity gregMob = NPCFactory.createBaseWaterSlime(100);
+    Entity gregMob = NPCFactory.createGregMeleeMob(100);
     gregMob.setScale(1.5f, 1.5f);
     spawnEntityAt(gregMob, new GridPoint2(17, 4), false, false);
   }
