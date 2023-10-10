@@ -309,7 +309,7 @@ public class SplitMoblingsTest {
   }
 
   Entity createSplitMob(int amount) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseWaterSlime(10);
     mob.addComponent(new CombatStatsComponent(10, 10));
     mob.addComponent(new SplitMoblings(amount));
     ServiceLocator.getEntityService().register(mob);
@@ -317,7 +317,7 @@ public class SplitMoblingsTest {
   }
 
   Entity createSplitMob(int amount, float scale) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseWaterSlime(10);
     mob.addComponent(new SplitMoblings(amount, scale));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
@@ -325,7 +325,7 @@ public class SplitMoblingsTest {
   }
 
   Entity createSplitMob(int amount, float scaleX, float scaleY) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseWaterSlime(10);
     mob.addComponent(new SplitMoblings(amount, scaleX, scaleY));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
