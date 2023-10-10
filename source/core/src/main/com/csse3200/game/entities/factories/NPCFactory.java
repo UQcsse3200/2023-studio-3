@@ -486,12 +486,15 @@ public class NPCFactory {
    * @return
    */
   public static Entity createDodgingDragonKnight(int health) {
-    Entity fireWorm = createDragonKnight(health);
+    Entity dodgeKnight = createDragonKnight(health);
 
-    fireWorm.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-    fireWorm.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+    dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    
+    PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 0.7f);
+    dodgeKnight.setScale(0.3f, 0.7f);
 
-    return fireWorm;
+    return dodgeKnight;
   }
 
 //  public static Entity createDeflectXenoGrunt(int health) {
