@@ -81,12 +81,15 @@ public class BuildInputComponent extends InputComponent {
             buildTower((int)cursorPosition.x, (int)cursorPosition.y);
             logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return true;
+        } else {
+            // TODO: Create a tile indication of invalid placement here??
+            return false;
         }
-        return false;
     }
 
     /**
-     * Triggers player events on specific keycodes.
+     * Configures shortcut keys for building towers. Pressing the shortcut key
+     * sets the 'tower to build' variable in CurrencyService
      *
      * @return whether the input was processed
      * @see InputProcessor#keyDown(int)
@@ -141,6 +144,7 @@ public class BuildInputComponent extends InputComponent {
                 // build the selected tower
                 newTower.setPosition(x, y);
                 ServiceLocator.getEntityService().register(newTower);
+
                 // Decrement currency and show a popup that reflects the cost of the build
                 ServiceLocator.getCurrencyService().getScrap().modify(-cost);
                 ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
@@ -154,7 +158,9 @@ public class BuildInputComponent extends InputComponent {
             } else {
                 // play a sound to indicate an invalid action
                 long soundId = errorSound.play();
-                errorSound.setVolume(soundId, 0.5f);
+                errorSound.setVolume(soundId, 1f);
+                // TODO: add a visual indication of the build fail, through
+                //  currency display flash
             }
         }
     }

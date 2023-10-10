@@ -88,7 +88,6 @@ public class UIElementsDisplay extends UIComponent {
         }
 
         // Update the centrally located towerTypes list -
-        logger.info("In UIElementsDisplay, the towers being sent to ServiceLocator are " + towers);
         ServiceLocator.setTowerTypes(towers);
 
         // Create the buttons - TODO This needs overhauling to pretty buttons

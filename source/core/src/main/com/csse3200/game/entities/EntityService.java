@@ -221,7 +221,7 @@ public class EntityService {
     try {
       mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
     } catch (NullPointerException e) {
-      // MapService is not running
+      // MapService is not running - consider this occupied (invalid tile)
       return true;
     }
     if (mp.getCell(x_coord, y_coord) != null) {
