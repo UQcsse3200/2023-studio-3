@@ -30,6 +30,7 @@ public class EffectComponent extends Component {
     private long burnTime;
     private long slowTime;
     private long stunTime;
+    private Vector2 initialSpeed;
     private static long BURN_TICK = 1000;
 
     public EffectComponent(boolean mob) {
@@ -56,6 +57,15 @@ public class EffectComponent extends Component {
         }
 
         // apply slow effect
+        if (mob) {
+            if (slowFlag) {
+                Vector2 halfSpeed = new Vector2(target.getComponent(PhysicsMovementComponent.class).getSpeed());
+                changeSpeed(new Vector2(halfSpeed.x / 2, halfSpeed.y / 2));
+            } else if (isSlowed) {
+                changeSpeed(initialSpeed);
+                isSlowed = false;
+            }
+        }
         if (slowFlag && !isSlowed) {
             slowEffect(2);
         } else if (!slowFlag && isSlowed) {
@@ -82,6 +92,7 @@ public class EffectComponent extends Component {
             case SLOW -> {
                 slowFlag = true;
                 slowTime = gameTime.getTime() + EFFECT_DURATION;
+                initialSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed();
             }
             case STUN -> {
                 stunFlag = true;
@@ -117,6 +128,16 @@ public class EffectComponent extends Component {
             targetPhysics.setSpeed(new Vector2(targetPhysics.getSpeed().x/2,
                     targetPhysics.getSpeed().y/2));
         }
+    }
+
+    private void changeSpeed(Vector2 speed) {
+        PhysicsMovementComponent targetPhysics = target.getComponent(
+                PhysicsMovementComponent.class);
+        if (targetPhysics == null) {
+            return;
+        }
+        // Set mob speed
+        targetPhysics.setSpeed(speed);
     }
 
     private void stunEffect(boolean stunned) {

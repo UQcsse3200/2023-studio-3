@@ -326,7 +326,7 @@ public class ForestGameArea extends GameArea {
 //    waves.getEvents().addListener("spawnWave", this::spawnMob);
     spawnGregMob(18, 2);
 //    spawnDemonBoss();
-    spawnEffectProjectile(new Vector2(5f,2f), PhysicsLayer.HUMANS, 20, new Vector2(1f,1f), ProjectileEffects.STUN, false);
+    spawnEffectProjectile(new Vector2(10f,2f), PhysicsLayer.NPC, 20, new Vector2(2f,2f), ProjectileEffects.SLOW, false);
 
     spawnScrap();
     spawnGapScanners();
