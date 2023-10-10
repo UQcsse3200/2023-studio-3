@@ -30,7 +30,7 @@ public class EffectComponent extends Component {
     private long burnTime;
     private long slowTime;
     private long stunTime;
-    private Vector2 initialSpeed;
+    private Vector2 defaultTargetSpeed;
     private static final Vector2 STUN_SPEED = new Vector2(0f,0f);
     private static final long BURN_TICK = 1000;
 
@@ -59,33 +59,42 @@ public class EffectComponent extends Component {
 
         // apply slow effect
         if (mob) {
-            if (slowFlag) {
-                Vector2 halfSpeed = new Vector2(target.getComponent(PhysicsMovementComponent.class).getSpeed());
-                changeSpeed(new Vector2(halfSpeed.x / 2, halfSpeed.y / 2));
-            } else if (isSlowed) {
-                changeSpeed(initialSpeed);
-                isSlowed = false;
+            if (target == null) {
+                return;
             }
-        }
-        if (slowFlag && !isSlowed) {
-            slowEffect(2);
-        } else if (!slowFlag && isSlowed) {
-            isSlowed = false;
-            slowEffect(5);
+            if (slowFlag) {
+                isSlowed = true;
+                Vector2 half_speed = new Vector2(defaultTargetSpeed.x / 2, defaultTargetSpeed.y / 2);
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(half_speed);
+            } else if (isSlowed) {
+                isSlowed = false;
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(defaultTargetSpeed);
+            }
+        } else {
+            if (slowFlag && !isSlowed) {
+                isSlowed = true;
+                target.getEvents().trigger("upgradeTower",
+                        TowerUpgraderComponent.UPGRADE.FIRERATE, 2);
+            } else if (!slowFlag && isSlowed) {
+                isSlowed = false;
+                target.getEvents().trigger("upgradeTower",
+                        TowerUpgraderComponent.UPGRADE.FIRERATE, 5);
+            }
         }
 
         // apply stun effect
         if (mob) {
             if (stunFlag) {
-                if (initialSpeed == null) {
+                if (defaultTargetSpeed == null) {
                     return;
                 }
                 target.getComponent(PhysicsMovementComponent.class).setSpeed(STUN_SPEED);
-            } else {
+            } else if (isStunned) {
                 if (target == null) {
                     return;
                 }
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(initialSpeed);
+                isStunned = false;
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(defaultTargetSpeed);
             }
         } else {
             if (stunFlag && !isStunned) {
@@ -98,6 +107,10 @@ public class EffectComponent extends Component {
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
         this.host = host;
         this.target = target;
+        defaultTargetSpeed = entity.getComponent(PhysicsMovementComponent.class).getNormalSpeed();
+        if (defaultTargetSpeed == null) {
+            defaultTargetSpeed = new Vector2(1f,1f);
+        }
         switch (effect) {
             case BURN -> {
                 burnFlag = true;
@@ -107,12 +120,10 @@ public class EffectComponent extends Component {
             case SLOW -> {
                 slowFlag = true;
                 slowTime = gameTime.getTime() + EFFECT_DURATION;
-                initialSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed();
             }
             case STUN -> {
                 stunFlag = true;
                 stunTime = gameTime.getTime() + EFFECT_DURATION;
-                initialSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed();
             }
         }
     }
@@ -122,28 +133,6 @@ public class EffectComponent extends Component {
         CombatStatsComponent targetCombat = this.target.getComponent(CombatStatsComponent.class);
         targetCombat.hit(hostCombat);
         lastTimeBurned = gameTime.getTime();
-    }
-
-    private void slowEffect(int amount) {
-        isSlowed = true;
-        if (PhysicsLayer.contains(PhysicsLayer.HUMANS,
-                target.getComponent(HitboxComponent.class).getLayer())) {
-            // if slowing human
-            target.getEvents().trigger("upgradeTower",
-                    TowerUpgraderComponent.UPGRADE.FIRERATE, amount);
-        } else if (PhysicsLayer.contains(PhysicsLayer.NPC,
-                target.getComponent(HitboxComponent.class).getLayer())) {
-            // if slowing npc
-            PhysicsMovementComponent targetPhysics = target.getComponent(
-                    PhysicsMovementComponent.class);
-            if (targetPhysics == null) {
-                return;
-            }
-
-            // Halve the mob speed
-            targetPhysics.setSpeed(new Vector2(targetPhysics.getSpeed().x/2,
-                    targetPhysics.getSpeed().y/2));
-        }
     }
 
     private void changeSpeed(Vector2 speed) {

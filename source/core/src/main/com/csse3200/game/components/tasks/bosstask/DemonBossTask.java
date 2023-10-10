@@ -98,6 +98,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         animation = demon.getComponent(AnimationRenderComponent.class); // get animation
         currentPos = demon.getPosition(); // get current position
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_SPEED); // set speed
+        demon.getComponent(PhysicsMovementComponent.class).setNormalSpeed(DEMON_SPEED);
 
         Timer.schedule(new Timer.Task() {
             @Override

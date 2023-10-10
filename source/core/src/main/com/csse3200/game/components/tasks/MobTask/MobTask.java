@@ -88,8 +88,10 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_MOB_SPEED);
         } else {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_RANGE_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_RANGE_SPEED);
         }
     }
 
@@ -98,6 +100,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public void update() {
+//        System.out.println(mob.getComponent(PhysicsMovementComponent.class).getSpeed());
         // death check
         if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag) {
             changeState(State.DEATH);

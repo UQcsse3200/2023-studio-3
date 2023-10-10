@@ -60,6 +60,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         currentPos = owner.getEntity().getPosition(); // get current position
         slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed
+        slimey.getComponent(PhysicsMovementComponent.class).setNormalSpeed(SLIMEY_SPEED);
         changeState(SlimeState.TRANSFORM);
         slimey.getEvents().trigger("demon_death_sound");
         Timer.schedule(new Timer.Task() {
