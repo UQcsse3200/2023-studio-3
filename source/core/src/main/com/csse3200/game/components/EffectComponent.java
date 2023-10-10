@@ -16,7 +16,7 @@ import com.csse3200.game.services.ServiceLocator;
 
 public class EffectComponent extends Component {
     private static final long EFFECT_DURATION = 5000;
-    private GameTime gameTime;
+    private final GameTime gameTime;
     // effect flags
     private boolean burnFlag;
     private boolean slowFlag;
@@ -30,7 +30,9 @@ public class EffectComponent extends Component {
     private long burnTime;
     private long slowTime;
     private long stunTime;
-    private static long BURN_TICK = 1000;
+    private Vector2 initialSpeed;
+    private static final Vector2 STUN_SPEED = new Vector2(0f,0f);
+    private static final long BURN_TICK = 1000;
 
     public EffectComponent(boolean mob) {
         this.mob = mob;
@@ -64,10 +66,24 @@ public class EffectComponent extends Component {
         }
 
         // apply stun effect
-        if (stunFlag && !isStunned) {
-            stunEffect(true);
-        } else if (!stunFlag && isStunned) {
-            stunEffect(false);
+        if (mob) {
+            if (stunFlag) {
+                if (initialSpeed == null) {
+                    return;
+                }
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(STUN_SPEED);
+            } else {
+                if (target == null) {
+                    return;
+                }
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(initialSpeed);
+            }
+        } else {
+            if (stunFlag && !isStunned) {
+                stunEffect(true);
+            } else if (!stunFlag && isStunned) {
+                stunEffect(false);
+            }
         }
     }
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
@@ -86,6 +102,7 @@ public class EffectComponent extends Component {
             case STUN -> {
                 stunFlag = true;
                 stunTime = gameTime.getTime() + EFFECT_DURATION;
+                initialSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed();
             }
         }
     }
@@ -125,23 +142,10 @@ public class EffectComponent extends Component {
         if (targetAI == null) {
             return;
         }
-        Vector2 targetInitialSpeed = target.getComponent(PhysicsMovementComponent.class).getSpeed();
-        if (targetInitialSpeed == null) {
-            return;
-        }
-
-        if (mob) {
-            if (stunned) {
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0f,0f));
-            } else {
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(targetInitialSpeed);
-            }
+        if (stunned) {
+            targetAI.disposeAll();
         } else {
-            if (stunned) {
-                targetAI.disposeAll();
-            } else {
-                targetAI.restore();
-            }
+            targetAI.restore();
         }
     }
 }
