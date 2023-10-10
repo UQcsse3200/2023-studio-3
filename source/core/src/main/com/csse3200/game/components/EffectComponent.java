@@ -31,6 +31,7 @@ public class EffectComponent extends Component {
     private long slowTime;
     private long stunTime;
     private Vector2 defaultTargetSpeed;
+    private PhysicsMovementComponent targetPhysics;
     private static final Vector2 STUN_SPEED = new Vector2(0f,0f);
     private static final long BURN_TICK = 1000;
 
@@ -65,10 +66,10 @@ public class EffectComponent extends Component {
             if (slowFlag) {
                 isSlowed = true;
                 Vector2 half_speed = new Vector2(defaultTargetSpeed.x / 2, defaultTargetSpeed.y / 2);
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(half_speed);
+                targetPhysics.setSpeed(half_speed);
             } else if (isSlowed) {
                 isSlowed = false;
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(defaultTargetSpeed);
+                targetPhysics.setSpeed(defaultTargetSpeed);
             }
         } else {
             if (slowFlag && !isSlowed) {
@@ -88,13 +89,13 @@ public class EffectComponent extends Component {
                 if (defaultTargetSpeed == null) {
                     return;
                 }
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(STUN_SPEED);
+                targetPhysics.setSpeed(STUN_SPEED);
             } else if (isStunned) {
                 if (target == null) {
                     return;
                 }
                 isStunned = false;
-                target.getComponent(PhysicsMovementComponent.class).setSpeed(defaultTargetSpeed);
+                targetPhysics.setSpeed(defaultTargetSpeed);
             }
         } else {
             if (stunFlag && !isStunned) {
@@ -107,7 +108,12 @@ public class EffectComponent extends Component {
     public void applyEffect(ProjectileEffects effect, Entity host, Entity target) {
         this.host = host;
         this.target = target;
-        defaultTargetSpeed = entity.getComponent(PhysicsMovementComponent.class).getNormalSpeed();
+
+        targetPhysics = entity.getComponent(PhysicsMovementComponent.class);
+        if (targetPhysics == null) {
+            return;
+        }
+        defaultTargetSpeed = targetPhysics.getNormalSpeed();
         if (defaultTargetSpeed == null) {
             defaultTargetSpeed = new Vector2(1f,1f);
         }
