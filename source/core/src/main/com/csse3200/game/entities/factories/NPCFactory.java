@@ -462,7 +462,8 @@ public class NPCFactory {
         .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
 
     // * TEMPORARY TESTING FOR PROJECTILE DODGING
-    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(MobType.DRAGON_KNIGHT, 5));
+    // splitXenoGrunt.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
     return splitXenoGrunt;
   }
 
@@ -489,8 +490,9 @@ public class NPCFactory {
     Entity dodgeKnight = createDragonKnight(health);
 
     dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-    dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    
+    // dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    dodgeKnight.getComponent(AITaskComponent.class).
+    addTask(new MobDodgeTask(MobType.DRAGON_KNIGHT, 5));
     PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 0.7f);
     dodgeKnight.setScale(0.3f, 0.7f);
 

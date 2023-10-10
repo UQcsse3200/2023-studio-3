@@ -1,6 +1,8 @@
 package com.csse3200.game.components.tasks;
 
 import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.tasks.MobTask.MobTask;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -14,7 +16,7 @@ import com.csse3200.game.services.ServiceLocator;
  * "dodgeIncomingEntity" event to the attached entity.
  * </p>
  */
-public class MobDodgeTask extends MobWanderTask {
+public class MobDodgeTask extends MobTask {
 
   private final int priority; // active priority
 
@@ -34,8 +36,8 @@ public class MobDodgeTask extends MobWanderTask {
    * @param waitTime    How long in seconds to wait between wandering.
    * @param priority    Priority level compared to other added tasks.
    */
-  public MobDodgeTask(Vector2 wanderRange, float waitTime, int priority) {
-    super(wanderRange, waitTime);
+  public MobDodgeTask(MobType mobType, int priority) {
+    super(mobType);
     this.priority = priority;
 
     timeSource = ServiceLocator.getTimeSource();
