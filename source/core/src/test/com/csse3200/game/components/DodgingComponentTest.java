@@ -91,7 +91,7 @@ public class DodgingComponentTest {
   }
 
   Entity createDodgeMob(float posX, float posY) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseNPC();
     mob.addComponent(new CombatStatsComponent(10, 10));
     mob.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE));
 
@@ -102,7 +102,7 @@ public class DodgingComponentTest {
 
   Entity createDodgeMob(float posX, float posY, float rangeDetection,
       float dodgeSpeed) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseNPC();
     mob.addComponent(new CombatStatsComponent(10, 10));
     mob.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, rangeDetection, dodgeSpeed));
 

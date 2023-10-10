@@ -220,7 +220,7 @@ public class DeflectingComponentTest {
   }
 
   Entity createDeflectMob(int amount, float posX, float posY) {
-    Entity mob = NPCFactory.createRangedBaseNPC();
+    Entity mob = NPCFactory.createBaseNPC();
     mob.addComponent(new DeflectingComponent(PhysicsLayer.PROJECTILE,
         PhysicsLayer.TOWER, amount));
     mob.addComponent(new CombatStatsComponent(DEFAULT_ATTACK, DEFAULT_DEFENSE));

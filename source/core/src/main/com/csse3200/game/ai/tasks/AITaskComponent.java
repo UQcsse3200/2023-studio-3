@@ -87,6 +87,7 @@ public class AITaskComponent extends Component implements TaskRunner {
       priorityTasksToBeRestored.add(priorityTasks.get(i));
     }
     for (int i = 0; i < priorityTasks.size(); i++) {
+      System.out.println(priorityTasks.get(i));
       priorityTasks.remove(i);
     }
   }

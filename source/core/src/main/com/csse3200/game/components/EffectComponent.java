@@ -5,6 +5,7 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.PhysicsLayer;
@@ -22,6 +23,7 @@ public class EffectComponent extends Component {
     private boolean isSlowed;
     private boolean stunFlag;
     private boolean isStunned;
+    private boolean mob;
     private Entity host;
     private Entity target;
     private long lastTimeBurned;
@@ -31,6 +33,7 @@ public class EffectComponent extends Component {
     private static long BURN_TICK = 1000;
 
     public EffectComponent(boolean mob) {
+        this.mob = mob;
         this.gameTime = ServiceLocator.getTimeSource();
     }
 
@@ -122,12 +125,23 @@ public class EffectComponent extends Component {
         if (targetAI == null) {
             return;
         }
+        Vector2 targetInitialSpeed = target.getComponent(PhysicsMovementComponent.class).getSpeed();
+        if (targetInitialSpeed == null) {
+            return;
+        }
 
-        if (stunned) {
-            targetAI.disposeAll();
-            targetAI.dispose();
+        if (mob) {
+            if (stunned) {
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0f,0f));
+            } else {
+                target.getComponent(PhysicsMovementComponent.class).setSpeed(targetInitialSpeed);
+            }
         } else {
-            targetAI.restore();
+            if (stunned) {
+                targetAI.disposeAll();
+            } else {
+                targetAI.restore();
+            }
         }
     }
 }
