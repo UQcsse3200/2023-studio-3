@@ -41,7 +41,7 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
     private final RaycastHit hit = new RaycastHit();
 
     public enum STATE {
-        IDLE, ATTACK, DEATH
+        IDLE, DEATH
     }
     public STATE towerState = STATE.IDLE;
 
@@ -97,7 +97,7 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
         switch (towerState) {
             case IDLE -> {
                 owner.getEntity().getEvents().trigger(IDLE);
-                towerState = STATE.ATTACK;
+                towerState = STATE.IDLE;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {

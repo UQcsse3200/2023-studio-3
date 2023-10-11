@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
@@ -25,6 +26,7 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.input.UpgradeUIComponent;import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * Factory to create a tower entity.
  *
@@ -34,7 +36,6 @@ import java.util.Set;
 public class TowerFactory {
     // Define a set to keep track of occupied lanes
     private static final Set<Integer> occupiedLanes = new HashSet<>();
-
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
@@ -467,6 +468,8 @@ public class TowerFactory {
      */
     public static Entity createBaseTower() {
         // we're going to add more components later on
+
+
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
@@ -474,7 +477,9 @@ public class TowerFactory {
                 .addComponent(new TowerUpgraderComponent());
 
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
-
+        // Set hitboxes and colliders to one tile
+        tower.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
+        tower.getComponent(ColliderComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         return tower;
     }
     public static Entity createAndPlaceTower(int lane) {
