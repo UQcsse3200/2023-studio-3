@@ -181,6 +181,7 @@ public class TowerFactory {
      */
     public static Entity createTNTTower() {
         Entity TNTTower = createBaseTower();
+        TNTTower.getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
         TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
