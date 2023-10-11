@@ -3,17 +3,14 @@ package com.csse3200.game.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.areas.terrain.TerrainComponent;
 import com.csse3200.game.components.CameraComponent;
-import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -98,21 +95,47 @@ class BuildInputComponentTest {
 
   @Test
     void shouldHandleMissingMapService() {
-
+        when(ServiceLocator.getMapService()).thenReturn(null);
+        assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
 
   @Test
     void shouldHandleMissingCurrencyService() {
-
+        when(ServiceLocator.getCurrencyService()).thenReturn(null);
+        assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
 
   @Test
-    void shouldHandleInvalidTower() {
+    void shouldHandleNullTowerName() {
+        TowerType towerType = mock(TowerType.class);
+        when(towerType.getTowerName()).thenReturn(null);
+        ServiceLocator.getCurrencyService().setTowerType(towerType);
+  }
 
+  @Test
+  void shouldHandleNullTowerDesc() {
+        TowerType towerType = mock(TowerType.class);
+        when(towerType.getDescription()).thenReturn(null);
+        ServiceLocator.getCurrencyService().setTowerType(towerType);
+  }
+
+  @Test
+  void shouldHandleNullTowerCost() {
+        TowerType towerType = mock(TowerType.class);
+        when(towerType.getPrice()).thenReturn(null);
+        ServiceLocator.getCurrencyService().setTowerType(towerType);
+  }
+
+  @Test
+  void shouldHandleInvalidTowerName() {
+        TowerType towerType = mock(TowerType.class);
+        when(towerType.getTowerName()).thenReturn(null);
+        ServiceLocator.getCurrencyService().setTowerType(towerType);
   }
 
   @Test
     void shouldHandleMissingEntityService() {
-
+        when(ServiceLocator.getEntityService()).thenReturn(null);
+        assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
 }

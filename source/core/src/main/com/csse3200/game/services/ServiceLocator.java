@@ -121,20 +121,9 @@ public class ServiceLocator {
   }
 
   public static void setTowerTypes(Array<TowerType> selectedTowers) {
-    if (towerTypes.isEmpty()) {
-      // set default towers
-      TowerType[] defaultTowers = {
-              TowerType.TNT,
-              TowerType.DROID,
-              TowerType.INCOME,
-              TowerType.WALL,
-              TowerType.WEAPON
-      };
-      towerTypes.addAll(defaultTowers);
-    } else{
-      towerTypes.clear();
-      towerTypes.addAll(selectedTowers);
-    }
+
+    towerTypes.clear();
+    towerTypes.addAll(selectedTowers);
   }
 
   public static Array<TowerType> getTowerTypes() {
@@ -151,6 +140,7 @@ public class ServiceLocator {
     gameEndService = null;
     waveService = null;
     mapService = null;
+    towerTypes.clear();
   }
 
   private ServiceLocator() {

@@ -13,7 +13,6 @@ import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.utils.math.Vector2Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +32,7 @@ public class BuildInputComponent extends InputComponent {
     private Sound buildSound;
     private Sound errorSound;
     private Array<TowerType> towers = new Array<>();
+    private Array<TowerType> defaultTowers = new Array<>();
 
     /**
      * Constructor for the BuildInputComponent
@@ -43,6 +43,21 @@ public class BuildInputComponent extends InputComponent {
         this.camera = camera;
         loadSounds();
         towers.addAll(ServiceLocator.getTowerTypes());
+
+//        logger.info("selected towers in buildInputComponent are " + towers);
+        TowerType[] defaultTowerTypes = {
+              TowerType.TNT,
+              TowerType.DROID,
+              TowerType.INCOME,
+              TowerType.WALL,
+              TowerType.WEAPON
+        };
+        defaultTowers.addAll(defaultTowerTypes);
+
+        if (towers.isEmpty()) {
+            ServiceLocator.setTowerTypes(defaultTowers);
+            towers = defaultTowers;
+        }
     }
 
     /**
@@ -74,12 +89,12 @@ public class BuildInputComponent extends InputComponent {
 
         // determine if the tile is unoccupied
         boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y);
-        logger.debug("Tile is occupied: " + tileOccupied );
+//        logger.debug("Tile is occupied: " + tileOccupied );
 
         // check that no entities are occupying the tile
         if (!tileOccupied) {
             buildTower((int)cursorPosition.x, (int)cursorPosition.y);
-            logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
+//            logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return true;
         } else {
             // TODO: Create a tile indication of invalid placement here??
@@ -95,7 +110,7 @@ public class BuildInputComponent extends InputComponent {
      * @see InputProcessor#keyDown(int)
      */
     @Override
-    public boolean keyDown(int keycode) {
+    public boolean keyUp(int keycode) {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
@@ -126,6 +141,7 @@ public class BuildInputComponent extends InputComponent {
      */
     public void buildTower(int x, int y) {
         // fetch the currently set TowerType in the currency service, and its associated build cost.
+
         TowerType tower = ServiceLocator.getCurrencyService().getTower();
         if (tower != null) {
             // fetch the price of the selected tower and attempt to instantiate
@@ -159,6 +175,7 @@ public class BuildInputComponent extends InputComponent {
                 // play a sound to indicate an invalid action
                 long soundId = errorSound.play();
                 errorSound.setVolume(soundId, 1f);
+                ServiceLocator.getCurrencyService().getDisplay().scrapBalanceFlash();
                 // TODO: add a visual indication of the build fail, through
                 //  currency display flash
             }
@@ -169,9 +186,14 @@ public class BuildInputComponent extends InputComponent {
      * Load the sound assets related to in-game tower building activity
      */
     private void loadSounds() {
-        ServiceLocator.getResourceService().loadSounds(sounds);
-        ServiceLocator.getResourceService().loadAll();
-        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
-        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
+        try {
+            ServiceLocator.getResourceService().loadSounds(sounds);
+            ServiceLocator.getResourceService().loadAll();
+            buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
+            errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
+
+        } catch (NullPointerException e) {
+            logger.error("BuildInputComponent line 173: Couldn't load sounds for build menu");
+        }
     }
 }
