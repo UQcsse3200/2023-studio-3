@@ -15,7 +15,6 @@ public class EngineerBulletsAnimationController extends Component{
         animator = this.entity.getComponent(AnimationRenderComponent.class);
         entity.getEvents().addListener("startProjectile", this::animateStart);
         entity.getEvents().addListener("startProjectileFinal", this::animateFinal);
-
     }
 
     void animateStart() {
@@ -25,5 +24,9 @@ public class EngineerBulletsAnimationController extends Component{
     void animateFinal() {
         animator.startAnimation("bulletFinal");
     }
+	
+	public void animateCollide(){
+        animator.startAnimation("bulletCollide");
+	}
 }
 

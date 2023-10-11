@@ -8,11 +8,11 @@ public enum TowerType {
     DROID("Droid Tower", "Droid Towers deploy robotic helpers that assist in combat and provide support to nearby turrets.",
             2, "0", "images/turret-select/droid-tower-default.png", "images/turret-select/droid-tower-clicked.png"),
     WALL("Wall Tower", "The Wall Tower creates barriers to block enemy paths, slowing down their progress.",
-            3, "100", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-clicked.png"),
+            3, "0", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-clicked.png"),
     FIRE("Fire Tower", "The Fire Tower emits flames, causing damage over time to enemies caught in its fiery radius.",
             4, "0", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-clicked.png"),
     STUN("Stun Tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
-            5, "1000", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-clicked.png"),
+            5, "0", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-clicked.png"),
     INCOME("Income Tower", "The Income Tower generates additional in-game currency over time.",
             5, "0", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-clicked.png");
 

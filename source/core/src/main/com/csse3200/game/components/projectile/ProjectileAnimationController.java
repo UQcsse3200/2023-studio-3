@@ -30,4 +30,8 @@ public class ProjectileAnimationController extends Component{
     void animateFinal() {
         animator.startAnimation(FINAL_ANIM);
     }
+	
+    public void animateCollide() {
+        animator.startAnimation("projectileCollide");
+    }
 }

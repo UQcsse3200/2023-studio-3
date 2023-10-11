@@ -102,6 +102,13 @@ wizard_death
   orig: 110, 90
   offset: 0, 0
   index: -1
+wizard_freeze
+  rotate: false
+  xy: 1250, 94
+  size: 110, 90
+  orig: 110, 90
+  offset: 0, 0
+  index: -1
 wizard_death
   rotate: false
   xy: 804, 2

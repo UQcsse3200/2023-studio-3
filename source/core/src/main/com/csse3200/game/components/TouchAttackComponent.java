@@ -10,6 +10,21 @@ import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
+import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
+import com.csse3200.game.components.projectile.StunEffectProjectileAnimationController;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.components.npc.DragonKnightAnimationController;
+import com.csse3200.game.components.npc.FireWormAnimationController;
+import com.csse3200.game.components.npc.SkeletonAnimationController;
+import com.csse3200.game.components.npc.WizardAnimationController;
+import com.csse3200.game.components.npc.WaterQueenAnimationController;
+import com.csse3200.game.components.npc.WaterSlimeAnimationController;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 
 /**
  * When this entity touches a valid enemy's hitbox, deal damage to them and
@@ -93,7 +108,123 @@ public class TouchAttackComponent extends Component {
     Component deflectComponent = target.getComponent(DeflectingComponent.class);
     if (deflectComponent != null && deflectComponent.enabled)
       return;
-
+  
+	EngineerBulletsAnimationController engineerBulletsAnimationController;
+	ProjectileAnimationController projectileAnimationController;
+	SnowBallProjectileAnimationController snowBallProjectileAnimationController;
+	StunEffectProjectileAnimationController stunEffectProjectileAnimationController;
+	if((engineerBulletsAnimationController=entity.getComponent(EngineerBulletsAnimationController.class)) != null)
+	{
+		engineerBulletsAnimationController.animateCollide();
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+	if((projectileAnimationController=entity.getComponent(ProjectileAnimationController.class)) != null)
+	{
+		projectileAnimationController.animateCollide();
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+	if((snowBallProjectileAnimationController=entity.getComponent(SnowBallProjectileAnimationController.class)) != null)
+	{
+		snowBallProjectileAnimationController.animateCollide();
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 200/*START_SPEED*frames*1000ms*/);
+		
+		AITaskComponent aiTaskComponent;
+		if((aiTaskComponent=target.getComponent(AITaskComponent.class))!=null)
+		{
+			aiTaskComponent.freezed = true;
+			PhysicsMovementComponent physicsMovementComponent;
+			if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+				physicsMovementComponent.setMoving(false);
+			new Timer().schedule(new TimerTask() {
+			  public void run() {
+				aiTaskComponent.freezed = false;
+				PhysicsMovementComponent physicsMovementComponent;
+				if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+					physicsMovementComponent.setMoving(true);
+			  }
+			}, 5000);
+		}
+		XenoAnimationController xenoAnimationController; 
+		DragonKnightAnimationController dragonKnightAnimationController;
+		FireWormAnimationController fireWormAnimationController; 
+		SkeletonAnimationController skeletonAnimationController; 
+		WizardAnimationController wizardAnimationController;  
+		WaterQueenAnimationController waterQueenAnimationController; 
+		WaterSlimeAnimationController waterSlimeAnimationController;
+		if((xenoAnimationController=target.getComponent(XenoAnimationController.class))!=null)
+			xenoAnimationController.animateFreeze(); 
+		else
+		if((dragonKnightAnimationController=target.getComponent(DragonKnightAnimationController.class))!=null)
+			dragonKnightAnimationController.animateFreeze();
+		else
+		if((fireWormAnimationController=target.getComponent(FireWormAnimationController.class))!=null)
+			fireWormAnimationController.animateFreeze();
+		else
+		if((skeletonAnimationController=target.getComponent(SkeletonAnimationController.class))!=null)
+			skeletonAnimationController.animateFreeze();
+		else
+		if((wizardAnimationController=target.getComponent(WizardAnimationController.class))!=null)
+			wizardAnimationController.animateFreeze();
+		else
+		if((waterQueenAnimationController=target.getComponent(WaterQueenAnimationController.class))!=null)
+			waterQueenAnimationController.animateFreeze();
+		else
+		if((waterSlimeAnimationController=target.getComponent(WaterSlimeAnimationController.class))!=null)
+			waterSlimeAnimationController.animateFreeze();
+		/*else
+			if(aiTaskComponent!=null)
+				aiTaskComponent.freezed = false;*/
+	}else
+	if((stunEffectProjectileAnimationController=entity.getComponent(StunEffectProjectileAnimationController.class)) != null)
+	{
+		stunEffectProjectileAnimationController.animateCollide();
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 900/*START_SPEED*frames*1000ms*/);
+		
+		AITaskComponent aiTaskComponent;
+		if((aiTaskComponent=target.getComponent(AITaskComponent.class))!=null)
+		{
+			aiTaskComponent.freezed = true;
+			PhysicsMovementComponent physicsMovementComponent;
+			if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+				physicsMovementComponent.setMoving(false);
+			new Timer().schedule(new TimerTask() {
+			  public void run() {
+				aiTaskComponent.freezed = false;
+				PhysicsMovementComponent physicsMovementComponent;
+				if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+					physicsMovementComponent.setMoving(true);
+			  }
+			}, 1000);
+		}
+	}
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
       // If entity has abilities, pick one at random and apply it else use baseAttack

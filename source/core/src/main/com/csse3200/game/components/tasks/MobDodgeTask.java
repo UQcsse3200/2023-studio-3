@@ -3,6 +3,8 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.npc.XenoAnimationController;
 
 /**
  * This task runs the AI that adds a dodge mechanic/functionality for the mobs
@@ -60,12 +62,15 @@ public class MobDodgeTask extends MobWanderTask {
   @Override
   public void update() {
     super.update();
-    if (timeSource.getTime() >= endTime) {
-      owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
-          owner.getEntity().getCenterPosition());
+	if(!owner.getEntity().getComponent(AITaskComponent.class).freezed)
+	{
+		if (timeSource.getTime() >= endTime) {
+		  owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
+			  owner.getEntity().getCenterPosition());
 
-      endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
-    }
+		  endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
+		}
+	}
   }
 
   /**

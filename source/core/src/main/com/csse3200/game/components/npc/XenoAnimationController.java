@@ -58,4 +58,9 @@ public class XenoAnimationController extends Component {
     void stopAnimation() {
         animator.startAnimation("default");
     }
+	
+	public void animateFreeze()
+	{
+		animator.startAnimation("xeno_freeze");
+	}
 }

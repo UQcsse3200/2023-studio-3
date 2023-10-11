@@ -23,5 +23,9 @@ public class StunEffectProjectileAnimationController extends Component {
     void animateStart() {
         animator.startAnimation(START_ANIM);
     }
-
+	
+	public void animateCollide()
+	{
+		animator.startAnimation("stun");
+	}
 }

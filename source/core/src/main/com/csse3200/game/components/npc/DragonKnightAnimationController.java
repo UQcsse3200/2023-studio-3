@@ -39,6 +39,9 @@ public class DragonKnightAnimationController extends Component {
         animator.startAnimation("dragon_knight_death");
     }
 
-
+	public void animateFreeze()
+	{
+		animator.startAnimation("dragon_knight_freeze");
+	}
 }
 

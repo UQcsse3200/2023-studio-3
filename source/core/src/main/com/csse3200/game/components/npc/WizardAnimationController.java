@@ -48,5 +48,10 @@ public class WizardAnimationController extends Component {
     void animateDeath() {
         animator.startAnimation("wizard_death");
     }
+	
+	public void animateFreeze()
+	{
+		animator.startAnimation("wizard_freeze");
+	}
 }
 
