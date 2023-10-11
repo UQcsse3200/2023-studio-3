@@ -408,7 +408,6 @@ public class TowerFactory {
                 .addComponent(aiTaskComponent);
 
         pierceTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);
         return pierceTower;
     }
 
