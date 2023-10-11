@@ -2,19 +2,19 @@ package com.csse3200.game.screens;
 
 public enum TowerType {
     WEAPON("Weapon Tower", "The Weapon Tower is a simple and basic turret that fires rapid shots at enemies dealing damage over time.",
-            0, "0", "images/turret-select/Weapon-Tower-Default.png", "images/turret-select/Weapon-Tower-Clicked.png"),
+            0, "0", "images/turret-select/Weapon-Tower-Default.png", "images/turret-select/weapon-tower-selected.png"),
     TNT("TNT Tower", "The TNT Tower launches explosive projectiles, dealing area damage to groups of enemies.",
-            1, "0", "images/turret-select/tnt-tower-default.png", "images/turret-select/tnt-tower-clicked.png"),
+            1, "0", "images/turret-select/tnt-tower-default.png", "images/turret-select/tnt-tower-selected.png"),
     DROID("Droid Tower", "Droid Towers deploy robotic helpers that assist in combat and provide support to nearby turrets.",
-            2, "0", "images/turret-select/droid-tower-default.png", "images/turret-select/droid-tower-clicked.png"),
+            2, "0", "images/turret-select/droid-tower-default.png", "images/turret-select/droid-tower-selected.png"),
     WALL("Wall Tower", "The Wall Tower creates barriers to block enemy paths, slowing down their progress.",
-            3, "100", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-clicked.png"),
+            3, "100", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-selected.png"),
     FIRE("Fire Tower", "The Fire Tower emits flames, causing damage over time to enemies caught in its fiery radius.",
-            4, "0", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-clicked.png"),
+            4, "0", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-selected.png"),
     STUN("Stun Tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
-            5, "1000", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-clicked.png"),
+            5, "1000", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
     INCOME("Income Tower", "The Income Tower generates additional in-game currency over time.",
-            5, "0", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-clicked.png");
+            5, "0", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png");
 
     private final String towerName;
     private final String description;
