@@ -151,8 +151,8 @@ public class MainMenuScreen extends ScreenAdapter {
 
     // MM_Planet2
     // Determine the proportional offset of the MM_Star1 sprite
-    float MM_Planet2_proportionalOffsetX = 1290f / backgroundTexture.getWidth();
-    float MM_Planet2_proportionalOffsetY = 1200f / backgroundTexture.getHeight();
+    float MM_Planet2_proportionalOffsetX = 1430f / backgroundTexture.getWidth();
+    float MM_Planet2_proportionalOffsetY = 1250f / backgroundTexture.getHeight();
     // Calculate the position of the MM_Star1 sprite on the screen
     float MM_Planet2_spriteX = MM_Planet2_proportionalOffsetX * screenWidth;
     float MM_Planet2_spriteY = MM_Planet2_proportionalOffsetY * screenHeight;
