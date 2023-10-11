@@ -226,7 +226,7 @@ public class SplitMoblingsTest {
 
     for (Entity entity : initialEntities) {
       entity.setPosition(
-          SplitMoblings.MIN_X_BOUNDS + 5, SplitMoblings.MIN_Y_BOUNDS + 5);
+          SplitMoblings.MIN_X_BOUNDS + 5, SplitMoblings.MIN_Y_BOUNDS + 3);
     }
 
     projectile.getComponent(TouchAttackComponent.class)
