@@ -376,8 +376,6 @@ public class TowerFactory {
                 .addComponent(animator)
                 .addComponent(new FireworksTowerAnimationController());
 
-        fireworksTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(fireworksTower, 0.2f, 0.2f);
         return fireworksTower;
     }
 
@@ -477,7 +475,8 @@ public class TowerFactory {
                 .addComponent(new TowerUpgraderComponent());
 
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
-        // Set hitboxes and colliders to one tile
+
+        // Set hitbox and collider to a vector of size 1 and align the hitbox and collider to the center of the tower
         tower.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         tower.getComponent(ColliderComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         return tower;
