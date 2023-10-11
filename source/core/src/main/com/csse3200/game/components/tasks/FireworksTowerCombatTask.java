@@ -22,7 +22,7 @@ import com.csse3200.game.services.ServiceLocator;
 public class FireworksTowerCombatTask extends DefaultTask implements PriorityTask {
     // constants
     // Time interval (in seconds) to scan for enemies
-    private static final int INTERVAL = 2;
+    private static final int INTERVAL = 1;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
@@ -103,6 +103,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
                 }
             }
             case ATTACK -> {
+                // check if fired last time if not fire if so hold
                 if (isTargetVisible()) {
                     owner.getEntity().getEvents().trigger(ATTACK);
                     Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,

@@ -345,7 +345,6 @@ public class TowerFactory {
                 .addComponent(new StunTowerAnimationController());
 
         stunTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);
         return stunTower;
     }
 
@@ -436,25 +435,6 @@ public class TowerFactory {
                 // ADD ANIMATION COMPONENTS
 
         ricochetTower.setScale(1.5f, 1.5f);
-        return ricochetTower;
-    }
-    public static Entity createHealTower() {
-        Entity ricochetTower = createBaseTower();
-        HealTowerConfig config = configs.HealTower;
-
-        AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
-
-        // ADD AnimationRenderComponent
-
-        ricochetTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent((new CostComponent(config.cost)))
-                .addComponent(aiTaskComponent);
-        // ADD ANIMATION COMPONENTS
-
-        ricochetTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
         return ricochetTower;
     }
 

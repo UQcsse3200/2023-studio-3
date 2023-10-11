@@ -68,7 +68,7 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
 
-        endTime = timeSource.getTime() + (INTERVAL * 5000);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**

@@ -49,8 +49,8 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         owner.getEntity().getEvents().addListener("addIncome",this::changeInterval);
-        // TODO: GOT RID OF THE 30 TIMES MULTIPLIER
-        endTime = timeSource.getTime() + (1000L);
+        // TODO: changed 30 TIMES MULTIPLIER to 5 times
+        endTime = timeSource.getTime() + (interval * 1500L);
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
