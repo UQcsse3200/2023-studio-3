@@ -12,6 +12,7 @@ import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.npc.DragonKnightAnimationController;
 import com.csse3200.game.components.npc.FireWormAnimationController;
 import com.csse3200.game.components.npc.GhostAnimationController;
+import com.csse3200.game.components.npc.NightBorneAnimationController;
 import com.csse3200.game.components.npc.SkeletonAnimationController;
 import com.csse3200.game.components.npc.SplitMoblings;
 import com.csse3200.game.components.npc.WaterQueenAnimationController;
@@ -323,6 +324,33 @@ public class NPCFactory {
     return coat;
   }
 
+  public static Entity createNightBorne(int health) {
+    Entity coat = createBaseNPC();
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/night_borne.atlas", TextureAtlas.class));
+    animator.addAnimation("night_borne_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("night_borne_attack", 0.1f);
+    animator.addAnimation("night_borne_death", 0.1f);
+    animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.NIGHT_BORNE));
+
+    coat
+            .addComponent(new CombatStatsComponent(health, 0, drops))
+            .addComponent(animator)
+            .addComponent(new NightBorneAnimationController())
+            .addComponent(aiTaskComponent);
+
+    coat.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    coat.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return coat;
+  }
+
   public static Entity createGregRangeMob(int health) {
     Entity fireWorm = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
@@ -475,6 +503,20 @@ public class NPCFactory {
    */
   public static Entity createSplittingWaterSlime(int health) {
     Entity splitWaterSlime = createBaseWaterSlime(health)
+
+        .addComponent(new SplitMoblings(7, 0.5f));
+        
+    return splitWaterSlime;
+  }
+
+  /**
+   * Create Splitting night borne
+   * 
+   * @require Entity to have a "splitDeath"
+   * @return
+   */
+  public static Entity createSplittingNightBorne(int health) {
+    Entity splitWaterSlime = createNightBorne(health)
 
         .addComponent(new SplitMoblings(7, 0.5f));
         

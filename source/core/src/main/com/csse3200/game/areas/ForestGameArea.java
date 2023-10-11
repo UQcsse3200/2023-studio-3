@@ -187,7 +187,8 @@ public class ForestGameArea extends GameArea {
           "images/towers/RicochetTower.atlas",
           "images/mobboss/iceBaby.atlas",
           "images/bombship/bombship.atlas",
-          "images/mobs/coat.atlas"
+          "images/mobs/coat.atlas",
+          "images/mobs/night_borne.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -525,6 +526,12 @@ public class ForestGameArea extends GameArea {
 
       case "Coat":
         mob = NPCFactory.createCoat(health);
+        break;
+      case "NightBorne":
+        mob = NPCFactory.createNightBorne(health);
+        break;
+      case "SplittingNightBorne":
+        mob = NPCFactory.createSplittingNightBorne(health);
         break;
 
       case "PatrickBoss":

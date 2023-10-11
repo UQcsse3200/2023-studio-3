@@ -120,10 +120,13 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY,
       float initialScaleX, float initialScaleY) {
-    Entity waterSlime = NPCFactory.createBaseWaterSlime(60);
+    // MAKE A SWITCH CASE STATEMENT HERE, ASK JASON HOW TO
+    // Entity waterSlime = NPCFactory.createBaseWaterSlime(60);
+    Entity waterSlime = NPCFactory.createNightBorne(60);
     waterSlime.setPosition(positionX, positionY);
 
-    waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    // waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    waterSlime.setScale(initialScaleX, initialScaleY);
 
     ServiceLocator.getEntityService().register(waterSlime);
   }

@@ -23,9 +23,9 @@ public class CoatAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("coat_run", this::animateWalk);
-        entity.getEvents().addListener("coat_attack", this::animateAttack);
-        entity.getEvents().addListener("coat_death", this::animateDeath);
+        entity.getEvents().addListener("mob_walk", this::animateWalk);
+        entity.getEvents().addListener("mob_attack", this::animateAttack);
+        entity.getEvents().addListener("mob_death", this::animateDeath);
 
 
     }

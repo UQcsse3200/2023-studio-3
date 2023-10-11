@@ -90,7 +90,7 @@ public class WaveFactory {
     // TODO hash out level1 test in NPCFactory when doing this. 
 //    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "PatrickBoss", "WaterQueen"));
 //    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "IceBoss", "WaterQueen"));
-    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Skeleton", "DeflectWizard"));
+    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("SplittingNightBorne","Skeleton"));
     ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
 
     // The mob bosses assigned to the associated levels (planets)

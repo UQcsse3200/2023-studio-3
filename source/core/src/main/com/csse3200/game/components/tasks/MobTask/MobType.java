@@ -7,7 +7,8 @@ public enum MobType {
     WATER_SLIME(true),
     FIRE_WORM(false),
     DRAGON_KNIGHT(true),
-    COAT(true);
+    COAT(true),
+    NIGHT_BORNE(true);
     private boolean isMelee;
 
     MobType(boolean melee) {

@@ -26,9 +26,9 @@ public class FireWormAnimationController extends Component {
     public void create() {
         super.create();
         animator = this.entity.getComponent(AnimationRenderComponent.class);
-        entity.getEvents().addListener("fire_worm_walk", this::animateWalk);
-        entity.getEvents().addListener("fire_worm_attack", this::animateAttack);
-        entity.getEvents().addListener("fire_worm_death", this::animateDeath);
+        entity.getEvents().addListener("mob_walk", this::animateWalk);
+        entity.getEvents().addListener("mob_attack", this::animateAttack);
+        entity.getEvents().addListener("mob_death", this::animateDeath);
         entity.getEvents().addListener("default", this::stopAnimation);
     }
 
