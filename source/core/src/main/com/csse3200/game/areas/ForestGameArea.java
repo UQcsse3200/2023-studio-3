@@ -321,11 +321,11 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
     player = spawnPlayer();
 
-    waves = WaveFactory.createWaves();
-    spawnEntity(waves);
-    waves.getEvents().addListener("spawnWave", this::spawnMob);
+//    waves = WaveFactory.createWaves();
+//    spawnEntity(waves);
+//    waves.getEvents().addListener("spawnWave", this::spawnMob);
 //    spawnGregMob(18, 2);
-//    spawnDemonBoss();
+    spawnDemonBoss();
 //    spawnEffectProjectile(new Vector2(10f,2f), PhysicsLayer.NPC, 20, new Vector2(2f,2f), ProjectileEffects.SLOW, false);
 
     spawnScrap();

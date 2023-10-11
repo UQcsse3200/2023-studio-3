@@ -64,6 +64,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
+    private Array<Entity> nearbyEntities;
 
     // Flags
     private boolean startFlag = false;
@@ -167,11 +168,10 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> jump(getJumpPos());
             case SMASH -> {
                 if (jumpComplete()) {
-                    if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {
-                        fireBreath();
-                    }
-                    else {
+                    if (nearbyEntities != null && !nearbyEntities.isEmpty()) {
                         cleave();
+                    } else {
+                        fireBreath();
                     }
                 }
             }
@@ -247,34 +247,34 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return PRIORITY;
     }
 
-    /**
-     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
-     * 
-     * @return nearby entities with the PhysicsLayer of HUMAN
-     */
-    private Array<Entity> getNearbyHumans(int radius) {
-        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
-                getNearbyEntities(demon, radius);
-        Array<Entity> nearbyHumans = new Array<>();
-
-        // iterate through nearby entities checking if they have desired properties
-        for (int i = 0; i < nearbyEntities.size; i++) {
-            Entity targetEntity = nearbyEntities.get(i);
-            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-            if (targetHitbox == null) {
-                break;
-            }
-
-            // check target layer
-            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
-                    getLayer())) {
-                break;
-            }
-
-            nearbyHumans.add(targetEntity);
-        }
-        return nearbyHumans;
-    }
+//    /**
+//     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
+//     *
+//     * @return nearby entities with the PhysicsLayer of HUMAN
+//     */
+//    private Array<Entity> getNearbyHumans(int radius) {
+//        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
+//                getNearbyEntities(demon, radius);
+//        Array<Entity> nearbyHumans = new Array<>();
+//
+//        // iterate through nearby entities checking if they have desired properties
+//        for (int i = 0; i < nearbyEntities.size; i++) {
+//            Entity targetEntity = nearbyEntities.get(i);
+//            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+//            if (targetHitbox == null) {
+//                break;
+//            }
+//
+//            // check target layer
+//            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
+//                    getLayer())) {
+//                break;
+//            }
+//
+//            nearbyHumans.add(targetEntity);
+//        }
+//        return nearbyHumans;
+//    }
 
     /**
      * Changes state of demon and moves it to the desired position.
@@ -346,7 +346,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private boolean jumpComplete() {
         if (animation.isFinished() && isJumping) {
-            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
+            nearbyEntities = ServiceLocator.getEntityService().getEntitiesInLayer(
+                    demon, SMASH_RADIUS, PhysicsLayer.HUMANS);
+            applyAoeDamage(nearbyEntities, SMASH_DAMAGE); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;

@@ -291,7 +291,6 @@ public class MobBossFactory {
                 .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));
 
 //        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
-
         return boss;
     }
 
