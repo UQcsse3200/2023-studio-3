@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.ArcaneArcherAnimationController;
 import com.csse3200.game.components.npc.CoatAnimationController;
 import com.csse3200.game.components.npc.DeflectingComponent;
 import com.csse3200.game.components.npc.DodgingComponent;
@@ -351,6 +352,34 @@ public class NPCFactory {
     return coat;
   }
 
+  public static Entity createArcaneArcher(int health) {
+    Entity coat = createBaseNPC();
+    ArrayList<Currency> drops = new ArrayList<>();
+
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService().getAsset("images/mobs/arcane_archer.atlas", TextureAtlas.class));
+    animator.addAnimation("arcane_archer_run", 0.1f, Animation.PlayMode.LOOP);
+    animator.addAnimation("arcane_archer_attack", 0.1f);
+    animator.addAnimation("arcane_archer_death", 0.1f);
+    animator.addAnimation("arcane_archer_dodge", 0.1f);
+    animator.addAnimation("default", 0.1f);
+
+    AITaskComponent aiTaskComponent = new AITaskComponent()
+            .addTask(new MobTask(MobType.ARCANE_ARCHER));
+
+    coat
+            .addComponent(new CombatStatsComponent(health, 0, drops))
+            .addComponent(animator)
+            .addComponent(new ArcaneArcherAnimationController())
+            .addComponent(aiTaskComponent);
+
+    coat.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    coat.getComponent(AnimationRenderComponent.class).scaleEntity();
+
+    return coat;
+  }
+
   public static Entity createGregRangeMob(int health) {
     Entity fireWorm = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
@@ -530,6 +559,24 @@ public class NPCFactory {
    */
   public static Entity createDodgingDragonKnight(int health) {
     Entity dodgeKnight = createDragonKnight(health);
+
+    dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
+    // dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
+    dodgeKnight.getComponent(AITaskComponent.class).
+    addTask(new MobDodgeTask(MobType.DRAGON_KNIGHT, 5));
+    PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 0.7f);
+    dodgeKnight.setScale(0.3f, 0.7f);
+
+    return dodgeKnight;
+  }
+
+  /**
+   * Create a dodging Arcane Archer
+   * 
+   * @return
+   */
+  public static Entity createDodgingArcaneArcher(int health) {
+    Entity dodgeKnight = createArcaneArcher(health);
 
     dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
     // dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));

@@ -49,7 +49,7 @@ public class MobDodgeTask extends MobTask {
   @Override
   public void start() {
     super.start();
-    owner.getEntity().getEvents().trigger("wanderStart");
+    owner.getEntity().getEvents().trigger("mob_walk");
 
     // endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
     endTime = timeSource.getTime();
@@ -65,6 +65,7 @@ public class MobDodgeTask extends MobTask {
     if (timeSource.getTime() >= endTime) {
       owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
           owner.getEntity().getCenterPosition());
+      
 
       endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
     }
