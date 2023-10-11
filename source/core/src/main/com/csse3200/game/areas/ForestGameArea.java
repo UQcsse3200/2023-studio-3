@@ -2,25 +2,11 @@ package com.csse3200.game.areas;
 
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.areas.terrain.TerrainFactory;
-import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
-import com.csse3200.game.physics.PhysicsLayer;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.Vector2;
 
-import com.csse3200.game.areas.terrain.TerrainComponent;
 import com.csse3200.game.components.ProjectileEffects;
-import com.csse3200.game.areas.terrain.TerrainFactory;
-import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
-import com.csse3200.game.components.ProjectileEffects;
-import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.*;
-
-import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.screens.AssetLoader;
 
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
@@ -29,14 +15,9 @@ import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.security.SecureRandom;
-import java.util.Random;
 import java.util.Timer;
 
-import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
-import java.util.ArrayList;
-
-import java.util.TimerTask;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
@@ -45,10 +26,6 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
-
-
-  private static final int NUM_MOBBOSS2=3;
-  private static final int NUM_MOBBOSS1=1;
 
   private SecureRandom rand = new SecureRandom();
 
@@ -238,12 +215,6 @@ public class ForestGameArea extends GameArea {
   private static final String[] forestMusic = {backgroundMusic};
   private Entity player;
   private Entity waves;
-
-  // Variables to be used with spawn projectile methods. This is the variable
-  // that should occupy the direction param.
-  private static final int towardsMobs = 100;
-  private Entity mobBoss2;
-  private Entity mobBoss1;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.

@@ -7,15 +7,11 @@ import com.csse3200.game.components.*;
 import com.csse3200.game.components.bosses.DemonAnimationController;
 import com.csse3200.game.components.bosses.PatrickAnimationController;
 import com.csse3200.game.components.bosses.IceBabyAnimationController;
-import com.csse3200.game.components.npc.Boss1AnimationController;
-import com.csse3200.game.components.npc.Boss2AnimationController;
 import com.csse3200.game.components.tasks.bosstask.*;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.configs.MobBossConfigs;
 import com.csse3200.game.entities.configs.NPCConfigs;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.*;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
@@ -26,26 +22,18 @@ import com.csse3200.game.services.ServiceLocator;
 public class MobBossFactory {
 
     private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, "configs/Boss.json");
-    private static final int PRIORITY = 1;
-    private static final int BOSS_MOB_AGRO_RANGE = 10;
-    private static final int DEMON_HEALTH = 5000;
-    private static final int DEMON_ATTACK = 0;
-    private static final int PATRICK_ATTACK = 0;
-    private static final int PATRICK_HEALTH = 2500;
-    private static final int ICEBABY_ATTACK = 0;
-    private static final int ICEBABY_HEALTH = 3000;
+    private static final int ATTACK = configs.mobBoss.baseAttack;
 
     /**
-     * Creates new Demon boss with its correlating tasks and animations
-     *
-     * @return Demon boss
+     * Creates new Demon Boss with tasks and animations.
+     * 
+     * @param health value for the Demon Boss's health
+     * @return a Demon Boss Entity
      */
-//    public static Entity createDemonBoss() {
-    // Create Demon Boss
     public static Entity createDemonBoss(int health) {
         Entity demon = createBaseBoss();
 
-        // Animation addition
+        // Animation
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/demon.atlas",
                         TextureAtlas.class));
@@ -59,19 +47,18 @@ public class MobBossFactory {
         animator.addAnimation("demon_walk", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.NORMAL);
 
-        // AI task addition
+        // Adds AI task 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new DemonBossTask());
 
-        // Component addition
+        // Adds components
         demon
                 .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(health, DEMON_ATTACK));
-//                .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
+                .addComponent(new CombatStatsComponent(health, ATTACK));
 
-        // Scale demon
+        // Scale Demon Boss
         demon.getComponent(AnimationRenderComponent.class).scaleEntity();
         demon.scaleHeight(5f);
         demon.scaleWidth(5f);
@@ -81,7 +68,8 @@ public class MobBossFactory {
     /**
      * Creates end state of demon boss
      *
-     * @return Slimey Boy
+     * @param health value for Slimey Boy's health
+     * @return a Slimey Boy Entity
      */
     public static Entity createSlimeyBoy(int health) {
         Entity slimeyBoy = createBaseBoss();
@@ -97,18 +85,18 @@ public class MobBossFactory {
         animator.addAnimation("take_hit", 0.2f, Animation.PlayMode.LOOP);
         animator.addAnimation("transform", 0.2f, Animation.PlayMode.REVERSED);
 
-        // AI task addition
+        // Adds AI task
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new SlimeyBoyTask());
 
-        // Component addition
+        // Adds components
         slimeyBoy
                 .addComponent(animator)
                 .addComponent(new DemonAnimationController())
                 .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(health, 0));
 
-        // Scale demon
+        // Scale Slimey Boy
         slimeyBoy.getComponent(AnimationRenderComponent.class).scaleEntity();
         slimeyBoy.scaleHeight(5f);
         slimeyBoy.scaleWidth(5f);
@@ -118,13 +106,13 @@ public class MobBossFactory {
     /**
      * Creates new Patrick boss with correlating tasks and animations
      *
-     * @param health - health of the boss
-     * @return Patrick Boss
+     * @param health value for the Patrick Boss's health
+     * @return a Patrick Boss
      */
     public static Entity createPatrickBoss(int health) {
         Entity patrick = createBaseBoss();
 
-        // Animation addition
+        // Animation
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
         animator.addAnimation("patrick_attack", 0.2f, Animation.PlayMode.NORMAL);
@@ -135,18 +123,18 @@ public class MobBossFactory {
         animator.addAnimation("patrick_spell", 0.2f, Animation.PlayMode.NORMAL);
         animator.addAnimation("patrick_walk", 0.2f, Animation.PlayMode.LOOP);
 
-        // AI task addition
+        // Adds AI task
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PatrickTask());
 
-        // Component addition
+        // Adds components
         patrick
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));
+                .addComponent(new CombatStatsComponent(health, ATTACK));
 
-        // Scale demon
+        // Scale Patrick Boss
         patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
         patrick.scaleHeight(4f);
         patrick.scaleWidth(4f);
@@ -154,29 +142,30 @@ public class MobBossFactory {
     }
 
     /**
-     * Creates a patrick entity whose sole purpose is to display death animation
-     * @return patrick death entity
+     * Creates a Patrick Boss Entity whose sole purpose is to display the Patrick death animation.
+     * 
+     * @return a Patrick Death Entity
      */
     public static Entity patrickDead() {
         Entity patrick = createBaseBoss();
 
-        // Animation addition
+        // Animation
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset("images/mobboss/patrick.atlas", TextureAtlas.class));
         animator.addAnimation("patrick_death", 0.2f, Animation.PlayMode.NORMAL);
 
-        // AI task addition
+        // Adds AI task
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PatrickDeathTask());
 
-        // Component addition
+        // Adds components
         patrick
                 .addComponent(animator)
                 .addComponent(new PatrickAnimationController())
                 .addComponent(aiTaskComponent)
                 .addComponent(new CombatStatsComponent(1, 0));
 
-        // Scale patrick
+        // Scale Patrick Boss
         patrick.getComponent(AnimationRenderComponent.class).scaleEntity();
         patrick.scaleHeight(4f);
         patrick.scaleWidth(4f);
@@ -186,7 +175,8 @@ public class MobBossFactory {
     /**
      * Creates a new ice boss and adds its correlating animations and tasks
      *
-     * @return - Ice Baby Boss
+     * @param health value for the Ice Boss's health
+     * @return an Ice Baby Boss Entity
      */
     public static Entity createIceBoss(int health) {
         Entity iceBaby = createBaseBoss();
@@ -211,7 +201,7 @@ public class MobBossFactory {
                 .addComponent(animator)
                 .addComponent(new IceBabyAnimationController())
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(health, ICEBABY_ATTACK));
+                .addComponent(new CombatStatsComponent(health, ATTACK));
 
         iceBaby.getComponent(AnimationRenderComponent.class).scaleEntity();
         iceBaby.scaleHeight(4f);
@@ -220,67 +210,10 @@ public class MobBossFactory {
         return iceBaby;
     }
 
-    // Create Boss King 1
-    public static Entity createMobBoss1(int numLane) {
-        MobBossConfigs config = configs.mobBoss;
-        Entity mobBoss1 = createBaseBoss();
-
-        AITaskComponent aiTaskComponent1 = new AITaskComponent()
-                .addTask(new FinalBossMovementTask(1f, numLane))
-                .addTask(new MobBossDeathTask(1));;
-
-        // Animation section
-        AnimationRenderComponent animator1 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/robot.atlas", TextureAtlas.class));
-        animator1.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP_REVERSED);
-
-        mobBoss1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator1)
-                .addComponent(aiTaskComponent1)
-                .addComponent(new Boss1AnimationController());
-
-        mobBoss1.getComponent(AnimationRenderComponent.class).scaleEntity();
-        mobBoss1.setScale(1f, 1f);
-
-        return mobBoss1;
-    }
-
-    // Create Boss King 2
-    public static Entity createMobBoss2() {
-        MobBossConfigs config = configs.mobBoss;
-        Entity mobBoss2 = createBaseBoss();
-
-        AITaskComponent aiTaskComponent2 = new AITaskComponent()
-                .addTask(new RangeBossTask(2f));
-
-        // Animation section
-        AnimationRenderComponent animator2 = new AnimationRenderComponent(
-                ServiceLocator.getResourceService().getAsset("images/mobs/boss2.atlas", TextureAtlas.class));
-        animator2.addAnimation("boss_death", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Idle", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Walk", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Charging", 0.3f, Animation.PlayMode.LOOP_REVERSED);
-        animator2.addAnimation("A1", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("A2", 0.3f, Animation.PlayMode.LOOP);
-        animator2.addAnimation("Hurt", 0.3f, Animation.PlayMode.LOOP);
-
-        mobBoss2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(animator2)
-                .addComponent(aiTaskComponent2)
-                .addComponent(new Boss2AnimationController())
-                .addComponent(new PhysicsComponent());
-
-        mobBoss2.getComponent(AnimationRenderComponent.class).scaleEntity();
-        mobBoss2.scaleHeight(3f);
-        mobBoss2.scaleWidth(3f);
-
-        return mobBoss2;
-    }
-
-
     /**
-     * Create base boss entity that all boss mobs will inherit
-     * @return base mob boss entity
+     * Creates a base boss entity with Components that all Mob Bosses will inherit.
+     * 
+     * @return a base mob boss entity
      */
     public static Entity createBaseBoss() {
         Entity boss = new Entity()
