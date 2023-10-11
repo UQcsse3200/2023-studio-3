@@ -82,7 +82,7 @@ class BuildInputComponentTest {
   @Test
   void shouldHandleTouchDown() {
       when(entityService.entitiesInTile(5, 5)).thenReturn(false);
-      assert(buildInputComponent.touchDown( 5, 5, 7, 8));
+      assertFalse(buildInputComponent.touchDown( 5, 5, 7, 8));
   }
 
   @Test

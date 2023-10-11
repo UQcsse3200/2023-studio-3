@@ -12,6 +12,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
+import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,9 +94,8 @@ public class BuildInputComponent extends InputComponent {
 
         // check that no entities are occupying the tile
         if (!tileOccupied) {
-            buildTower((int)cursorPosition.x, (int)cursorPosition.y);
 //            logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
-            return true;
+            return buildTower((int)cursorPosition.x, (int)cursorPosition.y);
         } else {
             // TODO: Create a tile indication of invalid placement here??
             return false;
@@ -139,15 +139,24 @@ public class BuildInputComponent extends InputComponent {
      * @param x x-coordinate int value
      * @param y y-coordinate int value
      */
-    public void buildTower(int x, int y) {
+    public boolean buildTower(int x, int y) {
+        TowerType tower;
+        CurrencyService currencyService;
         // fetch the currently set TowerType in the currency service, and its associated build cost.
-
-        TowerType tower = ServiceLocator.getCurrencyService().getTower();
+        try {
+            currencyService = ServiceLocator.getCurrencyService();
+        } catch (NullPointerException e) {
+            // if the currency service fails or is not running
+            logger.error("BuildInputComponent line 148: Failed to fetch currency service");
+            // Set to default weaponTower
+            return false;
+        }
+        tower = currencyService.getTower();
         if (tower != null) {
             // fetch the price of the selected tower and attempt to instantiate
-            int cost = Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice());
+            int cost = Integer.parseInt(currencyService.getTower().getPrice());
 
-            if (cost <= ServiceLocator.getCurrencyService().getScrap().getAmount()) {
+            if (cost <= currencyService.getScrap().getAmount()) {
                 Entity newTower = switch (tower) {
                     case WEAPON -> TowerFactory.createWeaponTower();
                     case INCOME -> TowerFactory.createIncomeTower();
@@ -159,7 +168,15 @@ public class BuildInputComponent extends InputComponent {
                 };
                 // build the selected tower
                 newTower.setPosition(x, y);
-                ServiceLocator.getEntityService().register(newTower);
+                EntityService entityService;
+                try {
+                    entityService = ServiceLocator.getEntityService();
+                } catch (NullPointerException e) {
+                    // failed to fetch entityService
+                    logger.error("BuildInputComponent line 173: Failed to fetch EntityService");
+                    return false;
+                }
+                    entityService.register(newTower);
 
                 // Decrement currency and show a popup that reflects the cost of the build
                 ServiceLocator.getCurrencyService().getScrap().modify(-cost);
@@ -171,6 +188,7 @@ public class BuildInputComponent extends InputComponent {
 
                 // deselect the tower after building
                 ServiceLocator.getCurrencyService().setTowerType(null);
+                return true;
             } else {
                 // play a sound to indicate an invalid action
                 long soundId = errorSound.play();
@@ -178,8 +196,10 @@ public class BuildInputComponent extends InputComponent {
                 ServiceLocator.getCurrencyService().getDisplay().scrapBalanceFlash();
                 // TODO: add a visual indication of the build fail, through
                 //  currency display flash
+
             }
         }
+        return false;
     }
 
     /**
