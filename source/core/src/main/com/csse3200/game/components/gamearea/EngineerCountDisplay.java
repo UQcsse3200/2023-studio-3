@@ -30,7 +30,7 @@ public class EngineerCountDisplay extends UIComponent {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
-        table.padTop(80f).padLeft(20f);
+        table.padTop(0f).padLeft(5f);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/engineers/engineerBanner.png")));

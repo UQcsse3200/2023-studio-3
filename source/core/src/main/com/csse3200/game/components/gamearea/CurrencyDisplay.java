@@ -47,7 +47,7 @@ public class CurrencyDisplay extends UIComponent {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
-        table.padTop(140f).padLeft(20f);
+        table.padTop(60f).padLeft(5f);
 
         scrapsTb = createButton("images/economy/scrapBanner.png",
                 ServiceLocator.getCurrencyService().getScrap().getAmount());

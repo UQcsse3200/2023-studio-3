@@ -14,6 +14,8 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+import static java.lang.Math.round;
+
 /**
  * The PierceTowerCombatTask runs the AI for the PierceTower class. The tower scans for mobs and targets in a straight
  * line from its centre coordinate and executes the trigger phrases for animations depeending on the current state of
@@ -32,6 +34,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
 
     // Class attributes
     private final int priority;
+    private float fireRateInterval;
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10);
     private final Vector2 maxRangePosition = new Vector2();
@@ -52,6 +55,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     public PierceTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -78,6 +82,9 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
+            if (towerState == STATE.ATTACK) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            }
             endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }

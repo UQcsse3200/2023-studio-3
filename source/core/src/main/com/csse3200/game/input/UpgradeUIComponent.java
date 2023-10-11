@@ -1,5 +1,6 @@
 package com.csse3200.game.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -32,6 +33,8 @@ import org.slf4j.LoggerFactory;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import static java.lang.Math.round;
 
 public class UpgradeUIComponent extends InputComponent {
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
@@ -85,21 +88,21 @@ public class UpgradeUIComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
-        //temp fix to prevent upgrading of new towers
-        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
-                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
-                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
-            return false;
-        }
-        //
+//        //temp fix to prevent upgrading of new towers
+//        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
+//                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
+//                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
+//            return false;
+//        }
+//        //
 
         // If the clicked position contains a turret, and the turret is upgradable and not a TNT tower
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null
-                && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
+                ) {
             // TNT TowerUpgraderComponent can be removed later, but possibly useful for future sprint.
            // Clear all existing upgrade tables
-            logger.info("clickedEntity: " + clickedEntity);
-
+//            logger.info("clickedEntity: " + clickedEntity);
+//
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
             Table existingUpgradeTable = upgradeTables.get(clickedEntity);
@@ -110,8 +113,6 @@ public class UpgradeUIComponent extends InputComponent {
             } else {
                 // If no upgrade table exists, create and store a new one
                 Table newUpgradeTable = createUpgradeTable(clickedEntity);
-                Vector2 UICoordinates = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
-                newUpgradeTable.setPosition(UICoordinates.x, UICoordinates.y);
                 stage.addActor(newUpgradeTable);
 
                 // Store the new upgrade table in the map
@@ -149,9 +150,11 @@ public class UpgradeUIComponent extends InputComponent {
     private Table createUpgradeTable(Entity turretEntity) {
         // This is the overarching table that contains the close button, the inner table, and the cost display
         Table upgradeTable = new Table();
-        upgradeTable.top();
+        upgradeTable.top().left();
         upgradeTable.defaults().pad(0).space(0);
         upgradeTable.setSize(60, 60);
+        upgradeTable.padTop(5f).padLeft(5f);
+        upgradeTable.setPosition(0, round((float) Gdx.graphics.getHeight() / 1.3f));
 
         // The inner table contains the upgrade buttons and the stats display
         Table innerUpgradeTable = new Table();
@@ -380,6 +383,7 @@ public class UpgradeUIComponent extends InputComponent {
                 }
             });
         }
+        logger.info(String.valueOf(attack));
         if (attack != 0) {
             innerUpgradeTable.add(attackIconImage).padRight(5).width(32).height(32);  // Add attack icon
             innerUpgradeTable.add(attackLabel).expandX().left();

@@ -331,15 +331,14 @@ public class ForestGameArea extends GameArea {
 //    spawnWeaponTower();
 //    spawnGapScanners();
 //    spawnDroidTower();
-//     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
-//     spawnPierceTower();
-//     spawnRicochetTower();
+     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
+     spawnPierceTower();
+     spawnRicochetTower();
 //    spawnBombship();
   }
 
   private void displayUI() {
     Entity ui = new Entity();
-    ui.addComponent(new GameAreaDisplay("Box Forest"));
     ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
