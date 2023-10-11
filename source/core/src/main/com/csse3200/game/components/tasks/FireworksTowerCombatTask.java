@@ -22,7 +22,7 @@ import com.csse3200.game.services.ServiceLocator;
 public class FireworksTowerCombatTask extends DefaultTask implements PriorityTask {
     // constants
     // Time interval (in seconds) to scan for enemies
-    private static final int INTERVAL = 1;
+    private static final int INTERVAL = 2;
     // The type of targets this tower will detect
     private static final short TARGET = PhysicsLayer.NPC;
     //Following constants are names of events that will be triggered in the state machine
@@ -69,7 +69,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
 
-        endTime = timeSource.getTime() + (INTERVAL * 500);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**
