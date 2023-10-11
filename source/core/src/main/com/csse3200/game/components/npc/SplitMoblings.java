@@ -125,8 +125,8 @@ public class SplitMoblings extends Component {
     Entity waterSlime = NPCFactory.createNightBorne(60);
     waterSlime.setPosition(positionX, positionY);
 
-    // waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
-    waterSlime.setScale(initialScaleX, initialScaleY);
+    waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    // waterSlime.setScale(initialScaleX, initialScaleY);
 
     ServiceLocator.getEntityService().register(waterSlime);
   }

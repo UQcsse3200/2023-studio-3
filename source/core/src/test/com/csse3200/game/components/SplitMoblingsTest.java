@@ -41,6 +41,7 @@ public class SplitMoblingsTest {
   private static final int BASE_AMOUNT = 5;
   private final String[] atlas = {
       "images/mobs/water_slime.atlas",
+      "images/mobs/night_borne.atlas"
   };
 
   Entity baseMob;

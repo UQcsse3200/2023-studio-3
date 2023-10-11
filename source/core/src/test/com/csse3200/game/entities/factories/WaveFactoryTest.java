@@ -51,7 +51,7 @@ class WaveFactoryTest {
   private final int LVL2_DIFF = 3;
   private final int LVL2_WAVES = 10;
   private final int LVL2_CHOSEN_LVL = 0;
-  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("Skeleton", "DeflectWizard"));
+  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Skeleton", "DeflectWizard"));
   private final String LVL2_BOSS = "PatrickBoss";
 
   // level stats for level 3 - fire planet
