@@ -436,7 +436,6 @@ public class TowerFactory {
                 // ADD ANIMATION COMPONENTS
 
         ricochetTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
         return ricochetTower;
     }
     public static Entity createHealTower() {
