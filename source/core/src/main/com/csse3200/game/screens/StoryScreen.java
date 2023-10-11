@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -17,6 +18,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Screen that displays a story with images and text.
@@ -67,6 +70,10 @@ public class StoryScreen extends ScreenAdapter {
             "all seems perfect until we picked up on a looming threat that maybe we aren't alone......",
             // Add more text as needed
     };
+    private String[] bgm = {
+            "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
+    };
+    private Music music;
     /**
      * Creates a new StoryScreen.
      *
@@ -83,6 +90,10 @@ public class StoryScreen extends ScreenAdapter {
         for (int i = 0; i < IMAGE_PATHS.length; i++) {
             images[i] = new Texture(IMAGE_PATHS[i]);
         }
+        ServiceLocator.registerResourceService(new ResourceService());
+        ServiceLocator.getResourceService().loadMusic(bgm);
+        ServiceLocator.getResourceService().loadAll();
+        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
     }
 
     @Override
@@ -128,6 +139,9 @@ public class StoryScreen extends ScreenAdapter {
         table.pad(20); // Add padding to the top-right corner
         table.add(buttonTable).row(); // Add button table and move to the next row
         stage.addActor(table);
+        music.setVolume(0.4f);
+        music.setLooping(true);
+        music.play();
     }
 
     @Override
@@ -201,5 +215,6 @@ public class StoryScreen extends ScreenAdapter {
         boldFont.dispose();
         stage.dispose();
         shapeRenderer.dispose();
+        music.dispose();
     }
 }

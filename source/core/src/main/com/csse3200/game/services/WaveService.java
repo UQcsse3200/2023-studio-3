@@ -17,6 +17,10 @@ public class WaveService {
     private long nextWaveTime;
     private final UIElementsDisplay display;
 
+    private int spawnDelay;
+
+    private boolean skipDelay = false;
+
 
     /**
      * Constructor for the Wave Service
@@ -122,11 +126,38 @@ public class WaveService {
     }
 
     /**
+     * Sets the spawn delay between levels
+     * @param spawnDelay representing the spawnDelay between levels.
+     */
+    public void setSpawnDelay(int spawnDelay) {this.spawnDelay = spawnDelay;}
+
+    /**
+     * Returns the spawn delay between levels
+     * @return (int) The spawn delay between levels.
+     */
+    public int getSpawnDelay() {return this.spawnDelay;}
+
+
+    /**
      * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
      * for this instance of the display.
      * @return the updating instance of UIElementsDisplay
      */
     public UIElementsDisplay getDisplay() {
         return this.display;
+    }
+
+    /**
+     * This will invert the value of the skipDelay boolean
+     * */
+    public void toggleDelay() {
+        this.skipDelay = !this.skipDelay;
+    }
+
+    /**
+     * retrieve the skipDelay condition
+     * */
+    public boolean shouldSkip() {
+      return this.skipDelay;
     }
 }

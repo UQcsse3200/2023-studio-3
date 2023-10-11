@@ -2,6 +2,7 @@ package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +54,25 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private static final String TEXTURE = "planets/background.png";
     private Set<TowerType> selectedTurrets = new HashSet<>();
     private TextButton backButton;
+    private String[] bgm = {
+            "sounds/background/pre_game/Sci-Fi7Loop.ogg"
+    };
+    private Music music;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
+    /**
+     * Constructor for the TurretSelectionScreen
+     * @param game The game object
+     */
     public TurretSelectionScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new ScreenViewport());
         table = new Table();
+
+        ServiceLocator.registerResourceService(new ResourceService());
+        ServiceLocator.getResourceService().loadMusic(bgm);
+        ServiceLocator.getResourceService().loadAll();
+        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
 
         // Set up the background
         batch = new SpriteBatch();
@@ -218,6 +233,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
         table.setFillParent(true);
         Gdx.input.setInputProcessor(stage);
 
+        music.setVolume(0.4f);
+        music.setLooping(true);
+        music.play();
+
     }
     @Override
     public void render(float delta) {
@@ -232,10 +251,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
         stage.draw();  // Draw the stage
     }
 
+    /**
+     * Returns the list of selected turrets
+     * @return The list of selected turrets
+     */
     public List<TowerType> getTurretList() {
         return turretList;
     }
 
+    /**
+     * Creates a button with the specified images and text
+     * @param defaultImageFilePath The file path to the default image
+     * @param alternateImageFilePath The file path to the alternate image
+     * @param cost The cost of the turret
+     * @param towerName The name of the turret
+     * @param turretDesc The description of the turret
+     * @return The created button
+     */
     private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, String cost,
                                     String towerName, String turretDesc) {
         Drawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(defaultImageFilePath)));
@@ -293,17 +325,27 @@ public class TurretSelectionScreen extends ScreenAdapter {
         return tb;
     }
 
+    /**
+     * Updates the description label
+     */
     private void updateDescriptionLabel() {
         descriptionLabel.setText("Description: " + turretDescription);
     }
 
+    /**
+     * Updates the description text
+     */
     private void updateDescriptionText() {
         descText.setText(turretDescriptionText);
     }
 
+    /**
+     * Disposes of the stage
+     */
     @Override
     public void dispose() {
         stage.dispose();
+        music.dispose();
     }
 
 }

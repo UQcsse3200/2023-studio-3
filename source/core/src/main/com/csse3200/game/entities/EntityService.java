@@ -79,6 +79,20 @@ public class EntityService {
   }
 
   /**
+   * Find an entity by its ID, if it exists return true, else return false
+   * @param id id of entity to find
+   * @return boolean true if entity exists, false if not
+   */
+  public boolean findEntityExistence(int id) {
+    for (Entity entity : entities) {
+      if (entity.getId() == id) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Get all entities
    */
   public Array<Entity> getEntities() {
@@ -174,6 +188,24 @@ public class EntityService {
     return null;
   }
 
+  /**
+   * Checks for the presence of an Entity at a specified position (x, y).
+   *
+   * @param x The x-coordinate of the position to check.
+   * @param y The y-coordinate of the position to check.
+   * @return The Entity found at the specified position, or null if no Entity is present.
+   */
+  public Entity checkEntityAtPosition(int x, int y) {
+    entities.sort(Comparator.comparingInt(Entity::getLayer));
+    for (Entity entity : entities) {
+      if (entity.getPosition().x == x && entity.getPosition().y == y) {
+        return entity;
+      }
+    }
+    return null;
+  }
+
+
   private boolean entityContainsPosition(Entity entity, float x, float y) {
     float entityX = entity.getPosition().x;
     float entityY = entity.getPosition().y;
@@ -198,7 +230,7 @@ public class EntityService {
       return true;
     }
     if (mp.getCell(x_coord, y_coord) != null) {
-      Entity entity = getEntityAtPosition(x_coord, y_coord);
+      Entity entity = checkEntityAtPosition(x_coord, y_coord);
       return entity != null;
     }
     return true;

@@ -6,6 +6,7 @@ import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.screens.GameLevelData;
+import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,10 +98,16 @@ public class WaveFactory {
     String boss1 = "IceBoss";
 //    String boss1 = "PatrickBoss";
     String boss2 = "PatrickBoss";
-    // String boss3 = "IceBoss";
-    //TODO change this to a fire boss in sprint 4
-   String boss3 = "FireBoss";
-    LevelWaves level = new LevelWaves(5);
+    //String boss3 = "IceBoss";
+
+    String boss3 = "FireBoss";
+
+    int spawnDelay = 5;
+
+    // Create new level entity with spawn delay of 5 seconds
+    LevelWaves level = new LevelWaves(spawnDelay);
+    // Tell the waveService what the spawn delay for levels will be (for UI team).
+    ServiceLocator.getWaveService().setSpawnDelay(spawnDelay);
 
     ArrayList<String> possibleMobs;
 
