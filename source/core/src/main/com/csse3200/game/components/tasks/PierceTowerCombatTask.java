@@ -39,6 +39,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     public enum STATE {
         IDLE, ATTACK, DEATH
@@ -103,18 +104,22 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
-                    owner.getEntity().getEvents().trigger(ALERT);
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                if (shoot) {
+                    if (!isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    } else {
+                        owner.getEntity().getEvents().trigger(ALERT);
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    }
                 }
+
+                shoot = !shoot;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {

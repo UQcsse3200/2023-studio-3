@@ -40,10 +40,11 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     //enums for the state triggers
     public enum STATE {
-        IDLE, ATTACK, DIE
+        IDLE, WAIT, ATTACK, DIE
     }
     public STATE towerState = STATE.IDLE;
 
@@ -111,20 +112,25 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
-                    owner.getEntity().getEvents().trigger(ATTACK);
+                if (shoot) {
+                    if (!isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    } else {
+                        owner.getEntity().getEvents().trigger(ATTACK);
 //                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
 //                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
-                    new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
-                    ProjectileEffects.STUN, false);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                        Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
+                                ProjectileEffects.STUN, false);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    }
                 }
+                shoot = !shoot;
             }
             case DIE -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {

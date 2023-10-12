@@ -181,7 +181,10 @@ public class TowerFactory {
      */
     public static Entity createTNTTower() {
         Entity TNTTower = createBaseTower();
-        TNTTower.getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);
+        TNTTower.getComponent(HitboxComponent.class)
+                .setLayer(PhysicsLayer.NONE)
+                .setSensor(true);
+        TNTTower.getComponent(ColliderComponent.class).setSensor(true);
         TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -271,7 +274,7 @@ public class TowerFactory {
         animator.addAnimation(IDLE_ANIM, IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(STOW_ANIM, STOW_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(DEPLOY_ANIM, DEPLOY_SPEED, Animation.PlayMode.REVERSED);
-        animator.addAnimation(FIRE_ANIM, FIRE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_ANIM, (2*FIRE_SPEED), Animation.PlayMode.LOOP);
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -304,7 +307,7 @@ public class TowerFactory {
                                 .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, (2*(FIRE_TOWER_ATTACK_SPEED+ 0.25f)), Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
@@ -334,7 +337,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, ((STUN_TOWER_ATTACK_SPEED+ 0.20f)), Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
@@ -365,7 +368,7 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, (2*FIREWORKS_TOWER_ANIM_ATTACK_SPEED), Animation.PlayMode.NORMAL);
         animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
 
@@ -394,7 +397,7 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(PIERCE_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, (2*PIERCE_TOWER_ANIM_ATTACK_SPEED), Animation.PlayMode.LOOP);
         animator.addAnimation(PIERCE_TOWER_IDLE_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(PIERCE_TOWER_DEATH_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(PIERCE_TOWER_ALERT_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
@@ -424,7 +427,7 @@ public class TowerFactory {
 
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset(RICOCHET_TOWER_ATLAS,TextureAtlas.class));
-        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
+        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,(2*RICOCHET_TOWER_ANIM_ATTACK_SPEED),Animation.PlayMode.LOOP);
         animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);
         animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
         ricochetTower

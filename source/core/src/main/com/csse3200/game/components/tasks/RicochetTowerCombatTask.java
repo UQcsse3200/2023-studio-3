@@ -40,6 +40,7 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     //enums for the state triggers
     public enum STATE {
@@ -104,18 +105,21 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
                 }
             }
             case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC,
-                            // NEED TO DO USER TESTING TO FIGURE OUT THE BOUNCE COUNT
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                if (shoot) {
+                    if (!isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    } else {
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC,
+                                // NEED TO DO USER TESTING TO FIGURE OUT THE BOUNCE COUNT
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    }
                 }
+                shoot = !shoot;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {

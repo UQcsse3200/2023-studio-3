@@ -40,6 +40,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     public enum STATE {
         IDLE, ATTACK, DEATH
@@ -104,17 +105,20 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
             }
             case ATTACK -> {
                 // check if fired last time if not fire if so hold
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y));
-                    ServiceLocator.getEntityService().register(newProjectile);
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState=STATE.IDLE;
+                if (shoot) {
+                    if (isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    } else {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState=STATE.IDLE;
+                    }
                 }
+                shoot = !shoot;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
