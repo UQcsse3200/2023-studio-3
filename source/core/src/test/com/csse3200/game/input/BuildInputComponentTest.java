@@ -86,7 +86,7 @@ class BuildInputComponentTest {
   }
 
   @Test
-    void shouldRejectOccupiedOrInvalidTile() {
+  void shouldRejectOccupiedOrInvalidTile() {
         // entitiesInTile checks for out of bounds condition as well
         when(entityService.entitiesInTile(5, 5)).thenReturn(true);
         assertFalse(buildInputComponent.touchDown(5,5, 7,8),
@@ -94,19 +94,19 @@ class BuildInputComponentTest {
   }
 
   @Test
-    void shouldHandleMissingMapService() {
+  void shouldHandleMissingMapService() {
         when(ServiceLocator.getMapService()).thenReturn(null);
         assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
 
   @Test
-    void shouldHandleMissingCurrencyService() {
+  void shouldHandleMissingCurrencyService() {
         when(ServiceLocator.getCurrencyService()).thenReturn(null);
         assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
 
   @Test
-    void shouldHandleNullTowerName() {
+  void shouldHandleNullTowerName() {
         TowerType towerType = mock(TowerType.class);
         when(towerType.getTowerName()).thenReturn(null);
         ServiceLocator.getCurrencyService().setTowerType(towerType);
@@ -134,7 +134,7 @@ class BuildInputComponentTest {
   }
 
   @Test
-    void shouldHandleMissingEntityService() {
+  void shouldHandleMissingEntityService() {
         when(ServiceLocator.getEntityService()).thenReturn(null);
         assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }

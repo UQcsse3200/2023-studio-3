@@ -45,7 +45,7 @@ public class BuildInputComponent extends InputComponent {
         loadSounds();
         towers.addAll(ServiceLocator.getTowerTypes());
 
-//        logger.info("selected towers in buildInputComponent are " + towers);
+        logger.debug("selected towers in buildInputComponent are " + towers);
         TowerType[] defaultTowerTypes = {
               TowerType.TNT,
               TowerType.DROID,
@@ -90,11 +90,11 @@ public class BuildInputComponent extends InputComponent {
 
         // determine if the tile is unoccupied
         boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y);
-//        logger.debug("Tile is occupied: " + tileOccupied );
+        logger.debug("Tile is occupied: " + tileOccupied );
 
         // check that no entities are occupying the tile
         if (!tileOccupied) {
-//            logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
+            logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return buildTower((int)cursorPosition.x, (int)cursorPosition.y);
         } else {
             // TODO: Create a tile indication of invalid placement here??
@@ -143,12 +143,9 @@ public class BuildInputComponent extends InputComponent {
         TowerType tower;
         CurrencyService currencyService;
         // fetch the currently set TowerType in the currency service, and its associated build cost.
-        try {
-            currencyService = ServiceLocator.getCurrencyService();
-        } catch (NullPointerException e) {
+        currencyService = ServiceLocator.getCurrencyService();
+        if (currencyService == null) {
             // if the currency service fails or is not running
-            logger.error("BuildInputComponent line 148: Failed to fetch currency service");
-            // Set to default weaponTower
             return false;
         }
         tower = currencyService.getTower();
@@ -169,14 +166,12 @@ public class BuildInputComponent extends InputComponent {
                 // build the selected tower
                 newTower.setPosition(x, y);
                 EntityService entityService;
-                try {
-                    entityService = ServiceLocator.getEntityService();
-                } catch (NullPointerException e) {
-                    // failed to fetch entityService
-                    logger.error("BuildInputComponent line 173: Failed to fetch EntityService");
+
+                entityService = ServiceLocator.getEntityService();
+                if (entityService == null){
                     return false;
                 }
-                    entityService.register(newTower);
+                entityService.register(newTower);
 
                 // Decrement currency and show a popup that reflects the cost of the build
                 ServiceLocator.getCurrencyService().getScrap().modify(-cost);
@@ -206,14 +201,9 @@ public class BuildInputComponent extends InputComponent {
      * Load the sound assets related to in-game tower building activity
      */
     private void loadSounds() {
-        try {
-            ServiceLocator.getResourceService().loadSounds(sounds);
-            ServiceLocator.getResourceService().loadAll();
-            buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
-            errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
-
-        } catch (NullPointerException e) {
-            logger.error("BuildInputComponent line 173: Couldn't load sounds for build menu");
-        }
+        ServiceLocator.getResourceService().loadSounds(sounds);
+        ServiceLocator.getResourceService().loadAll();
+        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
+        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
     }
 }
