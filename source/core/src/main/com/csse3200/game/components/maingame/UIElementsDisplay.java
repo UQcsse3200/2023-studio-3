@@ -51,13 +51,10 @@ public class UIElementsDisplay extends UIComponent {
         remainingMobsButton = new TextButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount(), skin);
         buttonTable.top().right();
-        towerTable.top();
+        towerTable.top().padTop(80f);
 
         buttonTable.setFillParent(true);
         towerTable.setFillParent(true);
-
-        towerTable.setDebug(true);
-        towerTable.padTop(50f);
 
         TowerType[] defaultTowers = {
                 TowerType.TNT,

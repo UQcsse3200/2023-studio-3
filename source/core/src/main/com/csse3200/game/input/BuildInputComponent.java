@@ -34,6 +34,7 @@ public class BuildInputComponent extends InputComponent {
     private Sound errorSound;
     private Array<TowerType> towers = new Array<>();
     private Array<TowerType> defaultTowers = new Array<>();
+    private boolean multipleTowerBuild = false;
 
     /**
      * Constructor for the BuildInputComponent
@@ -127,9 +128,27 @@ public class BuildInputComponent extends InputComponent {
             case Input.Keys.NUM_5:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
                 return true;
+            case Input.Keys.CONTROL_LEFT:
+                // After multiple placement, deselect tower and prevent further builds
+                ServiceLocator.getCurrencyService().setTowerType(null);
+                multipleTowerBuild = false;
+                return true;
             default:
                 return false;
         }
+    }
+
+    /**
+     *
+     * @param keycode one of the constants in {@link Input.Keys}
+     * @return
+     */
+    public boolean keyDown(int keycode) {
+        if (keycode == Input.Keys.CONTROL_LEFT) {
+            multipleTowerBuild = true;
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -182,7 +201,9 @@ public class BuildInputComponent extends InputComponent {
                 buildSound.setVolume(soundId, 0.4f);
 
                 // deselect the tower after building
-                ServiceLocator.getCurrencyService().setTowerType(null);
+                if (!multipleTowerBuild) {
+                    ServiceLocator.getCurrencyService().setTowerType(null);
+                }
                 return true;
             } else {
                 // play a sound to indicate an invalid action
