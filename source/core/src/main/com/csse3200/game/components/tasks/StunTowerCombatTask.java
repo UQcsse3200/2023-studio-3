@@ -44,7 +44,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
 
     //enums for the state triggers
     public enum STATE {
-        IDLE, WAIT, ATTACK, DIE
+        IDLE, ATTACK, DIE
     }
     public STATE towerState = STATE.IDLE;
 
