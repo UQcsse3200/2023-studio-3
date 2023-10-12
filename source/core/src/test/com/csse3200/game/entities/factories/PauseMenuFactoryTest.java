@@ -48,10 +48,7 @@ public class PauseMenuFactoryTest {
     @Test
     void entityHasRequiredComponents() {
         assertNotNull(entity.getComponent(PauseMenuTimeStopComponent.class));
-        assertNotNull(entity.getComponent(PauseMenuContinueButton.class));
-        assertNotNull(entity.getComponent(PauseMenuSettingsButton.class));
-        assertNotNull(entity.getComponent(PauseMenuPlanetSelectButton.class));
-        assertNotNull(entity.getComponent(PauseMenuMainMenuButton.class));
+        assertNotNull(entity.getComponent(PauseMenuButtonComponent.class));
         assertNotNull(entity.getComponent(TextureRenderComponent.class));
     }
 

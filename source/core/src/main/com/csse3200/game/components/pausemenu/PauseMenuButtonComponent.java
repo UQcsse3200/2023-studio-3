@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.ui.ButtonFactory;
@@ -15,6 +16,9 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
     private Table table;
+    private Table table2;
+    private Table table3;
+    private Table table4;
     private final GdxGame game;
 
     public PauseMenuButtonComponent(GdxGame screenSwitchHandle) {
@@ -32,14 +36,19 @@ public class PauseMenuButtonComponent extends UIComponent {
      * Positions them on the stage using a table
      */
     private void addActors() {
+        //window = new Window("",);
         table = new Table();
-        table.top().right();
         table.setFillParent(true);
-        ButtonFactory buttonFactory = new ButtonFactory();
-        TextButton continueBtn = buttonFactory.createButton("Continue");
-        TextButton settingsBtn = buttonFactory.createButton("Settings");
-        TextButton planetSelectBtn = buttonFactory.createButton("Planet Select");
-        TextButton mainMenuBtn = buttonFactory.createButton("Main Menu");
+        table2 = new Table();
+        table2.setFillParent(true);
+        table3 = new Table();
+        table3.setFillParent(true);
+        table4 = new Table();
+        table4.setFillParent(true);
+        TextButton continueBtn = ButtonFactory.createButton("Continue");
+        TextButton settingsBtn = ButtonFactory.createButton("Settings");
+        TextButton planetSelectBtn = ButtonFactory.createButton("Planet Select");
+        TextButton mainMenuBtn = ButtonFactory.createButton("Main Menu");
         continueBtn.addListener(
                 new ChangeListener() {
                     @Override
@@ -72,12 +81,15 @@ public class PauseMenuButtonComponent extends UIComponent {
                         game.setScreen(GdxGame.ScreenType.MAIN_MENU);
                     }
                 });
-        table.add(continueBtn).padTop(300f).padRight(700f);
-        table.add(settingsBtn).padTop(300f).padRight(500f);
-        table.add(planetSelectBtn).padTop(400f).padRight(675f);
-        table.add(mainMenuBtn).padTop(400f).padRight(490f);
+        table.add(continueBtn).padBottom(50f).padRight(200f);
+        table2.add(settingsBtn).padBottom(50f).padLeft(200f);
+        table3.add(planetSelectBtn).padTop(50f).padRight(200f);
+        table4.add(mainMenuBtn).padTop(50f).padLeft(200f);
 
         stage.addActor(table);
+        stage.addActor(table2);
+        stage.addActor(table3);
+        stage.addActor(table4);
     }
 
     @Override
