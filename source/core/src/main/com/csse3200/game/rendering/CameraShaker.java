@@ -15,17 +15,6 @@ import org.slf4j.LoggerFactory;
  Loosely based on 'Mastering LibGDX Game Development' - Chapter 9 - Camera Shake
  Book: https://www.amazon.com/Mastering-LibGDX-Game-Development-Patrick/dp/1785289365
 
- Changes/Enhancements:
- - All variables now use Vector3 (for eventual 3-axis camera shaking)
- - Minimum shake radius is now configurable
- - Radius fall off factor (was hard coded to 0.9f) is now configurable
- - added validation checks to parameters
- - You need to pass the camera in constructor, instead of position.x/y
- - added update() method for updating camera position
- - only compute new shake camera position every 1/60th of a second
- at most to accommodate fast refresh rates (to save GPU cycles)
- - added resetAndReconfigure(...) method to allow parameter changes
- - renamed variables so to not look like python
  */
 
 public class CameraShaker {
