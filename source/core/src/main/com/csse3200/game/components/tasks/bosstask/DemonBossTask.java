@@ -34,8 +34,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final Vector2 DEMON_SPEED = new Vector2(1f, 1f);
     private static final float STOP_DISTANCE = 0.1f;
     private static final float JUMP_DISTANCE = 3.0f;
-    private static final int Y_TOP_BOUNDARY = 6;
-    private static final int Y_BOT_BOUNDARY = 1;
+    private static final double Y_TOP_BOUNDARY = 5.5;
+    private static final double Y_BOT_BOUNDARY = 0.5;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_RADIUS = 3;
     private static final int MOVE_FORWARD_DELAY = 15;
@@ -44,6 +44,9 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final int CLEAVE_DAMAGE = 50;
     private static final int HEAL_TIMES = 10;
     private static final int HEALTH_TO_ADD = 10;
+    private static final int SLIMEY_BOY_HEALTH = 500;
+    private static final int SLIMES_SPAWNED = 2;
+    private static final int SPAWN_RADIUS = 2;
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
@@ -61,12 +64,14 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static int xLeftBoundary = 12;
     private ProjectileEffects effect = ProjectileEffects.BURN;
     private boolean aoe = true;
+    private Array<Entity> nearbyEntities;
 
     // Flags
     private boolean startFlag = false;
     private boolean isJumping;
     private boolean halfHealthFlag = false;
     private boolean isHealing = false;
+    private boolean isSpawning = false;
 
     /**
      * The different demon states.
@@ -94,6 +99,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         animation = demon.getComponent(AnimationRenderComponent.class); // get animation
         currentPos = demon.getPosition(); // get current position
         demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_SPEED); // set speed
+        demon.getComponent(PhysicsMovementComponent.class).setNormalSpeed(DEMON_SPEED);
 
         Timer.schedule(new Timer.Task() {
             @Override
@@ -144,7 +150,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         // detect death stage
         if (health <= 0) {
             // spawn slimey boy
-            Entity slimey = MobBossFactory.createSlimeyBoy();
+            Entity slimey = MobBossFactory.createSlimeyBoy(SLIMEY_BOY_HEALTH);
             slimey.setPosition(demon.getPosition().x, demon.getPosition().y);
             slimey.setScale(5f, 5f);
             ServiceLocator.getEntityService().register(slimey);
@@ -162,21 +168,22 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             case IDLE -> jump(getJumpPos());
             case SMASH -> {
                 if (jumpComplete()) {
-                    if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {
-                        fireBreath();
-                    }
-                    else {
+                    if (nearbyEntities != null && !nearbyEntities.isEmpty()) {
                         cleave();
+                    } else {
+                        fireBreath();
                     }
                 }
             }
             case BREATH, CLEAVE -> {
                 if (animation.isFinished()) {
-                    changeState(DemonState.IDLE);
+                    changeState(DemonState.CAST);
+                    isSpawning = true;
+                    spawnDemonSlimes();
                 }
             }
             case CAST -> {
-                if (!isHealing) {
+                if (!isHealing && !isSpawning) {
                     changeState(DemonState.IDLE);
                 }
             }
@@ -240,34 +247,34 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         return PRIORITY;
     }
 
-    /**
-     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
-     * 
-     * @return nearby entities with the PhysicsLayer of HUMAN
-     */
-    private Array<Entity> getNearbyHumans(int radius) {
-        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
-                getNearbyEntities(demon, radius);
-        Array<Entity> nearbyHumans = new Array<>();
-
-        // iterate through nearby entities checking if they have desired properties
-        for (int i = 0; i < nearbyEntities.size; i++) {
-            Entity targetEntity = nearbyEntities.get(i);
-            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-            if (targetHitbox == null) {
-                break;
-            }
-
-            // check target layer
-            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
-                    getLayer())) {
-                break;
-            }
-
-            nearbyHumans.add(targetEntity);
-        }
-        return nearbyHumans;
-    }
+//    /**
+//     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
+//     *
+//     * @return nearby entities with the PhysicsLayer of HUMAN
+//     */
+//    private Array<Entity> getNearbyHumans(int radius) {
+//        Array<Entity> nearbyEntities = ServiceLocator.getEntityService().
+//                getNearbyEntities(demon, radius);
+//        Array<Entity> nearbyHumans = new Array<>();
+//
+//        // iterate through nearby entities checking if they have desired properties
+//        for (int i = 0; i < nearbyEntities.size; i++) {
+//            Entity targetEntity = nearbyEntities.get(i);
+//            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
+//            if (targetHitbox == null) {
+//                break;
+//            }
+//
+//            // check target layer
+//            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
+//                    getLayer())) {
+//                break;
+//            }
+//
+//            nearbyHumans.add(targetEntity);
+//        }
+//        return nearbyHumans;
+//    }
 
     /**
      * Changes state of demon and moves it to the desired position.
@@ -338,12 +345,20 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      * @return if demon has completed jump or not
      */
     private boolean jumpComplete() {
-        if (currentPos.dst(jumpPos) <= STOP_DISTANCE && isJumping) {
-            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
+        if (animation.isFinished() && isJumping) {
+            nearbyEntities = ServiceLocator.getEntityService().getEntitiesInLayer(
+                    demon, SMASH_RADIUS, PhysicsLayer.HUMANS);
+            applyAoeDamage(nearbyEntities, SMASH_DAMAGE); // do damage upon landing
             isJumping = false;
             jumpTask.stop();
             return true;
         }
+//        if (currentPos.dst(jumpPos) <= STOP_DISTANCE && isJumping) {
+//            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing
+//            isJumping = false;
+//            jumpTask.stop();
+//            return true;
+//        }
         return false;
     }
 
@@ -460,5 +475,38 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
             }, (float) i /2);
         }
     }
-}
 
+    private void spawnDemonSlimes() {
+        for (int i = 0; i < SLIMES_SPAWNED; i++) {
+            demon.getEvents().trigger("spawn_demon_slime");
+            int finalI = i;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                Entity slime = MobBossFactory.createSlimeyBoy(100);
+                float angle = MathUtils.random(0f, MathUtils.PI2);
+                float distance = MathUtils.random(0f, SPAWN_RADIUS);
+
+                float x = demon.getPosition().x + distance * MathUtils.cos(angle);
+                float y = demon.getPosition().y + distance * MathUtils.sin(angle);
+
+                // boundary check
+                if (x > xRightBoundary || x < xLeftBoundary) {
+                    x = demon.getPosition().x;
+                }
+                if (y > Y_TOP_BOUNDARY || y < Y_BOT_BOUNDARY) {
+                    y = demon.getPosition().y;
+                }
+
+                Vector2 spawnLocation = new Vector2(x, y);
+                slime.setPosition(spawnLocation);
+                ServiceLocator.getEntityService().register(slime);
+
+                if (finalI == SLIMES_SPAWNED - 1) {
+                    isSpawning = false;
+                }
+                }
+            }, (float) (i + 1) * 2);
+        }
+    }
+}

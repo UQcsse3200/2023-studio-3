@@ -114,9 +114,8 @@ public class DroidAnimationController extends Component {
                 entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
         Projectile.setScale(new Vector2(0.5f,0.5f));
         Projectile.setPosition((float) (entity.getPosition().x + 0.2),
-                (float) (entity.getPosition().y - 0.2));
+                (float) (entity.getPosition().y));
         ServiceLocator.getEntityService().register(Projectile);
-
     }
 
 }
