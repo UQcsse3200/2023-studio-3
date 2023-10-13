@@ -64,6 +64,7 @@ public class WaveService {
      */
     public void setLevelCompleted() {
         if (!levelCompleted) {
+            logger.info("Level set to completed");
             levelCompleted = true;
         }
     }
