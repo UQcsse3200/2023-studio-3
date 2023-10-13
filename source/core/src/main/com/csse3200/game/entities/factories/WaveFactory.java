@@ -86,12 +86,12 @@ public class WaveFactory {
   public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
     int minMobs = 3 + maxDiff;
     // These are the mobs assigned to the associated levels (planets)
-    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
+    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Coat", "WaterQueen"));
     // TODO switch to hashed to demo the bosses and make sure to do this for mobs as well
     // TODO hash out level1 test in NPCFactory when doing this. 
 //    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "PatrickBoss", "WaterQueen"));
 //    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "IceBoss", "WaterQueen"));
-    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "Skeleton", "DeflectWizard"));
+    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("ArcaneArcher","SplittingNightBorne", "Skeleton", "DeflectWizard"));
     ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
 
     // The mob bosses assigned to the associated levels (planets)
