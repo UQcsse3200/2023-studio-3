@@ -134,6 +134,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
+    renderer.getCamera().getCamera().position.set(CAMERA_POSITION.x,CAMERA_POSITION.y,0);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
     InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
@@ -147,7 +148,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     loadAssets();
     createUI();
-    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
+    ServiceLocator.registerMapService(new MapService(renderer.getCamera(),camera));
     logger.debug("Initialising main game screen entities");
     ForestGameArea forestGameArea = new ForestGameArea();
     forestGameArea.create();
@@ -195,9 +196,11 @@ public class MainGameScreen extends ScreenAdapter {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+    ServiceLocator.getMapService().updateShakerGrid(delta);
     // Update the camera and set the batch's projection matrix
     camera.update();
     batch.setProjectionMatrix(camera.combined);
+    ServiceLocator.getMapService().updateShakerMap(delta);
 
     // Begin the batch
     batch.begin();

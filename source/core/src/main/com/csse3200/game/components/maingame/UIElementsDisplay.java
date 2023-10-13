@@ -197,6 +197,12 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void updateTimerButton() {
         int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
+
+        // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
+        if (totalSecs % 20 == 0) {
+                ServiceLocator.getMapService().shakeCameraMap();
+                ServiceLocator.getMapService().shakeCameraGrid();
+        }
         int seconds = totalSecs % 60;
         int minutes = (totalSecs % 3600) / 60;
         String finalTime = String.format("%02d:%02d", minutes, seconds);
