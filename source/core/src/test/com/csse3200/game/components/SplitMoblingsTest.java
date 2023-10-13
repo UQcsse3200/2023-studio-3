@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.npc.SplitMoblings;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;
@@ -309,17 +310,18 @@ public class SplitMoblingsTest {
     }
   }
 
+  // For now water slimes will be moblings spawned
   Entity createSplitMob(int amount) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
     mob.addComponent(new CombatStatsComponent(10, 10));
-    mob.addComponent(new SplitMoblings(amount));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount));
     ServiceLocator.getEntityService().register(mob);
     return mob;
   }
 
   Entity createSplitMob(int amount, float scale) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
-    mob.addComponent(new SplitMoblings(amount, scale));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount, scale));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;
@@ -327,7 +329,7 @@ public class SplitMoblingsTest {
 
   Entity createSplitMob(int amount, float scaleX, float scaleY) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
-    mob.addComponent(new SplitMoblings(amount, scaleX, scaleY));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount, scaleX, scaleY));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;

@@ -517,7 +517,7 @@ public class NPCFactory {
     Entity splitXenoGrunt = createXenoGrunt(health)
         // add the scaling yourself. can also scale the X and Y component,
         // leading to some very interesting mob designs.
-        .addComponent(new SplitMoblings(7, 0.5f))
+        .addComponent(new SplitMoblings(MobType.WATER_SLIME, 7, 0.5f))
         .addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
 
     // * TEMPORARY TESTING FOR PROJECTILE DODGING
@@ -535,7 +535,7 @@ public class NPCFactory {
   public static Entity createSplittingWaterSlime(int health) {
     Entity splitWaterSlime = createBaseWaterSlime(health)
 
-        .addComponent(new SplitMoblings(7, 0.5f));
+        .addComponent(new SplitMoblings(MobType.WATER_SLIME, 7, 0.5f));
         
     return splitWaterSlime;
   }
@@ -549,7 +549,7 @@ public class NPCFactory {
   public static Entity createSplittingNightBorne(int health) {
     Entity splitWaterSlime = createNightBorne(health)
 
-        .addComponent(new SplitMoblings(7, 0.5f));
+        .addComponent(new SplitMoblings(MobType.NIGHT_BORNE, 7, 0.5f));
         
     return splitWaterSlime;
   }
