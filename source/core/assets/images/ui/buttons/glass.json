@@ -192,7 +192,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 		background: UI_Glass_Frame_Standard_01a
 		titleFont: font_small
 		titleFontColor: White
-		stageBackground: UI_Glass_Frame_Standard_01a
 	}
 }
 }
