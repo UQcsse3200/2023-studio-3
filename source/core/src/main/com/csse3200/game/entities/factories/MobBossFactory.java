@@ -219,6 +219,7 @@ public class MobBossFactory {
         Entity boss = new Entity()
                 .addComponent(new PhysicsComponent())
 //                .addComponent(new ColliderComponent())
+                .addComponent(new EffectComponent(false))
                 .addComponent(new PhysicsMovementComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                 .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));

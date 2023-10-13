@@ -1,6 +1,8 @@
 package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.physics.box2d.Filter;
+import com.csse3200.game.components.EffectComponent;
+import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
 import com.csse3200.game.components.tasks.*;
@@ -469,6 +471,7 @@ public class TowerFactory {
         // we're going to add more components later on
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
+                .addComponent(new EffectComponent(false))
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
                 .addComponent(new TowerUpgraderComponent());
