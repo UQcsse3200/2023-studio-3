@@ -15,9 +15,13 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.areas.terrain.TerrainComponent.TerrainOrientation;
+import com.csse3200.game.currency.Scrap;
+import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.extensions.GameExtension;
 import static org.mockito.Mockito.*;
 
+import com.csse3200.game.screens.TowerType;
+import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.Test;
@@ -72,12 +76,20 @@ class TerrainComponentTest {
 
     Texture mockTexture = mock(Texture.class);
     ServiceLocator.registerResourceService(mock(ResourceService.class));
-    when(ServiceLocator.getResourceService().getAsset("images/highlight_tile.png", Texture.class))
+
+    ServiceLocator.registerCurrencyService(mock(CurrencyService.class));
+    when(ServiceLocator.getCurrencyService().getTower()).thenReturn(TowerType.WEAPON);
+
+    ServiceLocator.registerEntityService(mock(EntityService.class));
+    when(ServiceLocator.getEntityService().entitiesInTile(2,4)).thenReturn(Boolean.FALSE);
+
+    when(ServiceLocator.getCurrencyService().getScrap()).thenReturn(mock(Scrap.class));
+    when(ServiceLocator.getCurrencyService().getScrap().canBuy(Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice()))).thenReturn(Boolean.TRUE);
+    // The tile should turn green since it meets the requirement
+    when(ServiceLocator.getResourceService().getAsset("images/green_tile.png", Texture.class))
             .thenReturn(mockTexture);
 
-
     component.hoverHighlight();
-
     // Verify that the tile's texture region was changed
     verify(mockTile).setTextureRegion(any(TextureRegion.class));
   }
