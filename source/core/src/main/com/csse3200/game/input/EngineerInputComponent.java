@@ -47,10 +47,8 @@ public class EngineerInputComponent extends InputComponent {
 
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
-            if (selectedEngineer != null && moveClicked) {
+            if (selectedEngineer != null) {
                 moveEngineer(cursorPosition);
-                selectedEngineer = null;
-                moveClicked = false;
                 return true;
             } else {
                 return false;
@@ -60,30 +58,25 @@ public class EngineerInputComponent extends InputComponent {
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
         String currentAnimation = animator.getCurrentAnimation();
         HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
-        EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);
 
+        if (currentAnimation.contains("_outline")) {
+            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
+            controller.setClicked(false);
+        } else {
+            animator.startAnimation(currentAnimation + "_outline");
+            controller.setClicked(true);
+        }
+
+        // Selecting itself - deselecting
         if (engineer.equals(selectedEngineer)) {
-            // Deselect the engineer by clicking on itself
             this.getWanderTask().setSelected(false);
             selectedEngineer = null;
-            moveClicked = false;
-            if (currentAnimation.contains("_outline")) {
-                controller.deselectEngineer(currentAnimation);
-                //logger.info("Engineer deselected");
-            }
-        } else {
-            this.selectedEngineer = engineer;
-            this.getWanderTask().setSelected(true);
-            moveClicked = false;
-            logger.info("Engineer size: {}", engineer.getScale());
-
-            // outline image if it is not already outlined and vice versa
-            if (!currentAnimation.contains("_outline")) {
-                animator.startAnimation(currentAnimation + "_outline");
-                menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
-                controller.setClicked(true);
-            }
+            return true;
         }
+
+        // Selecting different engineer
+        selectedEngineer = engineer;
+        this.getWanderTask().setSelected(true);
         return true;
     }
 
