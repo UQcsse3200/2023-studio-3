@@ -74,7 +74,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         // Default to idle mode
         owner.getEntity().getEvents().trigger(WALK);
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
-        endTime = timeSource.getTime() + (INTERVAL * 500);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**

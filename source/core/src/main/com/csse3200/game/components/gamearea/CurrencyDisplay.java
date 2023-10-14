@@ -2,6 +2,7 @@ package com.csse3200.game.components.gamearea;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -87,6 +89,15 @@ public class CurrencyDisplay extends UIComponent {
         int value = ServiceLocator.getCurrencyService().getScrap().getAmount();
         CharSequence text = String.format("%d", value);
         scrapsTb.getLabel().setText(text);
+    }
+
+    /**
+     * Displays a warning animation of the scraps display if the player tries to
+     * build something that costs more than the balance
+     */
+    public void scrapBalanceFlash() {
+        // TODO: IMPLEMENT THIS
+        scrapsTb.setText("Insufficient!");
     }
 
     /**

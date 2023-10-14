@@ -1,0 +1,223 @@
+
+arcane_archer.png
+size: 512, 256
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+arcane_archer_attack
+  rotate: false
+  xy: 290, 2
+  size: 65, 44
+  orig: 65, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 362, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 146, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 74, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 362, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 218, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_attack
+  rotate: false
+  xy: 362, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 2, 2
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 2, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 146, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 74, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 434, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 218, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 2, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_death
+  rotate: false
+  xy: 146, 2
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 434, 140
+  size: 69, 44
+  orig: 69, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 290, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 146, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 290, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 74, 2
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 146, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_dodge
+  rotate: false
+  xy: 290, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 74, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 2, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 218, 94
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 2, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 218, 2
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 290, 186
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 74, 140
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+arcane_archer_run
+  rotate: false
+  xy: 218, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 218, 48
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1

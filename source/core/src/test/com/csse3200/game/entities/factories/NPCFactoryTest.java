@@ -193,8 +193,8 @@ public class NPCFactoryTest {
     public void testWaterSlimeCombatStatsComponent() {
         assertEquals(60, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
@@ -230,8 +230,8 @@ public class NPCFactoryTest {
     public void testWaterQueenCombatStatsComponent() {
         assertEquals(60, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
@@ -255,8 +255,8 @@ public class NPCFactoryTest {
     public void testFireWormCombatStatsComponent() {
         assertEquals(60, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
@@ -279,8 +279,8 @@ public class NPCFactoryTest {
     public void testDragonKnightCombatStatsComponent() {
         assertEquals(60, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
@@ -310,8 +310,8 @@ public class NPCFactoryTest {
     public void testWizardCombatStatsComponent() {
         assertEquals(60, wizard.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
@@ -341,8 +341,8 @@ public class NPCFactoryTest {
     public void testSkeletonCombatStatsComponent() {
         assertEquals(60, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test

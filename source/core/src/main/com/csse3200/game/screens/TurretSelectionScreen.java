@@ -13,22 +13,22 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import java.util.*;
+import java.util.List;
 
 public class TurretSelectionScreen extends ScreenAdapter {
 
@@ -105,17 +105,23 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         message = new Label("Select your turrets", skin);
 
-        confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
-                "images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png", "Continue", "", "");
-        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
-                new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
-        confirmButton.getStyle().down = pressDrawable;
-        confirmButton.pad(0,0,6,0);
+//        confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
+//                "images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png", "Continue", "", "");
+//        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
+//                new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
+//        confirmButton.getStyle().down = pressDrawable;
+//        confirmButton.pad(0,0,6,0);
+        confirmButton = ButtonFactory.createButton("Continue");
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Store the selected towers in the ServiceLocator for transferring across screens
-                ServiceLocator.setTowerTypes(selectedTurrets);;
+                // (as an Array)
+                Array<TowerType> towers = new Array<>();
+                for (TowerType t : selectedTurrets) {
+                    towers.add(t);
+                }
+                ServiceLocator.setTowerTypes(towers);;
                 game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
