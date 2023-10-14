@@ -53,7 +53,7 @@ public class WaveFactory {
         break;
       default:
         difficulty = 2;
-        maxWaves = 5;
+        maxWaves = 2; //change back to 5
     }
 
     LevelWaves level = createLevel(difficulty, maxWaves, chosenLevel);
