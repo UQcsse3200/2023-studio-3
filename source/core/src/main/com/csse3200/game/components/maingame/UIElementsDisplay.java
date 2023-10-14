@@ -196,11 +196,18 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the text for timer button.
      */
     public void updateTimerButton() {
-        int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
+        int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
+                - ServiceLocator.getTimeSource().getTime()) / 1000);
         int seconds = totalSecs % 60;
         int minutes = (totalSecs % 3600) / 60;
         String finalTime = String.format("%02d:%02d", minutes, seconds);
-        timerButton.setText("Next wave in:" + finalTime);
+        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
+            timerButton.setText("Next wave in: " + finalTime);
+        } else {
+            buttonTable.removeActor(timerButton);
+            stage.act();
+            stage.draw();
+        }
     }
 
     @Override
