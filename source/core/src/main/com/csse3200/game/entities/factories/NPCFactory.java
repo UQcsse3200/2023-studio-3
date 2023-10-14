@@ -617,7 +617,7 @@ public class NPCFactory {
   public static Entity createSplittingRocky(int health) {
     Entity splitRocky = createRocky(health)
 
-            .addComponent(new SplitMoblings(7, 0.5f));
+            .addComponent(new SplitMoblings(MobType.ROCKY, 7, 0.5f));
 
     return splitRocky;
   }
