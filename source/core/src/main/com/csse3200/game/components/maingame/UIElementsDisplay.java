@@ -2,28 +2,19 @@ package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.GridPoint2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
-import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
@@ -40,8 +31,6 @@ public class UIElementsDisplay extends UIComponent {
     };
     private Sound click;
     private Sound hover;
-//    private TextButton remainingMobsButton = new ButtonFactory().createButton("Mobs left:");
-//    private final TextButton timerButton = new ButtonFactory().createButton("Next wave:");
     private TextButton remainingMobsButton;
     private TextButton timerButton;
     private final int timer = 110;
@@ -62,13 +51,10 @@ public class UIElementsDisplay extends UIComponent {
         remainingMobsButton = new TextButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount(), skin);
         buttonTable.top().right();
-        towerTable.top();
+        towerTable.top().padTop(80f);
 
         buttonTable.setFillParent(true);
         towerTable.setFillParent(true);
-
-        towerTable.setDebug(true);
-        towerTable.padTop(50f);
 
         TowerType[] defaultTowers = {
                 TowerType.TNT,
@@ -98,6 +84,10 @@ public class UIElementsDisplay extends UIComponent {
             }
         }
 
+        // Update the centrally located towerTypes list -
+        ServiceLocator.setTowerTypes(towers);
+
+        // Create the buttons - TODO This needs overhauling to pretty buttons
         TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
         TextButton tower2 = new TextButton(towers.get(1).getTowerName(), skin);
         TextButton tower3 = new TextButton(towers.get(2).getTowerName(), skin);
@@ -196,8 +186,13 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the text for timer button.
      */
     public void updateTimerButton() {
-        int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
-                - ServiceLocator.getTimeSource().getTime()) / 1000);
+        int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));
+
+        // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
+        if (totalSecs % 20 == 0) {
+                ServiceLocator.getMapService().shakeCameraMap();
+                ServiceLocator.getMapService().shakeCameraGrid();
+        }
         int seconds = totalSecs % 60;
         int minutes = (totalSecs % 3600) / 60;
         String finalTime = String.format("%02d:%02d", minutes, seconds);
