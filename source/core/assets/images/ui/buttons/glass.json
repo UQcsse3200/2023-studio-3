@@ -147,7 +147,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	}
 	title: {
 		parent: default
-		font: title
+		font: game_paused_title
 		fontColor: White
 	}
 }
