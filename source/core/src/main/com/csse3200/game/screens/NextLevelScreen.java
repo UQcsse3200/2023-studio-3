@@ -35,7 +35,7 @@ public class NextLevelScreen extends ScreenAdapter {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                // Example: game.setScreen(new MainGameScreen(game, nextLevel));
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
             }
         });
         TextButton mainMenuButton = new TextButton("Main Menu", skin);
