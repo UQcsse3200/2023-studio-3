@@ -24,13 +24,13 @@ public class NextLevelScreen extends ScreenAdapter {
 
     public NextLevelScreen(GdxGame game) {
         batch = new SpriteBatch();
-        backgroundTexture = new Texture("images/ui/Screen/Nextlevel.png"); // Replace with the path to your background image
+        backgroundTexture = new Texture("images/ui/Screen/Nextlevel.png");
         font = new BitmapFont();
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json")); // Replace with the path to your UI skin JSON
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         TextButton nextLevelButton = new TextButton("Next Level", skin);
         nextLevelButton.addListener(new ClickListener() {
             @Override
