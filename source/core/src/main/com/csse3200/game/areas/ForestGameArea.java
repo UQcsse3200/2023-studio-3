@@ -215,6 +215,7 @@ public class ForestGameArea extends GameArea {
           "sounds/mobs/skeletonHit.mp3",
           "sounds/mobs/coatAttack.mp3",
           "sounds/mobs/archerArrow.mp3"
+
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
@@ -310,9 +311,9 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(17, 2);
 //    spawnPatrick();
 //    spawnDemonBoss();
-    spawnSplittingRocky(17, 4);
-    spawnFireWizard(17, 3);
-    spawnNecromancer(17, 2);
+    // spawnSplittingRocky(17, 4);
+    // spawnFireWizard(17, 3);
+    // spawnNecromancer(17, 2);
 
 
 
@@ -507,7 +508,6 @@ public class ForestGameArea extends GameArea {
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
-
       case "Coat":
         mob = NPCFactory.createCoat(health);
         break;
@@ -520,7 +520,15 @@ public class ForestGameArea extends GameArea {
       case "ArcaneArcher":
         mob = NPCFactory.createDodgingArcaneArcher(health);
         break;
-
+      case "SplittingRocky":
+        mob = NPCFactory.createSplittingRocky(health);
+        break;
+      case "Necromancer":
+        mob = NPCFactory.createNecromancer(health);
+        break;
+      case "DeflectFireWizard":
+        mob = NPCFactory.createDeflectFireWizard(health);
+        break;
       case "PatrickBoss":
         mob = MobBossFactory.createPatrickBoss(health);
         break;

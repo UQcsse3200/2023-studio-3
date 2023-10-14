@@ -141,6 +141,10 @@ public class SplitMoblings extends Component {
         entityType = NPCFactory.createNightBorne(baseMoblingHealth);
       }
 
+      case ROCKY -> {
+        entityType = NPCFactory.createRocky(baseMoblingHealth);
+      }
+
       default -> {
         entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
       }
