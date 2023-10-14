@@ -3,9 +3,9 @@ package com.csse3200.game.components.gamearea;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -95,8 +95,9 @@ public class CurrencyDisplay extends UIComponent {
      * build something that costs more than the balance
      */
     public void scrapBalanceFlash() {
-        // TODO: IMPLEMENT THIS
-        scrapsTb.setText("Insufficient!");
+        scrapsTb.addAction(Actions.repeat(2,
+                new SequenceAction(Actions.fadeOut(0.5f, Interpolation.bounce),
+                        Actions.fadeIn(0.5f, Interpolation.bounce))));
     }
 
     /**
