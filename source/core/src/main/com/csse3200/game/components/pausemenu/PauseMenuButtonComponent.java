@@ -24,7 +24,6 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final float windowSizeY = 400;
 //    private static float padScaleFactorY;
 //    private static float padScaleFactorX;
-    private final GdxGame game;
 
     public PauseMenuButtonComponent(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
