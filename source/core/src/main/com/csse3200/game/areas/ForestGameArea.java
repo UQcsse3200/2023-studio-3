@@ -166,7 +166,10 @@ public class ForestGameArea extends GameArea {
           "images/bombship/bombship.atlas",
           "images/mobs/coat.atlas",
           "images/mobs/night_borne.atlas",
-          "images/mobs/arcane_archer.atlas"
+          "images/mobs/arcane_archer.atlas",
+          "images/mobs/necromancer.atlas",
+          "images/mobs/firewizard.atlas",
+          "images/mobs/rocky.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -304,6 +307,12 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(17, 2);
 //    spawnPatrick();
 //    spawnDemonBoss();
+    spawnSplittingRocky(17, 4);
+    spawnFireWizard(17, 3);
+    spawnNecromancer(17, 2);
+
+
+
 
     spawnScrap();
     spawnGapScanners();
@@ -533,6 +542,27 @@ public class ForestGameArea extends GameArea {
 //    xenoGrunt.setScale(1.5f, 1.5f);
 //    spawnEntityAt(xenoGrunt, pos, true, true);
 //  }
+   // * TEMPORARY FOR TESTING
+  private void spawnSplittingRocky(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity rocky = NPCFactory.createSplittingRocky(60);
+    rocky.setScale(1.5f, 1.5f);
+    spawnEntityAt(rocky, pos, true, true);
+  }
+
+  private void spawnFireWizard(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity firewiz = NPCFactory.createDeflectFireWizard(60);
+    firewiz.setScale(1.5f, 1.5f);
+    spawnEntityAt(firewiz, pos, true, true);
+  }
+
+  private void spawnNecromancer(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity Necromancer = NPCFactory.createNecromancer(60);
+    Necromancer.setScale(1.5f, 1.5f);
+    spawnEntityAt(Necromancer, pos, true, true);
+  }
 
   // * TEMPORARY FOR TESTING
 //  private void spawnDodgingDragonKnight(int x, int y) {
