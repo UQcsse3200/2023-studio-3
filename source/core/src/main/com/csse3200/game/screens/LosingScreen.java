@@ -26,7 +26,7 @@ public class LosingScreen extends ScreenAdapter {
     private Texture introImage;
     private Sprite introSprite;
 
-    private static final String TEXTURE = "planets/background.png";
+    private static final String TEXTURE = "images/ui/Screen/Losing.png";
     private static final String INTRO_TEXT = """
             The aliens gained control. You lose!
             """;
