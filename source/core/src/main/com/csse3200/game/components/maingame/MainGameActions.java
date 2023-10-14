@@ -21,6 +21,7 @@ public class MainGameActions extends Component {
   public void create() {
     entity.getEvents().addListener("exit", this::onExit);
     entity.getEvents().addListener("lose", this::onLose);
+    //entity.getEvents().addListener("win", this::onWin);
   }
 
   /**
