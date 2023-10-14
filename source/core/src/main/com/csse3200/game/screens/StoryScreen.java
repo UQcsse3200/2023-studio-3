@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 
 /**
  * Screen that displays a story with images and text.
@@ -108,11 +109,9 @@ public class StoryScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
         shapeRenderer = new ShapeRenderer();
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 //
 //        // Create UI
-//        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
-        continueButton = new TextButton("Continue", skin);
+        continueButton = ButtonFactory.createButton("Continue");
         continueButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
@@ -120,7 +119,7 @@ public class StoryScreen extends ScreenAdapter {
             }
         });
 
-        skipButton = new TextButton("Skip", skin); // Universal Skip button
+        skipButton = ButtonFactory.createButton("Skip"); // Universal Skip button
         skipButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {

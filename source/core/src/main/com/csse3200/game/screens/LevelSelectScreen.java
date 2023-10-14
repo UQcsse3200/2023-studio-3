@@ -26,6 +26,7 @@ import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
@@ -65,8 +66,7 @@ public class LevelSelectScreen extends ScreenAdapter {
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-        TextButton BackButton = new TextButton("Back", skin); // Universal Skip button
+        TextButton BackButton = ButtonFactory.createButton("Back"); // Universal Skip button
         BackButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {

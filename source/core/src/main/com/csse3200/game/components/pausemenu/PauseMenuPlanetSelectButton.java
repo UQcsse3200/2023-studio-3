@@ -36,9 +36,7 @@ public class PauseMenuPlanetSelectButton extends UIComponent {
         table = new Table();
         table.top().right();
         table.setFillParent(true);
-        ButtonFactory buttonFactory = new ButtonFactory();
-//        TextButton pauseMenuBtn = buttonFactory.createButton("Planet Select");
-        TextButton pauseMenuBtn = new TextButton("Planet Select", skin);
+        TextButton pauseMenuBtn = ButtonFactory.createButton("Planet Select");
 
         // Triggers an event when the button is pressed.
         pauseMenuBtn.addListener(
@@ -52,7 +50,7 @@ public class PauseMenuPlanetSelectButton extends UIComponent {
 
         table.add(pauseMenuBtn).padTop(400f).padRight(675f);
 
-        stage.addActor(table);
+//        stage.addActor(table);
     }
 
     @Override
