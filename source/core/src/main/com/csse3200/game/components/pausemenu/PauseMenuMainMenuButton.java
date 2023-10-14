@@ -37,7 +37,7 @@ public class PauseMenuMainMenuButton extends UIComponent {
         table.top().right();
         table.setFillParent(true);
         TextButton pauseMenuBtn = ButtonFactory.createButton("Main Menu");
-        pauseMenuBtn.setScale(2f);
+
         // Triggers an event when the button is pressed.
         pauseMenuBtn.addListener(
                 new ChangeListener() {

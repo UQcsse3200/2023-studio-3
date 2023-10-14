@@ -15,14 +15,19 @@ import static com.csse3200.game.ui.UIComponent.skin;
 public class ButtonFactory {
     private static Skin defaultSkin;
 
-    // Static initializer block to initialize the default skin
-    // This is handled by UIComponent
+    // Static initializer block to initialize the default skin  -- THIS IS HANDLED BY UICOMPONENT
 //    static {
-//        defaultSkin = new
+//        defaultSkin = createDefaultSkin();
 //    }
-
+//
 //    private static Skin createDefaultSkin() {
-//        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+//
+//        // Define the button style with the background image
+//        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
+//        style.font = skin.getFont("default");
+//        style.up = new TextureRegionDrawable(new TextureRegion(new Texture("images/ui/Sprites/UI_Glass_Button_Large_Lock_01a1.png"))); // Set the button background to the loaded image
+//
+//        skin.add("default", style);
 //        return skin;
 //    }
 

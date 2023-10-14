@@ -7,7 +7,6 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.rendering.RenderService;
-import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.*;
@@ -48,10 +47,7 @@ public class PauseMenuFactoryTest {
     @Test
     void entityHasRequiredComponents() {
         assertNotNull(entity.getComponent(PauseMenuTimeStopComponent.class));
-        assertNotNull(entity.getComponent(PauseMenuContinueButton.class));
-        assertNotNull(entity.getComponent(PauseMenuSettingsButton.class));
-        assertNotNull(entity.getComponent(PauseMenuPlanetSelectButton.class));
-        assertNotNull(entity.getComponent(PauseMenuMainMenuButton.class));
+        assertNotNull(entity.getComponent(PauseMenuButtonComponent.class));
     }
 
     @Test
