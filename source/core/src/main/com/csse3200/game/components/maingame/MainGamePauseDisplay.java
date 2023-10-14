@@ -10,6 +10,7 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,7 +45,7 @@ public class MainGamePauseDisplay extends UIComponent {
         table.top().right();
         table.setFillParent(true);
 
-        TextButton mainMenuBtn = new TextButton("Pause", skin);
+        TextButton mainMenuBtn = ButtonFactory.createButton("Pause");
 
         // Spawns a pause menu when the button is pressed.
         mainMenuBtn.addListener(
@@ -59,7 +60,7 @@ public class MainGamePauseDisplay extends UIComponent {
                     }
                 });
 
-        table.add(mainMenuBtn).padTop(100f).padRight(10f);
+        table.add(mainMenuBtn).padTop(180f).padRight(30f);
 
         stage.addActor(table);
     }

@@ -54,7 +54,7 @@ public class PauseMenuContinueButton extends UIComponent {
 
         table.add(pauseMenuBtn).padTop(300f).padRight(700f);
 
-        stage.addActor(table);
+//        stage.addActor(table);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.csse3200.game.components.pausemenu;
 
 import com.badlogic.gdx.Gdx;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -20,12 +19,13 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
     private Window window;
-
     private final GdxGame game;
     private static final float windowSizeX = 300;
     private static final float windowSizeY = 400;
 //    private static float padScaleFactorY;
 //    private static float padScaleFactorX;
+    private final GdxGame game;
+
     public PauseMenuButtonComponent(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
     }
@@ -87,6 +87,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                         game.setScreen(GdxGame.ScreenType.MAIN_MENU);
                     }
                 });
+
         window.setKeepWithinStage(true);
         window.setResizable(true);
         window.setModal(true);
@@ -121,8 +122,8 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     @Override
     public void dispose() {
-        window.remove();
         window.clear();
+        window.remove();
         super.dispose();
     }
 }

@@ -50,7 +50,7 @@ public class PauseMenuPlanetSelectButton extends UIComponent {
 
         table.add(pauseMenuBtn).padTop(400f).padRight(675f);
 
-        stage.addActor(table);
+//        stage.addActor(table);
     }
 
     @Override
