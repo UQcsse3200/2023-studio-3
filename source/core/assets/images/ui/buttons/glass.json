@@ -110,7 +110,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOnOver: UI_Glass_Slot_Selected_01a
 		checkboxOver: UI_Glass_Slot_Unavailable_01a
 		checkboxOnDisabled: UI_Glass_Slot_Unavailable_01a
-		font: game_paused_24
+		font: glitch_24
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -122,7 +122,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
 		parent: default
-		font: game_paused_24
+		font: glitch_24
 		fontColor: White
 		downFontColor: Blue
 		overFontColor: White
@@ -142,18 +142,18 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: game_paused_24
+		font: glitch_24
 		fontColor: White
 	}
 	title: {
 		parent: default
-		font: game_paused_title
+		font: glitch_title
 		fontColor: White
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: game_paused_24
+		font: glitch_24
 		fontColorSelected: White
 		fontColorUnselected: Grey
 		selection: UI_Glass_Banner_01a
@@ -182,7 +182,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: game_paused_24
+		font: glitch_24
 		fontColor: Grey
 		overFontColor: White
 		disabledFontColor: Grey
@@ -202,7 +202,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
-		font: game_paused_24
+		font: glitch_24
 		fontColor: Grey
 		downFontColor: White
 		overFontColor: White
@@ -226,7 +226,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: game_paused_24
+		font: glitch_24
 		fontColor: White
 	}
 }
@@ -238,7 +238,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: UI_Glass_Frame_Standard_01a
-		titleFont: game_paused_title
+		titleFont: glitch_title
 		titleFontColor: White
 	}
 }

@@ -11,10 +11,8 @@ import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import com.csse3200.game.components.gamearea.GameAreaDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.security.SecureRandom;
 import java.util.Timer;
 
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
@@ -22,14 +20,7 @@ import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
-  private static final int NUM_BUILDINGS = 4;
-  private static final int NUM_GHOSTS = 0;
-  private static final int NUM_GRUNTS = 5;
-  private static final int NUM_BOSS = 4;
 
-  private SecureRandom rand = new SecureRandom();
-
-  private int wave = 0;
   private Timer waveTimer;
 
   private static final int NUM_WEAPON_TOWERS = 3;
@@ -141,14 +132,12 @@ public class ForestGameArea extends GameArea {
           "images/projectiles/basic_projectile.atlas",
           "images/projectiles/bossProjectile.atlas",
           "images/projectiles/mobProjectile.atlas",
-          "images/projectiles/mobProjectile.atlas",
           "images/projectiles/engineer_projectile.atlas",
           "images/projectiles/mobBoss_projectile.atlas",
           "images/projectiles/snow_ball.atlas",
           "images/projectiles/pierce_anim.atlas",
           "images/projectiles/burn_effect.atlas",
           "images/projectiles/firework_anim.atlas",
-          "images/projectiles/mobProjectile.atlas",
           "images/projectiles/stun_effect.atlas",
           "images/mobboss/demon.atlas",
           "images/mobs/fire_worm.atlas",
