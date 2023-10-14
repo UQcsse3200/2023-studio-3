@@ -293,11 +293,12 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
 
     // Set up infrastructure for end game tracking
-    player = spawnPlayer();
+//    player = spawnPlayer();
 
-   waves = WaveFactory.createWaves();
-   spawnEntity(waves);
-   waves.getEvents().addListener("spawnWave", this::spawnMob);
+    logger.info("Creating waves");
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
     // spawnCoat();
 //    spawnDodgingDragonKnight(17,4);
 //    spawnDeflectWizard(17, 3);
