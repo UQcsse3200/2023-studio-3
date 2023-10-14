@@ -3,7 +3,6 @@ package com.csse3200.game.entities.factories;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.components.pausemenu.*;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.utils.Array;
 
@@ -23,10 +22,6 @@ public class PauseMenuFactory {
 
             Entity pauseMenu = new Entity()
                     .addComponent(new PauseMenuTimeStopComponent())
-//                    .addComponent(new PauseMenuContinueButton())
-//                    .addComponent(new PauseMenuSettingsButton(game))
-//                    .addComponent(new PauseMenuPlanetSelectButton(game))
-//                    .addComponent(new PauseMenuMainMenuButton(game))
                     .addComponent(new PauseMenuButtonComponent(game));
             pauseMenu.setScale(8, 8);
             pauseMenu.setPosition(6f, 2f);

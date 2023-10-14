@@ -1,11 +1,11 @@
 package com.csse3200.game.components.pausemenu;
 
 import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -20,6 +20,7 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
     private Window window;
+
     private final GdxGame game;
     private static final float windowSizeX = 300;
     private static final float windowSizeY = 400;
@@ -39,7 +40,7 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     /**
      * Initialises the pause menu buttons
-     * Positions them on the stage using a table
+     * Positions them on the stage using a window
      */
     private void addActors() {
 
@@ -86,7 +87,6 @@ public class PauseMenuButtonComponent extends UIComponent {
                         game.setScreen(GdxGame.ScreenType.MAIN_MENU);
                     }
                 });
-
         window.setKeepWithinStage(true);
         window.setResizable(true);
         window.setModal(true);
@@ -121,8 +121,8 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     @Override
     public void dispose() {
-        window.clear();
         window.remove();
+        window.clear();
         super.dispose();
     }
 }
