@@ -53,14 +53,13 @@ public class MainMenuDisplay extends UIComponent {
         cursorPixmap.dispose(); // Dispose of the Pixmap to release resources
 
         table = new Table();
-        table1 = new Table();
         table.setFillParent(true);
-        table1.setFillParent(true);
+        stage.addActor(table);
 
-        Image title =
-                new Image(
-                        ServiceLocator.getResourceService()
-                                .getAsset("images/background/main_menu/main_menu_bg.png", Texture.class));
+        Texture backgroundTexture = ServiceLocator.getResourceService().getAsset("images/background/main_menu/main_menu_bg.png", Texture.class);
+        Image title = new Image(backgroundTexture);
+        title.setFillParent(true);
+        table.addActorAt(0, title);
         title.setWidth(Gdx.graphics.getWidth());
         title.setHeight(Gdx.graphics.getHeight());
         title.setPosition(0, 0);
@@ -130,18 +129,13 @@ public class MainMenuDisplay extends UIComponent {
         float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();
 
 
-        table.add(title);
-        table1.row();
-        table1.add(startBtn).padTop(padTopStartBtn);
-        table1.row();
-        table1.add(helpBtn).padTop(padTopOtherBtns);
-        table1.row();
-        table1.add(settingsBtn).padTop(padTopOtherBtns);
-        table1.row();
-        table1.add(exitBtn).padTop(padTopOtherBtns);
+        table.center();
+        table.add(startBtn).padTop(250f).center().row();
+        table.add(helpBtn).padTop(15f).center().row();
+        table.add(settingsBtn).padTop(15f).center().row();
+        table.add(exitBtn).padTop(15f).center().row();
 
         stage.addActor(table);
-        stage.addActor(table1);
     }
 
     @Override
