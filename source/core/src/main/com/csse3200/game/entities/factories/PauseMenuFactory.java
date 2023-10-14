@@ -23,10 +23,10 @@ public class PauseMenuFactory {
 
             Entity pauseMenu = new Entity()
                     .addComponent(new PauseMenuTimeStopComponent())
-                    .addComponent(new PauseMenuContinueButton())
-                    .addComponent(new PauseMenuSettingsButton(game))
-                    .addComponent(new PauseMenuPlanetSelectButton(game))
-                    .addComponent(new PauseMenuMainMenuButton(game))
+//                    .addComponent(new PauseMenuContinueButton())
+//                    .addComponent(new PauseMenuSettingsButton(game))
+//                    .addComponent(new PauseMenuPlanetSelectButton(game))
+//                    .addComponent(new PauseMenuMainMenuButton(game))
                     .addComponent(new PauseMenuButtonComponent(game));
             pauseMenu.setScale(8, 8);
             pauseMenu.setPosition(6f, 2f);

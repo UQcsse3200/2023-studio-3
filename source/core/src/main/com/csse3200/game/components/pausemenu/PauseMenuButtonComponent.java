@@ -19,10 +19,7 @@ import org.slf4j.LoggerFactory;
 public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
-    private Table table;
-    private Table table2;
-    private Table table3;
-    private Table table4;
+    private Window window;
     private final GdxGame game;
     private static final float windowSizeX = 300;
     private static final float windowSizeY = 400;
@@ -46,7 +43,7 @@ public class PauseMenuButtonComponent extends UIComponent {
      */
     private void addActors() {
 
-        Window window = new Window("Game Paused", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        window = new Window("Game Paused", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
 
         TextButton continueBtn = ButtonFactory.createButton("Continue");
         continueBtn.pad(20f);
@@ -124,7 +121,8 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     @Override
     public void dispose() {
-        table.clear();
+        window.clear();
+        window.remove();
         super.dispose();
     }
 }

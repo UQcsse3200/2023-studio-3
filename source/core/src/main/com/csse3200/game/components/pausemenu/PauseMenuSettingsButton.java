@@ -36,9 +36,7 @@ public class PauseMenuSettingsButton extends UIComponent {
         table = new Table();
         table.top().right();
         table.setFillParent(true);
-        ButtonFactory buttonFactory = new ButtonFactory();
-//        TextButton pauseMenuBtn = buttonFactory.createButton("Settings");
-        TextButton pauseMenuBtn = new TextButton("Settings", skin);
+        TextButton pauseMenuBtn = ButtonFactory.createButton("Settings");
 
         // Triggers an event when the button is pressed.
         pauseMenuBtn.addListener(

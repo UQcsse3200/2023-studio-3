@@ -39,9 +39,7 @@ public class PauseMenuContinueButton extends UIComponent {
         table = new Table();
         table.top().right();
         table.setFillParent(true);
-        ButtonFactory buttonFactory = new ButtonFactory();
-//        TextButton pauseMenuBtn = buttonFactory.createButton("Continue");
-        TextButton pauseMenuBtn = new TextButton("Continue", skin);
+        TextButton pauseMenuBtn = ButtonFactory.createButton("Continue");
 
         // Triggers an event when the button is pressed.
         pauseMenuBtn.addListener(
