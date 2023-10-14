@@ -24,7 +24,7 @@ public class MainGamePauseDisplay extends UIComponent {
     private Table table;
     private GdxGame game;
     private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg"
+            "sounds/ui/open_close/open_01.ogg"
     };
     private Sound openSound;
 

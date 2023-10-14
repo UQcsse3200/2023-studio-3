@@ -13,8 +13,8 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 
 public class EngineerCountDisplay extends UIComponent {
-    private Table table;
     private TextButton engineerTb;
+    private static final String defaultFont = "glitch_24";
 
     @Override
     public void create() {
@@ -27,7 +27,7 @@ public class EngineerCountDisplay extends UIComponent {
      * Positions it on the stage using a table
      */
     private void addActors() {
-        table = new Table();
+        Table table = new Table();
         table.top().left();
         table.setFillParent(true);
         table.padTop(80f).padLeft(20f);
@@ -35,7 +35,7 @@ public class EngineerCountDisplay extends UIComponent {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/engineers/engineerBanner.png")));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, new BitmapFont());
+                drawable, drawable, drawable, getSkin().getFont(defaultFont));
 
         String text = String.format("%d", ServiceLocator.getGameEndService().getEngineerCount());
         engineerTb = new TextButton(text, style);

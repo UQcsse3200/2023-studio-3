@@ -87,6 +87,197 @@ com.badlogic.gdx.graphics.Color: {
 		a: 1
 	}
 }
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	weapon_tower_disabled: {
+		name: Weapon-Tower-Default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	weapon_tower_down: {
+		name: Weapon-Tower-Default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	weapon_tower_over: {
+		name: Weapon-Tower-Default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	tnt_tower_disabled: {
+		name: tnt-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	stun_tower_disabled: {
+		name: stun-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	mine_tower_disabled: {
+		name: mine-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	fire_tower_disabled: {
+		name: fire-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	droid_tower_disabled: {
+		name: droid-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	wall_tower_disabled: {
+		name: wall-tower-default
+		color: {
+			r: 0.8156863
+			g: 0
+			b: 0
+			a: 1
+		}
+	}
+	wall_tower_over: {
+		name: wall-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	tnt_tower_over: {
+		name: tnt-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	stun_tower_over: {
+		name: stun-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	mine_tower_over: {
+		name: mine-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	fire_tower_over: {
+		name: fire-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	droid_tower_over: {
+		name: droid-tower-default
+		color: {
+			r: 0
+			g: 0.9137255
+			b: 0.9843137
+			a: 1
+		}
+	}
+	droid_tower_down: {
+		name: droid-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	fire_tower_down: {
+		name: fire-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	mine_tower_down: {
+		name: mine-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	stun_tower_down: {
+		name: stun-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	tnt_tower_down: {
+		name: tnt-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+	wall_tower_down: {
+		name: wall-tower-default
+		color: {
+			r: 0
+			g: 0.74509805
+			b: 0.003921569
+			a: 1
+		}
+	}
+}
 com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 	default: {
 		up: UI_Glass_Button_Large_Press_01a4
@@ -118,10 +309,52 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		parent: default
 		pressedOffsetY: -1
 	}
+	weapon_tower: {
+		imageUp: Weapon-Tower-Default
+		imageDown: weapon_tower_down
+		imageOver: weapon_tower_over
+		imageDisabled: weapon_tower_disabled
+	}
+	tnt_tower: {
+		imageUp: tnt-tower-default
+		imageDown: tnt_tower_down
+		imageOver: tnt_tower_over
+		imageDisabled: tnt_tower_disabled
+	}
+	droid_tower: {
+		imageUp: droid-tower-default
+		imageDown: droid_tower_down
+		imageOver: droid_tower_over
+		imageDisabled: droid_tower_disabled
+	}
+	stun_tower: {
+		imageUp: stun-tower-default
+		imageDown: stun_tower_down
+		imageOver: stun_tower_over
+		imageDisabled: stun_tower_disabled
+	}
+	fire_tower: {
+		imageUp: fire-tower-default
+		imageDown: fire_tower_down
+		imageOver: fire_tower_over
+		imageDisabled: fire_tower_disabled
+	}
+	wall: {
+		imageUp: wall-tower-default
+		imageDown: wall_tower_down
+		imageOver: wall_tower_over
+		imageDisabled: wall_tower_disabled
+	}
+	income_tower: {
+		imageUp: mine-tower-default
+		imageDown: mine_tower_down
+		imageOver: mine_tower_over
+		imageDisabled: mine_tower_disabled
+	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
-		parent: default
+		imageUp: Weapon-Tower-Default
 		font: glitch_24
 		fontColor: White
 		downFontColor: Blue
@@ -201,7 +434,6 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
-		parent: default
 		font: glitch_24
 		fontColor: Grey
 		downFontColor: White

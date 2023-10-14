@@ -28,7 +28,7 @@ public class BuildInputComponent extends InputComponent {
     private final Camera camera;
     private final String[] sounds = {
             "sounds/economy/buildSound.ogg",
-            "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg"
+            "sounds/ui/switch/switch_01.ogg"
     };
     private Sound buildSound;
     private Sound errorSound;
@@ -133,6 +133,8 @@ public class BuildInputComponent extends InputComponent {
                 ServiceLocator.getCurrencyService().setTowerType(null);
                 multipleTowerBuild = false;
                 return true;
+            case Input.Keys.ESCAPE:
+
             default:
                 return false;
         }
@@ -225,6 +227,6 @@ public class BuildInputComponent extends InputComponent {
         ServiceLocator.getResourceService().loadSounds(sounds);
         ServiceLocator.getResourceService().loadAll();
         buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
-        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
+        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/switch/switch_01.ogg", Sound.class);
     }
 }
