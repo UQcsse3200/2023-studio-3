@@ -184,4 +184,17 @@ public class CameraShaker {
         this.minimumShakeRadius = minimumShakeRadius;
         this.radiusFallOffFactor = radiusFallOffFactor;
     }
+
+    public float getShakeRadius() {
+        return shakeRadius;
+    }
+
+    public float getMinimumRadius() {
+        return minimumShakeRadius;
+    }
+
+    public float getFallOffFactor() {
+        return radiusFallOffFactor;
+    }
+
 }
