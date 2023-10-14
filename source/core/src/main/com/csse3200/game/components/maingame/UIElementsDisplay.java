@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +49,8 @@ public class UIElementsDisplay extends UIComponent {
     private void addActors() {
 //        remainingMobsButton = new ButtonFactory().createButton("Mobs:"
 //                + ServiceLocator.getWaveService().getEnemyCount());
-        remainingMobsButton = new TextButton("Mobs:"
-                + ServiceLocator.getWaveService().getEnemyCount(), skin);
+        remainingMobsButton = ButtonFactory.createButton("Mobs:"
+                + ServiceLocator.getWaveService().getEnemyCount());
         buttonTable.top().right();
         towerTable.top().padTop(80f);
 
@@ -88,11 +89,11 @@ public class UIElementsDisplay extends UIComponent {
         ServiceLocator.setTowerTypes(towers);
 
         // Create the buttons - TODO This needs overhauling to pretty buttons
-        TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);
-        TextButton tower2 = new TextButton(towers.get(1).getTowerName(), skin);
-        TextButton tower3 = new TextButton(towers.get(2).getTowerName(), skin);
-        TextButton tower4 = new TextButton(towers.get(3).getTowerName(), skin);
-        TextButton tower5 = new TextButton(towers.get(4).getTowerName(), skin);
+        TextButton tower1 = ButtonFactory.createButton(towers.get(0).getTowerName());
+        TextButton tower2 = ButtonFactory.createButton(towers.get(1).getTowerName());
+        TextButton tower3 = ButtonFactory.createButton(towers.get(2).getTowerName());
+        TextButton tower4 = ButtonFactory.createButton(towers.get(3).getTowerName());
+        TextButton tower5 = ButtonFactory.createButton(towers.get(4).getTowerName());
 
         // Triggers an event when the button is pressed.
         tower1.addListener(
@@ -176,8 +177,8 @@ public class UIElementsDisplay extends UIComponent {
 
 //        timerButton = new ButtonFactory().createButton("Next wave in:"
 //                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
-        timerButton = new TextButton("Next wave in:"
-                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000), skin);
+        timerButton = ButtonFactory.createButton("Next wave in:"
+                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         buttonTable.row();
         buttonTable.add(timerButton).padRight(10f);
     }
