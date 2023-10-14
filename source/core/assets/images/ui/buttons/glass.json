@@ -1,7 +1,55 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	determination_mono_32: {
+		file: determination_mono_32.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	determination_mono_48_title: {
+		file: determination_mono_48_title.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	emulogic_18: {
+		file: emulogic_18.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	emulogic_title: {
+		file: Emulogic-zrEw.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
 	font_small: {
 		file: dot_gothic_16.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	game_paused_24: {
+		file: game_paused_24.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	game_paused_title: {
+		file: game_paused_title.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	glitch_24: {
+		file: glitch_24.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
+	}
+	glitch_title: {
+		file: glitch_title.fnt
 		scaledSize: -1
 		markupEnabled: false
 		flip: false
@@ -50,8 +98,8 @@ com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
 		checkedOver: UI_Glass_Button_Large_Release_01a2
 		checkedDown: UI_Glass_Button_Large_Release_01a3
 		checkedFocused: UI_Glass_Button_Large_Release_01a4
-		pressedOffsetY: -2
-		unpressedOffsetY: 1
+		pressedOffsetY: -4
+		unpressedOffsetY: 4
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
@@ -62,7 +110,7 @@ com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
 		checkboxOnOver: UI_Glass_Slot_Selected_01a
 		checkboxOver: UI_Glass_Slot_Unavailable_01a
 		checkboxOnDisabled: UI_Glass_Slot_Unavailable_01a
-		font: font_small
+		font: game_paused_24
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
@@ -74,7 +122,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 	default: {
 		parent: default
-		font: font_small
+		font: game_paused_24
 		fontColor: White
 		downFontColor: Blue
 		overFontColor: White
@@ -94,7 +142,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton$ImageTextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 	default: {
-		font: title
+		font: game_paused_24
 		fontColor: White
 	}
 	title: {
@@ -105,7 +153,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 	default: {
-		font: font_small
+		font: game_paused_24
 		fontColorSelected: White
 		fontColorUnselected: Grey
 		selection: UI_Glass_Banner_01a
@@ -118,7 +166,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	default-horizontal: {
 		background: UI_Glass_Fillbar_01a
 		disabledBackground: UI_Glass_Fillbar_01a
-		knob: UI_Glass_Scrollbar_Handle_01a
+		knob: UI_Glass_Fillbar_Filler_01a
 		disabledKnob: UI_Glass_Slider_Handle_01a
 	}
 }
@@ -134,7 +182,7 @@ com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.SelectBox$SelectBoxStyle: {
 	default: {
-		font: font_small
+		font: game_paused_24
 		fontColor: Grey
 		overFontColor: White
 		disabledFontColor: Grey
@@ -154,7 +202,7 @@ com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 	default: {
 		parent: default
-		font: font_small
+		font: game_paused_24
 		fontColor: Grey
 		downFontColor: White
 		overFontColor: White
@@ -178,7 +226,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
 }
 com.badlogic.gdx.scenes.scene2d.ui.TextField$TextFieldStyle: {
 	default: {
-		font: font_small
+		font: game_paused_24
 		fontColor: White
 	}
 }
@@ -190,7 +238,7 @@ com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {
 		background: UI_Glass_Frame_Standard_01a
-		titleFont: font_small
+		titleFont: game_paused_title
 		titleFontColor: White
 	}
 }
