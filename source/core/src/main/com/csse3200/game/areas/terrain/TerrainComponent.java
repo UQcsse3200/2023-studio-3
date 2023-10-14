@@ -175,6 +175,11 @@ public class TerrainComponent extends RenderComponent {
       lastHoveredCell.getTile().setTextureRegion(originalRegion);
     }
 
+    if (ServiceLocator.getCurrencyService().getTower() == null && currentCell != null) {
+      ResourceService resourceService = ServiceLocator.getResourceService();
+      Texture texture = resourceService.getAsset("images/terrain_use.png", Texture.class);
+      currentCell.getTile().setTextureRegion(new TextureRegion(texture));
+    }
 
     if (currentCell != null && currentCell != lastHoveredCell) {
       originalRegion = currentCell.getTile().getTextureRegion();
@@ -188,7 +193,6 @@ public class TerrainComponent extends RenderComponent {
           Texture texture = resourceService.getAsset("images/red_tile.png", Texture.class);
           currentCell.getTile().setTextureRegion(new TextureRegion(texture));
         }
-
         lastHoveredCell = currentCell;
       }
     }
