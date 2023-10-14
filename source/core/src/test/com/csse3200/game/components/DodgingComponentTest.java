@@ -60,7 +60,8 @@ public class DodgingComponentTest {
         DEFAULT_RANGE_DETECTION,
         1.75f);
     // task = new MobDodgeTask(new Vector2(2f, 2f), 2f, 5);
-    task = new MobDodgeTask(MobType.DRAGON_KNIGHT, 5);
+    // task = new MobDodgeTask(MobType.DRAGON_KNIGHT, 5);
+    task = new MobTask(MobType.DRAGON_KNIGHT, true);
   }
 
   @Test

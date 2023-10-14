@@ -42,6 +42,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private Entity target;
     private GameTime gameTime;
     private long lastTimeAttacked;
+    private long dodgeEndTime;
 
     // Flags
     boolean melee;
@@ -51,6 +52,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     boolean rangeAttackFlag = false;
     boolean meleeAttackFlag = false;
     boolean deathFlag = false;
+    boolean canDodge = false;
 
     // Enums
     private enum State {
@@ -64,6 +66,17 @@ public class MobTask extends DefaultTask implements PriorityTask {
     public MobTask(MobType mobType) {
         this.mobType = mobType;
         gameTime = ServiceLocator.getTimeSource();
+    }
+
+    /**
+     * constructor for the mob
+     * @param mobType type of mob it is
+     * @param canDodge ability to dodge projectiles
+     */
+    public MobTask(MobType mobType, boolean canDodge) {
+        this.mobType = mobType;
+        gameTime = ServiceLocator.getTimeSource();
+        this.canDodge = true;
     }
 
     /**
@@ -84,6 +97,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         runFlag = true;
         changeState(State.RUN);
         lastTimeAttacked = gameTime.getTime();
+        dodgeEndTime = gameTime.getTime();
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
@@ -106,6 +120,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
             deathFlag = true;
         } else if (deathFlag && animation.isFinished()) {
             mob.setFlagForDelete(true);
+        }
+
+        if(gameTime.getTime() >= dodgeEndTime) {
+          if (canDodge) {
+            mob.getEvents().trigger("dodgeIncomingEntity",
+                mob.getCenterPosition());
+          }
+          dodgeEndTime = gameTime.getTime() + 500; // 500ms
         }
 
         switch (state) {
@@ -312,5 +334,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+    /**
+     * Sets dodge flag of the mob
+     * 
+     * @param dodgeFlag If true, mob dodges projectile.
+     */
+    public void setDodge(boolean dodgeFlag) {
+      this.canDodge = dodgeFlag;
     }
 }
