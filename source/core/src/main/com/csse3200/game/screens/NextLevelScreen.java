@@ -1,3 +1,7 @@
+/**
+ * This class represents the screen displayed when the player completes a level
+ * and can choose to proceed to the next level or return to the main menu.
+ */
 package com.csse3200.game.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -22,6 +26,11 @@ public class NextLevelScreen extends ScreenAdapter {
     private final BitmapFont font;
     private final Stage stage;
 
+    /**
+     * Constructs the NextLevelScreen with the necessary assets and buttons.
+     *
+     * @param game The game instance managing the screens.
+     */
     public NextLevelScreen(GdxGame game) {
         batch = new SpriteBatch();
         backgroundTexture = new Texture("images/ui/Screen/Nextlevel.png");
@@ -79,7 +88,6 @@ public class NextLevelScreen extends ScreenAdapter {
         stage.draw();
     }
 
-
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -92,4 +100,3 @@ public class NextLevelScreen extends ScreenAdapter {
         stage.dispose();
     }
 }
-
