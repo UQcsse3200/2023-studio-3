@@ -29,9 +29,6 @@ public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
     private static final float Z_INDEX = 2f;
     private final Table buttonTable = new Table();
-    private final Table towerTable = new Table();
-    Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-
     private TextButton remainingMobsButton;
     private TextButton timerButton;
     private final int timer = 110;
