@@ -48,35 +48,16 @@ public class EngineerInputComponent extends InputComponent {
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
             if (selectedEngineer != null) {
+                // Clicked a tile with an engineer selected and clicked on not an engineer
                 moveEngineer(cursorPosition);
                 return true;
             } else {
+                // Clicked a tile with no engineer selected or engineer on the tile
                 return false;
             }
         }
         // Case when engineer is clicked
-        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
-        String currentAnimation = animator.getCurrentAnimation();
-        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
-
-        if (currentAnimation.contains("_outline")) {
-            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
-            controller.setClicked(false);
-        } else {
-            animator.startAnimation(currentAnimation + "_outline");
-            controller.setClicked(true);
-        }
-
-        // Selecting itself - deselecting
-        if (engineer.equals(selectedEngineer)) {
-            this.getWanderTask().setSelected(false);
-            selectedEngineer = null;
-            return true;
-        }
-
-        // Selecting different engineer
-        selectedEngineer = engineer;
-        this.getWanderTask().setSelected(true);
+        switchEngineer(engineer);
         return true;
     }
 
@@ -97,6 +78,40 @@ public class EngineerInputComponent extends InputComponent {
         HumanWanderTask wander = this.getWanderTask();
         wander.startWaiting();
         wander.startCombat();
+    }
+
+    private void switchEngineer(Entity engineer) {
+        if (engineer.equals(this.selectedEngineer)) {
+            this.getWanderTask().setSelected(false);
+            this.selectedEngineer = null;
+            switchOutline(engineer);
+        }
+        else if (selectedEngineer == null) {
+            this.selectedEngineer = engineer;
+            switchOutline(engineer);
+            this.getWanderTask().setSelected(true);
+
+        } else {
+            this.getWanderTask().setSelected(false);
+            switchOutline(this.selectedEngineer);
+            switchOutline(engineer);
+            this.selectedEngineer = engineer;
+            this.getWanderTask().setSelected(true);
+
+        }
+    }
+
+    private void switchOutline(Entity engineer) {
+        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
+        String currentAnimation = animator.getCurrentAnimation();
+        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
+        if (currentAnimation.contains("_outline")) {
+            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
+            controller.setClicked(false);
+        } else {
+            animator.startAnimation(currentAnimation + "_outline");
+            controller.setClicked(true);
+        }
     }
 
     private HumanWanderTask getWanderTask() {
