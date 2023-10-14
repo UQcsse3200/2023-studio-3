@@ -32,7 +32,6 @@ import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 /**
  * The game screen containing the main game.
  *
@@ -220,17 +219,25 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.render();
 
     // Check if the game has ended
+    // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
     }
 
     // Check if all waves are completed and the level has been completed
     if (ServiceLocator.getWaveService().isLevelCompleted()) {
-      logger.info("Main game level completed detected, go to win screen");
-      ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
-      // Add something in to unlock the next planet/level?
+      if (selectedLevel == 2) { // Lava level
+          // If it's the lava level, go to the "win" screen
+          ui.getEvents().trigger("win");
+          logger.info("Main game level completed detected, go to win screen");
+        } else {
+          // For other levels, go to the "NextLevelScreen"
+          game.setScreen(GdxGame.ScreenType.Next_Screen);
+          logger.info("game level completed detected, go to NextLevelScreen");
+        }
+      }
     }
-  }
+    // Add something in to unlock the next planet/level?
 
   @Override
   public void resize(int width, int height) {
@@ -304,7 +311,6 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
-            //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
             .addComponent(new MainGamePauseDisplay(this.game))
             .addComponent(new Terminal())
             .addComponent(inputComponent)

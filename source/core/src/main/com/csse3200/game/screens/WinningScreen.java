@@ -25,11 +25,11 @@ public class WinningScreen extends ScreenAdapter {
     private Texture backgroundTexture;
     private Sprite backgroundSprite;
 
-    private static final String BACKGROUND_TEXTURE = "winning_background.png"; // Set the path to your winning background image
+    private static final String BACKGROUND_TEXTURE = "planets/background.png"; // Set the path to your winning background image
     private static final String WIN_TEXT = """
             Congratulations! You won!
             """;
-    private static final String[] winSounds = {"win_sound.ogg"}; // Set the path to your winning sound
+    // private static final String[] winSounds = {"win_sound.ogg"}; // Set the path to your winning sound
     private final BitmapFont font;
     private Stage stage;
     private final ResourceService resourceService;
@@ -39,9 +39,10 @@ public class WinningScreen extends ScreenAdapter {
         font = new BitmapFont();
         resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
-        resourceService.loadSounds(winSounds);
+      //  resourceService.loadSounds(winSounds);
         resourceService.loadAll();
     }
+
 
     @Override
     public void show() {
@@ -53,7 +54,7 @@ public class WinningScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("configs/text.json"));
+        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         TextButton exitButton = new TextButton("Exit Game", skin);
         exitButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
@@ -84,7 +85,7 @@ public class WinningScreen extends ScreenAdapter {
         stage.addActor(table);
 
         // Play win sound
-        resourceService.getAsset(winSounds[0], Sound.class).play(0.3f);
+        // resourceService.getAsset(winSounds[0], Sound.class).play(0.3f);
     }
 
     @Override
