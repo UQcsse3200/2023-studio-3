@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * on the screen, handles their behaviour and sound effects.
  */
 public class MainGameDisplay extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(MainGamePauseDisplay.class);
+    private static final Logger logger = LoggerFactory.getLogger(MainGameDisplay.class);
     private static final float Z_INDEX = 2f;
     private final Table towerTable = new Table();
     private final Table buttonTable = new Table();

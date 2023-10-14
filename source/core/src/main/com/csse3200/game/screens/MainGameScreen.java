@@ -16,7 +16,6 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
-import com.csse3200.game.components.maingame.MainGameLoseDisplay;
 import com.csse3200.game.components.maingame.MainGameDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
@@ -87,21 +86,19 @@ public class MainGameScreen extends ScreenAdapter {
   private final PhysicsEngine physicsEngine;
 
   private InputComponent upgradedInputHandler;
-  private final Stage stage;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
-  private int random = 0;
   public static int viewportWidth = screenWidth;
   public static int viewportHeight= screenHeight;
   int selectedLevel = GameLevelData.getSelectedLevel();
 
-  private OrthographicCamera camera;
-  private SpriteBatch batch;
+  private final OrthographicCamera camera;
+  private final SpriteBatch batch;
 
   private Texture backgroundTexture;
   private Music music;
-  private Array<String> ambientSounds = new Array<>(false, 5, String.class);
+  private final Array<String> ambientSounds = new Array<>(false, 5, String.class);
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -111,7 +108,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     batch = new SpriteBatch();
 
-    stage = new Stage(new ScreenViewport());
+    Stage stage = new Stage(new ScreenViewport());
 
 
     logger.debug("Initialising main game screen services");
@@ -169,22 +166,22 @@ public class MainGameScreen extends ScreenAdapter {
     Texture background;
     switch (selectedLevel) {
       // Desert
-      case 1: // Ice
+      case 1 -> { // Ice
         background = ServiceLocator.getResourceService().getAsset(ICE_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(ICE_BGM, Music.class);
         ambientSounds.addAll(iceSounds);
-        break;
-      case 2: // Lava
+      }
+      case 2 -> { // Lava
         background = ServiceLocator.getResourceService().getAsset(LAVA_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(LAVA_BGM, Music.class);
         ambientSounds.addAll(lavaSounds);
-        break;
-      default:
+      }
+      default -> {
         // Use a default background for other levels or planets
         background = ServiceLocator.getResourceService().getAsset(DESERT_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(DESERT_BGM, Music.class);
         ambientSounds.addAll(desertSounds);
-        break;
+      }
     }
     return background;
   }
@@ -304,7 +301,6 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
-            .addComponent(new MainGameLoseDisplay())
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
             .addComponent(new MainGameDisplay(this.game))
             .addComponent(new Terminal())

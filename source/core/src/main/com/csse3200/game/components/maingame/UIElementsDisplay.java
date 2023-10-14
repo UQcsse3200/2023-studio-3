@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -26,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
  */
 public class UIElementsDisplay extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);
+    private static final Logger logger = LoggerFactory.getLogger(UIElementsDisplay.class);
     private static final float Z_INDEX = 2f;
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
@@ -101,7 +103,8 @@ public class UIElementsDisplay extends UIComponent {
             }
             timerButton.setText("Next wave in: " + finalTime);
         } else {
-            buttonTable.removeActor(timerButton);
+            timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
+//            buttonTable.removeActor(timerButton);
             stage.act();
             stage.draw();
         }
