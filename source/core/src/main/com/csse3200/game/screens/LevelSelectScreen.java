@@ -53,7 +53,6 @@ public class LevelSelectScreen extends ScreenAdapter {
     private Music music;
 
     // Stores a time to determine the frame of the planet
-    // TODO: Account for integer overflow
     float timeCounter = 0;
 
     private static final String BG_PATH = "planets/background.png";

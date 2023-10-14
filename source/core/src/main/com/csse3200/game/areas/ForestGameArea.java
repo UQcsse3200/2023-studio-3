@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Music;
 
 import com.csse3200.game.components.ProjectileEffects;
 
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -26,6 +27,11 @@ public class ForestGameArea extends GameArea {
   private static final int NUM_GHOSTS = 0;
   private static final int NUM_GRUNTS = 5;
   private static final int NUM_BOSS = 4;
+
+  /* Change below to change the number of ms between spawns of engineers in the case */
+  private static final long ENGINEER_MIN_SPAWN_INTERVAL = 1000;
+
+  private long lastSpawnTime = 0;
 
   private SecureRandom rand = new SecureRandom();
 
@@ -963,10 +969,20 @@ public class ForestGameArea extends GameArea {
    * and trigger engineer spawning
    */
   private void spawnGapScanners() {
+    GameTime gameTime = ServiceLocator.getTimeSource();
+    long currSpawnTime = gameTime.getTime();
+    long diff = currSpawnTime - this.lastSpawnTime;
+
+    // Don't spawn an engineer if not enough time has passed
+    if (diff < ENGINEER_MIN_SPAWN_INTERVAL) {
+      return;
+    }
+
     for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
       Entity scanner = GapScannerFactory.createScanner();
       spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
+    this.lastSpawnTime = currSpawnTime;
   }
 
 
