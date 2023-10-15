@@ -3,7 +3,6 @@ package com.csse3200.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -29,6 +28,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.List;
+
+import static com.csse3200.game.ui.UIComponent.getSkin;
 
 public class TurretSelectionScreen extends ScreenAdapter {
 
@@ -57,6 +58,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private String[] bgm = {
             "sounds/background/pre_game/Sci-Fi7Loop.ogg"
     };
+    private static final String defaultFont = "determination_mono_18";
     private Music music;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
@@ -280,7 +282,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         Drawable alternateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(alternateImageFilePath)));
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = new BitmapFont(); // Set your desired font
+        buttonStyle.font = getSkin().getFont(defaultFont); // Set your desired font
         buttonStyle.up = defaultDrawable; // Default state
 
         // Create button
