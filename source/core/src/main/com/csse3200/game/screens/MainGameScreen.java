@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The game screen containing the main game.
  *
- * <p>Details on libGDX screens: https://happycoding.io/tutorials/libgdx/game-screens
+ * <p>Details on libGDX screens: <a href="https://happycoding.io/tutorials/libgdx/game-screens">...</a>
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
@@ -84,7 +84,7 @@ public class MainGameScreen extends ScreenAdapter {
   private final GdxGame game;
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
-
+  private final InputComponent buildHandler;
   private InputComponent upgradedInputHandler;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
@@ -108,6 +108,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     batch = new SpriteBatch();
 
+    Stage stage = new Stage(new ScreenViewport());
+
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
 
@@ -130,7 +132,7 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getCamera().position.set(CAMERA_POSITION.x,CAMERA_POSITION.y,0);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
@@ -221,7 +223,6 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
       // Check if all waves are completed and the level has been completed
-
       logger.info("Main game level completed detected, go to win screen");
       ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
       // Add something in to unlock the next planet/level?
@@ -301,6 +302,7 @@ public class MainGameScreen extends ScreenAdapter {
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
             .addComponent(new MainGameDisplay(this.game))
             .addComponent(new Terminal())
+            .addComponent(buildHandler)
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
 

@@ -206,12 +206,9 @@ public class TowerFactoryTest {
 
     @Test
     public void testWallTowerCombatStatsComponentAndCostComponent() {
-
-        assertEquals(300, wallTower.getComponent(CombatStatsComponent.class).getHealth(), "Health should be 20");
+        assertEquals(300, wallTower.getComponent(CombatStatsComponent.class).getHealth(), "Health should be 300");
         assertEquals(0, wallTower.getComponent(CombatStatsComponent.class).getBaseAttack(), "BaseAttack should be 0");
-        assertEquals(45, wallTower.getComponent(CostComponent.class).getCost(), "Cost should be 5");
-
-
+        assertEquals(45, wallTower.getComponent(CostComponent.class).getCost(), "Cost should be 45");
     }
 
     @Test
