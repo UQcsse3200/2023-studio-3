@@ -207,8 +207,7 @@ public class ForestGameArea extends GameArea {
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
-   *
-   * @requires terrainFactory != null
+   * &#064;requires  terrainFactory != null
    */
   public ForestGameArea() {
     super();
@@ -456,9 +455,6 @@ public class ForestGameArea extends GameArea {
   public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
-      case "Xeno":
-        mob = NPCFactory.createXenoGrunt(health);
-        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
