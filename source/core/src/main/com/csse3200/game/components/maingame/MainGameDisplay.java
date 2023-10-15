@@ -1,7 +1,6 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,7 +26,7 @@ public class MainGameDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private final Table towerTable = new Table();
     private final Table buttonTable = new Table();
-    private String[] sounds = {
+    private final String[] sounds = {
             "sounds/ui/click/click_01.ogg",
             "sounds/ui/open_close/open_01.ogg"
     };
@@ -141,12 +140,12 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(0) ) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(null, false);
+                            towerToggle(null);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
 
-                            towerToggle(tower1, false);
+                            towerToggle(tower1);
 
                         }
                         click.play(0.4f);
@@ -165,12 +164,12 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(1) ) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(null, false);
+                            towerToggle(null);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
 
-                            towerToggle(tower2, false);
+                            towerToggle(tower2);
 
                         }
                         click.play(0.4f);
@@ -188,14 +187,14 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(2)) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(null, false);
+                            towerToggle(null);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
                             if (ServiceLocator.getCurrencyService().getScrap().getAmount()
                                     >= Integer.parseInt(towers.get(2).getPrice())) {
 
-                                towerToggle(tower3, false);
+                                towerToggle(tower3);
 
                             } else {
                                 tower3.setDisabled(true);
@@ -217,12 +216,12 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(3)) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(null, false);
+                            towerToggle(null);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
 
-                            towerToggle(tower4, false);
+                            towerToggle(tower4);
 
                         }
                         click.play(0.4f);
@@ -240,12 +239,12 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(4)) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(tower5, false);
+                            towerToggle(tower5);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
 
-                            towerToggle(tower5, false);
+                            towerToggle(tower5);
 
                         }
                         click.play(0.4f);
@@ -286,12 +285,12 @@ public class MainGameDisplay extends UIComponent {
         // no tower selected, set all to off
         if (ServiceLocator.getCurrencyService().getTower() == null) {
             // toggle all buttons to off
-            towerToggle(null, false);
+            towerToggle(null);
         } else {
             // for handling shortcut key selection of tower build buttons
             for (int i = 0; i < towerButtons.size; i++) {
                 if (ServiceLocator.getCurrencyService().getTower() == towers.get(i)) {
-                    towerToggle(towerButtons.get(i), false);
+                    towerToggle(towerButtons.get(i));
                 }
             }
         }
@@ -305,26 +304,22 @@ public class MainGameDisplay extends UIComponent {
     /**
      * Helper method for toggling tower build buttons. The expected behaviour is that if one button is pressed,
      * all other buttons should be set to off. If a null button value is passed in then all buttons are set to off.
-     * Passing in isDisabled == true sets the button to 'disabled'. If null button and isDisabled == true, then all
-     * buttons will be set to 'disabled'.
      * <p></p>
      * @param towerButton the ImageButton which is being set to on, all others will be toggled off. If null, all buttons
      *                    will be set to off
-     * @param isDisabled sets whether the button should be set to disabled, if used with null towerButton, all buttons
-     *                   will be disabled
      */
-    private void towerToggle(ImageButton towerButton, boolean isDisabled) {
+    private void towerToggle(ImageButton towerButton) {
         if (towerButton == null) {
             // set all buttons to off, disable if isDisabled
             for (ImageButton button : towerButtons) {
                 button.setChecked(false);
-                button.setDisabled(isDisabled);
+//                button.setDisabled(isDisabled);
             }
         } else {
             // set the button corresponding to towerButton to on, all others to off
             for (ImageButton button : towerButtons) {
                 button.setChecked(button == towerButton);
-                button.setDisabled(isDisabled && button == towerButton);
+//                button.setDisabled(isDisabled && button == towerButton);
             }
         }
     }
