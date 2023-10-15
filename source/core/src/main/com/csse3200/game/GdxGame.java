@@ -64,43 +64,30 @@ public class GdxGame extends Game {
    * @return new screen
    */
   private Screen newScreen(ScreenType screenType) {
-    switch (screenType) {
-      case MAIN_MENU:
-        return new MainMenuScreen(this);
-      case MAIN_GAME:
-        return new MainGameScreen(this);
-      case SETTINGS:
-        return new SettingsScreen(this);
-      case STORY_SCREEN:
-        return new StoryScreen(this);
-      case LEVEL_SELECT:
-        return new LevelSelectScreen(this);
-      case LOSING_SCREEN:
-        return new LosingScreen(this);
-      case TURRET_SELECTION:
-        return new TurretSelectionScreen(this);
-      case HELP_SCREEN:
-        return new GameDescriptionHelpScreen(this);
-      case HELP_MOBS_SCREEN:
-        return new MobsDescriptionHelpScreen(this);
-        case HELP_TOWER_SCREEN:
-        return new TowerDescriptionHelpScreen(this);
-      case HELP_BOSS_SCREEN:
-        return new BossDescriptionHelpScreen(this);
-      case HOW_TO_PLAY:
-        return new HowToPlay(this);
-      case LOAD_SCREEN:
-        return new LoadingScreen(this);
-      case TUTORIAL_SCREEN:
-        return new Tutorial(this);
-      default:
-        return null;
-    }
+      return switch (screenType) {
+          case Next_Screen -> new NextLevelScreen(this);
+          case Win_Screen -> new WinningScreen(this);
+          case MAIN_MENU -> new MainMenuScreen(this);
+          case MAIN_GAME -> new MainGameScreen(this);
+          case SETTINGS -> new SettingsScreen(this);
+          case STORY_SCREEN -> new StoryScreen(this);
+          case LEVEL_SELECT -> new LevelSelectScreen(this);
+          case LOSING_SCREEN -> new LosingScreen(this);
+          case TURRET_SELECTION -> new TurretSelectionScreen(this);
+          case HELP_SCREEN -> new GameDescriptionHelpScreen(this);
+          case HELP_MOBS_SCREEN -> new MobsDescriptionHelpScreen(this);
+          case HELP_TOWER_SCREEN -> new TowerDescriptionHelpScreen(this);
+          case HELP_BOSS_SCREEN -> new BossDescriptionHelpScreen(this);
+          case HOW_TO_PLAY -> new HowToPlay(this);
+          case LOAD_SCREEN -> new LoadingScreen(this);
+          case TUTORIAL_SCREEN:new Tutorial(this);
+      default-> null;
+      };
   }
 
   public enum ScreenType {
     MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN,
-    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, HOW_TO_PLAY, TUTORIAL_SCREEN
+    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, Win_Screen, Next_Screen, HOW_TO_PLAY, TUTORIAL_SCREEN
   }
 
   /**

@@ -82,7 +82,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.level = (LevelWaves) this.owner.getEntity();
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-//    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
+    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
     this.waveStart.play();
     // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
@@ -103,8 +103,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
-      if (currentWaveIndex == this.level.getNumWaves()) {
-        logger.info("No waves remaining, level completed");
+      if (currentWaveIndex == this.level.getNumWaves() - 1) {
+        logger.info("No waves remaining");
         ServiceLocator.getWaveService().setLevelCompleted();
 
       } else {
@@ -116,7 +116,6 @@ public class WaveTask extends DefaultTask implements PriorityTask {
           ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);
         } else {
           if (globalTime.getTime() >= nextWaveAt || ServiceLocator.getWaveService().shouldSkip()) {
-            logger.info("Next wave starting");
             ServiceLocator.getWaveService().toggleDelay();
             currentWaveIndex++;
             ServiceLocator.getWaveService().setNextWaveTime(0);
@@ -128,6 +127,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
             ServiceLocator.getWaveService().setWaveCount(currentWaveIndex);
             this.currentWave = this.level.getWave(currentWaveIndex);
             ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
+            logger.info("Next wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
             //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
           }
         }
