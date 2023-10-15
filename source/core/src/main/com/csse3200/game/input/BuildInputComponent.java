@@ -98,7 +98,6 @@ public class BuildInputComponent extends InputComponent {
             logger.debug("spawning a tower at {}, {}", cursorPosition.x, cursorPosition.y);
             return buildTower((int)cursorPosition.x, (int)cursorPosition.y);
         } else {
-            // TODO: Create a tile indication of invalid placement here??
             return false;
         }
     }
@@ -144,7 +143,7 @@ public class BuildInputComponent extends InputComponent {
     /**
      *
      * @param keycode one of the constants in {@link Input.Keys}
-     * @return
+     * @return true if the multipleBuild key is down, otherwise false
      */
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.CONTROL_LEFT) {

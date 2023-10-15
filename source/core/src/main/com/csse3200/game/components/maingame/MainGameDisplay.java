@@ -3,7 +3,6 @@ package com.csse3200.game.components.maingame;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -29,13 +28,10 @@ public class MainGameDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private String[] sounds = {
             "sounds/ui/click/click_01.ogg",
-            "sounds/ui/hover/hover_01.ogg",
             "sounds/ui/open_close/open_01.ogg"
     };
     private Sound click;
-    private Sound hover;
     private Sound openSound;
-    private Sound closeSound;
     private GdxGame game;
 
     /**
@@ -235,6 +231,6 @@ public class MainGameDisplay extends UIComponent {
         ServiceLocator.getResourceService().loadSounds(sounds);
         ServiceLocator.getResourceService().loadAll();
         click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
-        openSound = ServiceLocator.getResourceService().getAsset(sounds[2], Sound.class);
+        openSound = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 }
