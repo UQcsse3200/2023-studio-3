@@ -89,8 +89,8 @@ public class MainGameScreen extends ScreenAdapter {
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
-  public static int viewportWidth = screenWidth;
-  public static int viewportHeight= screenHeight;
+  public static final int viewportWidth = screenWidth;
+  public static final int viewportHeight= screenHeight;
   int selectedLevel = GameLevelData.getSelectedLevel();
 
   private final OrthographicCamera camera;
@@ -107,9 +107,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
-
-    Stage stage = new Stage(new ScreenViewport());
-
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
