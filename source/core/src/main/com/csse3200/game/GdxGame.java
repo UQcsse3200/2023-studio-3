@@ -80,13 +80,14 @@ public class GdxGame extends Game {
           case HELP_BOSS_SCREEN -> new BossDescriptionHelpScreen(this);
           case HOW_TO_PLAY -> new HowToPlay(this);
           case LOAD_SCREEN -> new LoadingScreen(this);
-          default -> null;
+          case TUTORIAL_SCREEN-> new Tutorial(this);
+      default-> null;
       };
   }
 
   public enum ScreenType {
     MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN,
-    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, Win_Screen, Next_Screen, HOW_TO_PLAY
+    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, Win_Screen, Next_Screen, HOW_TO_PLAY, TUTORIAL_SCREEN
   }
 
   /**
