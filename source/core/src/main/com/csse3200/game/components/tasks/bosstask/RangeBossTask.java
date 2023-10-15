@@ -69,10 +69,9 @@ public class RangeBossTask extends DefaultTask implements PriorityTask {
     }
 
     public void switchMobBossBallState() {
-        switch (bossBallState) {
-            case START:
-                owner.getEntity().getEvents().trigger(FINAL);
-                bossBallState = STATE.FINAL;
+        if (bossBallState == STATE.START) {
+            owner.getEntity().getEvents().trigger(FINAL);
+            bossBallState = STATE.FINAL;
         }
     }
 

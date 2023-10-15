@@ -45,6 +45,7 @@ import java.util.Currency;
 public class NPCFactory {
   private static final NPCConfigs configs =
       FileLoader.readClass(NPCConfigs.class, "configs/NPCs.json");
+  private static final String DEFAULT = "default";
 
   /**
    * Creates a ghost entity.
@@ -114,7 +115,7 @@ public class NPCFactory {
     animator.addAnimation("skeleton_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("skeleton_attack", 0.1f);
     animator.addAnimation("skeleton_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.SKELETON));
@@ -146,7 +147,7 @@ public class NPCFactory {
     animator.addAnimation("wizard_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("wizard_attack", 0.1f);
     animator.addAnimation("wizard_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.WIZARD));
 
@@ -176,7 +177,7 @@ public class NPCFactory {
     animator.addAnimation("water_queen_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_queen_attack", 0.1f);
     animator.addAnimation("water_queen_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.WATER_QUEEN));
@@ -207,7 +208,7 @@ public class NPCFactory {
     animator.addAnimation("water_slime_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_slime_attack", 0.1f);
     animator.addAnimation("water_slime_death", 0.2f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.WATER_SLIME));
@@ -238,7 +239,7 @@ public class NPCFactory {
     animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("fire_worm_attack", 0.1f);
     animator.addAnimation("fire_worm_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.FIRE_WORM));
@@ -269,7 +270,7 @@ public class NPCFactory {
     animator.addAnimation("dragon_knight_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("dragon_knight_attack", 0.1f);
     animator.addAnimation("dragon_knight_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.DRAGON_KNIGHT));
@@ -296,7 +297,7 @@ public class NPCFactory {
     animator.addAnimation("coat_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("coat_attack", 0.1f);
     animator.addAnimation("coat_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.COAT));
@@ -323,7 +324,7 @@ public class NPCFactory {
     animator.addAnimation("night_borne_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("night_borne_attack", 0.1f);
     animator.addAnimation("night_borne_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.NIGHT_BORNE));
@@ -350,7 +351,7 @@ public class NPCFactory {
     animator.addAnimation("rocky_move", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("rocky_attack", 0.1f);
     animator.addAnimation("night_borne_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.NIGHT_BORNE));
@@ -377,7 +378,7 @@ public class NPCFactory {
     animator.addAnimation("necromancer_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("necromancer_attack", 0.1f);
     animator.addAnimation("necromancer_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.NECROMANCER));
@@ -404,7 +405,7 @@ public class NPCFactory {
     animator.addAnimation("firewizard_move", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("firewizard_attack", 0.1f);
     animator.addAnimation("firewizard_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.FIREWIZARD));
@@ -432,7 +433,7 @@ public class NPCFactory {
     animator.addAnimation("arcane_archer_attack", 0.1f);
     animator.addAnimation("arcane_archer_death", 0.1f);
     animator.addAnimation("arcane_archer_dodge", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.ARCANE_ARCHER));
@@ -459,7 +460,7 @@ public class NPCFactory {
     animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("fire_worm_attack", 0.1f);
     animator.addAnimation("fire_worm_death", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.FIRE_WORM));
@@ -485,9 +486,9 @@ public class NPCFactory {
   public static Entity createXenoGrunt(int health) {
     Entity xenoGrunt = createMeleeBaseNPC();
     BaseEnemyConfig config = configs.xenoGrunt;
-    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.sword, PredefinedWeapons.kick));
+    ArrayList<Melee> melee = new ArrayList<>(Arrays.asList(PredefinedWeapons.SWORD, PredefinedWeapons.KICK));
     // tester projectiles
-    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.fireBall, PredefinedWeapons.frostBall));
+    ArrayList<ProjectileConfig> projectiles = new ArrayList<>(Arrays.asList(PredefinedWeapons.FIREBALL, PredefinedWeapons.FROSTBALL));
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -499,7 +500,7 @@ public class NPCFactory {
     animator.addAnimation("xeno_melee_1", 0.1f);
     animator.addAnimation("xeno_melee_2", 0.1f);
     animator.addAnimation("xeno_die", 0.1f);
-    animator.addAnimation("default", 0.1f);
+    animator.addAnimation(DEFAULT, 0.1f);
     xenoGrunt
             .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
 //            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
@@ -601,11 +602,7 @@ public class NPCFactory {
    * @return Splitting water slime
    */
   public static Entity createSplittingWaterSlime(int health) {
-    Entity splitWaterSlime = createBaseWaterSlime(health)
-
-        .addComponent(new SplitMoblings(MobType.WATER_SLIME, 7, 0.5f));
-        
-    return splitWaterSlime;
+    return createBaseWaterSlime(health).addComponent(new SplitMoblings(MobType.WATER_SLIME, 7, 0.5f));
   }
 
   /**
@@ -615,11 +612,7 @@ public class NPCFactory {
    * @return Splitting Rocky
    */
   public static Entity createSplittingRocky(int health) {
-    Entity splitRocky = createRocky(health)
-
-            .addComponent(new SplitMoblings(MobType.ROCKY, 7, 0.5f));
-
-    return splitRocky;
+    return createRocky(health).addComponent(new SplitMoblings(MobType.ROCKY, 7, 0.5f));
   }
 
   /**
@@ -629,11 +622,7 @@ public class NPCFactory {
    * @return Splitting Night Borne
    */
   public static Entity createSplittingNightBorne(int health) {
-    Entity splitWaterSlime = createNightBorne(health)
-
-        .addComponent(new SplitMoblings(MobType.NIGHT_BORNE, 7, 0.5f));
-        
-    return splitWaterSlime;
+    return createNightBorne(health).addComponent(new SplitMoblings(MobType.NIGHT_BORNE, 7, 0.5f));
   }
 
   /**
@@ -682,11 +671,8 @@ public class NPCFactory {
    * @return Deflecting wizard
    */
   public static Entity createDeflectWizard(int health) {
-    Entity deflectWizard = createWizard(health);
-    deflectWizard.addComponent(new DeflectingComponent(
+    return createWizard(health).addComponent(new DeflectingComponent(
         PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
-
-    return deflectWizard;
   }
 
   /**
@@ -694,11 +680,8 @@ public class NPCFactory {
    * @return Deflecting firewizard
    */
   public static Entity createDeflectFireWizard(int health) {
-    Entity deflectWizard = createFirewizard(health);
-    deflectWizard.addComponent(new DeflectingComponent(
+    return createFirewizard(health).addComponent(new DeflectingComponent(
             PhysicsLayer.PROJECTILE, PhysicsLayer.TOWER, 10));
-
-    return deflectWizard;
   }
 }
 

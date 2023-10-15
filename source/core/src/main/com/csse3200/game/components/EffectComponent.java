@@ -125,6 +125,7 @@ public class EffectComponent extends Component {
                 stunFlag = true;
                 stunTime = gameTime.getTime() + EFFECT_DURATION;
             }
+            case FIREBALL -> {}
         }
     }
 

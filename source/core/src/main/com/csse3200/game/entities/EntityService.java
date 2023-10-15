@@ -98,7 +98,7 @@ public class EntityService {
    * @return An array containing entities within the given radius.
    */
   public Array<Entity> getNearbyEntities(Entity source, float radius) {
-    Array<Entity> nearbyEntities = new Array<Entity>();
+    Array<Entity> nearbyEntities = new Array<>();
     Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
     for (int i = 0; i < allEntities.size; i++) {
       Entity otherEntity = allEntities.get(i);
@@ -124,7 +124,7 @@ public class EntityService {
    * @return An array containing entities within the given radius.
    */
   public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
-    Array<Entity> entities = new Array<Entity>();
+    Array<Entity> entitiesInLayer = new Array<>();
     Array<Entity> allEntities = getNearbyEntities(source, radius);
 
     for (int i = 0; i < allEntities.size; i++) {
@@ -132,15 +132,12 @@ public class EntityService {
 
       // check targets layer
       HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-      if (targetHitbox == null) {
+      if (targetHitbox == null || (!PhysicsLayer.contains(layer, targetHitbox.getLayer()))) {
         continue;
       }
-      if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {
-        continue;
-      }
-      entities.add(targetEntity);
+      entitiesInLayer.add(targetEntity);
     }
-    return entities;
+    return entitiesInLayer;
   }
 
   /**
@@ -208,11 +205,11 @@ public class EntityService {
   /**
    * Determine whether there are any entities within the given tile position (x and y range). Checks for out of bounds
    * click location
-   * @param x_coord the top right x coordinate of the tile
-   * @param y_coord the top right y coordinate of the tile
+   * @param xCoord the top right x coordinate of the tile
+   * @param yCoord the top right y coordinate of the tile
    * @return true if the tile is occupied, false otherwise
    */
-  public boolean entitiesInTile(int x_coord, int y_coord) {
+  public boolean entitiesInTile(int xCoord, int yCoord) {
     TiledMapTileLayer mp;
     try {
       mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
@@ -220,8 +217,8 @@ public class EntityService {
       // MapService is not running - consider this occupied (invalid tile)
       return true;
     }
-    if (mp.getCell(x_coord, y_coord) != null) {
-      Entity entity = checkEntityAtPosition(x_coord, y_coord);
+    if (mp.getCell(xCoord, yCoord) != null) {
+      Entity entity = checkEntityAtPosition(xCoord, yCoord);
       return entity != null;
     }
     return true;

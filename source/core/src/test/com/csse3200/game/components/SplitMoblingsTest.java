@@ -37,7 +37,7 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.WaveService;
 
 @ExtendWith(GameExtension.class)
-public class SplitMoblingsTest {
+class SplitMoblingsTest {
   private static final int BASE_Y_COORD = 3;
   private static final int BASE_AMOUNT = 5;
   private final String[] atlas = {
@@ -73,14 +73,14 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     Entity mob = createSplitMob(5);
     assertNotNull("Mobling components does not exists",
         mob.getComponent(SplitMoblings.class));
   }
 
   @Test
-  public void shouldHaveAsset() {
+  void shouldHaveAsset() {
     Entity projectile = createDummyProjectile();
 
     baseMob.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
@@ -97,7 +97,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldBeDisposedAfterDeath() {
+  void shouldBeDisposedAfterDeath() {
     Entity projectile = createDummyProjectile();
     projectile.getComponent(CombatStatsComponent.class).setBaseAttack(20);
 
@@ -119,7 +119,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldInvokeDieStartEventAfterDeath() {
+  void shouldInvokeDieStartEventAfterDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
     baseMob.getComponent(CombatStatsComponent.class).setHealth(0);
 
@@ -135,7 +135,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotInvokeDieStartEventNoDeath() {
+  void shouldNotInvokeDieStartEventNoDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
 
     assertFalse("mob is dead when health is not 0",
@@ -147,7 +147,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSplitCorrectAmount() {
+  void shouldSplitCorrectAmount() {
     Entity projectile = createDummyProjectile();
 
     int allEntities = ServiceLocator.getEntityService().getEntities().size;
@@ -169,7 +169,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotSplitCorrectAmountOutOfBounds() {
+  void shouldNotSplitCorrectAmountOutOfBounds() {
     Entity projectile = createDummyProjectile();
 
     int allEntities = ServiceLocator.getEntityService().getEntities().size;
@@ -191,7 +191,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSpawnWithinRangeAmountOne() {
+  void shouldSpawnWithinRangeAmountOne() {
     Entity mob = createSplitMob(1);
     Entity projectile = createDummyProjectile();
 
@@ -213,7 +213,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSpawnWithinRangeMultipleAmount() {
+  void shouldSpawnWithinRangeMultipleAmount() {
     Entity projectile = createDummyProjectile();
     Entity mobThree = createSplitMob(3);
     Entity mobSeven = createSplitMob(7);
@@ -251,7 +251,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldScaleBasedOnParamsSingleAmt() {
+  void shouldScaleBasedOnParamsSingleAmt() {
     float scale = 1.5f;
     Entity mob = createSplitMob(1, scale);
     Entity projectile = createDummyProjectile();
@@ -277,7 +277,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldScaleXAndYbasedOnParamsMultiAmt() {
+  void shouldScaleXAndYbasedOnParamsMultiAmt() {
     float scaleX = 0.5f;
     float scaleY = 1.75f;
     Entity mob = createSplitMob(5, scaleX, scaleY);

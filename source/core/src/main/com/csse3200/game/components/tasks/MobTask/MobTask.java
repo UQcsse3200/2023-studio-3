@@ -163,6 +163,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     runFlag = true;
                 }
             }
+            case DEATH, DEFAULT -> {}
         }
     }
 

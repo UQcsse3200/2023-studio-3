@@ -12,11 +12,9 @@ import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
-import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     // Constants
     private static final int PRIORITY = 3;
     private static final Vector2 DEMON_SPEED = new Vector2(1f, 1f);
-    private static final float STOP_DISTANCE = 0.1f;
     private static final float JUMP_DISTANCE = 3.0f;
     private static final double Y_TOP_BOUNDARY = 5.5;
     private static final double Y_BOT_BOUNDARY = 0.5;
@@ -50,9 +47,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);
     private Vector2 currentPos;
-    private final PhysicsEngine physics;
-    private final GameTime gameTime;
-    private Vector2 jumpPos;
     private MovementTask jumpTask;
     private DemonState state = DemonState.IDLE;
     private DemonState prevState;
@@ -77,14 +71,6 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private enum DemonState {
         TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK
-    }
-
-    /**
-     * The demon boss task constructor. Initialises the physics and time.
-     */
-    public DemonBossTask() {
-        physics = ServiceLocator.getPhysicsService().getPhysics();
-        gameTime = ServiceLocator.getTimeSource();
     }
 
     /**
@@ -187,10 +173,8 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                 }
             }
             case TRANSFORM -> {
-                if (health <= 0) {
-                    if (animation.isFinished()) {
-                        changeState(DemonState.DEATH);
-                    }
+                if (health <= 0 && animation.isFinished()) {
+                    changeState(DemonState.DEATH);
                 }
             }
             case TAKE_HIT -> {
@@ -199,6 +183,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
                     halfHealthFlag = true;
                 }
             }
+            case DEATH, WALK -> {}
         }
     }
 
@@ -308,6 +293,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private Vector2 getJumpPos() {
         // check if boundary has shifted causing demon to be out of bounds
+        Vector2 jumpPos;
         if (currentPos.x > xRightBoundary) {
             jumpPos = new Vector2(currentPos.x - JUMP_DISTANCE, currentPos.y); //jump back into boundary
             return jumpPos;
@@ -317,6 +303,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
         if (currentPos.dst(ServiceLocator.getEntityService().getClosestEntityOfLayer(
                 demon, PhysicsLayer.HUMANS).getPosition()) < 2f) {
             jumpPos = new Vector2(currentPos.x + JUMP_DISTANCE, currentPos.y);
+            //TODO: Check whether jumpPos needs to be returned
         }
 
         float randomAngle = MathUtils.random(0, 2 * MathUtils.PI);
