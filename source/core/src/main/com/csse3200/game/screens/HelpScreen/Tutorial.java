@@ -31,6 +31,7 @@ import com.csse3200.game.services.*;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import com.csse3200.game.components.maingame.MainGameExitDisplay;
+import com.csse3200.game.screens.HelpScreen.TutorialOkButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -299,6 +300,7 @@ public class Tutorial extends ScreenAdapter {
                 .addComponent(new MainGameExitDisplay())
                 .addComponent(new MainGameLoseDisplay())
                 .addComponent(new MainGamePauseDisplay(this.game))
+                .addComponent(new TutorialOkButton(this.game))
                 .addComponent(new Terminal())
                 .addComponent(inputComponent)
                 .addComponent(new TerminalDisplay());
