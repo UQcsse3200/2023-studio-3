@@ -29,10 +29,10 @@ public class WaveFactory {
   private static Random rand = new Random();
 
   // Base health of the mobs
-  private static int BASE_HEALTH = 60;
+  private static int base_health = 60;
 
   // Base health of the boss
-  private static int BOSS_BASE_HEALTH = 80;
+  private static int boss_base_health = 80;
 
   /**
    * The function will create the waves depending on the level selected by the user.
@@ -138,7 +138,7 @@ public class WaveFactory {
       // add i/5 bosses every 5 waves with increased health where i is the i^th wave
       // 5/5 -> 1 boss, 10/5 -> 2 bosses etc
       if (i % 5 == 0) {
-        int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};
+        int[] bossStats = {i/5, boss_base_health + (chosenLevel * i)};
         mobs.put(boss, bossStats);
       }
 
@@ -154,8 +154,8 @@ public class WaveFactory {
       int mob1Num = rand.nextInt(minMobs - 3) + 2;
       int mob2Num = minMobs - mob1Num;
 
-      int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};
-      int[] mob2Stats = {mob2Num, BASE_HEALTH + (chosenLevel * i)};
+      int[] mob1Stats = {mob1Num, base_health + (chosenLevel * i)};
+      int[] mob2Stats = {mob2Num, base_health + (chosenLevel * i)};
 
 
       mobs.put(mob1, mob1Stats);
@@ -165,7 +165,7 @@ public class WaveFactory {
       minMobs ++;
     }
 
-    logger.info("Level created: " + level);
+    logger.info("Level created: {}", level);
     return level;
   }
 
