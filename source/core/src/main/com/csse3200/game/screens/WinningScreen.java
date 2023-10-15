@@ -18,12 +18,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.Preferences;
 
 public class WinningScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
     private Texture backgroundTexture;
     private Sprite backgroundSprite;
+    private Preferences preferences;
 
     private static final String BACKGROUND_TEXTURE = "planets/background.png"; // Set the path to your winning background image
     private static final String WIN_TEXT = """
@@ -41,6 +43,7 @@ public class WinningScreen extends ScreenAdapter {
         ServiceLocator.registerResourceService(resourceService);
       //  resourceService.loadSounds(winSounds);
         resourceService.loadAll();
+        preferences = Gdx.app.getPreferences("MyPreferences");
     }
 
 
@@ -83,6 +86,9 @@ public class WinningScreen extends ScreenAdapter {
         table.add(mainMenuButton).padTop(-200).row();
         table.add(playAgainButton).padTop(-300).row();
         stage.addActor(table);
+
+        preferences.putInteger("HighestLevelReached", 2);
+        preferences.flush();
 
         // Play win sound
         // resourceService.getAsset(winSounds[0], Sound.class).play(0.3f);

@@ -26,6 +26,7 @@ import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
@@ -51,6 +52,7 @@ public class LevelSelectScreen extends ScreenAdapter {
             "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
     };
     private Music music;
+    private Preferences preferences;
 
     // Stores a time to determine the frame of the planet
     // TODO: Account for integer overflow
@@ -61,6 +63,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     public LevelSelectScreen(GdxGame game) {
         font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
+        preferences = Gdx.app.getPreferences("MyGamePreferences");
         this.game = game;
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -109,12 +112,12 @@ public class LevelSelectScreen extends ScreenAdapter {
      * function can be modified.
      */
     private void spawnPlanets() {
-        // Spawn desert planet
-        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
-        // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
-        // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1);
+        // ICE is level 0
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1, 0);
+        // DESERT is level 1
+        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1, 1);
+        // LAVA is level 2
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1, 2);
 
         spawnPlanetBorders();
     }
@@ -128,9 +131,18 @@ public class LevelSelectScreen extends ScreenAdapter {
      * @param planetName The name of the planet
      * @param version The different type of planet
      * @param frame The frame of the planet
+     * @param levelNumber The level associated with the planet
      */
-    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame) {
-        Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame, int levelNumber) {
+        int highestLevelReached = preferences.getInteger("HighestLevelReached", 0);
+        Texture planet;
+
+        if(levelNumber > highestLevelReached) {
+            planet = new Texture(String.format("planets/%s_bw/%d/%d.png", planetName, version, frame));
+        } else {
+            planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+        }
+
         Sprite planetSprite = new Sprite(planet);
         planetSprite.setSize(width, height);
         batch.draw(planetSprite, posx, posy, width, height);
@@ -143,6 +155,8 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        int highestLevelReached = preferences.getInteger("HighestLevelReached", 0);
+
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
@@ -150,16 +164,24 @@ public class LevelSelectScreen extends ScreenAdapter {
                 // If the mouse is over a planet, draw the planet border
                 Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
                 batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
+
+                // Check if planet level is unlocked before allowing click
                 if (Gdx.input.justTouched()) {
-                    // If the planet is clicked, load the corresponding level
-                    dispose();
-                    logger.info("Loading level {}", planet[4]);
-                    GameLevelData.setSelectedLevel(planet[4]);
+                    if (planet[4] > highestLevelReached) {
+                        // If the planet is clicked, load the corresponding level
+                        dispose();
+                        logger.info("Loading level {}", planet[4]);
+                        GameLevelData.setSelectedLevel(planet[4]);
                         game.setScreen(new TurretSelectionScreen(game));
+                    } else {
+                        // Provide some feedback for locked levels, like a sound effect or a popup
+                        logger.info("Attempted to load locked level {}", planet[4]);
+                        // You can add a sound effect or a popup here to inform the player that the level is locked
                     }
                 }
             }
         }
+    }
 
 
 

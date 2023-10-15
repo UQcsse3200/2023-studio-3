@@ -14,14 +14,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
+import com.badlogic.gdx.Preferences;
 
 public class NextLevelScreen extends ScreenAdapter {
     private final SpriteBatch batch;
     private final Texture backgroundTexture;
     private final BitmapFont font;
     private final Stage stage;
+    private int currentLevel;
+    private Preferences preferences;
 
     public NextLevelScreen(GdxGame game) {
+        this.currentLevel = currentLevel;
+
+        preferences = Gdx.app.getPreferences("MyPreferences");
+        int highestLevelReached = preferences.getInteger("HighestLevelReached", -1);
+        if (currentLevel > highestLevelReached) {
+            preferences.putInteger("HighestLevelReached", currentLevel);
+            preferences.flush();
+        }
+
         batch = new SpriteBatch();
         backgroundTexture = new Texture("planets/background.png"); // Replace with the path to your background image
         font = new BitmapFont();
@@ -34,6 +46,13 @@ public class NextLevelScreen extends ScreenAdapter {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                if (currentLevel < 2) {
+                    game.setScreen(new LevelSelectScreen(game));
+                } else {
+                    // Handle the case where all levels are completed,
+                    // maybe transition to a game completion or main menu screen.
+                    game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+                }
                 // Logic to move to the next level
                 // You can implement your logic here, such as updating the level and calling game.setScreen()
                 // Example: game.setScreen(new MainGameScreen(game, nextLevel));
