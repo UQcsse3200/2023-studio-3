@@ -151,9 +151,18 @@ public class SplitMoblings extends Component {
         entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
       }
     }
+    
     entityType.setPosition(positionX, positionY);
 
-    entityType.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+    switch (mobType) {
+      case NIGHT_BORNE -> {
+        entityType.setScale(initialScaleX, initialScaleY);
+      }
+      default -> {
+        entityType.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+      }
+    }
+
 
     ServiceLocator.getEntityService().register(entityType);
 

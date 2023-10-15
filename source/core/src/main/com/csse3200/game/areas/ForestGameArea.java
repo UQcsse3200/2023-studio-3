@@ -486,7 +486,7 @@ public class ForestGameArea extends GameArea {
         mob = NPCFactory.createSkeleton(health);
         break;
       case "DeflectWizard":
-        mob = NPCFactory.createDeflectWizard(health);
+        mob = NPCFactory.createWizard(health);
         break;
       case "WaterQueen":
         mob = NPCFactory.createWaterQueen(health);
