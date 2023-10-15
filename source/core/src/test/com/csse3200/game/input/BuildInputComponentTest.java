@@ -2,12 +2,17 @@ package com.csse3200.game.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Camera;
 import com.csse3200.game.areas.terrain.TerrainComponent;
 import com.csse3200.game.components.CameraComponent;
+import com.csse3200.game.components.gamearea.CurrencyDisplay;
+import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.screens.TowerType;
@@ -25,6 +30,7 @@ class BuildInputComponentTest {
 
     private BuildInputComponent buildInputComponent;
     EntityService entityService;
+    ResourceService resourceService;
 
     @BeforeEach
     void setup() {
@@ -42,7 +48,7 @@ class BuildInputComponentTest {
         ServiceLocator.registerRenderService(render);
 
         CurrencyService currencyService = new CurrencyService();
-        ResourceService resourceService = new ResourceService();
+        resourceService = mock(ResourceService.class);
         MapService mapService = mock(MapService.class);
         when(mapService.getComponent()).thenReturn(mock(TerrainComponent.class));
         entityService = mock(EntityService.class);
@@ -138,4 +144,44 @@ class BuildInputComponentTest {
         when(ServiceLocator.getEntityService()).thenReturn(null);
         assertFalse(buildInputComponent.touchDown(5,5,7,8));
   }
+
+  @Test
+  void shouldReturnTowerOne() {
+        assert(ServiceLocator.getCurrencyService().getTower() == null);
+        buildInputComponent.keyUp(Input.Keys.NUM_1);
+        assert(ServiceLocator.getCurrencyService().getTower() ==
+                ServiceLocator.getTowerTypes().get(0));
+  }
+
+    @Test
+    void shouldReturnTowerTwo() {
+        assert(ServiceLocator.getCurrencyService().getTower() == null);
+        buildInputComponent.keyUp(Input.Keys.NUM_2);
+        assert(ServiceLocator.getCurrencyService().getTower() ==
+                ServiceLocator.getTowerTypes().get(1));
+    }
+
+    @Test
+    void shouldReturnTowerThree() {
+        assert(ServiceLocator.getCurrencyService().getTower() == null);
+        buildInputComponent.keyUp(Input.Keys.NUM_3);
+        assert(ServiceLocator.getCurrencyService().getTower() ==
+                ServiceLocator.getTowerTypes().get(2));
+    }
+
+    @Test
+    void shouldReturnTowerFour() {
+        assert(ServiceLocator.getCurrencyService().getTower() == null);
+        buildInputComponent.keyUp(Input.Keys.NUM_4);
+        assert(ServiceLocator.getCurrencyService().getTower() ==
+                ServiceLocator.getTowerTypes().get(3));
+    }
+
+    @Test
+    void shouldReturnTowerFive() {
+        assert(ServiceLocator.getCurrencyService().getTower() == null);
+        buildInputComponent.keyUp(Input.Keys.NUM_5);
+        assert(ServiceLocator.getCurrencyService().getTower() ==
+                ServiceLocator.getTowerTypes().get(4));
+    }
 }
