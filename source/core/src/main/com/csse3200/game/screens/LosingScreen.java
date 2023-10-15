@@ -62,7 +62,7 @@ public class LosingScreen extends ScreenAdapter {
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
         exitButton = new TextButton("Exit Game", skin);
-        exitButton.addListener(new ClickListener(){
+        exitButton.addListener(new ClickListener() {
             public void clicked(InputEvent even, float x, float y) {
                 game.exit();
             }
@@ -111,5 +111,7 @@ public class LosingScreen extends ScreenAdapter {
         batch.dispose();
         introImage.dispose();
         stage.dispose();
+
     }
+
 }
