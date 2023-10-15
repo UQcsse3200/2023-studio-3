@@ -5,16 +5,15 @@ import com.csse3200.game.components.gamearea.EngineerCountDisplay;
 public class GameEndService {
 
     private int engineerCount;
-
     private boolean gameOver = false;
-
-    private EngineerCountDisplay display;
+    private static final int STARTING_COUNT = 5;
+    private final EngineerCountDisplay display;
 
     /**
      * Constructor for the Game End Service
      */
     public GameEndService() {
-        this.engineerCount = 5;
+        this.engineerCount = STARTING_COUNT;
         this.display = new EngineerCountDisplay();
     }
 
@@ -49,6 +48,14 @@ public class GameEndService {
         if (engineerCount == 0) {
             gameOver = true;
         }
+    }
+
+    /**
+     * Return the warning threshold for the engineer count
+     * @return the warning threshold int
+     */
+    public float getThreshold() {
+        return (float)(0.25 * STARTING_COUNT);
     }
 
     /**

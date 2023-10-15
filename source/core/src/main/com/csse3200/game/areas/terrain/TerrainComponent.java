@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.rendering.RenderComponent;
+import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -157,8 +158,8 @@ public class TerrainComponent extends RenderComponent {
    * @see TiledMapTileLayer.Cell
    * @see TextureRegion
    */
-
   public void hoverHighlight() {
+    CurrencyService currencyService = ServiceLocator.getCurrencyService();
     Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
     camera.unproject(mousePos);
 
@@ -174,16 +175,27 @@ public class TerrainComponent extends RenderComponent {
       lastHoveredCell.getTile().setTextureRegion(originalRegion);
     }
 
+    if (ServiceLocator.getCurrencyService().getTower() == null && currentCell != null) {
+      ResourceService resourceService = ServiceLocator.getResourceService();
+      Texture texture = resourceService.getAsset("images/terrain_use.png", Texture.class);
+      currentCell.getTile().setTextureRegion(new TextureRegion(texture));
+    }
 
     if (currentCell != null && currentCell != lastHoveredCell) {
       originalRegion = currentCell.getTile().getTextureRegion();
 
       ResourceService resourceService = ServiceLocator.getResourceService();
-      Texture texture = resourceService.getAsset("images/highlight_tile.png", Texture.class);
-      currentCell.getTile().setTextureRegion(new TextureRegion(texture));
+      if (currencyService.getTower() != null) {
+        if (!ServiceLocator.getEntityService().entitiesInTile(tileX, tileY) && currencyService.getScrap().canBuy(Integer.parseInt(currencyService.getTower().getPrice()))) {
+          Texture texture = resourceService.getAsset("images/green_tile.png", Texture.class);
+          currentCell.getTile().setTextureRegion(new TextureRegion(texture));
+        } else {
+          Texture texture = resourceService.getAsset("images/red_tile.png", Texture.class);
+          currentCell.getTile().setTextureRegion(new TextureRegion(texture));
+        }
+        lastHoveredCell = currentCell;
+      }
     }
-
-    lastHoveredCell = currentCell;
   }
 
   public enum TerrainOrientation {
