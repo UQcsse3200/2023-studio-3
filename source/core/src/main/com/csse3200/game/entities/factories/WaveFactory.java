@@ -200,7 +200,6 @@ public class WaveFactory {
         leftToSort --;
       }
       minMobs ++;
-
       level.addWave(new WaveClass(mobs));
       atWave++;
     }
@@ -210,7 +209,7 @@ public class WaveFactory {
     level.addWave(new WaveClass(bossMob));
 
     System.out.println("total health is:" + calcHealth);
-    logger.info("Level created: " + level);
+    logger.info("Level created: {}", level);
     return level;
   }
 
