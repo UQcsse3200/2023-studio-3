@@ -6,7 +6,6 @@ import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -69,7 +68,7 @@ public class LevelWaves extends Entity {
             ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);
             Tuple mobStats = waves.get(waveIndex).getMobs().get(mobIndex);
-            this.getEvents().trigger("spawnWave", mobStats.mob, randomPos, mobStats.health);
+            this.getEvents().trigger("spawnWave", mobStats.mob, randomPos, mobStats.value);
             startTime = gameTime.getTime();
             mobIndex++;
             previousRandom = currentRandom;

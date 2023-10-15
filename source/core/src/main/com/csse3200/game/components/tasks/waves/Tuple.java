@@ -11,15 +11,15 @@ public class Tuple {
 
   public String mob;
 
-  public int health;
+  public int value;
 
-  public Tuple(String mob, int health) {
+  public Tuple(String mob, int value) {
     this.mob = mob;
-    this.health = health;
+    this.value = value;
   }
 
   @Override
   public String toString(){
-    return "Mob: " + mob + " Health: " + health;
+    return "Mob: " + mob + " Health: " + value;
   }
 }
