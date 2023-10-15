@@ -15,6 +15,7 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.components.npc.ArcaneArcherAnimationController;
 
 /**
  * The AI Task for all general mobs. This task handles the sequencing for melee
@@ -291,6 +292,13 @@ public class MobTask extends DefaultTask implements PriorityTask {
                 meleeFlag = true; // toggle melee flag off
             }
         }, MELEE_ATTACK_SPEED);
+			if(owner.getEntity().getComponent(ArcaneArcherAnimationController.class)!=null)
+			{
+				Entity newProjectile = ProjectileFactory.createPierceArrow(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+				newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+				newProjectile.setScale(1.3f, 1.3f);
+				ServiceLocator.getEntityService().register(newProjectile);
+            }
     }
 
     /**

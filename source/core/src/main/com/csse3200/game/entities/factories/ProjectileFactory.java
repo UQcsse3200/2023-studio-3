@@ -121,6 +121,22 @@ public class ProjectileFactory {
 
     return fireBall;
   }
+  
+  public static Entity createPierceArrow(short targetLayer, Vector2 destination, Vector2 speed) {
+	Entity arrow = createBaseProjectile(targetLayer, destination, speed);
+    AnimationRenderComponent animator =
+            new AnimationRenderComponent(
+                    ServiceLocator.getResourceService()
+                            .getAsset("images/projectiles/arrow.atlas", TextureAtlas.class));
+    animator.addAnimation("arrow", 0.1f, Animation.PlayMode.LOOP);
+    arrow
+            .addComponent(animator)
+            .addComponent(new PierceArrowAnimationController());
+    arrow.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
+    arrow.getComponent(TouchAttackComponent.class).setKnockBack(0f);
+
+    return arrow;
+  }
 
   /**
    * Create a ricochet fireball.
