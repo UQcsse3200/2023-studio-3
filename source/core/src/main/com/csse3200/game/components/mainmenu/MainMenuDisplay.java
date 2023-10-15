@@ -66,20 +66,16 @@ public class MainMenuDisplay extends UIComponent {
         title.setPosition(0, 0);
 
 // Create a "Start" TextButton using the default style
-//        TextButton startBtn = ButtonFactory.createButton("Start");
-        TextButton startBtn = new TextButton("Start", skin);
+        TextButton startBtn = ButtonFactory.createButton("Start");
 
 // Create a "Help" TextButton using the default style
-//        TextButton helpBtn = ButtonFactory.createButton("Help");
-        TextButton helpBtn = new TextButton("Help", skin);
+        TextButton helpBtn = ButtonFactory.createButton("Help");
 
 // Create a "Settings" TextButton with a custom image
-//        TextButton settingsBtn =ButtonFactory.createButton("Settings");
-        TextButton settingsBtn =new TextButton("Settings", skin);
+        TextButton settingsBtn =ButtonFactory.createButton("Settings");
 
 // Create a "Quit" TextButton with a custom image
-//        TextButton exitBtn = ButtonFactory.createButton("Quit");
-        TextButton exitBtn = new TextButton("Quit", skin);
+        TextButton exitBtn = ButtonFactory.createButton("Quit");
 
         // Triggers an event when the button is pressed
         startBtn.addListener(

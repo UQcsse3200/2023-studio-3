@@ -28,7 +28,7 @@ public class BuildInputComponent extends InputComponent {
     private final Camera camera;
     private final String[] sounds = {
             "sounds/economy/buildSound.ogg",
-            "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg"
+            "sounds/ui/switch/switch_01.ogg"
     };
     private Sound buildSound;
     private Sound errorSound;
@@ -115,6 +115,7 @@ public class BuildInputComponent extends InputComponent {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+
                 return true;
             case Input.Keys.NUM_2:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
@@ -133,6 +134,8 @@ public class BuildInputComponent extends InputComponent {
                 ServiceLocator.getCurrencyService().setTowerType(null);
                 multipleTowerBuild = false;
                 return true;
+            case Input.Keys.ESCAPE:
+
             default:
                 return false;
         }
@@ -210,9 +213,6 @@ public class BuildInputComponent extends InputComponent {
                 long soundId = errorSound.play();
                 errorSound.setVolume(soundId, 1f);
                 ServiceLocator.getCurrencyService().getDisplay().scrapBalanceFlash();
-                // TODO: add a visual indication of the build fail, through
-                //  currency display flash
-
             }
         }
         return false;
@@ -224,7 +224,9 @@ public class BuildInputComponent extends InputComponent {
     private void loadSounds() {
         ServiceLocator.getResourceService().loadSounds(sounds);
         ServiceLocator.getResourceService().loadAll();
-        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
-        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg", Sound.class);
+        buildSound = ServiceLocator.getResourceService()
+                .getAsset("sounds/economy/buildSound.ogg", Sound.class);
+        errorSound = ServiceLocator.getResourceService()
+                .getAsset("sounds/ui/switch/switch_01.ogg", Sound.class);
     }
 }
