@@ -80,7 +80,7 @@ public class GdxGame extends Game {
           case HELP_BOSS_SCREEN -> new BossDescriptionHelpScreen(this);
           case HOW_TO_PLAY -> new HowToPlay(this);
           case LOAD_SCREEN -> new LoadingScreen(this);
-          case TUTORIAL_SCREEN:new Tutorial(this);
+          case TUTORIAL_SCREEN-> new Tutorial(this);
       default-> null;
       };
   }
