@@ -108,6 +108,8 @@ public class MainGameScreen extends ScreenAdapter {
 
     batch = new SpriteBatch();
 
+    Stage stage = new Stage(new ScreenViewport());
+
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
 
@@ -218,10 +220,8 @@ public class MainGameScreen extends ScreenAdapter {
     // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
-    }
-
-    // Check if all waves are completed and the level has been completed
-    else if (ServiceLocator.getWaveService().isLevelCompleted()) {
+    } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      // Check if all waves are completed and the level has been completed
       logger.info("Main game level completed detected, go to win screen");
       ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
       // Add something in to unlock the next planet/level?

@@ -172,45 +172,43 @@ public class TowerFactoryTest {
     @Test
     public void testWeaponTowerCombatStatsComponentAndCostComponent() {
 
-        assertEquals(10, weaponTower.getComponent(CombatStatsComponent.class).getHealth(),
-                "Health should be 10");
-        assertEquals(10, weaponTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
-        assertEquals(10, weaponTower.getComponent(CostComponent.class).getCost(),
-                "Cost should be 10");
-        assertEquals(10, fireTower.getComponent(CombatStatsComponent.class).getHealth(),
-                "Fire Tower health must be 10");
-        assertEquals(10, fireTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "Fire Tower base attack must be 10");
-        assertEquals(10, fireTower.getComponent(CostComponent.class).getCost(),
-                "Fire Tower cost must 10");
-        assertEquals(10, stunTower.getComponent(CombatStatsComponent.class).getHealth(),
-                "Stun Tower health must be 10");
-        assertEquals(10, stunTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "Stun Tower base attack must be 10");
-        assertEquals(10, stunTower.getComponent(CostComponent.class).getCost(),
-                "Stun Tower cost must 10");
+        assertEquals(75, weaponTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Health should be 75");
+        assertEquals(15, weaponTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 15");
+        assertEquals(15, weaponTower.getComponent(CostComponent.class).getCost(),
+                "Cost should be 15");
+        assertEquals(100, fireTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Fire Tower health must be 100");
+        assertEquals(25, fireTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Fire Tower base attack must be 25");
+        assertEquals(45, fireTower.getComponent(CostComponent.class).getCost(),
+                "Fire Tower cost must 45");
+        assertEquals(100, stunTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Stun Tower health must be 100");
+        assertEquals(25, stunTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Stun Tower base attack must be 25");
+        assertEquals(45, stunTower.getComponent(CostComponent.class).getCost(),
+                "Stun Tower cost must 45");
         assertEquals(10, tntTower.getComponent(CombatStatsComponent.class).getHealth(),
                 "TNT Tower health must be 10");
         assertEquals(5, tntTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
                 "TNT Tower base attack must be 5");
-        assertEquals(1, tntTower.getComponent(CostComponent.class).getCost(),
-                "TNT Tower cost must 1");
-        assertEquals(50, droidTower.getComponent(CombatStatsComponent.class).getHealth(),
-                "TNT Tower health must be 50");
-        assertEquals(5, droidTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "Droid Tower base attack must be 5");
-        assertEquals(1, droidTower.getComponent(CostComponent.class).getCost(),
-                "Droid Tower cost must 1");
+        assertEquals(30, tntTower.getComponent(CostComponent.class).getCost(),
+                "TNT Tower cost must 30");
+        assertEquals(100, droidTower.getComponent(CombatStatsComponent.class).getHealth(),
+                "Droid Tower health must be 100");
+        assertEquals(25, droidTower.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "Droid Tower base attack must be 25");
+        assertEquals(45, droidTower.getComponent(CostComponent.class).getCost(),
+                "Droid Tower cost must 45");
     }
 
     @Test
     public void testWallTowerCombatStatsComponentAndCostComponent() {
-
-        assertEquals(20, wallTower.getComponent(CombatStatsComponent.class).getHealth(), "Health should be 20");
+        assertEquals(300, wallTower.getComponent(CombatStatsComponent.class).getHealth(), "Health should be 300");
         assertEquals(0, wallTower.getComponent(CombatStatsComponent.class).getBaseAttack(), "BaseAttack should be 0");
-        assertEquals(5, wallTower.getComponent(CostComponent.class).getCost(), "Cost should be 5");
-
+        assertEquals(45, wallTower.getComponent(CostComponent.class).getCost(), "Cost should be 5");
     }
 
     @Test
@@ -230,11 +228,11 @@ public class TowerFactoryTest {
         attacker.setPosition(10f,10f);
         wallTower.create();
 
-        assertEquals(20, wallTower.getComponent(CombatStatsComponent.class).getHealth());
+        assertEquals(300, wallTower.getComponent(CombatStatsComponent.class).getHealth());
 
         ServiceLocator.getPhysicsService().getPhysics().update();
 
-        assertEquals(10, wallTower.getComponent(CombatStatsComponent.class).getHealth());
+        assertEquals(290, wallTower.getComponent(CombatStatsComponent.class).getHealth());
 
     }
 

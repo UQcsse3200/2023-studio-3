@@ -33,7 +33,6 @@ public class BuildInputComponent extends InputComponent {
     private Sound buildSound;
     private Sound errorSound;
     private Array<TowerType> towers = new Array<>();
-    private Array<TowerType> defaultTowers = new Array<>();
     private boolean multipleTowerBuild = false;
 
     /**
@@ -54,6 +53,7 @@ public class BuildInputComponent extends InputComponent {
               TowerType.WALL,
               TowerType.WEAPON
         };
+        Array<TowerType> defaultTowers = new Array<>();
         defaultTowers.addAll(defaultTowerTypes);
 
         if (towers.isEmpty()) {
