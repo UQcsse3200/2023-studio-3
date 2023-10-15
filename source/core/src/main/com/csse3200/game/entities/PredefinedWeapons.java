@@ -1,7 +1,6 @@
 package com.csse3200.game.entities;
 
 import com.csse3200.game.entities.configs.ProjectileConfig;
-import com.csse3200.game.files.FileLoader;
 
 public class PredefinedWeapons {
     // Melee attacks

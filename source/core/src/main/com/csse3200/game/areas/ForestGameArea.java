@@ -245,37 +245,6 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-   * Cases to spawn a wave
-   */
-//  private void spawnWave() {
-//    wave++;
-//    switch (wave) {
-//      case 1:
-//      case 2:
-//        spawnFireWorm();
-//        spawnDragonKnight();
-//
-//        break;
-//      case 3:
-//        spawnSkeleton();
-//        spawnWizard();
-//        // mobBoss2 = spawnMobBoss2();
-//        break;
-//      case 4:
-//        spawnWaterQueen();
-//        spawnWaterSlime();
-//        // mobBoss2 = spawnMobBoss2();
-//
-//        break;
-//      case 5:
-//        spawnDemonBoss();
-//      default:
-//        // Handle other wave scenarios if needed
-//        break;
-//    }
-//  }
-
-  /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
   @Override

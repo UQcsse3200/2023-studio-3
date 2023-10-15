@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.MobTask;
+package com.csse3200.game.components.tasks.mobtask;
 
 public enum MobType {
     SKELETON(true),

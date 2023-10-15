@@ -14,7 +14,6 @@ import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
@@ -38,7 +37,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
     private static final double Y_BOT_BOUNDARY = 0.5;
     private static final int BREATH_ANIM_TIME = 2;
     private static final int SMASH_RADIUS = 3;
-    private static final int MOVE_FORWARD_DELAY = 15;
+    private static final float MOVE_FORWARD_DELAY = 15;
     private static final float BREATH_DURATION = 4.2f;
     private static final int SMASH_DAMAGE = 30;
     private static final int CLEAVE_DAMAGE = 50;

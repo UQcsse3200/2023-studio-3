@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.npc.SplitMoblings;
-import com.csse3200.game.components.tasks.MobTask.MobType;
+import com.csse3200.game.components.tasks.mobtask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;

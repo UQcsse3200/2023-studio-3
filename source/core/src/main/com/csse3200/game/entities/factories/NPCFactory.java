@@ -11,9 +11,9 @@ import com.csse3200.game.components.npc.*;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobMeleeAttackTask;
 import com.csse3200.game.components.tasks.MobRangedAttackTask;
-import com.csse3200.game.components.tasks.MobTask.MobTask;
-import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.components.tasks.MobWanderTask;
+import com.csse3200.game.components.tasks.mobtask.MobTask;
+import com.csse3200.game.components.tasks.mobtask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.Melee;
 import com.csse3200.game.entities.PredefinedWeapons;
@@ -533,8 +533,8 @@ public class NPCFactory {
   public static Entity createMeleeBaseNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
-            .addTask(new MobMeleeAttackTask(2, 2f));
+            .addTask(new MobWanderTask(2f))
+            .addTask(new MobMeleeAttackTask(2));
         //     .addTask(new MobAttackTask(2, 2f));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
@@ -558,9 +558,9 @@ public class NPCFactory {
   public static Entity createRangedBaseNPC() {
     AITaskComponent aiComponent =
         new AITaskComponent()
-            .addTask(new MobWanderTask(new Vector2(2f, 2f), 2f))
+            .addTask(new MobWanderTask(2f))
         //     .addTask(new MobAttackTask(2, 2f));
-            .addTask(new MobRangedAttackTask(2, 2f));
+            .addTask(new MobRangedAttackTask(2));
         // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
             // .addTask(new MobAttackTask(2, 40));

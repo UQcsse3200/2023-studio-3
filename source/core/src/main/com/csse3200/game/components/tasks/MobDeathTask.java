@@ -24,7 +24,6 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     private final PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-    private final RaycastHit hit = new RaycastHit();
 
     private int mobHealth;
 
@@ -71,11 +70,6 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     }
 
     @Override
-    public void stop() {
-        super.stop();
-    }
-
-    @Override
     public int getPriority() {
         if (status == Status.ACTIVE) {
             return getActivePriority();
@@ -98,11 +92,7 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
         return -1;
     }
     private boolean mobIsDead(int mobhealth) {
-
-        if (mobhealth <= 0) {
-            return true;
-        }
-        return false;
+        return mobhealth <= 0;
     }
 
     private void killMob() {

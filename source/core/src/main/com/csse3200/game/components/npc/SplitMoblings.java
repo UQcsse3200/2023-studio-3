@@ -1,7 +1,7 @@
 package com.csse3200.game.components.npc;
 
 import com.csse3200.game.components.Component;
-import com.csse3200.game.components.tasks.MobTask.MobType;
+import com.csse3200.game.components.tasks.mobtask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.services.ServiceLocator;
@@ -20,7 +20,8 @@ public class SplitMoblings extends Component {
   private int amount;
   private MobType mobType;
   private int baseMoblingHealth = 60;
-  private float scaleX, scaleY;
+  private float scaleX;
+  private float scaleY;
   public static final float DEFAULT_MINIFIED_SCALE = 0.75f;
   public static final double OFFSET_DISTANCE = 1.5;
   public static final int FULL_CIRCLE_ANGLE = 360;
@@ -106,7 +107,7 @@ public class SplitMoblings extends Component {
     // Inspired by:
     // https://stackoverflow.com/questions/37145768/distribute-points-evenly-on-circle-circumference-in-quadrants-i-and-iv-only
     for (int i = 0; i < amount; i++) {
-      float currAngle = (float) (360 / amount) * i;
+      float currAngle = FULL_CIRCLE_ANGLE / (float) amount * i;
       double radians = currAngle * Math.PI / 180;
 
       float newX = entity.getPosition().x + (float) OFFSET_DISTANCE *
@@ -186,7 +187,6 @@ public class SplitMoblings extends Component {
         && currY <= MAX_Y_BOUNDS) {
       return true;
     }
-    ;
     return false;
   }
 }

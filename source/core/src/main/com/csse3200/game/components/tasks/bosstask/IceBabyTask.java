@@ -24,7 +24,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     /** Constant names */
     private static final int PRIORITY = 3;
     private static final Vector2 ICEBABY_SPEED = new Vector2(1f, 1f);
-    private static final int MOVE_FORWARD_DELAY = 30;
+    private static final float MOVE_FORWARD_DELAY = 30;
     private static final int SMASH_RADIUS = 3;
     private static final int SMASH_DAMAGE = 30;
     private static final int ATK3_DAMAGE = 50;
