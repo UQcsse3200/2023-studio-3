@@ -283,9 +283,10 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
 
-   waves = WaveFactory.createWaves();
-   spawnEntity(waves);
-   waves.getEvents().addListener("spawnWave", this::spawnMob);
+    logger.info("Creating waves");
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
     // spawnCoat();
 //    spawnDodgingDragonKnight(17,4);
 //    spawnDeflectWizard(17, 3);
@@ -473,10 +474,9 @@ public class ForestGameArea extends GameArea {
       case "WaterQueen":
         mob = NPCFactory.createWaterQueen(health);
         break;
-        //TODO implement when boss is ready
-//      case "FireBoss":
-//        mob = MobBossFactory.createDemonBoss(health);
-//        break;
+      case "FireBoss":
+        mob = MobBossFactory.createDemonBoss(health);
+        break;
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;

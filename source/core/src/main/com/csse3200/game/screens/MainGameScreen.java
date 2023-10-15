@@ -213,15 +213,15 @@ public class MainGameScreen extends ScreenAdapter {
 
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
     ServiceLocator.getWaveService().getDisplay().updateMobCount();
+    ServiceLocator.getWaveService().getDisplay().updateLevelProgressBar();
     renderer.render();
 
     // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
-    }
+    } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      // Check if all waves are completed and the level has been completed
 
-    // Check if all waves are completed and the level has been completed
-    else if (ServiceLocator.getWaveService().isLevelCompleted()) {
       logger.info("Main game level completed detected, go to win screen");
       ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
       // Add something in to unlock the next planet/level?
