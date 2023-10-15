@@ -14,7 +14,7 @@ public enum TowerType {
     STUN("Stun Tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
             5, "45", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-clicked.png"),
     INCOME("Income Tower", "The Income Tower generates additional in-game currency over time.",
-            5, "10", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-clicked.png");
+            6, "10", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-clicked.png");
 
     private final String towerName;
     private final String description;
