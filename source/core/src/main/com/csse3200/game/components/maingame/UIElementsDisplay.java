@@ -33,6 +33,7 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
+    private LevelProgressBar progressbar;
     private final int timer = 110;
 
     @Override
@@ -58,9 +59,17 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
 
+        progressbar = new LevelProgressBar(500, 10);
+        progressbar.setPosition(500, Gdx.graphics.getHeight() - 200);
+        stage.addActor(progressbar);
+
         createTimerButton();
     }
 
+    public void updateLevelProgressBar() {
+        float totalSecs = (ServiceLocator.getTimeSource().getTime() / 1000);
+        progressbar.setValue(totalSecs);
+    }
 
     /**
      * This method updates the mob count button as mobs die in the game
@@ -144,5 +153,6 @@ public class UIElementsDisplay extends UIComponent {
     public void dispose() {
         super.dispose();
         buttonTable.clear();
+        progressbar.clear();
     }
 }

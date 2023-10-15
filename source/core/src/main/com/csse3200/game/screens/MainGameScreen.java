@@ -213,6 +213,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
     ServiceLocator.getWaveService().getDisplay().updateMobCount();
+    ServiceLocator.getWaveService().getDisplay().updateLevelProgressBar();
     renderer.render();
 
     // Check if the game has ended
