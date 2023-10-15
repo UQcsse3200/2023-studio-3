@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
@@ -85,7 +84,7 @@ public class MainGameScreen extends ScreenAdapter {
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
   private final InputComponent buildHandler;
-  private InputComponent upgradedInputHandler;
+  private final InputComponent upgradedInputHandler;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
@@ -107,8 +106,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
-
-    Stage stage = new Stage(new ScreenViewport());
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
