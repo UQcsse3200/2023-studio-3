@@ -25,7 +25,7 @@ import java.util.*;
  */
 public class BaseEnemyConfig extends BaseEntityConfig {
 
-    private int idCounter = 0;
+    private static int idCounter = 0;
 
     public final int speed;
 
