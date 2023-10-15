@@ -3,9 +3,11 @@ package com.csse3200.game.components.maingame;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
@@ -122,25 +124,39 @@ public class MainGameDisplay extends UIComponent {
 
         // Triggers an event when the button is pressed.
         tower1.addListener(
-                new ChangeListener() {
+                new ClickListener() {
                     @Override
-                    public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Tower 1 build button clicked");
-                        ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+                    public void clicked(InputEvent event, float x, float y) {
+
+                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
+                        if (selected == towers.get(0) ) {
+                            ServiceLocator.getCurrencyService().setTowerType(null);
+                        } else {
+                            ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+                        }
                         click.play(0.4f);
                     }
                 });
+        TextTooltip tower1Tooltip = new TextTooltip(towers.get(0).getDescription(), getSkin());
+        tower1.addListener(tower1Tooltip);
 
         // Triggers an event when the button is pressed.
         tower2.addListener(
-                new ChangeListener() {
+                new ClickListener() {
                     @Override
-                    public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Tower 2 build button clicked");
-                        ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+                    public void clicked(InputEvent event, float x, float y) {
+
+                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
+                        if (selected == towers.get(1) ) {
+                            ServiceLocator.getCurrencyService().setTowerType(null);
+                        } else {
+                            ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
+                        }
                         click.play(0.4f);
                     }
                 });
+        TextTooltip tower2Tooltip = new TextTooltip(towers.get(1).getDescription(), getSkin());
+        tower2.addListener(tower2Tooltip);
 
         tower3.addListener(
                 new ChangeListener() {
@@ -151,6 +167,8 @@ public class MainGameDisplay extends UIComponent {
                         click.play(0.4f);
                     }
                 });
+        TextTooltip tower3Tooltip = new TextTooltip(towers.get(3).getDescription(), getSkin());
+        tower3.addListener(tower3Tooltip);
 
         tower4.addListener(
                 new ChangeListener() {
@@ -161,6 +179,8 @@ public class MainGameDisplay extends UIComponent {
                         click.play(0.4f);
                     }
                 });
+        TextTooltip tower4Tooltip = new TextTooltip(towers.get(3).getDescription(), getSkin());
+        tower4.addListener(tower4Tooltip);
 
         tower5.addListener(
                 new ChangeListener() {
@@ -171,6 +191,8 @@ public class MainGameDisplay extends UIComponent {
                         click.play(0.4f);
                     }
                 });
+        TextTooltip tower5Tooltip = new TextTooltip(towers.get(4).getDescription(), getSkin());
+        tower5.addListener(tower5Tooltip);
 
         // Add all buttons to their respective tables and position them
         towerTable.add(tower1).padRight(10f);
@@ -183,6 +205,10 @@ public class MainGameDisplay extends UIComponent {
         // Add tables to the stage
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
+
+        TooltipManager tm = TooltipManager.getInstance();
+        tm.initialTime = 3;
+        tm.hideAll();
     }
 
     @Override

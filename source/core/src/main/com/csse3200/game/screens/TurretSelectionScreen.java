@@ -58,6 +58,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private String[] bgm = {
             "sounds/background/pre_game/Sci-Fi7Loop.ogg"
     };
+    private static final String defaultFont = "determination_mono_18";
     private Music music;
     private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);
 
@@ -281,7 +282,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         Drawable alternateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(alternateImageFilePath)));
 
         TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();
-        buttonStyle.font = getSkin().getFont("glitch_24"); // Set your desired font
+        buttonStyle.font = getSkin().getFont(defaultFont); // Set your desired font
         buttonStyle.up = defaultDrawable; // Default state
 
         // Create button

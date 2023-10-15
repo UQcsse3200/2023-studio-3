@@ -28,7 +28,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
-    private static final String defaultFont = "glitch_24";
+    private static final String defaultFont = "determination_mono_18";
 
     /**
      * Adds actors to stage

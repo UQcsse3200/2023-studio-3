@@ -115,6 +115,7 @@ public class BuildInputComponent extends InputComponent {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
+
                 return true;
             case Input.Keys.NUM_2:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
@@ -212,9 +213,6 @@ public class BuildInputComponent extends InputComponent {
                 long soundId = errorSound.play();
                 errorSound.setVolume(soundId, 1f);
                 ServiceLocator.getCurrencyService().getDisplay().scrapBalanceFlash();
-                // TODO: add a visual indication of the build fail, through
-                //  currency display flash
-
             }
         }
         return false;
@@ -226,7 +224,9 @@ public class BuildInputComponent extends InputComponent {
     private void loadSounds() {
         ServiceLocator.getResourceService().loadSounds(sounds);
         ServiceLocator.getResourceService().loadAll();
-        buildSound = ServiceLocator.getResourceService().getAsset("sounds/economy/buildSound.ogg", Sound.class);
-        errorSound = ServiceLocator.getResourceService().getAsset("sounds/ui/switch/switch_01.ogg", Sound.class);
+        buildSound = ServiceLocator.getResourceService()
+                .getAsset("sounds/economy/buildSound.ogg", Sound.class);
+        errorSound = ServiceLocator.getResourceService()
+                .getAsset("sounds/ui/switch/switch_01.ogg", Sound.class);
     }
 }
