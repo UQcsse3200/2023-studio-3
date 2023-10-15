@@ -75,7 +75,10 @@ public class NPCFactoryTest {
             "sounds/mobs/waterQueenSpell.mp3",
             "sounds/mobs/boneBreak.mp3",
             "sounds/mobs/fireWormRoar.mp3",
-            "sounds/mobs/wizardSpell.mp3"
+            "sounds/mobs/wizardSpell.mp3",
+            "sounds/mobs/archerArrow.mp3",
+            "sounds/mobs/coatAttack.mp3",
+            "sounds/mobs/skeletonHit.mp3"
     };
 
 
