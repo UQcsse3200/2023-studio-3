@@ -2,7 +2,6 @@ package com.csse3200.game.components.player;
 
 import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
-import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -214,10 +213,7 @@ public class HumanAnimationController extends Component {
      */
     public void deselectEngineer(String currentAnimation) {
         AnimationRenderComponent animator = this.entity.getComponent(AnimationRenderComponent.class);
-        EngineerMenuComponent menu = this.entity.getComponent(EngineerMenuComponent.class);
-
         animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
-        menu.removeMenu();
         setClicked(false);
     }
 }

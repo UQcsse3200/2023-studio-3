@@ -6,15 +6,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.ai.tasks.Task;
-import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
-import com.csse3200.game.components.tasks.human.HumanMovementTask;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.EngineerFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
@@ -28,7 +23,7 @@ public class EngineerInputComponent extends InputComponent {
     private Camera camera;
     private EntityService entityService;
 
-    private Entity selectedEngineer = null;
+    public Entity selectedEngineer = null;
     private boolean moveClicked = false;
 
     public EngineerInputComponent(Game game, Camera camera) {

@@ -313,6 +313,12 @@ public class ForestGameArea extends GameArea {
 
     spawnScrap();
     spawnGapScanners();
+    Entity engineer = EngineerFactory.createEngineer();
+    Entity engineer2= EngineerFactory.createEngineer();
+
+    spawnEntityAt(engineer, new GridPoint2(1, 4), true, true);
+    spawnEntityAt(engineer2, new GridPoint2(1, 5), true, true);
+
 
 //    spawnTNTTower();
 //    spawnWeaponTower();
@@ -971,9 +977,8 @@ public class ForestGameArea extends GameArea {
   private void spawnGapScanners() {
     GameTime gameTime = ServiceLocator.getTimeSource();
     long currSpawnTime = gameTime.getTime();
-    long diff = currSpawnTime - this.lastSpawnTime;
 
-    // Don't spawn an engineer if not enough time has passed
+    long diff = currSpawnTime - this.lastSpawnTime;
     if (diff < ENGINEER_MIN_SPAWN_INTERVAL) {
       return;
     }
