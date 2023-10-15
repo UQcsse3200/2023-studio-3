@@ -98,8 +98,9 @@ public class SplitMoblings extends Component {
       float newXPosition = (float) (entity.getPosition().x - OFFSET_DISTANCE);
       float newYPosition = (float) (entity.getPosition().y);
 
-      if (withinBounds(newXPosition, newYPosition))
+      if (withinBounds(newXPosition, newYPosition)) {
         spawnAdditionalMob(newXPosition, newYPosition, initialScaleX, initialScaleY);
+      }
     }
 
     // Inspired by:
@@ -113,8 +114,9 @@ public class SplitMoblings extends Component {
       float newY = entity.getPosition().y + (float) OFFSET_DISTANCE *
           (float) Math.sin(radians);
 
-      if (withinBounds(newX, newY))
+      if (withinBounds(newX, newY)) {
         spawnAdditionalMob(newX, newY, initialScaleX, initialScaleY);
+      }
     }
   }
 
@@ -156,6 +158,7 @@ public class SplitMoblings extends Component {
     ServiceLocator.getEntityService().register(entityType);
 
     // ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
+    //ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
   }
 
   /**

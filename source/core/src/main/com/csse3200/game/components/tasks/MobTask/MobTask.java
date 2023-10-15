@@ -119,6 +119,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
             movementTask.stop();
             deathFlag = true;
         } else if (deathFlag && animation.isFinished()) {
+            ServiceLocator.getWaveService().updateEnemyCount();
             mob.setFlagForDelete(true);
         }
 
