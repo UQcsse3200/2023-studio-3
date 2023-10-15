@@ -1,37 +1,52 @@
 {
-  "weapon": {
+  "income": {
     "health": 10,
-    "baseAttack": 10,
+    "baseAttack": 0,
     "cost": 10
   },
   "wall": {
-    "health": 20,
+    "health": 300,
     "baseAttack": 0,
-    "cost": 5
-  },
-  "income": {
-    "health": 20,
-    "baseAttack": 0,
-    "cost": 1
+    "cost": 45
   },
   "TNTTower": {
     "health": 10,
     "baseAttack": 5,
-    "cost": 1
+    "cost": 30
+  },
+  "weapon": {
+    "health": 75,
+    "baseAttack": 15,
+    "cost": 15
   },
   "DroidTower": {
-    "health": 50,
-    "baseAttack": 5,
-    "cost": 1
+    "health": 100,
+    "baseAttack": 25,
+    "cost": 45
   },
   "fireTower": {
-    "health": 10,
-    "baseAttack": 10,
-    "cost": 10
+    "health": 100,
+    "baseAttack": 25,
+    "cost": 45
   },
   "stunTower": {
-    "health": 10,
-    "baseAttack": 10,
-    "cost": 10
+    "health": 100,
+    "baseAttack": 25,
+    "cost": 45
+  },
+  "fireworksTower": {
+    "health": 125,
+    "baseAttack": 45,
+    "cost": 70
+  },
+  "pierceTower": {
+    "health": 125,
+    "baseAttack": 45,
+    "cost": 70
+  },
+  "ricochetTower": {
+    "health": 125,
+    "baseAttack": 45,
+    "cost": 70
   }
 }
