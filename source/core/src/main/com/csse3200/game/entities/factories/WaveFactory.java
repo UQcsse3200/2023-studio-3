@@ -2,7 +2,6 @@ package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.tasks.waves.LevelWaves;
-import com.csse3200.game.components.tasks.waves.Tuple;
 import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.components.tasks.waves.WaveTask;
 import com.csse3200.game.entities.Entity;
@@ -72,16 +71,18 @@ public class WaveFactory {
       ))
   ));
 
-  // Base health of the mobs
-//  private static int BASE_HEALTH = 80;
+  // The base health for the different mobs
   private static int MELEE_BASE_HEALTH = 80;
   private static int RANGE_BASE_HEALTH = 60;
 
-  // Base health of the boss
+  // Base health of the bosses
   private static int LVL1_BOSS_BASE_HEALTH = 500;
   private static int LVL2_BOSS_BASE_HEALTH = 1000;
   private static int LVL3_BOSS_BASE_HEALTH = 2000;
-//  private static int BOSS_BASE_HEALTH = 200;
+
+  private static final String BOSS_1 = "IceBoss";
+  private static final String BOSS_2 = "PatrickBoss";
+  private static final String BOSS_3 = "FireBoss";
 
   /**
    * The function will create the waves depending on the level selected by the user.
@@ -90,22 +91,18 @@ public class WaveFactory {
 
     int chosenLevel = GameLevelData.getSelectedLevel();
     int difficulty;
-    int maxWaves;
     switch (chosenLevel) {
       case 0:
         difficulty = 2;
-        maxWaves = 10;
         break;
       case 2:
         difficulty = 3;
-        maxWaves = 15;
         break;
       default:
         difficulty = 1;
-        maxWaves = 5;
     }
 
-    LevelWaves level = createLevel(maxWaves, difficulty);
+    LevelWaves level = createLevel(difficulty);
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WaveTask());
@@ -119,30 +116,23 @@ public class WaveFactory {
    *
    * Depending on the level selected (1 easy, 2 medium, 3 hard), the number of waves will increase as well as
    * the number of mobs per wave and the health of the mobs. Based on the level the mobs will change and waves will be
-   * constructed from two random mobs of the possible ones allocated for that level. Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
+   * constructed from the predefined structures above that ensure more difficult abilities the deeper the wave.
+   * Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
    * health will be increased from BASE_HEALTH to BASE_HEALTH + (I * chosen_level) so the difficulty
    * increases quicker.
    *
-   * The last wave of evrery level is a boss. The health is set to the
-   * @param maxWaves - the maximum number of waves for the level
-   * @param chosenLevel - the level selected by the user
+   * The last wave of every level is a boss.
    *
+   * @param chosenLevel - the level selected by the user
    * @return level - the level constructed with all the waves of mobs
    * */
-  public static LevelWaves createLevel(int maxWaves, int chosenLevel) {
-    // The mob bosses assigned to the associated levels (planets)
-    String boss1 = "IceBoss";
-    String boss2 = "PatrickBoss";
-    String boss3 = "FireBoss";
-
+  public static LevelWaves createLevel(int chosenLevel) {
     // Tell the waveService what the spawn delay for levels will be (for UI team).
     int spawnDelay = 5;
     ServiceLocator.getWaveService().setSpawnDelay(spawnDelay);
 
     // Create new level entity with spawn delay of 5 seconds
     LevelWaves level = new LevelWaves(spawnDelay);
-
-    int calcHealth = 0;
 
     // set the possible mobs and boss for the level
     ArrayList<ArrayList<String>> possibleMobs;
@@ -151,25 +141,26 @@ public class WaveFactory {
     int minMobs;
     switch (chosenLevel) {
       case 2:
-        boss = boss2;
+        boss = BOSS_2;
         bossHealth = LVL2_BOSS_BASE_HEALTH;
         possibleMobs = lvl2Structure;
         minMobs = 6;
         break;
       case 3:
-        boss = boss3;
+        boss = BOSS_3;
         bossHealth = LVL3_BOSS_BASE_HEALTH;
         possibleMobs = lvl3Structure;
         minMobs = 8;
         break;
       default:
-        boss = boss1;
+        boss = BOSS_2;
         bossHealth = LVL1_BOSS_BASE_HEALTH;
         possibleMobs = lvl1Structure;
         minMobs = 5;
         break;
     }
 
+    int totalMobs = 0;
     // Create mxWaves number of waves with mob stats increasing
     int atWave = 1;
     for (ArrayList<String> wave : possibleMobs) {
@@ -178,8 +169,11 @@ public class WaveFactory {
       int leftToSort = wave.size() - 1;
       int currentMobs = 0;
 
+      // Add each mob to the wave
       for (String mob: wave) {
         int num;
+
+        // Calculate the number of mobs for the wave
         if (leftToSort == 0) {
           num = minMobs - currentMobs;
         } else {
@@ -187,28 +181,31 @@ public class WaveFactory {
           currentMobs += num;
         }
 
+        // Calculate the health
         int health = RANGE_BASE_HEALTH;
         if (MELEE_MOBS.contains(mob)) {
           health = MELEE_BASE_HEALTH;
         }
-//        int[] mobStats = {num, health + (atWave * chosenLevel)};
-        int[] mobStats = {num, MELEE_BASE_HEALTH + (atWave * chosenLevel)};
+        int[] mobStats = {num, health + (atWave * chosenLevel)};
         mobs.put(mob, mobStats);
 
-        calcHealth +=  health + (atWave * chosenLevel);
-
         leftToSort --;
+        totalMobs += num;
       }
       minMobs ++;
       level.addWave(new WaveClass(mobs));
       atWave++;
     }
 
+    // Add boss wave
     HashMap<String, int[]> bossMob = new HashMap<>();
     bossMob.put(boss, new int[]{1, bossHealth});
+    totalMobs ++;
+
+    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
     level.addWave(new WaveClass(bossMob));
 
-    System.out.println("total health is:" + calcHealth);
+
     logger.info("Level created: {}", level);
     return level;
   }

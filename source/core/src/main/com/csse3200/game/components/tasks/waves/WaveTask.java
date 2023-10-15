@@ -94,13 +94,6 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   @Override
   public void update() {
     if (ServiceLocator.getWaveService().getEnemyCount() == 0) {
-//      currentWaveIndex++;
-
-      long currentTime = ServiceLocator.getTimeSource().getTime();
-      // Setting the timestamp for when the next mobs will spawn.
-      // Currently, the delay of mobs spawning after wave start
-      int spawnDelay = ServiceLocator.getWaveService().getSpawnDelay();
-//      ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
       if (currentWaveIndex == this.level.getNumWaves() - 1) {
