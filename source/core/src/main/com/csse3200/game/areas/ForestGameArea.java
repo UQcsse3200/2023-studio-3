@@ -326,7 +326,7 @@ public class ForestGameArea extends GameArea {
 //     spawnRicochetTower();
 //    spawnBombship();
   }
-
+  
   private void displayUI() {
     Entity ui = new Entity();
     ui.addComponent(new GameAreaDisplay("Box Forest"));
