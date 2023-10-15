@@ -250,7 +250,6 @@ public class MainGameDisplay extends UIComponent {
         tower5.addListener(tower5Tooltip);
 
         // Scale all the tower build buttons down
-        tower1.sizeBy(0.5f);
         // Add all buttons to their respective tables and position them
         towerTable.add(tower1).padRight(10f);
         towerTable.add(tower2).padRight(10f);
