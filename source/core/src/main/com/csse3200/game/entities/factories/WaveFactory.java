@@ -155,7 +155,7 @@ public class WaveFactory {
         break;
     }
 
-    int totalMobs = 0;
+//    int totalMobs = 0;
     // Create mxWaves number of waves with mob stats increasing
     int atWave = 1;
     for (ArrayList<String> wave : possibleMobs) {
@@ -190,7 +190,7 @@ public class WaveFactory {
         mobs.put(mob, mobStats);
 
         leftToSort --;
-        totalMobs += num;
+//        totalMobs += num;
       }
       minMobs ++;
       level.addWave(new WaveClass(mobs));
@@ -200,9 +200,9 @@ public class WaveFactory {
     // Add boss wave
     HashMap<String, int[]> bossMob = new HashMap<>();
     bossMob.put(boss, new int[]{1, bossHealth});
-    totalMobs ++;
+//    totalMobs ++;
 
-    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
+//    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
     level.addWave(new WaveClass(bossMob));
 
 

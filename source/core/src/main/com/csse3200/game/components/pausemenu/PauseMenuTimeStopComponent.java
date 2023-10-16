@@ -21,6 +21,7 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void create() {
+        ServiceLocator.getWaveService().toggleGamePause();
         freezeList = ServiceLocator.getEntityService().getEntities();
         for (Entity pauseTarget : freezeList) {
             if (pauseTarget.getId() != getEntity().getId()) {
@@ -36,6 +37,7 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void dispose() {
+        ServiceLocator.getWaveService().toggleGamePause();
         for (Entity pauseTarget : freezeList) {
                 pauseTarget.setEnabled(true);
         }

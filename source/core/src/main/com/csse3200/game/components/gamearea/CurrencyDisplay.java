@@ -58,6 +58,9 @@ public class CurrencyDisplay extends UIComponent {
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
+
+        scrapsTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
+        crystalsTb.addAction(new SequenceAction(Actions.fadeIn(8f)));
     }
 
     private TextButton createButton(String imageFilePath, int value) {

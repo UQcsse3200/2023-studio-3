@@ -67,8 +67,6 @@ public class TNTDamageComponent extends Component {
         for (int i = 0; i < allEntities.size; i++) {
             Entity otherEntity = allEntities.get(i);
 
-            if (entity == otherEntity) continue; // Skip the source entity
-
             Vector2 positionSource = entity.getPosition();
             Vector2 positionOther = otherEntity.getPosition();
 
@@ -77,7 +75,7 @@ public class TNTDamageComponent extends Component {
                 HitboxComponent otherHitbox = otherEntity.getComponent(HitboxComponent.class);
 
                 // Check for null components and log specifics
-                if (sourceHitbox == null || otherHitbox == null) {
+                if (sourceHitbox == null || otherHitbox == null || entity == otherEntity) {
 
                     continue;
                 }

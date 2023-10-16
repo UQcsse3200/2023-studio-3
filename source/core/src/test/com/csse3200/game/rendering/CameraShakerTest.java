@@ -29,7 +29,7 @@ public class CameraShakerTest {
         cameraShaker.startShaking();
         cameraShaker.reset();
         assertFalse(cameraShaker.isCameraShaking());
-        assertEquals(cameraShaker.origPosition, camera.position);
+        assertEquals(cameraShaker.getOrigPosition(), camera.position);
     }
 
     @Test
