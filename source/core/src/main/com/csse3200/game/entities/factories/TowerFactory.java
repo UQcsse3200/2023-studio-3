@@ -125,7 +125,7 @@ public class TowerFactory {
         IncomeTowerConfig config = configs.income;
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.incomeRate);
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.getIncomeRate());
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
 
@@ -138,10 +138,10 @@ public class TowerFactory {
         animator.addAnimation(ECO_MOVE, ECO_IDLE_SPEED, Animation.PlayMode.NORMAL);
 
         income
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
-                .addComponent(new IncomeUpgradeComponent(config.incomeRate))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new IncomeUpgradeComponent(config.getIncomeRate()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new EconTowerAnimationController());
@@ -169,9 +169,9 @@ public class TowerFactory {
 
         wall
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(animator)
                 .addComponent(new WallTowerAnimationController());
 
@@ -206,9 +206,9 @@ public class TowerFactory {
         animator.addAnimation(EXPLODE_ANIM,EXPLODE_SPEED, Animation.PlayMode.NORMAL);
 
         TNTTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(new TNTDamageComponent(PhysicsLayer.NPC,TNT_KNOCK_BACK_FORCE,TNT_TOWER_RANGE))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
@@ -246,9 +246,9 @@ public class TowerFactory {
         animator.addAnimation(GO_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
 
         droidTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(new DroidAnimationController())
                 .addComponent(animator)
                 .addComponent(aiTaskComponent);
@@ -281,10 +281,10 @@ public class TowerFactory {
         animator.addAnimation(FIRE_ANIM, (2*FIRE_SPEED), Animation.PlayMode.LOOP);
 
         weapon
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
@@ -314,12 +314,13 @@ public class TowerFactory {
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent(new CostComponent(config.cost))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireTowerAnimationController());
+
         fireTower.setScale(1.25f, 1.25f);
         return fireTower;
     }
@@ -344,9 +345,9 @@ public class TowerFactory {
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
-                .addComponent((new CostComponent(config.cost)))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent((new CostComponent(config.getCost())))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new StunTowerAnimationController());
@@ -375,8 +376,8 @@ public class TowerFactory {
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
 
         fireworksTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent((new CostComponent(config.cost)))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent((new CostComponent(config.getCost())))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireworksTowerAnimationController());
@@ -407,8 +408,8 @@ public class TowerFactory {
         pierceTower
                 .addComponent(animator)
                 .addComponent(new PierceTowerAnimationController())
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent((new CostComponent(config.cost)))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent((new CostComponent(config.getCost())))
                 .addComponent(aiTaskComponent);
 
         pierceTower.setScale(1.5f, 1.5f);
@@ -435,8 +436,8 @@ public class TowerFactory {
         ricochetTower
                 .addComponent(animator)
                 .addComponent(new RicochetTowerAnimationController())
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent((new CostComponent(config.cost)))
+                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
+                .addComponent((new CostComponent(config.getCost())))
                 .addComponent(aiTaskComponent);
                 // ADD ANIMATION COMPONENTS
 
