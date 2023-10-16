@@ -622,7 +622,7 @@ public class NPCFactory {
    * @return Splitting Night Borne
    */
   public static Entity createSplittingNightBorne(int health) {
-    return createNightBorne(health).addComponent(new SplitMoblings(MobType.NIGHT_BORNE, 7, 0.3f));
+    return createNightBorne(health).addComponent(new SplitMoblings(MobType.NIGHT_BORNE, 7, 0.5f));
   }
 
   /**
