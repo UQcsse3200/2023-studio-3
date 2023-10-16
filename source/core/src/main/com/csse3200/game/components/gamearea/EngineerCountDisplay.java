@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextTooltip;
-import com.badlogic.gdx.scenes.scene2d.ui.TooltipManager;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
@@ -16,7 +15,7 @@ import com.csse3200.game.ui.UIComponent;
 
 public class EngineerCountDisplay extends UIComponent {
     private TextButton engineerTb;
-    private static final String defaultFont = "determination_mono_18";
+    private static final String DEFAULT_FONT = "determination_mono_18";
 
     @Override
     public void create() {
@@ -37,7 +36,7 @@ public class EngineerCountDisplay extends UIComponent {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/engineers/engineerBanner.png")));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, getSkin().getFont(defaultFont));
+                drawable, drawable, drawable, getSkin().getFont(DEFAULT_FONT));
 
         String text = String.format("%d", ServiceLocator.getGameEndService().getEngineerCount());
         engineerTb = new TextButton(text, style);
