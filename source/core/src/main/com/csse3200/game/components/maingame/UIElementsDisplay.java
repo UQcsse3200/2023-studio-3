@@ -50,7 +50,7 @@ public class UIElementsDisplay extends UIComponent {
 
         progressbar = new LevelProgressBar(500, 10);
         progressbar.setPosition(500, Gdx.graphics.getHeight() - 200);
-        stage.addActor(progressbar);
+//        stage.addActor(progressbar);  // will re-enable once positioned and working correctly
 
         createTimerButton();
     }
