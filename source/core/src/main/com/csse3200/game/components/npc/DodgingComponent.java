@@ -96,7 +96,7 @@ public class DodgingComponent extends Component {
       // If mob is in the top half quadrant of the map grid, make the entity dodge
       // downwards.
       setVerticalAngleDirection(mobPos.y > 3.5 ? mobPos.y - 15 : mobPos.y + 15);
-      setVerticalSpeed(dodgeSpeed);      
+      setVerticalSpeed(dodgeSpeed);   
     } else {
       setVerticalAngleDirection(mobPos.y);
       setVerticalSpeed(originalSpeed);
@@ -110,7 +110,7 @@ public class DodgingComponent extends Component {
    * @param mobPos The current Vector2 position of the mob
    * @return True if a target is visible, false otherwise.
    */
-  private boolean isTargetVisible(Vector2 mobPos) {
+  public boolean isTargetVisible(Vector2 mobPos) {
     Vector2 maxRange = new Vector2(mobPos.x - rangeDetection, mobPos.y);
     // check also the upper and lower boundaries of the mob with the offset y mob
     // detection.
