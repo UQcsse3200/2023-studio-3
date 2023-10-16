@@ -66,7 +66,7 @@ class SplitMoblingsTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
-    WaveService waveService = mock(WaveService.class);
+    WaveService waveService = new WaveService();
     ServiceLocator.registerWaveService(waveService);
 
     baseMob = createSplitMob(BASE_AMOUNT);
