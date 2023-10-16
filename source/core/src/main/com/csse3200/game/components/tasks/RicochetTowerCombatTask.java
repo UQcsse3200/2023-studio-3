@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -46,7 +45,7 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
     public enum STATE {
         IDLE, ATTACK, DEATH
     }
-    public STATE towerState = STATE.IDLE;
+    private STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -78,6 +77,7 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
      * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
      * state is activated and otherwise idle state remains.
      */
+    @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -90,7 +90,6 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
      * of the game. If enemies are detected, state of the tower is changed to attack state.
      */
     public void updateTowerState() {
-
         if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
             owner.getEntity().getEvents().trigger(DEATH);
             towerState = STATE.DEATH;
@@ -115,13 +114,13 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
                                 // NEED TO DO USER TESTING TO FIGURE OUT THE BOUNCE COUNT
                                 new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
                         newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                                (float) (owner.getEntity().getPosition().y));
+                                (owner.getEntity().getPosition().y));
                         ServiceLocator.getEntityService().register(newProjectile);
                     }
                 }
                 shoot = !shoot;
             }
-            case DEATH -> {
+            default -> {     // DEATH
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
                     owner.getEntity().setFlagForDelete(true);
                 }
@@ -129,13 +128,27 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
         }
     }
 
+    /**
+     * Function for getting the tower's state
+     *
+     * @return The state of this tower
+     */
     public STATE getState() {
         return this.towerState;
     }
 
     /**
+     * Function for setting the tower's state
+     * @param newState The new state of this tower
+     */
+    public void setState(STATE newState) {
+        this.towerState = newState;
+    }
+
+    /**
      * stops the current animation and switches back the state of the tower to IDLE.
      */
+    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);

@@ -4,20 +4,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class PatrickTeleportTask extends DefaultTask {
-    private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);
+    private static final Logger logger = LoggerFactory.getLogger(PatrickTeleportTask.class);
     private Entity patrick;
     private final Vector2 location;
     private PatrickState state = PatrickState.IDLE;
     private PatrickState prevState;
     private AnimationRenderComponent animation;
-    private Status status = Status.INACTIVE;
     private CombatStatsComponent combatStats;
     private int health;
     private enum PatrickState {
@@ -32,6 +30,7 @@ public class PatrickTeleportTask extends DefaultTask {
     @Override
     public void start() {
         super.start();
+        status = Status.INACTIVE;
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class);
         combatStats = owner.getEntity().getComponent(CombatStatsComponent.class);
         health = combatStats.getHealth();
@@ -70,6 +69,7 @@ public class PatrickTeleportTask extends DefaultTask {
                     status = Status.FINISHED;
                 }
             }
+            case IDLE -> {}
         }
     }
 

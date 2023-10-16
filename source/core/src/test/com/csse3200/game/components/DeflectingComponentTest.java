@@ -35,7 +35,7 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 @ExtendWith(GameExtension.class)
-public class DeflectingComponentTest {
+class DeflectingComponentTest {
   Entity baseMob;
   private static final int DEFAULT_ATTACK = 10;
   private static final int DEFAULT_DEFENSE = 10;
@@ -73,13 +73,13 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     assertNotNull("Deflecting component does not exist",
         baseMob.getComponent(DeflectingComponent.class));
   }
 
   @Test
-  public void shouldNotBeDisposed() {
+  void shouldNotBeDisposed() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
 
     triggerCollisionStart(baseMob, projectile);
@@ -91,7 +91,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldBeDisposedWhenDisabled() {
+  void shouldBeDisposedWhenDisabled() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
     baseMob.getComponent(DeflectingComponent.class).setEnabled(false);
 
@@ -104,7 +104,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldInvokeDeflectProjEvent() {
+  void shouldInvokeDeflectProjEvent() {
     EventListener2<Fixture, Fixture> deflectProj = mock(EventListener2.class);
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
 
@@ -119,7 +119,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldInvokeXAmtTimes() {
+  void shouldInvokeXAmtTimes() {
     EventListener2<Fixture, Fixture> deflectProj = mock(EventListener2.class);
     Entity mob = createDeflectMob(3, VALID_POSITION_Y, VALID_POSITION_X);
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
@@ -155,7 +155,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldInvokeAtMostOnce() {
+  void shouldInvokeAtMostOnce() {
     EventListener2<Fixture, Fixture> deflectProj = mock(EventListener2.class);
     Entity mob = createDeflectMob(1, VALID_POSITION_Y, VALID_POSITION_X);
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
@@ -177,7 +177,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldReverseProjScaleX() {
+  void shouldReverseProjScaleX() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
 
     float initialX = projectile.getScale().x;
@@ -191,7 +191,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldRemainSameHealth() {
+  void shouldRemainSameHealth() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
     int health = baseMob.getComponent(CombatStatsComponent.class)
         .getHealth();
@@ -205,7 +205,7 @@ public class DeflectingComponentTest {
   }
 
   @Test
-  public void shouldNotChangeHealthWhenDisabled() {
+  void shouldNotChangeHealthWhenDisabled() {
     Entity projectile = createProjectile(VALID_POSITION_X, VALID_POSITION_Y);
     baseMob.getComponent(CombatStatsComponent.class).setHealth(100);
     int health = baseMob.getComponent(CombatStatsComponent.class).getHealth();

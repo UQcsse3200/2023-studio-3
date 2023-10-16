@@ -21,10 +21,10 @@ public class Melee implements Weapon {
     private final int cooldown;
 
 
-    public Melee(int damage, int attackRange, String Element, int castTime, int cooldown) {
+    public Melee(int damage, int attackRange, String element, int castTime, int cooldown) {
         this.damage = damage;
         this.attackRange = attackRange;
-        this.element = Element;
+        this.element = element;
         this.castTime = castTime;
         this.cooldown = cooldown;
     }

@@ -16,8 +16,8 @@ public class RicochetComponent extends Component {
   private short targetLayer;
   private HitboxComponent hitBoxComponent;
   private int bounceCount;
-  private static int MAX_BOUNCE_Y_DIRECTION = 250;
-  private static int MIN_BOUNCE_Y_DIRECTION = -250;
+  private static final int MAX_BOUNCE_Y_DIRECTION = 250;
+  private static final int MIN_BOUNCE_Y_DIRECTION = -250;
 
   /**
    * Initialise a RicochetComponent that spawns another projectile upon collision.
@@ -60,10 +60,10 @@ public class RicochetComponent extends Component {
 
     // Spawning of the projectile to be above (+ve) or below (-ve) upon
     // collision
-    int up_or_down = randomDirection <= 0 ? -1 : 1;
+    int upOrDown = randomDirection <= 0 ? -1 : 1;
 
     float newXPosition = (float) (projectile.getPosition().x - 0.75);
-    float newYPosition = (float) (projectile.getPosition().y + (0.65 * up_or_down));
+    float newYPosition = (float) (projectile.getPosition().y + (0.65 * upOrDown));
 
     // Prevent spawn of new projectile if it goes out of boundaries.
     if (newYPosition >= 8 || newYPosition <= 1 || newXPosition >= 17 || newXPosition <= 1)

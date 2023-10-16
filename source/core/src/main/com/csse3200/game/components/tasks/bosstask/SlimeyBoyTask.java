@@ -101,6 +101,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
                 slimey.getEvents().trigger("slimey_splat_sound");
                 slimey.setFlagForDelete(true);
             }
+            case IDLE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE -> {}
         }
     }
 
@@ -171,10 +172,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
      */
     private void applyAoeDamage(Array<Entity> targets, int damage) {
         for (int i = 0; i < targets.size; i++) {
-            Entity targetEntity = targets.get(i);
-
-            CombatStatsComponent targetCombatStats = targetEntity.
-                    getComponent(CombatStatsComponent.class);
+            CombatStatsComponent targetCombatStats = targets.get(i).getComponent(CombatStatsComponent.class);
             if (targetCombatStats != null) {
                 targetCombatStats.hit(damage);
             }
