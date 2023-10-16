@@ -12,21 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.event.ChangeEvent;
-import java.security.Provider;
-
 
 /**
  * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
  */
 public class UIElementsDisplay extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(UIElementsDisplay.class);
     private static final float Z_INDEX = 2f;
     private final Table buttonTable = new Table();
-    private final Table timerTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
 
@@ -97,11 +89,6 @@ public class UIElementsDisplay extends UIComponent {
             int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
                     - ServiceLocator.getTimeSource().getTime()) / 1000);
 
-            // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
-            if (totalSecs % 20 == 0) {
-                ServiceLocator.getMapService().shakeCameraMap();
-                ServiceLocator.getMapService().shakeCameraGrid();
-            }
             int seconds = totalSecs % 60;
             int minutes = (totalSecs % 3600) / 60;
             String finalTime = String.format("%02d:%02d", minutes, seconds);
