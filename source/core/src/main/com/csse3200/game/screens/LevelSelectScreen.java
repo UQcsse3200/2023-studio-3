@@ -44,7 +44,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final Stage stage;
     private final AnimatedText text;
     private BitmapFont font;
-    private static final String defaultFont = "determination_mono_32";
+    private static final String defaultFont = "determination_mono_22";
 
     private Sprite background;
     private final Music music;
