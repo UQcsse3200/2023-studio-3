@@ -29,7 +29,7 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(GdxGame game) {
         this.game = game;
         spriteBatch = new SpriteBatch();
-        backgroundTexture = new Texture("planets/background.png");
+        backgroundTexture = new Texture("images/LoadingScreen.png");
 
         // loadingTexture = new Texture("images/mobboss/patrick.png");
         stage = new Stage(new ScreenViewport());
