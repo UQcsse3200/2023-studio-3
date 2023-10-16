@@ -27,8 +27,6 @@ public class WaveFactory {
 
   private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
   private static Random rand = new Random();
-
-  // TODO: include necromancer
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
       "Skeleton", "Coat", "DragonKnight", "Necromancer"
   ));
@@ -71,15 +69,6 @@ public class WaveFactory {
       )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "SplittingRocky", "Necromancer", "DodgingDragon", "FireWorm"
       ))
   ));
-
-  // The base health for the different mobs
-  private static int MELEE_BASE_HEALTH = 80;
-  private static int RANGE_BASE_HEALTH = 60;
-
-  // Base health of the bosses
-  private static int LVL1_BOSS_BASE_HEALTH = 500;
-  private static int LVL2_BOSS_BASE_HEALTH = 1000;
-  private static int LVL3_BOSS_BASE_HEALTH = 2000;
 
   private static final String BOSS_1 = "IceBoss";
   private static final String BOSS_2 = "PatrickBoss";
@@ -140,6 +129,11 @@ public class WaveFactory {
     String boss = "";
     int bossHealth;
     int minMobs;
+    // Base health of the bosses
+    int LVL1_BOSS_BASE_HEALTH = 500;
+    int LVL2_BOSS_BASE_HEALTH = 1000;
+    int LVL3_BOSS_BASE_HEALTH = 2000;
+
     switch (chosenLevel) {
       case 2:
         boss = BOSS_2;
@@ -185,8 +179,11 @@ public class WaveFactory {
         }
 
         // Calculate the health
+        int RANGE_BASE_HEALTH = 60;
         int health = RANGE_BASE_HEALTH;
         if (MELEE_MOBS.contains(mob)) {
+          // The base health for the different mobs
+          int MELEE_BASE_HEALTH = 80;
           health = MELEE_BASE_HEALTH;
         }
         int[] mobStats = {num, health + (atWave * chosenLevel)};
