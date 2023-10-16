@@ -6,6 +6,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -29,6 +30,8 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
+
+import java.util.Arrays;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
@@ -70,8 +73,6 @@ public class LevelSelectScreen extends ScreenAdapter {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.MAIN_MENU);
-
-
             }
         });
         Table buttonTable = new Table();
@@ -109,11 +110,11 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     private void spawnPlanets() {
         // Spawn desert planet
-        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
+        spawnPlanet(Planets.DESERT, "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
         // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
+        spawnPlanet(Planets.ICE, "Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
         // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1);
+        spawnPlanet(Planets.LAVA, "Lava", 1, (int) (timeCounter * 15) % 60 + 1);
 
         spawnPlanetBorders();
     }
@@ -136,6 +137,13 @@ public class LevelSelectScreen extends ScreenAdapter {
     }
 
     /**
+     * Spawns a planet on the screen. Helper constructor to make it easier to use.
+     */
+    private void spawnPlanet(int[] planetData, String planetName, int version, int frame) {
+        spawnPlanet(planetData[2], planetData[3], planetData[0], planetData[1], planetName, version, frame);
+    }
+
+    /**
      * Spawns the borders of the planets. If a planet is clicked it will load the level
      * based on the planet. If a planet is hovered over it will display a border around
      * the planet.
@@ -154,11 +162,11 @@ public class LevelSelectScreen extends ScreenAdapter {
                     dispose();
                     logger.info("Loading level {}", planet[4]);
                     GameLevelData.setSelectedLevel(planet[4]);
-                        game.setScreen(new TurretSelectionScreen(game));
-                    }
+                    game.setScreen(new TurretSelectionScreen(game));
                 }
             }
         }
+    }
 
 
 
