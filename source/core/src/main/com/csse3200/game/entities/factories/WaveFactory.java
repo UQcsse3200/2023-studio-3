@@ -67,6 +67,7 @@ public class WaveFactory {
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "Coat", "Coat"
       )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "DodgingDragon"
       )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "Coat"
+      )), new ArrayList<>(Arrays.asList("Coat", "Coat", "FireWorm"
       )), new ArrayList<>(Arrays.asList("Coat", "Coat", "Coat", "DodgingDragon", "FireWorm"
       ))
   ));
@@ -153,7 +154,7 @@ public class WaveFactory {
         minMobs = 8;
         break;
       default:
-        boss = BOSS_2;
+        boss = BOSS_1;
         bossHealth = LVL1_BOSS_BASE_HEALTH;
         possibleMobs = lvl1Structure;
         minMobs = 5;
@@ -176,8 +177,10 @@ public class WaveFactory {
         // Calculate the number of mobs for the wave
         if (leftToSort == 0) {
           num = minMobs - currentMobs;
+          System.out.println(num + " for " + mob + " at wave " + atWave);
         } else {
-          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort)) + 2;
+          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
+          System.out.println(num + " for " + mob + " at wave " + atWave);
           currentMobs += num;
         }
 
