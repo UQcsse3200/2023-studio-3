@@ -358,8 +358,11 @@ public class MainGameDisplay extends UIComponent {
         towerUpdate();
     }
 
+    /**
+     * Update the level progress bar value
+     */
     public void updateLevelProgressBar() {
-        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
+        int totalSecs = ServiceLocator.getWaveService().totalMobs() - ServiceLocator.getWaveService().remainingMobsForLevel();
         progressbar.setValue(totalSecs);
     }
 
