@@ -8,6 +8,7 @@ import com.csse3200.game.entities.factories.EngineerFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -31,8 +32,8 @@ public class ScannerTask extends DefaultTask implements PriorityTask {
     private boolean mobs = false;
 
     // track the number of engineers spawned.
-    private static final int maxEngineers = 3;
-    private int engineerCount = 0;
+    private static final int maxEngineers = ServiceLocator.getGameEndService().getEngineerCount();
+
 
     /**
      * ScannerTask Constructor
@@ -68,12 +69,12 @@ public class ScannerTask extends DefaultTask implements PriorityTask {
             scan();
             if (!towers && !engineers && mobs) {
                 // spawn engineers now
-                if (engineerCount < maxEngineers) {
+                if (ServiceLocator.getGameEndService().getNumSpawnedEngineers() < maxEngineers) {
                     Entity engineer = EngineerFactory.createEngineer();
 
                     engineer.setPosition(new Vector2((int)(selfPosition.x + 1),(int) selfPosition.y));
                     ServiceLocator.getEntityService().register(engineer);
-                    engineerCount += 1;
+                    ServiceLocator.getGameEndService().incrementNumSpawnedEngineers();
                 }
             }
             endTime = timeSource.getTime() + SCAN_INTERVAL;

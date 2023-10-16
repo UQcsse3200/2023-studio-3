@@ -170,6 +170,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         // If there is an obstacle in the path to the max range point, mobs visible.
         Vector2 position = owner.getEntity().getCenterPosition();
         hits.clear();
+        targets.clear();
         for (int i = 5; i > -5; i--) {
             if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {
                 hits.add(hit);
