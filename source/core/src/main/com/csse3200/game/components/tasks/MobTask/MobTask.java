@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.mobtask;
+package com.csse3200.game.components.tasks.MobTask;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
