@@ -1,6 +1,7 @@
 package com.csse3200.game.screens.HelpScreen;
 
 
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,28 +9,30 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.maingame.MainGamePauseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
-
-import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Displays a button in the pause menu to resume the game and put away the pause menu.
+ * Displays a button to pause the game and bring up a pause menu.
  */
-public class HelpContinueButton extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.components.pausemenu.PauseMenuContinueButton.class);
+public class NextButton extends UIComponent {
+    private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.screens.HelpScreen.NextButton.class);
     private static final float Z_INDEX = 2f;
     private Table table;
     private GdxGame game;
     private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg"
+            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg"
     };
-    private Sound closeSound;
+    private Sound openSound;
+
+
+    public NextButton(GdxGame screenSwitchHandle) {
+        game = screenSwitchHandle;
+    }
 
     @Override
     public void create() {
@@ -40,34 +43,32 @@ public class HelpContinueButton extends UIComponent {
 
     private void addActors() {
         table = new Table();
-        table.center();
+        table.top().right();
         table.setFillParent(true);
-        ButtonFactory buttonFactory = new ButtonFactory();
-//        TextButton pauseMenuBtn = buttonFactory.createButton("Continue");
-        TextButton pauseMenuBtn = new TextButton("Continue", skin);
 
-        // Triggers an event when the button is pressed.
-        pauseMenuBtn.addListener(
+        TextButton mainMenuBtn = new TextButton("Pause", skin);
+
+        // Spawns a pause menu when the button is pressed.
+        mainMenuBtn.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Continue button clicked");
-                        closeSound.play(0.4f);
-                        entity.dispose();
-                        NextButtonMenu.nextMenu(game);
+                        logger.debug("Pause button clicked");
+                        openSound.play(0.4f);
+//                        PauseMenuFactory.createPauseMenu(game, false);
+                        PauseMenuFactory.createPauseMenu(game);
 
                     }
                 });
 
-        table.add(pauseMenuBtn);
+        table.add(mainMenuBtn).padTop(100f).padRight(10f);
+
         stage.addActor(table);
-
-
     }
 
     @Override
     public void draw(SpriteBatch batch) {
-        // draw is handled by the renderer component
+        // draw is handled by the stage
     }
 
     @Override
@@ -84,6 +85,6 @@ public class HelpContinueButton extends UIComponent {
     public void loadSounds() {
         ServiceLocator.getResourceService().loadSounds(sounds);
         ServiceLocator.getResourceService().loadAll();
-        closeSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
+        openSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
     }
 }
