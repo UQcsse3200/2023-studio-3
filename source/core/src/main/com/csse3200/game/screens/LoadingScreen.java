@@ -16,6 +16,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 
+/**
+ * Represents the loading screen of the game.
+ */
 public class LoadingScreen implements Screen {
     private final GdxGame game;
     private SpriteBatch spriteBatch;
@@ -26,6 +29,12 @@ public class LoadingScreen implements Screen {
     private Stage stage;
     private Label loadingLabel;
     private float dotTimer;
+
+    /**
+     * Initializes a new instance of the LoadingScreen class.
+     *
+     * @param game The game instance to which this screen belongs.
+     */
     public LoadingScreen(GdxGame game) {
         this.game = game;
         spriteBatch = new SpriteBatch();
@@ -39,11 +48,20 @@ public class LoadingScreen implements Screen {
         stage.addActor(loadingLabel);
     }
 
+    /**
+     * Called when this screen becomes the current screen for the game.
+     */
     @Override
     public void show() {
 
     }
 
+    /**
+     * Called by the game loop from the application every frame.
+     * Renders the screen and handles the transition to the main game.
+     *
+     * @param delta The time in seconds since the last frame.
+     */
     @Override
     public void render(float delta) {
         elapsedTime += delta;
@@ -80,26 +98,44 @@ public class LoadingScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Called when the screen should resize itself.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Called when the application is paused.
+     */
     @Override
     public void pause() {
         // Handle pause if needed
     }
 
+    /**
+     * Called when the application is resumed from a paused state.
+     */
     @Override
     public void resume() {
         // Handle resume if needed
     }
 
+    /**
+     * Called when this screen is no longer the current screen for the game.
+     */
     @Override
     public void hide() {
         // Hide any elements when the screen is not visible
     }
 
+    /**
+     * Called when disposing the screen to free up resources.
+     */
     @Override
     public void dispose() {
         spriteBatch.dispose();
