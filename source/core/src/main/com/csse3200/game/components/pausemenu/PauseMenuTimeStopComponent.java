@@ -12,6 +12,7 @@ import com.csse3200.game.services.ServiceLocator;
 public class PauseMenuTimeStopComponent extends Component {
     private Array<Entity> freezeList;
     public PauseMenuTimeStopComponent() {
+        // Not implemented
     }
 
     /**

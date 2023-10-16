@@ -64,7 +64,7 @@ public class FireworksTowerCombatTaskTest {
         entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         fireworksTowerCombatTask.start();
-        fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
+        fireworksTowerCombatTask.setTowerState(FireworksTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -92,7 +92,7 @@ public class FireworksTowerCombatTaskTest {
         entity.getEvents().addListener(FireworksTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
 
-        fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
+        fireworksTowerCombatTask.setTowerState(FireworksTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
