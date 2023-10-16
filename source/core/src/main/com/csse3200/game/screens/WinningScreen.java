@@ -19,6 +19,7 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.Preferences;
+import com.csse3200.game.ui.ButtonFactory;
 
 public class WinningScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -27,10 +28,8 @@ public class WinningScreen extends ScreenAdapter {
     private Sprite backgroundSprite;
     private Preferences preferences;
 
-    private static final String BACKGROUND_TEXTURE = "planets/background.png"; // Set the path to your winning background image
-    private static final String WIN_TEXT = """
-            Congratulations! You won!
-            """;
+    private static final String BACKGROUND_TEXTURE = "images/ui/Screen/WinningScreen.png"; // Set the path to your winning background image
+
     // private static final String[] winSounds = {"win_sound.ogg"}; // Set the path to your winning sound
     private final BitmapFont font;
     private Stage stage;
@@ -58,14 +57,14 @@ public class WinningScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-        TextButton exitButton = new TextButton("Exit Game", skin);
+        TextButton exitButton = ButtonFactory.createButton("Exit Game");
         exitButton.addListener(new ClickListener(){
             public void clicked(InputEvent event, float x, float y) {
                 game.exit();
             }
         });
 
-        TextButton mainMenuButton = new TextButton("Back to Main Menu", skin);
+        TextButton mainMenuButton = ButtonFactory.createButton("Back to Main Menu");
         mainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -73,25 +72,19 @@ public class WinningScreen extends ScreenAdapter {
             }
         });
 
-        TextButton playAgainButton = new TextButton("Play Again", skin);
-        playAgainButton.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
-            }
-        });
-
         Table table = new Table();
         table.setFillParent(true);
-        table.add(exitButton).padTop(-100).row();
-        table.add(mainMenuButton).padTop(-200).row();
-        table.add(playAgainButton).padTop(-300).row();
+        table.center(); // Center align the buttons vertically at the top of the screen
+        table.padTop(-100); // Add a 100-pixel gap at the top
+        table.padRight(-120);
+        // Add buttons with a 100-pixel gap in between
+        table.add(exitButton).padRight(200);
+        table.add(mainMenuButton);
+
         stage.addActor(table);
 
         preferences.putInteger("HighestLevelReached", 2);
         preferences.flush();
-
-        // Play win sound
-        // resourceService.getAsset(winSounds[0], Sound.class).play(0.3f);
     }
 
     @Override
@@ -101,7 +94,6 @@ public class WinningScreen extends ScreenAdapter {
 
         batch.begin();
         backgroundSprite.draw(batch);
-        font.draw(batch, WIN_TEXT, 730, 800); // Adjust the position
         batch.end();
 
         stage.draw();
