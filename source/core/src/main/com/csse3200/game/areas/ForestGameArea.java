@@ -155,7 +155,10 @@ public class ForestGameArea extends GameArea {
           "images/bombship/bombship.atlas",
           "images/mobs/coat.atlas",
           "images/mobs/night_borne.atlas",
-          "images/mobs/arcane_archer.atlas"
+          "images/mobs/arcane_archer.atlas",
+          "images/mobs/necromancer.atlas",
+          "images/mobs/firewizard.atlas",
+          "images/mobs/rocky.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -197,7 +200,11 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickCast.mp3",
           "sounds/mobBoss/patrickThunder.mp3",
           "sounds/mobBoss/patrickHit.mp3",
-          "sounds/mobBoss/spawnDemonSlime.mp3"
+          "sounds/mobBoss/spawnDemonSlime.mp3",
+          "sounds/mobs/skeletonHit.mp3",
+          "sounds/mobs/coatAttack.mp3",
+          "sounds/mobs/archerArrow.mp3"
+
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
@@ -237,37 +244,6 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-   * Cases to spawn a wave
-   */
-//  private void spawnWave() {
-//    wave++;
-//    switch (wave) {
-//      case 1:
-//      case 2:
-//        spawnFireWorm();
-//        spawnDragonKnight();
-//
-//        break;
-//      case 3:
-//        spawnSkeleton();
-//        spawnWizard();
-//        // mobBoss2 = spawnMobBoss2();
-//        break;
-//      case 4:
-//        spawnWaterQueen();
-//        spawnWaterSlime();
-//        // mobBoss2 = spawnMobBoss2();
-//
-//        break;
-//      case 5:
-//        spawnDemonBoss();
-//      default:
-//        // Handle other wave scenarios if needed
-//        break;
-//    }
-//  }
-
-  /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
   @Override
@@ -293,6 +269,12 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(17, 2);
 //    spawnPatrick();
 //    spawnDemonBoss();
+    // spawnSplittingRocky(17, 4);
+    // spawnFireWizard(17, 3);
+    // spawnNecromancer(17, 2);
+
+
+
 
     spawnScrap();
     spawnGapScanners();
@@ -306,7 +288,7 @@ public class ForestGameArea extends GameArea {
 //     spawnRicochetTower();
 //    spawnBombship();
   }
-
+  
   private void displayUI() {
     Entity ui = new Entity();
 //    ui.addComponent(new GameAreaDisplay("Box Forest"));  TODO: This should be the level name?
@@ -469,7 +451,7 @@ public class ForestGameArea extends GameArea {
         mob = NPCFactory.createSkeleton(health);
         break;
       case "DeflectWizard":
-        mob = NPCFactory.createDeflectWizard(health);
+        mob = NPCFactory.createWizard(health);
         break;
       case "WaterQueen":
         mob = NPCFactory.createWaterQueen(health);
@@ -480,7 +462,6 @@ public class ForestGameArea extends GameArea {
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
-
       case "Coat":
         mob = NPCFactory.createCoat(health);
         break;
@@ -493,7 +474,15 @@ public class ForestGameArea extends GameArea {
       case "ArcaneArcher":
         mob = NPCFactory.createDodgingArcaneArcher(health);
         break;
-
+      case "SplittingRocky":
+        mob = NPCFactory.createSplittingRocky(health);
+        break;
+      case "Necromancer":
+        mob = NPCFactory.createNecromancer(health);
+        break;
+      case "DeflectFireWizard":
+        mob = NPCFactory.createDeflectFireWizard(health);
+        break;
       case "PatrickBoss":
         mob = MobBossFactory.createPatrickBoss(health);
         break;
@@ -518,6 +507,27 @@ public class ForestGameArea extends GameArea {
 //    xenoGrunt.setScale(1.5f, 1.5f);
 //    spawnEntityAt(xenoGrunt, pos, true, true);
 //  }
+   // * TEMPORARY FOR TESTING
+  private void spawnSplittingRocky(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity rocky = NPCFactory.createSplittingRocky(60);
+    rocky.setScale(1.5f, 1.5f);
+    spawnEntityAt(rocky, pos, true, true);
+  }
+
+  private void spawnFireWizard(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity firewiz = NPCFactory.createDeflectFireWizard(60);
+    firewiz.setScale(1.5f, 1.5f);
+    spawnEntityAt(firewiz, pos, true, true);
+  }
+
+  private void spawnNecromancer(int x, int y) {
+    GridPoint2 pos = new GridPoint2(x, y);
+    Entity Necromancer = NPCFactory.createNecromancer(60);
+    Necromancer.setScale(1.5f, 1.5f);
+    spawnEntityAt(Necromancer, pos, true, true);
+  }
 
   // * TEMPORARY FOR TESTING
 //  private void spawnDodgingDragonKnight(int x, int y) {

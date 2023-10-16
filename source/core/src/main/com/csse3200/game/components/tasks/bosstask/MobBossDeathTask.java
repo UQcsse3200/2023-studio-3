@@ -6,12 +6,8 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
-import com.csse3200.game.physics.PhysicsEngine;
-import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-//import com.csse3200.game.rendering.DebugRenderer;
-
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -21,10 +17,8 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
 
     private final int priority;
     private Vector2 bossPosition = new Vector2(10f,10f);
-    private final PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-    private final RaycastHit hit = new RaycastHit();
 
     private int bossHealth;
 
@@ -33,9 +27,6 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
      */
     public MobBossDeathTask(int priority) {
         this.priority = priority;
-
-        physics = ServiceLocator.getPhysicsService().getPhysics();
-
         timeSource = ServiceLocator.getTimeSource();
     }
 
@@ -71,11 +62,6 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
     }
 
     @Override
-    public void stop() {
-        super.stop();
-    }
-
-    @Override
     public int getPriority() {
         if (status == Status.ACTIVE) {
             return getActivePriority();
@@ -98,11 +84,7 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
         return -1;
     }
     private boolean bossIsDead(int bosshealth) {
-
-        if (bosshealth <= 0) {
-            return true;
-        }
-        return false;
+        return bosshealth <= 0;
     }
 
     private void killboss() {

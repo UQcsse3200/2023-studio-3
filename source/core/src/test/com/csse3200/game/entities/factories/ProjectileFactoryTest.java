@@ -63,34 +63,34 @@ class ProjectileFactoryTest {
     }
     
     @Test
-    public void createBaseProjectile() {
+    void createBaseProjectile() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile);
     }
 
     @Test
-    public void testBaseProjectileColliderComponent() {
+    void testBaseProjectileColliderComponent() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(ColliderComponent.class), 
                 "Projectile does not have a ColliderComponent");
     }
 
     @Test
-    public void testBaseProjectileTouchAttackComponent() {
+    void testBaseProjectileTouchAttackComponent() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(TouchAttackComponent.class), 
                 "Projectile does not have a TouchAttackComponent");
     }
 
     @Test
-    public void testBaseProjectileDeleteOnMapEdgeComponent() {
+    void testBaseProjectileDeleteOnMapEdgeComponent() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(DeleteOnMapEdgeComponent.class), 
                 "Projectile does not have a DeleteOnMapEdgeComponent");
     }
 
     @Test
-    public void testBaseProjectileSpeed() {
+    void testBaseProjectileSpeed() {
         Vector2 testSpeed = new Vector2(1f, 1f);
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), testSpeed);
         assertEquals(testSpeed, projectile.getComponent(PhysicsMovementComponent.class).getSpeed(), 
@@ -98,114 +98,114 @@ class ProjectileFactoryTest {
     }
     
     @Test
-    public void testBaseProjectileHitbox() {
+    void testBaseProjectileHitbox() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(HitboxComponent.class),
                 "Projectile does not contain Hotbox component");
     }
 
     @Test
-    public void testBaseProjectilePhysics() {
+    void testBaseProjectilePhysics() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(PhysicsComponent.class),
         "Projectile does not have Physics component");
     }
     
     @Test
-    public void testBaseProjectilePhysicsMovement() {
+    void testBaseProjectilePhysicsMovement() {
         Entity projectile = ProjectileFactory.createBaseProjectile(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(projectile.getComponent(PhysicsMovementComponent.class),
                 "Projectile does not have PhysicsMovement component");
     }
 
     @Test
-    public void testFireBallProjectileCreation() {
+    void testFireBallProjectileCreation() {
         Entity fireBall = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireBall);
     }   
 
     @Test
-    public void testFireBallAnimationRenderComponent() {
+    void testFireBallAnimationRenderComponent() {
         Entity fireBall = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireBall.getComponent(AnimationRenderComponent.class),
                 "Fire Ball does not have an AnimationRenderComponent");
     }   
     @Test
-    public void testFireBallAnimationController() {
+    void testFireBallAnimationController() {
         Entity fireBall = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireBall.getComponent(ProjectileAnimationController.class), 
                 "Fire Ball does not have an Animation Controller");
     }   
 
     @Test
-    public void createMobBallProjectile() {
+    void createMobBallProjectile() {
         Entity mobBallProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(mobBallProjectile, "Mob King Ball is Null");
     }
     
     @Test
-    public void testMobBallProjectileAnimationRenderComponent() {
+    void testMobBallProjectileAnimationRenderComponent() {
         Entity mobBallProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(mobBallProjectile.getComponent(AnimationRenderComponent.class), 
                 "Mob Ball Projectile does not have an AnimationRenderComponent");
     }
 
 //     @Test
-//     public void testMobBallProjectileAnimationController() {
+//     void testMobBallProjectileAnimationController() {
 //         Entity mobBallProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
 //         assertNotNull(mobBallProjectile.getComponent(MobProjectileAnimationController.class), 
 //                 "Mob Ball Projectile does not have an AnimationController");
 //     }
 
     @Test
-    public void testMobBossBallCreation() {
+    void testMobBossBallCreation() {
         Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(mobBossBall, "Mob King Ball is null");
     }
     
     @Test
-    public void testMobBossBallAnimationRenderComponent() {
+    void testMobBossBallAnimationRenderComponent() {
         Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(mobBossBall.getComponent(AnimationRenderComponent.class),
                 "Mob King Ball does not have AnimationRenderComponent");
     }
 
     @Test
-    public void testMobBossBallAnimationController() {
+    void testMobBossBallAnimationController() {
         Entity mobBossBall = ProjectileFactory.createMobBossBall(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(mobBossBall.getComponent(MobBossProjectAnimController.class),
                 "Mob King Ball does not have Animation Controller");
     }
 
     @Test
-    public void testEngineerBulletCreation() {
+    void testEngineerBulletCreation() {
         Entity engineerBullet = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(engineerBullet, "engineerBullet is null");
     }
     
     @Test
-    public void testEngineerBulletAnimationRenderComponent() {
+    void testEngineerBulletAnimationRenderComponent() {
         Entity engineerBulllet = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(engineerBulllet.getComponent(AnimationRenderComponent.class),
                 "Engineer Bullet does not have AnimationRenderComponent");
     }
 
     @Test
-    public void testEngineerAnimationController() {
+    void testEngineerAnimationController() {
         Entity engineerBullet = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(engineerBullet.getComponent(EngineerBulletsAnimationController.class),
                 "Engineer Bullet does not have Animation Controller");
     }
 
     @Test
-    public void testStunProjectileCreation() {
+    void testStunProjectileCreation() {
         Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,
                 0.1f), new Vector2(2,2), ProjectileEffects.STUN, false);
         assertNotNull(stunProjectile, "stunProjectile is null");
     }
 
     @Test
-    public void testStunProjectileAnimationRenderComponent() {
+    void testStunProjectileAnimationRenderComponent() {
         Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,01f),
                 new Vector2(2,2), ProjectileEffects.STUN, false);
         assertNotNull(stunProjectile.getComponent(AnimationRenderComponent.class),
@@ -213,7 +213,7 @@ class ProjectileFactoryTest {
     }
 
     @Test
-    public void testStunProjectileAnimationController() {
+    void testStunProjectileAnimationController() {
         Entity stunProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
                 , new Vector2(2,2), ProjectileEffects.STUN, false);
         assertNotNull(stunProjectile.getComponent(StunEffectProjectileAnimationController.class),
@@ -221,21 +221,21 @@ class ProjectileFactoryTest {
     }
 
     @Test
-    public void testBurnProjectileCreation() {
+    void testBurnProjectileCreation() {
         Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,
                 0.1f), new Vector2(2,2), ProjectileEffects.BURN, false);
         assertNotNull(burnProjectile, "burnProjectile is null");
     }
 
     @Test
-    public void testBurnProjectileAnimationRenderComponent() {
+    void testBurnProjectileAnimationRenderComponent() {
         Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,01f),
                 new Vector2(2,2), ProjectileEffects.BURN, false);
         assertNotNull(burnProjectile.getComponent(AnimationRenderComponent.class),
                 "Burn Projectile does not have AnimationRenderComponent");
     }
     @Test
-    public void testBurnProjectileAnimationController() {
+    void testBurnProjectileAnimationController() {
         Entity burnProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
                 , new Vector2(2,2), ProjectileEffects.BURN, false);
         assertNotNull(burnProjectile.getComponent(BurnEffectProjectileAnimationController.class),
@@ -243,21 +243,21 @@ class ProjectileFactoryTest {
     }
 
     @Test
-    public void testSlowProjectileCreation() {
+    void testSlowProjectileCreation() {
         Entity slowProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,
                 0.1f), new Vector2(2,2), ProjectileEffects.SLOW, false);
         assertNotNull(slowProjectile, "slowProjectile is null");
     }
 
     @Test
-    public void testSlowProjectileAnimationRenderComponent() {
+    void testSlowProjectileAnimationRenderComponent() {
         Entity slowProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(0.1f,01f),
                 new Vector2(2,2), ProjectileEffects.SLOW, false);
         assertNotNull(slowProjectile.getComponent(AnimationRenderComponent.class),
                 "Slow Projectile does not have AnimationRenderComponent");
     }
     @Test
-    public void testSlowProjectileAnimationController() {
+    void testSlowProjectileAnimationController() {
         Entity slowProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f)
                 , new Vector2(2,2), ProjectileEffects.SLOW, false);
         assertNotNull(slowProjectile.getComponent(SnowBallProjectileAnimationController.class),
@@ -265,21 +265,21 @@ class ProjectileFactoryTest {
     }
 
     @Test
-    public void testFireworkProjectileCreation() {
+    void testFireworkProjectileCreation() {
         Entity fireworkProjectile = ProjectileFactory.createFireworks(
                 PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireworkProjectile, "fireworkProjectile is null");
     }
 
     @Test
-    public void testFireworkProjectileAnimationRenderComponent() {
+    void testFireworkProjectileAnimationRenderComponent() {
         Entity fireworkProjectile = ProjectileFactory.createFireworks(
                 PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireworkProjectile.getComponent(AnimationRenderComponent.class),
                 "Fire Projectile does not have AnimationRenderComponent");
     }
     @Test
-    public void testFireworkProjectileAnimationController() {
+    void testFireworkProjectileAnimationController() {
         Entity fireworkProjectile = ProjectileFactory.createFireworks(
                 PhysicsLayer.TOWER, new Vector2(0.1f, 0.1f), new Vector2(1f, 1f));
         assertNotNull(fireworkProjectile.getComponent(FireworkAnimationController.class),

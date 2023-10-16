@@ -36,38 +36,38 @@ public class WaveFactory {
   private static final ArrayList<ArrayList<String>> lvl1Structure = new ArrayList<>(Arrays.asList(
       new ArrayList<>(Arrays.asList("Coat"
       )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen"
-      )), new ArrayList<>(Arrays.asList("WaterQueen", "SplittingWaterSlime"
-      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "SplittingWaterSlime"
+      )), new ArrayList<>(Arrays.asList("WaterQueen", "WaterQueen"
+      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "Coat"
       ))
   ));
 
   private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
       new ArrayList<>(Arrays.asList("Skeleton"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
       )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "DeflectWizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("DeflectWizard", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("NightBorne", "Skeleton"
-      )), new ArrayList<>(Arrays.asList("DeflectWizard", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "NightBorne", "DeflectWizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "DeflectWizard", "NightBorne"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Wizard"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "Wizard", "SplittingNightBorne"
       ))
   ));
 
   private static final ArrayList<ArrayList<String>> lvl3Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("Coat", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "FireWorm"
+      new ArrayList<>(Arrays.asList("Necromancer"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("SplittingRocky", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Coat"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat", "Coat", "DodgingDragon", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWiza","SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard", "SplittingRocky", "DodgingDragon", "FireWorm"
       ))
   ));
 
@@ -153,7 +153,7 @@ public class WaveFactory {
         minMobs = 8;
         break;
       default:
-        boss = BOSS_2;
+        boss = BOSS_1;
         bossHealth = LVL1_BOSS_BASE_HEALTH;
         possibleMobs = lvl1Structure;
         minMobs = 5;

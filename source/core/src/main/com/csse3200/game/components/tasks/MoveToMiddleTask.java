@@ -10,12 +10,7 @@ public class MoveToMiddleTask extends DefaultTask implements PriorityTask {
     private final float speed;
     private boolean hasReachedTarget = false;
 
-    private Status taskStatus;
-
-    private Entity ownerEntity; // Store the owner entity
-
-    public MoveToMiddleTask(Entity ownerEntity, Vector2 targetPosition, float speed) {
-        this.ownerEntity = ownerEntity;
+    public MoveToMiddleTask(Vector2 targetPosition, float speed) {
         this.targetPosition = targetPosition;
         this.speed = speed;
     }
@@ -60,7 +55,7 @@ public class MoveToMiddleTask extends DefaultTask implements PriorityTask {
     }
 
     private void setStatus() {
-        Status taskStatus = Status.COMPLETED;
+        status = Status.COMPLETED;
     }
 }
 
