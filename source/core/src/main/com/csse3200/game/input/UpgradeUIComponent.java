@@ -19,7 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Scaling;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.areas.*;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.TowerCombatTask;
 import com.csse3200.game.components.tower.*;
