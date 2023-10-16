@@ -126,6 +126,7 @@ public class NPCFactory {
     animator.addAnimation("skeleton_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("skeleton_attack", 0.1f);
     animator.addAnimation("skeleton_death", 0.1f);
+    animator.addAnimation("skeleton_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -158,6 +159,7 @@ public class NPCFactory {
     animator.addAnimation("wizard_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("wizard_attack", 0.1f);
     animator.addAnimation("wizard_death", 0.1f);
+    animator.addAnimation("wizard_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.WIZARD));
@@ -188,6 +190,7 @@ public class NPCFactory {
     animator.addAnimation("water_queen_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_queen_attack", 0.1f);
     animator.addAnimation("water_queen_death", 0.1f);
+    animator.addAnimation("water_queen_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -219,6 +222,7 @@ public class NPCFactory {
     animator.addAnimation("water_slime_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("water_slime_attack", 0.1f);
     animator.addAnimation("water_slime_death", 0.2f);
+    animator.addAnimation("water_slime_freeze", 0.2f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -250,6 +254,7 @@ public class NPCFactory {
     animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("fire_worm_attack", 0.1f);
     animator.addAnimation("fire_worm_death", 0.1f);
+    animator.addAnimation("fire_worm_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -281,6 +286,7 @@ public class NPCFactory {
     animator.addAnimation("dragon_knight_run", 0.1f, Animation.PlayMode.LOOP);
     animator.addAnimation("dragon_knight_attack", 0.1f);
     animator.addAnimation("dragon_knight_death", 0.1f);
+    animator.addAnimation("dragon_knight_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
 
     AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -430,6 +436,7 @@ public class NPCFactory {
     animator.addAnimation("xeno_melee_1", 0.1f);
     animator.addAnimation("xeno_melee_2", 0.1f);
     animator.addAnimation("xeno_die", 0.1f);
+    animator.addAnimation("xeno_freeze", 0.1f);
     animator.addAnimation("default", 0.1f);
     xenoGrunt
             .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))

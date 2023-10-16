@@ -16,6 +16,8 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.npc.XenoAnimationController;
 
 /**
  * Task that allows mobs to shoot projectiles or melee attack towers
@@ -83,11 +85,14 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
-    updateMobState();
+	if(!owner.getEntity().getComponent(AITaskComponent.class).freezed)
+	{
+		updateMobState();
 
-    if (mobState == STATE.STOW) {
-      status = Status.FINISHED;
-    }
+		if (mobState == STATE.STOW) {
+		  status = Status.FINISHED;
+		}
+	}
   }
 
   /**
@@ -127,7 +132,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
-			this.owner.getEntity().getEvents().trigger("meleeStart");
+            this.owner.getEntity().getEvents().trigger("meleeStart");
           } else {
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
             newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));

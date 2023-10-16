@@ -294,10 +294,11 @@ public class MobTask extends DefaultTask implements PriorityTask {
         }, MELEE_ATTACK_SPEED);
 			if(owner.getEntity().getComponent(ArcaneArcherAnimationController.class)!=null)
 			{
-				Entity newProjectile = ProjectileFactory.createPierceArrow(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+				Entity newProjectile = ProjectileFactory.createPierceArrow(PhysicsLayer.HUMANS, new Vector2(-100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
 				newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
 				newProjectile.setScale(1.3f, 1.3f);
 				ServiceLocator.getEntityService().register(newProjectile);
+				lastTimeAttacked = gameTime.getTime();
             }
     }
 

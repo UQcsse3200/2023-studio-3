@@ -1,6 +1,6 @@
 
 stun_effect.png
-size: 128, 32
+size: 152, 32
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -30,6 +30,27 @@ projectile
   xy: 70, 2
   size: 17, 19
   orig: 17, 19
+  offset: 0, 0
+  index: -1
+stun
+  rotate: false
+  xy: 87, 2
+  size: 21, 19
+  orig: 21, 19
+  offset: 0, 0
+  index: -1
+stun
+  rotate: false
+  xy: 109, 2
+  size: 21, 19
+  orig: 21, 19
+  offset: 0, 0
+  index: -1
+stun
+  rotate: false
+  xy: 131, 2
+  size: 21, 19
+  orig: 21, 19
   offset: 0, 0
   index: -1
 default
