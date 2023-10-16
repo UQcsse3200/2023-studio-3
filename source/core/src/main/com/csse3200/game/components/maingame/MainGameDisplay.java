@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.screens.TowerType;
@@ -316,6 +315,7 @@ public class MainGameDisplay extends UIComponent {
         towerTable.add(tower3).padRight(10f);
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
+        towerTable.stack(new Label(String.format("%s", towers.get(0).getPrice()), getSkin()));
         towerTable.row();
         towerTable.add("1", "small");
         towerTable.add("2", "small");
