@@ -13,12 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 
 public class LosingScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -31,19 +34,15 @@ public class LosingScreen extends ScreenAdapter {
             The aliens gained control. You lose!
             """;
     private static final String[] lossSounds = {"sounds/background/loss/RisingScreams.ogg"};
-    private BitmapFont font;
-    private AnimatedText text;
+    private final AnimatedText text;
     private Stage stage;
-    private ResourceService resourceService;
-    private TextButton exitButton;
-    private TextButton mainMenuButton;
-    private TextButton playAgainButton;
+    private final ResourceService resourceService;
 
     public LosingScreen(GdxGame game) {
         this.game = game;
-        font = new BitmapFont();
+        BitmapFont font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
-        font.getData().setScale(2, 2);
+        font.getData().setScale(3, 2);
         resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadSounds(lossSounds);
@@ -61,13 +60,13 @@ public class LosingScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-        exitButton = new TextButton("Exit Game", skin);
+        TextButton exitButton = ButtonFactory.createButton("Exit Game");
         exitButton.addListener(new ClickListener() {
             public void clicked(InputEvent even, float x, float y) {
                 game.exit();
             }
         });
-        mainMenuButton = new TextButton("Back to Main Menu", skin);
+        TextButton mainMenuButton = ButtonFactory.createButton("Back to Main Menu");
         mainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,18 +75,20 @@ public class LosingScreen extends ScreenAdapter {
 
         });
 
-        playAgainButton = new TextButton("Play Again", skin);
+        TextButton playAgainButton = ButtonFactory.createButton("Play Again");
         playAgainButton.addListener(new ClickListener() {
             public void clicked(InputEvent even, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
             }
         });
+
         Table table = new Table();
         table.setFillParent(true);
         table.add(exitButton).padTop(-100).row();
-        table.add(mainMenuButton).padTop(-200).row();
-        table.add(playAgainButton).padTop(-300).row();
+        table.add(mainMenuButton).padTop(-300).row();
+        table.add(playAgainButton).padTop(-500).row();
         stage.addActor(table);
+
         // play loss sound
         resourceService.getAsset(lossSounds[0], Sound.class).play(0.3f);
     }
@@ -96,13 +97,11 @@ public class LosingScreen extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         batch.begin();
         introSprite.draw(batch);
         text.update();
-        text.draw(batch, 730, 800); // Adjust the position
+        text.draw(batch, 610, 500); // Adjust the position
         batch.end();
-
         stage.draw();
     }
 
@@ -111,7 +110,5 @@ public class LosingScreen extends ScreenAdapter {
         batch.dispose();
         introImage.dispose();
         stage.dispose();
-
     }
-
 }
