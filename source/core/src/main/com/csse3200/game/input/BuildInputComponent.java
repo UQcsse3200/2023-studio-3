@@ -58,6 +58,8 @@ public class BuildInputComponent extends InputComponent {
                 }
             }
         }
+
+        ServiceLocator.setTowerTypes(towers);
     }
 
     /**
