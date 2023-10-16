@@ -18,8 +18,11 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.csse3200.game.components.tasks.MobTask.MobType;
 
 /**
  * The AI Task for all general mobs. This task handles the sequencing for melee
@@ -176,7 +179,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     runFlag = true;
                 }
             }
-            case DEATH, DEFAULT -> {}
         }
     }
 
@@ -193,67 +195,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     }
                     case DEFAULT -> owner.getEntity().getEvents().trigger("mob_default");
                 }
-        // switch (mobType) {
-        //     case SKELETON -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("skeleton_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("skeleton_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("skeleton_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("skeleton_default");
-        //         }
-        //     }
-        //     case WIZARD -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("wizard_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("wizard_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("wizard_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case WATER_QUEEN -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("water_queen_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("water_queen_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("water_queen_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case WATER_SLIME -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("water_slime_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("water_slime_attack");
-        //             case DEATH -> {
-        //                 owner.getEntity().getEvents().trigger("water_slime_death");
-        //                 owner.getEntity().getEvents().trigger("splitDeath");
-        //             }
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case FIRE_WORM -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("fire_worm_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("fire_worm_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("fire_worm_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case DRAGON_KNIGHT -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("dragon_knight_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("dragon_knight_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("dragon_knight_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case COAT -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("coat_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("coat_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("coat_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        // }
     }
 
     /**

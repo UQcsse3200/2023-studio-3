@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
  * shows the 'ground' in the game. Enabling/disabling this component will show/hide the terrain.
  */
 public class TerrainComponent extends RenderComponent {
-  private static final Logger logger = LoggerFactory.getLogger(TerrainComponent.class);
   private static final int TERRAIN_LAYER = 0;
 
   private final TiledMap tiledMap;
@@ -33,7 +32,6 @@ public class TerrainComponent extends RenderComponent {
   private final TerrainOrientation orientation;
   private final float tileSize;
   private TiledMapTileLayer.Cell lastHoveredCell = null;
-  private TiledMapTile originalTile = null;
   private TextureRegion originalRegion = null;
 
 
@@ -105,41 +103,6 @@ public class TerrainComponent extends RenderComponent {
   @Override
   public int getLayer() {
     return TERRAIN_LAYER;
-  }
-
-   // TODO : This is just a visual effect that we might not need in the end but just keeping it here for now
-  public void colorTile(final int x, final int y) {
-    final TiledMapTileLayer tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);
-    final TiledMapTile originalTile = tileLayer.getCell(x, y).getTile();
-
-    ResourceService resourceService = ServiceLocator.getResourceService();
-
-    // Load all the tiles into an array
-    final TerrainTile[] terrainTiles = new TerrainTile[7];
-    for (int i = 0; i < 7; i++) {
-      Texture texture = resourceService.getAsset("images/GrassTile/grass_tile_" + (i + 1) + ".png", Texture.class);
-      terrainTiles[i] = new TerrainTile(new TextureRegion(texture));
-    }
-
-    final float interval = 0.2f; // Switch every 0.2 seconds
-    final float duration = 1.4f; // 7 images * 0.2 seconds each
-
-    Timer.schedule(new Timer.Task() {
-      float timeElapsed = 0.0f;
-
-      @Override
-      public void run() {
-        timeElapsed += interval;
-
-        if (timeElapsed >= duration) {
-          tileLayer.getCell(x, y).setTile(originalTile); // Reset to original tile after the total duration
-          this.cancel(); // End the timer task
-        } else {
-          int index = (int) (timeElapsed / interval);
-          tileLayer.getCell(x, y).setTile(terrainTiles[index]);
-        }
-      }
-    }, 0, interval, (int) (duration / interval) - 1); // Scheduling the task
   }
 
   /**

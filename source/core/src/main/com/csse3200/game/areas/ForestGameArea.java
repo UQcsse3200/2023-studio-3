@@ -206,16 +206,15 @@ public class ForestGameArea extends GameArea {
           "sounds/mobs/archerArrow.mp3"
 
   };
-  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+  private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
-  private static final String[] forestMusic = {backgroundMusic};
+  private static final String[] forestMusic = {BACKGROUND_MUSIC};
   private Entity player;
   private Entity waves;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
-   *
-   * @requires terrainFactory != null
+   * &#064;requires  terrainFactory != null
    */
   public ForestGameArea() {
     super();
@@ -293,7 +292,6 @@ public class ForestGameArea extends GameArea {
   
   private void displayUI() {
     Entity ui = new Entity();
-//    ui.addComponent(new GameAreaDisplay("Box Forest"));  TODO: This should be the level name?
     ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
@@ -445,9 +443,6 @@ public class ForestGameArea extends GameArea {
   public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
-      case "Xeno":
-        mob = NPCFactory.createXenoGrunt(health);
-        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
@@ -899,7 +894,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void playMusic() {
-    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
+    Music music = ServiceLocator.getResourceService().getAsset(BACKGROUND_MUSIC, Music.class);
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();

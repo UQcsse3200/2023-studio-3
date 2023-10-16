@@ -40,11 +40,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten
     private final Vector2 maxRangePosition = new Vector2();
-    private PhysicsEngine physics;
-    private GameTime timeSource;
+    private final PhysicsEngine physics;
+    private final GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+    private static final Logger logger = LoggerFactory.getLogger(TowerCombatTask.class);
     private boolean shoot = true;
   
     private enum STATE {
@@ -123,79 +123,16 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
             towerState = STATE.DEATH;
             return;
         }
+
         switch (towerState) {
-            case IDLE -> {
-                // targets detected in idle mode - start deployment
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    towerState = STATE.DEPLOY;
-                }
-            }
-            case DEPLOY -> {
-                // currently deploying,
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    towerState = STATE.FIRING;
-                } else {
-                    owner.getEntity().getEvents().trigger(STOW);
-                    towerState = STATE.STOW;
-                }
-            }
-            case FIRING -> {
-                if (shoot) {
-                    // targets gone - stop firing
-                    if (!isTargetVisible()) {
-
-                        owner.getEntity().getEvents().trigger(STOW);
-                        towerState = STATE.STOW;
-                    } else {
-                        owner.getEntity().getEvents().trigger(FIRING);
-                        // this might be changed to an event which gets triggered everytime the tower enters the firing state
-
-                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                        newProjectile.setScale(1.1f, 0.8f);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (float) (owner.getEntity().getPosition().y));
-                        ServiceLocator.getEntityService().register(newProjectile);
-
-                        // * TEMPRORARYYYYYYYY PLS DON'T DELETE THIS
-                        // PIERCE FIREBALL
-                        // Entity pierceFireball = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                        // pierceFireball.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(pierceFireball);
-
-                        // RICOCHET FIREBALL
-                        // Entity ricochetProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 0);
-
-                        // ricochetProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(ricochetProjectile);
-
-                        // SPLIT FIREWORKS FIREBALLL
-                        // Entity splitFireWorksProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 16);
-
-                        // splitFireWorksProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(splitFireWorksProjectile);
-                    }
-                }
-                shoot = !shoot;
-            }
-            case STOW -> {
-                // currently stowing
-                if (isTargetVisible()) {
-
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    towerState = STATE.DEPLOY;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
-            }
-            case DEATH -> {
-                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                    owner.getEntity().setFlagForDelete(true);
-                }
-            }
+            case IDLE -> handleIdleState();
+            case DEPLOY -> handleDeployState();
+            case FIRING -> handleFiringState();
+            case STOW -> handleStowState();
+            default -> handleDeathState();      // DEATH
         }
     }
+  
     /**
      * For stopping the running task
      */
@@ -245,7 +182,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
     private void changeFireRateInterval(int newInterval) {
-        logger.info("Changing fire rate to: " + newInterval);
+        logger.info("Changing fire rate to: %d", newInterval);
         fireRateInterval = 1 / ((float) newInterval / 5);
     }
 
@@ -258,4 +195,74 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         return fireRateInterval;
     }
 
+    /**
+     * Function triggers actions at IDLE state, then switch to DEPLOY
+     */
+    private void handleIdleState() {
+        // targets detected in idle mode - start deployment
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(DEPLOY);
+            towerState = STATE.DEPLOY;
+        }
+    }
+
+    /**
+     * Function triggers actions at DEPLOY state, then switch to FIRING or STOW
+     */
+    private void handleDeployState() {
+        // currently deploying,
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(FIRING);
+            towerState = STATE.FIRING;
+        } else {
+            owner.getEntity().getEvents().trigger(STOW);
+            towerState = STATE.STOW;
+        }
+    }
+
+    /**
+     * Function triggers actions at FIRING state
+     */
+    private void handleFiringState() {
+        if (shoot) {
+            // targets gone - stop firing
+            if (!isTargetVisible()) {
+                owner.getEntity().getEvents().trigger(STOW);
+                towerState = STATE.STOW;
+            } else {
+                owner.getEntity().getEvents().trigger(FIRING);
+                // this might be changed to an event which gets triggered everytime the tower enters the firing state
+
+                Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                newProjectile.setScale(1.1f, 0.8f);
+                newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (owner.getEntity().getPosition().y));
+                ServiceLocator.getEntityService().register(newProjectile);
+            }
+        }
+
+        shoot = !shoot;
+    }
+
+    /**
+     * Function triggers actions at STOW state, then switch to DEPLOY or IDLE
+     */
+    private void handleStowState() {
+        // currently stowing
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(DEPLOY);
+            towerState = STATE.DEPLOY;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Function handle DEATH state
+     */
+    private void handleDeathState() {
+        if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+            owner.getEntity().setFlagForDelete(true);
+        }
+    }
 }
