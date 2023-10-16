@@ -13,7 +13,7 @@ import java.util.Currency;
 
 
 @ExtendWith(GameExtension.class)
-public class EnemyTest {
+class EnemyTest {
 
     private ArrayList<Currency> drops = new ArrayList<>();
 //    private ArrayList<Currency> drops = new ArrayList<>(Arrays.asList(1,2));
