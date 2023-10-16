@@ -34,8 +34,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // weaponCapacity is the number of shots fired before the engineer has to reload
     private static final int weaponCapacity = 10;
     private int shotsFired = 0;  // Tracks the number of shots fired in the current cycle
-    
-    private Vector2 engineerPosition = new Vector2(10, 50); // Placeholder value for the Engineer's position.
+
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
     private GameTime timeSource;
@@ -68,7 +67,8 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         // Set the tower's coordinates
-        this.engineerPosition = owner.getEntity().getCenterPosition();
+        // Placeholder value for the Engineer's position.
+        Vector2 engineerPosition = owner.getEntity().getCenterPosition();
         this.maxRangePosition.set(engineerPosition.x + maxRange, engineerPosition.y);
         // Default to idle mode
         owner.getEntity().getEvents().trigger(IDLE_RIGHT);

@@ -40,11 +40,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten
     private final Vector2 maxRangePosition = new Vector2();
-    private PhysicsEngine physics;
-    private GameTime timeSource;
+    private final PhysicsEngine physics;
+    private final GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+    private static final Logger logger = LoggerFactory.getLogger(TowerCombatTask.class);
     private boolean shoot = true;
   
     private enum STATE {
@@ -154,26 +154,8 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
 
                         Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
                         newProjectile.setScale(1.1f, 0.8f);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (float) (owner.getEntity().getPosition().y));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (owner.getEntity().getPosition().y));
                         ServiceLocator.getEntityService().register(newProjectile);
-
-                        // * TEMPRORARYYYYYYYY PLS DON'T DELETE THIS
-                        // PIERCE FIREBALL
-                        // Entity pierceFireball = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                        // pierceFireball.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(pierceFireball);
-
-                        // RICOCHET FIREBALL
-                        // Entity ricochetProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 0);
-
-                        // ricochetProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(ricochetProjectile);
-
-                        // SPLIT FIREWORKS FIREBALLL
-                        // Entity splitFireWorksProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 16);
-
-                        // splitFireWorksProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
-                        // ServiceLocator.getEntityService().register(splitFireWorksProjectile);
                     }
                 }
                 shoot = !shoot;

@@ -11,7 +11,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
@@ -34,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * The game screen containing the main game.
  *
- * <p>Details on libGDX screens: https://happycoding.io/tutorials/libgdx/game-screens
+ * <p>Details on libGDX screens: <a href="https://happycoding.io/tutorials/libgdx/game-screens">...</a>
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
@@ -84,8 +83,8 @@ public class MainGameScreen extends ScreenAdapter {
   private final GdxGame game;
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
-
-  private InputComponent upgradedInputHandler;
+  private final InputComponent buildHandler;
+  private final InputComponent upgradedInputHandler;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
@@ -130,7 +129,7 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getCamera().position.set(CAMERA_POSITION.x,CAMERA_POSITION.y,0);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
@@ -213,7 +212,6 @@ public class MainGameScreen extends ScreenAdapter {
 
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
     ServiceLocator.getWaveService().getDisplay().updateMobCount();
-    ServiceLocator.getWaveService().getDisplay().updateLevelProgressBar();
     renderer.render();
 
     // Check if the game has ended
@@ -221,7 +219,6 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
       // Check if all waves are completed and the level has been completed
-
       logger.info("Main game level completed detected, go to win screen");
       ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
       // Add something in to unlock the next planet/level?
@@ -299,8 +296,9 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
-            .addComponent(new MainGameDisplay(this.game))
+            .addComponent(new MainGameDisplay(this.game, selectedLevel))
             .addComponent(new Terminal())
+            .addComponent(buildHandler)
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
 

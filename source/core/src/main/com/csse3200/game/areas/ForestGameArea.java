@@ -291,7 +291,6 @@ public class ForestGameArea extends GameArea {
   
   private void displayUI() {
     Entity ui = new Entity();
-//    ui.addComponent(new GameAreaDisplay("Box Forest"));  TODO: This should be the level name?
     ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
