@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
 /**
- * Displays a button in the pause menu to resume the game and put away the pause menu.
+ * Displays a button in the help menu to resume the game and put away the pause menu.
  */
 public class HelpContinueButton extends UIComponent {
     private static final float Z_INDEX = 2f;
@@ -35,7 +35,9 @@ public class HelpContinueButton extends UIComponent {
         addActors();
 
     }
-
+    /**
+     * Adds the button to the stage.
+     */
     private void addActors() {
         table = new Table();
         table.center();

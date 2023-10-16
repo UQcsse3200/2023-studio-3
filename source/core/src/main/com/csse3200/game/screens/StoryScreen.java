@@ -56,7 +56,6 @@ public class StoryScreen extends ScreenAdapter {
             "images/ui/game screen/5 arrival.png",
             "images/ui/game screen/6.0 survey.png",
             "images/ui/game screen/6.1 survey.png",
-            // Add more image paths as needed
     };
 
     private static final String[] IMAGE_TEXTS = {
@@ -74,6 +73,12 @@ public class StoryScreen extends ScreenAdapter {
             "all seems perfect until we picked up on a looming threat that maybe we aren't alone......",
     };
 
+    /**
+     * Constructs a new StoryScreen.
+     *
+     * @param game The main game instance that this screen is associated with.
+     *             It provides access to game-related functionality.
+     */
     public StoryScreen(GdxGame game) {
         this.game = game;
         this.images = new Texture[IMAGE_PATHS.length];
@@ -95,6 +100,10 @@ public class StoryScreen extends ScreenAdapter {
         music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
     }
 
+    /**
+     * Initializes assets and sets up the user interface for the StoryScreen.
+     * This method is called when the screen is displayed.
+     */
     @Override
     public void show() {
         // Initialize assets
@@ -141,6 +150,12 @@ public class StoryScreen extends ScreenAdapter {
         music.play();
     }
 
+    /**
+     * Renders the StoryScreen by clearing the screen, displaying images and text,
+     * and handling user interface interactions.
+     *
+     * @param delta The time in seconds since the last frame.
+     */
     @Override
     public void render(float delta) {
         // Clear the screen outside the loop
@@ -175,6 +190,10 @@ public class StoryScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Increments the current index to display the next image. If the index exceeds
+     * the total number of images, the game will navigate to the LevelSelectScreen.
+     */
     private void next() {
         currentIndex++;
         if (currentIndex >= images.length) {
@@ -182,11 +201,20 @@ public class StoryScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Resizes and updates the viewport dimensions based on the given width and height.
+     *
+     * @param width  The new width of the screen.
+     * @param height The new height of the screen.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Disposes all the resources associated with this screen to free up memory.
+     */
     @Override
     public void dispose() {
         batch.dispose();

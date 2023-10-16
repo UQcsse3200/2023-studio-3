@@ -124,11 +124,11 @@ public class LevelWaves extends Entity {
 
     @Override
     public String toString() {
-      String result = "";
-      for (WaveClass wave : waves) {
-        result += wave.toString() + "\n";
-      }
-      return result;
+        StringBuilder result = new StringBuilder();
+        for (WaveClass wave : waves) {
+            result.append(wave.toString()).append("\n");
+        }
+        return result.toString();
     }
 
 }

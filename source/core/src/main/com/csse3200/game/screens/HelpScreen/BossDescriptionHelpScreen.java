@@ -13,13 +13,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
-
+/**
+ * A screen that displays information about boss characters in the game.
+ */
 public class BossDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
 
-
+    /**
+     * Creates a new BossDescriptionHelpScreen.
+     *
+     * @param game The main game instance.
+     */
     public BossDescriptionHelpScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));

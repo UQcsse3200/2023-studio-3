@@ -40,31 +40,31 @@ public class MainMenuScreen extends ScreenAdapter {
   };
   private static final String[] titleMusic = {"sounds/background/title_screen/ScifiAmbient.ogg"};
   private static final String[] mainMenuTextures = {"images/background/main_menu/main_menu_bg.png"};
-  private Animation<TextureRegion> MM_Star1_animation;
-  private Animation<TextureRegion> MM_Galaxy1_animation;
-  private Animation<TextureRegion> MM_Planet1_animation;
-  private Animation<TextureRegion> MM_Planet2_animation;
-  private Animation<TextureRegion> MM_Planet3_animation;
-  private Animation<TextureRegion> MM_MonitorFace1_animation;
-  private Texture MM_Star1_Texture;
-  private Texture MM_Galaxy1_Texture;
-  private Texture MM_Planet1_Texture;
-  private Texture MM_Planet2_Texture;
-  private Texture MM_Planet3_Texture;
-  private Texture MM_MonitorFace1_Texture;
+  private Animation<TextureRegion> mmStar1Animation;
+  private Animation<TextureRegion> mmGalaxy1Animation;
+  private Animation<TextureRegion> mmPlanet1Animation;
+  private Animation<TextureRegion> mmPlanet2Animation;
+  private Animation<TextureRegion> mmPlanet3Animation;
+  private Animation<TextureRegion> mmMonitorface1Animation;
+  private Texture mmStar1Texture;
+  private Texture mmGalaxy1Texture;
+  private Texture mmPlanet1Texture;
+  private Texture mmPlanet2Texture;
+  private Texture mmPlanet3Texture;
+  private Texture mmMonitorface1Texture;
   private float elapsedTime = 0;
-  private int MM_Star1_frameWidth;
-  private int MM_Star1_frameHeight;
-  private int MM_Galaxy1_frameWidth;
-  private int MM_Galaxy1_frameHeight;
-  private int MM_Planet1_frameWidth;
-  private int MM_Planet1_frameHeight;
-  private int MM_Planet2_frameWidth;
-  private int MM_Planet2_frameHeight;
-  private int MM_Planet3_frameWidth;
-  private int MM_Planet3_frameHeight;
-  private int MM_MonitorFace1_frameWidth;
-  private int MM_MonitorFace1_frameHeight;
+  private int mmStar1Framewidth;
+  private int mmStar1Frameheight;
+  private int mmGalaxy1Framewidth;
+  private int mmGalaxy1Frameheight;
+  private int mmPlanet1Framewidth;
+  private int mmPlanet1Frameheight;
+  private int mmPlanet2Framewidth;
+  private int mmPlanet2Frameheight;
+  private int mmPlanet3Framewidth;
+  private int mmPlanet3Frameheight;
+  private int mmMonitorface1Framewidth;
+  private int mmMonitorface1Frameheight;
 
   public MainMenuScreen(GdxGame game) {
     this.game = game;
@@ -108,12 +108,12 @@ public class MainMenuScreen extends ScreenAdapter {
     elapsedTime += delta;
 
     // Draw various animations at specific positions and scales
-    drawAnimation(MM_Star1_animation, 890f / backgroundTexture.getWidth(), 680f / backgroundTexture.getHeight(), 0.3f);
-    drawAnimation(MM_Galaxy1_animation, 2100f / backgroundTexture.getWidth(), 1140f / backgroundTexture.getHeight(), 0.95f);
-    drawAnimation(MM_Planet1_animation, 1630f / backgroundTexture.getWidth(), 800f / backgroundTexture.getHeight(), 0.5f);
-    drawAnimation(MM_Planet2_animation, 1430f / backgroundTexture.getWidth(), 1250f / backgroundTexture.getHeight(), 0.7f);
-    drawAnimation(MM_Planet3_animation, 420f / backgroundTexture.getWidth(), 990f / backgroundTexture.getHeight(), 0.65f);
-    drawAnimation(MM_MonitorFace1_animation, 1930f / backgroundTexture.getWidth(), 360f / backgroundTexture.getHeight(), 3.0f);
+    drawAnimation(mmStar1Animation, 890f / backgroundTexture.getWidth(), 680f / backgroundTexture.getHeight(), 0.3f);
+    drawAnimation(mmGalaxy1Animation, 2100f / backgroundTexture.getWidth(), 1140f / backgroundTexture.getHeight(), 0.95f);
+    drawAnimation(mmPlanet1Animation, 1630f / backgroundTexture.getWidth(), 800f / backgroundTexture.getHeight(), 0.5f);
+    drawAnimation(mmPlanet2Animation, 1430f / backgroundTexture.getWidth(), 1250f / backgroundTexture.getHeight(), 0.7f);
+    drawAnimation(mmPlanet3Animation, 420f / backgroundTexture.getWidth(), 990f / backgroundTexture.getHeight(), 0.65f);
+    drawAnimation(mmMonitorface1Animation, 1930f / backgroundTexture.getWidth(), 360f / backgroundTexture.getHeight(), 3.0f);
 
     batch.end();
   }
@@ -164,23 +164,23 @@ public class MainMenuScreen extends ScreenAdapter {
     AnimationTexturePair result;
 
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_Star1.png", 60, 1, 0.15f);
-    MM_Star1_animation = result.getAnimation();
-    MM_Star1_Texture = result.getTexture();
+    mmStar1Animation = result.getAnimation();
+    mmStar1Texture = result.getTexture();
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_Galaxy1.png", 60, 1, 0.15f);
-    MM_Galaxy1_animation = result.getAnimation();
-    MM_Galaxy1_Texture = result.getTexture();
+    mmGalaxy1Animation = result.getAnimation();
+    mmGalaxy1Texture = result.getTexture();
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_Planet1.png", 60, 1, 0.15f);
-    MM_Planet1_animation = result.getAnimation();
-    MM_Planet1_Texture = result.getTexture();
+    mmPlanet1Animation = result.getAnimation();
+    mmPlanet1Texture = result.getTexture();
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_Planet2.png", 60, 1, 0.15f);
-    MM_Planet2_animation = result.getAnimation();
-    MM_Planet2_Texture = result.getTexture();
+    mmPlanet2Animation = result.getAnimation();
+    mmPlanet2Texture = result.getTexture();
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_Planet3.png", 54, 1, 0.15f);
-    MM_Planet3_animation = result.getAnimation();
-    MM_Planet3_Texture = result.getTexture();
+    mmPlanet3Animation = result.getAnimation();
+    mmPlanet3Texture = result.getTexture();
     result = loadAnimation("images/background/main_menu/MM_Objects/MM_MonitorFace1.png", 4, 1, 0.1f);
-    MM_MonitorFace1_animation = result.getAnimation();
-    MM_MonitorFace1_Texture = result.getTexture();
+    mmMonitorface1Animation = result.getAnimation();
+    mmMonitorface1Texture = result.getTexture();
 
     ServiceLocator.getResourceService().loadAll();
   }
@@ -196,12 +196,12 @@ public class MainMenuScreen extends ScreenAdapter {
     resourceService.unloadAssets(mainMenuTextures);
     resourceService.unloadAssets(mainMenuAtlases);
     resourceService.unloadAssets(titleMusic);
-    MM_Star1_Texture.dispose();
-    MM_Galaxy1_Texture.dispose();
-    MM_Planet1_Texture.dispose();
-    MM_Planet2_Texture.dispose();
-    MM_Planet3_Texture.dispose();
-    MM_MonitorFace1_Texture.dispose();
+    mmStar1Texture.dispose();
+    mmGalaxy1Texture.dispose();
+    mmPlanet1Texture.dispose();
+    mmPlanet2Texture.dispose();
+    mmPlanet3Texture.dispose();
+    mmMonitorface1Texture.dispose();
   }
 
 

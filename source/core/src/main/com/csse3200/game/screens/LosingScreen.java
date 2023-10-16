@@ -23,6 +23,12 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 
+/**
+ * Represents the screen displayed to the user when they lose the game.
+ * This class provides interactive buttons to allow the user to navigate to
+ * the main menu, replay, or exit the game, along with displaying a loss message and related resources.
+ *
+ */
 public class LosingScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
@@ -38,6 +44,12 @@ public class LosingScreen extends ScreenAdapter {
     private Stage stage;
     private final ResourceService resourceService;
 
+    /**
+     * Constructor for the LosingScreen.
+     * Initializes the loss text, resources, and registers required services.
+     *
+     * @param game Reference to the main game object to interact with other game components/screens.
+     */
     public LosingScreen(GdxGame game) {
         this.game = game;
         BitmapFont font = new BitmapFont();
@@ -49,6 +61,10 @@ public class LosingScreen extends ScreenAdapter {
         resourceService.loadAll();
     }
 
+    /**
+     * Called when this screen becomes the active screen.
+     * Sets up the UI elements, input processing, and plays the loss sound.
+     */
     @Override
     public void show() {
         batch = new SpriteBatch();
@@ -93,6 +109,12 @@ public class LosingScreen extends ScreenAdapter {
         resourceService.getAsset(lossSounds[0], Sound.class).play(0.3f);
     }
 
+    /**
+     * Renders the loss screen at each frame. This includes drawing the losing image,
+     * loss message, and any UI elements present.
+     *
+     * @param delta Time in seconds since the last render. Useful for frame rate independent updates.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -105,6 +127,10 @@ public class LosingScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    /**
+     * Disposes of all the resources loaded by this screen to prevent memory leaks.
+     * This includes the sprite batch, the intro image, and the stage.
+     */
     @Override
     public void dispose() {
         batch.dispose();

@@ -13,6 +13,9 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+/**
+ * The `TowerSelectionInstruct` class represents a UI component that displays instructions for tower selection in the game.
+ */
 
 public class TowerSelectionInstruct extends UIComponent{
 
@@ -22,7 +25,9 @@ public class TowerSelectionInstruct extends UIComponent{
         private static final float Z_INDEX = 2f;
         private Table table1;
         private GdxGame game;
-
+    /**
+     * Creates the UI component and adds necessary actors.
+     */
 
         @Override
         public void create() {

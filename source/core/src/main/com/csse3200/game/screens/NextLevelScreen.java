@@ -31,9 +31,10 @@ public class NextLevelScreen extends ScreenAdapter {
     private Preferences preferences;
 
     /**
-     * Constructs the NextLevelScreen with the necessary assets and buttons.
+     * Initializes the NextLevelScreen with the necessary assets and buttons.
      *
      * @param game The game instance managing the screens.
+     * @param currentLevel The current level the player is on.
      */
     public NextLevelScreen(GdxGame game, int currentLevel) {
         this.currentLevel = currentLevel;
@@ -86,6 +87,11 @@ public class NextLevelScreen extends ScreenAdapter {
         stage.addActor(table);
     }
 
+    /**
+     * Renders the screen visuals.
+     *
+     * @param delta Time in seconds since the last frame.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -112,11 +118,20 @@ public class NextLevelScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    /**
+     * Adjusts the size of elements based on screen width and height.
+     *
+     * @param width  The new width.
+     * @param height The new height.
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Releases all resources associated with this screen.
+     */
     @Override
     public void dispose() {
         batch.dispose();

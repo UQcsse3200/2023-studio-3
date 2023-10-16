@@ -21,6 +21,9 @@ import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.Preferences;
 import com.csse3200.game.ui.ButtonFactory;
 
+/**
+ * Represents the winning screen of the game, shown when the player wins.
+ */
 public class WinningScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
@@ -35,6 +38,11 @@ public class WinningScreen extends ScreenAdapter {
     private Stage stage;
     private final ResourceService resourceService;
 
+    /**
+     * Initializes a new instance of the WinningScreen class.
+     *
+     * @param game The game instance to which this screen belongs.
+     */
     public WinningScreen(GdxGame game) {
         this.game = game;
         font = new BitmapFont();
@@ -45,7 +53,10 @@ public class WinningScreen extends ScreenAdapter {
         preferences = Gdx.app.getPreferences("MyPreferences");
     }
 
-
+    /**
+     * Called when this screen becomes the current screen for the game.
+     * Sets up the UI elements and resources for the screen.
+     */
     @Override
     public void show() {
         batch = new SpriteBatch();
@@ -87,6 +98,11 @@ public class WinningScreen extends ScreenAdapter {
         preferences.flush();
     }
 
+    /**
+     * Called by the game loop to render the screen.
+     *
+     * @param delta The time in seconds since the last frame.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -99,6 +115,9 @@ public class WinningScreen extends ScreenAdapter {
         stage.draw();
     }
 
+    /**
+     * Disposes of all resources and assets when no longer needed.
+     */
     @Override
     public void dispose() {
         batch.dispose();

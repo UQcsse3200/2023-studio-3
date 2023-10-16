@@ -30,7 +30,16 @@ import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 import static com.csse3200.game.ui.UIComponent.getSkin;
 
 /**
- * The game screen where you can choose a planet to play on.
+ * Represents the level selection screen of the game, where players can choose a planet to play on.
+ * The screen displays different types of planets representing various game levels.
+ * Players can interact with the planets to select a level or get information about it.
+ * Background music and other UI elements like buttons and description boxes are also included.
+ *
+ * <p>Planets represent different levels in the game:
+ * ICE planet is level 1, DESERT planet is level 0, and LAVA planet is level 2.
+ * The appearance and properties of each planet vary based on the current game state and player progress.
+ * </p>
+ *
  */
 public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
@@ -44,7 +53,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final Stage stage;
     private final AnimatedText text;
     private BitmapFont font;
-    private static final String defaultFont = "determination_mono_32";
+    private static final String defaultFont = "determination_mono_22";
 
     private Sprite background;
     private final Music music;
@@ -63,6 +72,12 @@ public class LevelSelectScreen extends ScreenAdapter {
     };
 
 
+    /**
+     * Constructor to initialize the LevelSelectScreen.
+     *
+     * @param game The main game object, used to switch screens and access global game properties.
+     * @param currentLevel The current game level reached by the player.
+     */
     public LevelSelectScreen(GdxGame game, int currentLevel) {
         this.currentLevel = currentLevel;
         font = getSkin().getFont(defaultFont);
@@ -119,6 +134,13 @@ public class LevelSelectScreen extends ScreenAdapter {
         music.play();
     }
 
+    /**
+     * Spawns different types of planets on the screen based on the current game state.
+     * These planets represent different levels in the game.
+     *
+     * ICE planet is level 1, DESERT planet is level 0, and LAVA planet is level 2.
+     * The planets are spawned with their respective properties.
+     */
     private void spawnPlanets() {
         // ICE is level 0
         spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1, 1);
@@ -162,6 +184,9 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch.draw(planetSprite, posx, posy, width, height);
     }
 
+    /**
+     * Spawns planet borders and handles interactions with them.
+     */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         int highestLevelReached = currentLevel;
@@ -198,13 +223,25 @@ public class LevelSelectScreen extends ScreenAdapter {
         }
     }
 
+    /**
+     * Loads the specified planet level.
+     *
+     * @param planet An array containing information about the planet, where planet[4] represents the level to be loaded.
+     * @throws IllegalArgumentException If the specified planet number is invalid.
+     */
     private void loadPlanetLevel(int[] planet) {
-
         logger.info("Loading level {}", planet[4]);
         GameLevelData.setSelectedLevel(planet[4]);
         game.setScreen(new TurretSelectionScreen(game));
     }
 
+    /**
+     * Maps an unconventional planet number to a conventional one.
+     *
+     * @param unconventionalNumber The unconventional planet number to be mapped.
+     * @return The corresponding conventional planet number.
+     * @throws IllegalArgumentException If the unconventional planet number is not valid.
+     */
     public int mapToConventional(int unconventionalNumber) {
         switch (unconventionalNumber) {
             case -1:
@@ -220,7 +257,12 @@ public class LevelSelectScreen extends ScreenAdapter {
         }
     }
 
-
+    /**
+     * Retrieves the description for a given planet.
+     *
+     * @param planet An array containing information about the planet.
+     * @return A string describing the planet.
+     */
     private String getPlanetDescription(int[] planet) {
         int planetIndex = getPlanetIndex(planet);
         if (planetIndex >= 0 && planetIndex < planetDescriptions.length) {
@@ -229,6 +271,12 @@ public class LevelSelectScreen extends ScreenAdapter {
         return "Planet Description not available.";
     }
 
+    /**
+     * Retrieves the index of a given planet within the global planet array.
+     *
+     * @param planet An array containing information about the planet.
+     * @return The index of the planet or -1 if not found.
+     */
     private int getPlanetIndex(int[] planet) {
         for (int i = 0; i < Planets.PLANETS.length; i++) {
             if (planet == Planets.PLANETS[i]) {
@@ -238,6 +286,12 @@ public class LevelSelectScreen extends ScreenAdapter {
         return -1;
     }
 
+    /**
+     * Renders the level selection screen at each frame. This includes drawing the background, planets,
+     * and any necessary UI elements. It also handles user interactions such as hovering over and selecting planets.
+     *
+     * @param delta The time in seconds since the last render. This is used for frame rate independent updates.
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -288,11 +342,21 @@ public class LevelSelectScreen extends ScreenAdapter {
         stage.draw();
     }
 
-
+    /**
+     * Called when the screen size is changed. This updates the viewport to ensure the UI scales
+     * and positions correctly for the new window size.
+     *
+     * @param width The new width of the screen.
+     * @param height The new height of the screen.
+     */
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
 
+    /**
+     * Disposes of all the resources loaded by this screen to prevent memory leaks.
+     * This includes any textures, stages, sprite batches, music, and other disposable assets.
+     */
     @Override
     public void dispose() {
         stage.dispose();

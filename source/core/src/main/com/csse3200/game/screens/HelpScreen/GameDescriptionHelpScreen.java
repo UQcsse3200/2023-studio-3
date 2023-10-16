@@ -13,14 +13,20 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
-
+/**
+ * A screen that provides a description of the game and its components.
+ */
 
 public class GameDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
 
-
+    /**
+     * Creates a new GameDescriptionHelpScreen.
+     *
+     * @param game The main game instance.
+     */
     public GameDescriptionHelpScreen(GdxGame game) {
         this.game = game;
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));

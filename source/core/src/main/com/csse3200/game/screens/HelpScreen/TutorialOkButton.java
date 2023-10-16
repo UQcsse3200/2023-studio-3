@@ -15,14 +15,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Displays a button to pause the game and bring up a pause menu.
+ * The `TutorialOkButton` class represents a UI component that displays an "OK" button for a tutorial screen.
  */
 public class TutorialOkButton extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(TutorialOkButton.class);
     private static final float Z_INDEX = 2f;
     private Table table;
     private GdxGame game;
-
+    /**
+     * Creates a `TutorialOkButton` instance.
+     *
+     * @param screenSwitchHandle The game instance for screen switching.
+     */
 
     public TutorialOkButton(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
