@@ -25,7 +25,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     public static final String DEFAULT = "defaultStart";
     public static final String DAMAGE = "TNTDamageStart";
 
-
     // class attributes
     private final int priority;  // The active priority this task will have
     private final float maxRange;
@@ -51,7 +50,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
         this.maxRange = maxRange;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
-
     }
 
     /**
@@ -87,7 +85,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public void updateTowerState() {
         // configure tower state depending on target visibility
-
         switch (towerState) {
             case IDLE -> {
                 // targets detected in idle mode - start deployment
@@ -103,7 +100,7 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
                 owner.getEntity().getEvents().trigger(DAMAGE);
                 towerState = STATE.REMOVE;
             }
-            case REMOVE -> readToDelete = true;
+            default -> readToDelete = true;   // REMOVE
         }
     }
 
@@ -140,13 +137,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     }
 
     public boolean isReadyToDelete() {
-
         return readToDelete;
     }
-
-
 }
-
-
-
-
