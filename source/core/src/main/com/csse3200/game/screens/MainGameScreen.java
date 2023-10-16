@@ -212,7 +212,6 @@ public class MainGameScreen extends ScreenAdapter {
 
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
     ServiceLocator.getWaveService().getDisplay().updateMobCount();
-    ServiceLocator.getWaveService().getDisplay().updateLevelProgressBar();
     renderer.render();
 
     // Check if the game has ended
@@ -297,7 +296,7 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
-            .addComponent(new MainGameDisplay(this.game))
+            .addComponent(new MainGameDisplay(this.game, selectedLevel))
             .addComponent(new Terminal())
             .addComponent(buildHandler)
             .addComponent(inputComponent)

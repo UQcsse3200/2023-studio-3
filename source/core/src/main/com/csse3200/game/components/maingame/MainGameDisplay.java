@@ -1,5 +1,6 @@
 package com.csse3200.game.components.maingame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
-import com.csse3200.game.screens.MainGameScreen;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
@@ -29,9 +29,17 @@ public class MainGameDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private final Table towerTable = new Table();
     private final Table buttonTable = new Table();
+    private final Table progressTable = new Table();
+    private final Table levelNameTable = new Table();
     private final String[] sounds = {
             "sounds/ui/click/click_01.ogg",
             "sounds/ui/open_close/open_01.ogg"
+    };
+    private String level;
+    private static final String[] levels = {
+            "Desert Planet",
+            "Ice Planet",
+            "Lava Planet"
     };
     private Sound click;
     private Sound openSound;
@@ -43,13 +51,15 @@ public class MainGameDisplay extends UIComponent {
     private ImageButton tower3;
     private ImageButton tower4;
     private ImageButton tower5;
+    private LevelProgressBar progressbar;
 
     /**
      * The constructor for the display
      * @param screenSwitchHandle a handle back to the game entry point that manages screen switching
      */
-    public MainGameDisplay(GdxGame screenSwitchHandle) {
+    public MainGameDisplay(GdxGame screenSwitchHandle, int level) {
         game = screenSwitchHandle;
+        this.level = levels[level];
     }
 
     /**
@@ -70,12 +80,18 @@ public class MainGameDisplay extends UIComponent {
         // Create and position the tables that will hold the buttons.
 
         // Contains the tower build menu buttons
-        towerTable.top().padTop(80f);
+        towerTable.top().padTop(50f);
         towerTable.setFillParent(true);
 
         // Contains other buttons (just pause at this stage)
-        buttonTable.top().right().padTop(80f).padRight(80f);
+        buttonTable.top().right().padTop(50f).padRight(80f);
         buttonTable.setFillParent(true);
+
+        progressTable.top().center().setWidth(500f);
+        progressTable.setFillParent(true);
+
+        levelNameTable.top().left().padLeft(20f).padTop(20f);
+        levelNameTable.setFillParent(true);
 
         // Stores tower defaults, in case towers haven't been set in the tower select screen
         TowerType[] defaultTowers = {
@@ -273,19 +289,35 @@ public class MainGameDisplay extends UIComponent {
         TextTooltip tower5Tooltip = new TextTooltip(towers.get(4).getDescription(), getSkin());
         tower5.addListener(tower5Tooltip);
 
+        progressbar = new LevelProgressBar(500, 10);
+
+        levelNameTable.setSkin(getSkin());
+        levelNameTable.add(this.level, "title");
 
         // Scale all the tower build buttons down
         // Add all buttons to their respective tables and position them
+        towerTable.setSkin(getSkin());
         towerTable.add(tower1).padRight(10f);
         towerTable.add(tower2).padRight(10f);
         towerTable.add(tower3).padRight(10f);
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
+        towerTable.row();
+        towerTable.add("1", "small");
+        towerTable.add("2", "small");
+        towerTable.add("3", "small");
+        towerTable.add("4", "small");
+        towerTable.add("5", "small");
+        towerTable.row().colspan(5).pad(20f);
+        towerTable.add(progressbar).fillX();
+
         buttonTable.add(pauseBtn);
 
         // Add tables to the stage
+
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
+        stage.addActor(levelNameTable);
 
         TooltipManager tm = TooltipManager.getInstance();
         tm.initialTime = 3;
@@ -296,6 +328,11 @@ public class MainGameDisplay extends UIComponent {
     public void draw(SpriteBatch batch) {
         // draw is handled by the stage
         towerUpdate();
+    }
+
+    public void updateLevelProgressBar() {
+        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
+        progressbar.setValue(totalSecs);
     }
 
     /**
@@ -320,6 +357,7 @@ public class MainGameDisplay extends UIComponent {
         for (int i = 0; i < towerButtons.size; i++) {
             towerButtons.get(i).setDisabled(Integer.parseInt(towers.get(i).getPrice()) > balance);
         }
+        updateLevelProgressBar();
     }
 
     /**
@@ -334,13 +372,11 @@ public class MainGameDisplay extends UIComponent {
             // set all buttons to off, disable if isDisabled
             for (ImageButton button : towerButtons) {
                 button.setChecked(false);
-//                button.setDisabled(isDisabled);
             }
         } else {
             // set the button corresponding to towerButton to on, all others to off
             for (ImageButton button : towerButtons) {
                 button.setChecked(button == towerButton);
-//                button.setDisabled(isDisabled && button == towerButton);
             }
         }
     }
