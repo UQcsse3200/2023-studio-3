@@ -1,29 +1,21 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Null;
-import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.event.ChangeEvent;
 import java.security.Provider;
 
 
@@ -36,7 +28,7 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
-    private final int timer = 110;
+    private LevelProgressBar progressbar;
 
     @Override
     public void create() {
@@ -64,21 +56,31 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
 
+        progressbar = new LevelProgressBar(500, 10);
+        progressbar.setPosition(500, Gdx.graphics.getHeight() - 200);
+        stage.addActor(progressbar);
+
         createTimerButton();
     }
 
+    public void updateLevelProgressBar() {
+        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
+        progressbar.setValue(totalSecs);
+    }
 
     /**
      * This method updates the mob count button as mobs die in the game
      */
     public void updateMobCount() {
         remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
-        remainingMobsButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                ServiceLocator.getWaveService().toggleDelay();
-            }
-        });
+        remainingMobsButton.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        ServiceLocator.getWaveService().toggleDelay();
+                    }
+                }
+        );
     }
 
     /**
@@ -159,5 +161,6 @@ public class UIElementsDisplay extends UIComponent {
     public void dispose() {
         super.dispose();
         buttonTable.clear();
+        progressbar.clear();
     }
 }

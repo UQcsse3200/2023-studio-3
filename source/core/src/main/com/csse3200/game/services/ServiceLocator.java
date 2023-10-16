@@ -14,11 +14,11 @@ import java.util.Set;
 
 /**
  * A simplified implementation of the Service Locator pattern:
- * https://martinfowler.com/articles/injection.html#UsingAServiceLocator
+ * <a href="https://martinfowler.com/articles/injection.html#UsingAServiceLocator">...</a>
  *
  * <p>Allows global access to a few core game services.
  * Warning: global access is a trap and should be used <i>extremely</i> sparingly.
- * Read the wiki for details (https://github.com/UQcsse3200/game-engine/wiki/Service-Locator).
+ * Read the wiki for details (<a href="https://github.com/UQcsse3200/game-engine/wiki/Service-Locator">...</a>).
  */
 public class ServiceLocator {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);

@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(GameExtension.class)
 class EngineerCombatTaskTest {
-    private final int MAX_RANGE = 10;
     private EngineerCombatTask COMBAT_TASK;
     private Entity MOCK_ENGINEER;
     
@@ -69,6 +68,7 @@ class EngineerCombatTaskTest {
         resourceService.loadAll();
         
         // Create a mock engineer and add the combat task.
+        int MAX_RANGE = 10;
         COMBAT_TASK = new EngineerCombatTask(MAX_RANGE);
         MOCK_ENGINEER = EngineerFactory.createEngineer();
         MOCK_ENGINEER.getComponent(AITaskComponent.class).addTask(COMBAT_TASK);

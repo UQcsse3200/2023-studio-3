@@ -21,7 +21,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private int interval;
     private final Scrap scrap = new Scrap(); // currency to update
-    private final int currencyAmount = scrap.getAmount(); // amount of currency to update
+    private final int currencyAmount = 30; // amount of currency to update
     private static final String IDLE = "idleStartEco";
     private static final String MOVE = "moveStartEco";
     private static final String DEATH = "deathStartEco";
@@ -49,7 +49,6 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         owner.getEntity().getEvents().addListener("addIncome",this::changeInterval);
-        // TODO: changed 30 TIMES MULTIPLIER to 5 times
         endTime = timeSource.getTime() + (interval * 1500L);
         owner.getEntity().getEvents().trigger(IDLE);
     }
@@ -98,11 +97,11 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
      * Updates the currency based on time intervals.
      */
     public void updateCurrency() {
-        //logger.info("Updating currency");
-        ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount/2);
+        logger.info("Updating currency");
+        ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount);
 
         Vector2 coordinates = this.owner.getEntity().getCenterPosition();
-        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount/2, 25);
+        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount, 25);
 
         ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats(); // update currency display
 
