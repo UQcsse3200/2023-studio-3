@@ -22,10 +22,6 @@ public class TutorialOkButton extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table;
     private GdxGame game;
-    private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg"
-    };
-    private Sound openSound;
 
 
     public TutorialOkButton(GdxGame screenSwitchHandle) {
@@ -36,7 +32,7 @@ public class TutorialOkButton extends UIComponent {
     public void create() {
         super.create();
        // addActors();
-        loadSounds();
+
     }
 
     private void addActors() {
@@ -52,7 +48,7 @@ public class TutorialOkButton extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("ok button clicked");
-                        openSound.play(0.4f);
+
 //                        PauseMenuFactory.createPauseMenu(game, false);
                         PauseCompTutorial.TutorialMenu(game);
 
@@ -81,9 +77,4 @@ public class TutorialOkButton extends UIComponent {
         super.dispose();
     }
 
-    public void loadSounds() {
-        ServiceLocator.getResourceService().loadSounds(sounds);
-        ServiceLocator.getResourceService().loadAll();
-        openSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
-    }
 }

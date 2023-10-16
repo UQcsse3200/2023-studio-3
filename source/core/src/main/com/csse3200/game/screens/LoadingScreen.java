@@ -29,9 +29,9 @@ public class LoadingScreen implements Screen {
     public LoadingScreen(GdxGame game) {
         this.game = game;
         spriteBatch = new SpriteBatch();
-        backgroundTexture = new Texture("planets/background.png");
+        backgroundTexture = new Texture("images/LoadingScreen.png");
 
-       // loadingTexture = new Texture("images/mobboss/patrick.png");
+        // loadingTexture = new Texture("images/mobboss/patrick.png");
         stage = new Stage(new ScreenViewport());
         Skin skin = new Skin(Gdx.files.internal("uiskin.json")); // Use your own skin file
         loadingLabel = new Label("Loading", skin);
@@ -49,17 +49,17 @@ public class LoadingScreen implements Screen {
         elapsedTime += delta;
 
         // Clear the screen
-      spriteBatch.begin();
+        spriteBatch.begin();
 
         // Draw the background image
-       spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         // Draw the loading animation on top of the background
-       // spriteBatch.draw(loadingTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        // spriteBatch.draw(loadingTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-       spriteBatch.end();
+        spriteBatch.end();
 
-        if (AssetLoader.areAllAssetsLoaded() || elapsedTime >= 5) {
+        if (AssetLoader.areAllAssetsLoaded() || elapsedTime >= 1.5) {
             transitionToMainGame = true;
         }
 
@@ -104,6 +104,7 @@ public class LoadingScreen implements Screen {
     public void dispose() {
         spriteBatch.dispose();
         backgroundTexture.dispose();
-       // loadingTexture.dispose();
+        // loadingTexture.dispose();
     }
 }
+

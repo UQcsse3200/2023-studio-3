@@ -89,7 +89,8 @@ public class AssetLoader {
             "images/highlight_tile.png",
             "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png",
             "images/green_tile.png",
-            "images/red_tile.png"
+            "images/red_tile.png",
+            "images/HelpScreen/hs.jpg"
     };
 
     public static final String[] textureAtlases = {

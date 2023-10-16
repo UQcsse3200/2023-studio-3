@@ -78,8 +78,9 @@ public class GdxGame extends Game {
           case HELP_MOBS_SCREEN -> new MobsDescriptionHelpScreen(this);
           case HELP_TOWER_SCREEN -> new TowerDescriptionHelpScreen(this);
           case HELP_BOSS_SCREEN -> new BossDescriptionHelpScreen(this);
-          case HOW_TO_PLAY -> new HowToPlay(this);
           case LOAD_SCREEN -> new LoadingScreen(this);
+          case HOW_TO_PLAY -> new HowToPlay(this);
+
           case TUTORIAL_SCREEN-> new Tutorial(this);
       default-> null;
       };
