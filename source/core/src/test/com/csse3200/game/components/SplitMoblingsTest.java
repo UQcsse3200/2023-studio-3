@@ -69,7 +69,7 @@ class SplitMoblingsTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
-    WaveService waveService = new WaveService();
+    WaveService waveService = mock(WaveService.class);
     ServiceLocator.registerWaveService(waveService);
 
     GameEndService gameEndService = new GameEndService();
