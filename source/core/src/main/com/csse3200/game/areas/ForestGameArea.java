@@ -155,7 +155,10 @@ public class ForestGameArea extends GameArea {
           "images/bombship/bombship.atlas",
           "images/mobs/coat.atlas",
           "images/mobs/night_borne.atlas",
-          "images/mobs/arcane_archer.atlas"
+          "images/mobs/arcane_archer.atlas",
+          "images/mobs/necromancer.atlas",
+          "images/mobs/firewizard.atlas",
+          "images/mobs/rocky.atlas"
   };
   private static final String[] forestSounds = {
           "sounds/Impact4.ogg",
@@ -202,18 +205,20 @@ public class ForestGameArea extends GameArea {
           "sounds/towers/5.56_single_shot.mp3",
           "sounds/towers/explosion.mp3",
           "sounds/towers/eco_tower_ping.mp3",
-          "sounds/towers/ar15_single_shot_far.mp3"
+          "sounds/towers/ar15_single_shot_far.mp3",
+          "sounds/mobs/skeletonHit.mp3",
+          "sounds/mobs/coatAttack.mp3",
+          "sounds/mobs/archerArrow.mp3"
   };
-  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+  private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
-  private static final String[] forestMusic = {backgroundMusic};
+  private static final String[] forestMusic = {BACKGROUND_MUSIC};
   private Entity player;
   private Entity waves;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
-   *
-   * @requires terrainFactory != null
+   * &#064;requires  terrainFactory != null
    */
   public ForestGameArea() {
     super();
@@ -888,7 +893,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void playMusic() {
-    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
+    Music music = ServiceLocator.getResourceService().getAsset(BACKGROUND_MUSIC, Music.class);
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();
