@@ -84,27 +84,28 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the text for timer button.
      */
     public void updateTimerButton() {
-        int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
-                - ServiceLocator.getTimeSource().getTime()) / 1000);
+        if (!(ServiceLocator.getWaveService().getGamePaused())) {
+            int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
+                    - ServiceLocator.getTimeSource().getTime()) / 1000);
 
-        // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
-        if (totalSecs % 20 == 0) {
+            // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
+            if (totalSecs % 20 == 0) {
                 ServiceLocator.getMapService().shakeCameraMap();
                 ServiceLocator.getMapService().shakeCameraGrid();
-        }
-        int seconds = totalSecs % 60;
-        int minutes = (totalSecs % 3600) / 60;
-        String finalTime = String.format("%02d:%02d", minutes, seconds);
-        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
-            if (!findActor(timerButton)) {
-                createTimerButton();
             }
-            timerButton.setText("Next wave in: " + finalTime);
-        } else {
-            timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
-//            buttonTable.removeActor(timerButton);
-            stage.act();
-            stage.draw();
+            int seconds = totalSecs % 60;
+            int minutes = (totalSecs % 3600) / 60;
+            String finalTime = String.format("%02d:%02d", minutes, seconds);
+            if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
+                if (!findActor(timerButton)) {
+                    createTimerButton();
+                }
+                timerButton.setText("Next wave in: " + finalTime);
+            } else {
+                timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
+                stage.act();
+                stage.draw();
+            }
         }
     }
 
