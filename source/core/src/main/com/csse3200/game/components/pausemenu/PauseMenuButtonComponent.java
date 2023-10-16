@@ -1,15 +1,23 @@
 package com.csse3200.game.components.pausemenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.maingame.MainGameDisplay;
+import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
@@ -21,8 +29,8 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Window window;
     private final GdxGame game;
-    private static final float windowSizeX = 300;
-    private static final float windowSizeY = 400;
+    private static final float WINDOW_SIZE_X = 300;
+    private static final float WINDOW_SIZE_Y = 400;
     private final String[] sounds = {
             "sounds/ui/click/click_01.ogg",
             "sounds/ui/open_close/close_01.ogg",
@@ -47,7 +55,7 @@ public class PauseMenuButtonComponent extends UIComponent {
      */
     private void addActors() {
 
-        window = new Window("Game Paused", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        window = new Window("", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
 
         TextButton continueBtn = ButtonFactory.createButton("Continue");
         continueBtn.pad(20f);
@@ -65,6 +73,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                         logger.debug("Continue button clicked");
                         click.play(0.5f);
                         closeSound.play(0.5f);
+                        ServiceLocator.getTimeSource().setPaused(false);
                         entity.dispose();
                     }
                 });
@@ -96,7 +105,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                     }
                 });
 
-        window.setKeepWithinStage(true);
+
         window.setResizable(true);
         window.setModal(true);
         window.setTouchable(Touchable.enabled);
@@ -110,10 +119,10 @@ public class PauseMenuButtonComponent extends UIComponent {
         window.add(planetSelectBtn).center();
         window.row();
         window.add(mainMenuBtn).center();
-        window.setWidth(windowSizeX);
-        window.setHeight(windowSizeY);
-        window.setX((ServiceLocator.getRenderService().getStage().getWidth() / 2) - (windowSizeX / 2));
-        window.setY((ServiceLocator.getRenderService().getStage().getHeight() / 2) - (windowSizeY / 2));
+        window.setWidth(WINDOW_SIZE_X);
+        window.setHeight(WINDOW_SIZE_Y);
+        window.setX((ServiceLocator.getRenderService().getStage().getWidth() / 2) - (WINDOW_SIZE_X / 2));
+        window.setY((ServiceLocator.getRenderService().getStage().getHeight() / 2) - (WINDOW_SIZE_Y / 2));
 
         stage.addActor(window);
     }
@@ -140,6 +149,9 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     @Override
     public void dispose() {
+        click.play(0.5f);
+        closeSound.play(0.5f);
+        ServiceLocator.getTimeSource().setPaused(false);
         window.clear();
         window.remove();
         super.dispose();
