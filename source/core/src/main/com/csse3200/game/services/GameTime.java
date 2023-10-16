@@ -11,6 +11,8 @@ public class GameTime {
   private final long startTime;
   private float timeScale = 1f;
 
+  private boolean paused = false;
+
   public GameTime() {
     startTime = TimeUtils.millis();
     logger.debug("Setting game start time to {}", startTime);
@@ -43,5 +45,13 @@ public class GameTime {
 
   public long getTimeSince(long lastTime) {
     return getTime() - lastTime;
+  }
+
+  public boolean getPaused() {
+    return paused;
+  }
+
+  public void setPaused(boolean status) {
+    paused = status;
   }
 }

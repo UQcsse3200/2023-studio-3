@@ -1,22 +1,12 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Null;
-import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
@@ -34,7 +24,6 @@ public class UIElementsDisplay extends UIComponent {
     private TextButton remainingMobsButton;
     private TextButton timerButton;
     private LevelProgressBar progressbar;
-    private final int timer = 110;
 
     @Override
     public void create() {
@@ -67,7 +56,7 @@ public class UIElementsDisplay extends UIComponent {
     }
 
     public void updateLevelProgressBar() {
-        float totalSecs = (ServiceLocator.getTimeSource().getTime() / 1000);
+        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
         progressbar.setValue(totalSecs);
     }
 
