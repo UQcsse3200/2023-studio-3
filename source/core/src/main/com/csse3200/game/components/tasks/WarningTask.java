@@ -7,8 +7,8 @@ import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WarningFlashTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(WarningFlashTask.class);
+public class WarningTask extends DefaultTask implements PriorityTask {
+    private static final Logger logger = LoggerFactory.getLogger(WarningTask.class);
     long startTime;
     @Override
     public void start() {

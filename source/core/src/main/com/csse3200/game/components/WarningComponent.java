@@ -1,7 +1,13 @@
-package com.csse3200.game.components.maingame;
+package com.csse3200.game.components;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
@@ -16,26 +22,22 @@ public class WarningComponent extends UIComponent {
     float severity;
     GridPoint2 position;
     boolean toggle = false;
-    public WarningComponent(String mobType, GridPoint2 position) {
-        System.out.println("Warned");
+
+    @Override
+    public void create() {
+        super.create();
+        addActors();
+    }
+    public void addActors() {
+
+    }
+    public void config(String mobType, GridPoint2 position) {
         this.position = position;
         this.spawnTime = ServiceLocator.getTimeSource().getTime();
         this.severity = mobType.contains("Boss") ? 5f : 1.5f;
-//        this.warning = new Label("!", getSkin());
-        this.warning = ButtonFactory.createButton("Next wave in:"
-                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
-        this.warning.setPosition(position.x - 10, position.y);
     }
     @Override
     public void update() {
-        System.out.println("hi");
-        if (ServiceLocator.getTimeSource().getTime() > this.spawnTime + 333) {
-            this.warning.setVisible(toggle);
-            toggle = !toggle;
-        }
-        if (ServiceLocator.getTimeSource().getTime() > this.spawnTime + 2000) {
-            this.dispose();
-        }
     }
     @Override
     public void dispose() {

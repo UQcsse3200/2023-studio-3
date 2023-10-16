@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Timer;
 
+import static com.csse3200.game.entities.factories.WarningFactory.createWarning;
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -496,6 +497,7 @@ public class ForestGameArea extends GameArea {
     } else {
       mob.setScale(1.5f, 1.5f);
     }
+    flashWarning(entity, randomPos);
     spawnEntityAt(mob, randomPos, true, false);
   }
 
@@ -963,5 +965,8 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-
+  private void flashWarning(String mobType, GridPoint2 position) {
+    Entity warning = WarningFactory.createWarning(mobType, position);
+    spawnEntity(warning);
+  }
 }
