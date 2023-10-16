@@ -29,7 +29,7 @@ public class MainGameDisplay extends UIComponent {
     private static final float Z_INDEX = 2f;
     private final Table towerTable = new Table();
     private final Table buttonTable = new Table();
-//    private final Table progressTable = new Table();
+    private final Table progressTable = new Table();
     private final Table levelNameTable = new Table();
     private final String[] sounds = {
             "sounds/ui/click/click_01.ogg",
@@ -87,8 +87,8 @@ public class MainGameDisplay extends UIComponent {
         buttonTable.top().right().padTop(50f).padRight(80f);
         buttonTable.setFillParent(true);
 
-//        progressTable.top().center().setWidth(500f);
-//        progressTable.setFillParent(true);
+        progressTable.top().center().setWidth(500f);
+        progressTable.setFillParent(true);
 
         levelNameTable.top().left().padLeft(20f).padTop(20f);
         levelNameTable.setFillParent(true);
@@ -291,12 +291,7 @@ public class MainGameDisplay extends UIComponent {
 
         progressbar = new LevelProgressBar(500, 10);
 
-        progressbar.setPosition(((float) Gdx.graphics.getWidth() /2) - (Gdx.graphics.getWidth() * 0.6f)/2,
-                Gdx.graphics.getHeight() - 240);
-        progressbar.setWidth(Gdx.graphics.getWidth() * 0.6f);
-
         levelNameTable.setSkin(getSkin());
-//        Label levelName = new Label(this.level);
         levelNameTable.add(this.level, "title");
 
         // Scale all the tower build buttons down
@@ -313,16 +308,16 @@ public class MainGameDisplay extends UIComponent {
         towerTable.add("3", "small");
         towerTable.add("4", "small");
         towerTable.add("5", "small");
-        towerTable.setDebug(true);
+        towerTable.row().colspan(5).pad(20f);
+        towerTable.add(progressbar).fillX();
 
         buttonTable.add(pauseBtn);
-        buttonTable.setDebug(true);
+
         // Add tables to the stage
-        stage.addActor(progressbar);
+
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
         stage.addActor(levelNameTable);
-        stage.setDebugAll(true);
 
         TooltipManager tm = TooltipManager.getInstance();
         tm.initialTime = 3;
@@ -333,7 +328,6 @@ public class MainGameDisplay extends UIComponent {
     public void draw(SpriteBatch batch) {
         // draw is handled by the stage
         towerUpdate();
-//        ServiceLocator.getWaveService().getDisplay().updateLevelProgressBar();
     }
 
     public void updateLevelProgressBar() {
@@ -363,6 +357,7 @@ public class MainGameDisplay extends UIComponent {
         for (int i = 0; i < towerButtons.size; i++) {
             towerButtons.get(i).setDisabled(Integer.parseInt(towers.get(i).getPrice()) > balance);
         }
+        updateLevelProgressBar();
     }
 
     /**

@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
+
 import java.security.SecureRandom;
 
 /**
@@ -17,6 +18,10 @@ public class CoatAnimationController extends Component {
     //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
     private SecureRandom rand = new SecureRandom();
+
+    private static final String ATTACK_SOUND = "sounds/mobs/coatAttack.mp3";
+     Sound attackSound = ServiceLocator.getResourceService().getAsset(
+             ATTACK_SOUND, Sound.class);
     
 
     @Override
@@ -26,8 +31,6 @@ public class CoatAnimationController extends Component {
         entity.getEvents().addListener("mob_walk", this::animateWalk);
         entity.getEvents().addListener("mob_attack", this::animateAttack);
         entity.getEvents().addListener("mob_death", this::animateDeath);
-
-
     }
 
     void animateWalk() {
@@ -36,6 +39,8 @@ public class CoatAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("coat_attack");
+        attackSound.setVolume(1000, 5.5f);
+        attackSound.play();
     }
 
     void animateDeath() {

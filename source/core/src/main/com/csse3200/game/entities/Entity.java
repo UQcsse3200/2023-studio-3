@@ -208,10 +208,10 @@ public class Entity {
 
   public void removeComponent(Class<? extends Component> componentClass) {
     ComponentType componentType = ComponentType.getFrom(componentClass);
-    int id = componentType.getId();
+    int componentID = componentType.getId();
 
-    if (components.containsKey(id)) {
-      Component removedComponent = components.remove(id);
+    if (components.containsKey(componentID)) {
+      Component removedComponent = components.remove(componentID);
       removedComponent.dispose();
     }
   }
@@ -311,7 +311,7 @@ public class Entity {
 
   @Override
   public boolean equals(Object obj) {
-    return (obj instanceof Entity && ((Entity) obj).getId() == this.getId());
+    return (obj instanceof Entity entity && entity.getId() == this.getId());
   }
 
   @Override
