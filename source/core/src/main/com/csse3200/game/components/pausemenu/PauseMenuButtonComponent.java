@@ -24,6 +24,9 @@ import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implements the visual aspects of the pause menu, including button interactions.
+ */
 public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
@@ -42,6 +45,9 @@ public class PauseMenuButtonComponent extends UIComponent {
         game = screenSwitchHandle;
     }
 
+    /**
+     * Sets up the buttons and window of the pause menu when it is first made.
+     */
     @Override
     public void create() {
         super.create();
@@ -105,7 +111,6 @@ public class PauseMenuButtonComponent extends UIComponent {
                     }
                 });
 
-
         window.setResizable(true);
         window.setModal(true);
         window.setTouchable(Touchable.enabled);
@@ -128,6 +133,10 @@ public class PauseMenuButtonComponent extends UIComponent {
         stage.addActor(window);
     }
 
+    /**
+     * Draws the pause menu on the game screen.
+     * @param batch Batch to render to.
+     */
     @Override
     protected void draw(SpriteBatch batch) {
         // handled by stage
@@ -143,11 +152,18 @@ public class PauseMenuButtonComponent extends UIComponent {
         closeSound = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 
+    /**
+     * Gets the z-index of the pause menu
+     * @return The z-index of the pause menu
+     */
     @Override
     public float getZIndex() {
         return Z_INDEX;
     }
 
+    /**
+     * Removes the pause menu when the entity is disposed.
+     */
     @Override
     public void dispose() {
         click.play(0.5f);
