@@ -13,6 +13,7 @@ public class PauseMenuTimeStopComponent extends Component {
 
     private Array<Entity> freezeList;
     public PauseMenuTimeStopComponent() {
+        // Not implemented
     }
 
     /**

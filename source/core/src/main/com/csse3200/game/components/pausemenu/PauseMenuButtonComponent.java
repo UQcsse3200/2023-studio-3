@@ -29,8 +29,8 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Window window;
     private final GdxGame game;
-    private static final float windowSizeX = 300;
-    private static final float windowSizeY = 400;
+    private static final float WINDOW_SIZE_X = 300;
+    private static final float WINDOW_SIZE_Y = 400;
     private final String[] sounds = {
             "sounds/ui/click/click_01.ogg",
             "sounds/ui/open_close/close_01.ogg",
@@ -119,11 +119,10 @@ public class PauseMenuButtonComponent extends UIComponent {
         window.add(planetSelectBtn).center();
         window.row();
         window.add(mainMenuBtn).center();
-        window.setWidth(windowSizeX);
-        window.setHeight(windowSizeY);
-        window.setX((ServiceLocator.getRenderService().getStage().getWidth() / 2) - (windowSizeX / 2));
-        window.setY((ServiceLocator.getRenderService().getStage().getHeight() / 2) - (windowSizeY / 2));
-        window.addAction(Actions.fadeIn(0.8f, Interpolation.bounceIn));
+        window.setWidth(WINDOW_SIZE_X);
+        window.setHeight(WINDOW_SIZE_Y);
+        window.setX((ServiceLocator.getRenderService().getStage().getWidth() / 2) - (WINDOW_SIZE_X / 2));
+        window.setY((ServiceLocator.getRenderService().getStage().getHeight() / 2) - (WINDOW_SIZE_Y / 2));
 
         stage.addActor(window);
     }
