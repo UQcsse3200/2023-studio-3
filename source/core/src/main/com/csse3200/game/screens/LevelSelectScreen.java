@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
 
 import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
+import static com.csse3200.game.ui.UIComponent.getSkin;
 
 /**
  * The game screen where you can choose a planet to play on.
@@ -46,6 +47,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private Stage stage;
     private AnimatedText text;
     private BitmapFont font;
+    private static final String defaultFont = "determination_mono_32";
 
     private Sprite background;
     private String[] bgm = {
@@ -60,7 +62,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private static final String BG_PATH = "planets/background.png";
 
     public LevelSelectScreen(GdxGame game) {
-        font = new BitmapFont();
+        font = getSkin().getFont(defaultFont);
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         this.game = game;
 

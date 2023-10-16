@@ -36,7 +36,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
   private final Vector2 maxRangePosition = new Vector2();
   private final PhysicsEngine physics;
   private GameTime timeSource;
-  private long endTime;
+
   private final RaycastHit hit = new RaycastHit();
 
   private static final long DELAY = 1000; // delay between shots
@@ -50,7 +50,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
 
   /**
    * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
-   * @param maxRange Maximum effective range of the weapon mob. This determines the detection distance of targets
    */
   public MobAttackTask(int priority) {
     this.priority = priority;
@@ -69,9 +68,7 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
     startTime = timeSource.getTime();
     Vector2 mobPosition = owner.getEntity().getCenterPosition();
     this.maxRangePosition.set(0, mobPosition.y);
-    //owner.getEntity().getEvents().trigger(IDLE);
-    endTime = timeSource.getTime() + (INTERVAL * 500);
-//    owner.getEntity().getEvents().trigger("shootStart");
+    long endTime = timeSource.getTime() + (INTERVAL * 500);
   }
 
   /**
@@ -130,7 +127,6 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
             newProjectile.setScale(-1f, 1f);
             ServiceLocator.getEntityService().register(newProjectile);
 
-//            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
             this.owner.getEntity().getEvents().trigger(FIRING);
             mobState = STATE.STOW;
         }
@@ -193,11 +189,10 @@ public class MobAttackTask extends DefaultTask implements PriorityTask {
    * the function will return null. If it returns null when the mob is in state FIRING or DEPLOY, it will not fire
    * and will STOW.
    *
-   * returns the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
+   * @return the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
    * */
   private Weapon meleeOrProjectile() {
-//    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-//    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+
     setTarget();
     TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);
     Weapon chosenWeapon = null;

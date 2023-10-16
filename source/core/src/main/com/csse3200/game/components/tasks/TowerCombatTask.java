@@ -40,11 +40,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private final float maxRange;
     private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten
     private final Vector2 maxRangePosition = new Vector2();
-    private PhysicsEngine physics;
-    private GameTime timeSource;
+    private final PhysicsEngine physics;
+    private final GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+    private static final Logger logger = LoggerFactory.getLogger(TowerCombatTask.class);
     private boolean shoot = true;
   
     private enum STATE {
@@ -132,6 +132,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
             default -> handleDeathState();      // DEATH
         }
     }
+  
     /**
      * For stopping the running task
      */

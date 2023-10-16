@@ -100,9 +100,7 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
                 owner.getEntity().getEvents().trigger(DAMAGE);
                 towerState = STATE.REMOVE;
             }
-            default -> {        // REMOVE
-                readToDelete = true;
-            }
+            default -> readToDelete = true;   // REMOVE
         }
     }
 
@@ -142,7 +140,3 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
         return readToDelete;
     }
 }
-
-
-
-

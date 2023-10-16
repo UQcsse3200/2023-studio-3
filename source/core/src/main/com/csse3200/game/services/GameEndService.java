@@ -55,7 +55,7 @@ public class GameEndService {
      * @return the warning threshold int
      */
     public float getThreshold() {
-        return (float)(0.25 * STARTING_COUNT);
+        return (float)(0.3 * STARTING_COUNT);
     }
 
     /**

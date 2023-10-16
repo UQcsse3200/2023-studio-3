@@ -33,7 +33,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     public static final String SHOOT_UP = "ShootUp";
     public static final String SHOOT_DOWN = "ShootDown";
 
-
     // class attributes
     private final int priority;  // The active priority this task will have
     private final float maxRange;
@@ -139,6 +138,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return this.towerState;
     }
 
+    public void setState(STATE state) {
+        this.towerState = state;
+    }
+
     /**
      * Returns the current priority of the task.
      * @return active priority value if targets detected, inactive priority otherwise
@@ -168,23 +171,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      */
     public float getFireRateInterval() {
         return fireRateInterval;
-    }
-
-    /**
-     * Function for setting the tower state
-     * @param newState New state of the tower
-     */
-    public void setTowerState(STATE newState) {
-        this.towerState = newState;
-    }
-
-    /**
-     * Function for getting the tower state
-     *
-     * @return The state of this tower
-     */
-    public STATE getTowerState() {
-        return this.towerState;
     }
 
     /**

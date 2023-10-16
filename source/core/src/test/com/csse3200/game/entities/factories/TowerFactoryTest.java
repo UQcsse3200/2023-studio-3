@@ -160,20 +160,13 @@ public class TowerFactoryTest {
         PhysicsComponent physicsComponent5 = tntTower.getComponent(PhysicsComponent.class);
         PhysicsComponent physicsComponent6 = droidTower.getComponent(PhysicsComponent.class);
 
-        assertTrue(physicsComponent.getBody().getType() == BodyType.StaticBody,
-                "PhysicsComponent should be of type StaticBody");
-        assertTrue(physicsComponent1.getBody().getType() == BodyType.StaticBody,
-                "PhysicsComponent1 should be of type StaticBody");
-        assertTrue(physicsComponent2.getBody().getType() == BodyType.StaticBody,
-                "PhysicsComponent2 should be of type StaticBody");
-        assertTrue(physicsComponent3.getBody().getType() == BodyType.StaticBody,
-                "StunTower's PhysicsComponent should be of type StaticBody");
-        assertTrue(physicsComponent4.getBody().getType() == BodyType.StaticBody,
-                "FireTower's PhysicsComponent should be of type StaticBody");
-        assertTrue(physicsComponent5.getBody().getType() == BodyType.StaticBody,
-                "TNT tower's PhysicsComponent should be of type StaticBody");
-        assertTrue(physicsComponent6.getBody().getType() == BodyType.StaticBody,
-                "Droid Tower's PhysicsComponent should be of type StaticBody");
+        assertSame(physicsComponent.getBody().getType(), BodyType.StaticBody, "PhysicsComponent should be of type StaticBody");
+        assertSame(physicsComponent1.getBody().getType(), BodyType.StaticBody, "PhysicsComponent1 should be of type StaticBody");
+        assertSame(physicsComponent2.getBody().getType(), BodyType.StaticBody, "PhysicsComponent2 should be of type StaticBody");
+        assertSame(physicsComponent3.getBody().getType(), BodyType.StaticBody, "StunTower's PhysicsComponent should be of type StaticBody");
+        assertSame(physicsComponent4.getBody().getType(), BodyType.StaticBody, "FireTower's PhysicsComponent should be of type StaticBody");
+        assertSame(physicsComponent5.getBody().getType(), BodyType.StaticBody, "TNT tower's PhysicsComponent should be of type StaticBody");
+        assertSame(physicsComponent6.getBody().getType(), BodyType.StaticBody, "Droid Tower's PhysicsComponent should be of type StaticBody");
     }
 
     @Test
@@ -213,14 +206,9 @@ public class TowerFactoryTest {
 
     @Test
     public void testWallTowerCombatStatsComponentAndCostComponent() {
-
-        assertTrue(wallTower.getComponent(CombatStatsComponent.class).getHealth() == 300,
-                "Health should be 300");
-        assertTrue(wallTower.getComponent(CombatStatsComponent.class).getBaseAttack() == 0,
-                "BaseAttack should be 0");
-        assertTrue(wallTower.getComponent(CostComponent.class).getCost() == 45,
-                "Cost should be 5");
-
+        assertEquals(300, wallTower.getComponent(CombatStatsComponent.class).getHealth(), "Health should be 300");
+        assertEquals(0, wallTower.getComponent(CombatStatsComponent.class).getBaseAttack(), "BaseAttack should be 0");
+        assertEquals(45, wallTower.getComponent(CostComponent.class).getCost(), "Cost should be 45");
     }
 
     @Test
