@@ -47,6 +47,4 @@ public class MainGameActions extends Component {
   private void onLose() {
     game.setScreen(GdxGame.ScreenType.LOSING_SCREEN);
   }
-
-//  private void onWin() { game.setScreen(GdxGame.ScreenType.WIN_SCREEN);}  // TODO : Uncomment this once win screen implemented
 }
