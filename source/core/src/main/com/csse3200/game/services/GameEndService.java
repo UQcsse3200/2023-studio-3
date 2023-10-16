@@ -4,7 +4,9 @@ import com.csse3200.game.components.gamearea.EngineerCountDisplay;
 
 public class GameEndService {
 
-    private int engineerCount;
+    private int remainingEngineerCount;
+
+    private int numSpawnedEngineers = 0;
 
     private boolean gameOver = false;
 
@@ -14,7 +16,7 @@ public class GameEndService {
      * Constructor for the Game End Service
      */
     public GameEndService() {
-        this.engineerCount = 5;
+        this.remainingEngineerCount = 3;
         this.display = new EngineerCountDisplay();
     }
 
@@ -24,7 +26,7 @@ public class GameEndService {
      */
     public void setEngineerCount(int newLimit) {
         if (newLimit > 0 && newLimit < 1000) {
-            engineerCount = newLimit;
+            remainingEngineerCount = newLimit;
             display.updateCount();
         }
     }
@@ -35,7 +37,7 @@ public class GameEndService {
      */
 
     public int getEngineerCount() {
-        return engineerCount;
+        return remainingEngineerCount;
     }
 
     /**
@@ -43,10 +45,10 @@ public class GameEndService {
      * If engineer count is 0, the game is over.
      */
     public void updateEngineerCount() {
-        engineerCount -= 1;
+        remainingEngineerCount -= 1;
         display.updateCount();
 
-        if (engineerCount == 0) {
+        if (remainingEngineerCount == 0) {
             gameOver = true;
         }
     }
@@ -64,5 +66,13 @@ public class GameEndService {
      */
     public EngineerCountDisplay getDisplay() {
         return display;
+    }
+
+    public int getNumSpawnedEngineers() {
+        return numSpawnedEngineers;
+    }
+
+    public void incrementNumSpawnedEngineers(){
+        numSpawnedEngineers += 1;
     }
 }

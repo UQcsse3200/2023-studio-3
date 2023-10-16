@@ -124,14 +124,14 @@ public class HumanWanderTask extends DefaultTask implements PriorityTask {
       float engY = owner.getEntity().getCenterPosition().y;
       float targetY = combatTask.fetchTarget().y;
       // if the engineer is positioned within the tolerance range of the mob's y position, enter combat state
-      if (engY <  targetY + TOLERANCE &&
+      if (engY < targetY + TOLERANCE &&
               engY > targetY - TOLERANCE) {
         startCombat();
 
         // move into position for targeting mob
       } else if (!this.isSelected()) {
-        Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
-        startMoving(newPos);
+          Vector2 newPos = new Vector2(owner.getEntity().getPosition().x, combatTask.fetchTarget().y);
+          startMoving(newPos);
       }
     }
   }
