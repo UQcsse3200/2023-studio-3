@@ -67,11 +67,6 @@ public class WaveFactory {
       )), new ArrayList<>(Arrays.asList("FireWorm", "SplittingRocky", "Necromancer"
       )), new ArrayList<>(Arrays.asList("SplittingRocky", "DeflectFireWizard", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "SplittingRocky", "Necromancer", "DodgingDragon", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWizard","SplittingRocky", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "SplittingRocky", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard", "SplittingRocky", "DodgingDragon", "FireWorm"
       ))
   ));
 
