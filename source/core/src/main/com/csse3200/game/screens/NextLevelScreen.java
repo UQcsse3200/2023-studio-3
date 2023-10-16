@@ -20,6 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.badlogic.gdx.Preferences;
+import com.csse3200.game.ui.ButtonFactory;
 
 public class NextLevelScreen extends ScreenAdapter {
     private final SpriteBatch batch;
@@ -52,7 +53,7 @@ public class NextLevelScreen extends ScreenAdapter {
         Gdx.input.setInputProcessor(stage);
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-        TextButton nextLevelButton = new TextButton("Next Level", skin);
+        TextButton nextLevelButton = ButtonFactory.createButton("Next Level");
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -70,7 +71,7 @@ public class NextLevelScreen extends ScreenAdapter {
                 // Example: game.setScreen(new MainGameScreen(game, nextLevel));
             }
         });
-        TextButton mainMenuButton = new TextButton("Main Menu", skin);
+        TextButton mainMenuButton = ButtonFactory.createButton("Main Menu");
         mainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -81,7 +82,7 @@ public class NextLevelScreen extends ScreenAdapter {
         Table table = new Table();
         table.setFillParent(true);
         table.add(nextLevelButton).padTop(400).row();
-        table.add(mainMenuButton).padTop(-150).row();
+        table.add(mainMenuButton).padTop(-200).row();
         stage.addActor(table);
     }
 
