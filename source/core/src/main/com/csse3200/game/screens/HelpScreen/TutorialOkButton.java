@@ -77,7 +77,7 @@ public class TutorialOkButton extends UIComponent {
 
     @Override
     public void dispose() {
-        table.clear();
+
         super.dispose();
     }
 

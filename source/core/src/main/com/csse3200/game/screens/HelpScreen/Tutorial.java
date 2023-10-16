@@ -297,8 +297,6 @@ public class Tutorial extends ScreenAdapter {
                 .addComponent(new PerformanceDisplay())
                 .addComponent(new MainGameActions(this.game))
                 .addComponent(ServiceLocator.getWaveService().getDisplay())
-                .addComponent(new MainGameExitDisplay())
-                .addComponent(new MainGameLoseDisplay())
                 .addComponent(new MainGamePauseDisplay(this.game))
                 .addComponent(new TutorialOkButton(this.game))
                 .addComponent(new Terminal())
