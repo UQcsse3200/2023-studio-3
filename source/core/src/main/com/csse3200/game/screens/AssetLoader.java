@@ -91,7 +91,8 @@ public class AssetLoader {
             "images/towers/PierceTower.png",
             "images/towers/RicochetTower.png",
             "images/mobboss/iceBaby.png",
-            "images/bombship/bombship.png"
+            "images/bombship/bombship.png",
+            "images/HelpScreen/hs.jpg"
     };
 
     public static final String[] textureAtlases = {

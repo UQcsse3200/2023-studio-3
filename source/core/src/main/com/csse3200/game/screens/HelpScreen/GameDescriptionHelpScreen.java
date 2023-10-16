@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.entities.factories.PauseMenuFactory;
 
 
 public class GameDescriptionHelpScreen extends ScreenAdapter {
@@ -135,11 +136,10 @@ public class GameDescriptionHelpScreen extends ScreenAdapter {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.TUTORIAL_SCREEN);
+                PauseCompTutorial.TutorialMenu(game);
 
             }
         });
-
-
 
         Table buttonTable = new Table();
         buttonTable.add(BackButton).padRight(10);

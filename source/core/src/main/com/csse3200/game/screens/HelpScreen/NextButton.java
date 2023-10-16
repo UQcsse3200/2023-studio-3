@@ -1,5 +1,7 @@
 package com.csse3200.game.screens.HelpScreen;
 
+
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -17,8 +19,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Displays a button to pause the game and bring up a pause menu.
  */
-public class TutorialOkButton extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(TutorialOkButton.class);
+public class NextButton extends UIComponent {
+    private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.screens.HelpScreen.NextButton.class);
     private static final float Z_INDEX = 2f;
     private Table table;
     private GdxGame game;
@@ -28,14 +30,14 @@ public class TutorialOkButton extends UIComponent {
     private Sound openSound;
 
 
-    public TutorialOkButton(GdxGame screenSwitchHandle) {
+    public NextButton(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
     }
 
     @Override
     public void create() {
         super.create();
-       // addActors();
+        addActors();
         loadSounds();
     }
 
@@ -44,23 +46,22 @@ public class TutorialOkButton extends UIComponent {
         table.top().right();
         table.setFillParent(true);
 
-        TextButton mainMenuBtn = new TextButton("ok", skin);
+        TextButton mainMenuBtn = new TextButton("Pause", skin);
 
         // Spawns a pause menu when the button is pressed.
         mainMenuBtn.addListener(
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("ok button clicked");
+                        logger.debug("Pause button clicked");
                         openSound.play(0.4f);
 //                        PauseMenuFactory.createPauseMenu(game, false);
-                        PauseCompTutorial.TutorialMenu(game);
-
+                        PauseMenuFactory.createPauseMenu(game);
 
                     }
                 });
 
-        table.add(mainMenuBtn).padLeft(100f);
+        table.add(mainMenuBtn).padTop(100f).padRight(10f);
 
         stage.addActor(table);
     }
