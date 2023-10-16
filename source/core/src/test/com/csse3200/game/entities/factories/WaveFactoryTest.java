@@ -155,7 +155,7 @@ class WaveFactoryTest {
         if (waveNum != 5) {
           Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
           Set<String> expectedMobNames = new HashSet<>(LVL1_WAVES_STRUC.get(waveNum - 1));
-          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+          assertEquals(mobNames, expectedMobNames, "The mobs in the wave should be " + expectedMobNames + " .");
 
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
@@ -164,16 +164,16 @@ class WaveFactoryTest {
             mobsRemaining --;
 
             if (MELEE_MOBS.contains(key)) {
-              assertTrue(values[1] == MIN_MELEE_HEALTH + waveNum, "The health of the mob should be " + MIN_MELEE_HEALTH + waveNum + " .");
+              assertEquals(values[1], MIN_MELEE_HEALTH + waveNum, "The health of the mob should be " + MIN_MELEE_HEALTH + waveNum + " .");
             } else {
-              assertTrue(values[1] == MIN_RANGE_HEALTH + waveNum, "The health of the mob should be " + MIN_RANGE_HEALTH + waveNum + " .");
+              assertEquals(values[1], MIN_RANGE_HEALTH + waveNum, "The health of the mob should be " + MIN_RANGE_HEALTH + waveNum + " .");
             }
           }
         } else {
-          assertTrue(wave.getEntities().keySet().size() == 1);
+          assertEquals(wave.getEntities().keySet().size(), 1);
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
-            assertTrue(values[1] == bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
+            assertEquals(values[1], bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
           }
         }
         mobCount ++;
@@ -207,7 +207,7 @@ class WaveFactoryTest {
         if (waveNum != 10) {
           Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
           Set<String> expectedMobNames = new HashSet<>(LVL2_WAVES_STRUC.get(waveNum - 1));
-          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+          assertEquals(mobNames, expectedMobNames, "The mobs in the wave should be " + expectedMobNames + " .");
 
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
@@ -231,7 +231,7 @@ class WaveFactoryTest {
           assertTrue(wave.getEntities().keySet().size() == 1);
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
-            assertTrue(values[1] == bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
+            assertEquals(values[1], bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
           }
         }
         mobCount ++;
@@ -266,7 +266,7 @@ class WaveFactoryTest {
         if (waveNum != 15) {
           Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
           Set<String> expectedMobNames = new HashSet<>(LVL3_WAVES_STRUC.get(waveNum - 1));
-          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+          assertEquals(mobNames, expectedMobNames, "The mobs in the wave should be " + expectedMobNames + " .");
 
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
@@ -283,10 +283,10 @@ class WaveFactoryTest {
           }
 
         } else {
-          assertTrue(wave.getEntities().keySet().size() == 1);
+          assertEquals(wave.getEntities().keySet().size(), 1);
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
-            assertTrue(values[1] == bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
+            assertEquals(values[1], bossHealth, "The health of the boss should be " + MIN_BOSS_HEALTH);
           }
         }
         mobCount ++;
