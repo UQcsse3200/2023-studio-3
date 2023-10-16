@@ -258,7 +258,7 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
 
     // Set up infrastructure for end game tracking
-    player = spawnPlayer();
+ //   player = spawnPlayer();
 
    waves = WaveFactory.createWaves();
    spawnEntity(waves);
@@ -331,11 +331,11 @@ public class ForestGameArea extends GameArea {
 
   }
 
-  private Entity spawnPlayer() {
-    Entity newPlayer = PlayerFactory.createPlayer();
-    spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
-    return newPlayer;
-  }
+ // private Entity spawnPlayer() {
+ //   Entity newPlayer = PlayerFactory.createPlayer();
+//    spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
+ //   return newPlayer;
+  //}
 
   // Spawn player at a specific position
   private Entity spawnPlayer(GridPoint2 position) {
