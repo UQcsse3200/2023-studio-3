@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Displays a button to pause the game and bring up a pause menu.
+ * Displays a button to go to next screen in the game and bring up a menu.
  */
 public class NextButton extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.screens.HelpScreen.NextButton.class);
@@ -27,7 +27,11 @@ public class NextButton extends UIComponent {
 
 
 
-
+    /**
+     * Creates a new NextButton.
+     *
+     * @param screenSwitchHandle The main game instance.
+     */
     public NextButton(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
     }

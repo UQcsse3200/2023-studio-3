@@ -12,7 +12,12 @@ import com.badlogic.gdx.utils.Array;
 import static com.badlogic.gdx.utils.Align.center;
 
 public class PauseCompTutorial {
-
+    /**
+     * Creates a tutorial pause menu entity that includes a tutorial image and a button to continue the tutorial.
+     *
+     * @param game The GdxGame instance.
+     * @return The created tutorial menu entity.
+     */
     public static Entity TutorialMenu(GdxGame game) {
 
         Entity TutorialMenu = new Entity()

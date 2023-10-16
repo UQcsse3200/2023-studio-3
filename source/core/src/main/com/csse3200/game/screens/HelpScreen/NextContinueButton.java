@@ -20,14 +20,17 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Displays a button in the pause menu to resume the game and put away the pause menu.
+ * The NextContinueButton class displays a button in the game menu to resume the game and put away the menu.
+ * It extends UIComponent to handle UI-related functionality.
  */
 public class NextContinueButton extends UIComponent {
 
     private static final float Z_INDEX = 2f;
     private Table table1;
     private GdxGame game;
-
+    /**
+     * Creates the UI components and adds them to the stage.
+     */
 
     @Override
     public void create() {
