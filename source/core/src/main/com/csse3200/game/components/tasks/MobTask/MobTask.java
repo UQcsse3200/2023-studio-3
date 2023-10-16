@@ -341,14 +341,18 @@ public class MobTask extends DefaultTask implements PriorityTask {
         Entity currency;
         if (randomValue <= CRYSTAL_DROP_RATE) {
             currency = DropFactory.createCrystalDrop();
+            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+            ServiceLocator.getEntityService().register(currency);
 
         }
         else if (randomValue <= SCRAP_DROP_RATE) {
             currency = DropFactory.createScrapDrop();
+            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+            ServiceLocator.getEntityService().register(currency);
 
         }
-        currency.setPosition(mob.getPosition().x,mob.getPosition().y);
-        ServiceLocator.getEntityService().register(currency);
+
+
 
     }
 }
