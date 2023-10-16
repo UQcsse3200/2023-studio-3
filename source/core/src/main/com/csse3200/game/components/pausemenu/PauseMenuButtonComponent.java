@@ -1,13 +1,10 @@
 package com.csse3200.game.components.pausemenu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -16,14 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.maingame.MainGameDisplay;
-import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implements the visual aspects of the pause menu, including button interactions.
+ */
 public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
@@ -42,6 +40,9 @@ public class PauseMenuButtonComponent extends UIComponent {
         game = screenSwitchHandle;
     }
 
+    /**
+     * Sets up the buttons and window of the pause menu when it is first made.
+     */
     @Override
     public void create() {
         super.create();
@@ -105,7 +106,6 @@ public class PauseMenuButtonComponent extends UIComponent {
                     }
                 });
 
-
         window.setResizable(true);
         window.setModal(true);
         window.setTouchable(Touchable.enabled);
@@ -136,6 +136,10 @@ public class PauseMenuButtonComponent extends UIComponent {
         stage.addActor(window);
     }
 
+    /**
+     * Draws the pause menu on the game screen.
+     * @param batch Batch to render to.
+     */
     @Override
     protected void draw(SpriteBatch batch) {
         // handled by stage
@@ -151,11 +155,18 @@ public class PauseMenuButtonComponent extends UIComponent {
         closeSound = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 
+    /**
+     * Gets the z-index of the pause menu
+     * @return The z-index of the pause menu
+     */
     @Override
     public float getZIndex() {
         return Z_INDEX;
     }
 
+    /**
+     * Removes the pause menu when the entity is disposed.
+     */
     @Override
     public void dispose() {
         click.play(0.5f);
