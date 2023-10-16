@@ -298,11 +298,16 @@ public class MainGameDisplay extends UIComponent {
         stage.addActor(towerTable);
 
         // Animate the tower select buttons
-        animateTowerButton(tower1, 1040, 230);
-        animateTowerButton(tower2, 880, 230);
-        animateTowerButton(tower3, 720, 230);
-        animateTowerButton(tower4, 560, 230);
-        animateTowerButton(tower5, 400, 230);
+        int tower1Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 400;
+        int tower2Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 240;
+        int tower3Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 80;
+        int tower4Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 - 80;
+        int tower5Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 - 240;
+        animateTowerButton(tower1, tower1Gap, 230);
+        animateTowerButton(tower2, tower2Gap, 230);
+        animateTowerButton(tower3, tower3Gap, 230);
+        animateTowerButton(tower4, tower4Gap, 230);
+        animateTowerButton(tower5, tower5Gap, 230);
 
         TooltipManager tm = TooltipManager.getInstance();
         tm.initialTime = 3;
@@ -389,7 +394,7 @@ public class MainGameDisplay extends UIComponent {
     }
 
     public void animateTowerButton(ImageButton button, float x, float y) {
-        button.setPosition(Gdx.graphics.getWidth()- x, Gdx.graphics.getHeight());
+        button.setPosition(Gdx.graphics.getWidth() - x, Gdx.graphics.getHeight());
         button.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - x,
                 Gdx.graphics.getHeight() - y, 1f, Interpolation.fastSlow)));
     }

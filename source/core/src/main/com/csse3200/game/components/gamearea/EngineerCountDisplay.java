@@ -53,6 +53,8 @@ public class EngineerCountDisplay extends UIComponent {
 
         table.add(engineerTb).width(engineerTb.getWidth() * 0.5f).height(engineerTb.getHeight() * 0.5f);
         stage.addActor(table);
+
+        engineerTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
     }
 
     /**
