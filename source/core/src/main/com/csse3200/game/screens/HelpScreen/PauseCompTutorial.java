@@ -9,20 +9,20 @@ import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.utils.Array;
 
+import static com.badlogic.gdx.utils.Align.center;
+
 public class PauseCompTutorial {
 
     public static Entity TutorialMenu(GdxGame game) {
 
-            Entity TutorialMenu = new Entity()
-                    .addComponent(new PauseMenuTimeStopComponent())
-                    .addComponent(new PauseMenuContinueButton())
-                    .addComponent(new TextureRenderComponent("images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png"));
-            TutorialMenu.setScale(8, 8);
-            TutorialMenu.setPosition(6.3f, 2f);
-            ServiceLocator.getEntityService().register(TutorialMenu);
-            return TutorialMenu;
+        Entity TutorialMenu = new Entity()
+                .addComponent(new PauseMenuTimeStopComponent())
+                .addComponent(new HelpContinueButton())
+                .addComponent(new TextureRenderComponent("images/HelpScreen/hs.jpg"));
+        TutorialMenu.setScale(16, 8.2f);
+        TutorialMenu.setPosition(center+1.3f, center);
+        ServiceLocator.getEntityService().register(TutorialMenu);
+        return TutorialMenu;
 
-        }
     }
-
-
+}
