@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks.mobtask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
@@ -8,6 +9,7 @@ import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -31,6 +33,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final long MELEE_ATTACK_SPEED = 2000;
     private static final long RANGE_ATTACK_SPEED = 5000;
     private static final float MELEE_ATTACK_RANGE = 0.2f;
+
+    private static final float CRYSTAL_DROP_RATE = 0.1f;
+    private static final float SCRAP_DROP_RATE = 0.6f;
 
     // Private variables
     private final MobType mobType;
@@ -120,6 +125,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         } else if (deathFlag && animation.isFinished()) {
             ServiceLocator.getWaveService().updateEnemyCount();
             mob.setFlagForDelete(true);
+            dropCurrency();
         }
 
         if(gameTime.getTime() >= dodgeEndTime) {
@@ -328,5 +334,21 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     public void setDodge(boolean dodgeFlag) {
       this.canDodge = dodgeFlag;
+    }
+
+    private void dropCurrency() {
+        float randomValue = MathUtils.random(0,1);
+        Entity currency;
+        if (randomValue <= CRYSTAL_DROP_RATE) {
+            currency = DropFactory.createCrystalDrop();
+
+        }
+        else if (randomValue <= SCRAP_DROP_RATE) {
+            currency = DropFactory.createScrapDrop();
+
+        }
+        currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+        ServiceLocator.getEntityService().register(currency);
+
     }
 }
