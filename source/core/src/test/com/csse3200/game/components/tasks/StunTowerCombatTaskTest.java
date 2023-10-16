@@ -64,7 +64,7 @@ public class StunTowerCombatTaskTest {
         entity.getEvents().addListener(StunTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         stunTowerCombatTask.start();
-        stunTowerCombatTask.towerState = StunTowerCombatTask.STATE.IDLE;
+        stunTowerCombatTask.setState(StunTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -93,7 +93,7 @@ public class StunTowerCombatTaskTest {
         entity.getEvents().addListener(StunTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(StunTowerCombatTask.ATTACK, attack);
 
-        stunTowerCombatTask.towerState = StunTowerCombatTask.STATE.IDLE;
+        stunTowerCombatTask.setState(StunTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();

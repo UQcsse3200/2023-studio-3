@@ -122,7 +122,6 @@ public class DroidCombatTaskTest {
         verify(idle).handle();
         verifyNoInteractions(attackUp);
         assertEquals(DroidCombatTask.STATE.IDLE, droidCombatTask.getState());
-
     }
 
 

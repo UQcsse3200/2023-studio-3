@@ -47,7 +47,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     public enum STATE {
         IDLE, PREP_ATTACK, ATTACK, DEATH
     }
-    public STATE towerState = STATE.IDLE;
+    private STATE towerState = STATE.IDLE;
 
     /**
      * Starts the task running, triggers the initial 'IDLE' event
@@ -99,43 +99,19 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
             towerState = STATE.DEATH;
             return;
         }
+
         switch (towerState) {
             case IDLE -> {
-                if (isTargetVisible())  {
-                    owner.getEntity().getEvents().trigger(PREP_ATTACK);
-                    towerState = STATE.PREP_ATTACK;
-                }
+                handleIdleState();
             }
             case PREP_ATTACK -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    towerState = STATE.ATTACK;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
+                handlePrepAttackState();
             }
             case ATTACK -> {
-                if (shoot) {
-                    if (!isTargetVisible()) {
-                        owner.getEntity().getEvents().trigger(IDLE);
-                        towerState = STATE.IDLE;
-                    } else {
-                        owner.getEntity().getEvents().trigger(ATTACK);
-                        Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
-                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), ProjectileEffects.BURN, false);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                                (float) (owner.getEntity().getPosition().y));
-                        ServiceLocator.getEntityService().register(newProjectile);
-                    }
-                }
-                shoot = !shoot;
-
+                handleAttackState();
             }
-            case DEATH -> {
-                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                    owner.getEntity().setFlagForDelete(true);
-                }
+            default -> {     // DEATH
+                handleDeathState();
             }
         }
     }
@@ -143,6 +119,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     /**
      * stops the current animation.
      */
+    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
@@ -167,7 +144,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
      * not currently used.
      * @return the priority for this task
      */
-    private int getActivePriority() {
+    public int getActivePriority() {
         return !isTargetVisible() ? 0 : priority;
     }
 
@@ -175,7 +152,7 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
      * not currently used.
      * @return
      */
-    private int getInactivePriority() {
+    public int getInactivePriority() {
         return isTargetVisible() ? priority : 0;
     }
 
@@ -200,4 +177,74 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         return fireRateInterval;
     }
 
+    /**
+     * Function for getting the tower's state.
+     *
+     * @return The tower's state
+     */
+    public STATE getTowerState() {
+        return this.towerState;
+    }
+
+    /**
+     * Function for setting the tower's state
+     *
+     * @param newState The new state of this tower
+     */
+    public void setTowerState(STATE newState) {
+        this.towerState = newState;
+    }
+
+    /**
+     * Function triggers actions at IDLE state, then switch to PREP_ATTACK
+     */
+    private void handleIdleState() {
+        if (isTargetVisible())  {
+            owner.getEntity().getEvents().trigger(PREP_ATTACK);
+            towerState = STATE.PREP_ATTACK;
+        }
+    }
+
+    /**
+     * Functions triggers actions at PREP_ATTACH state, then switch to ATTACK or IDLE
+     */
+    private void handlePrepAttackState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(ATTACK);
+            towerState = STATE.ATTACK;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Functions trigger actions at ATTACK state
+     */
+    private void handleAttackState() {
+        if (shoot) {
+            if (!isTargetVisible()) {
+                owner.getEntity().getEvents().trigger(IDLE);
+                towerState = STATE.IDLE;
+            } else {
+                owner.getEntity().getEvents().trigger(ATTACK);
+                Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
+                        new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), ProjectileEffects.BURN, false);
+                newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                        (owner.getEntity().getPosition().y));
+                ServiceLocator.getEntityService().register(newProjectile);
+            }
+        }
+
+        shoot = !shoot;
+    }
+
+    /**
+     * Functions triggers actions at DEATH state
+     */
+    private void handleDeathState() {
+        if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+            owner.getEntity().setFlagForDelete(true);
+        }
+    }
 }

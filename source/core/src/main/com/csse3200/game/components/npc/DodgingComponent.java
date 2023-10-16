@@ -116,7 +116,7 @@ public class DodgingComponent extends Component {
    * @param mobPos The current Vector2 position of the mob
    * @return True if a target is visible, false otherwise.
    */
-  private boolean isTargetVisible(Vector2 mobPos) {
+  public boolean isTargetVisible(Vector2 mobPos) {
     Vector2 maxRange = new Vector2(mobPos.x - rangeDetection, mobPos.y);
     // check also the upper and lower boundaries of the mob with the offset y mob
     // detection.
