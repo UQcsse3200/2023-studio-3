@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.mobtask;
+package com.csse3200.game.components.tasks.MobTask;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -15,6 +15,7 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 
 /**
  * The AI Task for all general mobs. This task handles the sequencing for melee

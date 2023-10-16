@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.csse3200.game.components.tasks.MobTask.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,8 +15,6 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
-import com.csse3200.game.components.tasks.mobtask.MobTask;
-import com.csse3200.game.components.tasks.mobtask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;

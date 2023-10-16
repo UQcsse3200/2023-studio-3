@@ -1,7 +1,8 @@
 package com.csse3200.game.components.npc;
 
 import com.csse3200.game.components.Component;
-import com.csse3200.game.components.tasks.mobtask.MobType;
+//import com.csse3200.game.components.tasks.mobtask.MobType;
+import com.csse3200.game.components.tasks.MobTask.*;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.services.ServiceLocator;

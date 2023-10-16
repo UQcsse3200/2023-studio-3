@@ -1,7 +1,6 @@
 package com.csse3200.game.components.tasks;
 
-import com.csse3200.game.components.tasks.mobtask.MobTask;
-import com.csse3200.game.components.tasks.mobtask.MobType;
+import com.csse3200.game.components.tasks.MobTask.*;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
