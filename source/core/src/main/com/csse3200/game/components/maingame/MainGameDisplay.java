@@ -259,7 +259,7 @@ public class MainGameDisplay extends UIComponent {
                         if (selected == towers.get(4)) {
                             ServiceLocator.getCurrencyService().setTowerType(null);
 
-                            towerToggle(tower5);
+                            towerToggle(null);
 
                         } else {
                             ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
