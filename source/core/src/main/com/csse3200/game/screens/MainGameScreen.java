@@ -11,13 +11,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
-import com.csse3200.game.components.maingame.MainGameLoseDisplay;
-import com.csse3200.game.components.maingame.MainGamePauseDisplay;
+import com.csse3200.game.components.maingame.MainGameDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
@@ -29,14 +27,13 @@ import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.services.*;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
-import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
  * The game screen containing the main game.
  *
- * <p>Details on libGDX screens: https://happycoding.io/tutorials/libgdx/game-screens
+ * <p>Details on libGDX screens: <a href="https://happycoding.io/tutorials/libgdx/game-screens">...</a>
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
@@ -56,11 +53,11 @@ public class MainGameScreen extends ScreenAdapter {
           "sounds/background/desert/desert_bgm.ogg"
   };
   private static final String[] uiSounds = {
-          "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
-          "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg",
-          "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg",
-          "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
-          "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg"
+          "sounds/ui/click/click_01.ogg",
+          "sounds/ui/hover/hover_01.ogg",
+          "sounds/ui/open_close/close_01.ogg",
+          "sounds/ui/open_close/open_01.ogg",
+          "sounds/ui/switch/switch_01.ogg"
   };
   private static final String[] desertSounds = {
           "sounds/background/desert/Elements.ogg",
@@ -86,23 +83,21 @@ public class MainGameScreen extends ScreenAdapter {
   private final GdxGame game;
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
-
-  private InputComponent upgradedInputHandler;
-  private final Stage stage;
+  private final InputComponent buildHandler;
+  private final InputComponent upgradedInputHandler;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
-  private int random = 0;
-  public static int viewportWidth = screenWidth;
-  public static int viewportHeight= screenHeight;
+  public static final int viewportWidth = screenWidth;
+  public static final int viewportHeight= screenHeight;
   int selectedLevel = GameLevelData.getSelectedLevel();
 
-  private OrthographicCamera camera;
-  private SpriteBatch batch;
+  private final OrthographicCamera camera;
+  private final SpriteBatch batch;
 
   private Texture backgroundTexture;
   private Music music;
-  private Array<String> ambientSounds = new Array<>(false, 5, String.class);
+  private final Array<String> ambientSounds = new Array<>(false, 5, String.class);
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -111,9 +106,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
-
-    stage = new Stage(new ScreenViewport());
-
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
@@ -134,9 +126,10 @@ public class MainGameScreen extends ScreenAdapter {
 
     renderer = RenderFactory.createRenderer();
     renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);
+    renderer.getCamera().getCamera().position.set(CAMERA_POSITION.x,CAMERA_POSITION.y,0);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
@@ -147,7 +140,7 @@ public class MainGameScreen extends ScreenAdapter {
 
     loadAssets();
     createUI();
-    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
+    ServiceLocator.registerMapService(new MapService(renderer.getCamera(),camera));
     logger.debug("Initialising main game screen entities");
     ForestGameArea forestGameArea = new ForestGameArea();
     forestGameArea.create();
@@ -169,22 +162,22 @@ public class MainGameScreen extends ScreenAdapter {
     Texture background;
     switch (selectedLevel) {
       // Desert
-      case 1: // Ice
+      case 1 -> { // Ice
         background = ServiceLocator.getResourceService().getAsset(ICE_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(ICE_BGM, Music.class);
         ambientSounds.addAll(iceSounds);
-        break;
-      case 2: // Lava
+      }
+      case 2 -> { // Lava
         background = ServiceLocator.getResourceService().getAsset(LAVA_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(LAVA_BGM, Music.class);
         ambientSounds.addAll(lavaSounds);
-        break;
-      default:
+      }
+      default -> {
         // Use a default background for other levels or planets
         background = ServiceLocator.getResourceService().getAsset(DESERT_BACKDROP, Texture.class);
         music = ServiceLocator.getResourceService().getAsset(DESERT_BGM, Music.class);
         ambientSounds.addAll(desertSounds);
-        break;
+      }
     }
     return background;
   }
@@ -195,9 +188,11 @@ public class MainGameScreen extends ScreenAdapter {
     Gdx.gl.glClearColor(0, 0, 0, 1);
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+    ServiceLocator.getMapService().updateShakerGrid(delta);
     // Update the camera and set the batch's projection matrix
     camera.update();
     batch.setProjectionMatrix(camera.combined);
+    ServiceLocator.getMapService().updateShakerMap(delta);
 
     // Begin the batch
     batch.begin();
@@ -215,14 +210,19 @@ public class MainGameScreen extends ScreenAdapter {
     // Checks if tower selected is dead
     this.getUpgradedInputHandler().checkForDispose();
 
-    // Check if the game has ended
-    if (ServiceLocator.getGameEndService().hasGameEnded()) {
-      ui.getEvents().trigger("lose");
-    }
-
     ServiceLocator.getWaveService().getDisplay().updateTimerButton();
     ServiceLocator.getWaveService().getDisplay().updateMobCount();
     renderer.render();
+
+    // Check if the game has ended
+    if (ServiceLocator.getGameEndService().hasGameEnded()) {
+      ui.getEvents().trigger("lose");
+    } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      // Check if all waves are completed and the level has been completed
+      logger.info("Main game level completed detected, go to win screen");
+      ui.getEvents().trigger("win"); // needs to change to: ui.getEvents().trigger("win");
+      // Add something in to unlock the next planet/level?
+    }
   }
 
   @Override
@@ -295,10 +295,10 @@ public class MainGameScreen extends ScreenAdapter {
         .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
-            .addComponent(new MainGameExitDisplay())
-            .addComponent(new MainGameLoseDisplay())
-            .addComponent(new MainGamePauseDisplay(this.game))
+            //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
+            .addComponent(new MainGameDisplay(this.game, selectedLevel))
             .addComponent(new Terminal())
+            .addComponent(buildHandler)
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
 

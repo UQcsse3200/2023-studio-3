@@ -14,11 +14,11 @@ import java.util.Set;
 
 /**
  * A simplified implementation of the Service Locator pattern:
- * https://martinfowler.com/articles/injection.html#UsingAServiceLocator
+ * <a href="https://martinfowler.com/articles/injection.html#UsingAServiceLocator">...</a>
  *
  * <p>Allows global access to a few core game services.
  * Warning: global access is a trap and should be used <i>extremely</i> sparingly.
- * Read the wiki for details (https://github.com/UQcsse3200/game-engine/wiki/Service-Locator).
+ * Read the wiki for details (<a href="https://github.com/UQcsse3200/game-engine/wiki/Service-Locator">...</a>).
  */
 public class ServiceLocator {
   private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);
@@ -33,7 +33,7 @@ public class ServiceLocator {
   private static WaveService waveService;
   private static MapService mapService;
 
-  private static Set<TowerType> towerTypes = new HashSet<>();
+  private static Array<TowerType> towerTypes = new Array<>();
 
   public static CurrencyService getCurrencyService() {
       return currencyService;
@@ -120,12 +120,13 @@ public class ServiceLocator {
     mapService = source;
   }
 
-  public static void setTowerTypes(Set<TowerType> selectedTowers) {
+  public static void setTowerTypes(Array<TowerType> selectedTowers) {
+
     towerTypes.clear();
     towerTypes.addAll(selectedTowers);
   }
 
-  public static Set<TowerType> getTowerTypes() {
+  public static Array<TowerType> getTowerTypes() {
     return towerTypes;
   }
 
@@ -139,6 +140,7 @@ public class ServiceLocator {
     gameEndService = null;
     waveService = null;
     mapService = null;
+    towerTypes.clear();
   }
 
   private ServiceLocator() {

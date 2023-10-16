@@ -1,6 +1,7 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.tasks.MobTask.MobTask;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -14,7 +15,7 @@ import com.csse3200.game.services.ServiceLocator;
  * "dodgeIncomingEntity" event to the attached entity.
  * </p>
  */
-public class MobDodgeTask extends MobWanderTask {
+public class MobDodgeTask extends MobTask {
 
   private final int priority; // active priority
 
@@ -22,20 +23,18 @@ public class MobDodgeTask extends MobWanderTask {
   private long endTime;
 
   // Helps task wait between each interval.
-  private final int DELAY_INTERVAL = 500;
+  private static final int DELAY_INTERVAL = 500;
 
   /**
    * Initialises a mob dodge task with a specified wander range, wait time, and
    * priority level.
    * 
-   * @param wanderRange Distance in X and Y the entity can move from its position
-   *                    when start() is
-   *                    called.
-   * @param waitTime    How long in seconds to wait between wandering.
-   * @param priority    Priority level compared to other added tasks.
+   * @param mobType Distance in X and Y the entity can move from its position
+   *                    when start() is called.
+   * @param priority Priority level compared to other added tasks.
    */
-  public MobDodgeTask(Vector2 wanderRange, float waitTime, int priority) {
-    super(wanderRange, waitTime);
+  public MobDodgeTask(MobType mobType, int priority) {
+    super(mobType);
     this.priority = priority;
 
     timeSource = ServiceLocator.getTimeSource();
@@ -47,7 +46,7 @@ public class MobDodgeTask extends MobWanderTask {
   @Override
   public void start() {
     super.start();
-    owner.getEntity().getEvents().trigger("wanderStart");
+    owner.getEntity().getEvents().trigger("mob_walk");
 
     // endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
     endTime = timeSource.getTime();
@@ -63,6 +62,7 @@ public class MobDodgeTask extends MobWanderTask {
     if (timeSource.getTime() >= endTime) {
       owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
           owner.getEntity().getCenterPosition());
+      
 
       endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
     }

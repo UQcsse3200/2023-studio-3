@@ -34,16 +34,16 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     private final int id;
 
     //TODO: change to item class
-    private final ArrayList<Currency> drops;
-    private ArrayList<Melee> closeRangeAbilities;
-    private ArrayList<Weapon> longRangeAbilities;
+    private final List<Currency> drops;
+    private List<Melee> closeRangeAbilities;
+    private List<Weapon> longRangeAbilities;
 
     /**
      * Creates a new enemy config with default values.
      */
-    public BaseEnemyConfig(ArrayList<Currency> drops,
-                           ArrayList<Melee> closeRangeAbilities,
-                           ArrayList<Weapon> longRangeAbilities) {
+    public BaseEnemyConfig(List<Currency> drops,
+                           List<Melee> closeRangeAbilities,
+                           List<Weapon> longRangeAbilities) {
         this.speed = 1;
         this.drops = drops;
         this.fullHeath = this.health;
@@ -62,8 +62,8 @@ public class BaseEnemyConfig extends BaseEntityConfig {
      * @param drops the drops of the enemy
      * @param baseAttack the base damage to the target
      */
-    public BaseEnemyConfig(int speed, int health, ArrayList<Currency> drops,
-                           ArrayList<Melee> closeRangeAbilities, ArrayList<Weapon> longRangeAbilities, int baseAttack) {
+    public BaseEnemyConfig(int speed, int health, List<Currency> drops,
+                           List<Melee> closeRangeAbilities, List<Weapon> longRangeAbilities, int baseAttack) {
         this.speed = speed;
         this.health = health;
         this.fullHeath = health;
@@ -97,13 +97,13 @@ public class BaseEnemyConfig extends BaseEntityConfig {
     }
 
     /*** return the close range (Melee) attacks of the enemy */
-    public ArrayList<Melee> getCloseRangeAbilities() {
+    public List<Melee> getCloseRangeAbilities() {
         return this.closeRangeAbilities;
     }
 
     /** return the long range (Projectile) attacks of the enemy */
     //TODO change to projectile
-    public ArrayList<Weapon> getLongRangeAbilities() {
+    public List<Weapon> getLongRangeAbilities() {
         return this.longRangeAbilities;
     }
 

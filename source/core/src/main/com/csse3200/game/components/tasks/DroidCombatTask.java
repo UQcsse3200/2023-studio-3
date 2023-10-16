@@ -48,7 +48,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     public enum STATE {
         IDLE, UP, DOWN, SHOOT_UP, SHOOT_DOWN, WALK, DIE
     }
-    public STATE towerState = STATE.WALK;
+    private STATE towerState = STATE.WALK;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
@@ -74,7 +74,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         // Default to idle mode
         owner.getEntity().getEvents().trigger(WALK);
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
-        endTime = timeSource.getTime() + (INTERVAL * 500);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**
@@ -156,7 +156,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(GO_UP);
                     towerState = STATE.IDLE;
 
-
                 }
             }
             case DIE -> {
@@ -166,13 +165,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             }
         }
     }
-    /**
-     * For stopping the running task
-     */
-    @Override
-    public void stop() {
-        super.stop();
-    }
 
     /**
      * Returns the current state of the tower.
@@ -181,6 +173,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      */
     public STATE getState() {
         return this.towerState;
+    }
+
+    public void setState(STATE state) {
+        this.towerState = state;
     }
 
     /**

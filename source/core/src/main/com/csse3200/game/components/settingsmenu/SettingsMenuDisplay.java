@@ -14,6 +14,7 @@ import com.csse3200.game.GdxGame.ScreenType;
 import com.csse3200.game.files.UserSettings;
 import com.csse3200.game.files.UserSettings.DisplaySettings;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import com.csse3200.game.utils.StringDecorator;
 import com.badlogic.gdx.graphics.Cursor;
@@ -179,8 +180,8 @@ public class SettingsMenuDisplay extends UIComponent {
   }
 
   private Table makeMenuBtns() {
-    TextButton exitBtn = new TextButton("Exit", skin);
-    TextButton applyBtn = new TextButton("Apply", skin);
+    TextButton exitBtn = ButtonFactory.createButton("Exit");
+    TextButton applyBtn = ButtonFactory.createButton("Apply");
 
     exitBtn.addListener(
         new ChangeListener() {

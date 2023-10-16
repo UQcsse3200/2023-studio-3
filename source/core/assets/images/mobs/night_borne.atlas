@@ -1,0 +1,251 @@
+
+night_borne.png
+size: 2048, 128
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+night_borne_attack
+  rotate: false
+  xy: 84, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 2, 54
+  size: 80, 61
+  orig: 80, 61
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 1232, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 740, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 822, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 330, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 1068, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 658, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 166, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 904, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 412, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_attack
+  rotate: false
+  xy: 1150, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 1232, 19
+  size: 70, 44
+  orig: 70, 44
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 904, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 904, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 412, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 740, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 248, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 986, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 576, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 84, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 822, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 330, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 1068, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 576, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 576, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 166, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_death
+  rotate: false
+  xy: 494, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 1150, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 658, 13
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 248, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 986, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 494, 65
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+night_borne_run
+  rotate: false
+  xy: 2, 2
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
+default
+  rotate: false
+  xy: 2, 2
+  size: 80, 50
+  orig: 80, 50
+  offset: 0, 0
+  index: -1
