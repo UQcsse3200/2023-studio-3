@@ -34,7 +34,7 @@ public class NextLevelScreen extends ScreenAdapter {
      *
      * @param game The game instance managing the screens.
      */
-    public NextLevelScreen(GdxGame game) {
+    public NextLevelScreen(GdxGame game, int currentLevel) {
         this.currentLevel = currentLevel;
 
         preferences = Gdx.app.getPreferences("MyPreferences");
@@ -56,11 +56,13 @@ public class NextLevelScreen extends ScreenAdapter {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (currentLevel < 2) {
-                    game.setScreen(new LevelSelectScreen(game));
+                if (currentLevel == 1) {
+                    game.setScreen(new LevelSelectScreen(game, 0)); // Pass the next level to LevelSelectScreen
+                }
+                else if (currentLevel == 0) {
+                    game.setScreen(new LevelSelectScreen(game, 2)); // Pass the next level to LevelSelectScreen
                 } else {
-                    // Handle the case where all levels are completed,
-                    // maybe transition to a game completion or main menu screen.
+                    // Handle the case where all levels are completed
                     game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
                 }
                 // Logic to move to the next level

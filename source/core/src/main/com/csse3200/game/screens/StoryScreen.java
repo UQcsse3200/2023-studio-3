@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.Preferences;
 
 /**
  * Screen that displays a story with images and no text.
@@ -33,6 +34,7 @@ public class StoryScreen extends ScreenAdapter {
             "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
     };
     private Music music;
+    private Preferences preferences;
 
     // Image file paths
     private static final String[] IMAGE_PATHS = {
@@ -56,6 +58,10 @@ public class StoryScreen extends ScreenAdapter {
         this.images = new Texture[IMAGE_PATHS.length];
         this.currentIndex = 0;
         this.imageDuration = 100000.0f; // Time (in seconds) per image
+
+        preferences = Gdx.app.getPreferences("MyPreferences");
+        preferences.putInteger("HighestLevelReached", -1);
+        preferences.flush();
 
         this.elapsedTime = 0f;
 
@@ -141,7 +147,7 @@ public class StoryScreen extends ScreenAdapter {
     private void next() {
         currentIndex++;
         if (currentIndex >= images.length) {
-            game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+            game.setScreen(new LevelSelectScreen(game, -1));
         }
     }
 

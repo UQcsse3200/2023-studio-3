@@ -18,7 +18,7 @@ import static com.badlogic.gdx.Gdx.app;
  */
 public class GdxGame extends Game {
   private static final Logger logger = LoggerFactory.getLogger(GdxGame.class);
-
+  public int currentLevel = 0;
   @Override
   public void create() {
     logger.info("Creating game");
@@ -65,13 +65,13 @@ public class GdxGame extends Game {
    */
   private Screen newScreen(ScreenType screenType) {
       return switch (screenType) {
-          case Next_Screen -> new NextLevelScreen(this);
+          case Next_Screen -> new NextLevelScreen(this, currentLevel);
           case Win_Screen -> new WinningScreen(this);
           case MAIN_MENU -> new MainMenuScreen(this);
           case MAIN_GAME -> new MainGameScreen(this);
           case SETTINGS -> new SettingsScreen(this);
           case STORY_SCREEN -> new StoryScreen(this);
-          case LEVEL_SELECT -> new LevelSelectScreen(this);
+          case LEVEL_SELECT -> new LevelSelectScreen(this, currentLevel);
           case LOSING_SCREEN -> new LosingScreen(this);
           case TURRET_SELECTION -> new TurretSelectionScreen(this);
           case HELP_SCREEN -> new GameDescriptionHelpScreen(this);

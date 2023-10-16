@@ -26,7 +26,6 @@ import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import com.badlogic.gdx.Preferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Text;
@@ -41,6 +40,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
     private int selectedLevel = -1;
+    private int currentLevel;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
     private Stage stage;
@@ -52,7 +52,6 @@ public class LevelSelectScreen extends ScreenAdapter {
             "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
     };
     private Music music;
-    private Preferences preferences;
 
     // Stores a time to determine the frame of the planet
     // TODO: Account for integer overflow
@@ -60,10 +59,10 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     private static final String BG_PATH = "planets/background.png";
 
-    public LevelSelectScreen(GdxGame game) {
+    public LevelSelectScreen(GdxGame game, int currentLevel) {
+        this.currentLevel = currentLevel;
         font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
-        preferences = Gdx.app.getPreferences("MyPreferences");
         this.game = game;
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -134,7 +133,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      * @param levelNumber The level associated with the planet
      */
     private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame, int levelNumber) {
-        int highestLevelReached = getHighestLevelReached();
+        int highestLevelReached = currentLevel;
         Texture planet;
 
         levelNumber = mapToConventional(levelNumber);
@@ -149,8 +148,6 @@ public class LevelSelectScreen extends ScreenAdapter {
             planet = new Texture(String.format("planets/%s_bw/%d/%d.png", planetName, version, frame));
         }
 
-        logger.info("Highest level reached at start: {}", highestLevelReached);
-
         Sprite planetSprite = new Sprite(planet);
         planetSprite.setSize(width, height);
         batch.draw(planetSprite, posx, posy, width, height);
@@ -163,7 +160,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        int highestLevelReached = getHighestLevelReached();
+        int highestLevelReached = currentLevel;
 
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
@@ -211,19 +208,6 @@ public class LevelSelectScreen extends ScreenAdapter {
             default:
                 throw new IllegalArgumentException("Invalid planet number");
         }
-    }
-
-    private int getHighestLevelReached() {
-        int unconventionalHighest = preferences.getInteger("HighestLevelReached", -1);
-
-        if (unconventionalHighest == 2) {
-            // modify the value of unconventionalHighest as needed
-            unconventionalHighest = -1; // replace "someOtherValue" with the desired value
-            preferences.putInteger("HighestLevelReached", unconventionalHighest);
-            preferences.flush();  // save changes to preferences
-        }
-
-        return mapToConventional(unconventionalHighest);
     }
 
     // TODO: Make it display information about the planet
