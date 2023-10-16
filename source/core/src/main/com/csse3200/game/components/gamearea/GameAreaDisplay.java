@@ -15,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
  */
 public class GameAreaDisplay extends UIComponent {
   private static final Logger logger = LoggerFactory.getLogger(GameAreaDisplay.class);
-
+  private static final String DEFAULT_STYLE = "default";
   private String gameAreaName = "";
   private Label title;
 
@@ -45,10 +45,10 @@ public class GameAreaDisplay extends UIComponent {
     Label.LabelStyle labelStyle = new Label.LabelStyle();
     labelStyle.font = new BitmapFont();
     labelStyle.fontColor = Color.WHITE;
-    skin.add("default", labelStyle);
+    skin.add(DEFAULT_STYLE, labelStyle);
 
     // Create the dialog using the registered label style
-    Dialog dialog = new Dialog("Tower Details", skin,"default");
+    Dialog dialog = new Dialog("Tower Details", skin, DEFAULT_STYLE);
     dialog.text("Health: 100"); // Set tower health here
     dialog.getContentTable().row();
     dialog.text("Attack: 50"); // Set tower attack here
@@ -56,8 +56,9 @@ public class GameAreaDisplay extends UIComponent {
     dialog.setVisible(false); // Hide the dialog initially
     return dialog;
   }
+
   private void addActors() {
-    title = new Label(this.gameAreaName, skin, "default");
+    title = new Label(this.gameAreaName, skin, DEFAULT_STYLE);
     stage.addActor(title);
   }
 
@@ -68,7 +69,6 @@ public class GameAreaDisplay extends UIComponent {
     float offsetY = 30f;
 
     title.setPosition(offsetX, screenHeight - offsetY);
-
   }
 
   @Override
