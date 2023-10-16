@@ -153,10 +153,6 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 descriptionLabel = createButton("images/turret-select/imageedit_15_5627113584.png",
                         "images/turret-select/imageedit_15_5627113584.png", "Description: ", turretName, "");
 
-                //turretDescriptionText = createButton("images/turret-select/imageedit_20_9050213399.png",
-                       // "images/turret-select/imageedit_20_9050213399.png", )
-
-
                 TextButton button = createButton(turret.getDefaultImage(),
                         turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());
 
