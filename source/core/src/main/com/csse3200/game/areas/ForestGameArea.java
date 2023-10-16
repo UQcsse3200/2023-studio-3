@@ -394,106 +394,6 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(mob, randomPos, true, false);
   }
 
-  private void spawnWeaponTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 7 ; i++) {
-      GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);
-      GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);
-      Entity wallTower = TowerFactory.createWallTower();
-      Entity fireTower = TowerFactory.createFireTower();
-      Entity stunTower = TowerFactory.createStunTower();
-      spawnEntityAt(fireTower, randomPos1, true, true);
-      spawnEntityAt(stunTower, randomPos2, true, true);
-      spawnEntityAt(wallTower, randomPos2, true, true);
-    }
-  }
-
-  // * TEMPORARY FOR TESTING
-  private void spawnFireTowerAt(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity fireTower = TowerFactory.createFireTower();
-
-    spawnEntityAt(fireTower, pos, true, true);
-  }
-  private void spawnDroidTowerAt(int x, int y) {
-    GridPoint2 pos = new GridPoint2(x, y);
-    Entity droidTower = TowerFactory.createDroidTower();
-
-    spawnEntityAt(droidTower, pos, true, true);
-  }
-
-  private void spawnTNTTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity weaponTower = TowerFactory.createTNTTower();
-      spawnEntityAt(weaponTower, randomPos, true, true);
-    }
-
-  }
-  private void spawnFireWorksTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity FireWorksTower = TowerFactory.createFireworksTower();
-      spawnEntityAt(FireWorksTower, randomPos, true, true);
-    }
-
-  }
-  private void spawnPierceTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(3, 3);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity PierceTower = TowerFactory.createPierceTower();
-      spawnEntityAt(PierceTower, randomPos, true, true);
-    }
-
-  }
-  private void spawnRicochetTower() {
-    GridPoint2 minPos = new GridPoint2(0, 2);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 3);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity RicochetTower = TowerFactory.createRicochetTower();
-      spawnEntityAt(RicochetTower, randomPos, true, true);
-    }
-
-  }
-
-  private void spawnBombship() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-    Entity bombship = BombshipFactory.createBombship();
-    spawnEntityAt(bombship, minPos, true, true);
-  }
-
-  private void spawnDroidTower() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
-
-    for (int i = 0; i < NUM_WEAPON_TOWERS + 5; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity weaponTower = TowerFactory.createDroidTower();
-      spawnEntityAt(weaponTower, randomPos, true, false);
-    }
-  }
-
-  private void playMusic() {
-    Music music = ServiceLocator.getResourceService().getAsset(BACKGROUND_MUSIC, Music.class);
-    music.setLooping(true);
-    music.setVolume(0.3f);
-    music.play();
-  }
-
   private void loadAssets() {
     logger.debug("Loading assets");
     ResourceService resourceService = ServiceLocator.getResourceService();
@@ -538,17 +438,6 @@ public class ForestGameArea extends GameArea {
       GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
       Entity crystal = DropFactory.createCrystalDrop();
       spawnEntityAt(crystal, randomPos, true, false);
-    }
-  }
-
-  private void spawnIncome() {
-    GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);
-
-    for (int i = 0; i < 50; i++) {
-      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);
-      Entity towerfactory = TowerFactory.createIncomeTower();
-      spawnEntityAt(towerfactory, randomPos, true, true);
     }
   }
 
