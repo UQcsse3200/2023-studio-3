@@ -20,8 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 public class TNTTowerCombatTaskTest {
-
-
     TNTTowerCombatTask tntTowerCombatTask;
 
     @BeforeEach
@@ -37,7 +35,6 @@ public class TNTTowerCombatTaskTest {
 
     @Test
     public void testStartTriggersDefaultEvent() {
-
         Entity entity = createTNT();
 
         EventListener0 defaultStartListener = mock(EventListener0.class);
@@ -50,7 +47,6 @@ public class TNTTowerCombatTaskTest {
 
     @Test
     public void testUpdateTowerStateWithTargetInRange() {
-
         Entity entity = createTNT();
         entity.setPosition(10,10);
 
@@ -90,12 +86,10 @@ public class TNTTowerCombatTaskTest {
         tntTowerCombatTask.updateTowerState();
         // Set flag to dispose
         assertTrue(tntTowerCombatTask.isReadyToDelete());
-
     }
 
     @Test
     public void testStayAtIdleWhenNoTargetInRange() {
-
         Entity entity = createTNT();
         entity.setPosition(10,10);
 
@@ -117,7 +111,6 @@ public class TNTTowerCombatTaskTest {
         verifyNoInteractions(defaultStartListener);
         // still in idle
         assertEquals(TNTTowerCombatTask.STATE.IDLE, tntTowerCombatTask.getState());
-
     }
 
     Entity createTNT() {
@@ -128,7 +121,6 @@ public class TNTTowerCombatTaskTest {
                 .addComponent(new ColliderComponent());
         entity.create();
         return entity;
-
     }
 
     Entity createNPC() {
@@ -139,6 +131,4 @@ public class TNTTowerCombatTaskTest {
         Target.create();
         return Target;
     }
-
-
 }

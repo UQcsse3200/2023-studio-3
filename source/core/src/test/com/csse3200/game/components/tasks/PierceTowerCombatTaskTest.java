@@ -64,7 +64,7 @@ public class PierceTowerCombatTaskTest {
         entity.getEvents().addListener(PierceTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         pierceTowerCombatTask.start();
-        pierceTowerCombatTask.towerState = PierceTowerCombatTask.STATE.IDLE;
+        pierceTowerCombatTask.setTowerState(PierceTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -93,7 +93,7 @@ public class PierceTowerCombatTaskTest {
         entity.getEvents().addListener(PierceTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(PierceTowerCombatTask.ATTACK, attack);
 
-        pierceTowerCombatTask.towerState = PierceTowerCombatTask.STATE.IDLE;
+        pierceTowerCombatTask.setTowerState(PierceTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
