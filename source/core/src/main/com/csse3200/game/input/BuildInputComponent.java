@@ -196,6 +196,9 @@ public class BuildInputComponent extends InputComponent {
      * @param y the y position int the tower will occupy
      */
     private void createTower(TowerType tower, int x, int y, int cost) {
+        if (tower == null) {
+            return;
+        }
         Entity newTower = switch (tower) {
             case WEAPON -> TowerFactory.createWeaponTower();
             case INCOME -> TowerFactory.createIncomeTower();

@@ -482,18 +482,27 @@ com.badlogic.gdx.scenes.scene2d.ui.ImageButton$ImageButtonStyle: {
 		imageDown: pierce_tower_selected
 		imageOver: pierce_tower_over
 		imageDisabled: pierce_tower_disabled
+		imageChecked: pierce_tower_selected
+		imageCheckedDown: pierce_tower_selected
+		imageCheckedOver: pierce_tower_over
 	}
 	ricochet_tower: {
 		imageUp: ricochet-tower-default
 		imageDown: ricochet_tower_selected
 		imageOver: ricochet_tower_over
 		imageDisabled: ricochet_tower_disabled
+		imageChecked: ricochet_tower_selected
+		imageCheckedDown: ricochet_tower_selected
+		imageCheckedOver: ricochet_tower_over
 	}
 	fireworks_tower: {
 		imageUp: firework-tower-default
 		imageDown: firework_tower_selected
 		imageOver: firework_tower_over
 		imageDisabled: firework_tower_disabled
+		imageChecked: firework_tower_selected
+		imageCheckedDown: firework_tower_selected
+		imageCheckedOver: firework_tower_over
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
