@@ -115,13 +115,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if(mob.getCenterPosition().x <= 1) {
           mob.getComponent(CombatStatsComponent.class).setHealth(0);
+          ServiceLocator.getGameEndService().updateEngineerCount();
         }
 
         // death check
         if ((mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag)) {
             // decrement engineer count
             // ! tests failing because of textbox
-            // ServiceLocator.getGameEndService().updateEngineerCount();
+
             changeState(State.DEATH);
             animate();
             movementTask.stop();
