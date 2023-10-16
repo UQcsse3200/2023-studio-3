@@ -197,7 +197,11 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickCast.mp3",
           "sounds/mobBoss/patrickThunder.mp3",
           "sounds/mobBoss/patrickHit.mp3",
-          "sounds/mobBoss/spawnDemonSlime.mp3"
+          "sounds/mobBoss/spawnDemonSlime.mp3",
+          "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3",
+          "sounds/towers/5.56_single_shot.mp3",
+          "sounds/towers/explosion.mp3",
+          "sounds/towers/eco_tower_ping.mp3"
   };
   private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
 
