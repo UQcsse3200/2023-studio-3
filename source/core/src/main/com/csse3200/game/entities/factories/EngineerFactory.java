@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.EffectComponent;
 import com.csse3200.game.components.TouchAttackComponent;
 import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
@@ -107,6 +108,7 @@ public class EngineerFactory {
                     .addComponent(new PhysicsComponent())
                     .addComponent(new PhysicsMovementComponent())
                     .addComponent(new ColliderComponent())
+                    .addComponent(new EffectComponent(false))
                     .addComponent(new HitboxComponent().setLayer(PhysicsLayer.ENGINEER))
                     .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f));
     

@@ -17,8 +17,8 @@ public class SplitFireworksComponent extends Component {
   private short targetLayer;
   private HitboxComponent hitboxComponent;
   private int amount;
-  private static int TOTAL_RANGE = 450;
-  private static double SPAWN_OFFSET_X = 1.75;
+  private static final int TOTAL_RANGE = 450;
+  private static final double SPAWN_OFFSET_X = 1.75;
 
   /**
    * Initialises a component that splits the projectile into multiple fireballs
@@ -60,9 +60,9 @@ public class SplitFireworksComponent extends Component {
       // * RIGHT NOW TARGET IS NPC, SUBJECT TO CHANGE
       // Speed is a bit faster than normal but can change.
       Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,
-          new Vector2(100, (float) (projectile.getPosition().y + (newDirection - (double) (TOTAL_RANGE/2)))), new Vector2(3f, 3f));
+          new Vector2(100, (float) (projectile.getPosition().y + (newDirection - ((double) TOTAL_RANGE) / 2))), new Vector2(3f, 3f));
 
-      newProjectile.setPosition(newXPosition, (float) projectile.getPosition().y);
+      newProjectile.setPosition(newXPosition, projectile.getPosition().y);
 
       newProjectile.setScale(0.5f, 0.5f);
 

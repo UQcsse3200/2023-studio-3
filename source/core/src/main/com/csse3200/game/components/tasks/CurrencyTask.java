@@ -3,7 +3,9 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.currency.Scrap;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -19,9 +21,16 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private int interval;
     private final Scrap scrap = new Scrap(); // currency to update
-    private final int currencyAmount = scrap.getAmount(); // amount of currency to update
+    private final int currencyAmount = 30; // amount of currency to update
     private static final String IDLE = "idleStartEco";
     private static final String MOVE = "moveStartEco";
+    private static final String DEATH = "deathStartEco";
+
+    public enum STATE {
+        IDLE, DEATH
+    }
+    public STATE towerState = STATE.IDLE;
+
 
     /**
      * @param priority Task priority for currency updates. Must be a positive integer.
@@ -40,7 +49,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         owner.getEntity().getEvents().addListener("addIncome",this::changeInterval);
-        endTime = timeSource.getTime() + (30 * 1000L);
+        endTime = timeSource.getTime() + (interval * 1500L);
         owner.getEntity().getEvents().trigger(IDLE);
     }
 
@@ -52,8 +61,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
-            owner.getEntity().getEvents().trigger(MOVE);
-            updateCurrency(); // update currency
+            updateTowerState();
             logger.info(String.format("Interval: %d", interval));
             endTime = timeSource.getTime() + (interval * 1000L); // reset end time
 
@@ -61,14 +69,39 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     }
 
     /**
+     * This method acts is the state machine for IncomeTower. Relevant animations are triggered based on relevant state
+     * of the game. If the tower runs out of health it dies.
+     */
+    public void updateTowerState() {
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
+            owner.getEntity().getEvents().trigger(DEATH);
+            towerState = STATE.DEATH;
+        }
+
+        switch (towerState) {
+            case IDLE -> {
+                owner.getEntity().getEvents().trigger(MOVE);
+                updateCurrency(); // update currency
+                towerState = STATE.IDLE;
+            }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
+            }
+        }
+    }
+
+
+    /**
      * Updates the currency based on time intervals.
      */
     public void updateCurrency() {
-        //logger.info("Updating currency");
-        ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount/2);
+        logger.info("Updating currency");
+        ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount);
 
         Vector2 coordinates = this.owner.getEntity().getCenterPosition();
-        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount/2, 25);
+        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount, 25);
 
         ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats(); // update currency display
 

@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(GameExtension.class)
-public class NPCFactoryTest {
+class NPCFactoryTest {
 
     private Entity rangedBaseNpc;
     private Entity meleeBaseNpc;
@@ -75,7 +75,10 @@ public class NPCFactoryTest {
             "sounds/mobs/waterQueenSpell.mp3",
             "sounds/mobs/boneBreak.mp3",
             "sounds/mobs/fireWormRoar.mp3",
-            "sounds/mobs/wizardSpell.mp3"
+            "sounds/mobs/wizardSpell.mp3",
+            "sounds/mobs/archerArrow.mp3",
+            "sounds/mobs/coatAttack.mp3",
+            "sounds/mobs/skeletonHit.mp3"
     };
 
 
@@ -116,243 +119,243 @@ public class NPCFactoryTest {
     }
 
     @Test
-    public void testCreateRangedBaseNpcNotNull() {
+    void testCreateRangedBaseNpcNotNull() {
         assertNotNull(rangedBaseNpc, "base Ranged NPC should not be null");
     }
 
     @Test
-    public void testCreateRangedBaseNpcHasColliderComponent() {
+    void testCreateRangedBaseNpcHasColliderComponent() {
         assertNotNull(rangedBaseNpc.getComponent(ColliderComponent.class),
                 "Fire Worm should have ColliderComponent");
     }
 
     @Test
-    public void testCreateRangedBaseNpcHasHitboxComponent() {
+    void testCreateRangedBaseNpcHasHitboxComponent() {
         assertNotNull(rangedBaseNpc.getComponent(HitboxComponent.class),
                 "Fire Worm should have HitboxComponent");
     }
 
     @Test
-    public void testCreateRangedBaseNpcHasPhysicsComponent() {
+    void testCreateRangedBaseNpcHasPhysicsComponent() {
         assertNotNull(rangedBaseNpc.getComponent(PhysicsComponent.class),
                 "Fire Worm should have PhysicsComponent");
     }
 
     @Test
-    public void testCreateRangedBaseNpcHasPhysicsMovementComponent() {
+    void testCreateRangedBaseNpcHasPhysicsMovementComponent() {
         assertNotNull(rangedBaseNpc.getComponent(PhysicsMovementComponent.class),
                 "Fire Worm should have PhysicsMovementComponent");
     }
 
     @Test
-    public void testCreateRangedBaseNpcHasAIComponent() {
+    void testCreateRangedBaseNpcHasAIComponent() {
         assertNotNull(rangedBaseNpc.getComponent(AITaskComponent.class),
                 "Fire Worm should have PhysicsMovementComponent");
     }
     @Test
-    public void testCreateMeleeBaseNpcNotNull() {
+    void testCreateMeleeBaseNpcNotNull() {
         assertNotNull(meleeBaseNpc, "base Ranged NPC should not be null");
     }
 
     @Test
-    public void testCreateMeleeBaseNpcHasColliderComponent() {
+    void testCreateMeleeBaseNpcHasColliderComponent() {
         assertNotNull(meleeBaseNpc.getComponent(ColliderComponent.class),
                 "Fire Worm should have ColliderComponent");
     }
 
     @Test
-    public void testCreateMeleeBaseNpcHasHitboxComponent() {
+    void testCreateMeleeBaseNpcHasHitboxComponent() {
         assertNotNull(meleeBaseNpc.getComponent(HitboxComponent.class),
                 "Fire Worm should have HitboxComponent");
     }
 
     @Test
-    public void testCreateMeleeBaseNpcHasPhysicsComponent() {
+    void testCreateMeleeBaseNpcHasPhysicsComponent() {
         assertNotNull(meleeBaseNpc.getComponent(PhysicsComponent.class),
                 "Fire Worm should have PhysicsComponent");
     }
 
     @Test
-    public void testCreateMeleeBaseNpcHasPhysicsMovementComponent() {
+    void testCreateMeleeBaseNpcHasPhysicsMovementComponent() {
         assertNotNull(meleeBaseNpc.getComponent(PhysicsMovementComponent.class),
                 "Fire Worm should have PhysicsMovementComponent");
     }
 
     @Test
-    public void testCreateMeleeBaseNpcHasAIComponent() {
+    void testCreateMeleeBaseNpcHasAIComponent() {
         assertNotNull(rangedBaseNpc.getComponent(AITaskComponent.class),
                 "Fire Worm should have PhysicsMovementComponent");
     }
 
     @Test
-    public void testCreateWaterSlime() {
+    void testCreateWaterSlime() {
         assertNotNull(waterSlime, "Water Slime should not be null");
     }
 
     @Test
-    public void testWaterSlimeCombatStatsComponent() {
+    void testWaterSlimeCombatStatsComponent() {
         assertEquals(60, waterSlime.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, waterSlime.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void waterSlimeHasAnimationComponent() {
+    void waterSlimeHasAnimationComponent() {
         assertNotNull(waterSlime.getComponent(AnimationRenderComponent.class),
                 "Water Slime should have AnimationRenderComponent");
     }
 
     @Test
-    public void testCreateWaterSlimeHasAnimationController() {
+    void testCreateWaterSlimeHasAnimationController() {
         assertNotNull(waterSlime.getComponent(WaterSlimeAnimationController.class),
                 "Water Slime should have an Animation Controller");
     }
 
     @Test
-    public void testSplitWaterSlime() {
+    void testSplitWaterSlime() {
         assertNotNull(splitWaterSlime, "Water Slime should not be Null");
     }
 
     @Test
-    public void testSplitWaterSlimeHasSplittingComponent() {
+    void testSplitWaterSlimeHasSplittingComponent() {
         Entity splitWaterSlime = NPCFactory.createSplittingWaterSlime(60);
         assertNotNull(splitWaterSlime.getComponent(SplitMoblings.class), 
                 "Split water slimes should have a splitting component");
     }
 
     @Test
-    public void testCreateWaterQueenNotNull() {
+    void testCreateWaterQueenNotNull() {
         assertNotNull(waterQueen, "Water Queen should not be null");
     }
 
     @Test
-    public void testWaterQueenCombatStatsComponent() {
+    void testWaterQueenCombatStatsComponent() {
         assertEquals(60, waterQueen.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, waterQueen.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void waterQueenHasAnimationComponent() {
+    void waterQueenHasAnimationComponent() {
         assertNotNull(waterQueen.getComponent(AnimationRenderComponent.class),
                 "Water Queen should have AnimationRenderComponent");
     }
 
     @Test
-    public void testCreateWaterQueenHasAnimationController() {
+    void testCreateWaterQueenHasAnimationController() {
         assertNotNull(waterQueen.getComponent(WaterQueenAnimationController.class),
                 "Water Queen should have an Animation controller");
     }
 
     @Test
-    public void testCreateFireWormNotNull() {
+    void testCreateFireWormNotNull() {
         assertNotNull(fireWorm, "Fire Worm should not be null");
     }
 
     @Test
-    public void testFireWormCombatStatsComponent() {
+    void testFireWormCombatStatsComponent() {
         assertEquals(60, fireWorm.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, fireWorm.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void fireWormHasAnimationComponent() {
+    void fireWormHasAnimationComponent() {
         assertNotNull(fireWorm.getComponent(AnimationRenderComponent.class),
                 "Fire Worm should have AnimationRenderComponent");
     }
 
     @Test
-    public void fireWormHasAnimationController() {
+    void fireWormHasAnimationController() {
         assertNotNull(fireWorm.getComponent(FireWormAnimationController.class),
                 "Fire Worm should have AnimationRenderComponent");
     }
     @Test
-    public void testCreateDragonKnightNotNull() {
+    void testCreateDragonKnightNotNull() {
         assertNotNull(dragonKnight, "Dragon Knight should not be null");
     }
 
     @Test
-    public void testDragonKnightCombatStatsComponent() {
+    void testDragonKnightCombatStatsComponent() {
         assertEquals(60, dragonKnight.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, dragonKnight.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void dragonKnightHasAnimationComponent() {
+    void dragonKnightHasAnimationComponent() {
         assertNotNull(dragonKnight.getComponent(AnimationRenderComponent.class),
                 "Dragon Knight should have AnimationRenderComponent");
     }
 
     @Test
-    public void dragonKnightHasAnimationController() {
+    void dragonKnightHasAnimationController() {
         assertNotNull(dragonKnight.getComponent(DragonKnightAnimationController.class),
                 "Dragon Knight should have Animation Controller");
     }
 
     @Test
-    public void dodgingDragonKnightHasDodgingComponent() {
+    void dodgingDragonKnightHasDodgingComponent() {
         assertNotNull(dodgingDragonKnight.getComponent(DodgingComponent.class),
                 "Dragon Knight should have AnimationRenderComponent");
     }
 
     @Test
-    public void testCreateWizardNotNull() {
+    void testCreateWizardNotNull() {
         assertNotNull(wizard, "Wizard should not be null");
     }
 
     @Test
-    public void testWizardCombatStatsComponent() {
+    void testWizardCombatStatsComponent() {
         assertEquals(60, wizard.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, wizard.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void wizardHasAnimationComponent() {
+    void wizardHasAnimationComponent() {
         assertNotNull(wizard.getComponent(AnimationRenderComponent.class),
                 "Wizard should have AnimationRenderComponent");
     }
 
     @Test
-    public void wizardHasAnimationController() {
+    void wizardHasAnimationController() {
         assertNotNull(wizard.getComponent(WizardAnimationController.class),
                 "Wizard should have Animation Controller");
     }
 
     @Test
-    public void dodgingWizardHasDeflectingComponent() {
+    void dodgingWizardHasDeflectingComponent() {
         assertNotNull(deflectWizard.getComponent(DeflectingComponent.class),
                 "Deflecting Wizard should have Deflecting component");
     }
 
     @Test
-    public void testCreateSkeletonNotNull() {
+    void testCreateSkeletonNotNull() {
         assertNotNull(skeleton, "skeleton should not be null");
     }
 
     @Test
-    public void testSkeletonCombatStatsComponent() {
+    void testSkeletonCombatStatsComponent() {
         assertEquals(60, skeleton.getComponent(CombatStatsComponent.class).getHealth(),
                 "Health should be 100");
-        assertEquals(10, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
-                "BaseAttack should be 10");
+        assertEquals(0, skeleton.getComponent(CombatStatsComponent.class).getBaseAttack(),
+                "BaseAttack should be 0");
     }
 
     @Test
-    public void skeletonHasAnimationComponent() {
+    void skeletonHasAnimationComponent() {
         assertNotNull(skeleton.getComponent(AnimationRenderComponent.class),
                 "skeleton should have AnimationRenderComponent");
     }
 
     @Test
-    public void skeletonHasAnimationController() {
+    void skeletonHasAnimationController() {
         assertNotNull(skeleton.getComponent(SkeletonAnimationController.class),
                 "skeleton should have an Animation Controller");
     }

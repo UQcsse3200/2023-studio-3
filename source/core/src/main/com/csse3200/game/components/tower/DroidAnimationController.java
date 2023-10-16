@@ -92,31 +92,28 @@ public class DroidAnimationController extends Component {
     void animateDefault() { animator.startAnimation("idle");}
 
 
-    //TODO: For the time being, these items will be positioned here. Next, we should create a component that enables an entity to fire projectiles.
-
     /**
      * Fires a projectile upwards from the entity's current position.
      */
     void shootUp() {
-        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
                 entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
-        Projectile.setScale(new Vector2(0.5f,0.5f));
-        Projectile.setPosition((float) (entity.getPosition().x + 0.2),
+        projectile.setScale(new Vector2(0.5f,0.5f));
+        projectile.setPosition((float) (entity.getPosition().x + 0.2),
                 (float) (entity.getPosition().y + 0.5));
-        ServiceLocator.getEntityService().register(Projectile);
+        ServiceLocator.getEntityService().register(projectile);
     }
 
     /**
      * Fires a projectile downwards from the entity's current position.
      */
     void shootDown() {
-        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
+        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,
                 entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);
-        Projectile.setScale(new Vector2(0.5f,0.5f));
-        Projectile.setPosition((float) (entity.getPosition().x + 0.2),
-                (float) (entity.getPosition().y - 0.2));
-        ServiceLocator.getEntityService().register(Projectile);
-
+        projectile.setScale(new Vector2(0.5f,0.5f));
+        projectile.setPosition((float) (entity.getPosition().x + 0.2),
+                 (entity.getPosition().y));
+        ServiceLocator.getEntityService().register(projectile);
     }
 
 }

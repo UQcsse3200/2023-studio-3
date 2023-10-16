@@ -171,7 +171,6 @@ public class UpgradeUIComponent extends InputComponent {
         // Default values for the stats
         int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
         int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
-        turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());

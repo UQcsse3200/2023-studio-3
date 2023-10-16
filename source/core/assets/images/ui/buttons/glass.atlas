@@ -1,566 +1,699 @@
 
 glass.png
-size: 1024, 1024
+size: 2048, 2048
 format: RGBA8888
 filter: Linear, Linear
 repeat: none
 dot_gothic_16
   rotate: false
-  xy: 1, 893
+  xy: 1, 989
   size: 505, 107
   orig: 505, 107
   offset: 0, 0
   index: -1
 dot_gothic_32
   rotate: false
-  xy: 1, 651
+  xy: 509, 1527
   size: 505, 240
   orig: 505, 240
   offset: 0, 0
   index: -1
+Emulogic-zrEw
+  rotate: false
+  xy: 1, 763
+  size: 505, 224
+  orig: 505, 224
+  offset: 0, 0
+  index: -1
+determination_mono_18
+  rotate: false
+  xy: 1525, 1974
+  size: 505, 64
+  orig: 505, 64
+  offset: 0, 0
+  index: -1
+determination_mono_18_bold
+  rotate: false
+  xy: 509, 1769
+  size: 506, 106
+  orig: 506, 106
+  offset: 0, 0
+  index: -1
+determination_mono_22
+  rotate: false
+  xy: 1017, 1949
+  size: 506, 89
+  orig: 506, 89
+  offset: 0, 0
+  index: -1
+determination_mono_32
+  rotate: false
+  xy: 509, 1380
+  size: 503, 145
+  orig: 503, 145
+  offset: 0, 0
+  index: -1
+determination_mono_48_title
+  rotate: false
+  xy: 1, 1642
+  size: 506, 396
+  orig: 506, 396
+  offset: 0, 0
+  index: -1
+emulogic_18
+  rotate: false
+  xy: 1017, 1850
+  size: 505, 97
+  orig: 505, 97
+  offset: 0, 0
+  index: -1
+game_paused_24
+  rotate: false
+  xy: 1, 1587
+  size: 506, 53
+  orig: 506, 53
+  offset: 0, 0
+  index: -1
+game_paused_title
+  rotate: false
+  xy: 1, 657
+  size: 502, 104
+  orig: 502, 104
+  offset: 0, 0
+  index: -1
+glitch_24
+  rotate: false
+  xy: 509, 1877
+  size: 506, 161
+  orig: 506, 161
+  offset: 0, 0
+  index: -1
+glitch_title
+  rotate: false
+  xy: 1, 1098
+  size: 506, 487
+  orig: 506, 487
+  offset: 0, 0
+  index: -1
 UI_Glass_Arrow_Large_01a
   rotate: false
-  xy: 165, 583
+  xy: 965, 1346
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Arrow_Medium_01a
   rotate: false
-  xy: 263, 617
+  xy: 99, 167
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Arrow_Small_01a
   rotate: false
-  xy: 704, 900
+  xy: 251, 319
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Banner_01a
   rotate: false
-  xy: 508, 968
+  xy: 1017, 1816
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Banner_01b
   rotate: false
-  xy: 770, 934
+  xy: 403, 589
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Textfield_01a
   rotate: false
-  xy: 770, 934
+  xy: 403, 589
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Lock_01a1
   rotate: false
-  xy: 1, 617
+  xy: 509, 1194
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Release_01a3
   rotate: false
-  xy: 1, 617
+  xy: 509, 1194
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Lock_01a2
   rotate: false
-  xy: 508, 934
+  xy: 305, 623
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Release_01a2
   rotate: false
-  xy: 508, 934
+  xy: 305, 623
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Lock_01a3
   rotate: false
-  xy: 606, 968
+  xy: 1, 167
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Release_01a1
   rotate: false
-  xy: 606, 968
+  xy: 1, 167
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Lock_01a4
   rotate: false
-  xy: 1, 583
+  xy: 153, 319
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Press_01a1
   rotate: false
-  xy: 99, 617
+  xy: 1017, 1782
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Press_01a2
   rotate: false
-  xy: 508, 900
+  xy: 1115, 1816
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Press_01a3
   rotate: false
-  xy: 606, 934
+  xy: 509, 1160
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Press_01a4
   rotate: false
-  xy: 704, 968
+  xy: 607, 1194
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Large_Release_01a4
   rotate: false
-  xy: 704, 968
+  xy: 607, 1194
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Lock_01a1
   rotate: false
-  xy: 99, 583
+  xy: 403, 623
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Release_01a3
   rotate: false
-  xy: 99, 583
+  xy: 403, 623
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Lock_01a2
   rotate: false
-  xy: 197, 617
+  xy: 1115, 1782
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Release_01a2
   rotate: false
-  xy: 197, 617
+  xy: 1115, 1782
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Lock_01a3
   rotate: false
-  xy: 704, 934
+  xy: 1213, 1816
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Release_01a1
   rotate: false
-  xy: 704, 934
+  xy: 1213, 1816
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Lock_01a4
   rotate: false
-  xy: 802, 968
+  xy: 509, 1126
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Press_01a1
   rotate: false
-  xy: 1, 515
+  xy: 607, 1160
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Press_01a2
   rotate: false
-  xy: 508, 768
+  xy: 705, 1194
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Press_01a3
   rotate: false
-  xy: 606, 802
+  xy: 305, 555
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Press_01a4
   rotate: false
-  xy: 99, 549
+  xy: 1, 35
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Medium_Release_01a4
   rotate: false
-  xy: 99, 549
+  xy: 1, 35
   size: 64, 32
   orig: 64, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Lock_01a1 _1
   rotate: false
-  xy: 868, 968
+  xy: 469, 623
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Release_01a3
   rotate: false
-  xy: 868, 968
+  xy: 469, 623
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Lock_01a2_2
   rotate: false
-  xy: 1, 481
+  xy: 1181, 1782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Release_01a2
   rotate: false
-  xy: 1, 481
+  xy: 1181, 1782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Lock_01a3_3
   rotate: false
-  xy: 67, 515
+  xy: 1279, 1816
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Release_01a1
   rotate: false
-  xy: 67, 515
+  xy: 1279, 1816
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Lock_01a4_4
   rotate: false
-  xy: 508, 734
+  xy: 575, 1126
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Press_01a1_
   rotate: false
-  xy: 574, 768
+  xy: 673, 1160
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Press_01a2
   rotate: false
-  xy: 165, 549
+  xy: 771, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Press_01a3
   rotate: false
-  xy: 199, 583
+  xy: 305, 521
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Press_01a4
   rotate: false
-  xy: 297, 617
+  xy: 371, 555
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Button_Small_Release_01a4
   rotate: false
-  xy: 297, 617
+  xy: 371, 555
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Checkmark_Large_01a
   rotate: false
-  xy: 704, 866
+  xy: 1, 1
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Checkmark_Medium_01a
   rotate: false
-  xy: 738, 900
+  xy: 965, 1312
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Checkmark_Small_01a
   rotate: false
-  xy: 804, 934
+  xy: 99, 133
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Cross_Large_01a
   rotate: false
-  xy: 902, 968
+  xy: 251, 285
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Cross_Medium_01a
   rotate: false
-  xy: 1, 447
+  xy: 437, 589
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Cross_Small_01a
   rotate: false
-  xy: 35, 481
+  xy: 1215, 1782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Dropdown_01a
   rotate: false
-  xy: 101, 515
+  xy: 1313, 1816
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Dropdown_Handle_01a
   rotate: false
-  xy: 508, 700
+  xy: 609, 1126
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Fillbar_01a
   rotate: false
-  xy: 542, 734
+  xy: 707, 1160
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Fillbar_Filler_01a
   rotate: false
-  xy: 608, 768
+  xy: 805, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Frame_Horizontal_01a
   rotate: false
-  xy: 1, 549
+  xy: 305, 589
   size: 96, 32
   orig: 96, 32
   offset: 0, 0
   index: -1
 UI_Glass_Frame_Inward_01a
   rotate: false
-  xy: 508, 802
+  xy: 1, 69
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 UI_Glass_Frame_Lite_01a
   rotate: false
-  xy: 199, 549
+  xy: 305, 487
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Frame_Standard_01a
   rotate: false
-  xy: 606, 836
+  xy: 153, 221
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 UI_Glass_Frame_Vertical_01a
   rotate: false
-  xy: 1, 349
+  xy: 305, 389
   size: 32, 96
   orig: 32, 96
   offset: 0, 0
   index: -1
 UI_Glass_Minus_Large_01a
   rotate: false
-  xy: 233, 583
+  xy: 339, 521
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Minus_Medium_01a
   rotate: false
-  xy: 331, 617
+  xy: 405, 555
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Minus_Small_01a
   rotate: false
-  xy: 738, 866
+  xy: 965, 1278
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Plus_Large_01a
   rotate: false
-  xy: 772, 900
+  xy: 99, 99
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Plus_Medium_01a
   rotate: false
-  xy: 838, 934
+  xy: 251, 251
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Plus_Small_01a
   rotate: false
-  xy: 936, 968
+  xy: 1249, 1782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Scrollbar_01a
   rotate: false
-  xy: 35, 447
+  xy: 1347, 1816
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Scrollbar_Handle_01a
   rotate: false
-  xy: 69, 481
+  xy: 643, 1126
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Select_01a1
   rotate: false
-  xy: 135, 515
+  xy: 741, 1160
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Select_01a2
   rotate: false
-  xy: 508, 666
+  xy: 839, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Select_01a4
   rotate: false
-  xy: 508, 666
+  xy: 839, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Select_01a3
   rotate: false
-  xy: 542, 700
+  xy: 305, 355
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slider_01a
   rotate: false
-  xy: 576, 734
+  xy: 339, 487
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slider_Filler_01a
   rotate: false
-  xy: 1, 315
+  xy: 373, 521
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slider_Handle_01a
   rotate: false
-  xy: 233, 549
+  xy: 965, 1244
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slot_Available_01a
   rotate: false
-  xy: 267, 583
+  xy: 1283, 1782
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slot_Selected_01a
   rotate: false
-  xy: 365, 617
+  xy: 1381, 1816
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Slot_Unavailable_01a
   rotate: false
-  xy: 772, 866
+  xy: 677, 1126
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Toggle_Bar_01a
   rotate: false
-  xy: 806, 900
+  xy: 775, 1160
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Toggle_Cover_01a
   rotate: false
-  xy: 872, 934
+  xy: 873, 1194
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 UI_Glass_Toggle_Handle_01a
   rotate: false
-  xy: 970, 968
+  xy: 339, 453
   size: 32, 32
   orig: 32, 32
+  offset: 0, 0
+  index: -1
+Weapon-Tower-Default
+  rotate: false
+  xy: 153, 353
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+droid-tower-default
+  rotate: false
+  xy: 509, 1228
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+fire-tower-default
+  rotate: false
+  xy: 1, 505
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+imageedit_2_8132799771
+  rotate: false
+  xy: 661, 1228
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+mine-tower-default
+  rotate: false
+  xy: 1, 353
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+stun-tower-default
+  rotate: false
+  xy: 153, 505
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+tnt-tower-default
+  rotate: false
+  xy: 813, 1228
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: -1
+wall-tower-default
+  rotate: false
+  xy: 1, 201
+  size: 150, 150
+  orig: 150, 150
   offset: 0, 0
   index: -1

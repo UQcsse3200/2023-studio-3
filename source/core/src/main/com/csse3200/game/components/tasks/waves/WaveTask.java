@@ -82,8 +82,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.level = (LevelWaves) this.owner.getEntity();
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-//    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
-    this.waveStart.play();
+    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
     // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
   }
 
@@ -94,17 +93,10 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   @Override
   public void update() {
     if (ServiceLocator.getWaveService().getEnemyCount() == 0) {
-//      currentWaveIndex++;
-
-      long currentTime = ServiceLocator.getTimeSource().getTime();
-      // Setting the timestamp for when the next mobs will spawn.
-      // Currently, the delay of mobs spawning after wave start
-      int spawnDelay = ServiceLocator.getWaveService().getSpawnDelay();
-      ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
-      if (currentWaveIndex == this.level.getNumWaves()) {
-        logger.info("No waves remaining, level completed");
+      if (currentWaveIndex == this.level.getNumWaves() - 1) {
+        logger.info("No waves remaining");
         ServiceLocator.getWaveService().setLevelCompleted();
 
       } else {
@@ -112,22 +104,23 @@ public class WaveTask extends DefaultTask implements PriorityTask {
 //        logger.info("No enemies remaining, begin next wave");
         if (nextWaveAt == 0) {
           logger.info("Next wave in 10 seconds");
+          this.waveEnd.play();
           nextWaveAt = globalTime.getTime() + 10000;
           ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);
         } else {
           if (globalTime.getTime() >= nextWaveAt || ServiceLocator.getWaveService().shouldSkip()) {
-            logger.info("Next wave starting");
+            this.waveStart.play();
             ServiceLocator.getWaveService().toggleDelay();
             currentWaveIndex++;
             ServiceLocator.getWaveService().setNextWaveTime(0);
             nextWaveAt = 0;
-            this.waveEnd.play();
             this.waveInProgress = true;
             this.level.setWaveIndex(currentWaveIndex);
             // Set the service wave count to the current wave index.
             ServiceLocator.getWaveService().setWaveCount(currentWaveIndex);
             this.currentWave = this.level.getWave(currentWaveIndex);
             ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
+            logger.info("Next wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
             //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
           }
         }

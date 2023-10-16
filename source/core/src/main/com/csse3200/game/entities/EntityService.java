@@ -1,19 +1,10 @@
 package com.csse3200.game.entities;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Array;
-import com.csse3200.game.areas.terrain.TerrainComponent;
-import com.csse3200.game.areas.terrain.TerrainFactory;
-import com.csse3200.game.components.npc.DropComponent;
-import com.csse3200.game.input.DropInputComponent;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
-import com.csse3200.game.rendering.RenderService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,10 +49,15 @@ public class EntityService {
    * Update all registered entities. Should only be called from the main game loop.
    */
   public void update() {
-    for (Entity entity : entities) {
+    for (int i = 0; i < entities.size; i++) {
+      Entity entity = entities.get(i);
       entity.earlyUpdate();
       entity.update();
     }
+//    for (Entity entity : entities) {
+//      entity.earlyUpdate();
+//      entity.update();
+//    }
   }
 
   /**
@@ -102,7 +98,7 @@ public class EntityService {
    * @return An array containing entities within the given radius.
    */
   public Array<Entity> getNearbyEntities(Entity source, float radius) {
-    Array<Entity> nearbyEntities = new Array<Entity>();
+    Array<Entity> nearbyEntities = new Array<>();
     Array<Entity> allEntities = ServiceLocator.getEntityService().getEntities();
     for (int i = 0; i < allEntities.size; i++) {
       Entity otherEntity = allEntities.get(i);
@@ -128,7 +124,7 @@ public class EntityService {
    * @return An array containing entities within the given radius.
    */
   public Array<Entity> getEntitiesInLayer(Entity source, float radius, short layer) {
-    Array<Entity> entities = new Array<Entity>();
+    Array<Entity> entitiesInLayer = new Array<>();
     Array<Entity> allEntities = getNearbyEntities(source, radius);
 
     for (int i = 0; i < allEntities.size; i++) {
@@ -136,15 +132,12 @@ public class EntityService {
 
       // check targets layer
       HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-      if (targetHitbox == null) {
+      if (targetHitbox == null || (!PhysicsLayer.contains(layer, targetHitbox.getLayer()))) {
         continue;
       }
-      if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {
-        continue;
-      }
-      entities.add(targetEntity);
+      entitiesInLayer.add(targetEntity);
     }
-    return entities;
+    return entitiesInLayer;
   }
 
   /**
@@ -212,20 +205,20 @@ public class EntityService {
   /**
    * Determine whether there are any entities within the given tile position (x and y range). Checks for out of bounds
    * click location
-   * @param x_coord the top right x coordinate of the tile
-   * @param y_coord the top right y coordinate of the tile
+   * @param xCoord the top right x coordinate of the tile
+   * @param yCoord the top right y coordinate of the tile
    * @return true if the tile is occupied, false otherwise
    */
-  public boolean entitiesInTile(int x_coord, int y_coord) {
+  public boolean entitiesInTile(int xCoord, int yCoord) {
     TiledMapTileLayer mp;
     try {
       mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);
     } catch (NullPointerException e) {
-      // MapService is not running
+      // MapService is not running - consider this occupied (invalid tile)
       return true;
     }
-    if (mp.getCell(x_coord, y_coord) != null) {
-      Entity entity = checkEntityAtPosition(x_coord, y_coord);
+    if (mp.getCell(xCoord, yCoord) != null) {
+      Entity entity = checkEntityAtPosition(xCoord, yCoord);
       return entity != null;
     }
     return true;

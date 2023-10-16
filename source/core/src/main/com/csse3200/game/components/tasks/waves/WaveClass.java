@@ -1,18 +1,14 @@
 package com.csse3200.game.components.tasks.waves;
 
-import com.badlogic.gdx.math.GridPoint2;
-import com.csse3200.game.entities.Entity;
+
 import com.csse3200.game.services.GameTime;
-import com.csse3200.game.services.ServiceLocator;
+
 
 import java.util.*;
 
 public class WaveClass {
   private HashMap<String, int[]> entities;
-  private GameTime gameTime;
-  private long startTime;
   private List<Tuple> wave;
-  private Random rand = new Random();
   private int mobIndex;
 
   /**

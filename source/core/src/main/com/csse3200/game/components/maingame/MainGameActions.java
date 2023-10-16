@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
  */
 public class MainGameActions extends Component {
   private static final Logger logger = LoggerFactory.getLogger(MainGameActions.class);
-  private GdxGame game;
+  private final GdxGame game;
 
   public MainGameActions(GdxGame game) {
     this.game = game;
@@ -21,6 +21,7 @@ public class MainGameActions extends Component {
   public void create() {
     entity.getEvents().addListener("exit", this::onExit);
     entity.getEvents().addListener("lose", this::onLose);
+    //entity.getEvents().addListener("win", this::onWin);
   }
 
   /**
@@ -34,4 +35,6 @@ public class MainGameActions extends Component {
   private void onLose() {
     game.setScreen(GdxGame.ScreenType.LOSING_SCREEN);
   }
+
+//  private void onWin() { game.setScreen(GdxGame.ScreenType.WIN_SCREEN);}  // TODO : Uncomment this once win screen implemented
 }
