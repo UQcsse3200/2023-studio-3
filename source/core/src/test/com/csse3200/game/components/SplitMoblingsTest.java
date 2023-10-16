@@ -31,6 +31,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -68,6 +69,9 @@ class SplitMoblingsTest {
 
     WaveService waveService = new WaveService();
     ServiceLocator.registerWaveService(waveService);
+
+    GameEndService gameEndService = new GameEndService();
+    ServiceLocator.registerGameEndService(gameEndService);
 
     baseMob = createSplitMob(BASE_AMOUNT);
   }
