@@ -55,7 +55,7 @@ public class WaveFactory {
   ));
 
   private static final ArrayList<ArrayList<String>> lvl3Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("SplittingRocky"
+      new ArrayList<>(Arrays.asList("Necromancer"
       )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
       )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
       )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
