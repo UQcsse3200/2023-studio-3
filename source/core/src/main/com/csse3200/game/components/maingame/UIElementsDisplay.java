@@ -26,6 +26,7 @@ public class UIElementsDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(UIElementsDisplay.class);
     private static final float Z_INDEX = 2f;
     private final Table buttonTable = new Table();
+    private final Table timerTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
 
@@ -44,15 +45,14 @@ public class UIElementsDisplay extends UIComponent {
                 + ServiceLocator.getWaveService().getEnemyCount());
 
         remainingMobsButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 230);
-        remainingMobsButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 218,
+        remainingMobsButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 217,
                 Gdx.graphics.getHeight() - 230, 1f, Interpolation.fastSlow)));
 
-        buttonTable.top().right().padTop(130f).padRight(80f);
+        buttonTable.top().right().padTop(160f).padRight(80f);
         buttonTable.setFillParent(true);
 
         buttonTable.add(remainingMobsButton).right();
-        buttonTable.row();
-        buttonTable.add(timerButton);
+
 
         stage.addActor(buttonTable);
 
@@ -82,10 +82,11 @@ public class UIElementsDisplay extends UIComponent {
         timerButton = ButtonFactory.createButton("Next wave in:"
                 + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         timerButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 300);
-        timerButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 445,
+        timerButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 435,
                 Gdx.graphics.getHeight() - 300, 1f, Interpolation.fastSlow)));
+        timerButton.setDisabled(true);
         buttonTable.row();
-        buttonTable.add(timerButton).padRight(10f);
+        buttonTable.add(timerButton);
     }
 
     /**
@@ -106,10 +107,12 @@ public class UIElementsDisplay extends UIComponent {
             String finalTime = String.format("%02d:%02d", minutes, seconds);
             if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
                 if (!findActor(timerButton)) {
+                    remainingMobsButton.setDisabled(false);
                     createTimerButton();
                 }
                 timerButton.setText("Next wave in: " + finalTime);
             } else {
+                remainingMobsButton.setDisabled(true);
                 timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
                 stage.act();
                 stage.draw();

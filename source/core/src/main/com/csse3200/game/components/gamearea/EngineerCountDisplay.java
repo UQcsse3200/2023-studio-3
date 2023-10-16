@@ -1,8 +1,10 @@
 package com.csse3200.game.components.gamearea;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -34,6 +36,7 @@ public class EngineerCountDisplay extends UIComponent {
         table.top().left();
         table.setFillParent(true);
         table.padTop(80f).padLeft(20f);
+        table.setDebug(true);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/engineers/engineerBanner.png")));
@@ -54,7 +57,10 @@ public class EngineerCountDisplay extends UIComponent {
         table.add(engineerTb).width(engineerTb.getWidth() * 0.5f).height(engineerTb.getHeight() * 0.5f);
         stage.addActor(table);
 
-        engineerTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
+        // Animate the engineer count label
+        engineerTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 145);
+        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20, Gdx.graphics.getHeight() - 145,
+                1f, Interpolation.fastSlow)));
     }
 
     /**
