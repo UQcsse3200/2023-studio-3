@@ -29,11 +29,9 @@ public class MobDodgeTask extends MobTask {
    * Initialises a mob dodge task with a specified wander range, wait time, and
    * priority level.
    * 
-   * @param wanderRange Distance in X and Y the entity can move from its position
-   *                    when start() is
-   *                    called.
-   * @param waitTime    How long in seconds to wait between wandering.
-   * @param priority    Priority level compared to other added tasks.
+   * @param mobType Distance in X and Y the entity can move from its position
+   *                    when start() is called.
+   * @param priority Priority level compared to other added tasks.
    */
   public MobDodgeTask(MobType mobType, int priority) {
     super(mobType);
