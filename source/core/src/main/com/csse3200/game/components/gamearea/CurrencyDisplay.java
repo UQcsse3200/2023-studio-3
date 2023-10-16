@@ -59,7 +59,6 @@ public class CurrencyDisplay extends UIComponent {
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
         table.row();
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
-//        table.setDebug(true);
         stage.addActor(table);
 
         scrapsTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 205);
