@@ -73,6 +73,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                         logger.debug("Continue button clicked");
                         click.play(0.5f);
                         closeSound.play(0.5f);
+                        ServiceLocator.getTimeSource().setPaused(false);
                         entity.dispose();
                     }
                 });
@@ -109,10 +110,11 @@ public class PauseMenuButtonComponent extends UIComponent {
 
                     @Override
                     public boolean keyUp (InputEvent event, int keycode) {
-                        if (keycode == Input.Keys.ESCAPE) {
-                            game.getScreen().resume();
+                        if (keycode == Input.Keys.ESCAPE && ServiceLocator.getTimeSource().getPaused()) {
                             logger.debug("Closing pause menu with escape key");
-                            closeSound.play(0.4f);
+                            click.play(0.5f);
+                            closeSound.play(0.5f);
+                            ServiceLocator.getTimeSource().setPaused(false);
                             entity.dispose();
                             return true;
                         }

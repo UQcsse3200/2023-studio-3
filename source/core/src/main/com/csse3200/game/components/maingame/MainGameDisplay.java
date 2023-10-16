@@ -130,7 +130,7 @@ public class MainGameDisplay extends UIComponent {
                         logger.debug("Pause button clicked");
                         openSound.play(0.4f);
                         PauseMenuFactory.createPauseMenu(game);
-                        game.getScreen().pause();
+                        ServiceLocator.getTimeSource().setPaused(true);
                     }
                 });
 
@@ -139,11 +139,11 @@ public class MainGameDisplay extends UIComponent {
                 new InputListener() {
                     @Override
                     public boolean keyUp(InputEvent event, int keycode) {
-//                        MainGameScreen screen = (MainGameScreen) game.getScreen();
-                        if ((keycode == Input.Keys.ESCAPE)) {
+                        if ((keycode == Input.Keys.ESCAPE) && !ServiceLocator.getTimeSource().getPaused()) {
                             game.getScreen().pause();
                             openSound.play(0.4f);
                             PauseMenuFactory.createPauseMenu(game);
+                            ServiceLocator.getTimeSource().setPaused(true);
                             return true;
                         }
                         return false;

@@ -98,7 +98,6 @@ public class MainGameScreen extends ScreenAdapter {
   private Texture backgroundTexture;
   private Music music;
   private final Array<String> ambientSounds = new Array<>(false, 5, String.class);
-  private boolean paused = false;
 
   public MainGameScreen(GdxGame game) {
     this.game = game;
@@ -235,18 +234,12 @@ public class MainGameScreen extends ScreenAdapter {
 
   @Override
   public void pause() {
-    paused = true;
     logger.info("Game paused");
   }
 
   @Override
   public void resume() {
-    paused = false;
     logger.info("Game resumed");
-  }
-
-  public boolean getPaused() {
-    return paused;
   }
 
   @Override
