@@ -25,6 +25,11 @@ public class DragonKnightAnimationController extends Component {
         entity.getEvents().addListener("mob_walk", this::animateWalk);
         entity.getEvents().addListener("mob_attack", this::animateAttack);
         entity.getEvents().addListener("mob_death", this::animateDeath);
+
+        entity.getEvents().addListener("wanderStart", this::animateWalk);
+        entity.getEvents().addListener("shootStart", this::animateAttack);
+        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
     }
 
     void animateWalk() {
@@ -39,6 +44,9 @@ public class DragonKnightAnimationController extends Component {
         animator.startAnimation("dragon_knight_death");
     }
 
-
+	void animateFreeze()
+	{
+		animator.startAnimation("dragon_knight_freeze");
+	}
 }
 

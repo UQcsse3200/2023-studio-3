@@ -10,6 +10,22 @@ import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
+import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
+import com.csse3200.game.components.projectile.StunEffectProjectileAnimationController;
+import com.csse3200.game.components.projectile.BurnEffectProjectileAnimationController;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.components.npc.DragonKnightAnimationController;
+import com.csse3200.game.components.npc.FireWormAnimationController;
+import com.csse3200.game.components.npc.SkeletonAnimationController;
+import com.csse3200.game.components.npc.WizardAnimationController;
+import com.csse3200.game.components.npc.WaterQueenAnimationController;
+import com.csse3200.game.components.npc.WaterSlimeAnimationController;
+import com.csse3200.game.ai.tasks.AITaskComponent;
 
 /**
  * When this entity touches a valid enemy's hitbox, deal damage to them and
@@ -76,24 +92,123 @@ public class TouchAttackComponent extends Component {
   }
 
   public void onCollisionStart(Fixture me, Fixture other) {
-    if (hitboxComponent.getFixture() != me) {
-      // Not triggered by hitbox, ignore
-      return;
-    }
-
-    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
-      // Doesn't match our target layer, ignore
-      return;
-    }
-
+		if (me==null || hitboxComponent==null || hitboxComponent.getFixture() != me) {
+		  // Not triggered by hitbox, ignore
+		  return;
+		}
+		if(other!=null)
+		{
+			if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+			  // Doesn't match our target layer, ignore
+			  return;
+			}
+			Component deflectComponent = ((BodyUserData) other.getBody().getUserData()).entity.getComponent(DeflectingComponent.class);
+			if (deflectComponent != null && deflectComponent.enabled)
+				return;
+		}else
+			return;
     // Try to attack target.
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
 
-    // If enemy has deflecting component, don't delete it.
-    Component deflectComponent = target.getComponent(DeflectingComponent.class);
-    if (deflectComponent != null && deflectComponent.enabled)
-      return;
-
+	EngineerBulletsAnimationController engineerBulletsAnimationController;
+	ProjectileAnimationController projectileAnimationController;
+	SnowBallProjectileAnimationController snowBallProjectileAnimationController;
+	StunEffectProjectileAnimationController stunEffectProjectileAnimationController;
+	BurnEffectProjectileAnimationController burnEffectProjectileAnimationController;
+	if((engineerBulletsAnimationController=entity.getComponent(EngineerBulletsAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+	if((projectileAnimationController=entity.getComponent(ProjectileAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+	if((burnEffectProjectileAnimationController=entity.getComponent(BurnEffectProjectileAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 800/*START_SPEED*frames*1000ms*/);
+	}else
+	if((snowBallProjectileAnimationController=entity.getComponent(SnowBallProjectileAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 200/*START_SPEED*frames*1000ms*/);
+		
+		AITaskComponent aiTaskComponent;
+		if((aiTaskComponent=target.getComponent(AITaskComponent.class))!=null)
+		{
+			aiTaskComponent.freezed = true;
+			PhysicsMovementComponent physicsMovementComponent;
+			if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+				physicsMovementComponent.setMoving(false);
+			new Timer().schedule(new TimerTask() {
+			  public void run() {
+				aiTaskComponent.freezed = false;
+				PhysicsMovementComponent physicsMovementComponent;
+				if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+					physicsMovementComponent.setMoving(true);
+				target.getEvents().trigger("wanderStart");
+			  }
+			}, 5000);
+		}
+		target.getEvents().trigger("freeze");
+		/*else
+			if(aiTaskComponent!=null)
+				aiTaskComponent.freezed = false;*/
+	}else
+	if((stunEffectProjectileAnimationController=entity.getComponent(StunEffectProjectileAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 900/*START_SPEED*frames*1000ms*/);
+		
+		AITaskComponent aiTaskComponent;
+		if((aiTaskComponent=target.getComponent(AITaskComponent.class))!=null)
+		{
+			aiTaskComponent.freezed = true;
+			PhysicsMovementComponent physicsMovementComponent;
+			if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+				physicsMovementComponent.setMoving(false);
+			new Timer().schedule(new TimerTask() {
+			  public void run() {
+				aiTaskComponent.freezed = false;
+				PhysicsMovementComponent physicsMovementComponent;
+				if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
+					physicsMovementComponent.setMoving(true);
+			  }
+			}, 1000);
+		}
+	}
     CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);
     if (targetStats != null) {
       // If entity has abilities, pick one at random and apply it else use baseAttack

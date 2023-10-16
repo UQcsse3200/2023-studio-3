@@ -32,6 +32,10 @@ public class WizardAnimationController extends Component {
         entity.getEvents().addListener("mob_attack", this::animateAttack);
         entity.getEvents().addListener("mob_death", this::animateDeath);
 
+        entity.getEvents().addListener("wanderStart", this::animateWalk);
+        entity.getEvents().addListener("shootStart", this::animateAttack);
+        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
 
     }
 
@@ -48,5 +52,10 @@ public class WizardAnimationController extends Component {
     void animateDeath() {
         animator.startAnimation("wizard_death");
     }
+	
+	void animateFreeze()
+	{
+		animator.startAnimation("wizard_freeze");
+	}
 }
 

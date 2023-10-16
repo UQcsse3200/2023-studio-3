@@ -16,6 +16,8 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.npc.XenoAnimationController;
 
 /**
  * Task that allows mobs to shoot projectiles or melee attack towers
@@ -83,11 +85,14 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public void update() {
-    updateMobState();
-
-    if (mobState == STATE.STOW) {
-      status = Status.FINISHED;
-    }
+    
+	if(!owner.getEntity().getComponent(AITaskComponent.class).freezed)
+	{
+		updateMobState();
+		if (mobState == STATE.STOW) {
+		  status = Status.FINISHED;
+		}
+	}
   }
 
   /**
@@ -95,66 +100,64 @@ public class MobMeleeAttackTask extends DefaultTask implements PriorityTask {
    * triggers the appropriate events corresponding to the STATE enum.
    */
   public void updateMobState() {
-    switch (mobState) {
+			switch (mobState) {
+			  case IDLE -> {
+				if (isTargetVisible()) {
+				  // targets detected in idle mode - start deployment
+				  owner.getEntity().getEvents().trigger(DEPLOY);
+				  mobState = STATE.DEPLOY;
+				}
+			  }
 
-      case IDLE -> {
-        if (isTargetVisible()) {
-          // targets detected in idle mode - start deployment
-          owner.getEntity().getEvents().trigger(DEPLOY);
-          mobState = STATE.DEPLOY;
-        }
-      }
+			  case DEPLOY -> {
+				// currently deploying,
+				if (isTargetVisible() || this.meleeOrProjectile() != null) {
+				  owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
+				  this.owner.getEntity().getEvents().trigger(FIRING);
+				  mobState = STATE.FIRING;
+				} else {
+				  this.owner.getEntity().getEvents().trigger(STOW);
+				  mobState = STATE.STOW;
+				}
+			  }
 
-      case DEPLOY -> {
-        // currently deploying,
-        if (isTargetVisible() || this.meleeOrProjectile() != null) {
-          owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
-          this.owner.getEntity().getEvents().trigger(FIRING);
-          mobState = STATE.FIRING;
-        } else {
-          this.owner.getEntity().getEvents().trigger(STOW);
-          mobState = STATE.STOW;
-        }
-      }
+			  case FIRING -> {
+				// targets gone or cannot be attacked - stop firing
+				if (!isTargetVisible() || this.meleeOrProjectile() == null) {
+				  this.owner.getEntity().getEvents().trigger(STOW);
+				  mobState = STATE.STOW;
+				} else {
+				  if (this.meleeOrProjectile() instanceof Melee) {
+					TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
+					HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
+					attackComp.onCollisionStart(hitboxComp.getFixture(), target);
+					this.owner.getEntity().getEvents().trigger("shootStart");
+				  } else {
+					Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+					newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+					newProjectile.setScale(-0.0f, 0.0f);
+					ServiceLocator.getEntityService().register(newProjectile);
 
-      case FIRING -> {
-        // targets gone or cannot be attacked - stop firing
-        if (!isTargetVisible() || this.meleeOrProjectile() == null) {
-          this.owner.getEntity().getEvents().trigger(STOW);
-          mobState = STATE.STOW;
-        } else {
-          if (this.meleeOrProjectile() instanceof Melee) {
-            TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
-            HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
-            attackComp.onCollisionStart(hitboxComp.getFixture(), target);
-			
-            this.owner.getEntity().getEvents().trigger("shootStart");
-          } else {
-            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            newProjectile.setScale(-0.0f, 0.0f);
-            ServiceLocator.getEntityService().register(newProjectile);
+		//            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
+					this.owner.getEntity().getEvents().trigger(FIRING);
+					mobState = STATE.STOW;
+				  }
+				}
+				owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
 
-//            System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
-            this.owner.getEntity().getEvents().trigger(FIRING);
-            mobState = STATE.STOW;
-          }
-        }
-        owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);
+			  }
 
-      }
-
-      case STOW -> {
-        // currently stowing
-        if (isTargetVisible()) {
-          owner.getEntity().getEvents().trigger(DEPLOY);
-          mobState = STATE.DEPLOY;
-        } else {
-          owner.getEntity().getEvents().trigger(IDLE);
-          mobState = STATE.IDLE;
-        }
-      }
-    }
+			  case STOW -> {
+				// currently stowing
+				if (isTargetVisible()) {
+				  owner.getEntity().getEvents().trigger(DEPLOY);
+				  mobState = STATE.DEPLOY;
+				} else {
+				  owner.getEntity().getEvents().trigger(IDLE);
+				  mobState = STATE.IDLE;
+				}
+			  }
+			}
   }
 
   /**

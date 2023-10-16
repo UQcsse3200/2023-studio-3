@@ -25,6 +25,13 @@ dragon_knight_attack
   orig: 99, 99
   offset: 0, 0
   index: -1
+dragon_knight_freeze
+  rotate: false
+  xy: 407, 2
+  size: 99, 99
+  orig: 99, 99
+  offset: 0, 0
+  index: -1
 dragon_knight_attack
   rotate: false
   xy: 2, 308
