@@ -23,7 +23,6 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
-    private LevelProgressBar progressbar;
 
     @Override
     public void create() {
@@ -38,7 +37,7 @@ public class UIElementsDisplay extends UIComponent {
 
         remainingMobsButton = ButtonFactory.createButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount());
-        buttonTable.top().right().padTop(160f).padRight(80f);
+        buttonTable.top().right().padTop(130f).padRight(80f);
 
         buttonTable.setFillParent(true);
 
@@ -48,16 +47,7 @@ public class UIElementsDisplay extends UIComponent {
 
         stage.addActor(buttonTable);
 
-        progressbar = new LevelProgressBar(500, 10);
-        progressbar.setPosition(500, Gdx.graphics.getHeight() - 200);
-        stage.addActor(progressbar);
-
         createTimerButton();
-    }
-
-    public void updateLevelProgressBar() {
-        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
-        progressbar.setValue(totalSecs);
     }
 
     /**
@@ -142,6 +132,5 @@ public class UIElementsDisplay extends UIComponent {
     public void dispose() {
         super.dispose();
         buttonTable.clear();
-        progressbar.clear();
     }
 }
