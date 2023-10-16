@@ -5,7 +5,7 @@ public class FireworksTowerConfig {
     private int baseAttack = 0;
     private int cost = 1;
     private int attackRate = 0;
-    public int incomeRate = 0;
+    private int incomeRate = 0;
 
     /**
      * Function for getting tower's health

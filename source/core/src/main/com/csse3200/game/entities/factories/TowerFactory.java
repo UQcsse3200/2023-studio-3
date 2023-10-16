@@ -32,7 +32,7 @@ import java.util.Set;
  * Factory to create a tower entity.
  *
  * Predefined tower properties are loaded from a config stored as a json file and should have
- * the properties stores in 'baseTowerConfigs'.
+ * the properties stores in 'BaseTowerConfigs'.
  */
 public class TowerFactory {
     private static final Logger logger = LoggerFactory.getLogger(TowerFactory.class);
@@ -113,8 +113,8 @@ public class TowerFactory {
     private static final String ECO_IDLE = "idle";
     private static final float ECO_IDLE_SPEED = 0.3f;
 
-    private static final baseTowerConfigs configs =
-            FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
+    private static final BaseTowerConfigs configs =
+            FileLoader.readClass(BaseTowerConfigs.class, "configs/tower.json");
 
     /**
      * Creates an income tower that generates scrap
@@ -122,7 +122,7 @@ public class TowerFactory {
      */
     public static Entity createIncomeTower() {
         Entity income = createBaseTower();
-        IncomeTowerConfig config = configs.income;
+        IncomeTowerConfig config = configs.getIncome();
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
         CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.getIncomeRate());
@@ -155,7 +155,7 @@ public class TowerFactory {
      */
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
-        WallTowerConfig config = configs.wall;
+        WallTowerConfig config = configs.getWall();
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new WallTowerDestructionTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
 
@@ -191,7 +191,7 @@ public class TowerFactory {
                 .setLayer(PhysicsLayer.NONE)
                 .setSensor(true);
         TNTTower.getComponent(ColliderComponent.class).setSensor(true);
-        TNTTowerConfigs config = configs.TNTTower;
+        TNTTowerConfigs config = configs.getTNTTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
@@ -227,7 +227,7 @@ public class TowerFactory {
      */
     public static Entity createDroidTower() {
         Entity droidTower = createBaseTower();
-        DroidTowerConfig config = configs.DroidTower;
+        DroidTowerConfig config = configs.getDroidTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new DroidCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -264,7 +264,7 @@ public class TowerFactory {
      */
     public static Entity createWeaponTower() {
         Entity weapon = createBaseTower();
-        WeaponTowerConfig config = configs.weapon;
+        WeaponTowerConfig config = configs.getWeapon();
 
         // AiTaskComponent will run the tower task which carries out detection of targets and trigger events
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -298,7 +298,7 @@ public class TowerFactory {
      */
     public static Entity createFireTower() {
         Entity fireTower = createBaseTower();
-        FireTowerConfig config = configs.fireTower;
+        FireTowerConfig config = configs.getFireTower();
 
         //Component that handles triggering events and animations
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -331,7 +331,7 @@ public class TowerFactory {
      */
     public static Entity createStunTower() {
         Entity stunTower = createBaseTower();
-        StunTowerConfig config = configs.stunTower;
+        StunTowerConfig config = configs.getStunTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new StunTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -362,7 +362,7 @@ public class TowerFactory {
      */
     public static Entity createFireworksTower() {
         Entity fireworksTower = createBaseTower();
-        FireworksTowerConfig config = configs.fireworksTower;
+        FireworksTowerConfig config = configs.getFireworksTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -391,7 +391,7 @@ public class TowerFactory {
      */
     public static Entity createPierceTower() {
         Entity pierceTower = createBaseTower();
-        PierceTowerConfig config = configs.pierceTower;
+        PierceTowerConfig config = configs.getPierceTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -422,7 +422,7 @@ public class TowerFactory {
      */
     public static Entity createRicochetTower() {
         Entity ricochetTower = createBaseTower();
-        RicochetTowerConfig config = configs.ricochetTower;
+        RicochetTowerConfig config = configs.getRicochetTower();
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
