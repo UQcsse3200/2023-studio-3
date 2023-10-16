@@ -10,6 +10,8 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -41,6 +43,8 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private long reloadTime;
+
+    private static final Logger logger = LoggerFactory.getLogger(EngineerCombatTask.class);
 
     private ArrayList<RaycastHit> hits = new ArrayList<>();
     private final RaycastHit hit = new RaycastHit();
@@ -182,16 +186,17 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
      */
     public Vector2 fetchTarget() {
         // Initial nearest position for comparison
-        int lowest = 10;
+        float currentClosest = Float.MAX_VALUE;
 
         Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
                 owner.getEntity().getCenterPosition().y);
+        Vector2 enggPosition = owner.getEntity().getCenterPosition();
 
-        // Find the nearest target from the array of targets
-        for (Vector2 tgt : targets){
-            if (Math.abs(tgt.y - nearest.y) < lowest) {
-                lowest = (int)Math.abs(tgt.y - nearest.y);
-                nearest = tgt;
+        for (Vector2 target : targets) {
+            float distance = enggPosition.dst(target); // euclidean distance
+            if (distance < currentClosest) {
+                currentClosest = distance;
+                nearest = target;
             }
         }
         return nearest;
