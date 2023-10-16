@@ -14,7 +14,7 @@ public class WallTowerAnimationController extends Component{
 
     //animation name constants
     private static final String DEATH_ANIM = "Death";
-    private static final String Idle_ANIM = "Idle";
+    private static final String IDLE_ANIM = "Idle";
     //here we can add the sounds for the implemented animations
 
     AnimationRenderComponent animator;
@@ -29,13 +29,15 @@ public class WallTowerAnimationController extends Component{
         entity.getEvents().addListener(DEATH, this::animateDeath);
         entity.getEvents().addListener(IDLE, this::animateIdle);
     }
+
     /**
      * Starts the idle animation.
      */
     void animateDeath() {
         animator.startAnimation(DEATH_ANIM);
     }
+
     void animateIdle(){
-        animator.startAnimation(Idle_ANIM);
+        animator.startAnimation(IDLE_ANIM);
     }
 }
