@@ -24,7 +24,8 @@ public class EngineerInputComponent extends InputComponent {
     private EntityService entityService;
 
     public Entity selectedEngineer = null;
-    private boolean moveClicked = false;
+
+    private final String OUTLINE_STRING = "_outline";
 
     public EngineerInputComponent(Game game, Camera camera) {
         this.game = game;
@@ -32,8 +33,9 @@ public class EngineerInputComponent extends InputComponent {
         this.entityService = ServiceLocator.getEntityService();
     }
 
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);
+        Vector3 worldCoordinates = new Vector3(screenX , screenY, 0);
         camera.unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         camera.project(worldCoordinates);
@@ -100,11 +102,11 @@ public class EngineerInputComponent extends InputComponent {
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
         String currentAnimation = animator.getCurrentAnimation();
         HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
-        if (currentAnimation.contains("_outline")) {
+        if (currentAnimation.contains(OUTLINE_STRING)) {
             animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
             controller.setClicked(false);
         } else {
-            animator.startAnimation(currentAnimation + "_outline");
+            animator.startAnimation(currentAnimation + OUTLINE_STRING);
             controller.setClicked(true);
         }
     }
@@ -126,9 +128,4 @@ public class EngineerInputComponent extends InputComponent {
         Vector2 dest = cursorPosition.add(offset);
         wander.startMoving(dest);
     }
-
-    public void setMoveClicked(boolean moveClicked) {
-        this.moveClicked = moveClicked;
-    }
-
 }
