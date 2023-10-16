@@ -88,20 +88,9 @@ public class UpgradeUIComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
-//        //temp fix to prevent upgrading of new towers
-//        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
-//                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
-//                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
-//            return false;
-//        }
-//        //
-
         // If the clicked position contains a turret, and the turret is upgradable and not a TNT tower
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null
                 ) {
-            // TNT TowerUpgraderComponent can be removed later, but possibly useful for future sprint.
-           // Clear all existing upgrade tables
-//            logger.info("clickedEntity: " + clickedEntity);
 //
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
