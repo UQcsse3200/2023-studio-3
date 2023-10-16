@@ -23,7 +23,7 @@ public class StunTowerAnimationControllerTest {
     private final String[] texture = {"images/towers/stun_tower.png"};
     private final String[] atlas = {"images/towers/stun_tower.atlas"};
     private static final String[] sounds = {
-            "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3"
+            "sounds/towers/ar15_single_shot_far.mp3"
     };
 
     @BeforeEach

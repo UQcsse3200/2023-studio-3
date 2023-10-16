@@ -20,7 +20,7 @@ public class StunTowerAnimationController extends Component {
 
     //further sounds can be added for the tower attacks/movement
 
-    private static final String FIRE_SINGLE_SFX = "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3";
+    private static final String FIRE_SINGLE_SFX = "sounds/towers/ar15_single_shot_far.mp3";
 
     private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
             FIRE_SINGLE_SFX, Sound.class);
