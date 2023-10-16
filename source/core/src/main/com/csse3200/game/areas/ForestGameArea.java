@@ -967,6 +967,6 @@ public class ForestGameArea extends GameArea {
 
   private void flashWarning(String mobType, GridPoint2 position) {
     Entity warning = WarningFactory.createWarning(mobType, position);
-    spawnEntity(warning);
+    spawnEntityAt(warning, position, true, true);
   }
 }

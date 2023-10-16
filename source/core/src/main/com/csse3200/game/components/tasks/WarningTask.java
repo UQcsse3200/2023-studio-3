@@ -13,15 +13,15 @@ public class WarningTask extends DefaultTask implements PriorityTask {
     @Override
     public void start() {
         super.start();
-        logger.info("WarningFlashTask started.");
+        logger.info("WarningTask started.");
         startTime = ServiceLocator.getTimeSource().getTime();
     }
 
     @Override
     public void update() {
         owner.getEntity().getComponent(WarningComponent.class).update();
-        if (ServiceLocator.getTimeSource().getTime() > startTime + 2000) {
-            stop();
+        if (ServiceLocator.getTimeSource().getTime() > startTime + 5000) {
+            owner.getEntity().dispose();
         }
     }
 
