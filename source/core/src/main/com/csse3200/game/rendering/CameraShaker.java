@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
  */
 
 public class CameraShaker {
-    private static final Logger logger = LoggerFactory.getLogger(CameraShaker.class);
     private Camera camera;
     private boolean isShaking = false;
     private float origShakeRadius;
@@ -29,7 +28,7 @@ public class CameraShaker {
     private float timer;
     private Vector3 offset;
     private Vector3 currentPosition;
-    public Vector3 origPosition;
+    private Vector3 origPosition;
 
     /**
      * Constructor
@@ -45,7 +44,6 @@ public class CameraShaker {
         this.offset = new Vector3();
         this.currentPosition = new Vector3();
         this.origPosition = camera.position.cpy();
-        logger.info("Start | Camera Position: " + camera.position);
         reset();
     }
 
@@ -69,7 +67,6 @@ public class CameraShaker {
         this.offset = new Vector3();
         this.currentPosition = new Vector3();
         this.origPosition = camera.position.cpy();
-        logger.info("Start | Camera Position: " + camera.position);
         reset();
     }
 
@@ -143,10 +140,16 @@ public class CameraShaker {
      Private methods below
      */
 
+    /**
+     * Seeds a random angle between 1 and 360 degrees.
+     */
     private void seedRandomAngle(){
         randomAngle = MathUtils.random(1, 360);
     }
 
+    /**
+     * Computes the camera offset based on the current shake radius and random angle.
+     */
     private void computeCameraOffset(){
         float sine = MathUtils.sinDeg(randomAngle);
         float cosine = MathUtils.cosDeg(randomAngle);
@@ -154,12 +157,17 @@ public class CameraShaker {
         offset.y = sine * shakeRadius;
     }
 
+    /**
+     * Computes the current camera position based on the original position and the offset.
+     */
     private void computeCurrentPosition() {
         currentPosition.x = origPosition.x + offset.x;
         currentPosition.y = origPosition.y + offset.y;
-
     }
 
+    /**
+     * Reduces the shake effect over time based on the fall off factor.
+     */
     private void diminishShake(){
         if(shakeRadius < minimumShakeRadius){
             reset();
@@ -170,18 +178,62 @@ public class CameraShaker {
         randomAngle = MathUtils.random(1, 360);
     }
 
+    /**
+     * Validates and adjusts the provided parameters for the shake effect.
+     *
+     * @param shakeRadius         The intended maximum shake radius.
+     * @param minimumShakeRadius  The intended minimum shake radius.
+     * @param radiusFallOffFactor The intended fall off factor for shake radius.
+     */
     private void checkParameters(float shakeRadius, float minimumShakeRadius, float radiusFallOffFactor) {
         // validation checks on parameters
-        if (radiusFallOffFactor >= 1f) radiusFallOffFactor = 0.9f;      // radius fall off factor must be less than 1
-        if (radiusFallOffFactor <= 0) radiusFallOffFactor = 0.9f;       // radius fall off factor must be greater than 0
-        if (shakeRadius <= 0) shakeRadius = 30f;                        // shake radius must be greater than 0
-        if (minimumShakeRadius < 0) minimumShakeRadius = 0;             // minimum shake radius must be greater than 0
-        if (minimumShakeRadius >= shakeRadius)                          // minimum shake radius must be less than shake radius, if not
-            minimumShakeRadius = 0.15f * shakeRadius;                   // then set minimum shake radius to 15% of shake radius
+        if (radiusFallOffFactor >= 1f) radiusFallOffFactor = 0.9f;
+        if (radiusFallOffFactor <= 0) radiusFallOffFactor = 0.9f;
+        if (shakeRadius <= 0) shakeRadius = 30f;
+        if (minimumShakeRadius < 0) minimumShakeRadius = 0;
+        if (minimumShakeRadius >= shakeRadius)
+            minimumShakeRadius = 0.15f * shakeRadius;
 
         this.shakeRadius = shakeRadius;
         this.origShakeRadius = shakeRadius;
         this.minimumShakeRadius = minimumShakeRadius;
         this.radiusFallOffFactor = radiusFallOffFactor;
     }
+
+    /**
+     * Retrieves the current shake radius.
+     *
+     * @return The current shake radius.
+     */
+    public float getShakeRadius() {
+        return shakeRadius;
+    }
+
+    /**
+     * Retrieves the minimum shake radius.
+     *
+     * @return The minimum shake radius.
+     */
+    public float getMinimumRadius() {
+        return minimumShakeRadius;
+    }
+
+    /**
+     * Retrieves the fall off factor for the shake radius.
+     *
+     * @return The radius fall off factor.
+     */
+    public float getFallOffFactor() {
+        return radiusFallOffFactor;
+    }
+
+    /**
+     * Retrieves the original position of the camera before the shake effect began.
+     *
+     * @return The original position as a {@link Vector3} object.
+     */
+    public Vector3 getOrigPosition() {
+        return origPosition;
+    }
+
 }

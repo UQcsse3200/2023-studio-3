@@ -1,6 +1,7 @@
 package com.csse3200.game.components.pausemenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -22,8 +23,12 @@ public class PauseMenuButtonComponent extends UIComponent {
     private final GdxGame game;
     private static final float windowSizeX = 300;
     private static final float windowSizeY = 400;
-//    private static float padScaleFactorY;
-//    private static float padScaleFactorX;
+    private final String[] sounds = {
+            "sounds/ui/click/click_01.ogg",
+            "sounds/ui/open_close/close_01.ogg",
+    };
+    private Sound click;
+    private Sound closeSound;
 
     public PauseMenuButtonComponent(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
@@ -33,8 +38,7 @@ public class PauseMenuButtonComponent extends UIComponent {
     public void create() {
         super.create();
         addActors();
-//        padScaleFactorX = ServiceLocator.getRenderService().getStage().getWidth();
-//        padScaleFactorY = ServiceLocator.getRenderService().getStage().getHeight();
+        loadSounds();
     }
 
     /**
@@ -59,6 +63,8 @@ public class PauseMenuButtonComponent extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Continue button clicked");
+                        click.play(0.5f);
+                        closeSound.play(0.5f);
                         entity.dispose();
                     }
                 });
@@ -66,6 +72,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
+                        click.play(0.5f);
                         logger.debug("Settings button clicked");
                         game.setScreen(GdxGame.ScreenType.SETTINGS);
                     }
@@ -74,6 +81,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
+                        click.play(0.5f);
                         logger.debug("Planet select button clicked");
                         game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
                     }
@@ -82,6 +90,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
+                        click.play(0.5f);
                         logger.debug("Main menu button clicked");
                         game.setScreen(GdxGame.ScreenType.MAIN_MENU);
                     }
@@ -112,6 +121,16 @@ public class PauseMenuButtonComponent extends UIComponent {
     @Override
     protected void draw(SpriteBatch batch) {
         // handled by stage
+    }
+
+    /**
+     * Loads sound assets for use in the class
+     */
+    public void loadSounds() {
+        ServiceLocator.getResourceService().loadSounds(sounds);
+        ServiceLocator.getResourceService().loadAll();
+        click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
+        closeSound = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);
     }
 
     @Override

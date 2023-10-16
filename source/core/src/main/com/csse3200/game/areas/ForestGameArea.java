@@ -207,8 +207,7 @@ public class ForestGameArea extends GameArea {
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
-   *
-   * @requires terrainFactory != null
+   * &#064;requires  terrainFactory != null
    */
   public ForestGameArea() {
     super();
@@ -284,9 +283,10 @@ public class ForestGameArea extends GameArea {
     // Set up infrastructure for end game tracking
 //    player = spawnPlayer();
 
-   waves = WaveFactory.createWaves();
-   spawnEntity(waves);
-   waves.getEvents().addListener("spawnWave", this::spawnMob);
+    logger.info("Creating waves");
+    waves = WaveFactory.createWaves();
+    spawnEntity(waves);
+    waves.getEvents().addListener("spawnWave", this::spawnMob);
     // spawnCoat();
 //    spawnDodgingDragonKnight(17,4);
 //    spawnDeflectWizard(17, 3);
@@ -456,9 +456,6 @@ public class ForestGameArea extends GameArea {
   public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
-      case "Xeno":
-        mob = NPCFactory.createXenoGrunt(health);
-        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
@@ -477,10 +474,9 @@ public class ForestGameArea extends GameArea {
       case "WaterQueen":
         mob = NPCFactory.createWaterQueen(health);
         break;
-        //TODO implement when boss is ready
-//      case "FireBoss":
-//        mob = MobBossFactory.createDemonBoss(health);
-//        break;
+      case "FireBoss":
+        mob = MobBossFactory.createDemonBoss(health);
+        break;
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;

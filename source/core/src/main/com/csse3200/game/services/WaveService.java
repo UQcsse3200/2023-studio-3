@@ -23,6 +23,10 @@ public class WaveService {
     private boolean gamePaused = false;
     private long pauseBeginTime = 0;
 
+    private int levelEnemyCount = 0;
+    private int remainingLevelEnemyCount = 0;
+
+
     /**
      * Constructor for the Wave Service
      */
@@ -57,6 +61,7 @@ public class WaveService {
      */
     public void updateEnemyCount() {
         enemyCount -= 1;
+        remainingLevelEnemyCount -= 1;
         logger.info("{} enemies remaining in wave", getEnemyCount());
     }
 
@@ -182,5 +187,26 @@ public class WaveService {
             pauseBeginTime = ServiceLocator.getTimeSource().getTime();
         }
         gamePaused = !gamePaused;
+
+    /**
+     * retrieve the number of enemies in the level
+     * */
+    public int totalMobs() {
+      return this.levelEnemyCount;
+    }
+
+    /**
+     * set the total number of enemies in the level
+     * */
+    public void setTotalMobs(int total) {
+      this.levelEnemyCount = total;
+      this.remainingLevelEnemyCount = total;
+    }
+
+    /**
+     * get the number of mobs remaining for the whole level()
+     * */
+    public int remainingMobsForLevel() {
+      return this.remainingLevelEnemyCount;
     }
 }
