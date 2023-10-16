@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
+import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
@@ -52,6 +54,7 @@ public class MainGameDisplay extends UIComponent {
     private ImageButton tower4;
     private ImageButton tower5;
     private LevelProgressBar progressbar;
+    private Entity pauseMenu;
 
     /**
      * The constructor for the display
@@ -150,17 +153,20 @@ public class MainGameDisplay extends UIComponent {
                     }
                 });
 
+
         // Pause menu escape key opening listener
         stage.addListener(
                 new InputListener() {
                     @Override
                     public boolean keyUp(InputEvent event, int keycode) {
                         if ((keycode == Input.Keys.ESCAPE) && !ServiceLocator.getTimeSource().getPaused()) {
-                            game.getScreen().pause();
                             openSound.play(0.4f);
-                            PauseMenuFactory.createPauseMenu(game);
+                            pauseMenu = PauseMenuFactory.createPauseMenu(game);
                             ServiceLocator.getTimeSource().setPaused(true);
                             return true;
+                        } else if ((keycode == Input.Keys.ESCAPE) && ServiceLocator.getTimeSource().getPaused()) {
+                            pauseMenu.dispose();
+                            return false;
                         }
                         return false;
                     }
