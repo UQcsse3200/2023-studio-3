@@ -40,6 +40,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     public enum STATE {
         IDLE, ATTACK, DEATH
@@ -69,7 +70,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
 
-        endTime = timeSource.getTime() + (INTERVAL * 5000);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**
@@ -103,17 +104,21 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
                 }
             }
             case ATTACK -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.25));
-                    ServiceLocator.getEntityService().register(newProjectile);
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState=STATE.IDLE;
+                // check if fired last time if not fire if so hold
+                if (shoot) {
+                    if (isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    } else {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState=STATE.IDLE;
+                    }
                 }
+                shoot = !shoot;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {

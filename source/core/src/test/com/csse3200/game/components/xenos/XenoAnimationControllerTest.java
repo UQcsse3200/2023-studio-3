@@ -66,4 +66,10 @@ public class XenoAnimationControllerTest {
         assertEquals("xeno_die", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
+    @Test
+    public void testAnimateFreeze() {
+        xenoGrunt.getEvents().trigger("freeze");
+        assertEquals("xeno_freeze", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
+    }
+
 }

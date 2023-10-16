@@ -215,14 +215,21 @@ public class MainGameScreen extends ScreenAdapter {
     // Checks if tower selected is dead
     this.getUpgradedInputHandler().checkForDispose();
 
+    ServiceLocator.getWaveService().getDisplay().updateTimerButton();
+    ServiceLocator.getWaveService().getDisplay().updateMobCount();
+    renderer.render();
+
     // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
     }
 
-    ServiceLocator.getWaveService().getDisplay().updateTimerButton();
-    ServiceLocator.getWaveService().getDisplay().updateMobCount();
-    renderer.render();
+    // Check if all waves are completed and the level has been completed
+    if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      logger.info("Main game level completed detected, go to win screen");
+      ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
+      // Add something in to unlock the next planet/level?
+    }
   }
 
   @Override
@@ -297,6 +304,7 @@ public class MainGameScreen extends ScreenAdapter {
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             .addComponent(new MainGameExitDisplay())
             .addComponent(new MainGameLoseDisplay())
+            //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
             .addComponent(new MainGamePauseDisplay(this.game))
             .addComponent(new Terminal())
             .addComponent(inputComponent)

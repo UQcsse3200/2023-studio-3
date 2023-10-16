@@ -4,11 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private static final String DEPLOY = "deployStart";
     private static final String FIRING = "firingStart";
     private static final String IDLE = "idleStart";
+    private static final String DEATH = "deathStart";
 
     // class attributes
     private final int priority;  // The active priority this task will have
@@ -42,9 +45,10 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+    private boolean shoot = true;
   
     private enum STATE {
-        IDLE, DEPLOY, FIRING, STOW
+        IDLE, DEPLOY, FIRING, STOW, DEATH
     }
     private STATE towerState = STATE.IDLE;
 
@@ -114,6 +118,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public void updateTowerState() {
         // configure tower state depending on target visibility
+        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
+            owner.getEntity().getEvents().trigger(DEATH);
+            towerState = STATE.DEATH;
+            return;
+        }
         switch (towerState) {
             case IDLE -> {
                 // targets detected in idle mode - start deployment
@@ -133,38 +142,41 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case FIRING -> {
-                // targets gone - stop firing
-                if (!isTargetVisible()) {
+                if (shoot) {
+                    // targets gone - stop firing
+                    if (!isTargetVisible()) {
 
-                    owner.getEntity().getEvents().trigger(STOW);
-                    towerState = STATE.STOW;
-                } else {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    // this might be changed to an event which gets triggered everytime the tower enters the firing state
+                        owner.getEntity().getEvents().trigger(STOW);
+                        towerState = STATE.STOW;
+                    } else {
+                        owner.getEntity().getEvents().trigger(FIRING);
+                        // this might be changed to an event which gets triggered everytime the tower enters the firing state
 
-                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                    newProjectile.setScale(1.1f, 0.8f);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (float) (owner.getEntity().getPosition().y + 0.5));
-                    ServiceLocator.getEntityService().register(newProjectile);
-                    
-                    // * TEMPRORARYYYYYYYY PLS DON'T DELETE THIS
-                    // PIERCE FIREBALL
-                    // Entity pierceFireball = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-                    // pierceFireball.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                    // ServiceLocator.getEntityService().register(pierceFireball);
+                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                        newProjectile.setScale(1.1f, 0.8f);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (float) (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
 
-                    // RICOCHET FIREBALL
-                    // Entity ricochetProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 0);
+                        // * TEMPRORARYYYYYYYY PLS DON'T DELETE THIS
+                        // PIERCE FIREBALL
+                        // Entity pierceFireball = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f));
+                        // pierceFireball.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
+                        // ServiceLocator.getEntityService().register(pierceFireball);
 
-                    // ricochetProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
-                    // ServiceLocator.getEntityService().register(ricochetProjectile);
+                        // RICOCHET FIREBALL
+                        // Entity ricochetProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 0);
 
-                    // SPLIT FIREWORKS FIREBALLL
-                    // Entity splitFireWorksProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 16);
+                        // ricochetProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0), (float) (owner.getEntity().getPosition().y + 0.4));
+                        // ServiceLocator.getEntityService().register(ricochetProjectile);
 
-                    // splitFireWorksProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
-                    // ServiceLocator.getEntityService().register(splitFireWorksProjectile);
+                        // SPLIT FIREWORKS FIREBALLL
+                        // Entity splitFireWorksProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f,2f), 16);
+
+                        // splitFireWorksProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.75), (float) (owner.getEntity().getPosition().y + 0.4));
+                        // ServiceLocator.getEntityService().register(splitFireWorksProjectile);
+                    }
                 }
+                shoot = !shoot;
             }
             case STOW -> {
                 // currently stowing
@@ -175,6 +187,11 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
                 } else {
                     owner.getEntity().getEvents().trigger(IDLE);
                     towerState = STATE.IDLE;
+                }
+            }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
                 }
             }
         }

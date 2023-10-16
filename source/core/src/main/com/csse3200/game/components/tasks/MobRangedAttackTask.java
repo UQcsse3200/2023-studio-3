@@ -17,8 +17,10 @@ import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.npc.XenoAnimationController;
-
+import com.csse3200.game.components.npc.FireWormAnimationController;
+import com.csse3200.game.components.npc.WizardAnimationController;
+import com.csse3200.game.components.npc.WaterQueenAnimationController;
+import com.csse3200.game.components.ProjectileEffects;
 /**
  * Task that allows mobs to shoot projectiles or melee attack towers
  */
@@ -128,23 +130,35 @@ public class MobRangedAttackTask extends DefaultTask implements PriorityTask {
           this.owner.getEntity().getEvents().trigger(STOW);
           mobState = STATE.STOW;
         } else {
+			Entity newProjectile = (owner.getEntity().getComponent(FireWormAnimationController.class)!=null)?
+				ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f), ProjectileEffects.BURN, false)
+				: ((owner.getEntity().getComponent(WaterQueenAnimationController.class)!=null)?
+					ProjectileFactory.createComboSnowBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f), false)
+					: ((owner.getEntity().getComponent(WizardAnimationController.class)!=null)?
+						ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f), ProjectileEffects.STUN, false)
+						: ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f))));
+			newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile.setScale(-1f, 1f);
+			Entity newProjectile1 = (owner.getEntity().getComponent(FireWormAnimationController.class)!=null)?
+				ProjectileFactory.createPierceFireBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f))
+				: ((owner.getEntity().getComponent(WaterQueenAnimationController.class)!=null)?
+					ProjectileFactory.createFireworks(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f))
+					: ((owner.getEntity().getComponent(WizardAnimationController.class)!=null)?
+						ProjectileFactory.createRicochetFireball(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f), 3)
+						: ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f))));
+            newProjectile1.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile1.setScale(-1f, 1f);
+            ServiceLocator.getEntityService().register(newProjectile1);
+            ServiceLocator.getEntityService().register(newProjectile);
+
           if (this.meleeOrProjectile() instanceof Melee) {
             TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);
             HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);
             attackComp.onCollisionStart(hitboxComp.getFixture(), target);
-            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            newProjectile.setScale(-1f, 1f);
-            ServiceLocator.getEntityService().register(newProjectile);
 
           //  System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
             this.owner.getEntity().getEvents().trigger(FIRING);
           } else {
-            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
-            newProjectile.setScale(-1f, 1f);
-            ServiceLocator.getEntityService().register(newProjectile);
-
           //  System.out.printf("ANIMATION: " + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + "\n");
             this.owner.getEntity().getEvents().trigger(FIRING);
             mobState = STATE.STOW;

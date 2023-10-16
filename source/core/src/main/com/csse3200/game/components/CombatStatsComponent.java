@@ -48,6 +48,14 @@ public class CombatStatsComponent extends Component {
     this.state = HEALTH_FULL;
   }
 
+  public CombatStatsComponent(int health, int baseAttack, ArrayList<Currency> drops) {
+    setHealth(health);
+    this.fullHealth = health;
+    setBaseAttack(baseAttack);
+    this.drops = drops;
+    this.state = HEALTH_FULL;
+  }
+
   public CombatStatsComponent(int health, int baseAttack,
                               ArrayList<Currency> drops,
                               ArrayList<Melee> closeRangeAbilities,

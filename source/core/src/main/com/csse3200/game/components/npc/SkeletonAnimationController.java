@@ -30,6 +30,7 @@ public class SkeletonAnimationController extends Component {
         entity.getEvents().addListener("wanderStart", this::animateWalk);
         entity.getEvents().addListener("shootStart", this::animateAttack);
         entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
     }
 
     void animateWalk() {
@@ -46,7 +47,7 @@ public class SkeletonAnimationController extends Component {
         deathSound.play();
     }
 	
-	public void animateFreeze()
+	void animateFreeze()
 	{
 		animator.startAnimation("skeleton_freeze");
 	}

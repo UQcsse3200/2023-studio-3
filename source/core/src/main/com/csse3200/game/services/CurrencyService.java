@@ -49,6 +49,11 @@ public class CurrencyService {
         return display;
     }
 
+    /**
+     * Sets the tower type to build - triggered by pressing a tower build button in-game
+     * newTower can be a towertype or a null value to indicate clearing the value?
+     * @param newTower The towertype to be set for building, null if deselecting
+     */
     public void setTowerType(TowerType newTower) {
         if (tower == newTower) {
             tower = null;

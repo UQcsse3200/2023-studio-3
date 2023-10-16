@@ -29,6 +29,7 @@ public class WaterQueenAnimationController extends Component {
         entity.getEvents().addListener("wanderStart", this::animateWalk);
         entity.getEvents().addListener("shootStart", this::animateAttack);
         entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
     }
 
     void animateWalk() {
@@ -45,7 +46,7 @@ public class WaterQueenAnimationController extends Component {
         animator.startAnimation("water_queen_death");
     }
 	
-    public void animateFreeze() {
+    void animateFreeze() {
         animator.startAnimation("water_queen_freeze");
     }
 }

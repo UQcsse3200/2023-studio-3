@@ -5,6 +5,7 @@ import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.components.tasks.MobTask.*;
 
 /**
  * This task runs the AI that adds a dodge mechanic/functionality for the mobs
@@ -16,7 +17,7 @@ import com.csse3200.game.components.npc.XenoAnimationController;
  * "dodgeIncomingEntity" event to the attached entity.
  * </p>
  */
-public class MobDodgeTask extends MobWanderTask {
+public class MobDodgeTask extends MobTask {
 
   private final int priority; // active priority
 
@@ -36,8 +37,8 @@ public class MobDodgeTask extends MobWanderTask {
    * @param waitTime    How long in seconds to wait between wandering.
    * @param priority    Priority level compared to other added tasks.
    */
-  public MobDodgeTask(Vector2 wanderRange, float waitTime, int priority) {
-    super(wanderRange, waitTime);
+  public MobDodgeTask(MobType mobType, int priority) {
+    super(mobType);
     this.priority = priority;
 
     timeSource = ServiceLocator.getTimeSource();
@@ -49,7 +50,7 @@ public class MobDodgeTask extends MobWanderTask {
   @Override
   public void start() {
     super.start();
-    owner.getEntity().getEvents().trigger("wanderStart");
+    owner.getEntity().getEvents().trigger("mob_walk");
 
     // endTime = timeSource.getTime() + (1 * DELAY_INTERVAL);
     endTime = timeSource.getTime();

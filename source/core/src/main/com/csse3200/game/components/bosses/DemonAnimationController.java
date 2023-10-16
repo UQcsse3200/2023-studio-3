@@ -32,6 +32,8 @@ public class DemonAnimationController extends Component {
             "sounds/mobBoss/slimeJump.mp3", Sound.class);
     Sound slimePop = ServiceLocator.getResourceService().getAsset(
             "sounds/mobBoss/slimePop.mp3", Sound.class);
+    Sound spawnDemonSlime = ServiceLocator.getResourceService().getAsset(
+            "sounds/mobBoss/spawnDemonSlime.mp3", Sound.class);
 
     /**
      * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
@@ -66,6 +68,7 @@ public class DemonAnimationController extends Component {
         entity.getEvents().addListener("slimey_splat_sound", this::slimeySplatSound);
         entity.getEvents().addListener("slime_jump_sound", this::slimeJumpSound);
         entity.getEvents().addListener("slime_pop_sound", this::slimePopSound);
+        entity.getEvents().addListener("spawn_demon_slime", this::spawnDemonSlimeSound);
     }
 
     private void demonWalk() {
@@ -155,5 +158,9 @@ public class DemonAnimationController extends Component {
     private void slimePopSound() {
         slimePop.setVolume(1000,5.5f);
         slimePop.play();
+    }
+    private void spawnDemonSlimeSound() {
+        spawnDemonSlime.setVolume(1000,5.5f);
+        spawnDemonSlime.play();
     }
 }

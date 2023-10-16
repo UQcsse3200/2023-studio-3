@@ -103,8 +103,8 @@ public class WaveTask extends DefaultTask implements PriorityTask {
       ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
-      if (currentWaveIndex == this.level.getNumWaves()) {
-        logger.info("No waves remaining, level completed");
+      if (currentWaveIndex == this.level.getNumWaves() - 1) {
+        logger.info("No waves remaining");
         ServiceLocator.getWaveService().setLevelCompleted();
 
       } else {

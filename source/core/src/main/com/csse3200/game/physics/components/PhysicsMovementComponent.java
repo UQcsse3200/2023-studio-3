@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class PhysicsMovementComponent extends Component implements MovementController {
   private static final Logger logger = LoggerFactory.getLogger(PhysicsMovementComponent.class);
   private Vector2 maxSpeed = Vector2Utils.ONE;
+  private Vector2 normalSpeed;
   private float skipMovementTime = 0f;  // in seconds, for knockback
 
   private PhysicsComponent physicsComponent;
@@ -103,5 +104,14 @@ public class PhysicsMovementComponent extends Component implements MovementContr
 
   public Vector2 getSpeed() {
     return this.maxSpeed;
+  }
+  public void setNormalSpeed(Vector2 normalSpeed) {
+    this.normalSpeed = normalSpeed;
+  }
+  public Vector2 getNormalSpeed() {
+    if (normalSpeed == null) {
+      return maxSpeed;
+    }
+    return normalSpeed;
   }
 }

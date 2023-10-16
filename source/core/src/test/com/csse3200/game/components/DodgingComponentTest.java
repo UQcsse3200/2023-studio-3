@@ -14,6 +14,8 @@ import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.tasks.MobDodgeTask;
 import com.csse3200.game.components.tasks.MobWanderTask;
+import com.csse3200.game.components.tasks.MobTask.MobTask;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;
@@ -35,7 +37,7 @@ public class DodgingComponentTest {
   private static final float VALID_POSITION_Y = 4;
   private static final float VALID_POSITION_X = 7;
   private static final float DEFAULT_RANGE_DETECTION = 1f;
-  MobWanderTask task;
+  MobTask task;
 
   @BeforeEach
   public void setUp() {
@@ -57,7 +59,8 @@ public class DodgingComponentTest {
         VALID_POSITION_Y,
         DEFAULT_RANGE_DETECTION,
         1.75f);
-    task = new MobDodgeTask(new Vector2(2f, 2f), 2f, 5);
+    // task = new MobDodgeTask(new Vector2(2f, 2f), 2f, 5);
+    task = new MobDodgeTask(MobType.DRAGON_KNIGHT, 5);
   }
 
   @Test

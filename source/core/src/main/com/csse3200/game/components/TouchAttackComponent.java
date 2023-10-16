@@ -14,6 +14,7 @@ import com.csse3200.game.components.projectile.EngineerBulletsAnimationControlle
 import com.csse3200.game.components.projectile.ProjectileAnimationController;
 import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
 import com.csse3200.game.components.projectile.StunEffectProjectileAnimationController;
+import com.csse3200.game.components.projectile.BurnEffectProjectileAnimationController;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -91,31 +92,31 @@ public class TouchAttackComponent extends Component {
   }
 
   public void onCollisionStart(Fixture me, Fixture other) {
-    if (hitboxComponent.getFixture() != me) {
-      // Not triggered by hitbox, ignore
-      return;
-    }
-
-    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
-      // Doesn't match our target layer, ignore
-      return;
-    }
-
+		if (me==null || hitboxComponent==null || hitboxComponent.getFixture() != me) {
+		  // Not triggered by hitbox, ignore
+		  return;
+		}
+		if(other!=null)
+		{
+			if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {
+			  // Doesn't match our target layer, ignore
+			  return;
+			}
+			Component deflectComponent = ((BodyUserData) other.getBody().getUserData()).entity.getComponent(DeflectingComponent.class);
+			if (deflectComponent != null && deflectComponent.enabled)
+				return;
+		}else
+			return;
     // Try to attack target.
     Entity target = ((BodyUserData) other.getBody().getUserData()).entity;
 
-    // If enemy has deflecting component, don't delete it.
-    Component deflectComponent = target.getComponent(DeflectingComponent.class);
-    if (deflectComponent != null && deflectComponent.enabled)
-      return;
-  
 	EngineerBulletsAnimationController engineerBulletsAnimationController;
 	ProjectileAnimationController projectileAnimationController;
 	SnowBallProjectileAnimationController snowBallProjectileAnimationController;
 	StunEffectProjectileAnimationController stunEffectProjectileAnimationController;
+	BurnEffectProjectileAnimationController burnEffectProjectileAnimationController;
 	if((engineerBulletsAnimationController=entity.getComponent(EngineerBulletsAnimationController.class)) != null)
 	{
-		engineerBulletsAnimationController.animateCollide();
 		setDisposeOnHit(false);
 		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
 		new Timer().schedule(new TimerTask() {
@@ -127,7 +128,6 @@ public class TouchAttackComponent extends Component {
 	}else
 	if((projectileAnimationController=entity.getComponent(ProjectileAnimationController.class)) != null)
 	{
-		projectileAnimationController.animateCollide();
 		setDisposeOnHit(false);
 		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
 		new Timer().schedule(new TimerTask() {
@@ -137,9 +137,19 @@ public class TouchAttackComponent extends Component {
 		  }
 		}, 300/*START_SPEED*frames*1000ms*/);
 	}else
+	if((burnEffectProjectileAnimationController=entity.getComponent(BurnEffectProjectileAnimationController.class)) != null)
+	{
+		setDisposeOnHit(false);
+		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
+		new Timer().schedule(new TimerTask() {
+		  public void run() {
+			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;
+			projectile.setFlagForDelete(true);
+		  }
+		}, 800/*START_SPEED*frames*1000ms*/);
+	}else
 	if((snowBallProjectileAnimationController=entity.getComponent(SnowBallProjectileAnimationController.class)) != null)
 	{
-		snowBallProjectileAnimationController.animateCollide();
 		setDisposeOnHit(false);
 		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
 		new Timer().schedule(new TimerTask() {
@@ -162,43 +172,17 @@ public class TouchAttackComponent extends Component {
 				PhysicsMovementComponent physicsMovementComponent;
 				if((physicsMovementComponent=target.getComponent(PhysicsMovementComponent.class))!=null)
 					physicsMovementComponent.setMoving(true);
+				target.getEvents().trigger("wanderStart");
 			  }
 			}, 5000);
 		}
-		XenoAnimationController xenoAnimationController; 
-		DragonKnightAnimationController dragonKnightAnimationController;
-		FireWormAnimationController fireWormAnimationController; 
-		SkeletonAnimationController skeletonAnimationController; 
-		WizardAnimationController wizardAnimationController;  
-		WaterQueenAnimationController waterQueenAnimationController; 
-		WaterSlimeAnimationController waterSlimeAnimationController;
-		if((xenoAnimationController=target.getComponent(XenoAnimationController.class))!=null)
-			xenoAnimationController.animateFreeze(); 
-		else
-		if((dragonKnightAnimationController=target.getComponent(DragonKnightAnimationController.class))!=null)
-			dragonKnightAnimationController.animateFreeze();
-		else
-		if((fireWormAnimationController=target.getComponent(FireWormAnimationController.class))!=null)
-			fireWormAnimationController.animateFreeze();
-		else
-		if((skeletonAnimationController=target.getComponent(SkeletonAnimationController.class))!=null)
-			skeletonAnimationController.animateFreeze();
-		else
-		if((wizardAnimationController=target.getComponent(WizardAnimationController.class))!=null)
-			wizardAnimationController.animateFreeze();
-		else
-		if((waterQueenAnimationController=target.getComponent(WaterQueenAnimationController.class))!=null)
-			waterQueenAnimationController.animateFreeze();
-		else
-		if((waterSlimeAnimationController=target.getComponent(WaterSlimeAnimationController.class))!=null)
-			waterSlimeAnimationController.animateFreeze();
+		target.getEvents().trigger("freeze");
 		/*else
 			if(aiTaskComponent!=null)
 				aiTaskComponent.freezed = false;*/
 	}else
 	if((stunEffectProjectileAnimationController=entity.getComponent(StunEffectProjectileAnimationController.class)) != null)
 	{
-		stunEffectProjectileAnimationController.animateCollide();
 		setDisposeOnHit(false);
 		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));
 		new Timer().schedule(new TimerTask() {
