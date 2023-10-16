@@ -20,7 +20,8 @@ public class WaveService {
     private int spawnDelay;
 
     private boolean skipDelay = false;
-
+    private boolean gamePaused = false;
+    private long pauseBeginTime = 0;
 
     /**
      * Constructor for the Wave Service
@@ -160,5 +161,26 @@ public class WaveService {
      * */
     public boolean shouldSkip() {
       return this.skipDelay;
+    }
+
+    /**
+     * Return whether the game is currently paused or not.
+     * @return the gamePaused variable.
+     */
+    public boolean getGamePaused() {return this.gamePaused;}
+
+    /**
+     * Toggles whether the game is paused or not, to keep track of how long the game is paused.
+     * When unpaused, offsets the NextWaveTime by however long the game has been paused.
+     */
+    public void toggleGamePause() {
+        if (gamePaused) {
+            long pauseDuration = ServiceLocator.getTimeSource().getTime() - pauseBeginTime;
+            long updatedNextWaveTime = getNextWaveTime() + pauseDuration;
+            setNextWaveTime(updatedNextWaveTime);
+        } else {
+            pauseBeginTime = ServiceLocator.getTimeSource().getTime();
+        }
+        gamePaused = !gamePaused;
     }
 }

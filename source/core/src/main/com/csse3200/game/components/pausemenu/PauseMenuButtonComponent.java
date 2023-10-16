@@ -43,7 +43,7 @@ public class PauseMenuButtonComponent extends UIComponent {
      */
     private void addActors() {
 
-        window = new Window("Game Paused", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        window = new Window("", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
 
         TextButton continueBtn = ButtonFactory.createButton("Continue");
         continueBtn.pad(20f);
