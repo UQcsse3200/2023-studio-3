@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FireTowerCombatTaskTest {
+class FireTowerCombatTaskTest {
     FireTowerCombatTask fireTowerCombatTask;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class FireTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testStartTriggersIdleEvent() {
+    void testStartTriggersIdleEvent() {
         Entity entity = createFireTower();
         EventListener0 idleListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -53,7 +53,7 @@ public class FireTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createFireTower();
         entity.setPosition(10, 10);
 
@@ -91,7 +91,7 @@ public class FireTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetNotInRange() {
+    void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createFireTower();
         entity.setPosition(10, 10);
 
