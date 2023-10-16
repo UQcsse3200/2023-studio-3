@@ -35,6 +35,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
     private final Stage stage;
     private final AnimatedText text;
+    private BitmapFont font;
 
     private Sprite background;
     private final Music music;
@@ -52,8 +53,7 @@ public class LevelSelectScreen extends ScreenAdapter {
             "           A lava-filled planet with molten rivers and extreme temperatures."
     };
 
-    public LevelSelectScreen(GdxGame game) {
-        BitmapFont font = new BitmapFont();
+
     public LevelSelectScreen(GdxGame game, int currentLevel) {
         this.currentLevel = currentLevel;
         font = new BitmapFont();
@@ -172,10 +172,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 descriptionTable.setVisible(true); // Make the description box visible
                 // Flag for rendering planet borders
                 boolean isRenderingPlanetBorders = true;
-                if (isRenderingPlanetBorders) {
-                    Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
-                }
+
                 if (Gdx.input.justTouched()) {
                     if (conventionalPlanetLevel == 0 && highestLevelReached >= -1) { // ICE planet, which is always unlocked initially
                         loadPlanetLevel(planet);
@@ -213,16 +210,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 throw new IllegalArgumentException("Invalid planet number");
         }
     }
-                    int selectedLevel = planet[4];
-                    game.setScreen(new TurretSelectionScreen(game));
-                    dispose();
-                    logger.info("Loading level {}", planet[4]);
-                    GameLevelData.setSelectedLevel(planet[4]);
-                    game.setScreen(new TurretSelectionScreen(game));
-                }
-            }
-        }
-    }
+
 
     private String getPlanetDescription(int[] planet) {
         int planetIndex = getPlanetIndex(planet);
