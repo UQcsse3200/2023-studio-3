@@ -85,17 +85,17 @@ public class MainGameDisplay extends UIComponent {
         // Create and position the tables that will hold the buttons.
 
         // Contains the tower build menu buttons
-        towerTable.top().padTop(50f);
+        towerTable.top().padTop(80f);
         towerTable.setFillParent(true);
 
         // Contains other buttons (just pause at this stage)
-        buttonTable.top().right().padTop(50f).padRight(80f);
+        buttonTable.top().right().padTop(80f).padRight(80f);
         buttonTable.setFillParent(true);
 
         progressTable.top().center().setWidth(500f);
         progressTable.setFillParent(true);
 
-        levelNameTable.top().left().padLeft(20f).padTop(20f);
+        levelNameTable.center().top().padLeft(20f).padTop(20f).pad(20f);
         levelNameTable.setFillParent(true);
 
         // Stores tower defaults, in case towers haven't been set in the tower select screen
@@ -305,7 +305,7 @@ public class MainGameDisplay extends UIComponent {
         progressbar = new LevelProgressBar(500, 10);
 
         levelNameTable.setSkin(getSkin());
-        levelNameTable.add(this.level, "title");
+        levelNameTable.add(this.level, "default");
 
         // Scale all the tower build buttons down
         // Add all buttons to their respective tables and position them
@@ -315,7 +315,6 @@ public class MainGameDisplay extends UIComponent {
         towerTable.add(tower3).padRight(10f);
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
-        towerTable.stack(new Label(String.format("%s", towers.get(0).getPrice()), getSkin()));
         towerTable.row();
         towerTable.add("1", "small");
         towerTable.add("2", "small");
