@@ -55,7 +55,7 @@ public class WaveFactory {
   ));
 
   private static final ArrayList<ArrayList<String>> lvl3Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Necromancer"
+      new ArrayList<>(Arrays.asList("SplittingRocky"
       )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
       )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
       )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
@@ -63,7 +63,7 @@ public class WaveFactory {
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
       )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWiza","SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard","SplittingRocky", "Necromancer"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "SplittingRocky", "Necromancer"
       )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "DodgingDragon"
       )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "Necromancer"

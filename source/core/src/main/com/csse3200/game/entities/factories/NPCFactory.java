@@ -74,31 +74,6 @@ public class NPCFactory {
   }
 
   /**
-   * Creates a ghost king entity.
-   * 
-   * @return entity
-   */
-  public static Entity createGhostKing() {
-    Entity ghostKing = createMeleeBaseNPC();
-    GhostKingConfig config = configs.ghostKing;
-
-    AnimationRenderComponent animator =
-        new AnimationRenderComponent(
-            ServiceLocator.getResourceService()
-                .getAsset("images/ghostKing.atlas", TextureAtlas.class));
-    animator.addAnimation("float", 0.2f, Animation.PlayMode.LOOP);
-    animator.addAnimation("angry_float", 0.2f, Animation.PlayMode.LOOP);
-
-    ghostKing
-        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-        .addComponent(animator)
-        .addComponent(new GhostAnimationController());
-
-    ghostKing.getComponent(AnimationRenderComponent.class).scaleEntity();
-    return ghostKing;
-  }
-
-  /**
    * Creates a fire worm entity.
    *
    * @return entity
