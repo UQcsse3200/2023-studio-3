@@ -30,7 +30,7 @@ public class WaveFactory {
 
   // TODO: include necromancer
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
-      "Skeleton", "Coat", "DragonKnight"
+      "Skeleton", "Coat", "DragonKnight", "Necromancer"
   ));
 
   private static final ArrayList<ArrayList<String>> lvl1Structure = new ArrayList<>(Arrays.asList(

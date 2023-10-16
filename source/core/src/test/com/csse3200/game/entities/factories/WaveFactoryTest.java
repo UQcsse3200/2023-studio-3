@@ -1,8 +1,6 @@
 package com.csse3200.game.entities.factories;
 
 import com.csse3200.game.components.tasks.waves.LevelWaves;
-import com.badlogic.gdx.assets.AssetManager;
-import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
@@ -14,21 +12,16 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.WaveService;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.csse3200.game.entities.Entity;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.csse3200.game.entities.Entity;
 
-import java.security.Provider;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @ExtendWith(GameExtension.class)
 @ExtendWith(MockitoExtension.class)
@@ -41,31 +34,11 @@ class WaveFactoryTest {
   private final int MIN_MELEE_HEALTH = 80;
   private final int MIN_RANGE_HEALTH = 60;
   private final int MIN_BOSS_HEALTH = 80;
-
-  // level stats for level 1 - water planet
-  private final int LVL1_WAVES = 5;
-  private final int LVL1_CHOSEN_LVL = 1;
   private final int LVL1_LVL = 1;
-  private final ArrayList<String> LVL1_MOBS = new ArrayList<>(Arrays.asList("Coat", "SplittingWaterSlime", "WaterQueen"));
-
-  // level stats for level 2 - magic planet
-  private final int LVL2_WAVES = 10;
-  private final int LVL2_CHOSEN_LVL = 0;
   private final int LVL2_LVL = 2;
-
-  private final ArrayList<String> LVL2_MOBS = new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Skeleton", "DeflectWizard"));
-
-  // level stats for level 3 - fire planet
-  private final int LVL3_WAVES = 15;
-  private final int LVL3_CHOSEN_LVL = 2;
   private final int LVL3_LVL = 3;
-
-  private final ArrayList<String> LVL3_MOBS = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
-  //  private final String LVL3_BOSS = "FireBoss";
-  //TODO: make this a fire boss in sprint 4
-
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
-      "Skeleton", "Coat", "DragonKnight"
+      "Skeleton", "Coat", "DragonKnight", "Necromancer"
   ));
 
   private static final ArrayList<ArrayList<String>> LVL1_WAVES_STRUC = new ArrayList<>(Arrays.asList(
@@ -79,31 +52,31 @@ class WaveFactoryTest {
   private static final ArrayList<ArrayList<String>> LVL2_WAVES_STRUC = new ArrayList<>(Arrays.asList(
       new ArrayList<>(Arrays.asList("Skeleton"
       )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "DeflectWizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("DeflectWizard", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("NightBorne", "Skeleton"
-      )), new ArrayList<>(Arrays.asList("DeflectWizard", "NightBorne"
-      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "NightBorne", "DeflectWizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "DeflectWizard", "NightBorne"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Wizard"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "Wizard", "SplittingNightBorne"
       ))
   ));
 
   private static final ArrayList<ArrayList<String>> LVL3_WAVES_STRUC = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("Coat", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "FireWorm"
+      new ArrayList<>(Arrays.asList("Necromancer"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Coat"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Coat", "Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("Coat", "Coat", "Coat", "DodgingDragon", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("SplittingRocky", "DeflectFireWizard", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "SplittingRocky", "Necromancer", "DodgingDragon", "FireWorm"
       ))
   ));
 
@@ -168,6 +141,7 @@ class WaveFactoryTest {
       for (WaveClass wave : lvl1Mobs) {
         int mobsRemaining = wave.getEntities().size() - 1;
         int totalMobsSpawned = 0;
+
         // check the number of mobs in a wave
         if (waveNum == 5 || waveNum == 1) {
           assertEquals(1, wave.getEntities().size(), "Wave should contain 1 mob.");
@@ -179,6 +153,10 @@ class WaveFactoryTest {
 
 
         if (waveNum != 5) {
+          Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
+          Set<String> expectedMobNames = new HashSet<>(LVL1_WAVES_STRUC.get(waveNum - 1));
+          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
             assertTrue(values[0] > 1 && values[0] <= (mobCount - totalMobsSpawned - (2 * mobsRemaining)));
@@ -227,6 +205,10 @@ class WaveFactoryTest {
         }
 
         if (waveNum != 10) {
+          Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
+          Set<String> expectedMobNames = new HashSet<>(LVL2_WAVES_STRUC.get(waveNum - 1));
+          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
 
@@ -270,20 +252,22 @@ class WaveFactoryTest {
         int mobsRemaining = wave.getEntities().size() - 1;
         int totalMobsSpawned = 0;
 
-        //TODO unhash when fire mobs integrated.
-        System.out.println("wave is: "+ wave);
         // check the number of mobs in a wave
-//        if (waveNum == 1 || waveNum == 15) {
-//          assertEquals(1, wave.getEntities().size(), "Wave should contain 1 mob.");
-//        } else if (1 < waveNum && waveNum < 10) {
-//          assertEquals(2, wave.getEntities().size(), "Wave should contain 2 mobs.");
-//        } else if (9 < waveNum && waveNum < 14){
-//          assertEquals(3, wave.getEntities().size(), "Wave should contain 3 mobs.");
-//        } else if (waveNum == 14){
-//          assertEquals(5, wave.getEntities().size(), "Wave should contain 4 mobs.");
-//        }
+        if (waveNum == 1 || waveNum == 15) {
+          assertEquals(1, wave.getEntities().size(), "Wave should contain 1 mob.");
+        } else if (1 < waveNum && waveNum < 10) {
+          assertEquals(2, wave.getEntities().size(), "Wave should contain 2 mobs.");
+        } else if (9 < waveNum && waveNum < 14){
+          assertEquals(3, wave.getEntities().size(), "Wave should contain 3 mobs.");
+        } else if (waveNum == 14){
+          assertEquals(5, wave.getEntities().size(), "Wave should contain 4 mobs.");
+        }
 
         if (waveNum != 15) {
+          Set<String> mobNames = new HashSet<>(wave.getEntities().keySet());
+          Set<String> expectedMobNames = new HashSet<>(LVL3_WAVES_STRUC.get(waveNum - 1));
+          assertTrue(mobNames.equals(expectedMobNames), "The mobs in the wave should be " + expectedMobNames + " .");
+
           for (String key: wave.getEntities().keySet()) {
             int[] values = wave.getEntities().get(key);
 
