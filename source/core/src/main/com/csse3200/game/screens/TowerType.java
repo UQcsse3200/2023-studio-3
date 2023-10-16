@@ -14,7 +14,13 @@ public enum TowerType {
     STUN("Stun Tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
             5, "1000", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
     INCOME("Income Tower", "The Income Tower generates additional in-game currency over time.",
-            5, "0", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png");
+            5, "0", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png"),
+    PIERCE("Pierce Tower", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
+            6, "0", "images/turret-select/pierce-tower-default.png", "images/turret-select/pierce-tower-selected.png"),
+    RICOCHET("Ricochet Tower", "The Ricochet Tower fires a projectile that upon contact does damage and changes direction",
+            7, "0", "images/turret-select/ricochet-tower-default.png", "images/turret-select/ricochet-tower-selected.png"),
+    FIREWORK("Firework Tower", "The Firework Tower fires a projectile that splits on contact with its target",
+            8, "0", "images/turret-select/firework-tower-default.png", "images/turret-select/firework-tower-selected.png");
 
     private final String towerName;
     private final String description;
