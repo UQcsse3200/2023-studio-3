@@ -16,6 +16,9 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import static com.csse3200.game.ui.UIComponent.getSkin;
 
 /**
  * Screen that displays a story with images and no text.
@@ -35,22 +38,40 @@ public class StoryScreen extends ScreenAdapter {
     };
     private Music music;
     private Preferences preferences;
+    private BitmapFont font;
+    private static final String defaultFont = "determination_mono_22";
+    private GlyphLayout layout;
 
     // Image file paths
     private static final String[] IMAGE_PATHS = {
-            "images/ui/game screen/earth before 1.0.png",
-            "images/ui/game screen/earth before 1.1.png",
-            "images/ui/game screen/earth dying 2.0.png",
-            "images/ui/game screen/earth dying 2.1.png",
-            "images/ui/game screen/meeting 3.0.png",
-            "images/ui/game screen/meeting 3.1.png",
-            "images/ui/game screen/spaceship 4.0.png",
-            "images/ui/game screen/spaceship 4.1.png",
-            "images/ui/game screen/arrival 5.0.png",
-            "images/ui/game screen/arrival 5.1.png",
-            "images/ui/game screen/survey 6.0.png",
-            "images/ui/game screen/arrival 6.1.png",
+            "images/ui/game screen/1 earth before.png",
+            "images/ui/game screen/1.1 earth before.png",
+            "images/ui/game screen/2.0 earth dying.png",
+            "images/ui/game screen/2.1 earth dying.png",
+            "images/ui/game screen/3. meeting.png",
+            "images/ui/game screen/3.1 meeting turret.png",
+            "images/ui/game screen/4.0 spaceship built.png",
+            "images/ui/game screen/4.1 spaceship leaving.png",
+            "images/ui/game screen/5.1 arrival.png",
+            "images/ui/game screen/5 arrival.png",
+            "images/ui/game screen/6.0 survey.png",
+            "images/ui/game screen/6.1 survey.png",
             // Add more image paths as needed
+    };
+
+    private static final String[] IMAGE_TEXTS = {
+            "Over a century ago, a tranquil world basked in an era of serenity. ",
+            "Nature's embrace cradled humanity, and life flourished abundantly. ",
+            "However, this harmony soon succumbed to the relentless grip of human greed. ",
+            "As desires grew insatiable, the delicate balance fractured, and the world's vitality waned",
+            "as everything was about to be lost a group of people came together to save humanity and an idea was born",
+            "to set out towards the stars and conquer planets",
+            "humanity pooled its resources together and made giant ships called ARKs that would carry us onto the stars",
+            "we set out with our iron will and firm resolve to not fade away ",
+            "we arrived at planets and built outposts that would help us survive this harsh environment ",
+            "we terraformed and procured resources that would help the future generations survive ",
+            "the brightest and best began researching and evaluating the newly found planets",
+            "all seems perfect until we picked up on a looming threat that maybe we aren't alone......",
     };
 
     public StoryScreen(GdxGame game) {
@@ -81,7 +102,11 @@ public class StoryScreen extends ScreenAdapter {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
+        font = getSkin().getFont(defaultFont);
+        layout = new GlyphLayout();
+
+        Skin skin = new Skin(Gdx.
+                files.internal("images/ui/buttons/glass.json"));
 
         continueButton = new TextButton("Continue", skin);
         continueButton.addListener(new ClickListener() {
@@ -131,6 +156,12 @@ public class StoryScreen extends ScreenAdapter {
             batch.draw(images[currentIndex], 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
 
+        if (currentIndex < images.length && currentIndex < IMAGE_TEXTS.length) {
+            String text = IMAGE_TEXTS[currentIndex];
+            layout.setText(font, text);
+            font.draw(batch, text, (Gdx.graphics.getWidth() - layout.width) / 2, Gdx.graphics.getHeight() * 0.1f);
+        }
+
         batch.end();
 
         // Draw UI
@@ -164,5 +195,6 @@ public class StoryScreen extends ScreenAdapter {
         }
         stage.dispose();
         music.dispose();
+        font.dispose();
     }
 }
