@@ -187,6 +187,7 @@ public class WaveService {
             pauseBeginTime = ServiceLocator.getTimeSource().getTime();
         }
         gamePaused = !gamePaused;
+    }
 
     /**
      * retrieve the number of enemies in the level
