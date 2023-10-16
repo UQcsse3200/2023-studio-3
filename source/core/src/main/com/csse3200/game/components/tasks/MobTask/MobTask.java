@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.MobTask;
+package com.csse3200.game.components.tasks.mobtask;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
@@ -35,13 +35,13 @@ public class MobTask extends DefaultTask implements PriorityTask {
     // Private variables
     private final MobType mobType;
     private State state = State.DEFAULT;
-    private State prevState;
     private Entity mob;
     private AnimationRenderComponent animation;
     private MovementTask movementTask;
     private Entity target;
     private GameTime gameTime;
     private long lastTimeAttacked;
+    private long dodgeEndTime;
 
     // Flags
     boolean melee;
@@ -51,6 +51,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     boolean rangeAttackFlag = false;
     boolean meleeAttackFlag = false;
     boolean deathFlag = false;
+    boolean canDodge = false;
 
     // Enums
     private enum State {
@@ -64,6 +65,17 @@ public class MobTask extends DefaultTask implements PriorityTask {
     public MobTask(MobType mobType) {
         this.mobType = mobType;
         gameTime = ServiceLocator.getTimeSource();
+    }
+
+    /**
+     * constructor for the mob
+     * @param mobType type of mob it is
+     * @param canDodge ability to dodge projectiles
+     */
+    public MobTask(MobType mobType, boolean canDodge) {
+        this.mobType = mobType;
+        gameTime = ServiceLocator.getTimeSource();
+        this.canDodge = true;
     }
 
     /**
@@ -84,6 +96,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         runFlag = true;
         changeState(State.RUN);
         lastTimeAttacked = gameTime.getTime();
+        dodgeEndTime = gameTime.getTime();
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
@@ -109,6 +122,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
             mob.setFlagForDelete(true);
         }
 
+        if(gameTime.getTime() >= dodgeEndTime) {
+          if (canDodge) {
+            mob.getEvents().trigger("dodgeIncomingEntity",
+                mob.getCenterPosition());
+          }
+          dodgeEndTime = gameTime.getTime() + 500; // 500ms
+        }
+
         switch (state) {
             case RUN -> {
                 if (runFlag) {
@@ -116,48 +137,33 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     animate();
                     runFlag = false;
                 }
-                if (melee) {
-                    if (enemyDetected()) {
-                        if (gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
-                            changeState(State.ATTACK);
-                            meleeAttackFlag = true;
-                        }
-                    }
-                } else {
-                    if (gameTime.getTime() - lastTimeAttacked >= RANGE_ATTACK_SPEED) {
-                        changeState(State.ATTACK);
-                        rangeAttackFlag = true;
-                    }
+                if (melee && enemyDetected() && gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
+                    changeState(State.ATTACK);
+                    meleeAttackFlag = true;
+                } else if (gameTime.getTime() - lastTimeAttacked >= RANGE_ATTACK_SPEED) {
+                    changeState(State.ATTACK);
+                    rangeAttackFlag = true;
                 }
             }
             case ATTACK -> {
-                if (melee) {
-                    if (meleeAttackFlag) {
-                        movementTask.stop();
-                        animate();
-                        meleeAttack();
-                        meleeAttackFlag = false;
-                    }
-                    if (animation.isFinished()) {
-                        movementTask.start();
-                        changeState(State.RUN);
-                        runFlag = true;
-                    }
+                if (melee && meleeAttackFlag) {
+                    movementTask.stop();
+                    animate();
+                    meleeAttack();
+                    meleeAttackFlag = false;
+                } else if (!melee && rangeAttackFlag) {
+                    movementTask.stop();
+                    animate();
+                    rangeAttack();
+                    rangeAttackFlag = false;
                 }
-                if (!melee) {
-                    if (rangeAttackFlag) {
-                        movementTask.stop();
-                        animate();
-                        rangeAttack();
-                        rangeAttackFlag = false;
-                    }
-                    if (animation.isFinished()) {
-                        movementTask.start();
-                        changeState(State.RUN);
-                        runFlag = true;
-                    }
+                if (animation.isFinished()) {
+                    movementTask.start();
+                    changeState(State.RUN);
+                    runFlag = true;
                 }
             }
+            case DEATH, DEFAULT -> {}
         }
     }
 
@@ -238,11 +244,11 @@ public class MobTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * changes state of the mob
+     * Changes the state of the mob.
+     * 
      * @param state state to change current state to
      */
     private void changeState(State state) {
-        prevState = this.state;
         this.state = state;
     }
 
@@ -252,19 +258,19 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     private boolean enemyDetected() {
         // if there's an entity within x of - 1 of mob
-        Entity target = ServiceLocator.getEntityService().getEntityAtPosition(
+        Entity targetInFront = ServiceLocator.getEntityService().getEntityAtPosition(
                 mob.getPosition().x - MELEE_ATTACK_RANGE, mob.getPosition().y);
-        if (target == null) {
+        if (targetInFront == null) {
             return false;
         }
 
         // layer checking
-        HitboxComponent targetHitbox = target.getComponent(HitboxComponent.class);
+        HitboxComponent targetHitbox = targetInFront.getComponent(HitboxComponent.class);
         if (targetHitbox == null) {
             return false;
         }
         if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
-            this.target = target;
+            this.target = targetInFront;
             return true;
         }
         return false;
@@ -313,5 +319,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+    /**
+     * Sets dodge flag of the mob
+     * 
+     * @param dodgeFlag If true, mob dodges projectile.
+     */
+    public void setDodge(boolean dodgeFlag) {
+      this.canDodge = dodgeFlag;
     }
 }
