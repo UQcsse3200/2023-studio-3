@@ -114,7 +114,7 @@ public class EngineerInputComponent extends InputComponent {
         return movementTask.getTask(HumanWanderTask.class);
     }
 
-    private void moveEngineer(Vector2 cursorPosition) {
+    public void moveEngineer(Vector2 cursorPosition) {
         if (selectedEngineer == null) {
             logger.info("Trying to move an engineer that is not selected");
         }
