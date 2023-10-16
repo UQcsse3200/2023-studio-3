@@ -7,6 +7,7 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.tasks.CurrencyTask;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
@@ -17,6 +18,8 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The AI Task for all general mobs. This task handles the sequencing for melee
@@ -37,8 +40,12 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final float CRYSTAL_DROP_RATE = 0.1f;
     private static final float SCRAP_DROP_RATE = 0.6f;
 
+    private static final Logger logger = LoggerFactory.getLogger(MobTask.class);
+
+
     // Private variables
     private final MobType mobType;
+
     private State state = State.DEFAULT;
     private Entity mob;
     private AnimationRenderComponent animation;
@@ -337,7 +344,8 @@ public class MobTask extends DefaultTask implements PriorityTask {
     }
 
     private void dropCurrency() {
-        float randomValue = MathUtils.random(0,1);
+        float randomValue = MathUtils.random(0f,1f);
+        logger.info("Random value: " + randomValue);
         Entity currency;
         if (randomValue <= CRYSTAL_DROP_RATE) {
             currency = DropFactory.createCrystalDrop();

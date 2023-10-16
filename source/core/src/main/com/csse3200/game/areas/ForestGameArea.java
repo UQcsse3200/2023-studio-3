@@ -270,6 +270,7 @@ public class ForestGameArea extends GameArea {
 //    spawnSplittingXenoGrunt(17, 2);
 //    spawnPatrick();
 //    spawnDemonBoss();
+//    spawnIceBaby();
     // spawnSplittingRocky(17, 4);
     // spawnFireWizard(17, 3);
     // spawnNecromancer(17, 2);
@@ -352,8 +353,13 @@ public class ForestGameArea extends GameArea {
     spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
   }
 
+  private void spawnIceBaby() {
+    Entity iceBaby = MobBossFactory.createIceBoss(5000);
+    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+  }
+
   private void spawnPatrick() {
-    Entity patrick = MobBossFactory.createPatrickBoss(3000);
+    Entity patrick = MobBossFactory.createPatrickBoss(5000);
     spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
   }
 
