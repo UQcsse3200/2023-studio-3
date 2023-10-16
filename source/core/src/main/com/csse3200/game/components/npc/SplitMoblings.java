@@ -168,7 +168,6 @@ public class SplitMoblings extends Component {
     ServiceLocator.getEntityService().register(entityType);
 
     // ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
-    //ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
   }
 
   /**
