@@ -64,9 +64,6 @@ public class LevelSelectScreen extends ScreenAdapter {
         font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         preferences = Gdx.app.getPreferences("MyPreferences");
-        if (!preferences.contains("HighestLevelReached")) {
-            preferences.putInteger("HighestLevelReached", -1).flush();
-        }
         this.game = game;
 
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -137,12 +134,13 @@ public class LevelSelectScreen extends ScreenAdapter {
      * @param levelNumber The level associated with the planet
      */
     private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame, int levelNumber) {
-        int highestLevelReached = -1; // Default to -1 to make ICE appear in color first
+        int highestLevelReached = getHighestLevelReached();
         Texture planet;
 
-        if (levelNumber == 1 && highestLevelReached >= -1) { // ICE planet, which is always unlocked initially
+        levelNumber = mapToConventional(levelNumber);
+        if (levelNumber == 0 && highestLevelReached >= -1)  { // ICE planet, which is always unlocked initially
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
-        } else if (levelNumber == 0 && highestLevelReached == 0) { // DESERT planet, unlocked only when highestLevelReached is 0
+        } else if (levelNumber == 1 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
         } else if (levelNumber == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
@@ -165,7 +163,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        int highestLevelReached = -1;
+        int highestLevelReached = getHighestLevelReached();
 
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
@@ -175,13 +173,14 @@ public class LevelSelectScreen extends ScreenAdapter {
                 Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
                 batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
 
+                int conventionalPlanetLevel = mapToConventional(planet[4]);
                 // Check if planet level is unlocked before allowing click
                 if (Gdx.input.justTouched()) {
-                    if (planet[4] == 1 && highestLevelReached >= -1) { // ICE planet, which is always unlocked initially
+                    if (conventionalPlanetLevel == 0 && highestLevelReached >= -1) { // ICE planet, which is always unlocked initially
                         loadPlanetLevel(planet);
-                    } else if (planet[4] == 0 && highestLevelReached == 0) { // DESERT planet, unlocked only when highestLevelReached is 0
+                    } else if (conventionalPlanetLevel == 1 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
                         loadPlanetLevel(planet);
-                    } else if (planet[4] == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
+                    } else if (conventionalPlanetLevel == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
                         loadPlanetLevel(planet);
                     } else {
                         logger.info("Attempted to load locked level {}", planet[4]);
@@ -199,7 +198,33 @@ public class LevelSelectScreen extends ScreenAdapter {
         game.setScreen(new TurretSelectionScreen(game));
     }
 
+    public int mapToConventional(int unconventionalNumber) {
+        switch (unconventionalNumber) {
+            case -1:
+                return -1;
+            case 1:
+                return 0;
+            case 0:
+                return 1;
+            case 2:
+                return 2;
+            default:
+                throw new IllegalArgumentException("Invalid planet number");
+        }
+    }
 
+    private int getHighestLevelReached() {
+        int unconventionalHighest = preferences.getInteger("HighestLevelReached", -1);
+
+        if (unconventionalHighest == 2) {
+            // modify the value of unconventionalHighest as needed
+            unconventionalHighest = -1; // replace "someOtherValue" with the desired value
+            preferences.putInteger("HighestLevelReached", unconventionalHighest);
+            preferences.flush();  // save changes to preferences
+        }
+
+        return mapToConventional(unconventionalHighest);
+    }
 
     // TODO: Make it display information about the planet
     @Override
