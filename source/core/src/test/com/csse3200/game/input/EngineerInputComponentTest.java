@@ -2,12 +2,7 @@ package com.csse3200.game.input;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Camera;
-import com.csse3200.game.components.player.HumanAnimationController;
-import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.EngineerFactory;
-import com.csse3200.game.physics.PhysicsLayer;
-import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +26,7 @@ public class EngineerInputComponentTest {
     }
 
     @Test
-    public void testTouchDownWithNoSelectedEngineer() {
+    public void testTouchDownOnTileWithNoSelectedEngineer() {
         when(ServiceLocator.getEntityService().getEntityAtPositionLayer(anyFloat(), anyFloat(), anyShort())).thenReturn(null);
         // nothing happened -> false
         boolean result = engineerInputComponent.touchDown(0, 0, 0, 0);
