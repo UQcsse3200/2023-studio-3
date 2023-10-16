@@ -4,9 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -86,6 +89,8 @@ public class MainGameDisplay extends UIComponent {
         towerTable.top().padTop(50f);
         towerTable.setFillParent(true);
 
+        towerTable.setDebug(true);
+
         // Contains other buttons (just pause at this stage)
         buttonTable.top().right().padTop(50f).padRight(80f);
         buttonTable.setFillParent(true);
@@ -140,6 +145,11 @@ public class MainGameDisplay extends UIComponent {
         towerButtons.add(tower5);
 
         TextButton pauseBtn = ButtonFactory.createButton("Pause");
+
+        // Starting animation for pause button
+        pauseBtn.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 150);
+        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200,
+                Gdx.graphics.getHeight() - 150, 1f, Interpolation.fastSlow)));
 
         // Spawns a pause menu when the button is pressed.
         pauseBtn.addListener(
@@ -325,6 +335,18 @@ public class MainGameDisplay extends UIComponent {
         stage.addActor(towerTable);
         stage.addActor(levelNameTable);
 
+        // Animate the tower select buttons
+        int tower1Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 400;
+        int tower2Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 240;
+        int tower3Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 + 80;
+        int tower4Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 - 80;
+        int tower5Gap = Gdx.graphics.getWidth() /2 + (int) towerTable.getX()/2 - 240;
+        animateTowerButton(tower1, tower1Gap, 230);
+        animateTowerButton(tower2, tower2Gap, 230);
+        animateTowerButton(tower3, tower3Gap, 230);
+        animateTowerButton(tower4, tower4Gap, 230);
+        animateTowerButton(tower5, tower5Gap, 230);
+
         TooltipManager tm = TooltipManager.getInstance();
         tm.initialTime = 3;
         tm.hideAll();
@@ -411,5 +433,11 @@ public class MainGameDisplay extends UIComponent {
 
     public void unloadSounds() {
         ServiceLocator.getResourceService().unloadAssets(sounds);
+    }
+
+    public void animateTowerButton(ImageButton button, float x, float y) {
+        button.setPosition(Gdx.graphics.getWidth() - x, Gdx.graphics.getHeight());
+        button.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - x,
+                Gdx.graphics.getHeight() - y, 1f, Interpolation.fastSlow)));
     }
 }
