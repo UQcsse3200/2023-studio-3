@@ -16,8 +16,6 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.HelpScreen.TutorialForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
-import com.csse3200.game.components.maingame.MainGameLoseDisplay;
-import com.csse3200.game.components.maingame.MainGamePauseDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
@@ -30,7 +28,6 @@ import com.csse3200.game.screens.GameLevelData;
 import com.csse3200.game.services.*;
 import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
-import com.csse3200.game.components.maingame.MainGameExitDisplay;
 import com.csse3200.game.screens.HelpScreen.TutorialOkButton;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +146,7 @@ public class Tutorial extends ScreenAdapter {
 
         loadAssets();
         createUI();
-        ServiceLocator.registerMapService(new MapService(renderer.getCamera()));
+        ServiceLocator.registerMapService(new MapService(renderer.getCamera(),camera));
         logger.debug("Initialising tutorial game screen entities");
         TutorialForestGameArea forestGameArea = new TutorialForestGameArea();
         forestGameArea.create();
@@ -297,7 +294,7 @@ public class Tutorial extends ScreenAdapter {
                 .addComponent(new PerformanceDisplay())
                 .addComponent(new MainGameActions(this.game))
                 .addComponent(ServiceLocator.getWaveService().getDisplay())
-                .addComponent(new MainGamePauseDisplay(this.game))
+              //  .addComponent(new MainGamePauseDisplay(this.game))
                 .addComponent(new TutorialOkButton(this.game))
                 .addComponent(new Terminal())
                 .addComponent(inputComponent)

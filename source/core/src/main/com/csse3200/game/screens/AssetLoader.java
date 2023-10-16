@@ -1,15 +1,14 @@
 package com.csse3200.game.screens;
+
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.utils.async.AsyncExecutor;
-import com.badlogic.gdx.utils.async.AsyncTask;
-import com.csse3200.game.areas.ForestGameArea;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class AssetLoader {
     private static final Set<String> loadedAssets = new HashSet<>();
@@ -28,6 +27,7 @@ public class AssetLoader {
             "images/hex_grass_1.png",
             "images/background/mountain.png",
             "images/ghost_king.png",
+            "images/ghost_1.png",
             "images/terrain 2 normal.png",
             "images/terrain 2 hex.png",
             "images/hex_grass_2.png",
@@ -54,6 +54,8 @@ public class AssetLoader {
             "images/mobs/Idle.png",
             "images/mobs/rangeBossRight.png",
             "images/towers/wallTower.png",
+            "images/background/building2.png",
+            "images/iso_grass_3.png",
             "images/terrain_use.png",
             "images/Dusty_MoonBG.png",
             "images/economy/scrap.png",
@@ -72,6 +74,7 @@ public class AssetLoader {
             "images/projectiles/stun_effect.png",
             "images/projectiles/firework_anim.png",
             "images/projectiles/pierce_anim.png",
+            "images/projectiles/snow_ball.png",
             "images/mobboss/demon.png",
             "images/mobboss/demon2.png",
             "images/mobs/fire_worm.png",
@@ -85,14 +88,8 @@ public class AssetLoader {
             "images/GrassTile/grass_tile_7.png",
             "images/highlight_tile.png",
             "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png",
-            "images/towers/wall_tower.png",
-            "images/towers/fireworks_tower.png",
-            "images/towers/barrier.png",
-            "images/towers/PierceTower.png",
-            "images/towers/RicochetTower.png",
-            "images/mobboss/iceBaby.png",
-            "images/bombship/bombship.png",
-            "images/HelpScreen/hs.jpg"
+            "images/green_tile.png",
+            "images/red_tile.png"
     };
 
     public static final String[] textureAtlases = {
@@ -111,9 +108,12 @@ public class AssetLoader {
             "images/mobs/robot.atlas",
             "images/mobs/rangeBossRight.atlas",
             "images/towers/DroidTower.atlas",
+            "images/mobs/robot.atlas",
+            "images/mobs/rangeBossRight.atlas",
             "images/towers/TNTTower.atlas",
             "images/projectiles/basic_projectile.atlas",
             "images/projectiles/bossProjectile.atlas",
+            "images/projectiles/mobProjectile.atlas",
             "images/projectiles/mobProjectile.atlas",
             "images/projectiles/engineer_projectile.atlas",
             "images/projectiles/mobBoss_projectile.atlas",
@@ -121,6 +121,7 @@ public class AssetLoader {
             "images/projectiles/pierce_anim.atlas",
             "images/projectiles/burn_effect.atlas",
             "images/projectiles/firework_anim.atlas",
+            "images/projectiles/mobProjectile.atlas",
             "images/projectiles/stun_effect.atlas",
             "images/mobboss/demon.atlas",
             "images/mobs/fire_worm.atlas",
@@ -130,12 +131,7 @@ public class AssetLoader {
             "images/mobs/water_queen.atlas",
             "images/mobs/water_slime.atlas",
             "images/mobboss/patrick.atlas",
-            "images/mobboss/iceBaby.atlas",
-            "images/towers/fireworks_tower.atlas",
-            "images/towers/barrier.atlas",
-            "images/towers/PierceTower.atlas",
-            "images/towers/RicochetTower.atlas",
-            "images/bombship/bombship.atlas"
+            "images/mobboss/iceBaby.atlas"
     };
 
 
@@ -144,6 +140,7 @@ public class AssetLoader {
     };
 
     public static final String[] Sounds = {
+            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
             "sounds/Impact4.ogg",
             "sounds/economy/click.wav",
             "sounds/economy/click_1.wav",
@@ -184,11 +181,11 @@ public class AssetLoader {
             "sounds/mobBoss/patrickCast.mp3",
             "sounds/mobBoss/patrickThunder.mp3",
             "sounds/mobBoss/patrickHit.mp3",
-            "sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg",
-            "sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg",
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg",
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
-            "sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg",
+            "sounds/ui/click/click_01.ogg",
+            "sounds/ui/hover/hover_01.ogg",
+            "sounds/ui/open_close/close_01.ogg",
+            "sounds/ui/open_close/open_01.ogg",
+            "sounds/ui/switch/switch_01.ogg",
             "sounds/background/desert/Elements.ogg",
             "sounds/background/desert/Rocks1.ogg",
             "sounds/background/desert/Rocks2.ogg",
@@ -200,27 +197,20 @@ public class AssetLoader {
             "sounds/background/lava/Sizzling.ogg",
             "sounds/background/lava/Swoosh.ogg",
             "sounds/background/loss/RisingScreams.ogg",
+            "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
+            "sounds/waves/wave-end/Wave_Over_01.ogg"
     };
 
 
     public static void loadAllAssets() {
         ResourceService resourceService = ServiceLocator.getResourceService();
 
-        for (String assetPath : textures) {
-            resourceService.loadAsset(assetPath, Texture.class);
-        }
+        resourceService.loadTextures(textures);
+        resourceService.loadTextureAtlases(textureAtlases);
+        resourceService.loadSounds(Sounds);
+        resourceService.loadMusic(music);
 
-        for (String assetPath : textureAtlases) {
-            resourceService.loadAsset(assetPath, TextureAtlas.class);
-        }
-
-        for (String assetPath : Sounds) {
-            resourceService.loadAsset(assetPath, Sound.class);
-        }
-
-        for (String assetPath : music) {
-            resourceService.loadAsset(assetPath, Music.class);
-        }
+        // Wait for the assets to finish loading (you can implement a loading screen)
         while (!resourceService.loadForMillis(10)) {
             // Display loading progress if needed
         }
@@ -235,6 +225,22 @@ public class AssetLoader {
         resourceService.unloadAssets(music);
     }
 
+    public static Texture getTexture(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Texture.class);
+    }
+
+    public static TextureAtlas getTextureAtlas(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, TextureAtlas.class);
+    }
+
+    public static Sound getSound(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Sound.class);
+    }
+
+    public static Music getMusic(String assetPath) {
+        return ServiceLocator.getResourceService().getAsset(assetPath, Music.class);
+    }
+
     public static boolean areAllAssetsLoaded() {
         ResourceService resourceService = ServiceLocator.getResourceService();
 
@@ -243,11 +249,4 @@ public class AssetLoader {
                 loadedAssets.containsAll(Arrays.asList(Sounds)) &&
                 loadedAssets.containsAll(Arrays.asList(music));
     }
-
-    public static void onAssetLoaded(String assetPath) {
-        loadedAssets.add(assetPath);
-    }
-
-
 }
-

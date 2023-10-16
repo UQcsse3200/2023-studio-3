@@ -26,7 +26,7 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 @ExtendWith(GameExtension.class)
-public class RicochetComponentTest {
+class RicochetComponentTest {
   Entity projectile;
   Entity mob;
 
@@ -60,18 +60,18 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     assertNotNull(projectile, "Ricochet projectile does not exist");
   }
 
   @Test
-  public void shouldHaveRicochetComponent() {
+  void shouldHaveRicochetComponent() {
     assertNotNull(projectile.getComponent(RicochetComponent.class),
         "Projectile does not contain RicochetComponent");
   }
 
   @Test
-  public void shouldDisposeAferCollision() {
+  void shouldDisposeAferCollision() {
     int currentEntities = ServiceLocator.getEntityService().getEntities().size;
 
     triggerCollisionEnd(projectile, mob);
@@ -88,7 +88,7 @@ public class RicochetComponentTest {
 
   // @Ignore
   @Test
-  public void shouldSpawnAnotherProjWithinMapBounds() {
+  void shouldSpawnAnotherProjWithinMapBounds() {
     projectile.setPosition(3, 3);
     int currentEntities = ServiceLocator.getEntityService().getEntities().size;
 
@@ -102,7 +102,7 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void shouldNotSpawnAnotherProjOutOfMapBounds() {
+  void shouldNotSpawnAnotherProjOutOfMapBounds() {
     projectile.setPosition(-1, -1);
     int currentEntities = ServiceLocator.getEntityService().getEntities().size;
 
@@ -117,7 +117,7 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void testWithinRangeSpawnedProjectile() {
+  void testWithinRangeSpawnedProjectile() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
 
@@ -133,7 +133,7 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void testNotWithinRangeShouldNotSpawnProjectile() {
+  void testNotWithinRangeShouldNotSpawnProjectile() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
     triggerCollisionEnd(projectile, mob);
@@ -146,7 +146,7 @@ public class RicochetComponentTest {
   }
 
   @Test
-  public void shouldNotSpawnAnotherProjWithMaxBounceCount() {
+  void shouldNotSpawnAnotherProjWithMaxBounceCount() {
     Entity newProjectile = createProjectile(PhysicsLayer.NPC, 3);
     ServiceLocator.getEntityService().register(newProjectile);
     int currentEntities = ServiceLocator.getEntityService().getEntities().size;

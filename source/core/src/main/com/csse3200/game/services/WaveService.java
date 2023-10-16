@@ -20,6 +20,11 @@ public class WaveService {
     private int spawnDelay;
 
     private boolean skipDelay = false;
+    private boolean gamePaused = false;
+    private long pauseBeginTime = 0;
+
+    private int levelEnemyCount = 0;
+    private int remainingLevelEnemyCount = 0;
 
 
     /**
@@ -56,6 +61,7 @@ public class WaveService {
      */
     public void updateEnemyCount() {
         enemyCount -= 1;
+        remainingLevelEnemyCount -= 1;
         logger.info("{} enemies remaining in wave", getEnemyCount());
     }
 
@@ -160,5 +166,48 @@ public class WaveService {
      * */
     public boolean shouldSkip() {
       return this.skipDelay;
+    }
+
+    /**
+     * Return whether the game is currently paused or not.
+     * @return the gamePaused variable.
+     */
+    public boolean getGamePaused() {return this.gamePaused;}
+
+    /**
+     * Toggles whether the game is paused or not, to keep track of how long the game is paused.
+     * When unpaused, offsets the NextWaveTime by however long the game has been paused.
+     */
+    public void toggleGamePause() {
+        if (gamePaused) {
+            long pauseDuration = ServiceLocator.getTimeSource().getTime() - pauseBeginTime;
+            long updatedNextWaveTime = getNextWaveTime() + pauseDuration;
+            setNextWaveTime(updatedNextWaveTime);
+        } else {
+            pauseBeginTime = ServiceLocator.getTimeSource().getTime();
+        }
+        gamePaused = !gamePaused;
+    }
+
+    /**
+     * retrieve the number of enemies in the level
+     * */
+    public int totalMobs() {
+      return this.levelEnemyCount;
+    }
+
+    /**
+     * set the total number of enemies in the level
+     * */
+    public void setTotalMobs(int total) {
+      this.levelEnemyCount = total;
+      this.remainingLevelEnemyCount = total;
+    }
+
+    /**
+     * get the number of mobs remaining for the whole level()
+     * */
+    public int remainingMobsForLevel() {
+      return this.remainingLevelEnemyCount;
     }
 }

@@ -22,9 +22,16 @@ import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
+import static com.csse3200.game.ui.UIComponent.getSkin;
+
+/**
+ * The game screen where you can choose a planet to play on.
+ */
 public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
@@ -36,6 +43,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final Stage stage;
     private final AnimatedText text;
     private BitmapFont font;
+    private static final String defaultFont = "determination_mono_32";
 
     private Sprite background;
     private final Music music;
@@ -56,7 +64,7 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     public LevelSelectScreen(GdxGame game, int currentLevel) {
         this.currentLevel = currentLevel;
-        font = new BitmapFont();
+        font = getSkin().getFont(defaultFont);
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         this.game = game;
 

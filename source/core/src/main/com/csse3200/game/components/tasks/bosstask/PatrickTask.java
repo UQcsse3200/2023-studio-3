@@ -10,11 +10,9 @@ import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.MobBossFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
-import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +26,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     // Constants
     private static final int PRIORITY = 3;
     private static final Vector2 PATRICK_SPEED = new Vector2(1f, 1f);
-    private static final float MAX_RADIUS = 20f;
     private static final int ATTACK_DAMAGE = 100;
     private static final float RANGE_MIN_X = 10f;
     private static final float RANGE_MAX_X = 18f;
@@ -38,9 +35,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
 
     // Private variables
     private static final Logger logger = LoggerFactory.getLogger(PatrickTask.class);
-    private Vector2 currentPos;
-    private PhysicsEngine physics;
-    private GameTime gameTime;
     private PatrickState state = PatrickState.IDLE;
     private PatrickState prevState;
     private AnimationRenderComponent animation;
@@ -62,14 +56,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
     }
 
     /**
-     * Constructor for PatrickTask
-     */
-    public PatrickTask() {
-        physics = ServiceLocator.getPhysicsService().getPhysics();
-        gameTime = ServiceLocator.getTimeSource();
-    }
-
-    /**
      * What is called when the patrick task is assigned
      */
     @Override
@@ -77,7 +63,6 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         super.start();
         patrick = owner.getEntity();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
-        currentPos = owner.getEntity().getPosition(); // get current position
         patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
 
         // give game time to load
@@ -101,10 +86,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         // give game time to load
         if (!startFlag) {
             return;
-        }
-
-        // update teleport task while teleporting
-        if (teleportFlag) {
+        } else if (teleportFlag) { // update teleport task while teleporting
             teleportTask.update();
             if (teleportTask.getStatus().equals(Status.FINISHED)) {
                 teleportFlag = false;
@@ -151,15 +133,12 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                     }, 1f);
                     changeState(PatrickState.ATTACK);
                     meleeFlag = false;
+                } else if (rangeFlag && shotsFired > 2) {
+                    rangeFlag = false;
+                    meleeAttack();
+                    shotsFired = 0; // reset shots fired
                 } else if (rangeFlag) {
-                    // shoot 3 projectiles
-                    if (shotsFired > 2) {
-                        rangeFlag = false;
-                        meleeAttack();
-                        shotsFired = 0; // reset shots fired
-                    } else {
-                        changeState(PatrickState.IDLE);
-                    }
+                    changeState(PatrickState.IDLE);
                 }
             }
             case IDLE -> {
@@ -174,6 +153,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
                     rangeFlag = true;
                 }
             }
+            case WALK, HURT, DEATH, SPELL -> {}
         }
     }
 

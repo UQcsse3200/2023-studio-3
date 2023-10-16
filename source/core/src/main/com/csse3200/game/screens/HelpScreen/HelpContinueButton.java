@@ -8,21 +8,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.maingame.MainGamePauseDisplay;
+import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.services.ServiceLocator;
-
+import com.csse3200.game.components.pausemenu.*;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
 /**
  * Displays a button in the pause menu to resume the game and put away the pause menu.
  */
 public class HelpContinueButton extends UIComponent {
-    private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.components.pausemenu.PauseMenuContinueButton.class);
     private static final float Z_INDEX = 2f;
     private Table table;
     private Table table1;
@@ -52,7 +51,7 @@ public class HelpContinueButton extends UIComponent {
                 new ChangeListener() {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Continue button clicked");
+                       // logger.debug("Continue button clicked");
                         closeSound.play(0.4f);
                         entity.dispose();
                         NextButtonMenu.nextMenu(game);

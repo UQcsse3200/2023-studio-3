@@ -27,7 +27,7 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 @ExtendWith(GameExtension.class)
-public class SplitFireworksComponentTest {
+class SplitFireworksComponentTest {
   Entity projectile;
   Entity mob;
   static double OFFSET_X = 1.75;
@@ -63,18 +63,18 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     assertNotNull(projectile, "Ricochet projectile does not exist");
   }
 
   @Test
-  public void shouldHaveSplitFireworksComponent() {
+  void shouldHaveSplitFireworksComponent() {
     assertNotNull(projectile.getComponent(SplitFireworksComponent.class),
         "Projectile does not contain SplitFireworksComponent");
   }
 
   @Test
-  public void shouldDisposeAferCollision() {
+  void shouldDisposeAferCollision() {
     triggerCollisionEnd(projectile, mob);
 
     assertTrue("original projectile entity flag should be true after collision",
@@ -98,7 +98,7 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void shouldSpawnMultProjWithinMapBounds() {
+  void shouldSpawnMultProjWithinMapBounds() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
 
@@ -114,7 +114,7 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void shouldNotSpawnMultProjOutOfMapBounds() {
+  void shouldNotSpawnMultProjOutOfMapBounds() {
     projectile.setPosition(22, 22);
     mob.setPosition(22, 22);
 
@@ -130,7 +130,7 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void testWithinRangeSpawnedProjectiles() {
+  void testWithinRangeSpawnedProjectiles() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
 
@@ -144,7 +144,7 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void testTooCloseRangeSpawnedProjectiles() {
+  void testTooCloseRangeSpawnedProjectiles() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
 
@@ -159,7 +159,7 @@ public class SplitFireworksComponentTest {
   }
 
   @Test
-  public void shouldSpawnAtSpecifiedLocation() {
+  void shouldSpawnAtSpecifiedLocation() {
     projectile.setPosition(3, 3);
     mob.setPosition(3, 3);
     float currPosition = projectile.getPosition().x;

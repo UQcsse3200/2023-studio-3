@@ -171,7 +171,6 @@ public class UpgradeUIComponent extends InputComponent {
         // Default values for the stats
         int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
         int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
-        turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing
         int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
         float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
         Label healthLabel = new Label(String.format("%d/%d", currentHealth, maxHealth), createLabelStyle());
@@ -289,7 +288,6 @@ public class UpgradeUIComponent extends InputComponent {
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
                     fireRateLabel.setText(String.format("%.2f", fireRate));
                 }
-
             }
 
 
@@ -305,7 +303,7 @@ public class UpgradeUIComponent extends InputComponent {
         });
 
         // Repair button
-        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture("images/hammer.png")));
+        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture("images/spanner.png")));
         ImageButton repairButton = new ImageButton(repair);
         repairButton.addListener(new ClickListener() {
             @Override

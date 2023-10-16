@@ -19,7 +19,6 @@ public class TowerSelectionInstruct extends UIComponent{
     /**
      * Displays a button in the pause menu to resume the game and put away the pause menu.
      */
-        private static final Logger logger = LoggerFactory.getLogger(com.csse3200.game.components.pausemenu.PauseMenuContinueButton.class);
         private static final float Z_INDEX = 2f;
         private Table table1;
         private GdxGame game;

@@ -23,6 +23,10 @@ public class SkeletonAnimationController extends Component {
      Sound deathSound = ServiceLocator.getResourceService().getAsset(
              ATTACK_SOUND, Sound.class);
 
+     private static final String DEATH_SOUND = "sounds/mobs/skeletonHit.mp3";
+     Sound attackSound = ServiceLocator.getResourceService().getAsset(
+             DEATH_SOUND, Sound.class);
+
     @Override
     public void create() {
         super.create();
@@ -38,6 +42,8 @@ public class SkeletonAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("skeleton_attack");
+        attackSound.setVolume(1000, 0);
+        attackSound.play();
     }
 
     void animateDeath() {

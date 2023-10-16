@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SpawnWaveTask extends DefaultTask implements PriorityTask {
-    private static final Logger logger = LoggerFactory.getLogger(SpawnWaveTask.class);
+
     private final GameTime globalTime;
     private long endTime = 0;
     private final int SPAWNING_INTERVAL = 10;

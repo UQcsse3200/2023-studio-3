@@ -32,7 +32,7 @@ import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 
 @ExtendWith(GameExtension.class)
-public class DodgingComponentTest {
+class DodgingComponentTest {
   Entity baseMob, baseProjectile;
   private static final float VALID_POSITION_Y = 4;
   private static final float VALID_POSITION_X = 7;
@@ -60,23 +60,24 @@ public class DodgingComponentTest {
         DEFAULT_RANGE_DETECTION,
         1.75f);
     // task = new MobDodgeTask(new Vector2(2f, 2f), 2f, 5);
-    task = new MobDodgeTask(MobType.DRAGON_KNIGHT, 5);
+    // task = new MobDodgeTask(MobType.DRAGON_KNIGHT, 5);
+    task = new MobTask(MobType.DRAGON_KNIGHT, true);
   }
 
   @Test
-  public void shouldNotBeNullComponent() {
+  void shouldNotBeNullComponent() {
     assertNotNull("Dodging combat component should not be null",
         baseMob.getComponent(DodgingComponent.class));
   }
 
   @Test
-  public void shouldNotBeNullTask() {
+  void shouldNotBeNullTask() {
     assertNotNull("Mob dodging tasks should not be null",
         baseMob.getComponent(AITaskComponent.class));
   }
 
   @Test
-  public void shouldInvokeDodgeEvent() {
+  void shouldInvokeDodgeEvent() {
     EventListener1<Vector2> dodgeProj = mock(EventListener1.class);
     baseMob.getComponent(AITaskComponent.class).addTask(task);
     baseMob.getEvents().addListener(DodgingComponent.DODGE_EVENT, dodgeProj);

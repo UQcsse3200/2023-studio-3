@@ -1,6 +1,7 @@
 package com.csse3200.game.components.npc;
 
 import com.csse3200.game.components.Component;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.services.ServiceLocator;
@@ -17,24 +18,29 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class SplitMoblings extends Component {
   private int amount;
-  private float scaleX, scaleY;
+  private MobType mobType;
+  private int baseMoblingHealth = 60;
+  private float scaleX;
+  private float scaleY;
   public static final float DEFAULT_MINIFIED_SCALE = 0.75f;
   public static final double OFFSET_DISTANCE = 1.5;
   public static final int FULL_CIRCLE_ANGLE = 360;
   public static final float MIN_X_BOUNDS = 1;
   public static final float MAX_X_BOUNDS = (float) 18.5;
   public static final float MIN_Y_BOUNDS = 0;
-  public static final float MAX_Y_BOUNDS = 6;
+  public static final float MAX_Y_BOUNDS = 5;
   public static final String DIE_START_EVENT = "splitDeath";
 
   /**
    * Initialises a component that splits mob into multiple moblings. Amount of
    * moblings split based on the amount provided param.
    * 
-   * @param amount Amount of moblings to be split.
+   * @param mobType Type of moblings split on death based on the MobType enum.
+   * @param amount  Amount of moblings to be split.
    * @require amount > 0
    */
-  public SplitMoblings(int amount) {
+  public SplitMoblings(MobType mobType, int amount) {
+    this.mobType = mobType;
     this.amount = amount;
     scaleX = scaleY = DEFAULT_MINIFIED_SCALE;
   }
@@ -44,12 +50,15 @@ public class SplitMoblings extends Component {
    * moblings split is based on the amount provided param.
    * The overalling scaling (x and y) is also altered in the param.
    * 
-   * @param amount Amount of moblings to be split.
-   * @param scale  X and Y scaling of the moblings in respect to the original size
-   *               of the mobs.
+   * @param mobType Type of moblings split on death based on the MobType enum.
+   * @param amount  Amount of moblings to be split.
+   * @param scale   X and Y scaling of the moblings in respect to the original
+   *                size
+   *                of the mobs.
    * @require amount > 0
    */
-  public SplitMoblings(int amount, float scale) {
+  public SplitMoblings(MobType mobType, int amount, float scale) {
+    this.mobType = mobType;
     this.amount = amount;
     this.scaleX = this.scaleY = scale;
   }
@@ -59,12 +68,14 @@ public class SplitMoblings extends Component {
    * moblings split is based on the amount provided param.
    * The individual scaling (x and y) is also altered in the param.
    * 
-   * @param amount Amount of moblings to be split.
-   * @param scaleX X scaling of the moblings compared to original size.
-   * @param scaleY Y scaling of the moblings compared to original size.
+   * @param mobType Type of moblings split on death based on the MobType enum.
+   * @param amount  Amount of moblings to be split.
+   * @param scaleX  X scaling of the moblings compared to original size.
+   * @param scaleY  Y scaling of the moblings compared to original size.
    * @require amount > 0
    */
-  public SplitMoblings(int amount, float scaleX, float scaleY) {
+  public SplitMoblings(MobType mobType, int amount, float scaleX, float scaleY) {
+    this.mobType = mobType;
     this.amount = amount;
     this.scaleX = scaleX;
     this.scaleY = scaleY;
@@ -88,14 +99,15 @@ public class SplitMoblings extends Component {
       float newXPosition = (float) (entity.getPosition().x - OFFSET_DISTANCE);
       float newYPosition = (float) (entity.getPosition().y);
 
-      if (withinBounds(newXPosition, newYPosition))
+      if (withinBounds(newXPosition, newYPosition)) {
         spawnAdditionalMob(newXPosition, newYPosition, initialScaleX, initialScaleY);
+      }
     }
 
     // Inspired by:
     // https://stackoverflow.com/questions/37145768/distribute-points-evenly-on-circle-circumference-in-quadrants-i-and-iv-only
     for (int i = 0; i < amount; i++) {
-      float currAngle = (float) (360 / amount) * i;
+      float currAngle = FULL_CIRCLE_ANGLE / (float) amount * i;
       double radians = currAngle * Math.PI / 180;
 
       float newX = entity.getPosition().x + (float) OFFSET_DISTANCE *
@@ -103,8 +115,9 @@ public class SplitMoblings extends Component {
       float newY = entity.getPosition().y + (float) OFFSET_DISTANCE *
           (float) Math.sin(radians);
 
-      if (withinBounds(newX, newY))
+      if (withinBounds(newX, newY)) {
         spawnAdditionalMob(newX, newY, initialScaleX, initialScaleY);
+      }
     }
   }
 
@@ -120,15 +133,42 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY,
       float initialScaleX, float initialScaleY) {
-    // MAKE A SWITCH CASE STATEMENT HERE, ASK JASON HOW TO
     // Entity waterSlime = NPCFactory.createBaseWaterSlime(60);
-    Entity waterSlime = NPCFactory.createNightBorne(60);
-    waterSlime.setPosition(positionX, positionY);
+    Entity entityType;
+    switch (mobType) {
+      case WATER_SLIME -> {
+        entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
+      }
 
-    waterSlime.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
-    // waterSlime.setScale(initialScaleX, initialScaleY);
+      case NIGHT_BORNE -> {
+        entityType = NPCFactory.createNightBorne(baseMoblingHealth);
+      }
 
-    ServiceLocator.getEntityService().register(waterSlime);
+      case ROCKY -> {
+        entityType = NPCFactory.createRocky(baseMoblingHealth);
+      }
+
+      default -> {
+        entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
+      }
+    }
+    
+    entityType.setPosition(positionX, positionY);
+
+    switch (mobType) {
+      case NIGHT_BORNE -> {
+        entityType.setScale(initialScaleX, initialScaleY);
+      }
+      default -> {
+        entityType.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
+      }
+    }
+
+
+    ServiceLocator.getEntityService().register(entityType);
+
+    // ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
+    //ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
   }
 
   /**
@@ -147,7 +187,6 @@ public class SplitMoblings extends Component {
         && currY <= MAX_Y_BOUNDS) {
       return true;
     }
-    ;
     return false;
   }
 }
