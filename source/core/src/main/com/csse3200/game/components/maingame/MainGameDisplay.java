@@ -315,7 +315,6 @@ public class MainGameDisplay extends UIComponent {
         towerTable.add(tower3).padRight(10f);
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
-        towerTable.stack(new Label(String.format("%s", towers.get(0).getPrice()), getSkin()));
         towerTable.row();
         towerTable.add("1", "small");
         towerTable.add("2", "small");
