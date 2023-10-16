@@ -27,16 +27,13 @@ public class NextContinueButton extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table1;
     private GdxGame game;
-    private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg"
-    };
-    private Sound closeSound;
+
 
     @Override
     public void create() {
         super.create();
         addActors();
-        loadSounds();
+
     }
 
     private void addActors() {
@@ -53,7 +50,7 @@ public class NextContinueButton extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         //logger.debug("Continue button clicked");
-                        closeSound.play(0.4f);
+
                         entity.dispose();
 
                     }
@@ -62,7 +59,7 @@ public class NextContinueButton extends UIComponent {
         table1.add(NextMenuBtn);
         stage.addActor(table1);
         table1.top().right();
-        table1.padTop(240f).padRight(100f);
+        table1.padTop(350f).padRight(100f);
     }
 
     @Override
@@ -81,9 +78,4 @@ public class NextContinueButton extends UIComponent {
         super.dispose();
     }
 
-    public void loadSounds() {
-        ServiceLocator.getResourceService().loadSounds(sounds);
-        ServiceLocator.getResourceService().loadAll();
-        closeSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
-    }
 }

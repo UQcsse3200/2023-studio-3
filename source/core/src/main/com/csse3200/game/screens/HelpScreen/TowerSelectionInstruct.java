@@ -44,7 +44,7 @@ public class TowerSelectionInstruct extends UIComponent{
 
             stage.addActor(table1);
             table1.top().left();
-            table1.padTop(235f).padLeft(80f);
+            table1.padTop(345f).padLeft(80f);
 
         }
 

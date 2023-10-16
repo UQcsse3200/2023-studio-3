@@ -19,8 +19,8 @@ public class PauseCompTutorial {
                 .addComponent(new PauseMenuTimeStopComponent())
                 .addComponent(new HelpContinueButton())
                 .addComponent(new TextureRenderComponent("images/HelpScreen/hs.jpg"));
-        TutorialMenu.setScale(16, 8.2f);
-        TutorialMenu.setPosition(center+1.3f, center);
+        TutorialMenu.setScale(14f, 7f);
+        TutorialMenu.setPosition(center+2.5f, center);
         ServiceLocator.getEntityService().register(TutorialMenu);
         return TutorialMenu;
 

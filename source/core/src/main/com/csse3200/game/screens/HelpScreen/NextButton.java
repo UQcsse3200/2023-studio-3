@@ -24,10 +24,8 @@ public class NextButton extends UIComponent {
     private static final float Z_INDEX = 2f;
     private Table table;
     private GdxGame game;
-    private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg"
-    };
-    private Sound openSound;
+
+
 
 
     public NextButton(GdxGame screenSwitchHandle) {
@@ -38,7 +36,7 @@ public class NextButton extends UIComponent {
     public void create() {
         super.create();
         addActors();
-        loadSounds();
+
     }
 
     private void addActors() {
@@ -54,7 +52,7 @@ public class NextButton extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         logger.debug("Pause button clicked");
-                        openSound.play(0.4f);
+
 //                        PauseMenuFactory.createPauseMenu(game, false);
                         PauseMenuFactory.createPauseMenu(game);
 
@@ -82,9 +80,5 @@ public class NextButton extends UIComponent {
         super.dispose();
     }
 
-    public void loadSounds() {
-        ServiceLocator.getResourceService().loadSounds(sounds);
-        ServiceLocator.getResourceService().loadAll();
-        openSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
-    }
+
 }

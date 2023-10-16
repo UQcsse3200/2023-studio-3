@@ -26,16 +26,14 @@ public class HelpContinueButton extends UIComponent {
     private Table table;
     private Table table1;
     private GdxGame game;
-    private final String[] sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg"
-    };
+
     private Sound closeSound;
 
     @Override
     public void create() {
         super.create();
         addActors();
-        loadSounds();
+
     }
 
     private void addActors() {
@@ -52,7 +50,7 @@ public class HelpContinueButton extends UIComponent {
                     @Override
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                        // logger.debug("Continue button clicked");
-                        closeSound.play(0.4f);
+
                         entity.dispose();
                         NextButtonMenu.nextMenu(game);
 
@@ -80,9 +78,5 @@ public class HelpContinueButton extends UIComponent {
         super.dispose();
     }
 
-    public void loadSounds() {
-        ServiceLocator.getResourceService().loadSounds(sounds);
-        ServiceLocator.getResourceService().loadAll();
-        closeSound = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
-    }
+
 }
