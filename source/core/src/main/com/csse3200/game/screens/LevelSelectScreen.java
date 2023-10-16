@@ -6,7 +6,6 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -16,24 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.mainmenu.MainMenuDisplay;
-import com.csse3200.game.entities.factories.RenderFactory;
-import com.csse3200.game.rendering.Renderer;
 import com.csse3200.game.screens.text.AnimatedText;
-import com.csse3200.game.screens.Planets;
 import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Text;
-
-import java.util.Arrays;
-
-import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 
 /**
  * The game screen where you can choose a planet to play on.
@@ -189,6 +178,8 @@ public class LevelSelectScreen extends ScreenAdapter {
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
+    @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }

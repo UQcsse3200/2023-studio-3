@@ -107,7 +107,6 @@ public class HumanAnimationController extends Component {
         } else {
             animator.startAnimation(WALKL_ANIM);
         }
-//        runSound.play();
     }
 
     /**
@@ -204,16 +203,5 @@ public class HumanAnimationController extends Component {
      */
     public void setClicked(boolean clicked) {
         this.clicked = clicked;
-    }
-
-    /**
-     * Deseelects the engineer entity by starting the appropriate animation without an outline
-     * and removes the engineer menu from the stage
-     * @param currentAnimation the current animation of the entity
-     */
-    public void deselectEngineer(String currentAnimation) {
-        AnimationRenderComponent animator = this.entity.getComponent(AnimationRenderComponent.class);
-        animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
-        setClicked(false);
     }
 }
