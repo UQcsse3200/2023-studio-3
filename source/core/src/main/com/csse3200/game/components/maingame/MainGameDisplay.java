@@ -89,8 +89,6 @@ public class MainGameDisplay extends UIComponent {
         towerTable.top().padTop(50f);
         towerTable.setFillParent(true);
 
-        towerTable.setDebug(true);
-
         // Contains other buttons (just pause at this stage)
         buttonTable.top().right().padTop(50f).padRight(80f);
         buttonTable.setFillParent(true);
