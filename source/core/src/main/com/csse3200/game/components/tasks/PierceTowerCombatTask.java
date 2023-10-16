@@ -63,7 +63,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         // Get the tower coordinates
-        this.towerPosition = owner.getEntity().getCenterPosition();
+        this.towerPosition = owner.getEntity().getCenterPosition().sub(0.25f, 0.25f);
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
