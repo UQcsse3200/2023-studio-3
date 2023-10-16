@@ -3,6 +3,7 @@ package com.csse3200.game.components.maingame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -22,6 +23,8 @@ import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.Provider;
 
 
 /**
@@ -48,8 +51,11 @@ public class UIElementsDisplay extends UIComponent {
 
         remainingMobsButton = ButtonFactory.createButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount());
-        buttonTable.top().right().padTop(160f).padRight(80f);
+        remainingMobsButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 230);
+        remainingMobsButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 218,
+                Gdx.graphics.getHeight() - 230, 1f, Interpolation.fastSlow)));
 
+        buttonTable.top().right().padTop(160f).padRight(80f);
         buttonTable.setFillParent(true);
 
         buttonTable.add(remainingMobsButton).right();//.padTop(10f).padRight(10f);
@@ -67,6 +73,12 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void updateMobCount() {
         remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                ServiceLocator.getWaveService().toggleDelay();
+            }
+        });
     }
 
     /**
@@ -78,6 +90,9 @@ public class UIElementsDisplay extends UIComponent {
 //                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         timerButton = ButtonFactory.createButton("Next wave in:"
                 + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+        timerButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 300);
+        timerButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 445,
+                Gdx.graphics.getHeight() - 300, 1f, Interpolation.fastSlow)));
         buttonTable.row();
         buttonTable.add(timerButton).padRight(10f);
     }

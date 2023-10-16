@@ -1,10 +1,14 @@
 package com.csse3200.game.components.maingame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -67,6 +71,8 @@ public class MainGameDisplay extends UIComponent {
         towerTable.top().padTop(80f);
         towerTable.setFillParent(true);
 
+        towerTable.setDebug(true);
+
         // Contains other buttons (just pause at this stage)
         buttonTable.top().right().padTop(80f).padRight(80f);
         buttonTable.setFillParent(true);
@@ -110,6 +116,11 @@ public class MainGameDisplay extends UIComponent {
         TextButton tower4 = ButtonFactory.createButton(towers.get(3).getTowerName());
         TextButton tower5 = ButtonFactory.createButton(towers.get(4).getTowerName());
         TextButton pauseBtn = ButtonFactory.createButton("Pause");
+
+        // Starting animation for pause button
+        pauseBtn.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 150);
+        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200,
+                Gdx.graphics.getHeight() - 150, 1f, Interpolation.fastSlow)));
 
         // Spawns a pause menu when the button is pressed.
         pauseBtn.addListener(
@@ -206,6 +217,13 @@ public class MainGameDisplay extends UIComponent {
         stage.addActor(buttonTable);
         stage.addActor(towerTable);
 
+        // Animate the tower select buttons
+        animateTowerButton(tower1, 1210, 150);
+        animateTowerButton(tower2, 1012, 150);
+        animateTowerButton(tower3, 780, 150);
+        animateTowerButton(tower4, 533, 150);
+        animateTowerButton(tower5, 320, 150);
+
         TooltipManager tm = TooltipManager.getInstance();
         tm.initialTime = 3;
         tm.hideAll();
@@ -236,5 +254,11 @@ public class MainGameDisplay extends UIComponent {
         ServiceLocator.getResourceService().loadAll();
         click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
         openSound = ServiceLocator.getResourceService().getAsset(sounds[2], Sound.class);
+    }
+
+    public void animateTowerButton(TextButton button, float x, float y) {
+        button.setPosition(Gdx.graphics.getWidth()- x, Gdx.graphics.getHeight());
+        button.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - x,
+                Gdx.graphics.getHeight() - y, 1f, Interpolation.fastSlow)));
     }
 }
