@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class StunTowerCombatTaskTest {
+class StunTowerCombatTaskTest {
     StunTowerCombatTask stunTowerCombatTask;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class StunTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testStartTriggersIdleEvent() {
+    void testStartTriggersIdleEvent() {
         Entity entity = createStunTower();
         EventListener0 idleListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -53,7 +53,7 @@ public class StunTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createStunTower();
         entity.setPosition(10, 10);
 

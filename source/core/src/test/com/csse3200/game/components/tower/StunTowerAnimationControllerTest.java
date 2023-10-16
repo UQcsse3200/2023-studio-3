@@ -17,14 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
-public class StunTowerAnimationControllerTest {
-
+class StunTowerAnimationControllerTest {
     private Entity mockEntity;
     private final String[] texture = {"images/towers/stun_tower.png"};
     private final String[] atlas = {"images/towers/stun_tower.atlas"};
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ServiceLocator.registerPhysicsService(new PhysicsService());
         RenderService render = new RenderService();
         render.setDebug(mock(DebugRenderer.class));
@@ -40,19 +39,19 @@ public class StunTowerAnimationControllerTest {
     }
 
     @Test
-    public void testAnimateWalk() {
+    void testAnimateWalk() {
         mockEntity.getEvents().trigger("startIdle");
         assertEquals("idle", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateDefault() {
+    void testAnimateDefault() {
         mockEntity.getEvents().trigger("startAttack");
         assertEquals("attack", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateGoUp() {
+    void testAnimateGoUp() {
         mockEntity.getEvents().trigger("startDeath");
         assertEquals("death", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
