@@ -19,10 +19,10 @@ public class NextButtonMenu {
 
         Entity TutorialMenu = new Entity()
                 .addComponent(new PauseMenuTimeStopComponent())
-                .addComponent(new PauseMenuContinueButton());
+                .addComponent(new NextContinueButton());
 
         TutorialMenu.setScale(16, 8.2f);
-        TutorialMenu.setPosition(center+1.3f, center);
+        TutorialMenu.setPosition(center+1.3f, center+5f);
 
         Table table = new Table();
         table.setFillParent(true); // This makes the table the size of the stage
