@@ -343,7 +343,7 @@ public class ProjectileFactory {
         // This is the component that allows the projectile to damage a
         // specified target.
         // Original knockback value: 1.5f
-        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
+        .addComponent(new TouchAttackComponent(targetLayer, 0f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         // *TEMPORARY
         .addComponent(new DeleteOnMapEdgeComponent());
