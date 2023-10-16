@@ -225,14 +225,16 @@ public class MainGameScreen extends ScreenAdapter {
     }
 
     // Check if all waves are completed and the level has been completed
-    if (selectedLevel == 2) { // Lava level
-      // If it's the lava level, go to the "win" screen
-      ui.getEvents().trigger("win");
-      logger.info("Main game level completed detected, go to win screen");
-    } else {
-      // For other levels, go to the "NextLevelScreen"
-      game.setScreen(new NextLevelScreen(game, selectedLevel));
-      logger.info("game level completed detected, go to NextLevelScreen");
+    if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      if (selectedLevel == 2) { // Lava level
+        // If it's the lava level, go to the "win" screen
+        ui.getEvents().trigger("win");
+        logger.info("Main game level completed detected, go to win screen");
+      } else {
+        // For other levels, go to the "NextLevelScreen"
+        game.setScreen(new NextLevelScreen(game, selectedLevel));
+        logger.info("game level completed detected, go to NextLevelScreen");
+      }
     }
   }
   // Add something in to unlock the next planet/level?
