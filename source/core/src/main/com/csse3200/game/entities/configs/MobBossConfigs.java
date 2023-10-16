@@ -1,7 +1,7 @@
 package com.csse3200.game.entities.configs;
 
 /**
- * Defines the properties stored in ghost king config files to be loaded by the NPC Factory.
+ * Defines the properties stored in mob boss config files to be loaded by the Mob Boss Factory.
  */
 public class MobBossConfigs extends BaseEntityConfig {
   public int baseAttack = 0;

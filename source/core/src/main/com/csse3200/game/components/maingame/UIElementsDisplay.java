@@ -28,7 +28,6 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
-    private LevelProgressBar progressbar;
 
     @Override
     public void create() {
@@ -43,29 +42,21 @@ public class UIElementsDisplay extends UIComponent {
 
         remainingMobsButton = ButtonFactory.createButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount());
+
         remainingMobsButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 230);
         remainingMobsButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 218,
                 Gdx.graphics.getHeight() - 230, 1f, Interpolation.fastSlow)));
 
-        buttonTable.top().right().padTop(160f).padRight(80f);
+        buttonTable.top().right().padTop(130f).padRight(80f);
         buttonTable.setFillParent(true);
 
-        buttonTable.add(remainingMobsButton).right();//.padTop(10f).padRight(10f);
+        buttonTable.add(remainingMobsButton).right();
         buttonTable.row();
-        buttonTable.add(timerButton);//.padRight(10f);
+        buttonTable.add(timerButton);
 
         stage.addActor(buttonTable);
 
-        progressbar = new LevelProgressBar(500, 10);
-        progressbar.setPosition(500, Gdx.graphics.getHeight() - 200);
-        stage.addActor(progressbar);
-
         createTimerButton();
-    }
-
-    public void updateLevelProgressBar() {
-        float totalSecs = ((float) ServiceLocator.getTimeSource().getTime() / 1000);
-        progressbar.setValue(totalSecs);
     }
 
     /**
@@ -88,8 +79,6 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void createTimerButton() {
 
-//        timerButton = new ButtonFactory().createButton("Next wave in:"
-//                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         timerButton = ButtonFactory.createButton("Next wave in:"
                 + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         timerButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 300);
@@ -103,27 +92,28 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the text for timer button.
      */
     public void updateTimerButton() {
-        int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
-                - ServiceLocator.getTimeSource().getTime()) / 1000);
+        if (!(ServiceLocator.getWaveService().getGamePaused())) {
+            int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
+                    - ServiceLocator.getTimeSource().getTime()) / 1000);
 
-        // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
-        if (totalSecs % 20 == 0) {
+            // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
+            if (totalSecs % 20 == 0) {
                 ServiceLocator.getMapService().shakeCameraMap();
                 ServiceLocator.getMapService().shakeCameraGrid();
-        }
-        int seconds = totalSecs % 60;
-        int minutes = (totalSecs % 3600) / 60;
-        String finalTime = String.format("%02d:%02d", minutes, seconds);
-        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
-            if (!findActor(timerButton)) {
-                createTimerButton();
             }
-            timerButton.setText("Next wave in: " + finalTime);
-        } else {
-            timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
-//            buttonTable.removeActor(timerButton);
-            stage.act();
-            stage.draw();
+            int seconds = totalSecs % 60;
+            int minutes = (totalSecs % 3600) / 60;
+            String finalTime = String.format("%02d:%02d", minutes, seconds);
+            if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
+                if (!findActor(timerButton)) {
+                    createTimerButton();
+                }
+                timerButton.setText("Next wave in: " + finalTime);
+            } else {
+                timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
+                stage.act();
+                stage.draw();
+            }
         }
     }
 
@@ -161,6 +151,5 @@ public class UIElementsDisplay extends UIComponent {
     public void dispose() {
         super.dispose();
         buttonTable.clear();
-        progressbar.clear();
     }
 }

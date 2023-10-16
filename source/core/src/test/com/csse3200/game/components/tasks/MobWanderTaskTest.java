@@ -18,6 +18,7 @@ class MobWanderTaskTest {
   void beforeEach() {
     ServiceLocator.registerTimeSource(gameTime);
   }
+  //TODO: Add some tests to this class.
 
 //  @Test
 //  void shouldTriggerEvent() {

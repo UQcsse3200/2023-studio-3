@@ -55,7 +55,7 @@ public class PauseMenuButtonComponent extends UIComponent {
      */
     private void addActors() {
 
-        window = new Window("Game Paused", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
+        window = new Window("", new Skin(Gdx.files.internal("images/ui/buttons/glass.json")));
 
         TextButton continueBtn = ButtonFactory.createButton("Continue");
         continueBtn.pad(20f);
@@ -105,23 +105,23 @@ public class PauseMenuButtonComponent extends UIComponent {
                     }
                 });
 
-        window.addListener(
-                new InputListener() {
-
-                    @Override
-                    public boolean keyUp (InputEvent event, int keycode) {
-                        if (keycode == Input.Keys.ESCAPE && ServiceLocator.getTimeSource().getPaused()) {
-                            logger.debug("Closing pause menu with escape key");
-                            click.play(0.5f);
-                            closeSound.play(0.5f);
-                            ServiceLocator.getTimeSource().setPaused(false);
-                            entity.dispose();
-                            return true;
-                        }
-                        return false;
-                    }
-                }
-        );
+//        window.addListener(
+//                new InputListener() {
+//
+//                    @Override
+//                    public boolean keyUp (InputEvent event, int keycode) {
+//                        if (keycode == Input.Keys.ESCAPE && ServiceLocator.getTimeSource().getPaused()) {
+//                            logger.debug("Closing pause menu with escape key");
+//                            click.play(0.5f);
+//                            closeSound.play(0.5f);
+//                            ServiceLocator.getTimeSource().setPaused(false);
+//                            entity.dispose();
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                }
+//        );
 
 //        window.setKeepWithinStage(true);
         window.setResizable(true);
@@ -168,6 +168,9 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     @Override
     public void dispose() {
+        click.play(0.5f);
+        closeSound.play(0.5f);
+        ServiceLocator.getTimeSource().setPaused(false);
         window.clear();
         window.remove();
         super.dispose();

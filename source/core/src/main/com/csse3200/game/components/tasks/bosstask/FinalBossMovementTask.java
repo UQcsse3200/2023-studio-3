@@ -79,7 +79,7 @@ public class FinalBossMovementTask extends DefaultTask implements PriorityTask {
                 if (towerAhead()) {
                     Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.TOWER, new Vector2(0,currentPos.y + 0.75f), new Vector2(2f,2f), ProjectileEffects.BURN, false);
                     newProjectile.scaleHeight(-0.4f);
-                    newProjectile.setPosition((float) (currentPos.x), (float) (currentPos.y+0.75f));
+                    newProjectile.setPosition(currentPos.x, currentPos.y + 0.75f);
                     ServiceLocator.getEntityService().register(newProjectile);
                 }
                 startWaiting();

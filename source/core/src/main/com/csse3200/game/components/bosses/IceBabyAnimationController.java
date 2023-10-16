@@ -38,7 +38,7 @@ public class IceBabyAnimationController extends Component {
     Sound mobSpawnSound = ServiceLocator.getResourceService().getAsset(
             MOB_SPAWN_SOUND, Sound.class);
     private static final String AOE_SOUND = "sounds/mobBoss/iceBabyAOE.mp3";
-    Sound AOESound = ServiceLocator.getResourceService().getAsset(
+    Sound aoeSound = ServiceLocator.getResourceService().getAsset(
             AOE_SOUND, Sound.class);
 
     @Override
@@ -70,8 +70,8 @@ public class IceBabyAnimationController extends Component {
     }
     void animateATK3() {
         animator.startAnimation(ATK3_ANIM);
-        AOESound.setVolume(1000, 5.5f);
-        AOESound.play();
+        aoeSound.setVolume(1000, 5.5f);
+        aoeSound.play();
     }
     void animateDeath() {
         animator.startAnimation(DEATH_ANIM);
