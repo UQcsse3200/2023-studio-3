@@ -33,11 +33,11 @@ public class TowerUpgraderComponent extends Component {
      */
     public void upgradeTower(UPGRADE upgradeType, int value) {
         switch (upgradeType) {
-            case INCOME -> {getEntity().getEvents().trigger("addIncome", value);}
-            case ATTACK -> {upgradeTowerAttack(value);}
-            case MAXHP -> {upgradeTowerMaxHealth( value);}
-            case FIRERATE -> {getEntity().getEvents().trigger("addFireRate", value);}
-            case REPAIR -> {repairTower();}
+            case INCOME -> getEntity().getEvents().trigger("addIncome", value);
+            case ATTACK -> upgradeTowerAttack(value);
+            case MAXHP -> upgradeTowerMaxHealth( value);
+            case FIRERATE -> getEntity().getEvents().trigger("addFireRate", value);
+            case REPAIR -> repairTower();
 
         }
     }
