@@ -12,31 +12,21 @@ import com.csse3200.game.services.ServiceLocator;
 import com.badlogic.gdx.utils.Array;
 
 import static com.badlogic.gdx.utils.Align.center;
+import static com.badlogic.gdx.utils.Align.top;
 
 public class NextButtonMenu {
 
     public static Entity nextMenu(GdxGame game) {
 
-        Entity TutorialMenu = new Entity()
+        Entity Menu = new Entity()
                 .addComponent(new PauseMenuTimeStopComponent())
-                .addComponent(new NextContinueButton());
+                .addComponent(new NextContinueButton())
+                .addComponent(new TowerSelectionInstruct());
+        Menu.setScale(8, 8.2f);
+        Menu.setPosition(6.3f,2f);
 
-        TutorialMenu.setScale(16, 8.2f);
-        TutorialMenu.setPosition(center+1.3f, center+5f);
-
-        Table table = new Table();
-        table.setFillParent(true); // This makes the table the size of the stage
-
-        BitmapFont font = new BitmapFont(); // You can customize the font
-        Label.LabelStyle style = new Label.LabelStyle(font, Color.WHITE);
-        Label textLabel = new Label("Select and place towers and press continue", style);
-
-        // Add the text label to the table
-        table.add(textLabel).center();
-
-
-        ServiceLocator.getEntityService().register(TutorialMenu);
-        return TutorialMenu;
+        ServiceLocator.getEntityService().register(Menu);
+        return Menu;
 
     }
 }

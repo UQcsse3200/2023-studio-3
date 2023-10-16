@@ -18,6 +18,7 @@ import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * Displays a button in the pause menu to resume the game and put away the pause menu.
  */
@@ -41,7 +42,7 @@ public class NextContinueButton extends UIComponent {
     private void addActors() {
 
         table1 = new Table();
-        table1.padTop(10f);
+
         table1.setFillParent(true);
 //        TextButton NextMenuBtn = buttonFactory.createButton("Continue");
         TextButton NextMenuBtn = new TextButton("Continue", skin);
@@ -60,9 +61,8 @@ public class NextContinueButton extends UIComponent {
 
         table1.add(NextMenuBtn);
         stage.addActor(table1);
-
-
-
+        table1.top().right();
+        table1.padTop(240f).padRight(100f);
     }
 
     @Override
