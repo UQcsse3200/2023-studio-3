@@ -101,18 +101,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         }
 
         switch (towerState) {
-            case IDLE -> {
-                handleIdleState();
-            }
-            case PREP_ATTACK -> {
-                handlePrepAttackState();
-            }
-            case ATTACK -> {
-                handleAttackState();
-            }
-            default -> {     // DEATH
-                handleDeathState();
-            }
+            case IDLE -> handleIdleState();
+            case PREP_ATTACK -> handlePrepAttackState();
+            case ATTACK -> handleAttackState();
+            default -> handleDeathState();     // DEATH
         }
     }
 
