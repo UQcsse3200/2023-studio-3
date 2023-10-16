@@ -54,7 +54,7 @@ public class TutorialOkButton extends UIComponent {
                         logger.debug("ok button clicked");
                         openSound.play(0.4f);
 //                        PauseMenuFactory.createPauseMenu(game, false);
-                        PauseMenuFactory.createPauseMenu(game);
+                        PauseCompTutorial.TutorialMenu(game);
 
                     }
                 });
