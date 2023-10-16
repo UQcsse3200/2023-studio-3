@@ -1,15 +1,18 @@
 package com.csse3200.game.components.maingame;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
+import com.csse3200.game.screens.MainGameScreen;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
@@ -127,6 +130,23 @@ public class MainGameDisplay extends UIComponent {
                         logger.debug("Pause button clicked");
                         openSound.play(0.4f);
                         PauseMenuFactory.createPauseMenu(game);
+                        game.getScreen().pause();
+                    }
+                });
+
+        // Pause menu escape key opening listener
+        stage.addListener(
+                new InputListener() {
+                    @Override
+                    public boolean keyUp(InputEvent event, int keycode) {
+//                        MainGameScreen screen = (MainGameScreen) game.getScreen();
+                        if ((keycode == Input.Keys.ESCAPE)) {
+                            game.getScreen().pause();
+                            openSound.play(0.4f);
+                            PauseMenuFactory.createPauseMenu(game);
+                            return true;
+                        }
+                        return false;
                     }
                 });
 
@@ -252,6 +272,7 @@ public class MainGameDisplay extends UIComponent {
                 });
         TextTooltip tower5Tooltip = new TextTooltip(towers.get(4).getDescription(), getSkin());
         tower5.addListener(tower5Tooltip);
+
 
         // Scale all the tower build buttons down
         // Add all buttons to their respective tables and position them
