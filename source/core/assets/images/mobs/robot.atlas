@@ -24,6 +24,13 @@ Walk
   orig: 32, 72
   offset: 46, -56
   index: -1
+Freeze
+  rotate: false
+  xy: 925, 34
+  size: 32, 72
+  orig: 32, 72
+  offset: 46, -56
+  index: -1
 Walk
   rotate: false
   xy: 483, 34

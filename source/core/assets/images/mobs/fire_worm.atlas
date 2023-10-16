@@ -130,6 +130,13 @@ fire_worm_death
   orig: 75, 75
   offset: 0, 0
   index: -1
+fire_worm_freeze
+  rotate: false
+  xy: 770, 2
+  size: 75, 75
+  orig: 75, 75
+  offset: 0, 0
+  index: -1
 fire_worm_death
   rotate: false
   xy: 2, 156

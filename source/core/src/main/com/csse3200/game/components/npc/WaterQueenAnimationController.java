@@ -44,5 +44,9 @@ public class WaterQueenAnimationController extends Component {
     void animateDeath() {
         animator.startAnimation("water_queen_death");
     }
+	
+    public void animateFreeze() {
+        animator.startAnimation("water_queen_freeze");
+    }
 }
 

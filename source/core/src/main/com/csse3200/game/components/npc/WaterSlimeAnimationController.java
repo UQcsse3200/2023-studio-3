@@ -38,6 +38,10 @@ public class WaterSlimeAnimationController extends Component {
     void animateDeath() {
         animator.startAnimation("water_slime_death");
     }
+	
+    public void animateFreeze() {
+        animator.startAnimation("water_slime_freeze");
+    }
 }
 
 

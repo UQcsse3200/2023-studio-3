@@ -53,6 +53,13 @@ water_slime_death
   orig: 32, 25
   offset: 0, 0
   index: -1
+water_slime_freeze
+  rotate: false
+  xy: 442, 2
+  size: 32, 25
+  orig: 32, 25
+  offset: 0, 0
+  index: -1
 water_slime_death
   rotate: false
   xy: 240, 2

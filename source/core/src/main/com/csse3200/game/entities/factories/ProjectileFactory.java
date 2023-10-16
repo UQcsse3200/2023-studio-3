@@ -58,7 +58,7 @@ public class ProjectileFactory {
                                 .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-
+		animator.addAnimation("projectileCollide", START_SPEED, Animation.PlayMode.NORMAL);
         projectile
                 .addComponent(animator)
                 .addComponent(new ProjectileAnimationController());
@@ -84,6 +84,7 @@ public class ProjectileFactory {
                                 .getAsset("images/projectiles/snow_ball.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+		animator.addAnimation("collision", START_SPEED, Animation.PlayMode.NORMAL);
 
         projectile
                 .addComponent(animator)
@@ -101,6 +102,7 @@ public class ProjectileFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset("images/projectiles/stun_effect.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, 0.1f, Animation.PlayMode.LOOP);
+        animator.addAnimation("stun", 0.3f, Animation.PlayMode.LOOP);
 
         projectile
                 .addComponent(animator)
@@ -161,6 +163,7 @@ public class ProjectileFactory {
                             .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
     animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
+	animator.addAnimation("projectileCollide", START_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
             .addComponent(animator)
@@ -228,6 +231,7 @@ public class ProjectileFactory {
                             .getAsset("images/projectiles/engineer_projectile.atlas", TextureAtlas.class));
     animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
+    animator.addAnimation("bulletCollide", START_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
         .addComponent(animator)

@@ -50,6 +50,9 @@ public class FireWormAnimationController extends Component {
         animator.startAnimation("default");
     }
 
-
+	public void animateFreeze()
+	{
+		animator.startAnimation("fire_worm_freeze");
+	}
 }
 

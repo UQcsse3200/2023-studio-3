@@ -46,6 +46,13 @@ skeleton_attack
   orig: 62, 48
   offset: 0, 0
   index: -1
+skeleton_freeze
+  rotate: false
+  xy: 1152, 2
+  size: 62, 48
+  orig: 62, 48
+  offset: 0, 0
+  index: -1
 skeleton_attack
   rotate: false
   xy: 642, 2
