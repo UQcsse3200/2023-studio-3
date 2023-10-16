@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -19,6 +18,7 @@ import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
 
 public class LosingScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -60,14 +60,13 @@ public class LosingScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
-        Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-        exitButton = new TextButton("Exit Game", skin);
+        exitButton = ButtonFactory.createButton("Exit Game");
         exitButton.addListener(new ClickListener(){
             public void clicked(InputEvent even, float x, float y) {
                 game.exit();
             }
         });
-        mainMenuButton = new TextButton("Back to Main Menu", skin);
+        mainMenuButton = ButtonFactory.createButton("Back to Main Menu");
         mainMenuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,7 +75,7 @@ public class LosingScreen extends ScreenAdapter {
 
         });
 
-        playAgainButton = new TextButton("Play Again", skin);
+        playAgainButton = ButtonFactory.createButton("Play Again");
         playAgainButton.addListener(new ClickListener() {
             public void clicked(InputEvent even, float x, float y) {
                 game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);

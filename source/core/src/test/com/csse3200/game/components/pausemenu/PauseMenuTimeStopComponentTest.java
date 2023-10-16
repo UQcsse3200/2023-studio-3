@@ -3,7 +3,9 @@ package com.csse3200.game.components.pausemenu;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.services.WaveService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,6 +19,10 @@ public class PauseMenuTimeStopComponentTest {
     void beforeEach() {
         EntityService entityService = new EntityService();
         ServiceLocator.registerEntityService(entityService);
+        WaveService waveService = new WaveService();
+        ServiceLocator.registerWaveService(waveService);
+        GameTime gameTime = new GameTime();
+        ServiceLocator.registerTimeSource(gameTime);
         entity = mock(Entity.class);
         when(entity.getId()).thenReturn(-1); //Ensure it does not coincide with the pause menu's ID
         entityService.register(entity);

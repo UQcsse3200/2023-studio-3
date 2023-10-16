@@ -64,7 +64,7 @@ public class RicochetTowerCombatTaskTest {
         entity.getEvents().addListener(RicochetTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         ricochetTowerCombatTask.start();
-        ricochetTowerCombatTask.towerState = RicochetTowerCombatTask.STATE.IDLE;
+        ricochetTowerCombatTask.setState(RicochetTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -92,7 +92,7 @@ public class RicochetTowerCombatTaskTest {
         entity.getEvents().addListener(RicochetTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(RicochetTowerCombatTask.ATTACK, attack);
 
-        ricochetTowerCombatTask.towerState = RicochetTowerCombatTask.STATE.IDLE;
+        ricochetTowerCombatTask.setState(RicochetTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();

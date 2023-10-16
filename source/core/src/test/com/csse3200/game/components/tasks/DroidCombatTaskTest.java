@@ -64,7 +64,7 @@ public class DroidCombatTaskTest {
         entity.getEvents().addListener(DroidCombatTask.SHOOT_DOWN,shootDown);
         //Jump to IDLE state
         droidCombatTask.start();
-        droidCombatTask.towerState = DroidCombatTask.STATE.IDLE;
+        droidCombatTask.setState(DroidCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -110,7 +110,7 @@ public class DroidCombatTaskTest {
         entity.getEvents().addListener(DroidCombatTask.IDLE, idle);
         entity.getEvents().addListener(DroidCombatTask.ATTACK_UP,attackUp);
         //Jump to IDLE state
-        droidCombatTask.towerState = DroidCombatTask.STATE.IDLE;
+        droidCombatTask.setState(DroidCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -122,7 +122,6 @@ public class DroidCombatTaskTest {
         verify(idle).handle();
         verifyNoInteractions(attackUp);
         assertEquals(DroidCombatTask.STATE.IDLE, droidCombatTask.getState());
-
     }
 
 

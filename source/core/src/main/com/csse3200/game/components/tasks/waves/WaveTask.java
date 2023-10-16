@@ -1,17 +1,13 @@
 package com.csse3200.game.components.tasks.waves;
 
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.ai.tasks.Task;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.List;
 
 public class WaveTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(WaveTask.class);
@@ -21,10 +17,6 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   private long nextWaveAt = 0;
   private int currentWaveIndex = 0;
   private boolean waveInProgress;
-  private float startTime = 0;
-  private float endTime = 0;
-  private final float INITIAL_WAIT_INTERVAL = 10;
-  private final int SPAWNING_INTERVAL = 10;
 
   private static final String[] waveSounds = {
           "sounds/waves/wave-start/Wave_Start_Alarm.ogg",
@@ -82,9 +74,7 @@ public class WaveTask extends DefaultTask implements PriorityTask {
     this.level = (LevelWaves) this.owner.getEntity();
     this.currentWave = level.getWave(currentWaveIndex);
     ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-//    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
-    this.waveStart.play();
-    // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
+    logger.info("Wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
   }
 
   /**
@@ -94,13 +84,6 @@ public class WaveTask extends DefaultTask implements PriorityTask {
   @Override
   public void update() {
     if (ServiceLocator.getWaveService().getEnemyCount() == 0) {
-//      currentWaveIndex++;
-
-      long currentTime = ServiceLocator.getTimeSource().getTime();
-      // Setting the timestamp for when the next mobs will spawn.
-      // Currently, the delay of mobs spawning after wave start
-      int spawnDelay = ServiceLocator.getWaveService().getSpawnDelay();
-      ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));
 
       // Check if level has been completed - no more waves remaining
       if (currentWaveIndex == this.level.getNumWaves() - 1) {
@@ -109,35 +92,30 @@ public class WaveTask extends DefaultTask implements PriorityTask {
 
       } else {
         // Spawn the next wave
-//        logger.info("No enemies remaining, begin next wave");
         if (nextWaveAt == 0) {
           logger.info("Next wave in 10 seconds");
+          this.waveEnd.play();
           nextWaveAt = globalTime.getTime() + 10000;
           ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);
         } else {
           if (globalTime.getTime() >= nextWaveAt || ServiceLocator.getWaveService().shouldSkip()) {
-            logger.info("Next wave starting");
+            this.waveStart.play();
             ServiceLocator.getWaveService().toggleDelay();
             currentWaveIndex++;
             ServiceLocator.getWaveService().setNextWaveTime(0);
             nextWaveAt = 0;
-            this.waveEnd.play();
             this.waveInProgress = true;
             this.level.setWaveIndex(currentWaveIndex);
             // Set the service wave count to the current wave index.
             ServiceLocator.getWaveService().setWaveCount(currentWaveIndex);
             this.currentWave = this.level.getWave(currentWaveIndex);
             ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());
-            //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
+            logger.info("Next wave {} starting with {} enemies", currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
           }
         }
       }
 
     } else {
-        //logger.info("{} enemies remaining in wave {}", ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
-        //logger.info("WAVE SERVICE NUMBER: Wave Number {}",ServiceLocator.getWaveService().getWaveCount());
-        //logger.info("NEXT WAVE AT {}", ServiceLocator.getWaveService().getNextWaveTime());
-        //logger.info("TIME IS {}", ServiceLocator.getTimeSource().getTime());
       if (waveInProgress) {
         this.level.spawnWave();
       }

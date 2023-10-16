@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
-import com.csse3200.game.components.ProjectileEffects;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -39,11 +38,12 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     public enum STATE {
         IDLE, ATTACK, DEATH
     }
-    public STATE towerState = STATE.IDLE;
+    private STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -63,7 +63,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         // Get the tower coordinates
-        this.towerPosition = owner.getEntity().getCenterPosition();
+        this.towerPosition = owner.getEntity().getCenterPosition().sub(0.25f, 0.25f);
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
@@ -75,6 +75,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
      * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
      * state is activated and otherwise idle state remains.
      */
+    @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -103,20 +104,24 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
-                    owner.getEntity().getEvents().trigger(ALERT);
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.25));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                if (shoot) {
+                    if (!isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    } else {
+                        owner.getEntity().getEvents().trigger(ALERT);
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createPierceFireBall(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    }
                 }
+
+                shoot = !shoot;
             }
-            case DEATH -> {
+            default -> {        // DEATH
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
                     owner.getEntity().setFlagForDelete(true);
                 }
@@ -135,6 +140,7 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
     /**
      * stops the current animation and switches back the state of the tower to IDLE.
      */
+    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
@@ -154,5 +160,22 @@ public class PierceTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+    }
+
+    /**
+     * Function for getting the tower's state
+     *
+     * @return The state of this tower
+     */
+    public STATE getTowerState() {
+        return this.towerState;
+    }
+
+    /**
+     * Function for setting the tower's state
+     * @param newState The new state of this tower
+     */
+    public void setTowerState(STATE newState) {
+        this.towerState = newState;
     }
 }

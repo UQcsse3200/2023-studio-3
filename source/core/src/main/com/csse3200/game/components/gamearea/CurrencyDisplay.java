@@ -3,9 +3,9 @@ package com.csse3200.game.components.gamearea;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -28,6 +28,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
+    private static final String DEFAULT_FONT = "determination_mono_18";
 
     /**
      * Adds actors to stage
@@ -57,12 +58,15 @@ public class CurrencyDisplay extends UIComponent {
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
+
+        scrapsTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
+        crystalsTb.addAction(new SequenceAction(Actions.fadeIn(8f)));
     }
 
     private TextButton createButton(String imageFilePath, int value) {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, new BitmapFont());
+                drawable, drawable, drawable, getSkin().getFont(DEFAULT_FONT));
 
         // create button
         TextButton tb = new TextButton(String.format("%d", value), style);
@@ -87,6 +91,16 @@ public class CurrencyDisplay extends UIComponent {
         int value = ServiceLocator.getCurrencyService().getScrap().getAmount();
         CharSequence text = String.format("%d", value);
         scrapsTb.getLabel().setText(text);
+    }
+
+    /**
+     * Displays a warning animation of the scraps display if the player tries to
+     * build something that costs more than the balance
+     */
+    public void scrapBalanceFlash() {
+        scrapsTb.addAction(Actions.repeat(2,
+                new SequenceAction(Actions.fadeOut(0.5f, Interpolation.bounce),
+                        Actions.fadeIn(0.5f, Interpolation.bounce))));
     }
 
     /**

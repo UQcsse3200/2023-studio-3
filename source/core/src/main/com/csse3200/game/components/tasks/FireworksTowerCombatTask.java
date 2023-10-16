@@ -40,11 +40,12 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     public enum STATE {
         IDLE, ATTACK, DEATH
     }
-    public STATE towerState = STATE.IDLE;
+    private STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -69,13 +70,14 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
         // Set the default state to IDLE state
         owner.getEntity().getEvents().trigger(IDLE);
 
-        endTime = timeSource.getTime() + (INTERVAL * 5000);
+        endTime = timeSource.getTime() + (INTERVAL * 1000);
     }
 
     /**
      * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
      * state is activated and otherwise idle state remains.
      */
+    @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -103,17 +105,21 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
                 }
             }
             case ATTACK -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK);
-                    Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
-                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.25));
-                    ServiceLocator.getEntityService().register(newProjectile);
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState=STATE.IDLE;
+                // check if fired last time if not fire if so hold
+                if (shoot) {
+                    if (isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(ATTACK);
+                        Entity newProjectile = ProjectileFactory.createSplitFireWorksFireball(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), 3);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                    } else {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState=STATE.IDLE;
+                    }
                 }
+                shoot = !shoot;
             }
             case DEATH -> {
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
@@ -134,6 +140,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     /**
      * stops the current animation and switches back the state of the tower to IDLE.
      */
+    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
@@ -153,5 +160,22 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
      */
     public boolean isTargetVisible() {
         return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+    }
+
+    /**
+     * Function for getting the tower's state
+     *
+     * @return The state of this tower
+     */
+    public STATE getTowerState() {
+        return this.towerState;
+    }
+
+    /**
+     * Function for setting the tower's state
+     * @param newState The new state of this tower
+     */
+    public void setTowerState(STATE newState) {
+        this.towerState = newState;
     }
 }

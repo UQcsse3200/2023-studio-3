@@ -40,12 +40,13 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
+    private boolean shoot = true;
 
     //enums for the state triggers
     public enum STATE {
         IDLE, ATTACK, DIE
     }
-    public STATE towerState = STATE.IDLE;
+    private STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -66,7 +67,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
     public void start() {
         super.start();
         //get the tower coordinates
-        this.towerPosition = owner.getEntity().getCenterPosition();
+        this.towerPosition = owner.getEntity().getCenterPosition().sub(0.25f, 0.25f);
         this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);
         owner.getEntity().getEvents().addListener("addFireRate",this::changeFireRateInterval);
         //set the default state to IDLE state
@@ -79,6 +80,7 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
      * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
      * state is activated and otherwise idle state remains.
      */
+    @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -95,7 +97,6 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
      * of the game. If enemies are detected, state of the tower is changed to attack state.
      */
     public void updateTowerState() {
-
         if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 &&
         towerState != STATE.DIE) {
             owner.getEntity().getEvents().trigger(DEATH);
@@ -111,22 +112,28 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                 }
             }
             case ATTACK -> {
-                if (!isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                } else {
-                    owner.getEntity().getEvents().trigger(ATTACK);
+                if (shoot) {
+                    if (!isTargetVisible()) {
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    } else {
+                        owner.getEntity().getEvents().trigger(ATTACK);
 //                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
 //                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
-                    new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
-                    ProjectileEffects.STUN, false);
-                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
-                            (float) (owner.getEntity().getPosition().y + 0.25));
-                    ServiceLocator.getEntityService().register(newProjectile);
+                        Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
+                                new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
+                                ProjectileEffects.STUN, false);
+                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),
+                                (owner.getEntity().getPosition().y));
+                        ServiceLocator.getEntityService().register(newProjectile);
+                        owner.getEntity().getEvents().trigger(IDLE);
+                        towerState = STATE.IDLE;
+                    }
                 }
+
+                shoot = !shoot;
             }
-            case DIE -> {
+            default -> {       // DIE
                 if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
                     owner.getEntity().setFlagForDelete(true);
                 }
@@ -134,13 +141,27 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         }
     }
 
+    /**
+     * Function for getting the tower's state
+     *
+     * @return The state of this tower
+     */
     public STATE getState() {
         return this.towerState;
     }
 
     /**
+     * Function for setting the tower's state
+     * @param newState The new state of this tower
+     */
+    public void setState(STATE newState) {
+        this.towerState = newState;
+    }
+
+    /**
      * stops the current animation and switches back the state of the tower to IDLE.
      */
+    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);
