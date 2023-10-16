@@ -44,7 +44,6 @@ public class BuildInputComponent extends InputComponent {
         loadSounds();
         towers.addAll(ServiceLocator.getTowerTypes());
 
-        logger.debug(String.format("selected towers in buildInputComponent are %s", towers));
         TowerType[] defaultTowerTypes = {
               TowerType.TNT,
               TowerType.DROID,
@@ -90,11 +89,9 @@ public class BuildInputComponent extends InputComponent {
 
         // determine if the tile is unoccupied
         boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y);
-        logger.debug(String.format("Tile is occupied: %s", tileOccupied));
 
         // check that no entities are occupying the tile
         if (!tileOccupied) {
-            logger.debug(String.format("spawning a tower at %f, %f", cursorPosition.x, cursorPosition.y));
             return buildTower((int)cursorPosition.x, (int)cursorPosition.y);
         } else {
             return false;
@@ -113,7 +110,6 @@ public class BuildInputComponent extends InputComponent {
         switch (keycode) {
             case Input.Keys.NUM_1:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
-
                 return true;
             case Input.Keys.NUM_2:
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
@@ -161,50 +157,25 @@ public class BuildInputComponent extends InputComponent {
      * @param y y-coordinate int value
      */
     public boolean buildTower(int x, int y) {
-        TowerType tower;
-        CurrencyService currencyService;
         // fetch the currently set TowerType in the currency service, and its associated build cost.
-        currencyService = ServiceLocator.getCurrencyService();
-        if (currencyService == null) {
-            // if the currency service fails or is not running
-            return false;
-        }
-        tower = currencyService.getTower();
+        CurrencyService currencyService = ServiceLocator.getCurrencyService();
+        TowerType tower = currencyService.getTower();
         if (tower != null) {
             // fetch the price of the selected tower and attempt to instantiate
             int cost = Integer.parseInt(currencyService.getTower().getPrice());
 
-            if (cost <= currencyService.getScrap().getAmount()) {
-                Entity newTower = switch (tower) {
-                    case WEAPON -> TowerFactory.createWeaponTower();
-                    case INCOME -> TowerFactory.createIncomeTower();
-                    case TNT    -> TowerFactory.createTNTTower();
-                    case DROID  -> TowerFactory.createDroidTower();
-                    case WALL   -> TowerFactory.createWallTower();
-                    case FIRE   -> TowerFactory.createFireTower();
-                    case STUN   -> TowerFactory.createStunTower();
-                };
-                // build the selected tower
-                newTower.setPosition(x, y);
+            if (canAfford(cost)) {
 
-                if (entityService == null){
-                    return false;
-                }
-                entityService.register(newTower);
-
-                // Decrement currency and show a popup that reflects the cost of the build
-                ServiceLocator.getCurrencyService().getScrap().modify(-cost);
-                ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, -cost, 10);
-
+                createTower(tower, x, y, cost);
                 long soundId = buildSound.play();
                 buildSound.setVolume(soundId, 0.4f);
 
-                // deselect the tower after building
+                // deselect the tower after building if not in multiple placement mode
                 if (!multipleTowerBuild) {
                     ServiceLocator.getCurrencyService().setTowerType(null);
                 }
                 return true;
+
             } else {
                 // play a sound to indicate an invalid action
                 long soundId = errorSound.play();
@@ -213,6 +184,41 @@ public class BuildInputComponent extends InputComponent {
             }
         }
         return false;
+    }
+
+    /**
+     * Creates the new tower instance
+     * @param tower the TowerType currently set
+     * @param x the x position int the tower will occupy
+     * @param y the y position int the tower will occupy
+     */
+    private void createTower(TowerType tower, int x, int y, int cost) {
+        Entity newTower = switch (tower) {
+            case WEAPON -> TowerFactory.createWeaponTower();
+            case INCOME -> TowerFactory.createIncomeTower();
+            case TNT -> TowerFactory.createTNTTower();
+            case DROID -> TowerFactory.createDroidTower();
+            case WALL -> TowerFactory.createWallTower();
+            case FIRE -> TowerFactory.createFireTower();
+            case STUN -> TowerFactory.createStunTower();
+        };
+        // build the selected tower
+        newTower.setPosition(x, y);
+        entityService.register(newTower);
+
+        // Decrement currency and show a popup that reflects the cost of the build
+        ServiceLocator.getCurrencyService().getScrap().modify(-cost);
+        ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, -cost, 10);
+    }
+
+    /**
+     * Determines if there are sufficient resources for a tower build
+     * @param cost integer representing the cost of the intended build
+     * @return true if the cost is less than or equal to the current balance, false otherwise
+     */
+    private boolean canAfford(int cost) {
+        return (cost <= ServiceLocator.getCurrencyService().getScrap().getAmount());
     }
 
     /**
