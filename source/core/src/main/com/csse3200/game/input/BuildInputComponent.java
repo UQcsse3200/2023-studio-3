@@ -13,8 +13,6 @@ import com.csse3200.game.entities.factories.TowerFactory;
 import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -22,7 +20,6 @@ import org.slf4j.LoggerFactory;
  * DropInputComponent
  */
 public class BuildInputComponent extends InputComponent {
-    private static final Logger logger = LoggerFactory.getLogger(BuildInputComponent.class);
     private final EntityService entityService;
     private final Camera camera;
     private final String[] sounds = {
@@ -108,30 +105,35 @@ public class BuildInputComponent extends InputComponent {
     @Override
     public boolean keyUp(int keycode) {
         switch (keycode) {
-            case Input.Keys.NUM_1:
+            case Input.Keys.NUM_1 -> {
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
                 return true;
-            case Input.Keys.NUM_2:
+            }
+            case Input.Keys.NUM_2 -> {
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
                 return true;
-            case Input.Keys.NUM_3:
+            }
+            case Input.Keys.NUM_3 -> {
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
                 return true;
-            case Input.Keys.NUM_4:
+            }
+            case Input.Keys.NUM_4 -> {
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
                 return true;
-            case Input.Keys.NUM_5:
+            }
+            case Input.Keys.NUM_5 -> {
                 ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
                 return true;
-            case Input.Keys.CONTROL_LEFT:
+            }
+            case Input.Keys.CONTROL_LEFT -> {
                 // After multiple placement, deselect tower and prevent further builds
                 ServiceLocator.getCurrencyService().setTowerType(null);
                 multipleTowerBuild = false;
                 return true;
-            case Input.Keys.ESCAPE:
-
-            default:
+            }
+            default -> {
                 return false;
+            }
         }
     }
 
