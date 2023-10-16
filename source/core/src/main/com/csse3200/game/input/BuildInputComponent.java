@@ -51,10 +51,15 @@ public class BuildInputComponent extends InputComponent {
         Array<TowerType> defaultTowers = new Array<>();
         defaultTowers.addAll(defaultTowerTypes);
 
-        if (towers.isEmpty()) {
-            ServiceLocator.setTowerTypes(defaultTowers);
-            towers = defaultTowers;
+        if (towers.isEmpty() || towers.size < 5) {
+            for (TowerType tower : defaultTowers) {
+                if (towers.size < 5 && !towers.contains(tower, true)) {
+                    towers.add(tower);
+                }
+            }
         }
+
+        ServiceLocator.setTowerTypes(towers);
     }
 
     /**
@@ -196,6 +201,9 @@ public class BuildInputComponent extends InputComponent {
      * @param y the y position int the tower will occupy
      */
     private void createTower(TowerType tower, int x, int y, int cost) {
+        if (tower == null) {
+            return;
+        }
         Entity newTower = switch (tower) {
             case WEAPON -> TowerFactory.createWeaponTower();
             case INCOME -> TowerFactory.createIncomeTower();
