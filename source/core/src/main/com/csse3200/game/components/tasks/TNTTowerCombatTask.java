@@ -35,7 +35,7 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
     private final GameTime timeSource;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
-    public boolean readToDelete = false;
+    private boolean readToDelete = false;
 
     public enum STATE {
         IDLE, EXPLODE, REMOVE
@@ -103,19 +103,8 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
                 owner.getEntity().getEvents().trigger(DAMAGE);
                 towerState = STATE.REMOVE;
             }
-            case REMOVE -> {
-                readToDelete = true;
-            }
+            case REMOVE -> readToDelete = true;
         }
-
-
-    }
-    /**
-     * For stopping the running task
-     */
-    @Override
-    public void stop() {
-        super.stop();
     }
 
     /**
@@ -124,7 +113,6 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     @Override
     public int getPriority() {
-
         if (isReadyToDelete()) {
             owner.getEntity().setFlagForDelete(true);
             return -1;

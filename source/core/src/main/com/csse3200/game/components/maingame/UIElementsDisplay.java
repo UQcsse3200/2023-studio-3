@@ -1,27 +1,22 @@
 package com.csse3200.game.components.maingame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Null;
-import com.csse3200.game.screens.TowerType;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.swing.event.ChangeEvent;
+import java.security.Provider;
 
 
 /**
@@ -33,7 +28,6 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
-    private final int timer = 110;
 
     @Override
     public void create() {
@@ -48,25 +42,36 @@ public class UIElementsDisplay extends UIComponent {
 
         remainingMobsButton = ButtonFactory.createButton("Mobs:"
                 + ServiceLocator.getWaveService().getEnemyCount());
-        buttonTable.top().right().padTop(160f).padRight(80f);
 
+        remainingMobsButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 230);
+        remainingMobsButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 218,
+                Gdx.graphics.getHeight() - 230, 1f, Interpolation.fastSlow)));
+
+        buttonTable.top().right().padTop(130f).padRight(80f);
         buttonTable.setFillParent(true);
 
-        buttonTable.add(remainingMobsButton).right();//.padTop(10f).padRight(10f);
+        buttonTable.add(remainingMobsButton).right();
         buttonTable.row();
-        buttonTable.add(timerButton);//.padRight(10f);
+        buttonTable.add(timerButton);
 
         stage.addActor(buttonTable);
 
         createTimerButton();
     }
 
-
     /**
      * This method updates the mob count button as mobs die in the game
      */
     public void updateMobCount() {
         remainingMobsButton.setText("Mobs:" + ServiceLocator.getWaveService().getEnemyCount());
+        remainingMobsButton.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent event, Actor actor) {
+                        ServiceLocator.getWaveService().toggleDelay();
+                    }
+                }
+        );
     }
 
     /**
@@ -74,10 +79,11 @@ public class UIElementsDisplay extends UIComponent {
      */
     public void createTimerButton() {
 
-//        timerButton = new ButtonFactory().createButton("Next wave in:"
-//                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
         timerButton = ButtonFactory.createButton("Next wave in:"
                 + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+        timerButton.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 300);
+        timerButton.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 445,
+                Gdx.graphics.getHeight() - 300, 1f, Interpolation.fastSlow)));
         buttonTable.row();
         buttonTable.add(timerButton).padRight(10f);
     }
@@ -86,27 +92,28 @@ public class UIElementsDisplay extends UIComponent {
      * This method updates the text for timer button.
      */
     public void updateTimerButton() {
-        int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
-                - ServiceLocator.getTimeSource().getTime()) / 1000);
+        if (!(ServiceLocator.getWaveService().getGamePaused())) {
+            int totalSecs = (int) ((ServiceLocator.getWaveService().getNextWaveTime()
+                    - ServiceLocator.getTimeSource().getTime()) / 1000);
 
-        // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
-        if (totalSecs % 20 == 0) {
+            // TODO : THESE SHOULD BE REMOVED AND PLACED WHEREVER THE BOSS MOB GETS SPAWNED
+            if (totalSecs % 20 == 0) {
                 ServiceLocator.getMapService().shakeCameraMap();
                 ServiceLocator.getMapService().shakeCameraGrid();
-        }
-        int seconds = totalSecs % 60;
-        int minutes = (totalSecs % 3600) / 60;
-        String finalTime = String.format("%02d:%02d", minutes, seconds);
-        if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
-            if (!findActor(timerButton)) {
-                createTimerButton();
             }
-            timerButton.setText("Next wave in: " + finalTime);
-        } else {
-            timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
-//            buttonTable.removeActor(timerButton);
-            stage.act();
-            stage.draw();
+            int seconds = totalSecs % 60;
+            int minutes = (totalSecs % 3600) / 60;
+            String finalTime = String.format("%02d:%02d", minutes, seconds);
+            if (ServiceLocator.getTimeSource().getTime() < ServiceLocator.getWaveService().getNextWaveTime()) {
+                if (!findActor(timerButton)) {
+                    createTimerButton();
+                }
+                timerButton.setText("Next wave in: " + finalTime);
+            } else {
+                timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
+                stage.act();
+                stage.draw();
+            }
         }
     }
 
