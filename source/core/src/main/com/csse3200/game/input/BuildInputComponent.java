@@ -51,9 +51,12 @@ public class BuildInputComponent extends InputComponent {
         Array<TowerType> defaultTowers = new Array<>();
         defaultTowers.addAll(defaultTowerTypes);
 
-        if (towers.isEmpty()) {
-            ServiceLocator.setTowerTypes(defaultTowers);
-            towers = defaultTowers;
+        if (towers.isEmpty() || towers.size < 5) {
+            for (TowerType tower : defaultTowers) {
+                if (towers.size < 5 && !towers.contains(tower, true)) {
+                    towers.add(tower);
+                }
+            }
         }
     }
 

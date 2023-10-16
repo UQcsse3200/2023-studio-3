@@ -181,16 +181,16 @@ public class MainGameDisplay extends UIComponent {
 
         // If no towers set, populate with default towers
         if (towers.isEmpty() || towers.size < 5) {
-            if (towers.isEmpty()) {
-                towers.addAll(defaultTowers);
-            } else {
-                for (TowerType tower : defaultTowers) {
-                    if (towers.size < 5 && !towers.contains(tower, false)) {
-                        towers.add(tower);
-                    }
+//            if (towers.isEmpty()) {
+//                towers.addAll(defaultTowers);
+//            } else {
+            for (TowerType tower : defaultTowers) {
+                if (towers.size < 5 && !towers.contains(tower, true)) {
+                    towers.add(tower);
                 }
             }
         }
+        ServiceLocator.setTowerTypes(towers);
     }
 
     private void createTowerButtons() {
@@ -289,6 +289,10 @@ public class MainGameDisplay extends UIComponent {
      * depending on button selection and currency balance
      */
     private void towerUpdate() {
+        // Check for small tower array
+        if (towers.size < 5) {
+            setTowers();
+        }
         // no tower selected, set all to off
         if (ServiceLocator.getCurrencyService().getTower() == null) {
             // toggle all buttons to off
