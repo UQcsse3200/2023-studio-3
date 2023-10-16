@@ -32,7 +32,7 @@ public class ScannerTask extends DefaultTask implements PriorityTask {
     private boolean mobs = false;
 
     // track the number of engineers spawned.
-    private static final int maxEngineers = ServiceLocator.getGameEndService().getEngineerCount();
+    private static final int MAX_ENGINEERS = ServiceLocator.getGameEndService().getEngineerCount();
 
 
     /**
@@ -69,7 +69,7 @@ public class ScannerTask extends DefaultTask implements PriorityTask {
             scan();
             if (!towers && !engineers && mobs) {
                 // spawn engineers now
-                if (ServiceLocator.getGameEndService().getNumSpawnedEngineers() < maxEngineers) {
+                if (ServiceLocator.getGameEndService().getNumSpawnedEngineers() < MAX_ENGINEERS) {
                     Entity engineer = EngineerFactory.createEngineer();
 
                     engineer.setPosition(new Vector2((int)(selfPosition.x + 1),(int) selfPosition.y));

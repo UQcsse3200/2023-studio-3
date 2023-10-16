@@ -32,7 +32,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the Engineer's weapon.
     // weaponCapacity is the number of shots fired before the engineer has to reload
-    private static final int weaponCapacity = 10;
+    private static final int WEAPON_CAPACITY = 10;
     private int shotsFired = 0;  // Tracks the number of shots fired in the current cycle
     
     private Vector2 engineerPosition = new Vector2(10, 50); // Placeholder value for the Engineer's position.
@@ -106,7 +106,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
-                    if (shotsFired <= weaponCapacity) {
+                    if (shotsFired <= WEAPON_CAPACITY) {
                         owner.getEntity().getEvents().trigger(FIRING);
                         owner.getEntity().getEvents().trigger(ENGINEER_PROJECTILE_FIRED);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
