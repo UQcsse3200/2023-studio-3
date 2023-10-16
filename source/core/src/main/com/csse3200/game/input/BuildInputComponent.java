@@ -183,6 +183,9 @@ public class BuildInputComponent extends InputComponent {
                     case WALL   -> TowerFactory.createWallTower();
                     case FIRE   -> TowerFactory.createFireTower();
                     case STUN   -> TowerFactory.createStunTower();
+                    case PIERCE -> TowerFactory.createPierceTower();
+                    case FIREWORK -> TowerFactory.createFireworksTower();
+                    case RICOCHET -> TowerFactory.createRicochetTower();
                 };
                 // build the selected tower
                 newTower.setPosition(x, y);
