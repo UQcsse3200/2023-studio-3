@@ -123,7 +123,15 @@ public class PauseMenuButtonComponent extends UIComponent {
         window.setHeight(windowSizeY);
         window.setX((ServiceLocator.getRenderService().getStage().getWidth() / 2) - (windowSizeX / 2));
         window.setY((ServiceLocator.getRenderService().getStage().getHeight() / 2) - (windowSizeY / 2));
-        window.addAction(Actions.fadeIn(0.8f, Interpolation.bounceIn));
+
+        // Animate the pause menu opening
+        window.setPosition(((float) Gdx.graphics.getWidth() / 2) - (windowSizeX / 2),0);
+        window.addAction(new SequenceAction(Actions.moveTo(
+                ( ((float) Gdx.graphics.getWidth() / 2) - (windowSizeX / 2) ),
+                ( ((float) Gdx.graphics.getHeight() / 2) - (windowSizeY / 2) ),
+                        0.3f,
+                        Interpolation.fastSlow),
+                Actions.fadeIn(0.3f)));
 
         stage.addActor(window);
     }
