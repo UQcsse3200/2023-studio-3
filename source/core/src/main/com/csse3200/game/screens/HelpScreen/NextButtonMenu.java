@@ -15,7 +15,12 @@ import static com.badlogic.gdx.utils.Align.center;
 import static com.badlogic.gdx.utils.Align.top;
 
 public class NextButtonMenu {
-
+    /**
+     * Creates and configures a game menu entity with specific components.
+     *
+     * @param game The GdxGame instance to associate with the game menu.
+     * @return The created game menu entity.
+     */
     public static Entity nextMenu(GdxGame game) {
 
         Entity Menu = new Entity()

@@ -14,12 +14,18 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
-
+/**
+ * A screen that provides information on how to play the game.
+ */
 public class HowToPlay extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
-
+    /**
+     * Creates a new HowToPlay screen.
+     *
+     * @param game The main game instance.
+     */
 
     public HowToPlay(GdxGame game) {
         this.game = game;

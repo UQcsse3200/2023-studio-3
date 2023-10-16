@@ -14,12 +14,19 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
-
+/**
+ * The `TowerDescriptionHelpScreen` class represents a screen that displays information about various tower types in the game.
+ * It includes tower images and descriptions.
+ */
 public class TowerDescriptionHelpScreen extends ScreenAdapter {
     private final GdxGame game;
     private Stage stage;
     private SpriteBatch spriteBatch;
-
+    /**
+     * Constructs a new `TowerDescriptionHelpScreen`.
+     *
+     * @param game The GdxGame instance.
+     */
 
     public TowerDescriptionHelpScreen(GdxGame game) {
         this.game = game;
@@ -136,10 +143,11 @@ public class TowerDescriptionHelpScreen extends ScreenAdapter {
         // Add the table to the stage
         stage.addActor(imageTextTable);
     }
-
+    /**
+     * Sets the screen as the input processor when it is shown.
+     */
     @Override
     public void show() {
-        // Set this screen as the input processor
         Gdx.input.setInputProcessor(stage);
     }
 
