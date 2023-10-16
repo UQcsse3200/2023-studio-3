@@ -37,9 +37,9 @@ public class MainGameDisplay extends UIComponent {
     };
     private String level;
     private static final String[] levels = {
+            "Desert Planet",
             "Ice Planet",
-            "Lava Planet",
-            "Desert Planet"
+            "Lava Planet"
     };
     private Sound click;
     private Sound openSound;
@@ -90,7 +90,7 @@ public class MainGameDisplay extends UIComponent {
 //        progressTable.top().center().setWidth(500f);
 //        progressTable.setFillParent(true);
 
-        levelNameTable.top().left().padLeft(80f).padTop(20f);
+        levelNameTable.top().left().padLeft(20f).padTop(20f);
         levelNameTable.setFillParent(true);
 
         // Stores tower defaults, in case towers haven't been set in the tower select screen
