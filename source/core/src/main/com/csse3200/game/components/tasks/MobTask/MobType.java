@@ -1,4 +1,4 @@
-package com.csse3200.game.components.tasks.MobTask;
+package com.csse3200.game.components.tasks.mobtask;
 
 public enum MobType {
     SKELETON(true),
@@ -9,7 +9,10 @@ public enum MobType {
     DRAGON_KNIGHT(true),
     COAT(true),
     NIGHT_BORNE(true),
-    ARCANE_ARCHER(false);
+    ARCANE_ARCHER(false),
+    ROCKY(true),
+    NECROMANCER(true),
+    FIREWIZARD(true);
     private boolean isMelee;
 
     MobType(boolean melee) {

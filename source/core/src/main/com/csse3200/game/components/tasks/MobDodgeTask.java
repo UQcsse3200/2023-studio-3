@@ -1,8 +1,7 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.Vector2;
-import com.csse3200.game.components.tasks.MobTask.MobTask;
-import com.csse3200.game.components.tasks.MobTask.MobType;
+import com.csse3200.game.components.tasks.mobtask.MobTask;
+import com.csse3200.game.components.tasks.mobtask.MobType;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
@@ -24,7 +23,7 @@ public class MobDodgeTask extends MobTask {
   private long endTime;
 
   // Helps task wait between each interval.
-  private final int DELAY_INTERVAL = 500;
+  private static final int DELAY_INTERVAL = 500;
 
   /**
    * Initialises a mob dodge task with a specified wander range, wait time, and
