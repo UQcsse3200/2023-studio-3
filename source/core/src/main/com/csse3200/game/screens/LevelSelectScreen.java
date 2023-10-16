@@ -29,10 +29,13 @@ public class LevelSelectScreen extends ScreenAdapter {
     Logger logger = LoggerFactory.getLogger(LevelSelectScreen.class);
     private final GdxGame game;
     private SpriteBatch batch;
+    private int selectedLevel = -1;
+    private int currentLevel;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
     private final Stage stage;
     private final AnimatedText text;
+    private BitmapFont font;
 
     private Sprite background;
     private final Music music;
@@ -50,8 +53,10 @@ public class LevelSelectScreen extends ScreenAdapter {
             "           A lava-filled planet with molten rivers and extreme temperatures."
     };
 
-    public LevelSelectScreen(GdxGame game) {
-        BitmapFont font = new BitmapFont();
+
+    public LevelSelectScreen(GdxGame game, int currentLevel) {
+        this.currentLevel = currentLevel;
+        font = new BitmapFont();
         text = new AnimatedText(INTRO_TEXT, font, 0.05f);
         this.game = game;
 
@@ -106,18 +111,43 @@ public class LevelSelectScreen extends ScreenAdapter {
     }
 
     private void spawnPlanets() {
-        // Spawn desert planet
-        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1);
-        // Spawn ice planet
-        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1], "Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1);
-        // Spawn lava planet
-        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1], "Lava", 1, (int) (timeCounter * 15) % 60 + 1);
+        // ICE is level 0
+        spawnPlanet(150, 150, Planets.ICE[0], Planets.ICE[1],"Barren_or_Moon", 2, (int) (timeCounter * 35) % 60 + 1, 1);
+        // DESERT is level 1
+        spawnPlanet(150, 150, Planets.DESERT[0], Planets.DESERT[1], "Desert", 1, (int) (timeCounter * 60) % 60 + 1, 0);
+        // LAVA is level 2
+        spawnPlanet(200, 200, Planets.LAVA[0], Planets.LAVA[1],"Lava", 1, (int) (timeCounter * 15) % 60 + 1, 2);
 
         spawnPlanetBorders();
     }
 
-    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame) {
-        Texture planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+    /**
+     * Spawns a planet on the screen.
+     * @param width The width of the planet
+     * @param height The height of the planet
+     * @param posx The x position of the planet
+     * @param posy The y position of the planet
+     * @param planetName The name of the planet
+     * @param version The different type of planet
+     * @param frame The frame of the planet
+     * @param levelNumber The level associated with the planet
+     */
+    private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame, int levelNumber) {
+        int highestLevelReached = currentLevel;
+        Texture planet;
+
+        levelNumber = mapToConventional(levelNumber);
+        if (levelNumber == 0 && highestLevelReached >= -1)  { // ICE planet, which is always unlocked initially
+            planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+        } else if (levelNumber == 1 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
+            planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+        } else if (levelNumber == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
+            planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
+        } else {
+            // Display the planet in b&w if it's locked
+            planet = new Texture(String.format("planets/%s_bw/%d/%d.png", planetName, version, frame));
+        }
+
         Sprite planetSprite = new Sprite(planet);
         planetSprite.setSize(width, height);
         batch.draw(planetSprite, posx, posy, width, height);
@@ -125,29 +155,62 @@ public class LevelSelectScreen extends ScreenAdapter {
 
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        int highestLevelReached = currentLevel;
+
+        // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
             Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
             if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
+                // If the mouse is over a planet, draw the planet border
+                Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
+                batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
+
+                int conventionalPlanetLevel = mapToConventional(planet[4]);
+                // Check if planet level is unlocked before allowing click
                 String description = getPlanetDescription(planet);
                 descriptionBox.setText(description); // Set the description in the description box
                 descriptionTable.setVisible(true); // Make the description box visible
                 // Flag for rendering planet borders
                 boolean isRenderingPlanetBorders = true;
-                if (isRenderingPlanetBorders) {
-                    Sprite planetBorder = new Sprite(new Texture("planets/planetBorder.png"));
-                    batch.draw(planetBorder, planet[0] - 2.0f, planet[1] - 2.0f, planet[2] + 3.0f, planet[3] + 3.0f);
-                }
+
                 if (Gdx.input.justTouched()) {
-                    int selectedLevel = planet[4];
-                    game.setScreen(new TurretSelectionScreen(game));
-                    dispose();
-                    logger.info("Loading level {}", planet[4]);
-                    GameLevelData.setSelectedLevel(planet[4]);
-                    game.setScreen(new TurretSelectionScreen(game));
+                    if (conventionalPlanetLevel == 0 && highestLevelReached >= -1) { // ICE planet, which is always unlocked initially
+                        loadPlanetLevel(planet);
+                    } else if (conventionalPlanetLevel == 1 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
+                        loadPlanetLevel(planet);
+                    } else if (conventionalPlanetLevel == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
+                        loadPlanetLevel(planet);
+                    } else {
+                        logger.info("Attempted to load locked level {}", planet[4]);
+                        // Add feedback for the player here if necessary
+                    }
                 }
             }
         }
     }
+
+    private void loadPlanetLevel(int[] planet) {
+        dispose();
+        logger.info("Loading level {}", planet[4]);
+        GameLevelData.setSelectedLevel(planet[4]);
+        game.setScreen(new TurretSelectionScreen(game));
+    }
+
+    public int mapToConventional(int unconventionalNumber) {
+        switch (unconventionalNumber) {
+            case -1:
+                return -1;
+            case 1:
+                return 0;
+            case 0:
+                return 1;
+            case 2:
+                return 2;
+            default:
+                throw new IllegalArgumentException("Invalid planet number");
+        }
+    }
+
 
     private String getPlanetDescription(int[] planet) {
         int planetIndex = getPlanetIndex(planet);

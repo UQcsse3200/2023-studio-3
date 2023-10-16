@@ -19,19 +19,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
+import com.badlogic.gdx.Preferences;
 
 public class NextLevelScreen extends ScreenAdapter {
     private final SpriteBatch batch;
     private final Texture backgroundTexture;
     private final BitmapFont font;
     private final Stage stage;
+    private int currentLevel;
+    private Preferences preferences;
 
     /**
      * Constructs the NextLevelScreen with the necessary assets and buttons.
      *
      * @param game The game instance managing the screens.
      */
-    public NextLevelScreen(GdxGame game) {
+    public NextLevelScreen(GdxGame game, int currentLevel) {
+        this.currentLevel = currentLevel;
+
+        preferences = Gdx.app.getPreferences("MyPreferences");
+        int highestLevelReached = preferences.getInteger("HighestLevelReached", -1);
+        if (currentLevel > highestLevelReached) {
+            preferences.putInteger("HighestLevelReached", currentLevel);
+            preferences.flush();
+        }
+
         batch = new SpriteBatch();
         backgroundTexture = new Texture("images/ui/Screen/Nextlevel.png");
         font = new BitmapFont();
@@ -44,7 +56,18 @@ public class NextLevelScreen extends ScreenAdapter {
         nextLevelButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+                if (currentLevel == 1) {
+                    game.setScreen(new LevelSelectScreen(game, 0)); // Pass the next level to LevelSelectScreen
+                }
+                else if (currentLevel == 0) {
+                    game.setScreen(new LevelSelectScreen(game, 2)); // Pass the next level to LevelSelectScreen
+                } else {
+                    // Handle the case where all levels are completed
+                    game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+                }
+                // Logic to move to the next level
+                // You can implement your logic here, such as updating the level and calling game.setScreen()
+                // Example: game.setScreen(new MainGameScreen(game, nextLevel));
             }
         });
         TextButton mainMenuButton = new TextButton("Main Menu", skin);
