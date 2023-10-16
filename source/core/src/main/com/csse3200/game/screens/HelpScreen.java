@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.ui.ButtonFactory;
 
 public class HelpScreen extends ScreenAdapter {
     private final GdxGame game;
@@ -37,8 +38,7 @@ public class HelpScreen extends ScreenAdapter {
         // Add the table to the stage
         stage.addActor(table);
 
-        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
-        TextButton BackButton = new TextButton("Back", skin);
+        TextButton BackButton = ButtonFactory.createButton("Back");
         BackButton.addListener(new ClickListener() {
             @Override
             public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {

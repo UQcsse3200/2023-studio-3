@@ -21,6 +21,9 @@ public class WaveService {
 
     private boolean skipDelay = false;
 
+    private int levelEnemyCount = 0;
+    private int remainingLevelEnemyCount = 0;
+
 
     /**
      * Constructor for the Wave Service
@@ -56,6 +59,7 @@ public class WaveService {
      */
     public void updateEnemyCount() {
         enemyCount -= 1;
+        remainingLevelEnemyCount -= 1;
         logger.info("{} enemies remaining in wave", getEnemyCount());
     }
 
@@ -64,6 +68,7 @@ public class WaveService {
      */
     public void setLevelCompleted() {
         if (!levelCompleted) {
+            logger.info("Level set to completed");
             levelCompleted = true;
         }
     }
@@ -159,5 +164,27 @@ public class WaveService {
      * */
     public boolean shouldSkip() {
       return this.skipDelay;
+    }
+
+    /**
+     * retrieve the number of enemies in the level
+     * */
+    public int totalMobs() {
+      return this.levelEnemyCount;
+    }
+
+    /**
+     * set the total number of enemies in the level
+     * */
+    public void setTotalMobs(int total) {
+      this.levelEnemyCount = total;
+      this.remainingLevelEnemyCount = total;
+    }
+
+    /**
+     * get the number of mobs remaining for the whole level()
+     * */
+    public int remainingMobsForLevel() {
+      return this.remainingLevelEnemyCount;
     }
 }

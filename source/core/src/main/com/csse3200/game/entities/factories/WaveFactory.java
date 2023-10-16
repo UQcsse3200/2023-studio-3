@@ -28,11 +28,61 @@ public class WaveFactory {
   private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
   private static Random rand = new Random();
 
-  // Base health of the mobs
-  private static int BASE_HEALTH = 60;
+  // TODO: include necromancer
+  private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
+      "Skeleton", "Coat", "DragonKnight"
+  ));
 
-  // Base health of the boss
-  private static int BOSS_BASE_HEALTH = 80;
+  private static final ArrayList<ArrayList<String>> lvl1Structure = new ArrayList<>(Arrays.asList(
+      new ArrayList<>(Arrays.asList("Coat"
+      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen"
+      )), new ArrayList<>(Arrays.asList("WaterQueen", "WaterQueen"
+      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "Coat"
+      ))
+  ));
+
+  private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
+      new ArrayList<>(Arrays.asList("Skeleton"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Wizard"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "Wizard", "SplittingNightBorne"
+      ))
+  ));
+
+  private static final ArrayList<ArrayList<String>> lvl3Structure = new ArrayList<>(Arrays.asList(
+      new ArrayList<>(Arrays.asList("Necromancer"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("SplittingRocky", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWiza","SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard", "SplittingRocky", "DodgingDragon", "FireWorm"
+      ))
+  ));
+
+  // The base health for the different mobs
+  private static int MELEE_BASE_HEALTH = 80;
+  private static int RANGE_BASE_HEALTH = 60;
+
+  // Base health of the bosses
+  private static int LVL1_BOSS_BASE_HEALTH = 500;
+  private static int LVL2_BOSS_BASE_HEALTH = 1000;
+  private static int LVL3_BOSS_BASE_HEALTH = 2000;
+
+  private static final String BOSS_1 = "IceBoss";
+  private static final String BOSS_2 = "PatrickBoss";
+  private static final String BOSS_3 = "FireBoss";
 
   /**
    * The function will create the waves depending on the level selected by the user.
@@ -41,22 +91,18 @@ public class WaveFactory {
 
     int chosenLevel = GameLevelData.getSelectedLevel();
     int difficulty;
-    int maxWaves;
     switch (chosenLevel) {
       case 0:
-        difficulty = 3;
-        maxWaves = 10;
+        difficulty = 2;
         break;
       case 2:
-        difficulty = 5;
-        maxWaves = 15;
+        difficulty = 3;
         break;
       default:
-        difficulty = 2;
-        maxWaves = 5;
+        difficulty = 1;
     }
 
-    LevelWaves level = createLevel(difficulty, maxWaves, chosenLevel);
+    LevelWaves level = createLevel(difficulty);
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new WaveTask());
@@ -70,102 +116,97 @@ public class WaveFactory {
    *
    * Depending on the level selected (1 easy, 2 medium, 3 hard), the number of waves will increase as well as
    * the number of mobs per wave and the health of the mobs. Based on the level the mobs will change and waves will be
-   * constructed from two random mobs of the possible ones allocated for that level. Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
+   * constructed from the predefined structures above that ensure more difficult abilities the deeper the wave.
+   * Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
    * health will be increased from BASE_HEALTH to BASE_HEALTH + (I * chosen_level) so the difficulty
    * increases quicker.
    *
-   * Bosses are spawned every 5 waves and the health of the bosses increases as the level increases.
-   * For every 5 levels another boss is included (5th wave -> 1 boss, 10th wave -> 2 bosses etc.)
+   * The last wave of every level is a boss.
    *
-   * @param maxDiff - the maximum difficulty of the level (the start number of mobs - 3)
-   * @param maxWaves - the maximum number of waves for the level
    * @param chosenLevel - the level selected by the user
-   *
    * @return level - the level constructed with all the waves of mobs
    * */
-  public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
-    int minMobs = 3 + maxDiff;
-    // These are the mobs assigned to the associated levels (planets)
-    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "SplittingWaterSlime", "WaterQueen"));
-    // TODO switch to hashed to demo the bosses and make sure to do this for mobs as well
-    // TODO hash out level1 test in NPCFactory when doing this. 
-//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "PatrickBoss", "WaterQueen"));
-//    ArrayList<String> level1Mobs = new ArrayList<>(Arrays.asList("Xeno", "IceBoss", "WaterQueen"));
-    ArrayList<String> level2Mobs = new ArrayList<>(Arrays.asList("Xeno", "Skeleton", "DeflectWizard"));
-    ArrayList<String> level3Mobs = new ArrayList<>(Arrays.asList("Xeno", "DodgingDragon", "FireWorm"));
-
-    // The mob bosses assigned to the associated levels (planets)
-    String boss1 = "IceBoss";
-//    String boss1 = "PatrickBoss";
-    String boss2 = "PatrickBoss";
-    //String boss3 = "IceBoss";
-
-    String boss3 = "FireBoss";
-
+  public static LevelWaves createLevel(int chosenLevel) {
+    // Tell the waveService what the spawn delay for levels will be (for UI team).
     int spawnDelay = 5;
+    ServiceLocator.getWaveService().setSpawnDelay(spawnDelay);
 
     // Create new level entity with spawn delay of 5 seconds
     LevelWaves level = new LevelWaves(spawnDelay);
-    // Tell the waveService what the spawn delay for levels will be (for UI team).
-    ServiceLocator.getWaveService().setSpawnDelay(spawnDelay);
-
-    ArrayList<String> possibleMobs;
 
     // set the possible mobs and boss for the level
+    ArrayList<ArrayList<String>> possibleMobs;
     String boss = "";
+    int bossHealth;
+    int minMobs;
     switch (chosenLevel) {
-      case 0:
-        boss = boss2;
-        possibleMobs = level2Mobs;
-        chosenLevel = 2;
-        break;
       case 2:
-        boss = boss3;
-        possibleMobs = level3Mobs;
-        chosenLevel = 3;
+        boss = BOSS_2;
+        bossHealth = LVL2_BOSS_BASE_HEALTH;
+        possibleMobs = lvl2Structure;
+        minMobs = 6;
+        break;
+      case 3:
+        boss = BOSS_3;
+        bossHealth = LVL3_BOSS_BASE_HEALTH;
+        possibleMobs = lvl3Structure;
+        minMobs = 8;
         break;
       default:
-        boss = boss1;
-        possibleMobs = level1Mobs;
-        chosenLevel = 1;
+        boss = BOSS_1;
+        bossHealth = LVL1_BOSS_BASE_HEALTH;
+        possibleMobs = lvl1Structure;
+        minMobs = 5;
         break;
     }
 
+    int totalMobs = 0;
     // Create mxWaves number of waves with mob stats increasing
-    for (int i = 1; i <= maxWaves; i++) {
+    int atWave = 1;
+    for (ArrayList<String> wave : possibleMobs) {
       HashMap<String, int[]> mobs = new HashMap<>();
 
-      // add i/5 bosses every 5 waves with increased health where i is the i^th wave
-      // 5/5 -> 1 boss, 10/5 -> 2 bosses etc
-      if (i % 5 == 0) {
-        int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};
-        mobs.put(boss, bossStats);
+      int leftToSort = wave.size() - 1;
+      int currentMobs = 0;
+
+      // Add each mob to the wave
+      for (String mob: wave) {
+        int num;
+
+        // Calculate the number of mobs for the wave
+        if (leftToSort == 0) {
+          num = minMobs - currentMobs;
+        } else {
+          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort)) + 2;
+          currentMobs += num;
+        }
+
+        // Calculate the health
+        int health = RANGE_BASE_HEALTH;
+        if (MELEE_MOBS.contains(mob)) {
+          health = MELEE_BASE_HEALTH;
+        }
+        int[] mobStats = {num, health + (atWave * chosenLevel)};
+        mobs.put(mob, mobStats);
+
+        leftToSort --;
+        totalMobs += num;
       }
-
-      // select 2 random mobs from the possible mobs
-      String mob1 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
-      String mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
-
-      // ensure the mobs are different
-      while (mob2 == mob1) {
-        mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));
-      }
-
-      int mob1Num = rand.nextInt(minMobs - 3) + 2;
-      int mob2Num = minMobs - mob1Num;
-
-      int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};
-      int[] mob2Stats = {mob2Num, BASE_HEALTH + (chosenLevel * i)};
-
-
-      mobs.put(mob1, mob1Stats);
-      mobs.put(mob2, mob2Stats);
-
-      level.addWave(new WaveClass(mobs));
       minMobs ++;
+      level.addWave(new WaveClass(mobs));
+      atWave++;
     }
 
-    logger.info("Level created: " + level);
+    // Add boss wave
+    HashMap<String, int[]> bossMob = new HashMap<>();
+    bossMob.put(boss, new int[]{1, bossHealth});
+    totalMobs ++;
+
+    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
+    level.addWave(new WaveClass(bossMob));
+
+
+    logger.info("Level created: {}", level);
     return level;
   }
 

@@ -1,6 +1,9 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Filter;
+import com.csse3200.game.components.EffectComponent;
+import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
 import com.csse3200.game.components.tasks.*;
@@ -25,6 +28,7 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.input.UpgradeUIComponent;import java.util.HashSet;
 import java.util.Set;
 
+
 /**
  * Factory to create a tower entity.
  *
@@ -34,7 +38,6 @@ import java.util.Set;
 public class TowerFactory {
     // Define a set to keep track of occupied lanes
     private static final Set<Integer> occupiedLanes = new HashSet<>();
-
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
@@ -180,6 +183,10 @@ public class TowerFactory {
      */
     public static Entity createTNTTower() {
         Entity TNTTower = createBaseTower();
+        TNTTower.getComponent(HitboxComponent.class)
+                .setLayer(PhysicsLayer.NONE)
+                .setSensor(true);
+        TNTTower.getComponent(ColliderComponent.class).setSensor(true);
         TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -269,7 +276,7 @@ public class TowerFactory {
         animator.addAnimation(IDLE_ANIM, IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(STOW_ANIM, STOW_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(DEPLOY_ANIM, DEPLOY_SPEED, Animation.PlayMode.REVERSED);
-        animator.addAnimation(FIRE_ANIM, FIRE_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_ANIM, (2*FIRE_SPEED), Animation.PlayMode.LOOP);
 
         weapon
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
@@ -301,7 +308,7 @@ public class TowerFactory {
                                 .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
+        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, (2*(FIRE_TOWER_ATTACK_SPEED+ 0.25f)), Animation.PlayMode.LOOP);
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
@@ -331,7 +338,7 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, ((STUN_TOWER_ATTACK_SPEED+ 0.20f)), Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
@@ -343,7 +350,6 @@ public class TowerFactory {
                 .addComponent(new StunTowerAnimationController());
 
         stunTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);
         return stunTower;
     }
 
@@ -363,7 +369,7 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
+        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, (2*FIREWORKS_TOWER_ANIM_ATTACK_SPEED), Animation.PlayMode.NORMAL);
         animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
 
@@ -375,8 +381,6 @@ public class TowerFactory {
                 .addComponent(animator)
                 .addComponent(new FireworksTowerAnimationController());
 
-        fireworksTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(fireworksTower, 0.2f, 0.2f);
         return fireworksTower;
     }
 
@@ -395,7 +399,7 @@ public class TowerFactory {
                 new AnimationRenderComponent(
                         ServiceLocator.getResourceService()
                                 .getAsset(PIERCE_TOWER_ATLAS, TextureAtlas.class));
-        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
+        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, (2*PIERCE_TOWER_ANIM_ATTACK_SPEED), Animation.PlayMode.LOOP);
         animator.addAnimation(PIERCE_TOWER_IDLE_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);
         animator.addAnimation(PIERCE_TOWER_DEATH_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(PIERCE_TOWER_ALERT_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
@@ -410,7 +414,6 @@ public class TowerFactory {
                 .addComponent(aiTaskComponent);
 
         pierceTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);
         return pierceTower;
     }
 
@@ -427,7 +430,7 @@ public class TowerFactory {
 
         AnimationRenderComponent animator = new AnimationRenderComponent(
                 ServiceLocator.getResourceService().getAsset(RICOCHET_TOWER_ATLAS,TextureAtlas.class));
-        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
+        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,(2*RICOCHET_TOWER_ANIM_ATTACK_SPEED),Animation.PlayMode.LOOP);
         animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);
         animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
         ricochetTower
@@ -440,26 +443,6 @@ public class TowerFactory {
                 // ADD ANIMATION COMPONENTS
 
         ricochetTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
-        return ricochetTower;
-    }
-    public static Entity createHealTower() {
-        Entity ricochetTower = createBaseTower();
-        HealTowerConfig config = configs.HealTower;
-
-        AITaskComponent aiTaskComponent = new AITaskComponent()
-                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
-
-        // ADD AnimationRenderComponent
-
-        ricochetTower
-                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent((new CostComponent(config.cost)))
-                .addComponent(aiTaskComponent);
-        // ADD ANIMATION COMPONENTS
-
-        ricochetTower.setScale(1.5f, 1.5f);
-        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);
         return ricochetTower;
     }
 
@@ -469,14 +452,20 @@ public class TowerFactory {
      */
     public static Entity createBaseTower() {
         // we're going to add more components later on
+
+
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
+                .addComponent(new EffectComponent(false))
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
                 .addComponent(new TowerUpgraderComponent());
 
         tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)
 
+        // Set hitbox and collider to a vector of size 1 and align the hitbox and collider to the center of the tower
+        tower.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
+        tower.getComponent(ColliderComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         return tower;
     }
     public static Entity createAndPlaceTower(int lane) {

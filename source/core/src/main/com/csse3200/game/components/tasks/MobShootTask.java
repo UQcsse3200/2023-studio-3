@@ -18,7 +18,7 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class MobShootTask extends DefaultTask implements PriorityTask {
   private static final int INTERVAL = 1; // time interval to scan for towers in
-  private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
+  private static final short TARGET_LAYER = PhysicsLayer.HUMANS; // mobs detecting for towers
   // ^ fix this
 
   private static final String WALKING = "wanderStart";
@@ -29,15 +29,13 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
   private Fixture target;
 
   private final int priority;
-  private final float maxRange;
-  private Vector2 mobPosition = new Vector2(10f,10f);
   private final Vector2 maxRangePosition = new Vector2();
   private final PhysicsEngine physics;
   private GameTime timeSource;
   private long endTime;
   private final RaycastHit hit = new RaycastHit();
 
-  private final long delay = 1000; // delay between shots
+  private static final long DELAY = 1000; // delay between shots
   private long startTime;
 
   private enum STATE {
@@ -48,11 +46,9 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
 
   /**
    * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
-   * @param maxRange Maximum effective range of the weapon mob. This determines the detection distance of targets
    */
-  public MobShootTask(int priority, float maxRange) {
+  public MobShootTask(int priority) {
     this.priority = priority;
-    this.maxRange = maxRange;
     startTime = 0;
 
     physics = ServiceLocator.getPhysicsService().getPhysics();
@@ -66,7 +62,7 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
   public void start() {
     super.start();
     startTime = timeSource.getTime();
-    this.mobPosition = owner.getEntity().getCenterPosition();
+    Vector2 mobPosition = owner.getEntity().getCenterPosition();
     this.maxRangePosition.set(0, mobPosition.y);
     //owner.getEntity().getEvents().trigger(IDLE);
     endTime = timeSource.getTime() + (INTERVAL * 500);
@@ -103,7 +99,7 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
 
       case DEPLOY -> {
         // currently deploying,
-        if (isTargetVisible()  != false) {
+        if (isTargetVisible()) {
           owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);
           this.owner.getEntity().getEvents().trigger(FIRING);
           mobState = STATE.FIRING;
@@ -115,13 +111,13 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
 
       case FIRING -> {
         // targets gone or cannot be attacked - stop firing
-        if (!isTargetVisible() == false) {
+        if (isTargetVisible()) {
           this.owner.getEntity().getEvents().trigger(WALKING);
           mobState = STATE.WALKING;
         } else {
           
             Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));
-            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));
+            newProjectile.setPosition(owner.getEntity().getPosition().x, owner.getEntity().getPosition().y);
             newProjectile.setScale(-1f, 1f);
             ServiceLocator.getEntityService().register(newProjectile);
 
@@ -167,29 +163,7 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
    */
   @Override
   public int getPriority() {
-    if (status == Status.ACTIVE) {
-      return getActivePriority();
-    }
-    return getInactivePriority();
-  }
-
-  /**
-   * Fetches the active priority of the Task if a target is visible.
-   * @return (int) active priority if a target is visible, -1 otherwise
-   */
-  private int getActivePriority() {
-     if ((startTime + delay) < timeSource.getTime() && isTargetVisible() != false) {
-       return priority;
-     }
-    return -1;
-  }
-
-  /**
-   * Fetches the inactive priority of the Task if a target is not visible.
-   * @return (int) -1 if a target is not visible, active priority otherwise
-   */
-  private int getInactivePriority() {
-    if ((startTime + delay) < timeSource.getTime() && isTargetVisible() != false) {
+    if ((startTime + DELAY) < timeSource.getTime() && isTargetVisible()) {
       return priority;
     }
     return -1;
@@ -201,7 +175,7 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
    */
   private boolean isTargetVisible() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-    return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);
+    return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET_LAYER, hit);
   }
 
   /**
@@ -229,6 +203,6 @@ public class MobShootTask extends DefaultTask implements PriorityTask {
 
   private void setTarget() {
     Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
-    target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+    target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET_LAYER);
   }
 }
