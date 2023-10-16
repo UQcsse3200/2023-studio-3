@@ -38,6 +38,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private SpriteBatch batch;
     private int selectedLevel = -1;
     private int currentLevel;
+    private boolean isMouseOverPlanet = false;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
     private final Stage stage;
@@ -198,7 +199,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     }
 
     private void loadPlanetLevel(int[] planet) {
-        dispose();
+
         logger.info("Loading level {}", planet[4]);
         GameLevelData.setSelectedLevel(planet[4]);
         game.setScreen(new TurretSelectionScreen(game));
@@ -249,9 +250,44 @@ public class LevelSelectScreen extends ScreenAdapter {
         text.update();
         text.draw(batch, 100, 700);
         batch.end();
+        boolean isMouseOverPlanetNow = false;
+        Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+
+        for (int[] planet : Planets.PLANETS) {
+            Rectangle planetRect = new Rectangle(planet[0], planet[1], planet[2], planet[3]);
+            if (planetRect.contains(mousePos.x, (float) Gdx.graphics.getHeight() - mousePos.y)) {
+                isMouseOverPlanetNow = true;
+                int conventionalPlanetLevel = mapToConventional(planet[4]);
+                String description = getPlanetDescription(planet);
+                descriptionBox.setText(description);
+                descriptionTable.setVisible(true);
+                int highestLevelReached = currentLevel;
+                if (Gdx.input.justTouched()) {
+                    if (conventionalPlanetLevel == 0 && highestLevelReached >= -1) {
+                        loadPlanetLevel(planet);
+                    } else if (conventionalPlanetLevel == 1 && highestLevelReached >= 0) {
+                        loadPlanetLevel(planet);
+                    } else if (conventionalPlanetLevel == 2 && highestLevelReached >= 1) {
+                        loadPlanetLevel(planet);
+                    } else {
+                        logger.info("Attempted to load locked level {}", planet[4]);
+                    }
+                }
+            }
+        }
+
+        if (!isMouseOverPlanetNow && isMouseOverPlanet) {
+            // Mouse was over a planet in the previous frame but not anymore
+            // Hide the description box
+            descriptionTable.setVisible(false);
+        }
+
+        isMouseOverPlanet = isMouseOverPlanetNow;
+
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
+
 
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
