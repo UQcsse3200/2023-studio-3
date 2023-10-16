@@ -19,8 +19,11 @@ import com.csse3200.game.ui.UIComponent;
 
 public class EngineerCountDisplay extends UIComponent {
     private TextButton engineerTb;
-    private static final String defaultFont = "determination_mono_18";
+
+    private static final String DEFAULT_FONT = "determination_mono_18";
+
     private static final float Z_INDEX = 2f;
+
     @Override
     public void create() {
         super.create();
@@ -36,12 +39,11 @@ public class EngineerCountDisplay extends UIComponent {
         table.top().left();
         table.setFillParent(true);
         table.padTop(80f).padLeft(20f);
-        table.setDebug(true);
 
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(
                 new Texture("images/engineers/engineerBanner.png")));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, getSkin().getFont(defaultFont));
+                drawable, drawable, drawable, getSkin().getFont(DEFAULT_FONT));
 
         String text = String.format("%d", ServiceLocator.getGameEndService().getEngineerCount());
         engineerTb = new TextButton(text, style);

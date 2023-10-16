@@ -29,7 +29,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
-    private static final String defaultFont = "determination_mono_18";
+    private static final String DEFAULT_FONT = "determination_mono_18";
 
     /**
      * Adds actors to stage
@@ -59,7 +59,6 @@ public class CurrencyDisplay extends UIComponent {
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
         table.row();
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
-        table.setDebug(true);
         stage.addActor(table);
 
         scrapsTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 205);
@@ -74,7 +73,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton createButton(String imageFilePath, int value) {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, getSkin().getFont(defaultFont));
+                drawable, drawable, drawable, getSkin().getFont(DEFAULT_FONT));
 
         // create button
         TextButton tb = new TextButton(String.format("%d", value), style);

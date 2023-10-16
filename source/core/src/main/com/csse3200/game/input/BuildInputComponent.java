@@ -166,6 +166,7 @@ public class BuildInputComponent extends InputComponent {
             // fetch the price of the selected tower and attempt to instantiate
             int cost = Integer.parseInt(currencyService.getTower().getPrice());
 
+
             if (canAfford(cost)) {
 
                 createTower(tower, x, y, cost);
@@ -203,6 +204,9 @@ public class BuildInputComponent extends InputComponent {
             case WALL -> TowerFactory.createWallTower();
             case FIRE -> TowerFactory.createFireTower();
             case STUN -> TowerFactory.createStunTower();
+            case PIERCE -> TowerFactory.createPierceTower();
+            case FIREWORK -> TowerFactory.createFireworksTower();
+            case RICOCHET -> TowerFactory.createRicochetTower();
         };
         // build the selected tower
         newTower.setPosition(x, y);

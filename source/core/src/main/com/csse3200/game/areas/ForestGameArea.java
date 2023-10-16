@@ -206,9 +206,9 @@ public class ForestGameArea extends GameArea {
           "sounds/mobs/archerArrow.mp3"
 
   };
-  private static final String backgroundMusic = "sounds/background/Sci-Fi1.ogg";
+  private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
-  private static final String[] forestMusic = {backgroundMusic};
+  private static final String[] forestMusic = {BACKGROUND_MUSIC};
   private Entity player;
   private Entity waves;
 
@@ -888,7 +888,7 @@ public class ForestGameArea extends GameArea {
   }
 
   private void playMusic() {
-    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);
+    Music music = ServiceLocator.getResourceService().getAsset(BACKGROUND_MUSIC, Music.class);
     music.setLooping(true);
     music.setVolume(0.3f);
     music.play();
