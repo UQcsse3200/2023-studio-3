@@ -41,10 +41,10 @@ public class WaveFactory {
 
   private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
     new ArrayList<>(Arrays.asList("Skeleton"
-    )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
+    )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
       )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
       )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
-      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne"
+      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
       )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
       )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
       )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Wizard"
