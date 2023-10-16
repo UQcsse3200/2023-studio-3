@@ -105,25 +105,7 @@ public class PauseMenuButtonComponent extends UIComponent {
                     }
                 });
 
-//        window.addListener(
-//                new InputListener() {
-//
-//                    @Override
-//                    public boolean keyUp (InputEvent event, int keycode) {
-//                        if (keycode == Input.Keys.ESCAPE && ServiceLocator.getTimeSource().getPaused()) {
-//                            logger.debug("Closing pause menu with escape key");
-//                            click.play(0.5f);
-//                            closeSound.play(0.5f);
-//                            ServiceLocator.getTimeSource().setPaused(false);
-//                            entity.dispose();
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                }
-//        );
 
-//        window.setKeepWithinStage(true);
         window.setResizable(true);
         window.setModal(true);
         window.setTouchable(Touchable.enabled);
