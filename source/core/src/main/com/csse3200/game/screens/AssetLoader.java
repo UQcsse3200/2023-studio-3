@@ -156,6 +156,7 @@ public class AssetLoader {
             "sounds/mobs/waterQueenSpell.mp3",
             "sounds/mobs/boneBreak.mp3",
             "sounds/mobs/fireWormRoar.mp3",
+            "sounds/mobs/archerArrow.mp3",
             "sounds/mobBoss/demonBreath.mp3",
             "sounds/mobBoss/demonSpawn.wav",
             "sounds/mobBoss/demonAttack.wav",

@@ -35,6 +35,7 @@ public class ArcherAnimationControllerTest {
         ResourceService resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextureAtlases(atlas);
+		resourceService.loadSounds(new String[]{"sounds/mobs/archerArrow.mp3"});
         resourceService.loadAll();
 
         arcaneArcher = NPCFactory.createDodgingArcaneArcher(60); // Replace with actual Droid Tower creation logic
