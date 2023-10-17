@@ -56,7 +56,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
      */
     public TowerCombatTask(int priority, float maxRange) {
-
         this.priority = priority;
         this.maxRange = maxRange;
         this.fireRateInterval = 1;
@@ -181,7 +180,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
     private void changeFireRateInterval(int newInterval) {
-        logger.info("Changing fire rate to: %d", newInterval);
+        logger.info(String.format("Changing fire rate to: %d", newInterval));
         fireRateInterval = 1 / ((float) newInterval / 5);
     }
 
