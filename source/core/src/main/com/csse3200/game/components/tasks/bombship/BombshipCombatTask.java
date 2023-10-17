@@ -22,9 +22,9 @@ import java.util.ArrayList;
  */
 public class BombshipCombatTask extends DefaultTask implements PriorityTask {
 
-    private static final int INTERVAL = 1; // The time interval for each target scan from the Engineer.
+    private static final int INTERVAL = 1; // The time interval for each target scan from the bombship.
     private static final int PRIORITY = 3; // Default priority of the combat task when mobs are in range.
-    private static final short TARGET1 = PhysicsLayer.BOSS; // The type of targets that the Engineer will detect.
+    private static final short TARGET1 = PhysicsLayer.BOSS; // The type of targets that the bombship will detect.
     private static final short TARGET2 = PhysicsLayer.XENO;
 
     // Animation event names for the Engineer's state machine.
@@ -40,13 +40,12 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     private PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-    private long reloadTime;
-/**
+
     private ArrayList<RaycastHit> hits = new ArrayList<>();
     private final RaycastHit hit = new RaycastHit();
-    private ArrayList<Vector2> targets = new ArrayList<>();
-*/
-    /** The Engineer's states. */
+    private ArrayList<Vector2> hit_targets = new ArrayList<>();
+
+    /** The Bombship's states. */
     private enum STATE {
         IDLE, START , DESTROY
     }
@@ -87,7 +86,7 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
      * Bombship state machine
      */
     public void updateBombshipState() {
-        // configure engineer state depending on target visibility
+        // configure bombship state depending on target visibility
         switch (bombshipState) {
             case IDLE -> {
                 // targets detected in idle mode - start deployment
@@ -151,7 +150,7 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
      * this could be done in the next sprint , the scan doesnt work as of now !
      * @return a Vector2 position of the nearest mob detected.
      */
-   /** public Vector2 fetchTarget() {
+    public Vector2 fetchTarget() {
         // Initial nearest position for comparison
         int lowest = 10;
 
@@ -159,7 +158,7 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
                 owner.getEntity().getCenterPosition().y);
 
         // Find the nearest target from the array of targets
-        for (Vector2 tgt : targets){
+        for (Vector2 tgt : hit_targets){
             if (Math.abs(tgt.y - nearest.y) < lowest) {
                 lowest = (int)Math.abs(tgt.y - nearest.y);
                 nearest = tgt;
@@ -167,6 +166,5 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
         }
         return nearest;
     }
-    */
 }
 
