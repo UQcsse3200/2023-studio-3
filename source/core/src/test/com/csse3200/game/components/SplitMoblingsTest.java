@@ -13,12 +13,14 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.npc.SplitMoblings;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;
@@ -30,13 +32,14 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.WaveService;
 
 @ExtendWith(GameExtension.class)
-public class SplitMoblingsTest {
+class SplitMoblingsTest {
   private static final int BASE_Y_COORD = 3;
   private static final int BASE_AMOUNT = 5;
   private final String[] atlas = {
@@ -55,6 +58,7 @@ public class SplitMoblingsTest {
     ServiceLocator.registerPhysicsService(new PhysicsService());
 
     ServiceLocator.registerEntityService(new EntityService());
+    ServiceLocator.registerGameEndService(new GameEndService());
 
     RenderService render = new RenderService();
     render.setDebug(mock(DebugRenderer.class));
@@ -65,21 +69,23 @@ public class SplitMoblingsTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
-    WaveService waveService = new WaveService();
+    WaveService waveService = mock(WaveService.class);
     ServiceLocator.registerWaveService(waveService);
+
+    GameEndService gameEndService = new GameEndService();
+    ServiceLocator.registerGameEndService(gameEndService);
 
     baseMob = createSplitMob(BASE_AMOUNT);
   }
 
   @Test
-  public void shouldNotBeNull() {
+  void shouldNotBeNull() {
     Entity mob = createSplitMob(5);
-    assertNotNull("Mobling components does not exists",
-        mob.getComponent(SplitMoblings.class));
+    Assertions.assertNotNull(mob.getComponent(SplitMoblings.class), "Mobling components does not exists");
   }
 
   @Test
-  public void shouldHaveAsset() {
+  void shouldHaveAsset() {
     Entity projectile = createDummyProjectile();
 
     baseMob.setPosition(SplitMoblings.MIN_X_BOUNDS + 2, SplitMoblings.MIN_Y_BOUNDS + 2);
@@ -89,14 +95,13 @@ public class SplitMoblingsTest {
       if (entity.equals(baseMob) || entity.equals(projectile))
         continue;
 
-      assertTrue("moblings does not contain the right asset",
-          ServiceLocator.getResourceService().containsAsset(atlas[0], entity.getClass()));
+      Assertions.assertTrue(ServiceLocator.getResourceService().containsAsset(atlas[0], entity.getClass()), "moblings does not contain the right asset");
 
     }
   }
 
   @Test
-  public void shouldBeDisposedAfterDeath() {
+  void shouldBeDisposedAfterDeath() {
     Entity projectile = createDummyProjectile();
     projectile.getComponent(CombatStatsComponent.class).setBaseAttack(20);
 
@@ -118,7 +123,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldInvokeDieStartEventAfterDeath() {
+  void shouldInvokeDieStartEventAfterDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
     baseMob.getComponent(CombatStatsComponent.class).setHealth(0);
 
@@ -134,7 +139,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotInvokeDieStartEventNoDeath() {
+  void shouldNotInvokeDieStartEventNoDeath() {
     EventListener0 dieStart = mock(EventListener0.class);
 
     assertFalse("mob is dead when health is not 0",
@@ -146,7 +151,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSplitCorrectAmount() {
+  void shouldSplitCorrectAmount() {
     Entity projectile = createDummyProjectile();
 
     int allEntities = ServiceLocator.getEntityService().getEntities().size;
@@ -168,7 +173,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldNotSplitCorrectAmountOutOfBounds() {
+  void shouldNotSplitCorrectAmountOutOfBounds() {
     Entity projectile = createDummyProjectile();
 
     int allEntities = ServiceLocator.getEntityService().getEntities().size;
@@ -190,7 +195,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSpawnWithinRangeAmountOne() {
+  void shouldSpawnWithinRangeAmountOne() {
     Entity mob = createSplitMob(1);
     Entity projectile = createDummyProjectile();
 
@@ -212,7 +217,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldSpawnWithinRangeMultipleAmount() {
+  void shouldSpawnWithinRangeMultipleAmount() {
     Entity projectile = createDummyProjectile();
     Entity mobThree = createSplitMob(3);
     Entity mobSeven = createSplitMob(7);
@@ -250,7 +255,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldScaleBasedOnParamsSingleAmt() {
+  void shouldScaleBasedOnParamsSingleAmt() {
     float scale = 1.5f;
     Entity mob = createSplitMob(1, scale);
     Entity projectile = createDummyProjectile();
@@ -276,7 +281,7 @@ public class SplitMoblingsTest {
   }
 
   @Test
-  public void shouldScaleXAndYbasedOnParamsMultiAmt() {
+  void shouldScaleXAndYbasedOnParamsMultiAmt() {
     float scaleX = 0.5f;
     float scaleY = 1.75f;
     Entity mob = createSplitMob(5, scaleX, scaleY);
@@ -309,17 +314,18 @@ public class SplitMoblingsTest {
     }
   }
 
+  // For now water slimes will be moblings spawned
   Entity createSplitMob(int amount) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
     mob.addComponent(new CombatStatsComponent(10, 10));
-    mob.addComponent(new SplitMoblings(amount));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount));
     ServiceLocator.getEntityService().register(mob);
     return mob;
   }
 
   Entity createSplitMob(int amount, float scale) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
-    mob.addComponent(new SplitMoblings(amount, scale));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount, scale));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;
@@ -327,7 +333,7 @@ public class SplitMoblingsTest {
 
   Entity createSplitMob(int amount, float scaleX, float scaleY) {
     Entity mob = NPCFactory.createBaseWaterSlime(10);
-    mob.addComponent(new SplitMoblings(amount, scaleX, scaleY));
+    mob.addComponent(new SplitMoblings(MobType.WATER_SLIME, amount, scaleX, scaleY));
     mob.addComponent(new CombatStatsComponent(10, 10));
     ServiceLocator.getEntityService().register(mob);
     return mob;

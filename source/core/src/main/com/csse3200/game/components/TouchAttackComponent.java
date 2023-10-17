@@ -45,7 +45,6 @@ public class TouchAttackComponent extends Component {
   private short targetLayer;
   private float knockbackForce = 0f;
   private boolean disposeOnHit = false;
-  private int aoeSize = 0;
   private CombatStatsComponent combatStats;
   private HitboxComponent hitboxComponent;
 

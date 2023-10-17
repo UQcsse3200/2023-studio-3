@@ -20,8 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
-public class TNTDamageComponentTest {
-
+class TNTDamageComponentTest {
     private GameTime gameTime;
     private Entity Attacker;
     private Entity Target_1;
@@ -31,7 +30,7 @@ public class TNTDamageComponentTest {
     private final String[] atlas = {"images/towers/TNTTower.atlas"};
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         gameTime = mock(GameTime.class);
         when(gameTime.getDeltaTime()).thenReturn(1f);
         ServiceLocator.registerTimeSource(gameTime);
@@ -53,28 +52,23 @@ public class TNTDamageComponentTest {
         ServiceLocator.getEntityService().register(Target_1);
         ServiceLocator.getEntityService().register(Target_2);
         ServiceLocator.getEntityService().register(Entity_3);
-
-
     }
 
     @Test
-    public void TestTNTDamageOnTargetsThatAreInRange() {
+    void TestTNTDamageOnTargetsThatAreInRange() {
         Attacker.setPosition(10,10);
         Target_1.setPosition(12,10);// Same lane and inside radius
 
         Attacker.getEvents().trigger("TNTDamageStart");
 
         assertEquals(80, Target_1.getComponent(CombatStatsComponent.class).getHealth());
-
-
     }
 
     @Test
-    public void TestTNTDamageOnTargetsThatAreNoTInRange() {
+    void TestTNTDamageOnTargetsThatAreNoTInRange() {
         Attacker.setPosition(10,10);
         Target_1.setPosition(15,10); // on the same lane but outside the radius
         Target_2.setPosition(11,12); // inside the radius but outside the lane
-
 
         Attacker.getEvents().trigger("TNTDamageStart");
         //Nothing should happen
@@ -83,10 +77,9 @@ public class TNTDamageComponentTest {
     }
 
     @Test
-    public void TestTNTDamageOnEntitiesThatAreNotTargets() {
+    void TestTNTDamageOnEntitiesThatAreNotTargets() {
         Attacker.setPosition(10,10);
         Entity_3.setPosition(12,10); // on the same lane and inside the radius but different target layer
-
 
         Attacker.getEvents().trigger("TNTDamageStart");
         //Nothing should happen

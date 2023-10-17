@@ -1,7 +1,6 @@
 package com.csse3200.game.areas.terrain;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.GridPoint2;
 import com.csse3200.game.components.CameraComponent;
 import com.csse3200.game.services.ResourceService;
@@ -52,14 +50,12 @@ public class TerrainFactory {
     ResourceService resourceService = ServiceLocator.getResourceService();
     resourceService.loadTextures(new String[]{"images/terrain_use.png"});
     resourceService.loadAll();
-    switch (terrainType) {
-      case ALL_DEMO:
-        TextureRegion orthogonal =
-                new TextureRegion(resourceService.getAsset("images/terrain_use.png", Texture.class));
-        return createTerrain(1f, orthogonal);
-      default:
-        return null;
+    if (terrainType == TerrainType.ALL_DEMO) {
+      TextureRegion orthogonal =
+              new TextureRegion(resourceService.getAsset("images/terrain_use.png", Texture.class));
+      return createTerrain(1f, orthogonal);
     }
+    return null;
   }
 
   /**
@@ -86,12 +82,10 @@ public class TerrainFactory {
    */
 
   public TiledMapRenderer createRenderer(TiledMap tiledMap, float tileScale) {
-    switch (orientation) {
-      case ORTHOGONAL:
-        return new OrthogonalTiledMapRenderer(tiledMap, tileScale);
-      default:
-        return null;
+    if (orientation == TerrainComponent.TerrainOrientation.ORTHOGONAL) {
+      return new OrthogonalTiledMapRenderer(tiledMap, tileScale);
     }
+    return null;
   }
 
   /**
@@ -104,9 +98,9 @@ public class TerrainFactory {
   private TiledMap createTiles(GridPoint2 tileSize, TextureRegion terrain) {
     TiledMap tiledMap = new TiledMap();
 
-    TiledMapTileLayer Layer = new TiledMapTileLayer(20, 6, tileSize.x, tileSize.y);
-    fillInvisibleTiles(Layer, new GridPoint2(20, 6), terrain);
-    tiledMap.getLayers().add(Layer);
+    TiledMapTileLayer layer = new TiledMapTileLayer(20, 6, tileSize.x, tileSize.y);
+    fillInvisibleTiles(layer, new GridPoint2(20, 6), terrain);
+    tiledMap.getLayers().add(layer);
 
     return tiledMap;
   }

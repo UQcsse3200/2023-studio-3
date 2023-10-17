@@ -4,20 +4,19 @@ import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import java.security.SecureRandom;
+
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
  * of the events is triggered.
  */
 public class ArcaneArcherAnimationController extends Component {
-    // // For on collision sounds later
-    // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
-    // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
-    //         COLLISION_SFX, Sound.class);
-    AnimationRenderComponent animator;
-    private SecureRandom rand = new SecureRandom();
     
+    AnimationRenderComponent animator;
+    
+    private static final String ATTACK_SOUND = "sounds/mobs/archerArrow.mp3";
+     Sound attackSound = ServiceLocator.getResourceService().getAsset(
+             ATTACK_SOUND, Sound.class);
 
     @Override
     public void create() {
@@ -28,7 +27,6 @@ public class ArcaneArcherAnimationController extends Component {
         entity.getEvents().addListener("mob_death", this::animateDeath);
         entity.getEvents().addListener("mob_dodge", this::animateDodge);
 
-
     }
 
     void animateWalk() {
@@ -37,6 +35,8 @@ public class ArcaneArcherAnimationController extends Component {
 
     void animateAttack() {
         animator.startAnimation("arcane_archer_attack");
+        attackSound.setVolume(1000, 5.5f);
+        attackSound.play();
     }
 
     void animateDeath() {

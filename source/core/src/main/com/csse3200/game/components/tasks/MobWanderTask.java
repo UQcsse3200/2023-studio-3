@@ -21,22 +21,17 @@ import com.csse3200.game.components.npc.WizardAnimationController;
 public class MobWanderTask extends DefaultTask implements PriorityTask {
   private static final Logger logger = LoggerFactory.getLogger(MobWanderTask.class);
 
-  private final Vector2 wanderRange;
   private final float waitTime;
   private Vector2 startPos;
   private MovementTask movementTask;
   private WaitTask waitTask;
   private Task currentTask;
   private boolean isDead = false;
-  private Vector2 mobPosition;
 
   /**
-   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
-   *     called.
    * @param waitTime How long in seconds to wait between wandering.
    */
-  public MobWanderTask(Vector2 wanderRange, float waitTime) {
-    this.wanderRange = wanderRange;
+  public MobWanderTask(float waitTime) {
     this.waitTime = waitTime;
   }
 
@@ -69,6 +64,7 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
 		// Update the position of the mob
 		mobPosition = owner.getEntity().getPosition();
 
+<<<<<<< HEAD
 		// If the mob is at zero health, kill the mob,
 		// play the death animation and stop the task
 		// This method is the idea of Ahmad who very kindly helped with section, massive props to him for his help!
@@ -88,6 +84,27 @@ public class MobWanderTask extends DefaultTask implements PriorityTask {
 
 		  // Delete the mob and update count for number of mobs remaining in the wave
 		  owner.getEntity().setFlagForDelete(true);
+=======
+    // Update the position of the mob
+    Vector2 mobPosition = owner.getEntity().getPosition();
+
+    // If the mob is at zero health, kill the mob,
+    // play the death animation and stop the task
+    // This method is the idea of Ahmad who very kindly helped with section, massive props to him for his help!
+    if (!isDead && Boolean.TRUE.equals(owner.getEntity().getComponent(CombatStatsComponent.class).isDead())) {
+      this.owner.getEntity().getEvents().trigger("dieStart");
+      currentTask.stop();
+      isDead = true;
+      ServiceLocator.getWaveService().updateEnemyCount();
+    }
+
+    // Check if the mob has finished death animation
+    else if (isDead && owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+      // Drop scrap at the mobs location
+      Entity scrap = DropFactory.createScrapDrop();
+      scrap.setPosition(mobPosition.x, mobPosition.y);
+      ServiceLocator.getEntityService().register(scrap);
+>>>>>>> 91d5dcc5ab2f970a304af380e5a604d66a04b5b0
 
 		}
 		// If not dead, do normal things...

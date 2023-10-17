@@ -1,6 +1,11 @@
 package com.csse3200.game.components.tasks;
 
+<<<<<<< HEAD
 import com.badlogic.gdx.math.Vector2;
+=======
+import com.csse3200.game.components.tasks.MobTask.MobTask;
+import com.csse3200.game.components.tasks.MobTask.MobType;
+>>>>>>> 91d5dcc5ab2f970a304af380e5a604d66a04b5b0
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ai.tasks.AITaskComponent;
@@ -25,17 +30,15 @@ public class MobDodgeTask extends MobTask {
   private long endTime;
 
   // Helps task wait between each interval.
-  private final int DELAY_INTERVAL = 500;
+  private static final int DELAY_INTERVAL = 500;
 
   /**
    * Initialises a mob dodge task with a specified wander range, wait time, and
    * priority level.
    * 
-   * @param wanderRange Distance in X and Y the entity can move from its position
-   *                    when start() is
-   *                    called.
-   * @param waitTime    How long in seconds to wait between wandering.
-   * @param priority    Priority level compared to other added tasks.
+   * @param mobType Distance in X and Y the entity can move from its position
+   *                    when start() is called.
+   * @param priority Priority level compared to other added tasks.
    */
   public MobDodgeTask(MobType mobType, int priority) {
     super(mobType);

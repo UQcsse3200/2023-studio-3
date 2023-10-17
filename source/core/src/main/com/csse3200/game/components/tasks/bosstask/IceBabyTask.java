@@ -9,13 +9,12 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.NPCFactory;
-import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     /** Constant names */
     private static final int PRIORITY = 3;
     private static final Vector2 ICEBABY_SPEED = new Vector2(1f, 1f);
-    private static final int MOVE_FORWARD_DELAY = 30;
+    private static final float MOVE_FORWARD_DELAY = 30;
     private static final int SMASH_RADIUS = 3;
     private static final int SMASH_DAMAGE = 30;
     private static final int ATK3_DAMAGE = 50;
@@ -34,8 +33,6 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private static final int Y_BOT_BOUNDARY = 1;
     private static final Logger logger = LoggerFactory.getLogger(IceBabyTask.class);
     /** Variable names */
-    private PhysicsEngine physics;
-    private GameTime gameTime;
     private STATE prevState;
     private AnimationRenderComponent animation;
     private Entity iceBaby;
@@ -44,7 +41,6 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private MovementTask walkTask;
     private static int xRightBoundary = 17;
     private static int xLeftBoundary = 12;
-    private boolean aoe = true;
     private boolean startFlag = false;
     private boolean isWalking;
     /** Animation constants */
@@ -61,14 +57,6 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         IDLE, ATK1, ATK2, ATK3, DEATH, INTRO, STAGGER, TAKEHIT, WALK
     }
     private STATE iceBabyState = STATE.IDLE;
-
-    /**
-     * Constructor for IceBabyTask
-     */
-    public IceBabyTask() {
-        physics = ServiceLocator.getPhysicsService().getPhysics();
-        gameTime = ServiceLocator.getTimeSource();
-    }
 
     //ice baby should be able to poop out little mobs - spawn new
     //ice baby can also do aoe attack based on the animation
@@ -127,6 +115,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
             animate();
             if (animation.isFinished()) {
                 iceBaby.setFlagForDelete(true);
+                dropCurrency();
             }
         }
 
@@ -141,7 +130,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
                 }
             case ATK1, ATK2 -> {
                 if (animation.isFinished()) {
-                    ATK3();
+                    atk3();
                 }
             }
             case ATK3 -> {
@@ -149,6 +138,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
                     changeState(STATE.IDLE);
                 }
             }
+            case DEATH, INTRO, STAGGER, TAKEHIT -> {}
         }
     }
 
@@ -253,7 +243,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     /**
      * Changes the state of the animation and deals damage to nearby humans
      */
-    private void ATK3() {
+    private void atk3() {
         changeState(STATE.ATK3);
         animate();
         Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(iceBaby,
@@ -276,6 +266,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         Entity newMob = NPCFactory.createSplittingWaterSlime(80);
         newMob.setPosition((float) (iceBaby.getPosition().x + 0.5), (float) (iceBaby.getPosition().y + 0.5));
         ServiceLocator.getEntityService().register(newMob);
+        ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
     }
 
     /**
@@ -309,16 +300,11 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         for (int i = 0; i < nearbyEntities.size; i++) {
             Entity targetEntity = nearbyEntities.get(i);
             HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);
-            if (targetHitbox == null) {
+            // check target hitbox and layer
+            if (targetHitbox == null || (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
+                    getLayer()))) {
                 break;
             }
-
-            // check target layer
-            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.
-                    getLayer())) {
-                break;
-            }
-
             nearbyHumans.add(targetEntity);
         }
         return nearbyHumans;
@@ -332,6 +318,22 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+
+    private void dropCurrency() {
+        // Create and register 5 crystal drops around the bossPosition
+        for (int i = 0; i < 5; i++) {
+            Entity crystal = DropFactory.createCrystalDrop();
+
+            // Calculate positions around the bossPosition
+            float offsetX = MathUtils.random(-1f, 1f); // Adjust the range as needed
+            float offsetY = MathUtils.random(-1f, 1f);
+            float dropX = owner.getEntity().getPosition().x + offsetX;
+            float dropY = owner.getEntity().getPosition().y + offsetY;
+            crystal.setPosition(dropX, dropY);
+            ServiceLocator.getEntityService().register(crystal);
+        }
     }
 
 }

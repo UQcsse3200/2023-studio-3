@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class FireworksTowerCombatTaskTest {
+class FireworksTowerCombatTaskTest {
     FireworksTowerCombatTask fireworksTowerCombatTask;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class FireworksTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testStartTriggersIdleEvent() {
+    void testStartTriggersIdleEvent() {
         Entity entity = createFireworksTower();
         EventListener0 idleListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -53,7 +53,7 @@ public class FireworksTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createFireworksTower();
         entity.setPosition(10, 10);
 
@@ -64,7 +64,7 @@ public class FireworksTowerCombatTaskTest {
         entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         fireworksTowerCombatTask.start();
-        fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
+        fireworksTowerCombatTask.setTowerState(FireworksTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -80,7 +80,7 @@ public class FireworksTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetNotInRange() {
+    void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createFireworksTower();
         entity.setPosition(10, 10);
 
@@ -92,7 +92,7 @@ public class FireworksTowerCombatTaskTest {
         entity.getEvents().addListener(FireworksTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(FireworksTowerCombatTask.ATTACK, attack);
 
-        fireworksTowerCombatTask.towerState = FireworksTowerCombatTask.STATE.IDLE;
+        fireworksTowerCombatTask.setTowerState(FireworksTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();

@@ -9,7 +9,10 @@ public enum MobType {
     DRAGON_KNIGHT(true),
     COAT(true),
     NIGHT_BORNE(true),
-    ARCANE_ARCHER(false);
+    ARCANE_ARCHER(false),
+    ROCKY(true),
+    NECROMANCER(true),
+    FIREWIZARD(true);
     private boolean isMelee;
 
     MobType(boolean melee) {

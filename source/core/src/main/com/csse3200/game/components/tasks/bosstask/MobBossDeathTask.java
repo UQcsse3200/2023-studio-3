@@ -1,17 +1,16 @@
 package com.csse3200.game.components.tasks.bosstask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
-import com.csse3200.game.physics.PhysicsEngine;
-import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
-//import com.csse3200.game.rendering.DebugRenderer;
 
+//CODE IS REDUNDANT ///
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -21,10 +20,8 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
 
     private final int priority;
     private Vector2 bossPosition = new Vector2(10f,10f);
-    private final PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-    private final RaycastHit hit = new RaycastHit();
 
     private int bossHealth;
 
@@ -33,9 +30,6 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
      */
     public MobBossDeathTask(int priority) {
         this.priority = priority;
-
-        physics = ServiceLocator.getPhysicsService().getPhysics();
-
         timeSource = ServiceLocator.getTimeSource();
     }
 
@@ -71,11 +65,6 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
     }
 
     @Override
-    public void stop() {
-        super.stop();
-    }
-
-    @Override
     public int getPriority() {
         if (status == Status.ACTIVE) {
             return getActivePriority();
@@ -98,11 +87,7 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
         return -1;
     }
     private boolean bossIsDead(int bosshealth) {
-
-        if (bosshealth <= 0) {
-            return true;
-        }
-        return false;
+        return bosshealth <= 0;
     }
 
     private void killboss() {
@@ -111,10 +96,18 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
     }
 
     private void dropCurrency() {
+        // Create and register 5 crystal drops around the bossPosition
+        for (int i = 0; i < 5; i++) {
+            Entity crystal = DropFactory.createCrystalDrop();
 
-        Entity scrap = DropFactory.createScrapDrop();
-        scrap.setPosition(bossPosition.x,bossPosition.y);
-        ServiceLocator.getEntityService().register(scrap.setScale(2,2));
+            // Calculate positions around the bossPosition
+            float offsetX = MathUtils.random(-1f, 1f); // Adjust the range as needed
 
+            float dropX = bossPosition.x + offsetX;
+
+            crystal.setPosition(dropX, bossPosition.y);
+            ServiceLocator.getEntityService().register(crystal);
+        }
     }
+
 }

@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -7,11 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.physics.PhysicsEngine;
-import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.GameTime;
-//import com.csse3200.game.rendering.DebugRenderer;
 
+
+/// THIS CODE IS REDUNDANT ///
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -24,7 +25,6 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     private final PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-    private final RaycastHit hit = new RaycastHit();
 
     private int mobHealth;
 
@@ -61,18 +61,12 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     public void updateBossState() {
 
         mobHealth = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();
-        // TODO: inset a bit that picks from a list of drop options and drops this
 
         if (mobIsDead(mobHealth)) {
             killMob();
             dropCurrency();
         }
 
-    }
-
-    @Override
-    public void stop() {
-        super.stop();
     }
 
     @Override
@@ -98,11 +92,7 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
         return -1;
     }
     private boolean mobIsDead(int mobhealth) {
-
-        if (mobhealth <= 0) {
-            return true;
-        }
-        return false;
+        return mobhealth <= 0;
     }
 
     private void killMob() {
@@ -110,10 +100,18 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     }
 
     private void dropCurrency() {
+        float randomValue = MathUtils.random(0,1);
+        Entity currency;
+        if (randomValue <= 0.1f) {
+            currency = DropFactory.createCrystalDrop();
 
-        Entity scrap = DropFactory.createScrapDrop();
-        scrap.setPosition(mobPosition.x,mobPosition.y);
-        ServiceLocator.getEntityService().register(scrap);
+        }
+        else {
+            currency = DropFactory.createScrapDrop();
+
+        }
+        currency.setPosition(mobPosition.x,mobPosition.y);
+        ServiceLocator.getEntityService().register(currency);
 
     }
 

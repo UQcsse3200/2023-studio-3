@@ -1,10 +1,7 @@
 package com.csse3200.game.components.npc;
 
-import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
-import java.security.SecureRandom;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
@@ -15,9 +12,7 @@ public class NightBorneAnimationController extends Component {
     // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
     // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
     //         COLLISION_SFX, Sound.class);
-    AnimationRenderComponent animator;
-    private SecureRandom rand = new SecureRandom();
-    
+    AnimationRenderComponent animator; 
 
     @Override
     public void create() {

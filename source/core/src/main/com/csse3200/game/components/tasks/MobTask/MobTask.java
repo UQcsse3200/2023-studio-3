@@ -1,13 +1,16 @@
 package com.csse3200.game.components.tasks.MobTask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -16,6 +19,11 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.components.npc.ArcaneArcherAnimationController;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.csse3200.game.components.tasks.MobTask.MobType;
 
 /**
  * The AI Task for all general mobs. This task handles the sequencing for melee
@@ -33,16 +41,23 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final long RANGE_ATTACK_SPEED = 5000;
     private static final float MELEE_ATTACK_RANGE = 0.2f;
 
+    private static final float CRYSTAL_DROP_RATE = 0.1f;
+    private static final float SCRAP_DROP_RATE = 0.6f;
+
+    private static final Logger logger = LoggerFactory.getLogger(MobTask.class);
+
+
     // Private variables
     private final MobType mobType;
+
     private State state = State.DEFAULT;
-    private State prevState;
     private Entity mob;
     private AnimationRenderComponent animation;
     private MovementTask movementTask;
     private Entity target;
     private GameTime gameTime;
     private long lastTimeAttacked;
+    private long dodgeEndTime;
 
     // Flags
     boolean melee;
@@ -52,10 +67,11 @@ public class MobTask extends DefaultTask implements PriorityTask {
     boolean rangeAttackFlag = false;
     boolean meleeAttackFlag = false;
     boolean deathFlag = false;
+    boolean canDodge = false;
 
     // Enums
     private enum State {
-        RUN, ATTACK, DEATH, DEFAULT
+        RUN, ATTACK, DEATH, DEFAULT, DODGE
     }
 
     /**
@@ -65,6 +81,17 @@ public class MobTask extends DefaultTask implements PriorityTask {
     public MobTask(MobType mobType) {
         this.mobType = mobType;
         gameTime = ServiceLocator.getTimeSource();
+    }
+
+    /**
+     * constructor for the mob
+     * @param mobType type of mob it is
+     * @param canDodge ability to dodge projectiles
+     */
+    public MobTask(MobType mobType, boolean canDodge) {
+        this.mobType = mobType;
+        gameTime = ServiceLocator.getTimeSource();
+        this.canDodge = true;
     }
 
     /**
@@ -85,6 +112,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
         runFlag = true;
         changeState(State.RUN);
         lastTimeAttacked = gameTime.getTime();
+        dodgeEndTime = gameTime.getTime();
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
@@ -99,14 +127,39 @@ public class MobTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
 
+        if(mob.getCenterPosition().x <= 1) {
+          mob.getComponent(CombatStatsComponent.class).setHealth(0);
+          ServiceLocator.getGameEndService().updateEngineerCount();
+        }
+
         // death check
-        if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag) {
+        if ((mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag)) {
+            // decrement engineer count
+            // ! tests failing because of textbox
+
             changeState(State.DEATH);
             animate();
             movementTask.stop();
             deathFlag = true;
+            
         } else if (deathFlag && animation.isFinished()) {
+            ServiceLocator.getWaveService().updateEnemyCount();
             mob.setFlagForDelete(true);
+            dropCurrency();
+        }
+
+        // Uhhh
+        if(gameTime.getTime() >= dodgeEndTime) {
+          if (canDodge) {
+            mob.getEvents().trigger("dodgeIncomingEntity",
+                mob.getCenterPosition());
+            if(mob.getComponent(DodgingComponent.class).isTargetVisible(mob.getCenterPosition())) {
+                changeState(State.DODGE);
+                animate();
+                // movementTask.stop();
+            }
+        }
+          dodgeEndTime = gameTime.getTime() + 500; // 500ms
         }
 
         switch (state) {
@@ -116,46 +169,38 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     animate();
                     runFlag = false;
                 }
-                if (melee) {
-                    if (enemyDetected()) {
-                        if (gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
-                            changeState(State.ATTACK);
-                            meleeAttackFlag = true;
-                        }
-                    }
-                } else {
-                    if (gameTime.getTime() - lastTimeAttacked >= RANGE_ATTACK_SPEED) {
-                        changeState(State.ATTACK);
-                        rangeAttackFlag = true;
-                    }
+                if (melee && enemyDetected() && gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
+                    changeState(State.ATTACK);
+                    meleeAttackFlag = true;
+                } else if (gameTime.getTime() - lastTimeAttacked >= RANGE_ATTACK_SPEED) {
+                    changeState(State.ATTACK);
+                    rangeAttackFlag = true;
                 }
             }
             case ATTACK -> {
-                if (melee) {
-                    if (meleeAttackFlag) {
-                        movementTask.stop();
-                        animate();
-                        meleeAttack();
-                        meleeAttackFlag = false;
-                    }
-                    if (animation.isFinished()) {
-                        movementTask.start();
-                        changeState(State.RUN);
-                        runFlag = true;
-                    }
+                if (melee && meleeAttackFlag) {
+                    movementTask.stop();
+                    animate();
+                    meleeAttack();
+                    meleeAttackFlag = false;
+                } else if (!melee && rangeAttackFlag) {
+                    movementTask.stop();
+                    animate();
+                    rangeAttack();
+                    rangeAttackFlag = false;
                 }
-                if (!melee) {
-                    if (rangeAttackFlag) {
-                        movementTask.stop();
-                        animate();
-                        rangeAttack();
-                        rangeAttackFlag = false;
-                    }
-                    if (animation.isFinished()) {
-                        movementTask.start();
-                        changeState(State.RUN);
-                        runFlag = true;
-                    }
+                if (animation.isFinished()) {
+                    movementTask.start();
+                    changeState(State.RUN);
+                    runFlag = true;
+                }
+            }
+            case DODGE -> {
+                if (animation.isFinished()) {
+                    movementTask.start();
+                    changeState(State.RUN);
+                    animate();
+                    runFlag = true;
                 }
             }
         }
@@ -172,77 +217,17 @@ public class MobTask extends DefaultTask implements PriorityTask {
                         owner.getEntity().getEvents().trigger("mob_death");
                         owner.getEntity().getEvents().trigger("splitDeath");
                     }
+                    case DODGE -> owner.getEntity().getEvents().trigger("mob_dodge");
                     case DEFAULT -> owner.getEntity().getEvents().trigger("mob_default");
                 }
-        // switch (mobType) {
-        //     case SKELETON -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("skeleton_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("skeleton_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("skeleton_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("skeleton_default");
-        //         }
-        //     }
-        //     case WIZARD -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("wizard_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("wizard_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("wizard_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case WATER_QUEEN -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("water_queen_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("water_queen_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("water_queen_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case WATER_SLIME -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("water_slime_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("water_slime_attack");
-        //             case DEATH -> {
-        //                 owner.getEntity().getEvents().trigger("water_slime_death");
-        //                 owner.getEntity().getEvents().trigger("splitDeath");
-        //             }
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case FIRE_WORM -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("fire_worm_walk");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("fire_worm_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("fire_worm_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case DRAGON_KNIGHT -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("dragon_knight_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("dragon_knight_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("dragon_knight_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        //     case COAT -> {
-        //         switch (state) {
-        //             case RUN -> owner.getEntity().getEvents().trigger("coat_run");
-        //             case ATTACK -> owner.getEntity().getEvents().trigger("coat_attack");
-        //             case DEATH -> owner.getEntity().getEvents().trigger("coat_death");
-        //             case DEFAULT -> owner.getEntity().getEvents().trigger("default");
-        //         }
-        //     }
-        // }
     }
 
     /**
-     * changes state of the mob
+     * Changes the state of the mob.
+     * 
      * @param state state to change current state to
      */
     private void changeState(State state) {
-        prevState = this.state;
         this.state = state;
     }
 
@@ -252,19 +237,19 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     private boolean enemyDetected() {
         // if there's an entity within x of - 1 of mob
-        Entity target = ServiceLocator.getEntityService().getEntityAtPosition(
+        Entity targetInFront = ServiceLocator.getEntityService().getEntityAtPosition(
                 mob.getPosition().x - MELEE_ATTACK_RANGE, mob.getPosition().y);
-        if (target == null) {
+        if (targetInFront == null) {
             return false;
         }
 
         // layer checking
-        HitboxComponent targetHitbox = target.getComponent(HitboxComponent.class);
+        HitboxComponent targetHitbox = targetInFront.getComponent(HitboxComponent.class);
         if (targetHitbox == null) {
             return false;
         }
         if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
-            this.target = target;
+            this.target = targetInFront;
             return true;
         }
         return false;
@@ -321,5 +306,35 @@ public class MobTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+    /**
+     * Sets dodge flag of the mob
+     * 
+     * @param dodgeFlag If true, mob dodges projectile.
+     */
+    public void setDodge(boolean dodgeFlag) {
+      this.canDodge = dodgeFlag;
+    }
+
+    private void dropCurrency() {
+        float randomValue = MathUtils.random(0f,1f);
+        logger.info("Random value: " + randomValue);
+        Entity currency;
+        if (randomValue <= CRYSTAL_DROP_RATE) {
+            currency = DropFactory.createCrystalDrop();
+            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+            ServiceLocator.getEntityService().register(currency);
+
+        }
+        else if (randomValue <= SCRAP_DROP_RATE) {
+            currency = DropFactory.createScrapDrop();
+            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+            ServiceLocator.getEntityService().register(currency);
+
+        }
+
+
+
     }
 }

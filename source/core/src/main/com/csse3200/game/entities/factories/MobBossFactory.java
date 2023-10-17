@@ -216,16 +216,16 @@ public class MobBossFactory {
      * @return a base mob boss entity
      */
     public static Entity createBaseBoss() {
-        Entity boss = new Entity()
+
+        return new Entity()
                 .addComponent(new PhysicsComponent())
 //                .addComponent(new ColliderComponent())
+                .addComponent(new EffectComponent(false))
                 .addComponent(new PhysicsMovementComponent())
                 .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))
                 .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));
 
 //        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);
-
-        return boss;
     }
 
     /**
