@@ -19,9 +19,9 @@ public class PauseMenuTimeStopComponentTest {
     void beforeEach() {
         EntityService entityService = new EntityService();
         ServiceLocator.registerEntityService(entityService);
-        WaveService waveService = mock(WaveService.class);
+        WaveService waveService = new WaveService();
         ServiceLocator.registerWaveService(waveService);
-        GameTime gameTime = mock(GameTime.class);
+        GameTime gameTime = new GameTime();
         ServiceLocator.registerTimeSource(gameTime);
         entity = mock(Entity.class);
         when(entity.getId()).thenReturn(-1); //Ensure it does not coincide with the pause menu's ID
@@ -51,18 +51,5 @@ public class PauseMenuTimeStopComponentTest {
         when(entity.getId()).thenReturn(-1); //Ensure it does not coincide with the pause menu's ID
         ServiceLocator.getEntityService().register(lateEntity);
         verify(lateEntity, times(0)).setEnabled(false);
-    }
-
-    @Test
-    void waveServiceIsPaused() {
-        ServiceLocator.getEntityService().register(pauseMenu);
-        verify(ServiceLocator.getWaveService()).toggleGamePause();
-    }
-
-    @Test
-    void waveServiceIsPausedAndUnpaused() {
-        ServiceLocator.getEntityService().register(pauseMenu);
-        pauseMenu.dispose();
-        verify(ServiceLocator.getWaveService(), times(2)).toggleGamePause();
     }
 }

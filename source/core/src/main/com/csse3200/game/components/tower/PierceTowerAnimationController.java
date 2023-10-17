@@ -1,9 +1,7 @@
 package com.csse3200.game.components.tower;
 
-import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Listens to triggers phrases and executes the required animations.
@@ -21,10 +19,7 @@ public class PierceTowerAnimationController extends Component {
     private static final String ALERT_ANIM = "Warning";
 
     //further sounds can be added for the tower attacks/movement
-    private static final String FIRE_SINGLE_SFX = "sounds/towers/5.56_single_shot.mp3";
 
-    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
-            FIRE_SINGLE_SFX, Sound.class);
     AnimationRenderComponent animator;
 
     /**
@@ -53,7 +48,6 @@ public class PierceTowerAnimationController extends Component {
      */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);
-        fireSingleSound.play();
     }
 
     /**

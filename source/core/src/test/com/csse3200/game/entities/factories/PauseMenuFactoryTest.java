@@ -22,6 +22,9 @@ public class PauseMenuFactoryTest {
     Entity entity;
     GdxGame game;
 
+    String[] texture = {
+            "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png"
+    };
     @BeforeEach
     void beforeEach() {
         EntityService entityService = new EntityService();
@@ -35,6 +38,7 @@ public class PauseMenuFactoryTest {
         ServiceLocator.registerRenderService(renderService);
         ResourceService resourceService = new ResourceService();
         ServiceLocator.registerResourceService(resourceService);
+        resourceService.loadTextures(texture);
         resourceService.loadAll();
 
         game = mock(GdxGame.class);

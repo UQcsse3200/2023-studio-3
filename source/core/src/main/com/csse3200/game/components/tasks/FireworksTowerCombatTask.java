@@ -13,8 +13,6 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
-import static java.lang.Math.round;
-
 
 /**
  * The FireworksTowerCombatTask runs the AI for the FireworksTower class. The tower scans for mobs and targets in a
@@ -40,7 +38,6 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
     private GameTime timeSource;
-    private float fireRateInterval;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
     private boolean shoot = true;
@@ -57,7 +54,6 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     public FireworksTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
-        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -85,12 +81,7 @@ public class FireworksTowerCombatTask extends DefaultTask implements PriorityTas
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            if (towerState == STATE.ATTACK) {
-                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
-            } else {
-                endTime = timeSource.getTime() + (INTERVAL * 1000);
-            }
-
+            endTime = timeSource.getTime() + (INTERVAL * 1000);
         }
     }
 

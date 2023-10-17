@@ -97,7 +97,7 @@ public class SplitMoblings extends Component {
     // left.
     if (amount == 1) {
       float newXPosition = (float) (entity.getPosition().x - OFFSET_DISTANCE);
-      float newYPosition = (entity.getPosition().y);
+      float newYPosition = (float) (entity.getPosition().y);
 
       if (withinBounds(newXPosition, newYPosition)) {
         spawnAdditionalMob(newXPosition, newYPosition, initialScaleX, initialScaleY);
@@ -133,31 +133,37 @@ public class SplitMoblings extends Component {
    */
   public void spawnAdditionalMob(float positionX, float positionY,
       float initialScaleX, float initialScaleY) {
+    // Entity waterSlime = NPCFactory.createBaseWaterSlime(60);
     Entity entityType;
     switch (mobType) {
-      case WATER_SLIME ->
+      case WATER_SLIME -> {
         entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
+      }
 
-      case NIGHT_BORNE ->
+      case NIGHT_BORNE -> {
         entityType = NPCFactory.createNightBorne(baseMoblingHealth);
+      }
 
-      case ROCKY ->
+      case ROCKY -> {
         entityType = NPCFactory.createRocky(baseMoblingHealth);
+      }
 
-      default ->
+      default -> {
         entityType = NPCFactory.createBaseWaterSlime(baseMoblingHealth);
+      }
     }
-
+    
     entityType.setPosition(positionX, positionY);
 
     switch (mobType) {
-      case NIGHT_BORNE ->
+      case NIGHT_BORNE -> {
         entityType.setScale(initialScaleX, initialScaleY);
-
-      default ->
+      }
+      default -> {
         entityType.setScale(initialScaleX * scaleX, initialScaleY * scaleY);
-
+      }
     }
+
 
     ServiceLocator.getEntityService().register(entityType);
 
@@ -174,9 +180,12 @@ public class SplitMoblings extends Component {
    *         False otherwise.
    */
   private boolean withinBounds(float currX, float currY) {
-    return currX >= MIN_X_BOUNDS
+    if (currX >= MIN_X_BOUNDS
         && currX <= MAX_X_BOUNDS
         && currY >= MIN_Y_BOUNDS
-        && currY <= MAX_Y_BOUNDS;
+        && currY <= MAX_Y_BOUNDS) {
+      return true;
+    }
+    return false;
   }
 }

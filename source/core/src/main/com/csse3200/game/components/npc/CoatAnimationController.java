@@ -5,13 +5,19 @@ import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
 
+import java.security.SecureRandom;
 
 /**
  * This class listens to events relevant to a ghost entity's state and plays the animation when one
  * of the events is triggered.
  */
 public class CoatAnimationController extends Component {
+    // // For on collision sounds later
+    // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
+    // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
+    //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
+    private SecureRandom rand = new SecureRandom();
 
     private static final String ATTACK_SOUND = "sounds/mobs/coatAttack.mp3";
      Sound attackSound = ServiceLocator.getResourceService().getAsset(

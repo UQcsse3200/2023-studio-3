@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.areas.*;
+import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameDisplay;
@@ -29,6 +29,7 @@ import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * The game screen containing the main game.
  *
@@ -218,15 +219,9 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
       // Check if all waves are completed and the level has been completed
-      if (selectedLevel == 2) { // Lava level
-        // If it's the lava level, go to the "win" screen
-        ui.getEvents().trigger("win");
-        logger.info("Main game level completed detected, go to win screen");
-      } else {
-        // For other levels, go to the "NextLevelScreen"
-        game.setScreen(new NextLevelScreen(game, selectedLevel));
-        logger.info("game level completed detected, go to NextLevelScreen");
-      }
+      logger.info("Main game level completed detected, go to win screen");
+      ui.getEvents().trigger("win"); // needs to change to: ui.getEvents().trigger("win");
+      // Add something in to unlock the next planet/level?
     }
   }
 
@@ -297,7 +292,7 @@ public class MainGameScreen extends ScreenAdapter {
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
 
-            .addComponent(new PerformanceDisplay())
+        .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui

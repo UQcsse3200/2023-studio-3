@@ -175,6 +175,14 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         return !isTargetVisible() ? 0 : priority;
     }
 
+    public int getActivePriority() {
+        return !isTargetVisible() ? 0 : priority;
+    }
+
+    public int getInactivePriority() {
+        return isTargetVisible() ? priority : 0;
+    }
+
     /**
      * Searches for enemies/mobs in a straight line from the centre of the tower to maxRange in a straight line.
      * @return true if targets are detected, false otherwise
@@ -187,4 +195,12 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
         fireRateInterval = 1 / ((float) newInterval / 5);
     }
 
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+        return fireRateInterval;
+    }
 }

@@ -11,6 +11,7 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.configs.*;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
 import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
@@ -19,6 +20,7 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 
 /**
  * Factory to create non-playable human character (NPC) entities with predefined components.
+ *
  * These may be modified to become controllable characters in future sprints.
  *
  * <p>Each NPC entity type should have a creation method that returns a corresponding entity.
@@ -29,15 +31,18 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
  * similar characteristics.
  */
 public class BombshipFactory {
+  
   private static final int COMBAT_TASK_PRIORITY = 2;
   private static final int BOMBSHIP_RANGE = 30;
   private static final BombshipConfigs configs =
           FileLoader.readClass(BombshipConfigs.class, "configs/Bombship.json");
+  
   private static final float HUMAN_SCALE_X = 1f;
   private static final float HUMAN_SCALE_Y = 0.8f;
   
   /**
    * Creates an Engineer entity, based on a base Human entity, with the appropriate components and animations
+   *
    *
    * @return entity
    */
@@ -70,12 +75,17 @@ public class BombshipFactory {
    * @return entity
    */
   public static Entity createBaseshipNPC() {
-      return new Entity()
-              .addComponent(new PhysicsComponent())
-              .addComponent(new PhysicsMovementComponent())
-              .addComponent(new ColliderComponent())
-              .addComponent(new HitboxComponent().setLayer(PhysicsLayer.BOMBSHIP))
-              .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f));
+    
+    
+    Entity ship =
+            new Entity()
+                    .addComponent(new PhysicsComponent())
+                    .addComponent(new PhysicsMovementComponent())
+                    .addComponent(new ColliderComponent())
+                    .addComponent(new HitboxComponent().setLayer(PhysicsLayer.BOMBSHIP))
+                    .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f));
+
+    return ship;
   }
   
   private BombshipFactory() {

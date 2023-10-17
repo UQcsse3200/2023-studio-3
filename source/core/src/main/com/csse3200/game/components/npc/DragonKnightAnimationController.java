@@ -11,7 +11,12 @@ import java.security.SecureRandom;
  * of the events is triggered.
  */
 public class DragonKnightAnimationController extends Component {
+    // // For on collision sounds later
+    // private static final String COLLISION_SFX = "sounds/projectiles/on_collision.mp3";
+    // Sound onCollisionSound = ServiceLocator.getResourceService().getAsset(
+    //         COLLISION_SFX, Sound.class);
     AnimationRenderComponent animator;
+    private SecureRandom rand = new SecureRandom();
 
     @Override
     public void create() {

@@ -7,8 +7,6 @@ import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.ServiceLocator;
 
-import java.util.Random;
-
 /**
  * A component that adds a dodging event listener to the current attached
  * entity. The entity will dodge another entity that is presumably coming at its
@@ -29,10 +27,9 @@ public class DodgingComponent extends Component {
   private final RaycastHit hit = new RaycastHit();
   private short targetLayer;
   private float rangeDetection;
-  private float dodgeSpeed = 1.75f;
+  private float dodgeSpeed = 1.75f; 
   private float originalSpeed; // Original entity vertical speed
   private PhysicsEngine physics;
-  private Random random = new Random();
 
   // Sometimes the raycast mechanic doesn't detect the other entity because of the
   // target's (or self) collider size does not match. This value makes sure the
@@ -95,15 +92,11 @@ public class DodgingComponent extends Component {
    * @param mobPos The current Vector2 mob position in the map.
    */
   public void changeTraverseDirection(Vector2 mobPos) {
-    int randDirection = random.nextInt(2) == 1 ? -1 : 1;
-
     if (isTargetVisible(mobPos)) {
       // If mob is in the top half quadrant of the map grid, make the entity dodge
       // downwards.
-      // setVerticalAngleDirection(mobPos.y > 3.5 ? mobPos.y - 15 : mobPos.y + 15);
-      // Random direction
-      setVerticalAngleDirection(mobPos.y + (15 * randDirection));
-      setVerticalSpeed(dodgeSpeed);
+      setVerticalAngleDirection(mobPos.y > 3.5 ? mobPos.y - 15 : mobPos.y + 15);
+      setVerticalSpeed(dodgeSpeed);      
     } else {
       setVerticalAngleDirection(mobPos.y);
       setVerticalSpeed(originalSpeed);

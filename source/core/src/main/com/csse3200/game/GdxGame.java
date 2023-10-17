@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.csse3200.game.files.UserSettings;
 import com.csse3200.game.screens.*;
-import com.csse3200.game.screens.HelpScreen.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +17,7 @@ import static com.badlogic.gdx.Gdx.app;
  */
 public class GdxGame extends Game {
   private static final Logger logger = LoggerFactory.getLogger(GdxGame.class);
-  public int currentLevel = 0;
+
   @Override
   public void create() {
     logger.info("Creating game");
@@ -64,31 +63,30 @@ public class GdxGame extends Game {
    * @return new screen
    */
   private Screen newScreen(ScreenType screenType) {
-      return switch (screenType) {
-          case Next_Screen -> new NextLevelScreen(this, currentLevel);
-          case Win_Screen -> new WinningScreen(this);
-          case MAIN_MENU -> new MainMenuScreen(this);
-          case MAIN_GAME -> new MainGameScreen(this);
-          case SETTINGS -> new SettingsScreen(this);
-          case STORY_SCREEN -> new StoryScreen(this);
-          case LEVEL_SELECT -> new LevelSelectScreen(this, currentLevel);
-          case LOSING_SCREEN -> new LosingScreen(this);
-          case TURRET_SELECTION -> new TurretSelectionScreen(this);
-          case HELP_SCREEN -> new GameDescriptionHelpScreen(this);
-          case HELP_MOBS_SCREEN -> new MobsDescriptionHelpScreen(this);
-          case HELP_TOWER_SCREEN -> new TowerDescriptionHelpScreen(this);
-          case HELP_BOSS_SCREEN -> new BossDescriptionHelpScreen(this);
-          case LOAD_SCREEN -> new LoadingScreen(this);
-          case HOW_TO_PLAY -> new HowToPlay(this);
-
-          case TUTORIAL_SCREEN-> new Tutorial(this);
-      default-> null;
-      };
+    switch (screenType) {
+      case MAIN_MENU:
+        return new MainMenuScreen(this);
+      case MAIN_GAME:
+        return new MainGameScreen(this);
+      case SETTINGS:
+        return new SettingsScreen(this);
+      case STORY_SCREEN:
+        return new StoryScreen(this);
+      case LEVEL_SELECT:
+        return new LevelSelectScreen(this);
+      case LOSING_SCREEN:
+        return new LosingScreen(this);
+      case TURRET_SELECTION:
+        return new TurretSelectionScreen(this);
+      case HELP_SCREEN:
+        return new HelpScreen(this);
+      default:
+        return null;
+    }
   }
 
   public enum ScreenType {
-    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN, LOAD_SCREEN,
-    HELP_MOBS_SCREEN, HELP_TOWER_SCREEN, HELP_BOSS_SCREEN, Win_Screen, Next_Screen, HOW_TO_PLAY, TUTORIAL_SCREEN
+    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN
   }
 
   /**

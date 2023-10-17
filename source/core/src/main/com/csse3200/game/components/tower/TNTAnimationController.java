@@ -1,9 +1,7 @@
 package com.csse3200.game.components.tower;
 
-import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
 
 /**
  * This class listens to events relevant to TNTTower entity's state and plays the animation when one
@@ -11,10 +9,6 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class TNTAnimationController extends Component {
     private AnimationRenderComponent animator;
-    private static final String EXPLOSION = "sounds/towers/explosion.mp3";
-
-    private final Sound explosion = ServiceLocator.getResourceService().getAsset(
-            EXPLOSION, Sound.class);
 
     /**
      * Creation call for a TNTAnimationController, fetches the animationRenderComponent that this controller will
@@ -49,7 +43,7 @@ public class TNTAnimationController extends Component {
      * This method should be invoked when the entity enters the explosion state.
      */
     void animateExplode() { animator.startAnimation("explode");
-        explosion.play();
+
     }
 
 }

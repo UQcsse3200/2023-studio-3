@@ -4,6 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
@@ -41,7 +43,7 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
     public enum STATE {
         IDLE, DEATH
     }
-    private STATE towerState = STATE.IDLE;
+    public STATE towerState = STATE.IDLE;
 
     /**
      * @param priority Task priority when targets are detected (0 when nothing is present)
@@ -73,7 +75,6 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
      * updates the current state of the tower based on the current state of the game. If enemies are detected, attack
      * state is activated and otherwise idle state remains.
      */
-    @Override
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
@@ -86,19 +87,22 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
      * of the game. If enemies are detected, state of the tower is changed to attack state.
      */
     public void updateTowerState() {
+
         if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() <= 0 && towerState != STATE.DEATH) {
             owner.getEntity().getEvents().trigger(DEATH);
             towerState = STATE.DEATH;
             return;
         }
 
-        // Replace "switch" statement by "if" statements to increase readability.
-        if (towerState == STATE.IDLE) {
-            owner.getEntity().getEvents().trigger(IDLE);
-            towerState = STATE.IDLE;
-        } else {        // DEATH
-            if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                owner.getEntity().setFlagForDelete(true);
+        switch (towerState) {
+            case IDLE -> {
+                owner.getEntity().getEvents().trigger(IDLE);
+                towerState = STATE.IDLE;
+            }
+            case DEATH -> {
+                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+                    owner.getEntity().setFlagForDelete(true);
+                }
             }
         }
     }
@@ -112,17 +116,8 @@ public class WallTowerDestructionTask extends DefaultTask implements PriorityTas
     }
 
     /**
-     * Function for setting the tower's state.
-     * @param newState The new state of this tower.
-     */
-    public void setState(STATE newState) {
-        this.towerState = newState;
-    }
-
-    /**
      * stops the current animation and switches back the state of the tower to IDLE.
      */
-    @Override
     public void stop() {
         super.stop();
         owner.getEntity().getEvents().trigger(IDLE);

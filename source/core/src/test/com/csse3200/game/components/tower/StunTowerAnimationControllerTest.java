@@ -17,16 +17,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
-class StunTowerAnimationControllerTest {
+public class StunTowerAnimationControllerTest {
+
     private Entity mockEntity;
     private final String[] texture = {"images/towers/stun_tower.png"};
     private final String[] atlas = {"images/towers/stun_tower.atlas"};
-    private static final String[] sounds = {
-            "sounds/towers/ar15_single_shot_far.mp3"
-    };
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         ServiceLocator.registerPhysicsService(new PhysicsService());
         RenderService render = new RenderService();
         render.setDebug(mock(DebugRenderer.class));
@@ -35,7 +33,6 @@ class StunTowerAnimationControllerTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
-        resourceService.loadSounds(sounds);
         resourceService.loadAll();
 
         mockEntity = TowerFactory.createStunTower(); // Replace with actual Droid Tower creation logic
@@ -43,19 +40,19 @@ class StunTowerAnimationControllerTest {
     }
 
     @Test
-    void testAnimateWalk() {
+    public void testAnimateWalk() {
         mockEntity.getEvents().trigger("startIdle");
         assertEquals("idle", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    void testAnimateDefault() {
+    public void testAnimateDefault() {
         mockEntity.getEvents().trigger("startAttack");
         assertEquals("attack", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    void testAnimateGoUp() {
+    public void testAnimateGoUp() {
         mockEntity.getEvents().trigger("startDeath");
         assertEquals("death", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }

@@ -2,6 +2,7 @@ package com.csse3200.game.components.mainmenu;
 
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.components.Component;
+import com.csse3200.game.screens.HelpScreen;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

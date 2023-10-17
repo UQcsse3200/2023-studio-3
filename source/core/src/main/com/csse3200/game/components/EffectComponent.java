@@ -54,6 +54,9 @@ public class EffectComponent extends Component {
 
         // apply slow effect
         if (mob) {
+            if (target == null) {
+                return;
+            }
             if (slowFlag) {
                 isSlowed = true;
                 Vector2 half_speed = new Vector2(defaultTargetSpeed.x / 2, defaultTargetSpeed.y / 2);
@@ -82,6 +85,9 @@ public class EffectComponent extends Component {
                 }
                 targetPhysics.setSpeed(STUN_SPEED);
             } else if (isStunned) {
+                if (target == null) {
+                    return;
+                }
                 isStunned = false;
                 targetPhysics.setSpeed(defaultTargetSpeed);
             }

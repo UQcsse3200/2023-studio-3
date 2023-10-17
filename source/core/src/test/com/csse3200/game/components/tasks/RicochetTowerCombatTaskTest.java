@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class RicochetTowerCombatTaskTest {
+public class RicochetTowerCombatTaskTest {
     RicochetTowerCombatTask ricochetTowerCombatTask;
 
     @BeforeEach
@@ -39,7 +39,7 @@ class RicochetTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    void testStartTriggersIdleEvent() {
+    public void testStartTriggersIdleEvent() {
         Entity entity = createRicochetTower();
         EventListener0 idleListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -53,7 +53,7 @@ class RicochetTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    void testUpdateTowerStateWithTargetInRange() {
+    public void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createRicochetTower();
         entity.setPosition(10, 10);
 
@@ -80,7 +80,7 @@ class RicochetTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    void testUpdateTowerStateWithTargetNotInRange() {
+    public void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createRicochetTower();
         entity.setPosition(10, 10);
 

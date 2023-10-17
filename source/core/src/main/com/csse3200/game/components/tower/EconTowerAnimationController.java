@@ -1,9 +1,7 @@
 package com.csse3200.game.components.tower;
 
-import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Listens for events relevant to a weapon tower state.
@@ -16,11 +14,6 @@ public class EconTowerAnimationController extends Component {
     // Animation name constants
     private static final String ECO_MOVE = "move1";
     private static final String ECO_IDLE = "idle";
-
-    private static final String PING = "sounds/towers/eco_tower_ping.mp3";
-
-    private final Sound ping = ServiceLocator.getResourceService().getAsset(
-            PING, Sound.class);
 
     AnimationRenderComponent animator;
 
@@ -43,8 +36,7 @@ public class EconTowerAnimationController extends Component {
         animator.startAnimation(ECO_IDLE);
     }
 
-    void animateMove() { animator.startAnimation(ECO_MOVE);
-    ping.play();}
+    void animateMove() { animator.startAnimation(ECO_MOVE); }
 
 
 }

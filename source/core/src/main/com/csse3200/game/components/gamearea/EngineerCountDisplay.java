@@ -1,10 +1,8 @@
 package com.csse3200.game.components.gamearea;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
@@ -59,25 +57,20 @@ public class EngineerCountDisplay extends UIComponent {
         table.add(engineerTb).width(engineerTb.getWidth() * 0.5f).height(engineerTb.getHeight() * 0.5f);
         stage.addActor(table);
 
-        // Animate the engineer count label
-        engineerTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 145f);
-        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 145,
-                1f, Interpolation.fastSlow)));
+        engineerTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
     }
 
     /**
      * Updates the engineer count on the UI component
      */
     public void updateCount() {
-        if (engineerTb != null) { // fix for null pointer exception
-            int currentCount = ServiceLocator.getGameEndService().getEngineerCount();
-            String text = String.format("%d", currentCount);
-            engineerTb.getLabel().setText(text);
-            if (currentCount < ServiceLocator.getGameEndService().getThreshold()) {
+        int currentCount = ServiceLocator.getGameEndService().getEngineerCount();
+        String text = String.format("%d", currentCount);
+        engineerTb.getLabel().setText(text);
+        if (currentCount < ServiceLocator.getGameEndService().getThreshold()) {
 //            engineerTb.addAction(Actions.color(Color.RED, 0.5f, Interpolation.swingIn));
-                engineerTb.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(0.5f),
-                        Actions.fadeIn(0.5f))));
-            }
+            engineerTb.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(0.5f),
+                    Actions.fadeIn(0.5f))));
         }
     }
 

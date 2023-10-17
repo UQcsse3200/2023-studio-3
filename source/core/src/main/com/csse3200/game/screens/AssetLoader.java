@@ -1,17 +1,13 @@
 package com.csse3200.game.screens;
-
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class AssetLoader {
-    private static final Set<String> loadedAssets = new HashSet<>();
     // Define your asset file paths here
     public static final String[] textures = {
             "images/desert_bg.png",
@@ -89,8 +85,7 @@ public class AssetLoader {
             "images/highlight_tile.png",
             "images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png",
             "images/green_tile.png",
-            "images/red_tile.png",
-            "images/HelpScreen/hs.jpg"
+            "images/red_tile.png"
     };
 
     public static final String[] textureAtlases = {
@@ -141,7 +136,6 @@ public class AssetLoader {
     };
 
     public static final String[] Sounds = {
-            "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
             "sounds/Impact4.ogg",
             "sounds/economy/click.wav",
             "sounds/economy/click_1.wav",
@@ -242,13 +236,5 @@ public class AssetLoader {
     public static Music getMusic(String assetPath) {
         return ServiceLocator.getResourceService().getAsset(assetPath, Music.class);
     }
-
-    public static boolean areAllAssetsLoaded() {
-        ResourceService resourceService = ServiceLocator.getResourceService();
-
-        return loadedAssets.containsAll(Arrays.asList(textures)) &&
-                loadedAssets.containsAll(Arrays.asList(textureAtlases)) &&
-                loadedAssets.containsAll(Arrays.asList(Sounds)) &&
-                loadedAssets.containsAll(Arrays.asList(music));
-    }
 }
+

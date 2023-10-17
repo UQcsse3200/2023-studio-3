@@ -1,9 +1,7 @@
 package com.csse3200.game.components.tower;
 
-import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
-import com.csse3200.game.services.ServiceLocator;
 
 /**
  * This class listens to events relevant to DroidTower entity's state and plays the animation when one
@@ -11,11 +9,6 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class FireworksTowerAnimationController extends Component {
     private AnimationRenderComponent animator;
-
-    private static final String FIRE_SINGLE_SFX = "sounds/towers/5.56_single_shot.mp3";
-
-    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
-            FIRE_SINGLE_SFX, Sound.class);
 
     /**
      * Creation call for a DroidAnimationController, fetches the animationRenderComponent that this controller will
@@ -37,7 +30,6 @@ public class FireworksTowerAnimationController extends Component {
      */
     void animateAttack() {
         animator.startAnimation("Attack");
-        fireSingleSound.play();
     }
 
 

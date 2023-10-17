@@ -1,6 +1,5 @@
 package com.csse3200.game.components.tasks;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
@@ -11,8 +10,6 @@ import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.GameTime;
 
-
-/// THIS CODE IS REDUNDANT ///
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -100,18 +97,10 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     }
 
     private void dropCurrency() {
-        float randomValue = MathUtils.random(0,1);
-        Entity currency;
-        if (randomValue <= 0.1f) {
-            currency = DropFactory.createCrystalDrop();
 
-        }
-        else {
-            currency = DropFactory.createScrapDrop();
-
-        }
-        currency.setPosition(mobPosition.x,mobPosition.y);
-        ServiceLocator.getEntityService().register(currency);
+        Entity scrap = DropFactory.createScrapDrop();
+        scrap.setPosition(mobPosition.x,mobPosition.y);
+        ServiceLocator.getEntityService().register(scrap);
 
     }
 

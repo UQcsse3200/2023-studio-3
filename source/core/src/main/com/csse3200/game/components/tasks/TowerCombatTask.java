@@ -3,6 +3,7 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -56,6 +57,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
      */
     public TowerCombatTask(int priority, float maxRange) {
+
         this.priority = priority;
         this.maxRange = maxRange;
         this.fireRateInterval = 1;
@@ -180,7 +182,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
     private void changeFireRateInterval(int newInterval) {
-        logger.info(String.format("Changing fire rate to: %d", newInterval));
+        logger.info("Changing fire rate to: %d", newInterval);
         fireRateInterval = 1 / ((float) newInterval / 5);
     }
 

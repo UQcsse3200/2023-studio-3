@@ -89,7 +89,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         // Restrictions can be added to the arrays i.e. map == "Forest" && level == 1 using for loop
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
-
+//=======
 //        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
         backButton = new TextButton("Back", skin);
         backButton.addListener(new ClickListener() {
@@ -124,7 +124,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                     towers.add(t);
                 }
                 ServiceLocator.setTowerTypes(towers);;
-                game.setScreen(GdxGame.ScreenType.LOAD_SCREEN);
+                game.setScreen(GdxGame.ScreenType.MAIN_GAME);
             }
         });
 

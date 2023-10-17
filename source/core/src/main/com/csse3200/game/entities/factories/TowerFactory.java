@@ -1,7 +1,9 @@
 package com.csse3200.game.entities.factories;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.csse3200.game.components.EffectComponent;
+import com.csse3200.game.components.EffectsComponent;
 import com.csse3200.game.components.tasks.DroidCombatTask;
 import com.csse3200.game.components.tasks.TNTTowerCombatTask;
 import com.csse3200.game.components.tasks.*;
@@ -21,24 +23,28 @@ import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.physics.components.PhysicsComponent;
 import com.csse3200.game.files.FileLoader;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import java.util.HashSet;
+import com.csse3200.game.input.UpgradeUIComponent;import java.util.HashSet;
 import java.util.Set;
+
 
 /**
  * Factory to create a tower entity.
  *
  * Predefined tower properties are loaded from a config stored as a json file and should have
- * the properties stores in 'BaseTowerConfigs'.
+ * the properties stores in 'baseTowerConfigs'.
  */
 public class TowerFactory {
+    // Define a set to keep track of occupied lanes
+    private static final Set<Integer> occupiedLanes = new HashSet<>();
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
     private static final int TNT_TOWER_RANGE = 6;
     private static final int TNT_KNOCK_BACK_FORCE = 10;
+    private static final String WALL_IMAGE = "images/towers/wall_tower.png";
+    private static final String RESOURCE_TOWER = "images/towers/mine_tower.png";
     private static final String TURRET_ATLAS = "images/towers/turret01.atlas";
     private static final String FIRE_TOWER_ATLAS = "images/towers/fire_tower_atlas.atlas";
     private static final String STUN_TOWER_ATLAS = "images/towers/stun_tower.atlas";
@@ -99,28 +105,28 @@ public class TowerFactory {
     private static final float RICOCHET_TOWER_ANIM_ATTACK_SPEED = 0.12f;
     private static final String PIERCE_TOWER_ALERT_ANIM ="Warning";
     private static final float PIERCE_TOWER_ANIM_ATTACK_SPEED = 0.12f;
-    // private static final int INCOME_INTERVAL = 300;
+    private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
     private static final String ECO_MOVE = "move1";
     private static final String ECO_IDLE = "idle";
     private static final float ECO_IDLE_SPEED = 0.3f;
 
-    private static final BaseTowerConfigs configs =
-            FileLoader.readClass(BaseTowerConfigs.class, "configs/tower.json");
-
+    private static final baseTowerConfigs configs =
+            FileLoader.readClass(baseTowerConfigs.class, "configs/tower.json");
     /**
      * Creates an income tower that generates scrap
      * @return income
      */
     public static Entity createIncomeTower() {
         Entity income = createBaseTower();
-        IncomeTowerConfig config = configs.getIncome();
+        IncomeTowerConfig config = configs.income;
 
         // Create the CurrencyIncomeTask and add it to the AITaskComponent
-        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.getIncomeRate());
+        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.incomeRate);
 
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);
+
 
         // Contains all the animations that the tower will have
         AnimationRenderComponent animator =
@@ -131,10 +137,10 @@ public class TowerFactory {
         animator.addAnimation(ECO_MOVE, ECO_IDLE_SPEED, Animation.PlayMode.NORMAL);
 
         income
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
-                .addComponent(new IncomeUpgradeComponent(config.getIncomeRate()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new IncomeUpgradeComponent(config.incomeRate))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new EconTowerAnimationController());
@@ -142,13 +148,9 @@ public class TowerFactory {
         return income;
     }
 
-    /**
-     * Create wall tower
-     * @return entity
-     */
     public static Entity createWallTower() {
         Entity wall = createBaseTower();
-        WallTowerConfig config = configs.getWall();
+        WallTowerConfig config = configs.wall;
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new WallTowerDestructionTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
 
@@ -162,9 +164,9 @@ public class TowerFactory {
 
         wall
                 .addComponent(aiTaskComponent)
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
                 .addComponent(animator)
                 .addComponent(new WallTowerAnimationController());
 
@@ -172,6 +174,7 @@ public class TowerFactory {
         PhysicsUtils.setScaledCollider(wall, 0.5f, 0.5f);
         return wall;
     }
+
 
     /**
      * Create a type of TNT that explodes once it detects a mob within a certain range.
@@ -184,7 +187,7 @@ public class TowerFactory {
                 .setLayer(PhysicsLayer.NONE)
                 .setSensor(true);
         TNTTower.getComponent(ColliderComponent.class).setSensor(true);
-        TNTTowerConfigs config = configs.getTNTTower();
+        TNTTowerConfigs config = configs.TNTTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));
@@ -199,16 +202,15 @@ public class TowerFactory {
         animator.addAnimation(EXPLODE_ANIM,EXPLODE_SPEED, Animation.PlayMode.NORMAL);
 
         TNTTower
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
                 .addComponent(new TNTDamageComponent(PhysicsLayer.NPC,TNT_KNOCK_BACK_FORCE,TNT_TOWER_RANGE))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TNTAnimationController());
 
         TNTTower.getComponent(AnimationRenderComponent.class).scaleEntity();
-        TNTTower.removeComponent(TowerUpgraderComponent.class);
 
         return TNTTower;
     }
@@ -220,8 +222,8 @@ public class TowerFactory {
      * @return entity
      */
     public static Entity createDroidTower() {
-        Entity droidTower = createBaseTower();
-        DroidTowerConfig config = configs.getDroidTower();
+        Entity DroidTower = createBaseTower();
+        DroidTowerConfig config = configs.DroidTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new DroidCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -239,15 +241,17 @@ public class TowerFactory {
         animator.addAnimation(GO_UP,DROID_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(GO_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);
 
-        droidTower
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+
+
+        DroidTower
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
                 .addComponent(new DroidAnimationController())
                 .addComponent(animator)
                 .addComponent(aiTaskComponent);
 
-        return droidTower;
+        return DroidTower;
     }
 
 
@@ -258,7 +262,7 @@ public class TowerFactory {
      */
     public static Entity createWeaponTower() {
         Entity weapon = createBaseTower();
-        WeaponTowerConfig config = configs.getWeapon();
+        WeaponTowerConfig config = configs.weapon;
 
         // AiTaskComponent will run the tower task which carries out detection of targets and trigger events
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -275,14 +279,16 @@ public class TowerFactory {
         animator.addAnimation(FIRE_ANIM, (2*FIRE_SPEED), Animation.PlayMode.LOOP);
 
         weapon
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
 
         return weapon;
+
     }
 
     /**
@@ -291,7 +297,7 @@ public class TowerFactory {
      */
     public static Entity createFireTower() {
         Entity fireTower = createBaseTower();
-        FireTowerConfig config = configs.getFireTower();
+        FireTowerConfig config = configs.fireTower;
 
         //Component that handles triggering events and animations
         AITaskComponent aiTaskComponent = new AITaskComponent()
@@ -307,13 +313,12 @@ public class TowerFactory {
         animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         fireTower
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent(new CostComponent(config.cost))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireTowerAnimationController());
-
         fireTower.setScale(1.25f, 1.25f);
         return fireTower;
     }
@@ -324,7 +329,7 @@ public class TowerFactory {
      */
     public static Entity createStunTower() {
         Entity stunTower = createBaseTower();
-        StunTowerConfig config = configs.getStunTower();
+        StunTowerConfig config = configs.stunTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new StunTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -334,13 +339,13 @@ public class TowerFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));
         animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);
-        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, (STUN_TOWER_ATTACK_SPEED+ 0.20f), Animation.PlayMode.LOOP);
+        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, ((STUN_TOWER_ATTACK_SPEED+ 0.20f)), Animation.PlayMode.LOOP);
         animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);
 
         stunTower
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
+                .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new StunTowerAnimationController());
@@ -355,10 +360,11 @@ public class TowerFactory {
      */
     public static Entity createFireworksTower() {
         Entity fireworksTower = createBaseTower();
-        FireworksTowerConfig config = configs.getFireworksTower();
+        FireworksTowerConfig config = configs.fireworksTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
+
 
         AnimationRenderComponent animator =
                 new AnimationRenderComponent(
@@ -369,9 +375,8 @@ public class TowerFactory {
         animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);
 
         fireworksTower
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireworksTowerAnimationController());
@@ -385,7 +390,7 @@ public class TowerFactory {
      */
     public static Entity createPierceTower() {
         Entity pierceTower = createBaseTower();
-        PierceTowerConfig config = configs.getPierceTower();
+        PierceTowerConfig config = configs.pierceTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -399,12 +404,12 @@ public class TowerFactory {
         animator.addAnimation(PIERCE_TOWER_DEATH_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(PIERCE_TOWER_ALERT_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);
 
+
         pierceTower
                 .addComponent(animator)
                 .addComponent(new PierceTowerAnimationController())
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new CostComponent(config.getCost()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
 
         pierceTower.setScale(1.5f, 1.5f);
@@ -417,7 +422,7 @@ public class TowerFactory {
      */
     public static Entity createRicochetTower() {
         Entity ricochetTower = createBaseTower();
-        RicochetTowerConfig config = configs.getRicochetTower();
+        RicochetTowerConfig config = configs.ricochetTower;
 
         AITaskComponent aiTaskComponent = new AITaskComponent()
                 .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));
@@ -427,13 +432,11 @@ public class TowerFactory {
         animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,(2*RICOCHET_TOWER_ANIM_ATTACK_SPEED),Animation.PlayMode.LOOP);
         animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);
         animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);
-
         ricochetTower
                 .addComponent(animator)
                 .addComponent(new RicochetTowerAnimationController())
-                .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent(new CostComponent(config.getCost()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
                 // ADD ANIMATION COMPONENTS
 
@@ -448,6 +451,7 @@ public class TowerFactory {
     public static Entity createBaseTower() {
         // we're going to add more components later on
 
+
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
                 .addComponent(new EffectComponent(false))
@@ -461,5 +465,28 @@ public class TowerFactory {
         tower.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         tower.getComponent(ColliderComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         return tower;
+    }
+    public static Entity createAndPlaceTower(int lane) {
+        if (isLaneOccupied(lane)) {
+            System.out.println("Lane " + lane + " is already occupied by a tower");
+            return null;
+        }
+
+        Entity tower = createBaseTower();
+        // Customize the tower creation here based on the chosen tower type
+
+        // Add the lane to the set of occupied lanes
+        occupiedLanes.add(lane);
+
+        return tower;
+    }
+
+    /**
+     * Checks if a lane is already occupied by a tower.
+     * @param lane The lane to check.
+     * @return True if the lane is occupied, false otherwise.
+     */
+    public static boolean isLaneOccupied(int lane) {
+        return occupiedLanes.contains(lane);
     }
 }

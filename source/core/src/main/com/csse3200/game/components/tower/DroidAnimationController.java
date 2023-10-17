@@ -1,6 +1,5 @@
 package com.csse3200.game.components.tower;
 
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.components.ProjectileEffects;
@@ -16,11 +15,6 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class DroidAnimationController extends Component {
     private AnimationRenderComponent animator;
-
-    private static final String FIRE_SINGLE_SFX = "sounds/towers/5.56_single_shot.mp3";
-
-    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
-            FIRE_SINGLE_SFX, Sound.class);
 
     /**
      * Creation call for a DroidAnimationController, fetches the animationRenderComponent that this controller will
@@ -72,7 +66,6 @@ public class DroidAnimationController extends Component {
      */
     void animateAttackUp() {
         animator.startAnimation("attackUp");
-        fireSingleSound.play();
     }
 
     /**
@@ -81,7 +74,6 @@ public class DroidAnimationController extends Component {
      */
     void animateAttackDown() {
         animator.startAnimation("attackDown");
-        fireSingleSound.play();
     }
 
     /**

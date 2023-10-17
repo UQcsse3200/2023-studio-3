@@ -1,6 +1,5 @@
 package com.csse3200.game.components.tasks.bosstask;
 
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
@@ -9,7 +8,6 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
-import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.rendering.AnimationRenderComponent;
@@ -188,6 +186,4 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
     public int getPriority() {
         return PRIORITY;
     }
-
-
 }
