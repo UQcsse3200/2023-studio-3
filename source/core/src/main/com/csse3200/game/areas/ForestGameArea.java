@@ -202,10 +202,14 @@ public class ForestGameArea extends GameArea {
           "sounds/mobBoss/patrickThunder.mp3",
           "sounds/mobBoss/patrickHit.mp3",
           "sounds/mobBoss/spawnDemonSlime.mp3",
+          "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3",
+          "sounds/towers/5.56_single_shot.mp3",
+          "sounds/towers/explosion.mp3",
+          "sounds/towers/eco_tower_ping.mp3",
+          "sounds/towers/ar15_single_shot_far.mp3",
           "sounds/mobs/skeletonHit.mp3",
           "sounds/mobs/coatAttack.mp3",
           "sounds/mobs/archerArrow.mp3"
-
   };
   private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
@@ -245,6 +249,37 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
+   * Cases to spawn a wave
+   */
+//  private void spawnWave() {
+//    wave++;
+//    switch (wave) {
+//      case 1:
+//      case 2:
+//        spawnFireWorm();
+//        spawnDragonKnight();
+//
+//        break;
+//      case 3:
+//        spawnSkeleton();
+//        spawnWizard();
+//        // mobBoss2 = spawnMobBoss2();
+//        break;
+//      case 4:
+//        spawnWaterQueen();
+//        spawnWaterSlime();
+//        // mobBoss2 = spawnMobBoss2();
+//
+//        break;
+//      case 5:
+//        spawnDemonBoss();
+//      default:
+//        // Handle other wave scenarios if needed
+//        break;
+//    }
+//  }
+
+  /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
    */
   @Override
@@ -268,9 +303,10 @@ public class ForestGameArea extends GameArea {
     spawnScrap();
     spawnGapScanners();
   }
-  
+
   private void displayUI() {
     Entity ui = new Entity();
+//    ui.addComponent(new GameAreaDisplay("Box Forest"));  TODO: This should be the level name?
     ui.addComponent(ServiceLocator.getGameEndService().getDisplay());
     ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());
     spawnEntity(ui);
@@ -333,6 +369,9 @@ public class ForestGameArea extends GameArea {
   public void spawnMob(String entity, GridPoint2 randomPos, int health) {
     Entity mob;
     switch (entity) {
+      case "Xeno":
+        mob = NPCFactory.createXenoGrunt(health);
+        break;
       case "SplittingWaterSlime":
         mob = NPCFactory.createSplittingWaterSlime(health);
         break;
@@ -357,6 +396,7 @@ public class ForestGameArea extends GameArea {
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
+
       case "Coat":
         mob = NPCFactory.createCoat(health);
         break;
@@ -369,15 +409,7 @@ public class ForestGameArea extends GameArea {
       case "ArcaneArcher":
         mob = NPCFactory.createDodgingArcaneArcher(health);
         break;
-      case "SplittingRocky":
-        mob = NPCFactory.createSplittingRocky(health);
-        break;
-      case "Necromancer":
-        mob = NPCFactory.createNecromancer(health);
-        break;
-      case "DeflectFireWizard":
-        mob = NPCFactory.createDeflectFireWizard(health);
-        break;
+
       case "PatrickBoss":
         mob = MobBossFactory.createPatrickBoss(health);
         break;
@@ -394,6 +426,7 @@ public class ForestGameArea extends GameArea {
     }
     spawnEntityAt(mob, randomPos, true, false);
   }
+
 
   private void loadAssets() {
     logger.debug("Loading assets");

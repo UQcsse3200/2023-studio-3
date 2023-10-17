@@ -55,7 +55,13 @@ public class TowerFactoryTest {
     private static final String[] sounds = {
             "sounds/towers/gun_shot_trimmed.mp3",
             "sounds/towers/deploy.mp3",
-            "sounds/towers/stow.mp3"
+            "sounds/towers/stow.mp3",
+            "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3",
+            "sounds/towers/5.56_single_shot.mp3",
+            "sounds/towers/explosion.mp3",
+            "sounds/towers/eco_tower_ping.mp3",
+            "sounds/towers/ar15_single_shot_far.mp3"
+
     };
 
     @BeforeEach
