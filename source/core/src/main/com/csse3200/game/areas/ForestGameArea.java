@@ -394,7 +394,6 @@ public class ForestGameArea extends GameArea {
       case "IceBoss":
         mob = MobBossFactory.createIceBoss(health);
         break;
-
       case "Coat":
         mob = NPCFactory.createCoat(health);
         break;
@@ -407,7 +406,6 @@ public class ForestGameArea extends GameArea {
       case "ArcaneArcher":
         mob = NPCFactory.createDodgingArcaneArcher(health);
         break;
-
       case "PatrickBoss":
         mob = MobBossFactory.createPatrickBoss(health);
         break;
@@ -416,13 +414,8 @@ public class ForestGameArea extends GameArea {
         break;
     }
 
-    if (entity.contains("Boss")) {
-      mob.scaleHeight(5f);
-      mob.scaleWidth(5f);
-    } else {
-      mob.setScale(1.5f, 1.5f);
-    }
     spawnEntityAt(mob, randomPos, true, false);
+    
   }
 
 
