@@ -71,6 +71,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         animation = iceBaby.getComponent(AnimationRenderComponent.class);
         currentPos = iceBaby.getPosition();
         iceBaby.getComponent(PhysicsMovementComponent.class).setSpeed(ICEBABY_SPEED);
+        iceBaby.getComponent(PhysicsMovementComponent.class).setNormalSpeed(ICEBABY_SPEED);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
