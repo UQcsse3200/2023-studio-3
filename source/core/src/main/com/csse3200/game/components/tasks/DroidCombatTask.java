@@ -105,27 +105,13 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         }
 
         switch (towerState) {
-            case WALK -> {
-                handleWalkState();
-            }
-            case IDLE -> {
-                handleIdleState();
-            }
-            case SHOOT_DOWN -> {
-                handleShootDownState();
-            }
-            case SHOOT_UP -> {
-                handleShootUpState();
-            }
-            case DOWN -> {
-                handleDownState();
-            }
-            case UP -> {
-                handleUpState();
-            }
-            default -> {        // DIE
-                handleDieState();
-            }
+            case WALK -> handleWalkState();
+            case IDLE -> handleIdleState();
+            case SHOOT_DOWN -> handleShootDownState();
+            case SHOOT_UP -> handleShootUpState();
+            case DOWN -> handleDownState();
+            case UP -> handleUpState();
+            default -> handleDieState();       // DIE
         }
     }
 
@@ -138,6 +124,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return this.towerState;
     }
 
+    /**
+     * Function for setting the tower's state.
+     * @param state The new state of this tower.
+     */
     public void setState(STATE state) {
         this.towerState = state;
     }

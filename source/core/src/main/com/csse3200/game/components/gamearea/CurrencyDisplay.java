@@ -61,12 +61,12 @@ public class CurrencyDisplay extends UIComponent {
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
 
-        scrapsTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 205);
-        scrapsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20, Gdx.graphics.getHeight() - 205,
+        scrapsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 205f);
+        scrapsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 205f,
                 1f, Interpolation.fastSlow)));
 
-        crystalsTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 268);
-        crystalsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20, Gdx.graphics.getHeight() - 268,
+        crystalsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 268f);
+        crystalsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 268f,
                 1f, Interpolation.fastSlow)));
     }
 

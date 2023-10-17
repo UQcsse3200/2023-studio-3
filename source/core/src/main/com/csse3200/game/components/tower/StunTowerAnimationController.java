@@ -18,8 +18,6 @@ public class StunTowerAnimationController extends Component {
     private static final String ATTACK_ANIM = "attack";
     private static final String DEATH_ANIM = "death";
 
-    //further sounds can be added for the tower attacks/movement
-
     private static final String FIRE_SINGLE_SFX = "sounds/towers/ar15_single_shot_far.mp3";
 
     private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
