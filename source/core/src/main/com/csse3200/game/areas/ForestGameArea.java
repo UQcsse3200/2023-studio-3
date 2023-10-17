@@ -364,6 +364,12 @@ public class ForestGameArea extends GameArea {
         break;
     }
 
+    if (entity.contains("Boss")) {
+      mob.scaleHeight(5f);
+      mob.scaleWidth(5f);
+    } else {
+      mob.setScale(1.5f, 1.5f);
+    }
     spawnEntityAt(mob, randomPos, true, false);
     
   }
