@@ -169,9 +169,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     animate();
                     runFlag = false;
                 }
-                if (!enemyDetected() && melee) {
-                    runFlag = true;
-                }
                 if (melee && enemyDetected() && gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
                     changeState(State.ATTACK);
                     meleeAttackFlag = true;
@@ -193,11 +190,8 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     rangeAttackFlag = false;
                 }
                 if (animation.isFinished()) {
-                    movementTask.start();
                     changeState(State.RUN);
-                    if (!melee) {
-                        runFlag = true;
-                    }
+                    runFlag = true;
                 }
             }
             case DODGE -> {
