@@ -161,7 +161,9 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
      * @return true if mobs are present and false otherwise.
      */
     public boolean isTargetVisible() {
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     private void changeFireRateInterval(int newInterval) {
