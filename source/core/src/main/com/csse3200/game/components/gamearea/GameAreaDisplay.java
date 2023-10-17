@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
  * Displays the name of the current game area.
  */
 public class GameAreaDisplay extends UIComponent {
-  private static final Logger logger = LoggerFactory.getLogger(GameAreaDisplay.class);
   private static final String DEFAULT_STYLE = "default";
   private String gameAreaName = "";
   private Label title;
