@@ -21,7 +21,7 @@ public class CurrencyTask extends DefaultTask implements PriorityTask {
     private long endTime;
     private int interval;
     private final Scrap scrap = new Scrap(); // currency to update
-    private final int currencyAmount = 30; // amount of currency to update
+    private final int currencyAmount = 10; // amount of currency to update
     private static final String IDLE = "idleStartEco";
     private static final String MOVE = "moveStartEco";
     private static final String DEATH = "deathStartEco";

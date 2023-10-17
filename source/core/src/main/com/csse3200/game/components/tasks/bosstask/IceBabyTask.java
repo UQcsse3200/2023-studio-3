@@ -9,6 +9,7 @@ import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
@@ -71,6 +72,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         animation = iceBaby.getComponent(AnimationRenderComponent.class);
         currentPos = iceBaby.getPosition();
         iceBaby.getComponent(PhysicsMovementComponent.class).setSpeed(ICEBABY_SPEED);
+        iceBaby.getComponent(PhysicsMovementComponent.class).setNormalSpeed(ICEBABY_SPEED);
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
@@ -114,6 +116,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
             animate();
             if (animation.isFinished()) {
                 iceBaby.setFlagForDelete(true);
+                dropCurrency();
             }
         }
 
@@ -264,6 +267,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         Entity newMob = NPCFactory.createSplittingWaterSlime(80);
         newMob.setPosition((float) (iceBaby.getPosition().x + 0.5), (float) (iceBaby.getPosition().y + 0.5));
         ServiceLocator.getEntityService().register(newMob);
+        ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
     }
 
     /**
@@ -315,6 +319,22 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     @Override
     public int getPriority() {
         return PRIORITY;
+    }
+
+
+    private void dropCurrency() {
+        // Create and register 5 crystal drops around the bossPosition
+        for (int i = 0; i < 5; i++) {
+            Entity crystal = DropFactory.createCrystalDrop();
+
+            // Calculate positions around the bossPosition
+            float offsetX = MathUtils.random(-1f, 1f); // Adjust the range as needed
+            float offsetY = MathUtils.random(-1f, 1f);
+            float dropX = owner.getEntity().getPosition().x + offsetX;
+            float dropY = owner.getEntity().getPosition().y + offsetY;
+            crystal.setPosition(dropX, dropY);
+            ServiceLocator.getEntityService().register(crystal);
+        }
     }
 
 }
