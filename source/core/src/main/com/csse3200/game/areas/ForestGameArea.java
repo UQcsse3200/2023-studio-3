@@ -337,19 +337,6 @@ public class ForestGameArea extends GameArea {
 
   }
 
-  //private Entity spawnPlayer() {
-  //  Entity newPlayer = PlayerFactory.createPlayer();
-  //  spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
- //  return newPlayer;
- // }
-
-  // Spawn player at a specific position
- // private Entity spawnPlayer(GridPoint2 position) {
-  //  Entity newPlayer = PlayerFactory.createPlayer();
-//   spawnEntityAt(newPlayer, position, true, true);
- //   return newPlayer;
- // }
-
   /**
    * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
    * @param entity mob to be spawned
