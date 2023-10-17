@@ -21,6 +21,7 @@ public class UIElementsDisplay extends UIComponent {
     private final Table buttonTable = new Table();
     private TextButton remainingMobsButton;
     private TextButton timerButton;
+    private long time = 0;
 
     @Override
     public void create() {
@@ -98,7 +99,12 @@ public class UIElementsDisplay extends UIComponent {
                     createTimerButton();
                 }
                 timerButton.setText("Next wave in: " + finalTime);
+                time = ServiceLocator.getTimeSource().getTime();
             } else {
+                if (ServiceLocator.getTimeSource().getTime() <  time + 2000) {
+                    ServiceLocator.getMapService().shakeCameraMap();
+                    ServiceLocator.getMapService().shakeCameraGrid();
+                }
                 remainingMobsButton.setDisabled(true);
                 timerButton.addAction(new SequenceAction(Actions.fadeOut(1f), Actions.removeActor()));
                 stage.act();
