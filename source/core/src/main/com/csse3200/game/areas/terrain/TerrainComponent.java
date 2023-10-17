@@ -16,8 +16,6 @@ import com.csse3200.game.rendering.RenderComponent;
 import com.csse3200.game.services.CurrencyService;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Render a tiled terrain for a given tiled map and orientation. A terrain is a map of tiles that

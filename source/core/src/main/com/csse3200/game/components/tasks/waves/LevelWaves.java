@@ -1,6 +1,7 @@
 package com.csse3200.game.components.tasks.waves;
 
 import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
@@ -14,7 +15,6 @@ public class LevelWaves extends Entity {
     private float spawnDelay;
     private GameTime gameTime;
     private long startTime;
-    private Random rand = new Random();
     private int currentRandom = 0;
     private int previousRandom = 0;
     private int mobIndex;
@@ -63,7 +63,7 @@ public class LevelWaves extends Entity {
     public void spawnWave() {
         if (gameTime.getTime() >= startTime + spawnDelay * 1000) {
             do {
-                currentRandom = rand.nextInt(0, ServiceLocator.getMapService().getHeight());
+                currentRandom = MathUtils.random(0, ServiceLocator.getMapService().getHeight());
             } while (currentRandom == previousRandom);
             ServiceLocator.getWaveService().setNextLane(currentRandom);
             GridPoint2 randomPos = new GridPoint2(19, currentRandom);

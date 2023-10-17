@@ -17,10 +17,10 @@ public class EconTowerAnimationController extends Component {
     private static final String ECO_MOVE = "move1";
     private static final String ECO_IDLE = "idle";
 
-    private static final String PING = "sounds/towers/eco_tower_ping.mp3";
+    private static final String PING_PATH = "sounds/towers/eco_tower_ping.mp3";
 
     private final Sound ping = ServiceLocator.getResourceService().getAsset(
-            PING, Sound.class);
+            PING_PATH, Sound.class);
 
     AnimationRenderComponent animator;
 

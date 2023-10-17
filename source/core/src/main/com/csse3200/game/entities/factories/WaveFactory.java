@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
@@ -15,70 +16,73 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
 
-
 public class WaveFactory {
-  /**
-   * Create a Wave entity.
-   * Each wave class represents a single wave, then they are appended to a level.
-   * Cases can be written in here to set what happens for each level.
-   *
-   * @return entity
-   */
+  // CONSTANTS
+  private static final String SKELETON = "Skeleton";
+  private static final String COAT = "Coat";
+  private static final String WATER_QUEEN = "WaterQueen";
+  private static final String SPLITTING_WATER_SLIME = "SplittingWaterSlime";
+  private static final String ARCANE_ARCHER = "ArcaneArcher";
+  private static final String WIZARD = "Wizard";
+  private static final String SPLITTING_NIGHT_BORNE = "SplittingNightBorne";
+  private static final String DRAGON_KNIGHT = "DragonKnight";
+  private static final String NECROMANCER = "Necromancer";
+  private static final String SPLITTING_ROCKY = "SplittingRocky";
+  private static final String FIRE_WORM = "FireWorm";
+  private static final String DODGING_DRAGON = "DodgingDragon";
+  private static final String DEFLECT_FIRE_WIZARD = "DeflectFireWizard";
+  private static final String ICE_BOSS = "IceBoss";
+  private static final String PATRICK_BOSS = "PatrickBoss";
+  private static final String FIRE_BOSS = "FireBoss";
 
   private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
-  private static Random rand = new Random();
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
-      "Skeleton", "Coat", "DragonKnight", "Necromancer"
+          SKELETON, COAT, DRAGON_KNIGHT, NECROMANCER
   ));
 
-  private static final ArrayList<ArrayList<String>> lvl1Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Coat"
-      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen"
-      )), new ArrayList<>(Arrays.asList("WaterQueen", "SplittingWaterSlime"
-      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "SplittingWaterSlime"
-      ))
+  private static final ArrayList<ArrayList<String>> LVL1_STRUCTURE = new ArrayList<>(Arrays.asList(
+          new ArrayList<>(Arrays.asList(COAT
+          )), new ArrayList<>(Arrays.asList(COAT, WATER_QUEEN
+          )), new ArrayList<>(Arrays.asList(WATER_QUEEN, SPLITTING_WATER_SLIME
+          )), new ArrayList<>(Arrays.asList(COAT, WATER_QUEEN, SPLITTING_WATER_SLIME
+          ))
   ));
 
-  private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
-    new ArrayList<>(Arrays.asList("Skeleton"
-    )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
-      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
-      )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
-      )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
-      )), new ArrayList<>(Arrays.asList("ArcaneArcher", "SplittingNightBorne", "Wizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher", "Wizard", "SplittingNightBorne"
-      ))
+  private static final ArrayList<ArrayList<String>> LVL2_STRUCTURE = new ArrayList<>(Arrays.asList(
+          new ArrayList<>(Arrays.asList(SKELETON
+          )), new ArrayList<>(Arrays.asList(SKELETON, ARCANE_ARCHER
+          )), new ArrayList<>(Arrays.asList(SKELETON, WIZARD
+          )), new ArrayList<>(Arrays.asList(SKELETON, SPLITTING_NIGHT_BORNE
+          )), new ArrayList<>(Arrays.asList(WIZARD, SPLITTING_NIGHT_BORNE
+          )), new ArrayList<>(Arrays.asList(SPLITTING_NIGHT_BORNE, SKELETON
+          )), new ArrayList<>(Arrays.asList(WIZARD, SPLITTING_NIGHT_BORNE
+          )), new ArrayList<>(Arrays.asList(ARCANE_ARCHER, SPLITTING_NIGHT_BORNE, WIZARD
+          )), new ArrayList<>(Arrays.asList(SKELETON, ARCANE_ARCHER, WIZARD, SPLITTING_NIGHT_BORNE
+          ))
   ));
 
-  private static final ArrayList<ArrayList<String>> lvl3Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Necromancer"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "SplittingRocky", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("SplittingRocky", "DeflectFireWizard", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "SplittingRocky", "Necromancer", "DodgingDragon", "FireWorm"
-      ))
+  private static final ArrayList<ArrayList<String>> LVL3_STRUCTURE = new ArrayList<>(Arrays.asList(
+          new ArrayList<>(Arrays.asList(NECROMANCER
+          )), new ArrayList<>(Arrays.asList(NECROMANCER, DODGING_DRAGON
+          )), new ArrayList<>(Arrays.asList(NECROMANCER, FIRE_WORM
+          )), new ArrayList<>(Arrays.asList(NECROMANCER, DEFLECT_FIRE_WIZARD
+          )), new ArrayList<>(Arrays.asList(DEFLECT_FIRE_WIZARD, FIRE_WORM
+          )), new ArrayList<>(Arrays.asList(DODGING_DRAGON, FIRE_WORM
+          )), new ArrayList<>(Arrays.asList(DODGING_DRAGON, NECROMANCER
+          )), new ArrayList<>(Arrays.asList(FIRE_WORM, NECROMANCER
+          )), new ArrayList<>(Arrays.asList(DEFLECT_FIRE_WIZARD, NECROMANCER
+          )), new ArrayList<>(Arrays.asList(DODGING_DRAGON, DEFLECT_FIRE_WIZARD, NECROMANCER
+          )), new ArrayList<>(Arrays.asList(FIRE_WORM, NECROMANCER, DODGING_DRAGON
+          )), new ArrayList<>(Arrays.asList(FIRE_WORM, SPLITTING_ROCKY, NECROMANCER
+          )), new ArrayList<>(Arrays.asList(SPLITTING_ROCKY, DEFLECT_FIRE_WIZARD, FIRE_WORM
+          )), new ArrayList<>(Arrays.asList(DEFLECT_FIRE_WIZARD, SPLITTING_ROCKY, NECROMANCER, DODGING_DRAGON, FIRE_WORM
+          ))
   ));
-
-  private static final String BOSS_1 = "IceBoss";
-  private static final String BOSS_2 = "PatrickBoss";
-  private static final String BOSS_3 = "FireBoss";
 
   /**
    * The function will create the waves depending on the level selected by the user.
-   * */
+   */
   public static Entity createWaves() {
-
     int chosenLevel = GameLevelData.getSelectedLevel();
     int difficulty;
     switch (chosenLevel) {
@@ -93,9 +97,7 @@ public class WaveFactory {
     }
 
     LevelWaves level = createLevel(difficulty);
-    AITaskComponent aiComponent =
-        new AITaskComponent()
-            .addTask(new WaveTask());
+    AITaskComponent aiComponent = new AITaskComponent().addTask(new WaveTask());
     return level.addComponent(aiComponent);
   }
 
@@ -136,21 +138,21 @@ public class WaveFactory {
 
     switch (chosenLevel) {
       case 2:
-        boss = BOSS_2;
+        boss = PATRICK_BOSS;
         bossHealth = LVL2_BOSS_BASE_HEALTH;
-        possibleMobs = lvl2Structure;
+        possibleMobs = LVL2_STRUCTURE;
         minMobs = 6;
         break;
       case 3:
-        boss = BOSS_3;
+        boss = FIRE_BOSS;
         bossHealth = LVL3_BOSS_BASE_HEALTH;
-        possibleMobs = lvl3Structure;
+        possibleMobs = LVL3_STRUCTURE;
         minMobs = 8;
         break;
       default:
-        boss = BOSS_1;
+        boss = ICE_BOSS;
         bossHealth = LVL1_BOSS_BASE_HEALTH;
-        possibleMobs = lvl1Structure;
+        possibleMobs = LVL1_STRUCTURE;
         minMobs = 5;
         break;
     }
@@ -171,17 +173,16 @@ public class WaveFactory {
         if (leftToSort == 0) {
           num = minMobs - currentMobs;
         } else {
-          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
+          num = MathUtils.random(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
+          System.out.println(num + " for " + mob + " at wave " + atWave);
           currentMobs += num;
         }
 
         // Calculate the health
-        final int RANGE_BASE_HEALTH = 60;
-        int health = RANGE_BASE_HEALTH;
+          int health = 60;
         if (MELEE_MOBS.contains(mob)) {
           // The base health for the different mobs
-          final int MELEE_BASE_HEALTH = 80;
-          health = MELEE_BASE_HEALTH;
+            health = 80;
         }
         int[] mobStats = {num, health + (atWave * chosenLevel)};
         mobs.put(mob, mobStats);
@@ -208,3 +209,4 @@ public class WaveFactory {
     throw new IllegalStateException("Instantiating static util class");
   }
 }
+

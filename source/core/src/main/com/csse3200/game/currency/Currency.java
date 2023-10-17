@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class Currency {
-
     private static final Logger logger = LoggerFactory.getLogger(Currency.class);
 
     // The logo of the currency
@@ -53,7 +52,7 @@ public abstract class Currency {
      * @param addedAmount The amount the currency will be incremented by.
      */
     public void modify(int addedAmount) {
-        logger.debug("Modifying " + this.getClass().getSimpleName() + "by " + addedAmount);
+        logger.debug(String.format("Modifying %s by %d", this.getClass().getSimpleName(), addedAmount));
         this.amount += addedAmount;
     }
 

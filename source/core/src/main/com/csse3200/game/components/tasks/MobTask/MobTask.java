@@ -129,18 +129,19 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if(mob.getCenterPosition().x <= 1) {
           mob.getComponent(CombatStatsComponent.class).setHealth(0);
-          ServiceLocator.getGameEndService().updateEngineerCount();
+
         }
 
         // death check
         if ((mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag)) {
             // decrement engineer count
             // ! tests failing because of textbox
-
+            ServiceLocator.getGameEndService().updateEngineerCount();
             changeState(State.DEATH);
             animate();
             movementTask.stop();
             deathFlag = true;
+
             
         } else if (deathFlag && animation.isFinished()) {
             ServiceLocator.getWaveService().updateEnemyCount();
@@ -312,17 +313,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
         float randomValue = MathUtils.random(0f,1f);
         logger.info("Random value: " + randomValue);
         Entity currency;
-        if (randomValue <= CRYSTAL_DROP_RATE) {
-            currency = DropFactory.createCrystalDrop();
-            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
-            ServiceLocator.getEntityService().register(currency);
-
-        }
-        else if (randomValue <= SCRAP_DROP_RATE) {
+        if (randomValue <= SCRAP_DROP_RATE && randomValue > CRYSTAL_DROP_RATE) {
             currency = DropFactory.createScrapDrop();
             currency.setPosition(mob.getPosition().x,mob.getPosition().y);
             ServiceLocator.getEntityService().register(currency);
-
+        } else if (randomValue <= CRYSTAL_DROP_RATE) {
+            currency = DropFactory.createCrystalDrop();
+            currency.setPosition(mob.getPosition().x,mob.getPosition().y);
+            ServiceLocator.getEntityService().register(currency);
         }
 
 

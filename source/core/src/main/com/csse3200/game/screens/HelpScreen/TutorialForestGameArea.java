@@ -139,8 +139,6 @@ public class TutorialForestGameArea extends GameArea {
         spawnTerrain();
 
         // Set up infrastructure for end game tracking
-//    player = spawnPlayer();
-
         waves = WaveFactory.createWaves();
         spawnEntity(waves);
         waves.getEvents().addListener("spawnWave", this::spawnMob);

@@ -61,7 +61,7 @@ public class EngineerCountDisplay extends UIComponent {
 
         // Animate the engineer count label
         engineerTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 145f);
-        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 145,
+        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 145f,
                 1f, Interpolation.fastSlow)));
     }
 

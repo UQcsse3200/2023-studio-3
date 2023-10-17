@@ -8,11 +8,14 @@ import com.badlogic.gdx.audio.Music;
 
 import com.csse3200.game.components.ProjectileEffects;
 
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.SecureRandom;
 import java.util.Timer;
 
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
@@ -20,6 +23,13 @@ import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+
+  /* Change below to change the number of ms between spawns of engineers in the case */
+  private static final long ENGINEER_MIN_SPAWN_INTERVAL = 1000;
+
+  private long lastSpawnTime = 0;
+
+  private int wave = 0;
 
   private Timer waveTimer;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
@@ -212,8 +222,6 @@ public class ForestGameArea extends GameArea {
   private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
   private static final String[] forestMusic = {BACKGROUND_MUSIC};
-  private Entity player;
-  private Entity waves;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
@@ -224,19 +232,6 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-   * Add this method to start the wave spawning timer when the game starts.
-   */
-//  private void startWaveTimer() {
-//    waveTimer = new Timer();
-//    waveTimer.scheduleAtFixedRate(new TimerTask() {
-//      @Override
-//      public void run() {
-//        spawnWave();
-//      }
-//    }, 0, 10000); // 10000 milliseconds = 10 seconds
-//  }
-
-  /**
    * Add this method to stop the wave timer when the game ends or as needed.
    */
   private void stopWaveTimer() {
@@ -245,37 +240,6 @@ public class ForestGameArea extends GameArea {
       waveTimer = null;
     }
   }
-
-  /**
-   * Cases to spawn a wave
-   */
-//  private void spawnWave() {
-//    wave++;
-//    switch (wave) {
-//      case 1:
-//      case 2:
-//        spawnFireWorm();
-//        spawnDragonKnight();
-//
-//        break;
-//      case 3:
-//        spawnSkeleton();
-//        spawnWizard();
-//        // mobBoss2 = spawnMobBoss2();
-//        break;
-//      case 4:
-//        spawnWaterQueen();
-//        spawnWaterSlime();
-//        // mobBoss2 = spawnMobBoss2();
-//
-//        break;
-//      case 5:
-//        spawnDemonBoss();
-//      default:
-//        // Handle other wave scenarios if needed
-//        break;
-//    }
-//  }
 
   /**
    * Create the game area, including terrain, static entities (trees), dynamic entities (player)
@@ -291,15 +255,14 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
 
     // Set up infrastructure for end game tracking
- //   player = spawnPlayer();
-
     logger.info("Creating waves");
-    waves = WaveFactory.createWaves();
+    Entity waves = WaveFactory.createWaves();
     spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 
     spawnScrap();
     spawnGapScanners();
+
   }
 
   private void displayUI() {
@@ -344,19 +307,6 @@ public class ForestGameArea extends GameArea {
     ServiceLocator.getEntityService().register(wall);
 
   }
-
-  //private Entity spawnPlayer() {
-  //  Entity newPlayer = PlayerFactory.createPlayer();
-  //  spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
- //  return newPlayer;
- // }
-
-  // Spawn player at a specific position
- // private Entity spawnPlayer(GridPoint2 position) {
-  //  Entity newPlayer = PlayerFactory.createPlayer();
-//   spawnEntityAt(newPlayer, position, true, true);
- //   return newPlayer;
- // }
 
   /**
    * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
@@ -478,10 +428,19 @@ public class ForestGameArea extends GameArea {
    * and trigger engineer spawning
    */
   private void spawnGapScanners() {
+    GameTime gameTime = ServiceLocator.getTimeSource();
+    long currSpawnTime = gameTime.getTime();
+
+    long diff = currSpawnTime - this.lastSpawnTime;
+    if (diff < ENGINEER_MIN_SPAWN_INTERVAL) {
+      return;
+    }
+
     for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
       Entity scanner = GapScannerFactory.createScanner();
       spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
+    this.lastSpawnTime = currSpawnTime;
   }
 
 
