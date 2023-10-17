@@ -214,13 +214,10 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.render();
 
     // Check if the game has ended
-    // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
-    }
-
-    // Check if all waves are completed and the level has been completed
-    if (ServiceLocator.getWaveService().isLevelCompleted()) {
+    } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      // Check if all waves are completed and the level has been completed
       if (selectedLevel == 2) { // Lava level
         // If it's the lava level, go to the "win" screen
         ui.getEvents().trigger("win");
@@ -232,7 +229,6 @@ public class MainGameScreen extends ScreenAdapter {
       }
     }
   }
-  // Add something in to unlock the next planet/level?
 
   @Override
   public void resize(int width, int height) {
