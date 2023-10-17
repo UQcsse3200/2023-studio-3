@@ -285,8 +285,6 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
 
     // Set up infrastructure for end game tracking
- //   player = spawnPlayer();
-
     logger.info("Creating waves");
     Entity waves = WaveFactory.createWaves();
     spawnEntity(waves);
