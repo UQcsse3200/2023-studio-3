@@ -2,19 +2,12 @@ package com.csse3200.game.components;
 
 import java.util.ArrayList;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.components.tower.TowerUpgraderComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.physics.BodyUserData;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.components.HitboxComponent;
-import com.csse3200.game.physics.components.PhysicsMovementComponent;
 import com.csse3200.game.services.ServiceLocator;
-
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 
 import com.badlogic.gdx.utils.Array;
 
@@ -102,6 +95,7 @@ public class EffectsComponent extends Component {
         }
         effectComponent.applyEffect(effect, hostEntity, targetEntity);
     }
+
     /**
      * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
      * @param effect effect to be applied to entities within radius
@@ -135,133 +129,5 @@ public class EffectsComponent extends Component {
             }
             effectComponent.applyEffect(effect, hostEntity, targetEntity);
         }
-    }
-
-    /**
-     * Deals damage to target based on hosts' CombatStatsComponent
-     * @param target CombatStatsComponent of entity hit by projectile
-     * @param host CombatStatsComponent of projectile
-     */
-    private void fireballEffect(CombatStatsComponent target, CombatStatsComponent host) {
-        target.hit(host);
-    }
-
-//    /**
-//     * Applies 5 ticks of damage from hosts' CombatStatsComponent over 5 seconds
-//     * @param target CombatStatsComponent of entity hit by projectile
-//     * @param host CombatStatsComponent of projectile
-//     */
-//    private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
-//        // Ensure burn effects aren't applied multiple times by same projectile
-//        if (burnEntities.contains(target, false)) {
-//            return;
-//        }
-//        burnEntities.add(target);
-//        // Create a timer task to apply the effect repeatedly
-//        int numberOfTicks = 5;
-//        long delay = 1;
-//        Timer.schedule(new Timer.Task() {
-//            private int count = 0;
-//
-//            @Override
-//            public void run() {
-//                if (count < numberOfTicks) {
-//                    target.hit(host);
-//                    count++;
-//                } else {
-//                    // Ensure to cancel the task when it's done
-//                    this.cancel();
-//                }
-//            }
-//        }, delay, delay);
-//    }
-
-    /**
-     * Applies slow effect to targetEntity. If entity is a mob, speed
-     * and firing rate will be slowed. If entity is a tower, firing rate
-     * will be slowed
-     * @param targetEntity Entity for slow effect to be applied to
-     */
-    private void slowEffect(Entity targetEntity) {
-        boolean towerFlag = false;
-        boolean mobFlag = false;
-
-        PhysicsMovementComponent targetPhysics = null;
-        float xSpeed = 0;
-        float ySpeed = 0;
-
-        // Create a timer task to apply the effect repeatedly
-        if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
-            // towers
-            towerFlag = true;
-            targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, -30);
-        } else if (PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {
-            // mobs
-            mobFlag = true;
-            targetPhysics = targetEntity.getComponent(PhysicsMovementComponent.class);
-            if (targetPhysics == null) {
-                return;
-            }
-
-            // Halve the mob speed
-            xSpeed = targetPhysics.getSpeed().x;
-            ySpeed = targetPhysics.getSpeed().y;
-            targetPhysics.setSpeed(new Vector2(xSpeed/2, ySpeed/2));
-        } else {
-            return;
-        }
-
-        // Reset speed
-        boolean finalTowerFlag = towerFlag;
-        boolean finalMobFlag = mobFlag;
-        PhysicsMovementComponent finalTargetPhysics = targetPhysics;
-        float finalXSpeed = xSpeed;
-        float finalYSpeed = ySpeed;
-        Timer.schedule(new Task() {
-            @Override
-            public void run() {
-                if (finalTowerFlag) {
-                    targetEntity.getEvents().trigger("upgradeTower", TowerUpgraderComponent.UPGRADE.FIRERATE, 30);
-                } else if (finalMobFlag) {
-                    finalTargetPhysics.setSpeed(new Vector2(finalXSpeed, finalYSpeed));
-                }
-            }
-        }, 5); // 5 seconds delay
-    }
-
-    /**
-     * Applies stun effect to a taget entity.
-     * @param targetEntity Entity for stun effect to be applied to.
-     */
-    private void stunEffect(Entity targetEntity) {
-        CombatStatsComponent hostCombatStats = targetEntity.getComponent(CombatStatsComponent.class);
-        AITaskComponent taskComponent = targetEntity.getComponent(AITaskComponent.class);
-
-        if (hostCombatStats == null || taskComponent == null) {
-            return;
-        }
-
-        hostCombatStats.setBaseAttack(0);
-
-        if (stunnedEntities.contains(targetEntity)) {
-            return;
-        }
-
-        taskComponent.disposeAll();
-        stunnedEntities.add(targetEntity);
-
-        new java.util.Timer().schedule(
-                new java.util.TimerTask() {
-                    @Override
-                    public void run() {
-                        taskComponent.restore();
-                        for (int i = 0; i < stunnedEntities.size(); i++) {
-                            if (stunnedEntities.get(i).equals(targetEntity)) {
-                                stunnedEntities.remove(stunnedEntities.get(i));
-                            }
-                        }
-                        this.cancel();
-                    }
-                }, 5000);
     }
 }

@@ -8,11 +8,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.physics.PhysicsEngine;
-import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.services.GameTime;
-//import com.csse3200.game.rendering.DebugRenderer;
 
+
+/// THIS CODE IS REDUNDANT ///
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -61,7 +61,6 @@ public class MobDeathTask extends DefaultTask implements PriorityTask {
     public void updateBossState() {
 
         mobHealth = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();
-        // TODO: inset a bit that picks from a list of drop options and drops this
 
         if (mobIsDead(mobHealth)) {
             killMob();

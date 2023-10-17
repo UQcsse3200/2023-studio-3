@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
@@ -26,26 +27,23 @@ public class WaveFactory {
    */
 
   private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
-  private static Random rand = new Random();
-
-  // TODO: include necromancer
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
-      "Skeleton", "Coat", "DragonKnight"
+      "Skeleton", "Coat", "DragonKnight", "Necromancer"
   ));
 
   private static final ArrayList<ArrayList<String>> lvl1Structure = new ArrayList<>(Arrays.asList(
       new ArrayList<>(Arrays.asList("Coat"
       )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen"
-      )), new ArrayList<>(Arrays.asList("WaterQueen", "WaterQueen"
-      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "Coat"
+      )), new ArrayList<>(Arrays.asList("WaterQueen", "SplittingWaterSlime"
+      )), new ArrayList<>(Arrays.asList("Coat", "WaterQueen", "SplittingWaterSlime"
       ))
   ));
 
   private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Skeleton"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
+    new ArrayList<>(Arrays.asList("Skeleton"
+    )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
       )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
+      )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
       )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
       )), new ArrayList<>(Arrays.asList("SplittingNightBorne", "Skeleton"
       )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
@@ -58,27 +56,19 @@ public class WaveFactory {
       new ArrayList<>(Arrays.asList("Necromancer"
       )), new ArrayList<>(Arrays.asList("Necromancer", "DodgingDragon"
       )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "FireWorm"
-      )), new ArrayList<>(Arrays.asList("SplittingRocky", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "FireWorm"
       )), new ArrayList<>(Arrays.asList("DodgingDragon", "Necromancer"
       )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DeflectFireWiza","SplittingRocky", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "SplittingRocky", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "DodgingDragon"
-      )), new ArrayList<>(Arrays.asList("FireWorm", "DeflectWizard", "Necromancer"
-      )), new ArrayList<>(Arrays.asList("Necromancer", "DeflectFireWizard", "SplittingRocky", "DodgingDragon", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("DodgingDragon", "DeflectFireWizard", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "Necromancer", "DodgingDragon"
+      )), new ArrayList<>(Arrays.asList("FireWorm", "SplittingRocky", "Necromancer"
+      )), new ArrayList<>(Arrays.asList("SplittingRocky", "DeflectFireWizard", "FireWorm"
+      )), new ArrayList<>(Arrays.asList("DeflectFireWizard", "SplittingRocky", "Necromancer", "DodgingDragon", "FireWorm"
       ))
   ));
-
-  // The base health for the different mobs
-  private static int MELEE_BASE_HEALTH = 80;
-  private static int RANGE_BASE_HEALTH = 60;
-
-  // Base health of the bosses
-  private static int LVL1_BOSS_BASE_HEALTH = 500;
-  private static int LVL2_BOSS_BASE_HEALTH = 1000;
-  private static int LVL3_BOSS_BASE_HEALTH = 2000;
 
   private static final String BOSS_1 = "IceBoss";
   private static final String BOSS_2 = "PatrickBoss";
@@ -139,6 +129,11 @@ public class WaveFactory {
     String boss = "";
     int bossHealth;
     int minMobs;
+    // Base health of the bosses
+    final int LVL1_BOSS_BASE_HEALTH = 500;
+    final int LVL2_BOSS_BASE_HEALTH = 1000;
+    final int LVL3_BOSS_BASE_HEALTH = 2000;
+
     switch (chosenLevel) {
       case 2:
         boss = BOSS_2;
@@ -160,7 +155,6 @@ public class WaveFactory {
         break;
     }
 
-    int totalMobs = 0;
     // Create mxWaves number of waves with mob stats increasing
     int atWave = 1;
     for (ArrayList<String> wave : possibleMobs) {
@@ -177,20 +171,23 @@ public class WaveFactory {
         if (leftToSort == 0) {
           num = minMobs - currentMobs;
         } else {
-          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort)) + 2;
+          num = MathUtils.random(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
+          System.out.println(num + " for " + mob + " at wave " + atWave);
           currentMobs += num;
         }
 
         // Calculate the health
+        final int RANGE_BASE_HEALTH = 60;
         int health = RANGE_BASE_HEALTH;
         if (MELEE_MOBS.contains(mob)) {
+          // The base health for the different mobs
+          final int MELEE_BASE_HEALTH = 80;
           health = MELEE_BASE_HEALTH;
         }
         int[] mobStats = {num, health + (atWave * chosenLevel)};
         mobs.put(mob, mobStats);
 
         leftToSort --;
-        totalMobs += num;
       }
       minMobs ++;
       level.addWave(new WaveClass(mobs));
@@ -200,9 +197,7 @@ public class WaveFactory {
     // Add boss wave
     HashMap<String, int[]> bossMob = new HashMap<>();
     bossMob.put(boss, new int[]{1, bossHealth});
-    totalMobs ++;
 
-    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
     level.addWave(new WaveClass(bossMob));
 
 

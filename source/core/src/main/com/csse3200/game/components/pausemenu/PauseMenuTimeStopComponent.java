@@ -10,9 +10,9 @@ import com.csse3200.game.services.ServiceLocator;
  * Handles the pausing/resuming of time when the pause menu is brought up/put away.
  */
 public class PauseMenuTimeStopComponent extends Component {
-
     private Array<Entity> freezeList;
     public PauseMenuTimeStopComponent() {
+        // Not implemented
     }
 
     /**
@@ -20,6 +20,7 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void create() {
+        ServiceLocator.getWaveService().toggleGamePause();
         freezeList = ServiceLocator.getEntityService().getEntities();
         for (Entity pauseTarget : freezeList) {
             if (pauseTarget.getId() != getEntity().getId()) {
@@ -35,6 +36,7 @@ public class PauseMenuTimeStopComponent extends Component {
      */
     @Override
     public void dispose() {
+        ServiceLocator.getWaveService().toggleGamePause();
         for (Entity pauseTarget : freezeList) {
                 pauseTarget.setEnabled(true);
         }

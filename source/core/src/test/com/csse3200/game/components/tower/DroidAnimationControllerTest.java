@@ -17,14 +17,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(GameExtension.class)
-public class DroidAnimationControllerTest {
-
+class DroidAnimationControllerTest {
     private Entity mockEntity;
     private final String[] texture = {"images/towers/DroidTower.png"};
     private final String[] atlas = {"images/towers/DroidTower.atlas"};
 
+    private static final String[] sounds = {
+            "sounds/towers/5.56_single_shot.mp3"
+    };
+
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         ServiceLocator.registerPhysicsService(new PhysicsService());
         RenderService render = new RenderService();
         render.setDebug(mock(DebugRenderer.class));
@@ -33,6 +36,7 @@ public class DroidAnimationControllerTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
 
         mockEntity = TowerFactory.createDroidTower(); // Replace with actual Droid Tower creation logic
@@ -40,43 +44,43 @@ public class DroidAnimationControllerTest {
     }
 
     @Test
-    public void testAnimateWalk() {
+    void testAnimateWalk() {
         mockEntity.getEvents().trigger("walkStart");
         assertEquals("walk", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateDefault() {
+    void testAnimateDefault() {
         mockEntity.getEvents().trigger("idleStart");
         assertEquals("idle", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateGoUp() {
+    void testAnimateGoUp() {
         mockEntity.getEvents().trigger("goUpStart");
         assertEquals("goUp", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateGoDown() {
+    void testAnimateGoDown() {
         mockEntity.getEvents().trigger("goDownStart");
         assertEquals("goDown", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateAttackUp() {
+    void testAnimateAttackUp() {
         mockEntity.getEvents().trigger("attackUpStart");
         assertEquals("attackUp", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateAttackDown() {
+    void testAnimateAttackDown() {
         mockEntity.getEvents().trigger("attackDownStart");
         assertEquals("attackDown", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    public void testAnimateDeath() {
+    void testAnimateDeath() {
         mockEntity.getEvents().trigger("deathStart");
         assertEquals("death", mockEntity.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }

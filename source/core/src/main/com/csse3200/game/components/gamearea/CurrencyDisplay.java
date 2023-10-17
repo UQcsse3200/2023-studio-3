@@ -1,5 +1,6 @@
 package com.csse3200.game.components.gamearea;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,7 +29,7 @@ public class CurrencyDisplay extends UIComponent {
     private TextButton scrapsTb;
     private TextButton crystalsTb;
     private Sound clickSound;
-    private static final String defaultFont = "determination_mono_18";
+    private static final String DEFAULT_FONT = "determination_mono_18";
 
     /**
      * Adds actors to stage
@@ -48,7 +49,7 @@ public class CurrencyDisplay extends UIComponent {
         table = new Table();
         table.top().left();
         table.setFillParent(true);
-        table.padTop(60f).padLeft(5f);
+        table.padTop(140f).padLeft(20f);
 
         scrapsTb = createButton("images/economy/scrapBanner.png",
                 ServiceLocator.getCurrencyService().getScrap().getAmount());
@@ -56,14 +57,23 @@ public class CurrencyDisplay extends UIComponent {
                 ServiceLocator.getCurrencyService().getCrystal().getAmount());
 
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
+        table.row();
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
+
+        scrapsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 205f);
+        scrapsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 205f,
+                1f, Interpolation.fastSlow)));
+
+        crystalsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 268f);
+        crystalsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 268f,
+                1f, Interpolation.fastSlow)));
     }
 
     private TextButton createButton(String imageFilePath, int value) {
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(
-                drawable, drawable, drawable, getSkin().getFont(defaultFont));
+                drawable, drawable, drawable, getSkin().getFont(DEFAULT_FONT));
 
         // create button
         TextButton tb = new TextButton(String.format("%d", value), style);

@@ -1,7 +1,7 @@
 package com.csse3200.game.components.npc;
 
 import com.csse3200.game.components.Component;
-import com.csse3200.game.components.tasks.mobtask.MobType;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.NPCFactory;
 import com.csse3200.game.services.ServiceLocator;
@@ -167,8 +167,7 @@ public class SplitMoblings extends Component {
 
     ServiceLocator.getEntityService().register(entityType);
 
-    // ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
-    //ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
+    ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
   }
 
   /**

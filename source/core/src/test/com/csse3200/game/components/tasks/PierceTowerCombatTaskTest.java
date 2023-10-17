@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PierceTowerCombatTaskTest {
+class PierceTowerCombatTaskTest {
     PierceTowerCombatTask pierceTowerCombatTask;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class PierceTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testStartTriggersIdleEvent() {
+    void testStartTriggersIdleEvent() {
         Entity entity = createPierceTower();
         EventListener0 idleListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -53,7 +53,7 @@ public class PierceTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createPierceTower();
         entity.setPosition(10, 10);
 
@@ -64,7 +64,7 @@ public class PierceTowerCombatTaskTest {
         entity.getEvents().addListener(PierceTowerCombatTask.ATTACK, attack);
         //Jump to IDLE state
         pierceTowerCombatTask.start();
-        pierceTowerCombatTask.towerState = PierceTowerCombatTask.STATE.IDLE;
+        pierceTowerCombatTask.setTowerState(PierceTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();
@@ -81,7 +81,7 @@ public class PierceTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetNotInRange() {
+    void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createPierceTower();
         entity.setPosition(10, 10);
 
@@ -93,7 +93,7 @@ public class PierceTowerCombatTaskTest {
         entity.getEvents().addListener(PierceTowerCombatTask.IDLE, idle);
         entity.getEvents().addListener(PierceTowerCombatTask.ATTACK, attack);
 
-        pierceTowerCombatTask.towerState = PierceTowerCombatTask.STATE.IDLE;
+        pierceTowerCombatTask.setTowerState(PierceTowerCombatTask.STATE.IDLE);
 
         ServiceLocator.getPhysicsService().getPhysics().update();
         entity.update();

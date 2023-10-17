@@ -10,6 +10,8 @@ import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+//CODE IS REDUNDANT ///
+
 /**
  * Task that prints a message to the terminal whenever it is called.
  */

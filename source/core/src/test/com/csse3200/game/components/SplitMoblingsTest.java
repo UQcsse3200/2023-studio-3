@@ -13,13 +13,14 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.npc.SplitMoblings;
-import com.csse3200.game.components.tasks.mobtask.MobType;
+import com.csse3200.game.components.tasks.MobTask.MobType;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.NPCFactory;
@@ -31,6 +32,7 @@ import com.csse3200.game.physics.components.ColliderComponent;
 import com.csse3200.game.physics.components.HitboxComponent;
 import com.csse3200.game.rendering.DebugRenderer;
 import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.services.GameEndService;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -56,6 +58,7 @@ class SplitMoblingsTest {
     ServiceLocator.registerPhysicsService(new PhysicsService());
 
     ServiceLocator.registerEntityService(new EntityService());
+    ServiceLocator.registerGameEndService(new GameEndService());
 
     RenderService render = new RenderService();
     render.setDebug(mock(DebugRenderer.class));
@@ -66,8 +69,11 @@ class SplitMoblingsTest {
     resourceService.loadTextureAtlases(atlas);
     resourceService.loadAll();
 
-    WaveService waveService = new WaveService();
+    WaveService waveService = mock(WaveService.class);
     ServiceLocator.registerWaveService(waveService);
+
+    GameEndService gameEndService = new GameEndService();
+    ServiceLocator.registerGameEndService(gameEndService);
 
     baseMob = createSplitMob(BASE_AMOUNT);
   }
@@ -75,8 +81,7 @@ class SplitMoblingsTest {
   @Test
   void shouldNotBeNull() {
     Entity mob = createSplitMob(5);
-    assertNotNull("Mobling components does not exists",
-        mob.getComponent(SplitMoblings.class));
+    Assertions.assertNotNull(mob.getComponent(SplitMoblings.class), "Mobling components does not exists");
   }
 
   @Test
@@ -90,8 +95,7 @@ class SplitMoblingsTest {
       if (entity.equals(baseMob) || entity.equals(projectile))
         continue;
 
-      assertTrue("moblings does not contain the right asset",
-          ServiceLocator.getResourceService().containsAsset(atlas[0], entity.getClass()));
+      Assertions.assertTrue(ServiceLocator.getResourceService().containsAsset(atlas[0], entity.getClass()), "moblings does not contain the right asset");
 
     }
   }

@@ -11,9 +11,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.areas.*;
 import com.csse3200.game.components.gamearea.PerformanceDisplay;
 import com.csse3200.game.components.maingame.MainGameActions;
 import com.csse3200.game.components.maingame.MainGameDisplay;
@@ -30,11 +29,10 @@ import com.csse3200.game.ui.terminal.Terminal;
 import com.csse3200.game.ui.terminal.TerminalDisplay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 /**
  * The game screen containing the main game.
  *
- * <p>Details on libGDX screens: https://happycoding.io/tutorials/libgdx/game-screens
+ * <p>Details on libGDX screens: <a href="https://happycoding.io/tutorials/libgdx/game-screens">...</a>
  */
 public class MainGameScreen extends ScreenAdapter {
   private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);
@@ -84,13 +82,13 @@ public class MainGameScreen extends ScreenAdapter {
   private final GdxGame game;
   private final Renderer renderer;
   private final PhysicsEngine physicsEngine;
-
-  private InputComponent upgradedInputHandler;
+  private final InputComponent buildHandler;
+  private final InputComponent upgradedInputHandler;
   static int screenWidth = Gdx.graphics.getWidth();
   static int screenHeight = Gdx.graphics.getHeight();
   private Entity ui;
-  public static int viewportWidth = screenWidth;
-  public static int viewportHeight= screenHeight;
+  public static final int viewportWidth = screenWidth;
+  public static final int viewportHeight= screenHeight;
   int selectedLevel = GameLevelData.getSelectedLevel();
 
   private final OrthographicCamera camera;
@@ -107,9 +105,6 @@ public class MainGameScreen extends ScreenAdapter {
     camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);
 
     batch = new SpriteBatch();
-
-    Stage stage = new Stage(new ScreenViewport());
-
 
     logger.debug("Initialising main game screen services");
     ServiceLocator.registerTimeSource(new GameTime());
@@ -133,7 +128,7 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.getCamera().getCamera().position.set(CAMERA_POSITION.x,CAMERA_POSITION.y,0);
     renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());
     InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());
-    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
+    buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());
     upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());
     InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());
     ServiceLocator.getInputService().register(inputHandler);
@@ -219,15 +214,25 @@ public class MainGameScreen extends ScreenAdapter {
     renderer.render();
 
     // Check if the game has ended
+    // Check if the game has ended
     if (ServiceLocator.getGameEndService().hasGameEnded()) {
       ui.getEvents().trigger("lose");
-    } else if (ServiceLocator.getWaveService().isLevelCompleted()) {
-      // Check if all waves are completed and the level has been completed
-      logger.info("Main game level completed detected, go to win screen");
-      ui.getEvents().trigger("lose"); // needs to change to: ui.getEvents().trigger("win");
-      // Add something in to unlock the next planet/level?
+    }
+
+    // Check if all waves are completed and the level has been completed
+    if (ServiceLocator.getWaveService().isLevelCompleted()) {
+      if (selectedLevel == 2) { // Lava level
+        // If it's the lava level, go to the "win" screen
+        ui.getEvents().trigger("win");
+        logger.info("Main game level completed detected, go to win screen");
+      } else {
+        // For other levels, go to the "NextLevelScreen"
+        game.setScreen(new NextLevelScreen(game, selectedLevel));
+        logger.info("game level completed detected, go to NextLevelScreen");
+      }
     }
   }
+  // Add something in to unlock the next planet/level?
 
   @Override
   public void resize(int width, int height) {
@@ -296,12 +301,13 @@ public class MainGameScreen extends ScreenAdapter {
     ui = new Entity();
     ui.addComponent(new InputDecorator(stage, 10))
 
-        .addComponent(new PerformanceDisplay())
+            .addComponent(new PerformanceDisplay())
             .addComponent(new MainGameActions(this.game))
             .addComponent(ServiceLocator.getWaveService().getDisplay())
             //.addComponent(new MainGameWinDisplay()) <- needs to be uncommented when team 3 have implemented the ui
-            .addComponent(new MainGameDisplay(this.game))
+            .addComponent(new MainGameDisplay(this.game, selectedLevel))
             .addComponent(new Terminal())
+            .addComponent(buildHandler)
             .addComponent(inputComponent)
             .addComponent(new TerminalDisplay());
 
