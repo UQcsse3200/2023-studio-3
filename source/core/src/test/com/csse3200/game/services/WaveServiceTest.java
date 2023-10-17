@@ -2,9 +2,12 @@ package com.csse3200.game.services;
 
 import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.components.maingame.UIElementsDisplay;
 import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveTask;
+import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.extensions.GameExtension;
+import com.csse3200.game.rendering.DebugRenderer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,41 +19,78 @@ import com.csse3200.game.rendering.RenderService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-@Disabled
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 @ExtendWith(GameExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class WaveServiceTest {
 
-    WaveTask waveTask;
-    ResourceService resourceService;
-    LevelWaves level;
-
-    WaveService waveService;
     @BeforeEach
     void setUp() {
-        resourceService = ServiceLocator.getResourceService();
-        waveService = ServiceLocator.getWaveService();
-        GameTime globalTime = mock(GameTime.class);
-        level = mock(LevelWaves.class);
-        ServiceLocator.registerTimeSource(globalTime);
-        waveTask = new WaveTask();
-        String[] sounds = waveTask.getSounds();
-        resourceService.getAsset(sounds[0], Sound.class);
-        resourceService.getAsset(sounds[1], Sound.class);
+
+        UIElementsDisplay uiElementsDisplay = mock(UIElementsDisplay.class);
+        GameTime gameTime = mock(GameTime.class);
+        ServiceLocator.registerTimeSource(gameTime);
+        ServiceLocator.registerPhysicsService(new PhysicsService());
+        RenderService render = new RenderService();
+        render.setDebug(mock(DebugRenderer.class));
+        ServiceLocator.registerRenderService(render);
+        ResourceService resourceService = mock(ResourceService.class);
+        ServiceLocator.registerResourceService(resourceService);
+        ServiceLocator.registerWaveService(new WaveService());
     }
 
     @Test
-    void shouldSetNextWaveTime() {
-
-        waveTask.start();
-        ServiceLocator.getWaveService().setEnemyCount(0);
-        waveTask.update();
-
-        assertTrue(ServiceLocator.getWaveService().getNextWaveTime() > 0);
-
+    void testSetWaveCount() {
+        // setting the number of waves to be 5 will give you an index of 6 because the wave number
+        // goes from 1-6 instead of 0-5. Because players like to see "starting at level 1 not 0.
+        ServiceLocator.getWaveService().setWaveCount(5);
+        assertEquals(6, ServiceLocator.getWaveService().getWaveCount());
     }
+
+    @Test
+    public void testSetLevelCompleted() {
+        ServiceLocator.getWaveService().setLevelCompleted();
+        assertTrue(ServiceLocator.getWaveService().isLevelCompleted());
+    }
+
+    @Test
+    void testSetNextLane() {
+        ServiceLocator.getWaveService().setNextLane(2);
+        assertEquals(2, ServiceLocator.getWaveService().getNextLane());
+    }
+
+    @Test
+    void testToggleDelay() {
+        ServiceLocator.getWaveService().toggleDelay();
+        assertTrue(ServiceLocator.getWaveService().shouldSkip());
+    }
+
+    @Test
+    void testSetTotalMobs() {
+        ServiceLocator.getWaveService().setTotalMobs(100);
+        assertEquals(100, ServiceLocator.getWaveService().totalMobs());
+        assertEquals(100, ServiceLocator.getWaveService().remainingMobsForLevel());
+    }
+
+    @Test
+    void testToggleGamePaused() {
+        // the toggle game paused method should flip the
+        // gamePaused variable
+        // This is checked with an assertEquals test.
+        boolean gamePaused = ServiceLocator.getWaveService().getGamePaused();
+        ServiceLocator.getWaveService().toggleGamePause();
+        assertEquals(!gamePaused, ServiceLocator.getWaveService().getGamePaused());
+    }
+
 
 }
