@@ -26,12 +26,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class WarningComponent extends UIComponent {
-    long startTime = ServiceLocator.getTimeSource().getTime();
+    private long startTime = ServiceLocator.getTimeSource().getTime();
     private static final Logger logger = LoggerFactory.getLogger(WarningComponent.class);
-    TextButton warning;
-    long spawnTime;
-    float severity;
-    Vector2 position;
+    private TextButton warning;
+    private Vector2 position;
+    private Camera camera;
     boolean toggle = false;
 
     @Override
@@ -46,24 +45,31 @@ public class WarningComponent extends UIComponent {
                 Actions.color(new Color(Color.RED)),
                 Actions.parallel(Actions.fadeOut(2f), Actions.sizeBy(-1000, 0, 2f)),
                 Actions.removeActor()));
-        warning.setPosition(Gdx.graphics.getWidth(), position.y);
+        Vector2 mobPosition = convert_coordinates(position.x, position.y, camera);
+        warning.setPosition(mobPosition.x, mobPosition.y);
         stage.addActor(warning);
     }
 
-    public void config(Entity mob) {
+    public void config(Entity mob, Camera camera) {
         this.position = mob.getPosition();
+        this.camera = camera;
     }
     @Override
     public void dispose() {
         this.warning.clear();
         super.dispose();
     }
+
+    /**
+     * Ported from CurrencyDisplay.
+     */
     private Vector2 convert_coordinates(float x, float y, Camera camera) {
         Vector3 entityCoordinates = new Vector3(x, y, 0);
         Vector3 entityScreenCoordinate = camera.project(entityCoordinates);
         Vector2 stageCoordinates = stage.screenToStageCoordinates(
                 new Vector2(entityScreenCoordinate.x, entityScreenCoordinate.y));
         stage.getViewport().unproject(stageCoordinates);
+        return stageCoordinates;
     }
 
     @Override
