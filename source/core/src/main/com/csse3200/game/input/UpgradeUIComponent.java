@@ -288,7 +288,6 @@ public class UpgradeUIComponent extends InputComponent {
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
                     fireRateLabel.setText(String.format("%.2f", fireRate));
                 }
-
             }
 
 
@@ -304,7 +303,7 @@ public class UpgradeUIComponent extends InputComponent {
         });
 
         // Repair button
-        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture("images/hammer.png")));
+        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture("images/spanner.png")));
         ImageButton repairButton = new ImageButton(repair);
         repairButton.addListener(new ClickListener() {
             @Override

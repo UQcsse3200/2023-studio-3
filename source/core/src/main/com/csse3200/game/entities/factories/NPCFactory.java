@@ -64,9 +64,7 @@ public class NPCFactory {
   **/
     ghost
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-     //   .addComponent(animator)
              .addComponent(new TextureRenderComponent("images/mobs/satyr.png"));
-     //   .addComponent(new GhostAnimationController());
 
     ghost.getComponent(TextureRenderComponent.class).scaleEntity();
 
@@ -103,8 +101,6 @@ public class NPCFactory {
    *
    * @return entity
    */
-//  public static Entity createSkeleton(int health) {
-//    Entity skeleton = createBaseNPC(int health);
   public static Entity createSkeleton(int health) {
     Entity skeleton = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
@@ -396,7 +392,7 @@ public class NPCFactory {
   }
 
   public static Entity createFirewizard(int health) {
-    Entity Firewizard = createBaseNPC();
+    Entity fireWizard = createBaseNPC();
     ArrayList<Currency> drops = new ArrayList<>();
 
     AnimationRenderComponent animator =
@@ -410,16 +406,16 @@ public class NPCFactory {
     AITaskComponent aiTaskComponent = new AITaskComponent()
             .addTask(new MobTask(MobType.FIREWIZARD));
 
-    Firewizard
+    fireWizard
             .addComponent(new CombatStatsComponent(health, 0, drops))
             .addComponent(animator)
             .addComponent(new FirewizardAnimationController())
             .addComponent(aiTaskComponent);
 
-    Firewizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
-    Firewizard.getComponent(AnimationRenderComponent.class).scaleEntity();
+    fireWizard.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+    fireWizard.getComponent(AnimationRenderComponent.class).scaleEntity();
 
-    return Firewizard;
+    return fireWizard;
   }
 
   public static Entity createArcaneArcher(int health) {
@@ -503,7 +499,6 @@ public class NPCFactory {
     animator.addAnimation(DEFAULT, 0.1f);
     xenoGrunt
             .addComponent(new CombatStatsComponent(health, config.baseAttack, drops, melee, projectiles))
-//            .addComponent(new CombatStatsComponent(config.fullHeath, config.baseAttack, drops, melee, projectiles))
             .addComponent(animator)
             .addComponent(new XenoAnimationController());
 
@@ -536,10 +531,7 @@ public class NPCFactory {
         new AITaskComponent()
             .addTask(new MobWanderTask(2f))
             .addTask(new MobMeleeAttackTask(2));
-        //     .addTask(new MobAttackTask(2, 2f));
-        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
-            // .addTask(new MobAttackTask(2, 40));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
@@ -560,11 +552,8 @@ public class NPCFactory {
     AITaskComponent aiComponent =
         new AITaskComponent()
             .addTask(new MobWanderTask(2f))
-        //     .addTask(new MobAttackTask(2, 2f));
             .addTask(new MobRangedAttackTask(2));
-        // .addTask(new MeleeMobTask(new Vector2(2f, 2f), 2f));
 
-            // .addTask(new MobAttackTask(2, 40));
     Entity npc =
         new Entity()
             .addComponent(new PhysicsComponent())
@@ -633,13 +622,10 @@ public class NPCFactory {
   public static Entity createDodgingDragonKnight(int health) {
     Entity dodgeKnight = createDragonKnight(health);
 
-    dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-    // dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    // dodgeKnight.getComponent(AITaskComponent.class).
-    // addTask(new MobDodgeTask(MobType.DRAGON_KNIGHT, 5));
+    dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f, 5f));
     dodgeKnight.getComponent(AITaskComponent.class).getTask(MobTask.class).setDodge(true);
-    PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 0.7f);
-    dodgeKnight.setScale(0.3f, 0.7f);
+    PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 1f);
+    dodgeKnight.setScale(0.3f, 1f);
 
     return dodgeKnight;
   }
@@ -653,9 +639,6 @@ public class NPCFactory {
     Entity dodgeKnight = createArcaneArcher(health);
 
     dodgeKnight.addComponent(new DodgingComponent(PhysicsLayer.PROJECTILE, 0.25f));
-    // dodgeKnight.getComponent(AITaskComponent.class).addTask(new MobDodgeTask(new Vector2(2f, 2f), 2f, 5));
-    // dodgeKnight.getComponent(AITaskComponent.class).
-    // addTask(new MobDodgeTask(MobType.DRAGON_KNIGHT, 5));
     dodgeKnight.getComponent(AITaskComponent.class).getTask(MobTask.class).setDodge(true);
     PhysicsUtils.setScaledCollider(dodgeKnight, 0.3f, 0.7f);
     dodgeKnight.setScale(0.3f, 0.7f);
@@ -663,9 +646,6 @@ public class NPCFactory {
     return dodgeKnight;
   }
 
-//  public static Entity createDeflectXenoGrunt(int health) {
-//    Entity deflectXenoGrunt = createXenoGrunt(health);
-//    deflectXenoGrunt.addComponent(new DeflectingComponent(
   /**
    * Creates a wizard that can deflect bullets
    * @return Deflecting wizard

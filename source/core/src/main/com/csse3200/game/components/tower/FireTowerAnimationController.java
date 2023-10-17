@@ -21,6 +21,11 @@ public class FireTowerAnimationController extends Component{
     private static final String DEATH_ANIM = "death";
     //here we can add the sounds for the implemented animations
 
+    private static final String FIRE_SINGLE_SFX = "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3";
+
+    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+            FIRE_SINGLE_SFX, Sound.class);
+
     AnimationRenderComponent animator;
 
     /**
@@ -55,6 +60,7 @@ public class FireTowerAnimationController extends Component{
      */
     void animateAttack() {
         animator.startAnimation(ATTACK_ANIM);
+        fireSingleSound.play();
     }
 
     void animateDeath() {

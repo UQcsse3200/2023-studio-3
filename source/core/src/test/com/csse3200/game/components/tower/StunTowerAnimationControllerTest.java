@@ -21,6 +21,9 @@ class StunTowerAnimationControllerTest {
     private Entity mockEntity;
     private final String[] texture = {"images/towers/stun_tower.png"};
     private final String[] atlas = {"images/towers/stun_tower.atlas"};
+    private static final String[] sounds = {
+            "sounds/towers/ar15_single_shot_far.mp3"
+    };
 
     @BeforeEach
     void setUp() {
@@ -32,6 +35,7 @@ class StunTowerAnimationControllerTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
 
         mockEntity = TowerFactory.createStunTower(); // Replace with actual Droid Tower creation logic

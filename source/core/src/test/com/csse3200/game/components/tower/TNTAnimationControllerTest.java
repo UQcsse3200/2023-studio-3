@@ -22,6 +22,10 @@ class TNTAnimationControllerTest {
     private final String[] texture = {"images/towers/TNTTower.png"};
     private final String[] atlas = {"images/towers/TNTTower.atlas"};
 
+    private static final String[] sounds = {
+            "sounds/towers/explosion.mp3"
+    };
+
     @BeforeEach
     void setUp() {
         // Initialize the TNTAnimationController object
@@ -33,6 +37,7 @@ class TNTAnimationControllerTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
 
       mockEntity = TowerFactory.createTNTTower();

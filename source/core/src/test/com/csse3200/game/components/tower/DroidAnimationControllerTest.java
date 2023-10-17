@@ -22,6 +22,10 @@ class DroidAnimationControllerTest {
     private final String[] texture = {"images/towers/DroidTower.png"};
     private final String[] atlas = {"images/towers/DroidTower.atlas"};
 
+    private static final String[] sounds = {
+            "sounds/towers/5.56_single_shot.mp3"
+    };
+
     @BeforeEach
     void setUp() {
         ServiceLocator.registerPhysicsService(new PhysicsService());
@@ -32,6 +36,7 @@ class DroidAnimationControllerTest {
         ServiceLocator.registerResourceService(resourceService);
         resourceService.loadTextures(texture);
         resourceService.loadTextureAtlases(atlas);
+        resourceService.loadSounds(sounds);
         resourceService.loadAll();
 
         mockEntity = TowerFactory.createDroidTower(); // Replace with actual Droid Tower creation logic
