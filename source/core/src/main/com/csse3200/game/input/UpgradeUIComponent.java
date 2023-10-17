@@ -158,7 +158,7 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeTable.top().left();
         upgradeTable.defaults().pad(0).space(0);
         upgradeTable.setSize(60, 60);
-        upgradeTable.padTop(30f).padLeft(5f);
+        upgradeTable.padTop(85f).padLeft(5f);
         upgradeTable.setPosition(0, round((float) Gdx.graphics.getHeight() / 1.3f));
 
         // The inner table contains the upgrade buttons and the stats display
