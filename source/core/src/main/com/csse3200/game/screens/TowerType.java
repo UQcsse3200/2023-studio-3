@@ -13,7 +13,7 @@ public enum TowerType {
             4, "45", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-selected.png"),
     STUN("Stun Tower", "stun_tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
             5, "45", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
-    INCOME("Income Tower", "income_tower", "The Income Tower generates additional in-game currency over time.",
+    INCOME("Mine Tower", "income_tower", "The Income Tower generates additional in-game currency over time.",
             6, "10", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png"),
     PIERCE("Pierce Tower", "", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
             6, "0", "images/turret-select/pierce-tower-default.png", "images/turret-select/pierce-tower-selected.png"),
