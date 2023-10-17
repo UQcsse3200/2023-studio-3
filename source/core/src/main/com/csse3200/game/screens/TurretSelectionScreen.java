@@ -104,18 +104,19 @@ public class TurretSelectionScreen extends ScreenAdapter {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                click.play(0.4f);
                 // Handle the "back" action, e.g., return to the previous screen
                 game.setScreen(GdxGame.ScreenType.LEVEL_SELECT); // Replace PREVIOUS_SCREEN with the appropriate screen type
             }
         });
-        stage.addActor(backButton);
 
-        message = new Label("Select up to 5 turrets", skin);
+        message = new Label("Select up to 5 towers", skin);
 
         confirmButton = ButtonFactory.createButton("Continue");
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                click.play(0.4f);
                 // Store the selected towers in the ServiceLocator for transferring across screens
                 // (as an Array)
                 Array<TowerType> towers = new Array<>();
@@ -130,9 +131,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretDescriptionLabel = createButton("images/turret-select/imageedit_28_4047785594.png",
                 "images/turret-select/imageedit_28_4047785594.png", "", "", turretDescriptionText);
 
-        BitmapFont font = new BitmapFont();
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;  // Set your desired BitmapFont
+        labelStyle.font = getSkin().getFont("determination_mono_18");  // Set your desired BitmapFont
         descText = new Label(turretDescriptionText, labelStyle);
         descText.setWrap(true);
         descText.setWidth(190f);
@@ -172,7 +172,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                         if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
                             message.setText("You can only select up to 5 turrets.");
                         } else {
-                            message.setText("Select up to 5 turrets");
+                            message.setText("Select up to 5 towers");
                         }
                         if (selectedTurrets.contains(turret)) {
                             // Turret is already selected, unselect it
@@ -222,9 +222,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         // Set the position for turretDescriptionLabel
         turretDescriptionLabel.setPosition(turretDescriptionLabelX, turretDescriptionLabelY);
-        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 70);
+        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 65);
 
         // Add the actors to the stage
+        stage.addActor(backButton);
         stage.addActor(turretDescriptionLabel);
         stage.addActor(descriptionLabel);
         stage.addActor(descText);
