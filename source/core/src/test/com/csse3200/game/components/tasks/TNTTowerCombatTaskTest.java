@@ -19,7 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class TNTTowerCombatTaskTest {
+class TNTTowerCombatTaskTest {
     TNTTowerCombatTask tntTowerCombatTask;
 
     @BeforeEach
@@ -34,7 +34,7 @@ public class TNTTowerCombatTaskTest {
     }
 
     @Test
-    public void testStartTriggersDefaultEvent() {
+    void testStartTriggersDefaultEvent() {
         Entity entity = createTNT();
 
         EventListener0 defaultStartListener = mock(EventListener0.class);
@@ -46,7 +46,7 @@ public class TNTTowerCombatTaskTest {
     }
 
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createTNT();
         entity.setPosition(10,10);
 
@@ -89,7 +89,7 @@ public class TNTTowerCombatTaskTest {
     }
 
     @Test
-    public void testStayAtIdleWhenNoTargetInRange() {
+    void testStayAtIdleWhenNoTargetInRange() {
         Entity entity = createTNT();
         entity.setPosition(10,10);
 

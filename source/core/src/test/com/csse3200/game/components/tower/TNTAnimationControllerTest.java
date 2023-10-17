@@ -16,11 +16,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-
-
 @ExtendWith(GameExtension.class)
-public class TNTAnimationControllerTest {
-
+class TNTAnimationControllerTest {
     private Entity mockEntity;
     private final String[] texture = {"images/towers/TNTTower.png"};
     private final String[] atlas = {"images/towers/TNTTower.atlas"};
@@ -29,9 +26,8 @@ public class TNTAnimationControllerTest {
             "sounds/towers/explosion.mp3"
     };
 
-
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // Initialize the TNTAnimationController object
         ServiceLocator.registerPhysicsService(new PhysicsService());
         RenderService render = new RenderService();
@@ -49,7 +45,7 @@ public class TNTAnimationControllerTest {
     }
 
     @Test
-    public void testAnimateDig() {
+    void testAnimateDig() {
 
         // Trigger the animateDig method
         mockEntity.getEvents().trigger("digStart");
@@ -59,7 +55,7 @@ public class TNTAnimationControllerTest {
     }
 
     @Test
-    public void testAnimateDefault() {
+    void testAnimateDefault() {
         // Trigger the animateDefault method
         mockEntity.getEvents().trigger("defaultStart");
 
@@ -68,7 +64,7 @@ public class TNTAnimationControllerTest {
     }
 
     @Test
-    public void testAnimateExplode() {
+    void testAnimateExplode() {
         // Trigger the animateExplode method
         mockEntity.getEvents().trigger("explodeStart");
 
