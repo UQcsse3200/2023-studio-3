@@ -22,7 +22,6 @@ public class EffectsComponent extends Component {
     private final boolean aoe;
     private HitboxComponent hitboxComponent;
     private final short targetLayer;
-    private Array<CombatStatsComponent> burnEntities = new Array<>();
     private ArrayList<Entity> stunnedEntities = new ArrayList<>();
 
     /**
