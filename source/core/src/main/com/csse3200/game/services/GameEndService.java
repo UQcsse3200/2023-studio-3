@@ -16,7 +16,7 @@ public class GameEndService {
      * Constructor for the Game End Service
      */
     public GameEndService() {
-        this.remainingEngineerCount = 10;
+        this.remainingEngineerCount = 5;
         this.display = new EngineerCountDisplay();
     }
 
