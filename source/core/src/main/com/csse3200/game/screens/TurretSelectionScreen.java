@@ -3,9 +3,9 @@ package com.csse3200.game.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -37,6 +37,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
     private Stage stage;
     private Label descText;
     private List<TowerType> turretList;
+    private final String[] sounds = {
+            "sounds/ui/click/click_01.ogg",
+    };
+    private Sound click;
     private TextButton confirmButton;
     private String turretDescriptionText;
 
@@ -71,6 +75,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         stage = new Stage(new ScreenViewport());
         table = new Table();
 
+        loadSounds();
+
         ServiceLocator.registerResourceService(new ResourceService());
         ServiceLocator.getResourceService().loadMusic(bgm);
         ServiceLocator.getResourceService().loadAll();
@@ -90,33 +96,24 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
         Skin skin = new Skin(Gdx.files.internal("images/ui/buttons/glass.json"));
 
-//        Skin skin = new Skin(Gdx.files.internal("flat-earth/skin/flat-earth-ui.json"));
-        backButton = new TextButton("Back", skin);
+        backButton = ButtonFactory.createButton("Back");
+        backButton.setPosition(10, Gdx.graphics.getHeight() - backButton.getHeight() - 10); // Adjust position as needed
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                click.play(0.4f);
                 // Handle the "back" action, e.g., return to the previous screen
-                game.setScreen(GdxGame.ScreenType.MAIN_MENU); // Replace PREVIOUS_SCREEN with the appropriate screen type
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT); // Replace PREVIOUS_SCREEN with the appropriate screen type
             }
         });
-        Table topRightTable = new Table();
-        topRightTable.top().right();
-        topRightTable.add(backButton).pad(10);
 
-        stage.addActor(topRightTable);
+        message = new Label("Select up to 5 towers", skin);
 
-        message = new Label("Select your turrets", skin);
-
-//        confirmButton = createButton("images/turret-select/imageedit_4_5616741474.png",
-//                "images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png", "Continue", "", "");
-//        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(
-//                new Texture("images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png")));
-//        confirmButton.getStyle().down = pressDrawable;
-//        confirmButton.pad(0,0,6,0);
         confirmButton = ButtonFactory.createButton("Continue");
         confirmButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                click.play(0.4f);
                 // Store the selected towers in the ServiceLocator for transferring across screens
                 // (as an Array)
                 Array<TowerType> towers = new Array<>();
@@ -131,9 +128,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         turretDescriptionLabel = createButton("images/turret-select/imageedit_28_4047785594.png",
                 "images/turret-select/imageedit_28_4047785594.png", "", "", turretDescriptionText);
 
-        BitmapFont font = new BitmapFont();
         Label.LabelStyle labelStyle = new Label.LabelStyle();
-        labelStyle.font = font;  // Set your desired BitmapFont
+        labelStyle.font = getSkin().getFont("determination_mono_18");  // Set your desired BitmapFont
         descText = new Label(turretDescriptionText, labelStyle);
         descText.setWrap(true);
         descText.setWidth(190f);
@@ -159,7 +155,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 turretTable.center(); // Center the contents of the nested table
 
                 descriptionLabel = createButton("images/turret-select/imageedit_15_5627113584.png",
-                        "images/turret-select/imageedit_15_5627113584.png", "Description: ", turretName, "");
+                        "images/turret-select/imageedit_15_5627113584.png", "", turretName, "");
 
                 TextButton button = createButton(turret.getDefaultImage(),
                         turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());
@@ -173,7 +169,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                         if (selectedTurrets.size() > MAX_SELECTED_TURRETS) {
                             message.setText("You can only select up to 5 turrets.");
                         } else {
-                            message.setText("Select your turrets");
+                            message.setText("Select up to 5 towers");
                         }
                         if (selectedTurrets.contains(turret)) {
                             // Turret is already selected, unselect it
@@ -195,6 +191,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
                             // You can change the button appearance to indicate selection
                         }
+                        click.play(0.4f);
                     }
                 });
 
@@ -220,11 +217,12 @@ public class TurretSelectionScreen extends ScreenAdapter {
         float turretDescriptionLabelX = Gdx.graphics.getWidth() - turretDescriptionLabel.getWidth() - 11;
         float turretDescriptionLabelY = Gdx.graphics.getHeight() - descriptionLabel.getHeight() - turretDescriptionLabel.getHeight() - 7;  // Adjusted vertical position
 
-// Set the position for turretDescriptionLabel
+        // Set the position for turretDescriptionLabel
         turretDescriptionLabel.setPosition(turretDescriptionLabelX, turretDescriptionLabelY);
-        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 70);
+        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 65);
 
-// Add the actors to the stage
+        // Add the actors to the stage
+        stage.addActor(backButton);
         stage.addActor(turretDescriptionLabel);
         stage.addActor(descriptionLabel);
         stage.addActor(descText);
@@ -240,8 +238,8 @@ public class TurretSelectionScreen extends ScreenAdapter {
         music.setVolume(0.4f);
         music.setLooping(true);
         music.play();
-
     }
+
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -333,7 +331,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
      * Updates the description label
      */
     private void updateDescriptionLabel() {
-        descriptionLabel.setText("Description: " + turretDescription);
+        descriptionLabel.setText("Info: " + turretDescription);
     }
 
     /**
@@ -343,6 +341,15 @@ public class TurretSelectionScreen extends ScreenAdapter {
         descText.setText(turretDescriptionText);
     }
 
+    public void loadSounds() {
+        ServiceLocator.getResourceService().loadSounds(sounds);
+        ServiceLocator.getResourceService().loadAll();
+        click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);
+    }
+
+    public void unloadSounds() {
+        ServiceLocator.getResourceService().unloadAssets(sounds);
+    }
     /**
      * Disposes of the stage
      */
@@ -350,6 +357,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
     public void dispose() {
         stage.dispose();
         music.dispose();
+        unloadSounds();
     }
 
 }
