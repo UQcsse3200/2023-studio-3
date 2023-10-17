@@ -203,7 +203,6 @@ public class TowerFactory {
 
         TNTTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
                 .addComponent(new TNTDamageComponent(PhysicsLayer.NPC,TNT_KNOCK_BACK_FORCE,TNT_TOWER_RANGE))
                 .addComponent(aiTaskComponent)
@@ -211,6 +210,7 @@ public class TowerFactory {
                 .addComponent(new TNTAnimationController());
 
         TNTTower.getComponent(AnimationRenderComponent.class).scaleEntity();
+        TNTTower.removeComponent(TowerUpgraderComponent.class);
 
         return TNTTower;
     }
@@ -282,7 +282,6 @@ public class TowerFactory {
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CostComponent(config.cost))
-                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
@@ -376,6 +375,7 @@ public class TowerFactory {
 
         fireworksTower
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
@@ -408,6 +408,7 @@ public class TowerFactory {
         pierceTower
                 .addComponent(animator)
                 .addComponent(new PierceTowerAnimationController())
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
@@ -435,6 +436,7 @@ public class TowerFactory {
         ricochetTower
                 .addComponent(animator)
                 .addComponent(new RicochetTowerAnimationController())
+                .addComponent(new UpgradableStatsComponent(config.attackRate))
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
