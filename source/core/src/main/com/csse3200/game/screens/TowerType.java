@@ -15,11 +15,11 @@ public enum TowerType {
             5, "45", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
     INCOME("Income Tower", "income_tower", "The Income Tower generates additional in-game currency over time.",
             6, "10", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png"),
-    PIERCE("Pierce Tower", "", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
+    PIERCE("Pierce Tower", "pierce_tower", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
             6, "0", "images/turret-select/pierce-tower-default.png", "images/turret-select/pierce-tower-selected.png"),
-    RICOCHET("Ricochet Tower", "", "The Ricochet Tower fires a projectile that upon contact does damage and changes direction",
+    RICOCHET("Ricochet Tower", "ricochet_tower", "The Ricochet Tower fires a projectile that upon contact does damage and changes direction",
             7, "0", "images/turret-select/ricochet-tower-default.png", "images/turret-select/ricochet-tower-selected.png"),
-    FIREWORK("Firework Tower", "", "The Firework Tower fires a projectile that splits on contact with its target",
+    FIREWORK("Firework Tower", "fireworks_tower", "The Firework Tower fires a projectile that splits on contact with its target",
             8, "0", "images/turret-select/firework-tower-default.png", "images/turret-select/firework-tower-selected.png");
   
     private final String towerName;

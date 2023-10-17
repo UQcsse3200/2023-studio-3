@@ -15,7 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.GdxGame;
-import com.csse3200.game.components.pausemenu.PauseMenuButtonComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.PauseMenuFactory;
 import com.csse3200.game.screens.TowerType;
@@ -32,6 +31,7 @@ import org.slf4j.LoggerFactory;
 public class MainGameDisplay extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(MainGameDisplay.class);
     private static final float Z_INDEX = 2f;
+    private static final String SHORTCUT_FONT = "small";
     private final Table towerTable = new Table();
     private final Table buttonTable = new Table();
     private final Table progressTable = new Table();
@@ -86,227 +86,33 @@ public class MainGameDisplay extends UIComponent {
         // Create and position the tables that will hold the buttons.
 
         // Contains the tower build menu buttons
-        towerTable.top().padTop(50f);
+        towerTable.top().padTop(80f);
         towerTable.setFillParent(true);
 
         // Contains other buttons (just pause at this stage)
-        buttonTable.top().right().padTop(50f).padRight(80f);
+        buttonTable.top().right().padTop(80f).padRight(80f);
         buttonTable.setFillParent(true);
 
         progressTable.top().center().setWidth(500f);
         progressTable.setFillParent(true);
 
-        levelNameTable.top().left().padLeft(20f).padTop(20f);
+        levelNameTable.center().top().padLeft(20f).padTop(20f).pad(20f);
         levelNameTable.setFillParent(true);
 
-        // Stores tower defaults, in case towers haven't been set in the tower select screen
-        TowerType[] defaultTowers = {
-                TowerType.TNT,
-                TowerType.DROID,
-                TowerType.INCOME,
-                TowerType.WALL,
-                TowerType.WEAPON
-        };
-
-        // Fetch the selected tower types if set
-        towers = new Array<>();
-
-        for (TowerType tower : ServiceLocator.getTowerTypes()) {
-            towers.add(tower);
-        }
-
-        // If no towers set, populate with default towers
-        if (towers.isEmpty() || towers.size < 5) {
-            if (towers.isEmpty()) {
-                towers.addAll(defaultTowers);
-            } else {
-                for (TowerType tower : defaultTowers) {
-                    if (towers.size < 5 && !towers.contains(tower, false)) {
-                        towers.add(tower);
-                    }
-                }
-            }
-        }
+        // set the towerTypes if they aren't already
+        setTowers();
 
         // Update the centrally located towerTypes list -
         ServiceLocator.setTowerTypes(towers);
 
-        tower1 = new ImageButton(skin, towers.get(0).getSkinName());
-        towerButtons.add(tower1);
-        tower2 = new ImageButton(skin, towers.get(1).getSkinName());
-        towerButtons.add(tower2);
-        tower3 = new ImageButton(skin, towers.get(2).getSkinName());
-        towerButtons.add(tower3);
-        tower4 = new ImageButton(skin, towers.get(3).getSkinName());
-        towerButtons.add(tower4);
-        tower5 = new ImageButton(skin, towers.get(4).getSkinName());
-        towerButtons.add(tower5);
-
-        TextButton pauseBtn = ButtonFactory.createButton("Pause");
-
-        // Starting animation for pause button
-        pauseBtn.setPosition(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() - 150);
-        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200,
-                Gdx.graphics.getHeight() - 150, 1f, Interpolation.fastSlow)));
-
-        // Spawns a pause menu when the button is pressed.
-        pauseBtn.addListener(
-                new ChangeListener() {
-                    @Override
-                    public void changed(ChangeEvent changeEvent, Actor actor) {
-                        logger.debug("Pause button clicked");
-                        openSound.play(0.4f);
-                        pauseMenu = PauseMenuFactory.createPauseMenu(game);
-                        ServiceLocator.getTimeSource().setPaused(true);
-                    }
-                });
-
-
-        // Pause menu escape key opening listener
-        stage.addListener(
-                new InputListener() {
-                    @Override
-                    public boolean keyUp(InputEvent event, int keycode) {
-                        if ((keycode == Input.Keys.ESCAPE) && !ServiceLocator.getTimeSource().getPaused()) {
-                            openSound.play(0.4f);
-                            pauseMenu = PauseMenuFactory.createPauseMenu(game);
-                            ServiceLocator.getTimeSource().setPaused(true);
-                            return true;
-                        } else if ((keycode == Input.Keys.ESCAPE) && ServiceLocator.getTimeSource().getPaused()) {
-                            pauseMenu.dispose();
-                            return false;
-                        }
-                        return false;
-                    }
-                });
-
-        // Triggers an event when the button is pressed.
-        tower1.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
-                        if (selected == towers.get(0) ) {
-                            ServiceLocator.getCurrencyService().setTowerType(null);
-
-                            towerToggle(null);
-
-                        } else {
-                            ServiceLocator.getCurrencyService().setTowerType(towers.get(0));
-
-                            towerToggle(tower1);
-
-                        }
-                        click.play(0.4f);
-                    }
-                });
-        TextTooltip tower1Tooltip = new TextTooltip(towers.get(0).getDescription(), getSkin());
-        tower1.addListener(tower1Tooltip);
-
-        // Triggers an event when the button is pressed.
-        tower2.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
-                        if (selected == towers.get(1) ) {
-                            ServiceLocator.getCurrencyService().setTowerType(null);
-
-                            towerToggle(null);
-
-                        } else {
-                            ServiceLocator.getCurrencyService().setTowerType(towers.get(1));
-
-                            towerToggle(tower2);
-
-                        }
-                        click.play(0.4f);
-                    }
-                });
-        TextTooltip tower2Tooltip = new TextTooltip(towers.get(1).getDescription(), getSkin());
-        tower2.addListener(tower2Tooltip);
-
-        tower3.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
-                        if (selected == towers.get(2)) {
-                            ServiceLocator.getCurrencyService().setTowerType(null);
-
-                            towerToggle(null);
-
-                        } else {
-                            ServiceLocator.getCurrencyService().setTowerType(towers.get(2));
-                            if (ServiceLocator.getCurrencyService().getScrap().getAmount()
-                                    >= Integer.parseInt(towers.get(2).getPrice())) {
-
-                                towerToggle(tower3);
-
-                            } else {
-                                tower3.setDisabled(true);
-                            }
-                        }
-                        click.play(0.4f);
-                    }
-                });
-
-        TextTooltip tower3Tooltip = new TextTooltip(towers.get(3).getDescription(), getSkin());
-        tower3.addListener(tower3Tooltip);
-
-        tower4.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
-                        if (selected == towers.get(3)) {
-                            ServiceLocator.getCurrencyService().setTowerType(null);
-
-                            towerToggle(null);
-
-                        } else {
-                            ServiceLocator.getCurrencyService().setTowerType(towers.get(3));
-
-                            towerToggle(tower4);
-
-                        }
-                        click.play(0.4f);
-                    }
-                });
-        TextTooltip tower4Tooltip = new TextTooltip(towers.get(3).getDescription(), getSkin());
-        tower4.addListener(tower4Tooltip);
-
-        tower5.addListener(
-                new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-
-                        TowerType selected = ServiceLocator.getCurrencyService().getTower();
-                        if (selected == towers.get(4)) {
-                            ServiceLocator.getCurrencyService().setTowerType(null);
-
-                            towerToggle(null);
-
-                        } else {
-                            ServiceLocator.getCurrencyService().setTowerType(towers.get(4));
-
-                            towerToggle(tower5);
-
-                        }
-                        click.play(0.4f);
-                    }
-                });
-        TextTooltip tower5Tooltip = new TextTooltip(towers.get(4).getDescription(), getSkin());
-        tower5.addListener(tower5Tooltip);
+        // create the tower buttons, pause button, and their associated listeners
+        createTowerButtons();
+        TextButton pauseBtn = createPauseButton();
 
         progressbar = new LevelProgressBar(500, 10);
 
         levelNameTable.setSkin(getSkin());
-        levelNameTable.add(this.level, "title");
+        levelNameTable.add(this.level, "default");
 
         // Scale all the tower build buttons down
         // Add all buttons to their respective tables and position them
@@ -317,11 +123,11 @@ public class MainGameDisplay extends UIComponent {
         towerTable.add(tower4).padRight(10f);
         towerTable.add(tower5).padRight(10f);
         towerTable.row();
-        towerTable.add("1", "small");
-        towerTable.add("2", "small");
-        towerTable.add("3", "small");
-        towerTable.add("4", "small");
-        towerTable.add("5", "small");
+        towerTable.add("1", SHORTCUT_FONT);
+        towerTable.add("2", SHORTCUT_FONT);
+        towerTable.add("3", SHORTCUT_FONT);
+        towerTable.add("4", SHORTCUT_FONT);
+        towerTable.add("5", SHORTCUT_FONT);
         towerTable.row().colspan(5).pad(20f);
         towerTable.add(progressbar).fillX();
 
@@ -356,6 +162,120 @@ public class MainGameDisplay extends UIComponent {
         towerUpdate();
     }
 
+    private void setTowers() {
+        // Stores tower defaults, in case towers haven't been set in the tower select screen
+        TowerType[] defaultTowers = {
+                TowerType.TNT,
+                TowerType.DROID,
+                TowerType.INCOME,
+                TowerType.WALL,
+                TowerType.WEAPON
+        };
+
+        // Fetch the selected tower types if set
+        towers = new Array<>();
+
+        for (TowerType tower : ServiceLocator.getTowerTypes()) {
+            towers.add(tower);
+        }
+
+        // If no towers set, populate with default towers
+        if (towers.isEmpty() || towers.size < 5) {
+//            if (towers.isEmpty()) {
+//                towers.addAll(defaultTowers);
+//            } else {
+            for (TowerType tower : defaultTowers) {
+                if (towers.size < 5 && !towers.contains(tower, true)) {
+                    towers.add(tower);
+                }
+            }
+        }
+        ServiceLocator.setTowerTypes(towers);
+    }
+
+    private void createTowerButtons() {
+        tower1 = new ImageButton(skin, towers.get(0).getSkinName());
+        towerButtons.add(tower1);
+        tower2 = new ImageButton(skin, towers.get(1).getSkinName());
+        towerButtons.add(tower2);
+        tower3 = new ImageButton(skin, towers.get(2).getSkinName());
+        towerButtons.add(tower3);
+        tower4 = new ImageButton(skin, towers.get(3).getSkinName());
+        towerButtons.add(tower4);
+        tower5 = new ImageButton(skin, towers.get(4).getSkinName());
+        towerButtons.add(tower5);
+
+        int i = 0;
+        for (ImageButton button : towerButtons) {
+            // Triggers an event when the button is pressed.
+            int finalI = i;
+            button.addListener(
+                    new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+
+                            TowerType selected = ServiceLocator.getCurrencyService().getTower();
+                            if (selected == towers.get(finalI) ) {
+                                ServiceLocator.getCurrencyService().setTowerType(null);
+
+                                towerToggle(null);
+
+                            } else {
+                                ServiceLocator.getCurrencyService().setTowerType(towers.get(finalI));
+
+                                towerToggle(button);
+
+                            }
+                            click.play(0.4f);
+                        }
+                    });
+            TextTooltip tower1Tooltip = new TextTooltip(towers.get(i).getDescription(), getSkin());
+            button.addListener(tower1Tooltip);
+            i++;
+        }
+    }
+
+    private TextButton createPauseButton() {
+        TextButton pauseBtn = ButtonFactory.createButton("Pause");
+
+        // Starting animation for pause button
+        pauseBtn.setPosition(Gdx.graphics.getWidth(), (float)(Gdx.graphics.getHeight() - 150));
+        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200,
+                Gdx.graphics.getHeight() - 150, 1f, Interpolation.fastSlow)));
+
+        // Spawns a pause menu when the button is pressed.
+        pauseBtn.addListener(
+                new ChangeListener() {
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+                        logger.debug("Pause button clicked");
+                        openSound.play(0.4f);
+                        pauseMenu = PauseMenuFactory.createPauseMenu(game);
+                        ServiceLocator.getTimeSource().setPaused(true);
+                    }
+                });
+
+
+        // Pause menu escape key opening listener
+        stage.addListener(
+                new InputListener() {
+                    @Override
+                    public boolean keyUp(InputEvent event, int keycode) {
+                        if ((keycode == Input.Keys.ESCAPE) && !ServiceLocator.getTimeSource().getPaused()) {
+                            openSound.play(0.4f);
+                            pauseMenu = PauseMenuFactory.createPauseMenu(game);
+                            ServiceLocator.getTimeSource().setPaused(true);
+                            return true;
+                        } else if ((keycode == Input.Keys.ESCAPE) && ServiceLocator.getTimeSource().getPaused()) {
+                            pauseMenu.dispose();
+                            return false;
+                        }
+                        return false;
+                    }
+                });
+        return pauseBtn;
+    }
+
     /**
      * Update the level progress bar value
      */
@@ -369,6 +289,10 @@ public class MainGameDisplay extends UIComponent {
      * depending on button selection and currency balance
      */
     private void towerUpdate() {
+        // Check for small tower array
+        if (towers.size < 5) {
+            setTowers();
+        }
         // no tower selected, set all to off
         if (ServiceLocator.getCurrencyService().getTower() == null) {
             // toggle all buttons to off
