@@ -266,6 +266,7 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
         Entity newMob = NPCFactory.createSplittingWaterSlime(80);
         newMob.setPosition((float) (iceBaby.getPosition().x + 0.5), (float) (iceBaby.getPosition().y + 0.5));
         ServiceLocator.getEntityService().register(newMob);
+        ServiceLocator.getWaveService().setEnemyCount(ServiceLocator.getWaveService().getEnemyCount() + 1);
     }
 
     /**

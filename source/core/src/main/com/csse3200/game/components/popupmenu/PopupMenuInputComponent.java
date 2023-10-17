@@ -7,14 +7,12 @@ import com.csse3200.game.input.InputComponent;
  * This input handler only uses keyboard input.
  */
 public class PopupMenuInputComponent extends InputComponent{
-    /** TO DO:
-     * This component's end goal is to send a deactivation trigger when the
-     * user clicks on anything  other than the menu entity, and reactivate it
-     * if the user clicks on a tower, with the new tower's stats as per its
-     * config file.
-     * Current implementation step:  trigger a generic event whenever
-     * the mouse is clicked, with no checks for the entity clicked on.
+    /**
+     * !!!
+     * NOTE: THIS CLASS IS OBSOLETE
+     * !!!
      */
+
     public PopupMenuInputComponent() {super(1);}
     // Note: will need to change constructor's priority when merging with other
     // branches that add other input components.

@@ -1,15 +1,10 @@
 package com.csse3200.game.components.tasks.waves;
 
-
-import com.csse3200.game.services.GameTime;
-
-
 import java.util.*;
 
 public class WaveClass {
   private HashMap<String, int[]> entities;
   private List<Tuple> wave;
-  private int mobIndex;
 
   /**
    * Constructor for the WaveClass
@@ -18,7 +13,6 @@ public class WaveClass {
   public WaveClass(HashMap<String, int[]> entities) {
     this.entities = entities;
     this.wave = entitiesToWave();
-    this.mobIndex = 0;
   }
 
   /**
