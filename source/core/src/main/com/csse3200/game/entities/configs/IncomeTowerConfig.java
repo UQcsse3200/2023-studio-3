@@ -8,7 +8,7 @@ public class IncomeTowerConfig {
     private int baseAttack = 0;
     private int cost = 1;
     private float attackRate = 0;
-    private float incomeRate = 10;
+    public float incomeRate = 3;
 
     /**
      * Function for getting tower's health
