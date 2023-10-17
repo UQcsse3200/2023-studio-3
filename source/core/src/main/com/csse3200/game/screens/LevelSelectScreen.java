@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.csse3200.game.GdxGame;
 import com.csse3200.game.screens.text.AnimatedText;
 import com.csse3200.game.services.GameEndService;
+import com.csse3200.game.services.GameState;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
@@ -46,7 +47,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private final GdxGame game;
     private SpriteBatch batch;
     private int selectedLevel = -1;
-    private int currentLevel;
+    public int currentLevel;
     private boolean isMouseOverPlanet = false;
 
     private static final String INTRO_TEXT = "Select a Planet for Conquest";
@@ -71,7 +72,7 @@ public class LevelSelectScreen extends ScreenAdapter {
             "           A lava-filled planet with molten rivers and extreme temperatures."
     };
 
-
+    int highestLevelReached = GameState.getInstance().getCurrentLevel();
     /**
      * Constructor to initialize the LevelSelectScreen.
      *
@@ -165,15 +166,15 @@ public class LevelSelectScreen extends ScreenAdapter {
      * @param levelNumber The level associated with the planet
      */
     private void spawnPlanet(int width, int height, int posx, int posy, String planetName, int version, int frame, int levelNumber) {
-        int highestLevelReached = currentLevel;
+
         Texture planet;
 
         levelNumber = mapToConventional(levelNumber);
-        if (levelNumber == 0 && highestLevelReached >= -1)  { // ICE planet, which is always unlocked initially
+        if (levelNumber == -1 && highestLevelReached >= -1)  { // ICE planet, which is always unlocked initially
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
-        } else if (levelNumber == 1 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
+        } else if (levelNumber == 0 && highestLevelReached >= 0) { // DESERT planet, unlocked only when highestLevelReached is 0
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
-        } else if (levelNumber == 2 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
+        } else if (levelNumber == 1 && highestLevelReached >= 1) { // LAVA planet, unlocked after DESERT
             planet = new Texture(String.format("planets/%s/%d/%d.png", planetName, version, frame));
         } else {
             // Display the planet in b&w if it's locked
@@ -190,7 +191,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
-        int highestLevelReached = currentLevel;
+
 
         // Iterates through the planets checking for the bounding box
         for (int[] planet : Planets.PLANETS) {
@@ -316,7 +317,7 @@ public class LevelSelectScreen extends ScreenAdapter {
                 String description = getPlanetDescription(planet);
                 descriptionBox.setText(description);
                 descriptionTable.setVisible(true);
-                int highestLevelReached = currentLevel;
+
                 if (Gdx.input.justTouched()) {
                     if (conventionalPlanetLevel == 0 && highestLevelReached >= -1) {
                         loadPlanetLevel(planet);

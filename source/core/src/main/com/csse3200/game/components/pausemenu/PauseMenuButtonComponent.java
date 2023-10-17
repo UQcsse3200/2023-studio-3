@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.csse3200.game.GdxGame;
+import com.csse3200.game.screens.LevelSelectScreen;
+import com.csse3200.game.services.GameState;
 import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import com.csse3200.game.ui.UIComponent;
@@ -26,6 +28,7 @@ public class PauseMenuButtonComponent extends UIComponent {
     private static final Logger logger = LoggerFactory.getLogger(PauseMenuButtonComponent.class);
     private static final float Z_INDEX = 2f;
     private Window window;
+    private int currentLevel;
     private final GdxGame game;
     private static final float WINDOW_SIZE_X = 300;
     private static final float WINDOW_SIZE_Y = 400;
@@ -38,6 +41,7 @@ public class PauseMenuButtonComponent extends UIComponent {
 
     public PauseMenuButtonComponent(GdxGame screenSwitchHandle) {
         game = screenSwitchHandle;
+        this.currentLevel = currentLevel;
     }
 
     /**
@@ -93,7 +97,9 @@ public class PauseMenuButtonComponent extends UIComponent {
                     public void changed(ChangeEvent changeEvent, Actor actor) {
                         click.play(0.5f);
                         logger.debug("Planet select button clicked");
-                        game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
+                        game.setScreen(new LevelSelectScreen(game, 0));
+                        GameState.getInstance().setCurrentLevel(currentLevel);
+                        //game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);
                     }
                 });
         mainMenuBtn.addListener(
