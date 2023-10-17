@@ -6,6 +6,7 @@ import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.npc.DodgingComponent;
 import com.csse3200.game.components.tasks.MovementTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -56,7 +57,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
     // Enums
     private enum State {
-        RUN, ATTACK, DEATH, DEFAULT
+        RUN, ATTACK, DEATH, DEFAULT, DODGE
     }
 
     /**
@@ -112,22 +113,37 @@ public class MobTask extends DefaultTask implements PriorityTask {
     @Override
     public void update() {
 
+        if(mob.getCenterPosition().x <= 1) {
+          mob.getComponent(CombatStatsComponent.class).setHealth(0);
+          ServiceLocator.getGameEndService().updateEngineerCount();
+        }
+
         // death check
-        if (mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag) {
+        if ((mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag)) {
+            // decrement engineer count
+            // ! tests failing because of textbox
+
             changeState(State.DEATH);
             animate();
             movementTask.stop();
             deathFlag = true;
+            
         } else if (deathFlag && animation.isFinished()) {
             ServiceLocator.getWaveService().updateEnemyCount();
             mob.setFlagForDelete(true);
         }
 
+        // Uhhh
         if(gameTime.getTime() >= dodgeEndTime) {
           if (canDodge) {
             mob.getEvents().trigger("dodgeIncomingEntity",
                 mob.getCenterPosition());
-          }
+            if(mob.getComponent(DodgingComponent.class).isTargetVisible(mob.getCenterPosition())) {
+                changeState(State.DODGE);
+                animate();
+                // movementTask.stop();
+            }
+        }
           dodgeEndTime = gameTime.getTime() + 500; // 500ms
         }
 
@@ -164,6 +180,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     runFlag = true;
                 }
             }
+            case DODGE -> {
+                if (animation.isFinished()) {
+                    movementTask.start();
+                    changeState(State.RUN);
+                    animate();
+                    runFlag = true;
+                }
+            }
         }
     }
 
@@ -178,6 +202,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
                         owner.getEntity().getEvents().trigger("mob_death");
                         owner.getEntity().getEvents().trigger("splitDeath");
                     }
+                    case DODGE -> owner.getEntity().getEvents().trigger("mob_dodge");
                     case DEFAULT -> owner.getEntity().getEvents().trigger("mob_default");
                 }
     }
