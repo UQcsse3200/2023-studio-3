@@ -34,10 +34,6 @@ import java.util.Set;
  * the properties stores in 'BaseTowerConfigs'.
  */
 public class TowerFactory {
-    private static final Logger logger = LoggerFactory.getLogger(TowerFactory.class);
-
-    // Define a set to keep track of occupied lanes
-    private static final Set<Integer> occupiedLanes = new HashSet<>();
     private static final int COMBAT_TASK_PRIORITY = 2;
     private static final int WEAPON_TOWER_MAX_RANGE = 40;
     private static final int TNT_TOWER_MAX_RANGE = 6;
@@ -465,29 +461,5 @@ public class TowerFactory {
         tower.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         tower.getComponent(ColliderComponent.class).setAsBoxAligned(new Vector2(1f, 1f), PhysicsComponent.AlignX.CENTER, PhysicsComponent.AlignY.CENTER);
         return tower;
-    }
-
-    public static Entity createAndPlaceTower(int lane) {
-        if (isLaneOccupied(lane)) {
-            logger.info(String.format("Lane %d is already occupied by a tower", lane));
-            return null;
-        }
-
-        Entity tower = createBaseTower();
-        // Customize the tower creation here based on the chosen tower type
-
-        // Add the lane to the set of occupied lanes
-        occupiedLanes.add(lane);
-
-        return tower;
-    }
-
-    /**
-     * Checks if a lane is already occupied by a tower.
-     * @param lane The lane to check.
-     * @return True if the lane is occupied, false otherwise.
-     */
-    public static boolean isLaneOccupied(int lane) {
-        return occupiedLanes.contains(lane);
     }
 }
