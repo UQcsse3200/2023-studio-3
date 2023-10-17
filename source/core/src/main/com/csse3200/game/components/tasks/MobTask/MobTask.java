@@ -32,7 +32,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final int MELEE_DAMAGE = 10;
     private static final long MELEE_ATTACK_SPEED = 2000;
     private static final long RANGE_ATTACK_SPEED = 5000;
-    private static final float MELEE_ATTACK_RANGE = 0.2f;
+    private static final float MELEE_ATTACK_RANGE = 0f;
 
     // Private variables
     private final MobType mobType;
