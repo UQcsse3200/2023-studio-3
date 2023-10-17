@@ -151,6 +151,13 @@ water_queen_walk
   orig: 90, 60
   offset: 0, 0
   index: -1
+water_queen_freeze
+  rotate: false
+  xy: 1104, 2
+  size: 90, 60
+  orig: 90, 60
+  offset: 0, 0
+  index: -1
 water_queen_walk
   rotate: false
   xy: 554, 2

@@ -29,7 +29,11 @@ public class FireWormAnimationController extends Component {
         entity.getEvents().addListener("mob_walk", this::animateWalk);
         entity.getEvents().addListener("mob_attack", this::animateAttack);
         entity.getEvents().addListener("mob_death", this::animateDeath);
-        entity.getEvents().addListener("default", this::stopAnimation);
+
+        entity.getEvents().addListener("wanderStart", this::animateWalk);
+        entity.getEvents().addListener("shootStart", this::animateAttack);
+        entity.getEvents().addListener("dieStart", this::animateDeath);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
     }
 
     void animateWalk() {
@@ -50,6 +54,9 @@ public class FireWormAnimationController extends Component {
         animator.startAnimation("default");
     }
 
-
+	void animateFreeze()
+	{
+		animator.startAnimation("fire_worm_freeze");
+	}
 }
 
