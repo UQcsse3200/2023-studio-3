@@ -218,6 +218,7 @@ public class TowerFactory {
                 .addComponent(new TNTAnimationController());
 
         TNTTower.getComponent(AnimationRenderComponent.class).scaleEntity();
+        TNTTower.removeComponent(TowerUpgraderComponent.class);
 
         return TNTTower;
     }
@@ -287,7 +288,6 @@ public class TowerFactory {
                 .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
                 .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
                 .addComponent(new CostComponent(config.getCost()))
-                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new TowerAnimationController());
@@ -350,7 +350,7 @@ public class TowerFactory {
         stunTower
                 .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
                 .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
-                .addComponent((new CostComponent(config.getCost())))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new StunTowerAnimationController());
@@ -380,7 +380,8 @@ public class TowerFactory {
 
         fireworksTower
                 .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent((new CostComponent(config.getCost())))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
+                .addComponent(new CostComponent(config.getCost()))
                 .addComponent(aiTaskComponent)
                 .addComponent(animator)
                 .addComponent(new FireworksTowerAnimationController());
@@ -412,7 +413,8 @@ public class TowerFactory {
                 .addComponent(animator)
                 .addComponent(new PierceTowerAnimationController())
                 .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent((new CostComponent(config.getCost())))
+                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
                 .addComponent(aiTaskComponent);
 
         pierceTower.setScale(1.5f, 1.5f);
@@ -440,7 +442,8 @@ public class TowerFactory {
                 .addComponent(animator)
                 .addComponent(new RicochetTowerAnimationController())
                 .addComponent(new CombatStatsComponent(config.getHealth(), config.getBaseAttack()))
-                .addComponent((new CostComponent(config.getCost())))
+                .addComponent(new CostComponent(config.getCost()))
+                .addComponent(new UpgradableStatsComponent(config.getAttackRate()))
                 .addComponent(aiTaskComponent);
                 // ADD ANIMATION COMPONENTS
 

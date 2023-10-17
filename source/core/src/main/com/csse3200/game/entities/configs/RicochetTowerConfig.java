@@ -2,8 +2,9 @@ package com.csse3200.game.entities.configs;
 
 public class RicochetTowerConfig {
     private int health = 1;
-    private int baseAttack = 0;
+    private int baseAttack = 1;
     private int cost = 1;
+    private float attackRate = 1;
 
     /**
      * Function for getting tower's health
@@ -27,5 +28,13 @@ public class RicochetTowerConfig {
      */
     public int getCost() {
         return this.cost;
+    }
+  
+    /**
+     * Functino for getting tower's attack rate
+     * @return The attack rate of this tower
+     */
+    public float getAttackRate() {
+        return this.attackRate;
     }
 }
