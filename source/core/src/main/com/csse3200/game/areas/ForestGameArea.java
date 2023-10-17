@@ -293,7 +293,7 @@ public class ForestGameArea extends GameArea {
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 
     spawnScrap();
-//    spawnGapScanners();
+    spawnGapScanners();
   }
 
   private void displayUI() {
