@@ -2,6 +2,7 @@ package com.csse3200.game.components;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.GridPoint2;
@@ -57,9 +58,9 @@ public class WarningComponent extends UIComponent {
         this.warning.clear();
         super.dispose();
     }
-    private Vector2 convert_coordinates(float x, float y) {
+    private Vector2 convert_coordinates(float x, float y, Camera camera) {
         Vector3 entityCoordinates = new Vector3(x, y, 0);
-        Vector3 entityScreenCoordinate = this.camera.project(entityCoordinates);
+        Vector3 entityScreenCoordinate = camera.project(entityCoordinates);
         Vector2 stageCoordinates = stage.screenToStageCoordinates(
                 new Vector2(entityScreenCoordinate.x, entityScreenCoordinate.y));
         stage.getViewport().unproject(stageCoordinates);
