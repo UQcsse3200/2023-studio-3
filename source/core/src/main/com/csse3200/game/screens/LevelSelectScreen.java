@@ -152,6 +152,7 @@ public class LevelSelectScreen extends ScreenAdapter {
         spawnPlanetBorders();
     }
 
+
     /**
      * Spawns a planet on the screen.
      * @param width The width of the planet
