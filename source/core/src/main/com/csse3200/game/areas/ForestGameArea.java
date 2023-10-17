@@ -4,11 +4,18 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
+import com.badlogic.gdx.audio.Music;
+
+import com.csse3200.game.components.ProjectileEffects;
+
+import com.csse3200.game.services.GameTime;
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.security.SecureRandom;
 import java.util.Timer;
 
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
@@ -16,6 +23,13 @@ import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 /** Forest area for the demo game with trees, a player, and some enemies. */
 public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
+
+  /* Change below to change the number of ms between spawns of engineers in the case */
+  private static final long ENGINEER_MIN_SPAWN_INTERVAL = 1000;
+
+  private long lastSpawnTime = 0;
+
+  private int wave = 0;
 
   private Timer waveTimer;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
@@ -248,6 +262,7 @@ public class ForestGameArea extends GameArea {
 
     spawnScrap();
     spawnGapScanners();
+
   }
 
   private void displayUI() {
@@ -413,10 +428,19 @@ public class ForestGameArea extends GameArea {
    * and trigger engineer spawning
    */
   private void spawnGapScanners() {
+    GameTime gameTime = ServiceLocator.getTimeSource();
+    long currSpawnTime = gameTime.getTime();
+
+    long diff = currSpawnTime - this.lastSpawnTime;
+    if (diff < ENGINEER_MIN_SPAWN_INTERVAL) {
+      return;
+    }
+
     for (int i = 0; i < terrain.getMapBounds(0).y; i++) {
       Entity scanner = GapScannerFactory.createScanner();
       spawnEntityAt(scanner, new GridPoint2(0, i), true, true);
     }
+    this.lastSpawnTime = currSpawnTime;
   }
 
 

@@ -6,15 +6,10 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.csse3200.game.ai.tasks.AITaskComponent;
-import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.ai.tasks.Task;
-import com.csse3200.game.components.npc.EngineerMenuComponent;
 import com.csse3200.game.components.player.HumanAnimationController;
-import com.csse3200.game.components.tasks.human.HumanMovementTask;
 import com.csse3200.game.components.tasks.human.HumanWanderTask;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.entities.factories.EngineerFactory;
 import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.ServiceLocator;
@@ -28,8 +23,9 @@ public class EngineerInputComponent extends InputComponent {
     private Camera camera;
     private EntityService entityService;
 
-    private Entity selectedEngineer = null;
-    private boolean moveClicked = false;
+    public Entity selectedEngineer = null;
+
+    private final String OUTLINE_STRING = "_outline";
 
     public EngineerInputComponent(Game game, Camera camera) {
         this.game = game;
@@ -37,8 +33,9 @@ public class EngineerInputComponent extends InputComponent {
         this.entityService = ServiceLocator.getEntityService();
     }
 
+    @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);
+        Vector3 worldCoordinates = new Vector3(screenX , screenY, 0);
         camera.unproject(worldCoordinates);
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         camera.project(worldCoordinates);
@@ -47,43 +44,17 @@ public class EngineerInputComponent extends InputComponent {
 
         // Case when engineer is not clicked
         if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {
-            if (selectedEngineer != null && moveClicked) {
+            if (selectedEngineer != null) {
+                // Clicked a tile with an engineer selected and clicked on not an engineer
                 moveEngineer(cursorPosition);
-                selectedEngineer = null;
-                moveClicked = false;
                 return true;
             } else {
+                // Clicked a tile with no engineer selected or engineer on the tile
                 return false;
             }
         }
         // Case when engineer is clicked
-        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
-        String currentAnimation = animator.getCurrentAnimation();
-        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
-        EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);
-
-        if (engineer.equals(selectedEngineer)) {
-            // Deselect the engineer by clicking on itself
-            this.getWanderTask().setSelected(false);
-            selectedEngineer = null;
-            moveClicked = false;
-            if (currentAnimation.contains("_outline")) {
-                controller.deselectEngineer(currentAnimation);
-                //logger.info("Engineer deselected");
-            }
-        } else {
-            this.selectedEngineer = engineer;
-            this.getWanderTask().setSelected(true);
-            moveClicked = false;
-            logger.info("Engineer size: {}", engineer.getScale());
-
-            // outline image if it is not already outlined and vice versa
-            if (!currentAnimation.contains("_outline")) {
-                animator.startAnimation(currentAnimation + "_outline");
-                menu.createMenu(cursorPosition.x, cursorPosition.y, camera);
-                controller.setClicked(true);
-            }
-        }
+        switchEngineer(engineer);
         return true;
     }
 
@@ -106,12 +77,65 @@ public class EngineerInputComponent extends InputComponent {
         wander.startCombat();
     }
 
+    /**
+     * Switches the specified engineer
+     * If the given engineer is already selected, deselect it
+     * If another engineer is selected, deselect it and select the new given engineer
+     * @param engineer (Entity) the specified engineer
+     */
+    private void switchEngineer(Entity engineer) {
+        if (engineer.equals(this.selectedEngineer)) {
+            this.getWanderTask().setSelected(false);
+            this.selectedEngineer = null;
+            switchOutline(engineer);
+        }
+        else if (selectedEngineer == null) {
+            this.selectedEngineer = engineer;
+            switchOutline(engineer);
+            this.getWanderTask().setSelected(true);
+
+        } else {
+            this.getWanderTask().setSelected(false);
+            switchOutline(this.selectedEngineer);
+            switchOutline(engineer);
+            this.selectedEngineer = engineer;
+            this.getWanderTask().setSelected(true);
+
+        }
+    }
+
+    /**
+     * Switches the outline of the given engineer and deselects/selects engineer as needed
+     * If outlined -> remove outline, deselect engineer and vice versa
+     * @param engineer (Entity) the specified engineer
+     */
+    private void switchOutline(Entity engineer) {
+        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
+        String currentAnimation = animator.getCurrentAnimation();
+        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);
+        if (currentAnimation.contains(OUTLINE_STRING)) {
+            animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));
+            controller.setClicked(false);
+        } else {
+            animator.startAnimation(currentAnimation + OUTLINE_STRING);
+            controller.setClicked(true);
+        }
+    }
+
+    /**
+     * Returns the wander task of the selected engineer
+     * @return (HumanWanderTask) the wander task of the selected engineer
+     */
     private HumanWanderTask getWanderTask() {
         AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);
         return movementTask.getTask(HumanWanderTask.class);
     }
 
-    private void moveEngineer(Vector2 cursorPosition) {
+    /**
+     * Moves the selected engineer to the given cursor position
+     * @param cursorPosition (Vector2) the cursor position
+     */
+    public void moveEngineer(Vector2 cursorPosition) {
         if (selectedEngineer == null) {
             logger.info("Trying to move an engineer that is not selected");
         }
@@ -123,9 +147,4 @@ public class EngineerInputComponent extends InputComponent {
         Vector2 dest = cursorPosition.add(offset);
         wander.startMoving(dest);
     }
-
-    public void setMoveClicked(boolean moveClicked) {
-        this.moveClicked = moveClicked;
-    }
-
 }

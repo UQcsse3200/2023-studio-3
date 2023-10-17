@@ -10,6 +10,8 @@ import com.csse3200.game.physics.PhysicsLayer;
 import com.csse3200.game.physics.raycast.RaycastHit;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     // The Engineer's attributes.
     private final float maxRange; // The maximum range of the Engineer's weapon.
     // weaponCapacity is the number of shots fired before the engineer has to reload
-    private static final int weaponCapacity = 10;
+    private static final int WEAPON_CAPACITY = 10;
     private int shotsFired = 0;  // Tracks the number of shots fired in the current cycle
 
     private final Vector2 maxRangePosition = new Vector2();
@@ -40,6 +42,8 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
     private GameTime timeSource;
     private long endTime;
     private long reloadTime;
+
+    private static final Logger logger = LoggerFactory.getLogger(EngineerCombatTask.class);
 
     private ArrayList<RaycastHit> hits = new ArrayList<>();
     private final RaycastHit hit = new RaycastHit();
@@ -106,7 +110,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
                     owner.getEntity().getEvents().trigger(IDLE_RIGHT);
                     engineerState = STATE.IDLE_RIGHT;
                 } else {
-                    if (shotsFired <= weaponCapacity) {
+                    if (shotsFired <= WEAPON_CAPACITY) {
                         owner.getEntity().getEvents().trigger(FIRING);
                         owner.getEntity().getEvents().trigger(ENGINEER_PROJECTILE_FIRED);
                         // this might be changed to an event which gets triggered everytime the tower enters the firing state
@@ -166,6 +170,7 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
         // If there is an obstacle in the path to the max range point, mobs visible.
         Vector2 position = owner.getEntity().getCenterPosition();
         hits.clear();
+        targets.clear();
         for (int i = 5; i > -5; i--) {
             if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {
                 hits.add(hit);
@@ -182,16 +187,17 @@ public class EngineerCombatTask extends DefaultTask implements PriorityTask {
      */
     public Vector2 fetchTarget() {
         // Initial nearest position for comparison
-        int lowest = 10;
+        float currentClosest = Float.MAX_VALUE;
 
         Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
                 owner.getEntity().getCenterPosition().y);
+        Vector2 enggPosition = owner.getEntity().getCenterPosition();
 
-        // Find the nearest target from the array of targets
-        for (Vector2 tgt : targets){
-            if (Math.abs(tgt.y - nearest.y) < lowest) {
-                lowest = (int)Math.abs(tgt.y - nearest.y);
-                nearest = tgt;
+        for (Vector2 target : targets) {
+            float distance = enggPosition.dst(target); // euclidean distance
+            if (distance < currentClosest) {
+                currentClosest = distance;
+                nearest = target;
             }
         }
         return nearest;

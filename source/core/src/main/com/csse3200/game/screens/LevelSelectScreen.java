@@ -25,9 +25,9 @@ import com.csse3200.game.services.ServiceLocator;
 import com.csse3200.game.ui.ButtonFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import static com.badlogic.gdx.scenes.scene2d.ui.Table.Debug.table;
 import static com.csse3200.game.ui.UIComponent.getSkin;
+
 
 /**
  * Represents the level selection screen of the game, where players can choose a planet to play on.
@@ -58,6 +58,7 @@ public class LevelSelectScreen extends ScreenAdapter {
     private Sprite background;
     private final Music music;
 
+    // Stores a time to determine the frame of the planet
     float timeCounter = 0;
 
     private static final String BG_PATH = "planets/background.png";
@@ -185,8 +186,11 @@ public class LevelSelectScreen extends ScreenAdapter {
         batch.draw(planetSprite, posx, posy, width, height);
     }
 
+
     /**
-     * Spawns planet borders and handles interactions with them.
+     * Spawns the borders of the planets. If a planet is clicked it will load the level
+     * based on the planet. If a planet is hovered over it will display a border around
+     * the planet.
      */
     private void spawnPlanetBorders() {
         Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -350,6 +354,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      * @param width The new width of the screen.
      * @param height The new height of the screen.
      */
+    @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
     }
