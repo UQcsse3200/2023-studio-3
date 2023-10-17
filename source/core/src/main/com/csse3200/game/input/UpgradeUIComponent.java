@@ -1,5 +1,6 @@
 package com.csse3200.game.input;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -33,7 +34,25 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import static java.lang.Math.round;
+
 public class UpgradeUIComponent extends InputComponent {
+
+    // CONSTANTS
+
+    /**
+     * The cost for all upgrades are 10 crystals
+     */
+    private static final int UPGRADE_COST = 10; // Crystal
+
+    /**
+     * The cost for repairing a turret is 50 scrap
+     */
+    private static final int REPAIR_COST = 50; // Scrap
+    private static final float ATTACK_RATE_INCREASE = 0.2f;
+    private static final int ATTACK_INCREASE = 10; // Damage
+    private static final int HEALTH_INCREASE = 10; // Health
+    private static final int TIME_DECREASE = 5; // Scrap
     private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
     private final EntityService entityService;
     private final Camera camera;
@@ -85,21 +104,10 @@ public class UpgradeUIComponent extends InputComponent {
         Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);
         Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);
 
-        //temp fix to prevent upgrading of new towers
-        if (clickedEntity!= null && (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||
-                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||
-                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {
-            return false;
-        }
-        //
-
         // If the clicked position contains a turret, and the turret is upgradable and not a TNT tower
         if (clickedEntity != null && clickedEntity.getComponent(TowerUpgraderComponent.class) != null
-                && clickedEntity.getComponent(TNTDamageComponent.class) == null) {
-            // TNT TowerUpgraderComponent can be removed later, but possibly useful for future sprint.
-           // Clear all existing upgrade tables
-            logger.info("clickedEntity: " + clickedEntity);
-
+                ) {
+//
             clearUpgradeTables();
             // Check if there is an existing upgrade table for this turret entity
             Table existingUpgradeTable = upgradeTables.get(clickedEntity);
@@ -110,8 +118,6 @@ public class UpgradeUIComponent extends InputComponent {
             } else {
                 // If no upgrade table exists, create and store a new one
                 Table newUpgradeTable = createUpgradeTable(clickedEntity);
-                Vector2 UICoordinates = stage.screenToStageCoordinates(new Vector2(screenX, screenY));
-                newUpgradeTable.setPosition(UICoordinates.x, UICoordinates.y);
                 stage.addActor(newUpgradeTable);
 
                 // Store the new upgrade table in the map
@@ -149,9 +155,11 @@ public class UpgradeUIComponent extends InputComponent {
     private Table createUpgradeTable(Entity turretEntity) {
         // This is the overarching table that contains the close button, the inner table, and the cost display
         Table upgradeTable = new Table();
-        upgradeTable.top();
+        upgradeTable.top().left();
         upgradeTable.defaults().pad(0).space(0);
         upgradeTable.setSize(60, 60);
+        upgradeTable.padTop(30f).padLeft(5f);
+        upgradeTable.setPosition(0, round((float) Gdx.graphics.getHeight() / 1.3f));
 
         // The inner table contains the upgrade buttons and the stats display
         Table innerUpgradeTable = new Table();
@@ -180,11 +188,12 @@ public class UpgradeUIComponent extends InputComponent {
         costDisplay.setWidth(0);
         costDisplay.setBackground(drawableBackground);
         // Create an Image for the scrap icon
-        Drawable costDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrap.png")));
+        Drawable costDrawable = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/crystal.png")));
+        Drawable costDrawableScrap = new TextureRegionDrawable(new TextureRegion(new Texture("images/economy/scrap.png")));
         Image costImage = new Image(costDrawable);
         costDisplay.add(costImage).center();
         costImage.setScaling(Scaling.none);
-        Label costDisplayLabel = new Label("100", createLabelStyle());
+        Label costDisplayLabel = new Label("You shouldn't see this", createLabelStyle());
         costDisplay.add(costDisplayLabel).padLeft(0);
 
         TextButton closeButton = new TextButton("X", style);
@@ -217,14 +226,15 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeHealth.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
+                value = ServiceLocator.getCurrencyService().getCrystal().getAmount();
                 logger.info("clicked");
-                if (value >= 100) {
-                    value -= 100;
-                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
-                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
+                if (value >= UPGRADE_COST) {
+                    value -= UPGRADE_COST;
+                    ServiceLocator.getCurrencyService().getCrystal().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
 
-                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, 10);
+                    turretEntity.getComponent(TowerUpgraderComponent.class)
+                            .upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, HEALTH_INCREASE);
                     int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
                     int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();
                     healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
@@ -232,7 +242,7 @@ public class UpgradeUIComponent extends InputComponent {
             }
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                costDisplayLabel.setText("10");
+                costDisplayLabel.setText(String.format("%d", UPGRADE_COST));
                 costDisplay.setVisible(true);
             }
             @Override
@@ -247,12 +257,13 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeAttack.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
-                if (value >= 10) {
-                    value -= 10;
-                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
-                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 5);
+                value = ServiceLocator.getCurrencyService().getCrystal().getAmount();
+                if (value >= UPGRADE_COST) {
+                    value -= UPGRADE_COST;
+                    ServiceLocator.getCurrencyService().getCrystal().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
+                    turretEntity.getComponent(TowerUpgraderComponent.class)
+                            .upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, ATTACK_INCREASE);
 
                     int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();
                     attackLabel.setText(String.format("%d", attack));
@@ -260,7 +271,7 @@ public class UpgradeUIComponent extends InputComponent {
             }
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                costDisplayLabel.setText("10");
+                costDisplayLabel.setText(String.format("%d", UPGRADE_COST));
                 costDisplay.setVisible(true);
             }
             @Override
@@ -276,14 +287,18 @@ public class UpgradeUIComponent extends InputComponent {
         upgradeFireRate.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                value = ServiceLocator.getCurrencyService().getScrap().getAmount();
-                if (value >= 10) {
-                    value -= 10;
-                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);
-                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 0.2f;
-                    turretEntity.getComponent(UpgradableStatsComponent.class).setAttackRate(newFireRate);
-                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, (int) newFireRate * 5);
+                value = ServiceLocator.getCurrencyService().getCrystal().getAmount();
+                if (value >= UPGRADE_COST) {
+                    value -= UPGRADE_COST;
+                    ServiceLocator.getCurrencyService().getCrystal().setAmount(value);
+                    ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
+                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class)
+                            .getAttackRate() + ATTACK_RATE_INCREASE;
+                    turretEntity.getComponent(UpgradableStatsComponent.class)
+                            .setAttackRate(newFireRate);
+                    turretEntity.getComponent(TowerUpgraderComponent.class)
+                            .upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE,
+                                    (int) newFireRate * 5);
 
                     float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();
                     fireRateLabel.setText(String.format("%.2f", fireRate));
@@ -293,7 +308,7 @@ public class UpgradeUIComponent extends InputComponent {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                costDisplayLabel.setText("10");
+                costDisplayLabel.setText(String.format("%d", UPGRADE_COST));
                 costDisplay.setVisible(true);
             }
             @Override
@@ -309,11 +324,12 @@ public class UpgradeUIComponent extends InputComponent {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 value = ServiceLocator.getCurrencyService().getScrap().getAmount();
-                if (value >= 100) {
-                    value -= 100;
+                if (value >= REPAIR_COST) {
+                    value -= REPAIR_COST;
                     ServiceLocator.getCurrencyService().getScrap().setAmount(value);
                     ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.REPAIR, 0);
+                    turretEntity.getComponent(TowerUpgraderComponent.class)
+                            .upgradeTower(TowerUpgraderComponent.UPGRADE.REPAIR, 0);
                     int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();
                     healthLabel.setText(String.format("%d/%d", currentHealth, maxHealth));
                 }
@@ -321,11 +337,13 @@ public class UpgradeUIComponent extends InputComponent {
 
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                costDisplayLabel.setText("10");
+                costDisplayLabel.setText(String.format("%d", REPAIR_COST));
+                costImage.setDrawable(costDrawableScrap);
                 costDisplay.setVisible(true);
             }
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+                costImage.setDrawable(costDrawable);
                 costDisplay.setVisible(false);
             }
 
@@ -353,12 +371,12 @@ public class UpgradeUIComponent extends InputComponent {
             upgradeIncome.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    value = ServiceLocator.getCurrencyService().getScrap().getAmount();
-                    if (value >= 10 && turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() >= 10) {
-                        value -= 10;
-                        ServiceLocator.getCurrencyService().getScrap().setAmount(value);
-                        ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();
-                        float newIncome = turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() - 5;
+                    value = ServiceLocator.getCurrencyService().getCrystal().getAmount();
+                    if (value >= UPGRADE_COST && turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() >= 10) {
+                        value -= UPGRADE_COST;
+                        ServiceLocator.getCurrencyService().getCrystal().setAmount(value);
+                        ServiceLocator.getCurrencyService().getDisplay().updateCrystalsStats();
+                        float newIncome = turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() - TIME_DECREASE;
                         turretEntity.getComponent(IncomeUpgradeComponent.class).setIncomeRate(newIncome);
                         turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.INCOME, (int) newIncome);
                         incomeLabel.setText(String.format("%.2f", newIncome));
@@ -369,7 +387,7 @@ public class UpgradeUIComponent extends InputComponent {
 
                 @Override
                 public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-                    costDisplayLabel.setText("10");
+                    costDisplayLabel.setText(String.format("%d", UPGRADE_COST));
                     costDisplay.setVisible(true);
                 }
                 @Override
@@ -378,6 +396,7 @@ public class UpgradeUIComponent extends InputComponent {
                 }
             });
         }
+        logger.info(String.valueOf(attack));
         if (attack != 0) {
             innerUpgradeTable.add(attackIconImage).padRight(5).width(32).height(32);  // Add attack icon
             innerUpgradeTable.add(attackLabel).expandX().left();

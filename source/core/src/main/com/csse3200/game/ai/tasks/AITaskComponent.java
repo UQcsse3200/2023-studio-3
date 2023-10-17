@@ -46,8 +46,8 @@ public class AITaskComponent extends Component implements TaskRunner {
    */
   public <T extends PriorityTask> T getTask(Class<T> task) {
     for (PriorityTask priorityTask : priorityTasks) {
-      if (priorityTask.getClass() == task) {
-        return (T) priorityTask;
+      if (task.isInstance(priorityTask)) {
+        return task.cast(priorityTask);
       }
     }
     logger.info("Task {} not found", task);
@@ -83,12 +83,8 @@ public class AITaskComponent extends Component implements TaskRunner {
    */
   public void disposeAll() {
     currentTask = null;
-    for (int i = 0; i < priorityTasks.size(); i++) {
-      priorityTasksToBeRestored.add(priorityTasks.get(i));
-    }
-    for (int i = 0; i < priorityTasks.size(); i++) {
-      priorityTasks.remove(i);
-    }
+    priorityTasksToBeRestored.addAll(priorityTasks);
+    priorityTasks.clear();
   }
 
   /**
@@ -96,12 +92,8 @@ public class AITaskComponent extends Component implements TaskRunner {
    * back into priorityTasks.
    */
   public void restore() {
-    for (int i = 0; i < priorityTasksToBeRestored.size(); i++) {
-      priorityTasks.add(priorityTasksToBeRestored.get(i));
-    }
-    for (int i = 0; i < priorityTasksToBeRestored.size(); i++) {
-      priorityTasksToBeRestored.remove(i);
-    }
+    priorityTasks.addAll(priorityTasksToBeRestored);
+    priorityTasksToBeRestored.clear();
     this.update();
   }
 
