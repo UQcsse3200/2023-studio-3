@@ -82,9 +82,6 @@ public class EffectComponent extends Component {
                 }
                 targetPhysics.setSpeed(STUN_SPEED);
             } else if (isStunned) {
-                if (target == null) {
-                    return;
-                }
                 isStunned = false;
                 targetPhysics.setSpeed(defaultTargetSpeed);
             }
