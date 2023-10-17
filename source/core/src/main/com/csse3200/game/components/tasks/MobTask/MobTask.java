@@ -38,7 +38,7 @@ public class MobTask extends DefaultTask implements PriorityTask {
     private static final int MELEE_DAMAGE = 10;
     private static final long MELEE_ATTACK_SPEED = 2000;
     private static final long RANGE_ATTACK_SPEED = 5000;
-    private static final float MELEE_ATTACK_RANGE = 0.2f;
+    private static final float MELEE_ATTACK_RANGE = 0f;
 
     private static final float CRYSTAL_DROP_RATE = 0.1f;
     private static final float SCRAP_DROP_RATE = 0.6f;
@@ -102,7 +102,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
         super.start();
         mob = owner.getEntity();
         animation = mob.getComponent(AnimationRenderComponent.class);
-        mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
         melee = mobType.isMelee();
 
         movementTask = new MovementTask(new Vector2(0f, mob.getPosition().y));
@@ -115,8 +114,10 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_MOB_SPEED);
         } else {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_RANGE_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_RANGE_SPEED);
         }
     }
 
@@ -168,6 +169,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
                     animate();
                     runFlag = false;
                 }
+                if (!enemyDetected() && melee) {
+                    runFlag = true;
+                }
                 if (melee && enemyDetected() && gameTime.getTime() - lastTimeAttacked >= MELEE_ATTACK_SPEED) {
                     changeState(State.ATTACK);
                     meleeAttackFlag = true;
@@ -191,7 +195,9 @@ public class MobTask extends DefaultTask implements PriorityTask {
                 if (animation.isFinished()) {
                     movementTask.start();
                     changeState(State.RUN);
-                    runFlag = true;
+                    if (!melee) {
+                        runFlag = true;
+                    }
                 }
             }
             case DODGE -> {

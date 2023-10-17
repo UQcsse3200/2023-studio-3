@@ -64,6 +64,7 @@ public class PatrickTask extends DefaultTask implements PriorityTask {
         patrick = owner.getEntity();
         animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation
         patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed
+        patrick.getComponent(PhysicsMovementComponent.class).setNormalSpeed(PATRICK_SPEED);
 
         // give game time to load
         Timer.schedule(new Timer.Task() {

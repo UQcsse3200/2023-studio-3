@@ -29,7 +29,7 @@ public class DodgingComponent extends Component {
   private final RaycastHit hit = new RaycastHit();
   private short targetLayer;
   private float rangeDetection;
-  private float dodgeSpeed = 1.75f; 
+  private float dodgeSpeed = 1.75f;
   private float originalSpeed; // Original entity vertical speed
   private PhysicsEngine physics;
   private Random random = new Random();
@@ -96,13 +96,14 @@ public class DodgingComponent extends Component {
    */
   public void changeTraverseDirection(Vector2 mobPos) {
     int randDirection = random.nextInt(2) == 1 ? -1 : 1;
+
     if (isTargetVisible(mobPos)) {
       // If mob is in the top half quadrant of the map grid, make the entity dodge
       // downwards.
       // setVerticalAngleDirection(mobPos.y > 3.5 ? mobPos.y - 15 : mobPos.y + 15);
       // Random direction
       setVerticalAngleDirection(mobPos.y + (15 * randDirection));
-      setVerticalSpeed(dodgeSpeed);      
+      setVerticalSpeed(dodgeSpeed);
     } else {
       setVerticalAngleDirection(mobPos.y);
       setVerticalSpeed(originalSpeed);
