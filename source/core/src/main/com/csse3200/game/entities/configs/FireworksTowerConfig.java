@@ -2,9 +2,9 @@ package com.csse3200.game.entities.configs;
 
 public class FireworksTowerConfig {
     private int health = 1;
-    private int baseAttack = 0;
+    private int baseAttack = 1;
     private int cost = 1;
-    private int attackRate = 0;
+    private int attackRate = 1;
     private int incomeRate = 0;
 
     /**
@@ -35,7 +35,7 @@ public class FireworksTowerConfig {
      * Function for getting tower's attack rate
      * @return The attack rate of this tower
      */
-    public float getAttackRate() {
+    public int getAttackRate() {
         return this.attackRate;
     }
 

@@ -239,9 +239,9 @@ public class MainGameDisplay extends UIComponent {
         TextButton pauseBtn = ButtonFactory.createButton("Pause");
 
         // Starting animation for pause button
-        pauseBtn.setPosition(Gdx.graphics.getWidth(), (float)(Gdx.graphics.getHeight() - 150));
-        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200,
-                Gdx.graphics.getHeight() - 150, 1f, Interpolation.fastSlow)));
+        pauseBtn.setPosition((float)Gdx.graphics.getWidth(), (Gdx.graphics.getHeight() - 150f));
+        pauseBtn.addAction(new SequenceAction(Actions.moveTo(Gdx.graphics.getWidth() - 200f,
+                Gdx.graphics.getHeight() - 150f, 1f, Interpolation.fastSlow)));
 
         // Spawns a pause menu when the button is pressed.
         pauseBtn.addListener(
