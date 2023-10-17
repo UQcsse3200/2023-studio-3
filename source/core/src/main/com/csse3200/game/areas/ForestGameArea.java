@@ -161,6 +161,7 @@ public class ForestGameArea extends GameArea {
           "images/mobs/rocky.atlas"
   };
   private static final String[] forestSounds = {
+          "sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg",
           "sounds/Impact4.ogg",
           "sounds/economy/click.wav",
           "sounds/economy/click_1.wav",
@@ -292,7 +293,7 @@ public class ForestGameArea extends GameArea {
     spawnTerrain();
 
     // Set up infrastructure for end game tracking
-//    player = spawnPlayer();
+ //   player = spawnPlayer();
 
     logger.info("Creating waves");
     waves = WaveFactory.createWaves();
@@ -346,18 +347,18 @@ public class ForestGameArea extends GameArea {
 
   }
 
-  private Entity spawnPlayer() {
-    Entity newPlayer = PlayerFactory.createPlayer();
-    spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
-    return newPlayer;
-  }
+  //private Entity spawnPlayer() {
+  //  Entity newPlayer = PlayerFactory.createPlayer();
+  //  spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);
+ //  return newPlayer;
+ // }
 
   // Spawn player at a specific position
-  private Entity spawnPlayer(GridPoint2 position) {
-    Entity newPlayer = PlayerFactory.createPlayer();
-    spawnEntityAt(newPlayer, position, true, true);
-    return newPlayer;
-  }
+ // private Entity spawnPlayer(GridPoint2 position) {
+  //  Entity newPlayer = PlayerFactory.createPlayer();
+//   spawnEntityAt(newPlayer, position, true, true);
+ //   return newPlayer;
+ // }
 
   /**
    * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
