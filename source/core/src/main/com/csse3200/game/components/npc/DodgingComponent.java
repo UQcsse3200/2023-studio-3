@@ -1,5 +1,6 @@
 package com.csse3200.game.components.npc;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.physics.PhysicsEngine;
@@ -32,7 +33,6 @@ public class DodgingComponent extends Component {
   private float dodgeSpeed = 1.75f; 
   private float originalSpeed; // Original entity vertical speed
   private PhysicsEngine physics;
-  private Random random = new Random();
 
   // Sometimes the raycast mechanic doesn't detect the other entity because of the
   // target's (or self) collider size does not match. This value makes sure the
@@ -95,7 +95,7 @@ public class DodgingComponent extends Component {
    * @param mobPos The current Vector2 mob position in the map.
    */
   public void changeTraverseDirection(Vector2 mobPos) {
-    int randDirection = random.nextInt(2) == 1 ? -1 : 1;
+    int randDirection = MathUtils.random(0,2) == 1 ? -1 : 1;
     if (isTargetVisible(mobPos)) {
       // If mob is in the top half quadrant of the map grid, make the entity dodge
       // downwards.

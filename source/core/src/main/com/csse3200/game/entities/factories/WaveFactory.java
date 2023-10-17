@@ -1,5 +1,6 @@
 package com.csse3200.game.entities.factories;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.csse3200.game.ai.tasks.AITaskComponent;
 import com.csse3200.game.components.tasks.waves.LevelWaves;
 import com.csse3200.game.components.tasks.waves.WaveClass;
@@ -26,7 +27,6 @@ public class WaveFactory {
    */
 
   private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);
-  private static Random rand = new Random();
   private static final ArrayList<String> MELEE_MOBS = new ArrayList<>(Arrays.asList(
       "Skeleton", "Coat", "DragonKnight", "Necromancer"
   ));
@@ -173,7 +173,7 @@ public class WaveFactory {
           num = minMobs - currentMobs;
           System.out.println(num + " for " + mob + " at wave " + atWave);
         } else {
-          num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
+          num = MathUtils.random(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
           System.out.println(num + " for " + mob + " at wave " + atWave);
           currentMobs += num;
         }
