@@ -3,7 +3,6 @@ package com.csse3200.game.components.tasks;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
-import com.csse3200.game.areas.ForestGameArea;
 import com.csse3200.game.components.CombatStatsComponent;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.ProjectileFactory;
@@ -57,7 +56,6 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
      */
     public TowerCombatTask(int priority, float maxRange) {
-
         this.priority = priority;
         this.maxRange = maxRange;
         this.fireRateInterval = 1;
@@ -123,61 +121,16 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
             towerState = STATE.DEATH;
             return;
         }
+
         switch (towerState) {
-            case IDLE -> {
-                // targets detected in idle mode - start deployment
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    towerState = STATE.DEPLOY;
-                }
-            }
-            case DEPLOY -> {
-                // currently deploying,
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(FIRING);
-                    towerState = STATE.FIRING;
-                } else {
-                    owner.getEntity().getEvents().trigger(STOW);
-                    towerState = STATE.STOW;
-                }
-            }
-            case FIRING -> {
-                if (shoot) {
-                    // targets gone - stop firing
-                    if (!isTargetVisible()) {
-
-                        owner.getEntity().getEvents().trigger(STOW);
-                        towerState = STATE.STOW;
-                    } else {
-                        owner.getEntity().getEvents().trigger(FIRING);
-                        // this might be changed to an event which gets triggered everytime the tower enters the firing state
-
-                        Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
-                        newProjectile.setScale(1.1f, 0.8f);
-                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (owner.getEntity().getPosition().y));
-                        ServiceLocator.getEntityService().register(newProjectile);
-                    }
-                }
-                shoot = !shoot;
-            }
-            case STOW -> {
-                // currently stowing
-                if (isTargetVisible()) {
-
-                    owner.getEntity().getEvents().trigger(DEPLOY);
-                    towerState = STATE.DEPLOY;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
-            }
-            case DEATH -> {
-                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                    owner.getEntity().setFlagForDelete(true);
-                }
-            }
+            case IDLE -> handleIdleState();
+            case DEPLOY -> handleDeployState();
+            case FIRING -> handleFiringState();
+            case STOW -> handleStowState();
+            default -> handleDeathState();      // DEATH
         }
     }
+  
     /**
      * For stopping the running task
      */
@@ -218,7 +171,9 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      */
     private boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     /**
@@ -227,7 +182,7 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
      * @param newInterval The rate at which the tower should fire projectiles in shots per second.
      */
     private void changeFireRateInterval(int newInterval) {
-        logger.info("Changing fire rate to: " + newInterval);
+        logger.info(String.format("Changing fire rate to: %d", newInterval));
         fireRateInterval = 1 / ((float) newInterval / 5);
     }
 
@@ -240,4 +195,74 @@ public class TowerCombatTask extends DefaultTask implements PriorityTask {
         return fireRateInterval;
     }
 
+    /**
+     * Function triggers actions at IDLE state, then switch to DEPLOY
+     */
+    private void handleIdleState() {
+        // targets detected in idle mode - start deployment
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(DEPLOY);
+            towerState = STATE.DEPLOY;
+        }
+    }
+
+    /**
+     * Function triggers actions at DEPLOY state, then switch to FIRING or STOW
+     */
+    private void handleDeployState() {
+        // currently deploying,
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(FIRING);
+            towerState = STATE.FIRING;
+        } else {
+            owner.getEntity().getEvents().trigger(STOW);
+            towerState = STATE.STOW;
+        }
+    }
+
+    /**
+     * Function triggers actions at FIRING state
+     */
+    private void handleFiringState() {
+        if (shoot) {
+            // targets gone - stop firing
+            if (!isTargetVisible()) {
+                owner.getEntity().getEvents().trigger(STOW);
+                towerState = STATE.STOW;
+            } else {
+                owner.getEntity().getEvents().trigger(FIRING);
+                // this might be changed to an event which gets triggered everytime the tower enters the firing state
+
+                Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC, new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
+                newProjectile.setScale(1.1f, 0.8f);
+                newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.5), (owner.getEntity().getPosition().y));
+                ServiceLocator.getEntityService().register(newProjectile);
+            }
+        }
+
+        shoot = !shoot;
+    }
+
+    /**
+     * Function triggers actions at STOW state, then switch to DEPLOY or IDLE
+     */
+    private void handleStowState() {
+        // currently stowing
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(DEPLOY);
+            towerState = STATE.DEPLOY;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Function handle DEATH state
+     */
+    private void handleDeathState() {
+        if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+            owner.getEntity().setFlagForDelete(true);
+        }
+    }
 }

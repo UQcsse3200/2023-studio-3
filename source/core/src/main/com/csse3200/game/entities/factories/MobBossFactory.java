@@ -216,6 +216,7 @@ public class MobBossFactory {
      * @return a base mob boss entity
      */
     public static Entity createBaseBoss() {
+
         return new Entity()
                 .addComponent(new PhysicsComponent())
 //                .addComponent(new ColliderComponent())

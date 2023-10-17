@@ -33,7 +33,6 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
     public static final String SHOOT_UP = "ShootUp";
     public static final String SHOOT_DOWN = "ShootDown";
 
-
     // class attributes
     private final int priority;  // The active priority this task will have
     private final float maxRange;
@@ -90,7 +89,7 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             } else {
                 endTime = timeSource.getTime() + (INTERVAL * 1000);
             }
-            }
+        }
     }
 
     /**
@@ -104,65 +103,15 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
             towerState = STATE.DIE;
             return;
         }
+
         switch (towerState) {
-            case WALK -> {
-                owner.getEntity().getEvents().trigger(WALK);
-                towerState = STATE.IDLE;
-            }
-            case IDLE -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK_UP);
-                    owner.getEntity().getEvents().trigger(SHOOT_UP);
-                    towerState = STATE.DOWN;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                }
-            }
-            case SHOOT_DOWN -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(ATTACK_DOWN);
-                    owner.getEntity().getEvents().trigger(SHOOT_DOWN);
-                    towerState = STATE.UP;
-                } else {
-                    owner.getEntity().getEvents().trigger(GO_UP);
-                    towerState = STATE.UP;
-                }
-            }
-            case SHOOT_UP -> {
-                if (isTargetVisible()) {
-
-                    owner.getEntity().getEvents().trigger(ATTACK_UP);
-                    owner.getEntity().getEvents().trigger(SHOOT_UP);
-                    towerState = STATE.DOWN;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
-            }
-            case DOWN -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(GO_DOWN);
-                    towerState = STATE.SHOOT_DOWN;
-                } else {
-                    owner.getEntity().getEvents().trigger(IDLE);
-                    towerState = STATE.IDLE;
-                }
-            }
-            case UP -> {
-                if (isTargetVisible()) {
-                    owner.getEntity().getEvents().trigger(GO_UP);
-                    towerState = STATE.SHOOT_UP;
-                } else {
-                    owner.getEntity().getEvents().trigger(GO_UP);
-                    towerState = STATE.IDLE;
-
-                }
-            }
-            case DIE -> {
-                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
-                    owner.getEntity().setFlagForDelete(true);
-                }
-            }
+            case WALK -> handleWalkState();
+            case IDLE -> handleIdleState();
+            case SHOOT_DOWN -> handleShootDownState();
+            case SHOOT_UP -> handleShootUpState();
+            case DOWN -> handleDownState();
+            case UP -> handleUpState();
+            default -> handleDieState();       // DIE
         }
     }
 
@@ -175,6 +124,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return this.towerState;
     }
 
+    /**
+     * Function for setting the tower's state.
+     * @param state The new state of this tower.
+     */
     public void setState(STATE state) {
         this.towerState = state;
     }
@@ -194,7 +147,9 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      */
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     private void changeFireRateInterval(int newInterval) {
@@ -210,4 +165,87 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return fireRateInterval;
     }
 
+    /**
+     * Function triggers walk and changes state from WALK to IDLE
+     */
+    private void handleWalkState() {
+        owner.getEntity().getEvents().trigger(WALK);
+        towerState = STATE.IDLE;
+    }
+
+    /**
+     * Function triggers actions at IDLE state
+     */
+    private void handleIdleState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(ATTACK_UP);
+            owner.getEntity().getEvents().trigger(SHOOT_UP);
+            towerState = STATE.DOWN;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+        }
+    }
+
+    /**
+     * Function triggers actions at SHOOT_DOWN state, then switch to UP
+     */
+    private void handleShootDownState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(ATTACK_DOWN);
+            owner.getEntity().getEvents().trigger(SHOOT_DOWN);
+        } else {
+            owner.getEntity().getEvents().trigger(GO_UP);
+        }
+
+        towerState = STATE.UP;
+    }
+
+    /**
+     * Function triggers actions at SHOOT_UP state, then switch to DOWN or IDLE
+     */
+    private void handleShootUpState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(ATTACK_UP);
+            owner.getEntity().getEvents().trigger(SHOOT_UP);
+            towerState = STATE.DOWN;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Function triggers actions at DOWN state, then switch to SHOOT_DOWN or IDLE
+     */
+    private void handleDownState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(GO_DOWN);
+            towerState = STATE.SHOOT_DOWN;
+        } else {
+            owner.getEntity().getEvents().trigger(IDLE);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Function triggers actions at UP state, then switch to SHOOT_UP or IDLE
+     */
+    private void handleUpState() {
+        if (isTargetVisible()) {
+            owner.getEntity().getEvents().trigger(GO_UP);
+            towerState = STATE.SHOOT_UP;
+        } else {
+            owner.getEntity().getEvents().trigger(GO_UP);
+            towerState = STATE.IDLE;
+        }
+    }
+
+    /**
+     * Function handles DIE state
+     */
+    private void handleDieState() {
+        if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {
+            owner.getEntity().setFlagForDelete(true);
+        }
+    }
 }

@@ -8,19 +8,19 @@ public enum TowerType {
     DROID("Droid Tower", "droid_tower", "Droid Towers are basic military towers that deal damage to enemies and slow down enemies",
             2, "45", "images/turret-select/droid-tower-default.png", "images/turret-select/droid-tower-selected.png"),
     WALL("Wall Tower", "wall", "The Wall Tower creates barriers to block enemy paths, slowing down their progress.",
-            3, "45", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-selected.png"),
+            3, "200", "images/turret-select/wall-tower-default.png", "images/turret-select/wall-tower-selected.png"),
     FIRE("Fire Tower", "fire_tower", "The Fire Tower emits flames, causing damage over time to enemies caught in its fiery radius.",
-            4, "45", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-selected.png"),
+            4, "300", "images/turret-select/fire-tower-default.png", "images/turret-select/fire-tower-selected.png"),
     STUN("Stun Tower", "stun_tower", "The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.",
-            5, "45", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
-    INCOME("Mine Tower", "income_tower", "The Mine Tower generates additional in-game currency over time.",
-            6, "10", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png"),
-    PIERCE("Pierce Tower", "", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
-            6, "0", "images/turret-select/pierce-tower-default.png", "images/turret-select/pierce-tower-selected.png"),
-    RICOCHET("Ricochet Tower", "", "The Ricochet Tower fires a projectile that upon contact does damage and changes direction",
-            7, "0", "images/turret-select/ricochet-tower-default.png", "images/turret-select/ricochet-tower-selected.png"),
-    FIREWORK("Firework Tower", "", "The Firework Tower fires a projectile that splits on contact with its target",
-            8, "0", "images/turret-select/firework-tower-default.png", "images/turret-select/firework-tower-selected.png");
+            5, "500", "images/turret-select/stun-tower-default.png", "images/turret-select/stun-tower-selected.png"),
+    INCOME("Income Tower", "income_tower", "The Mine Tower generates additional in-game currency over time.",
+            6, "100", "images/turret-select/mine-tower-default.png", "images/turret-select/mine-tower-selected.png"),
+    PIERCE("Pierce Tower", "pierce_tower", "The Pierce Tower fires a projectile that pierces through targets and does not dissipate upon contact.",
+            6, "400", "images/turret-select/pierce-tower-default.png", "images/turret-select/pierce-tower-selected.png"),
+    RICOCHET("Ricochet Tower", "ricochet_tower", "The Ricochet Tower fires a projectile that upon contact does damage and changes direction",
+            7, "400", "images/turret-select/ricochet-tower-default.png", "images/turret-select/ricochet-tower-selected.png"),
+    FIREWORK("Firework Tower", "fireworks_tower", "The Firework Tower fires a projectile that splits on contact with its target",
+            8, "400", "images/turret-select/firework-tower-default.png", "images/turret-select/firework-tower-selected.png");
   
     private final String towerName;
     private final String skinName;

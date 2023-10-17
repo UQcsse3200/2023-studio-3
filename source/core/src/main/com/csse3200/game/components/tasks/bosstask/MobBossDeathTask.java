@@ -1,5 +1,6 @@
 package com.csse3200.game.components.tasks.bosstask;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.ai.tasks.DefaultTask;
 import com.csse3200.game.ai.tasks.PriorityTask;
@@ -8,6 +9,8 @@ import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.DropFactory;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+
+//CODE IS REDUNDANT ///
 
 /**
  * Task that prints a message to the terminal whenever it is called.
@@ -93,10 +96,18 @@ public class MobBossDeathTask extends DefaultTask implements PriorityTask {
     }
 
     private void dropCurrency() {
+        // Create and register 5 crystal drops around the bossPosition
+        for (int i = 0; i < 5; i++) {
+            Entity crystal = DropFactory.createCrystalDrop();
 
-        Entity scrap = DropFactory.createScrapDrop();
-        scrap.setPosition(bossPosition.x,bossPosition.y);
-        ServiceLocator.getEntityService().register(scrap.setScale(2,2));
+            // Calculate positions around the bossPosition
+            float offsetX = MathUtils.random(-1f, 1f); // Adjust the range as needed
 
+            float dropX = bossPosition.x + offsetX;
+
+            crystal.setPosition(dropX, bossPosition.y);
+            ServiceLocator.getEntityService().register(crystal);
+        }
     }
+
 }

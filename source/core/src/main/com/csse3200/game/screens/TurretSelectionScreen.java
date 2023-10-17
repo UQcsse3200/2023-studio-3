@@ -121,7 +121,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                     towers.add(t);
                 }
                 ServiceLocator.setTowerTypes(towers);;
-                game.setScreen(GdxGame.ScreenType.MAIN_GAME);
+                game.setScreen(GdxGame.ScreenType.LOAD_SCREEN);
             }
         });
 
