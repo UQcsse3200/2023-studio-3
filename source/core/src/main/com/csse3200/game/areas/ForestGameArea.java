@@ -497,8 +497,8 @@ public class ForestGameArea extends GameArea {
     } else {
       mob.setScale(1.5f, 1.5f);
     }
-    flashWarning(entity, randomPos);
     spawnEntityAt(mob, randomPos, true, false);
+    flashWarning(mob);
   }
 
   // * TEMPORARY FOR TESTING
@@ -965,8 +965,8 @@ public class ForestGameArea extends GameArea {
     }
   }
 
-  private void flashWarning(String mobType, GridPoint2 position) {
-    Entity warning = WarningFactory.createWarning(mobType, position);
-    spawnEntityAt(warning, position, true, true);
+  private void flashWarning(Entity mob) {
+    Entity warning = WarningFactory.createWarning(mob);
+    spawnEntityAt(warning, new GridPoint2(), false, false);
   }
 }
