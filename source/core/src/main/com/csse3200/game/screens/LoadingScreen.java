@@ -44,7 +44,7 @@ public class LoadingScreen implements Screen {
         stage = new Stage(new ScreenViewport());
         Skin skin = new Skin(Gdx.files.internal("uiskin.json")); // Use your own skin file
         loadingLabel = new Label("Loading", skin);
-        loadingLabel.setPosition(Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2);
+        loadingLabel.setPosition((float) Gdx.graphics.getWidth() / 2 - 50f, (float) Gdx.graphics.getHeight() / 2);
         stage.addActor(loadingLabel);
     }
 
