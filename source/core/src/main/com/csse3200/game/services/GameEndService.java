@@ -68,10 +68,17 @@ public class GameEndService {
         return display;
     }
 
+    /**
+     * Returns the number of spawned engineers
+     * @return (int) number of spawned engineers
+     */
     public int getNumSpawnedEngineers() {
         return numSpawnedEngineers;
     }
 
+    /**
+     * Increments the number of spawned engineers
+     */
     public void incrementNumSpawnedEngineers(){
         numSpawnedEngineers += 1;
     }

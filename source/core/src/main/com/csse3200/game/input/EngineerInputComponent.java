@@ -77,6 +77,12 @@ public class EngineerInputComponent extends InputComponent {
         wander.startCombat();
     }
 
+    /**
+     * Switches the specified engineer
+     * If the given engineer is already selected, deselect it
+     * If another engineer is selected, deselect it and select the new given engineer
+     * @param engineer (Entity) the specified engineer
+     */
     private void switchEngineer(Entity engineer) {
         if (engineer.equals(this.selectedEngineer)) {
             this.getWanderTask().setSelected(false);
@@ -98,6 +104,11 @@ public class EngineerInputComponent extends InputComponent {
         }
     }
 
+    /**
+     * Switches the outline of the given engineer and deselects/selects engineer as needed
+     * If outlined -> remove outline, deselect engineer and vice versa
+     * @param engineer (Entity) the specified engineer
+     */
     private void switchOutline(Entity engineer) {
         AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
         String currentAnimation = animator.getCurrentAnimation();
@@ -111,11 +122,19 @@ public class EngineerInputComponent extends InputComponent {
         }
     }
 
+    /**
+     * Returns the wander task of the selected engineer
+     * @return (HumanWanderTask) the wander task of the selected engineer
+     */
     private HumanWanderTask getWanderTask() {
         AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);
         return movementTask.getTask(HumanWanderTask.class);
     }
 
+    /**
+     * Moves the selected engineer to the given cursor position
+     * @param cursorPosition (Vector2) the cursor position
+     */
     public void moveEngineer(Vector2 cursorPosition) {
         if (selectedEngineer == null) {
             logger.info("Trying to move an engineer that is not selected");
