@@ -39,8 +39,8 @@ public class IceBabyTask extends DefaultTask implements PriorityTask {
     private Vector2 currentPos;
     private Vector2 walkPos;
     private MovementTask walkTask;
-    private static int xRightBoundary = 17;
-    private static int xLeftBoundary = 12;
+    private int xRightBoundary = 17;
+    private int xLeftBoundary = 12;
     private boolean startFlag = false;
     private boolean isWalking;
     /** Animation constants */
