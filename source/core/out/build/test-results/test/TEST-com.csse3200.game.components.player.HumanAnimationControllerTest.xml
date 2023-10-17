@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.player.HumanAnimationControllerTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:23" hostname="DESKTOP-F4ACIG8" time="0.515">
+  <properties/>
+  <testcase name="shouldAnimateDeath()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.102"/>
+  <testcase name="shouldAnimateHit()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.074"/>
+  <testcase name="shouldAnimateLeftWalk()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.069"/>
+  <testcase name="shouldAnimateIdleRight()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.065"/>
+  <testcase name="shoudlAnimateFiring()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.068"/>
+  <testcase name="shouldHaveAnimationController()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.066"/>
+  <testcase name="shouldAnimateRightWalk()" classname="com.csse3200.game.components.player.HumanAnimationControllerTest" time="0.056"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

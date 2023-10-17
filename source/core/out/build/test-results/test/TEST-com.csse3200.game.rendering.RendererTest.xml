@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.rendering.RendererTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:47" hostname="DESKTOP-F4ACIG8" time="0.447">
+  <properties/>
+  <testcase name="shouldRender()" classname="com.csse3200.game.rendering.RendererTest" time="0.021"/>
+  <testcase name="shouldResizeCamera()" classname="com.csse3200.game.rendering.RendererTest" time="0.209"/>
+  <testcase name="shouldResizeViewPort()" classname="com.csse3200.game.rendering.RendererTest" time="0.215"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

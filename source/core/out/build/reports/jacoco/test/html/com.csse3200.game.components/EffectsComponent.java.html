@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EffectsComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components</a> &gt; <span class="el_source">EffectsComponent.java</span></div><h1>EffectsComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components;
+
+import java.util.ArrayList;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
+
+import com.badlogic.gdx.utils.Array;
+
+/**
+ * This component applies an effect from the ProjectileEffects enum. This consists of fireball, burn,
+ * slow, and stun. Component also handles the targeting of specific layers and an area of effect
+ * application of effects.
+ */
+public class EffectsComponent extends Component {
+    private final float radius;
+    private final ProjectileEffects effect;
+    private final boolean aoe;
+    private HitboxComponent hitboxComponent;
+    private final short targetLayer;
+<span class="fc" id="L32">    private Array&lt;CombatStatsComponent&gt; burnEntities = new Array&lt;&gt;();</span>
+<span class="fc" id="L33">    private ArrayList&lt;Entity&gt; stunnedEntities = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * Constructor for the AoEComponent.
+     *
+     * @param radius The radius of the area-of-effect.
+     */
+<span class="fc" id="L40">    public EffectsComponent(short targetLayer, float radius, ProjectileEffects effect, boolean aoe) {</span>
+<span class="fc" id="L41">        this.targetLayer = targetLayer;</span>
+<span class="fc" id="L42">        this.radius = radius;</span>
+<span class="fc" id="L43">        this.effect = effect;</span>
+<span class="fc" id="L44">        this.aoe = aoe;</span>
+<span class="fc" id="L45">    }</span>
+
+    @Override
+    public void create() {
+<span class="nc" id="L49">        entity.getEvents().addListener(&quot;collisionStart&quot;, this::onCollisionStart);</span>
+<span class="nc" id="L50">        entity.getEvents().addListener(&quot;collisionEnd&quot;, this::onCollisionEnd);</span>
+<span class="nc" id="L51">        hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="nc" id="L52">    }</span>
+
+    private void onCollisionStart(Fixture me, Fixture other) {
+        // Nothing to do in collision start
+<span class="nc" id="L56">    }</span>
+
+    private void onCollisionEnd(Fixture me, Fixture other) {
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        if (hitboxComponent.getFixture() != me) {</span>
+            // Not triggered by hitbox, ignore
+<span class="nc" id="L61">            return;</span>
+        }
+
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {</span>
+            // Doesn't match our target layer, ignore
+<span class="nc" id="L66">            return;</span>
+        }
+
+        // Get the other entity involved in the collision
+<span class="nc" id="L70">        Entity otherEntity = ((BodyUserData) other.getBody().getUserData()).entity;</span>
+<span class="nc" id="L71">        CombatStatsComponent otherCombatStats = otherEntity.getComponent(CombatStatsComponent.class);</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (otherCombatStats == null) {</span>
+            // The other entity does not have a CombatStatsComponent
+<span class="nc" id="L74">            return;</span>
+        }
+
+        // Apply effect
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (effect == ProjectileEffects.FIREBALL) {</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (aoe) {</span>
+<span class="nc" id="L80">                applyAoeEffect(ProjectileEffects.FIREBALL);</span>
+            }
+        } else {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">            if (aoe) {</span>
+<span class="nc" id="L84">                applyAoeEffect(effect);</span>
+            } else {
+<span class="nc" id="L86">                applySingleEffect(effect, otherCombatStats, otherEntity);</span>
+            }
+        }
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Used for singe targeting projectiles to apply effects entity it collides with.
+     * @param effect effect to be applied to entity
+     */
+    public void applySingleEffect(ProjectileEffects effect, CombatStatsComponent targetCombatStats, Entity targetEntity) {
+<span class="nc" id="L96">        Entity hostEntity = getEntity();</span>
+<span class="nc" id="L97">        CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);</span>
+
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if (hostCombatStats == null) {</span>
+            // The host entity does not have a CombatStatsComponent to deal damage
+<span class="nc" id="L101">            return;</span>
+        }
+
+        // Apply effect
+<span class="nc bnc" id="L105" title="All 5 branches missed.">        switch (effect) {</span>
+<span class="nc" id="L106">            case FIREBALL -&gt; {}</span>
+            case BURN -&gt; {
+<span class="nc" id="L108">                burnEffect(targetCombatStats, hostCombatStats);</span>
+<span class="nc" id="L109">            }</span>
+<span class="nc" id="L110">            case SLOW -&gt; {slowEffect(targetEntity);}</span>
+<span class="nc" id="L111">            case STUN -&gt; {stunEffect(targetEntity);}</span>
+        }
+<span class="nc" id="L113">    }</span>
+    /**
+     * Used for aoe projectiles to apply effects to all entities within the area of effect (radius).
+     * @param effect effect to be applied to entities within radius
+     */
+    public void applyAoeEffect(ProjectileEffects effect) {
+<span class="nc" id="L119">        Entity hostEntity = getEntity();</span>
+<span class="nc" id="L120">        CombatStatsComponent hostCombatStats = hostEntity.getComponent(CombatStatsComponent.class);</span>
+
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (hostCombatStats == null) {</span>
+            // The host entity does not have a CombatStatsComponent to deal damage
+<span class="nc" id="L124">            return;</span>
+        }
+
+<span class="nc" id="L127">        Array&lt;Entity&gt; nearbyEntities = ServiceLocator.getEntityService().getNearbyEntities(hostEntity, radius);</span>
+
+        // Iterate through nearby entities and apply effects
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (int i = 0; i &lt; nearbyEntities.size; i++) {</span>
+<span class="nc" id="L131">            Entity targetEntity = nearbyEntities.get(i);</span>
+
+<span class="nc" id="L133">            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);</span>
+<span class="nc bnc" id="L134" title="All 2 branches missed.">            if (targetHitbox == null) { return; }</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if (!PhysicsLayer.contains(targetLayer, targetHitbox.getLayer())) {</span>
+                // Doesn't match our target layer, ignore
+<span class="nc" id="L137">                return;</span>
+            }
+
+<span class="nc" id="L140">            CombatStatsComponent targetCombatStats = targetEntity.getComponent(CombatStatsComponent.class);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            if (targetCombatStats != null) {</span>
+<span class="nc bnc" id="L142" title="All 5 branches missed.">                switch (effect) {</span>
+<span class="nc" id="L143">                    case FIREBALL -&gt; {fireballEffect(targetCombatStats, hostCombatStats);}</span>
+<span class="nc" id="L144">                    case BURN -&gt; {burnEffect(targetCombatStats, hostCombatStats);}</span>
+<span class="nc" id="L145">                    case SLOW -&gt; {slowEffect(targetEntity);}</span>
+                    case STUN -&gt; {
+<span class="nc" id="L147">                        stunEffect(targetEntity);</span>
+<span class="nc" id="L148">                    }</span>
+                }
+            } else {
+<span class="nc" id="L151">                return;</span>
+            }
+        }
+<span class="nc" id="L154">    }</span>
+
+    /**
+     * Deals damage to target based on hosts' CombatStatsComponent
+     * @param target CombatStatsComponent of entity hit by projectile
+     * @param host CombatStatsComponent of projectile
+     */
+    private void fireballEffect(CombatStatsComponent target, CombatStatsComponent host) {
+<span class="nc" id="L162">        target.hit(host);</span>
+<span class="nc" id="L163">    }</span>
+
+    /**
+     * Applies 5 ticks of damage from hosts' CombatStatsComponent over 5 seconds
+     * @param target CombatStatsComponent of entity hit by projectile
+     * @param host CombatStatsComponent of projectile
+     */
+    private void burnEffect(CombatStatsComponent target, CombatStatsComponent host) {
+        // Ensure burn effects aren't applied multiple times by same projectile
+<span class="nc bnc" id="L172" title="All 2 branches missed.">        if (burnEntities.contains(target, false)) {</span>
+<span class="nc" id="L173">            return;</span>
+        }
+<span class="nc" id="L175">        burnEntities.add(target);</span>
+        // Create a timer task to apply the effect repeatedly
+<span class="nc" id="L177">        int numberOfTicks = 5;</span>
+<span class="nc" id="L178">        long delay = 1;</span>
+<span class="nc" id="L179">        Timer.schedule(new Timer.Task() {</span>
+<span class="nc" id="L180">            private int count = 0;</span>
+
+            @Override
+            public void run() {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                if (count &lt; numberOfTicks) {</span>
+<span class="nc" id="L185">                    target.hit(host);</span>
+<span class="nc" id="L186">                    count++;</span>
+                } else {
+                    // Ensure to cancel the task when it's done
+<span class="nc" id="L189">                    this.cancel();</span>
+                }
+<span class="nc" id="L191">            }</span>
+        }, delay, delay);
+<span class="nc" id="L193">    }</span>
+
+    /**
+     * Applies slow effect to targetEntity. If entity is a mob, speed
+     * and firing rate will be slowed. If entity is a tower, firing rate
+     * will be slowed
+     * @param targetEntity Entity for slow effect to be applied to
+     */
+    private void slowEffect(Entity targetEntity) {
+<span class="nc" id="L202">        boolean towerFlag = false;</span>
+<span class="nc" id="L203">        boolean mobFlag = false;</span>
+
+<span class="nc" id="L205">        PhysicsMovementComponent targetPhysics = null;</span>
+<span class="nc" id="L206">        float xSpeed = 0;</span>
+<span class="nc" id="L207">        float ySpeed = 0;</span>
+
+        // Create a timer task to apply the effect repeatedly
+<span class="nc bnc" id="L210" title="All 2 branches missed.">        if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetEntity.getComponent(HitboxComponent.class).getLayer())) {</span>
+            // towers
+<span class="nc" id="L212">            towerFlag = true;</span>
+<span class="nc" id="L213">            targetEntity.getEvents().trigger(&quot;upgradeTower&quot;, TowerUpgraderComponent.UPGRADE.FIRERATE, -30);</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        } else if (PhysicsLayer.contains(PhysicsLayer.NPC, targetEntity.getComponent(HitboxComponent.class).getLayer())) {</span>
+            // mobs
+<span class="nc" id="L216">            mobFlag = true;</span>
+<span class="nc" id="L217">            targetPhysics = targetEntity.getComponent(PhysicsMovementComponent.class);</span>
+<span class="nc bnc" id="L218" title="All 2 branches missed.">            if (targetPhysics == null) {</span>
+<span class="nc" id="L219">                return;</span>
+            }
+
+            // Halve the mob speed
+<span class="nc" id="L223">            xSpeed = targetPhysics.getSpeed().x;</span>
+<span class="nc" id="L224">            ySpeed = targetPhysics.getSpeed().y;</span>
+<span class="nc" id="L225">            targetPhysics.setSpeed(new Vector2(xSpeed/2, ySpeed/2));</span>
+        } else {
+<span class="nc" id="L227">            return;</span>
+        }
+
+        // Reset speed
+<span class="nc" id="L231">        boolean finalTowerFlag = towerFlag;</span>
+<span class="nc" id="L232">        boolean finalMobFlag = mobFlag;</span>
+<span class="nc" id="L233">        PhysicsMovementComponent finalTargetPhysics = targetPhysics;</span>
+<span class="nc" id="L234">        float finalXSpeed = xSpeed;</span>
+<span class="nc" id="L235">        float finalYSpeed = ySpeed;</span>
+<span class="nc" id="L236">        Timer.schedule(new Task() {</span>
+            @Override
+            public void run() {
+<span class="nc bnc" id="L239" title="All 2 branches missed.">                if (finalTowerFlag) {</span>
+<span class="nc" id="L240">                    targetEntity.getEvents().trigger(&quot;upgradeTower&quot;, TowerUpgraderComponent.UPGRADE.FIRERATE, 30);</span>
+<span class="nc bnc" id="L241" title="All 2 branches missed.">                } else if (finalMobFlag) {</span>
+<span class="nc" id="L242">                    finalTargetPhysics.setSpeed(new Vector2(finalXSpeed, finalYSpeed));</span>
+                }
+<span class="nc" id="L244">            }</span>
+        }, 5); // 5 seconds delay
+<span class="nc" id="L246">    }</span>
+
+    /**
+     * Applies stun effect to a taget entity.
+     * @param targetEntity Entity for stun effect to be applied to.
+     */
+    private void stunEffect(Entity targetEntity) {
+<span class="nc" id="L253">        CombatStatsComponent hostCombatStats = targetEntity.getComponent(CombatStatsComponent.class);</span>
+<span class="nc" id="L254">        AITaskComponent taskComponent = targetEntity.getComponent(AITaskComponent.class);</span>
+
+<span class="nc bnc" id="L256" title="All 4 branches missed.">        if (hostCombatStats == null || taskComponent == null) {</span>
+<span class="nc" id="L257">            return;</span>
+        }
+
+<span class="nc" id="L260">        hostCombatStats.setBaseAttack(0);</span>
+
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        if (stunnedEntities.contains(targetEntity)) {</span>
+<span class="nc" id="L263">            return;</span>
+        }
+        
+<span class="nc" id="L266">        taskComponent.disposeAll();</span>
+<span class="nc" id="L267">        stunnedEntities.add(targetEntity);</span>
+    
+<span class="nc" id="L269">        new java.util.Timer().schedule( </span>
+<span class="nc" id="L270">        new java.util.TimerTask() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L273">                taskComponent.restore();</span>
+<span class="nc bnc" id="L274" title="All 2 branches missed.">                for (int i = 0; i &lt; stunnedEntities.size(); i++) {</span>
+<span class="nc bnc" id="L275" title="All 2 branches missed.">                    if (stunnedEntities.get(i).equals(targetEntity)) {</span>
+<span class="nc" id="L276">                        stunnedEntities.remove(stunnedEntities.get(i));</span>
+                    }
+                }
+<span class="nc" id="L279">                this.cancel();</span>
+<span class="nc" id="L280">            }</span>
+        }, 5000);
+<span class="nc" id="L282">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

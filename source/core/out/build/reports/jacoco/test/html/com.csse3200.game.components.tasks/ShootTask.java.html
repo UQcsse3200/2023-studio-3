@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ShootTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">ShootTask.java</span></div><h1>ShootTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.entities.Entity;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.DebugRenderer;
+import com.csse3200.game.services.ServiceLocator;
+
+
+/**
+ * Task that prints a message to the terminal whenever it is called.
+ */
+public class ShootTask extends DefaultTask implements PriorityTask {
+  private String message;
+  private final Entity target;
+  private final int priority;
+  private final float viewDistance;
+  private final float maxChaseDistance;
+  private final PhysicsEngine physics;
+  private final DebugRenderer debugRenderer;
+<span class="nc" id="L25">  private final RaycastHit hit = new RaycastHit();</span>
+
+  /**
+   * @param target The entity to shoot at.
+   * @param priority Task priority when shooting (0 when not chasing).
+   * @param viewDistance Maximum distance from the entity at which shooting can start.
+   * @param maxChaseDistance Maximum distance from the entity while shooting before giving up.
+   */
+<span class="nc" id="L33">  public ShootTask(Entity target, int priority, float viewDistance, float maxChaseDistance) {</span>
+<span class="nc" id="L34">    this.target = target;</span>
+<span class="nc" id="L35">    this.priority = priority;</span>
+<span class="nc" id="L36">    this.viewDistance = viewDistance;</span>
+<span class="nc" id="L37">    this.maxChaseDistance = maxChaseDistance;</span>
+<span class="nc" id="L38">    this.message = &quot;Shoot Task Activated &quot; + target;</span>
+<span class="nc" id="L39">    physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="nc" id="L40">    debugRenderer = ServiceLocator.getRenderService().getDebug();</span>
+
+<span class="nc" id="L42">  }</span>
+
+  @Override
+  public void start() {
+<span class="nc" id="L46">    super.start();</span>
+<span class="nc" id="L47">    System.out.println(this.message);</span>
+<span class="nc" id="L48">  }</span>
+
+  @Override
+  public int getPriority() {
+<span class="nc bnc" id="L52" title="All 2 branches missed.">    if (status == Status.ACTIVE) {</span>
+<span class="nc" id="L53">      return getActivePriority();</span>
+    }
+
+<span class="nc" id="L56">    return getInactivePriority();</span>
+  }
+
+  private float getDistanceToTarget() {
+<span class="nc" id="L60">    return owner.getEntity().getPosition().dst(target.getPosition());</span>
+  }
+
+  private int getActivePriority() {
+<span class="nc" id="L64">    float dst = getDistanceToTarget();</span>
+<span class="nc bnc" id="L65" title="All 4 branches missed.">    if (dst &gt; maxChaseDistance || !isTargetVisible()) {</span>
+<span class="nc" id="L66">      return -1; // Too far, stop chasing</span>
+    }
+<span class="nc" id="L68">    return priority;</span>
+  }
+
+  private int getInactivePriority() {
+<span class="nc" id="L72">    float dst = getDistanceToTarget();</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">    if (dst &lt; viewDistance &amp;&amp; isTargetVisible()) {</span>
+<span class="nc" id="L74">      return priority;</span>
+    }
+<span class="nc" id="L76">    return -1;</span>
+  }
+
+  private boolean isTargetVisible() {
+<span class="nc" id="L80">    Vector2 from = owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L81">    Vector2 to = target.getCenterPosition();</span>
+
+    // If there is an obstacle in the path to the player, not visible.
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (physics.raycast(from, to, PhysicsLayer.OBSTACLE, hit)) {</span>
+<span class="nc" id="L85">      debugRenderer.drawLine(from, hit.point);</span>
+<span class="nc" id="L86">      return false;</span>
+    }
+<span class="nc" id="L88">    debugRenderer.drawLine(from, to);</span>
+<span class="nc" id="L89">    return true;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

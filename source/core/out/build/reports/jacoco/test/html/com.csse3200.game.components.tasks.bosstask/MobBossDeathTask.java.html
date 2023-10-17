@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MobBossDeathTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bosstask</a> &gt; <span class="el_source">MobBossDeathTask.java</span></div><h1>MobBossDeathTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bosstask;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+//import com.csse3200.game.rendering.DebugRenderer;
+
+
+/**
+ * Task that prints a message to the terminal whenever it is called.
+ */
+public class MobBossDeathTask extends DefaultTask implements PriorityTask {
+    private static final int INTERVAL = 1; // time interval to scan for towers in
+
+    private final int priority;
+<span class="nc" id="L23">    private Vector2 bossPosition = new Vector2(10f,10f);</span>
+    private final PhysicsEngine physics;
+    private GameTime timeSource;
+    private long endTime;
+<span class="nc" id="L27">    private final RaycastHit hit = new RaycastHit();</span>
+
+    private int bossHealth;
+
+    /**
+     * @param priority Task priority when shooting (0 when not chasing).
+     */
+<span class="nc" id="L34">    public MobBossDeathTask(int priority) {</span>
+<span class="nc" id="L35">        this.priority = priority;</span>
+
+<span class="nc" id="L37">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+
+<span class="nc" id="L39">        timeSource = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L40">    }</span>
+
+    @Override
+    public void start() {
+<span class="nc" id="L44">        super.start();</span>
+        // gets starting health
+<span class="nc" id="L46">        this.bossHealth = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();</span>
+        //sets mob position
+<span class="nc" id="L48">        this.bossPosition = owner.getEntity().getCenterPosition();</span>
+        //sets endTime
+<span class="nc" id="L50">        endTime = timeSource.getTime() + (INTERVAL * 500);</span>
+<span class="nc" id="L51">    }</span>
+
+    @Override
+    public void update() {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L56">            updateMobBossState();</span>
+<span class="nc" id="L57">            endTime = timeSource.getTime() + (INTERVAL * 1000);</span>
+        }
+<span class="nc" id="L59">    }</span>
+
+    public void updateMobBossState() {
+
+<span class="nc" id="L63">        bossHealth = owner.getEntity().getComponent(CombatStatsComponent.class).getHealth();</span>
+        // TODO: inset a bit that picks from a list of drop options and drops this
+
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (bossIsDead(bossHealth)) {</span>
+<span class="nc" id="L67">            killboss();</span>
+<span class="nc" id="L68">            dropCurrency();</span>
+        }
+
+<span class="nc" id="L71">    }</span>
+
+    @Override
+    public void stop() {
+<span class="nc" id="L75">        super.stop();</span>
+<span class="nc" id="L76">    }</span>
+
+    @Override
+    public int getPriority() {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (status == Status.ACTIVE) {</span>
+<span class="nc" id="L81">            return getActivePriority();</span>
+        }
+
+<span class="nc" id="L84">        return getInactivePriority();</span>
+    }
+
+    private int getActivePriority() {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        if (bossHealth &gt; 0) {</span>
+<span class="nc" id="L89">            return -1;</span>
+        }
+<span class="nc" id="L91">        return priority;</span>
+    }
+
+    private int getInactivePriority() {
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        if (bossHealth &lt;= 0) {</span>
+<span class="nc" id="L96">            return priority;</span>
+        }
+<span class="nc" id="L98">        return -1;</span>
+    }
+    private boolean bossIsDead(int bosshealth) {
+
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (bosshealth &lt;= 0) {</span>
+<span class="nc" id="L103">            return true;</span>
+        }
+<span class="nc" id="L105">        return false;</span>
+    }
+
+    private void killboss() {
+<span class="nc" id="L109">        owner.getEntity().getEvents().trigger(&quot;boss_death&quot;);</span>
+<span class="nc" id="L110">        owner.getEntity().dispose();</span>
+<span class="nc" id="L111">    }</span>
+
+    private void dropCurrency() {
+
+<span class="nc" id="L115">        Entity scrap = DropFactory.createScrapDrop();</span>
+<span class="nc" id="L116">        scrap.setPosition(bossPosition.x,bossPosition.y);</span>
+<span class="nc" id="L117">        ServiceLocator.getEntityService().register(scrap.setScale(2,2));</span>
+
+<span class="nc" id="L119">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

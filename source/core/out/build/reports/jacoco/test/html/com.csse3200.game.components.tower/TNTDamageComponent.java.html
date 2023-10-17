@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TNTDamageComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">TNTDamageComponent.java</span></div><h1>TNTDamageComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Class responsible for applying damage and knock-back to nearby entities when triggered.
+ * Utilizes HitboxComponent and CombatStatsComponent for functionality.
+ */
+public class TNTDamageComponent extends Component {
+    private short targetLayer;
+<span class="pc" id="L23">    private float knockbackForce = 0f;</span>
+    private float radius;
+    private CombatStatsComponent combatStats;
+    private HitboxComponent hitboxComponent;
+
+    /**
+     * Default constructor for creating a component without knockback.
+     *
+     * @param targetLayer The physics layer of the target entities' collider.
+     */
+<span class="nc" id="L33">    public TNTDamageComponent(short targetLayer) {</span>
+<span class="nc" id="L34">        this.targetLayer = targetLayer;</span>
+<span class="nc" id="L35">    }</span>
+
+    /**
+     * Overloaded constructor for creating a component with knockback and radius.
+     *
+     * @param targetLayer The physics layer of the target entities' collider.
+     * @param knockback The force of the knockback.
+     * @param radius The radius within which entities will be affected.
+     */
+<span class="fc" id="L44">    public TNTDamageComponent(short targetLayer, float knockback, float radius) {</span>
+<span class="fc" id="L45">        this.targetLayer = targetLayer;</span>
+<span class="fc" id="L46">        this.knockbackForce = knockback;</span>
+<span class="fc" id="L47">        this.radius = radius;</span>
+<span class="fc" id="L48">    }</span>
+
+    /**
+     * Initializes the component and registers event listeners.
+     */
+    @Override
+    public void create() {
+<span class="fc" id="L55">        entity.getEvents().addListener(&quot;TNTDamageStart&quot;, this::applyTNTDamage);</span>
+<span class="fc" id="L56">        combatStats = entity.getComponent(CombatStatsComponent.class);</span>
+<span class="fc" id="L57">        hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Scans all nearby entities within a given radius and applies damage and knockback to them.
+     */
+    private void applyTNTDamage() {
+        // Fetch nearby entities
+<span class="fc" id="L65">        Array&lt;Entity&gt; allEntities = ServiceLocator.getEntityService().getEntities();</span>
+
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (int i = 0; i &lt; allEntities.size; i++) {</span>
+<span class="fc" id="L68">            Entity otherEntity = allEntities.get(i);</span>
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if (entity == otherEntity) continue; // Skip the source entity</span>
+
+<span class="fc" id="L72">            Vector2 positionSource = entity.getPosition();</span>
+<span class="fc" id="L73">            Vector2 positionOther = otherEntity.getPosition();</span>
+
+<span class="pc bpc" id="L75" title="1 of 6 branches missed.">            if (positionSource.dst(positionOther) &lt;= radius &amp;&amp; positionSource.y -1 &lt;= positionOther.y &amp;&amp; positionSource.y +1 &gt;= positionOther.y) {</span>
+<span class="fc" id="L76">                HitboxComponent sourceHitbox = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L77">                HitboxComponent otherHitbox = otherEntity.getComponent(HitboxComponent.class);</span>
+
+                // Check for null components and log specifics
+<span class="pc bpc" id="L80" title="2 of 4 branches missed.">                if (sourceHitbox == null || otherHitbox == null) {</span>
+
+<span class="nc" id="L82">                    continue;</span>
+                }
+
+<span class="fc" id="L85">                applyDamage(sourceHitbox.getFixture(), otherHitbox.getFixture());</span>
+            }
+        }
+<span class="fc" id="L88">    }</span>
+
+
+    /**
+     * Applies damage and knockback to a specific entity based on their physics fixtures.
+     *
+     * @param me The fixture representing this entity.
+     * @param other The fixture representing the target entity.
+     */
+    private void applyDamage(Fixture me, Fixture other) {
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">        if (hitboxComponent.getFixture() != me) {</span>
+            // Not triggered by hitbox, ignore
+<span class="nc" id="L100">            return;</span>
+        }
+
+<span class="fc bfc" id="L103" title="All 2 branches covered.">        if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {</span>
+            // Doesn't match our target layer, ignore
+<span class="fc" id="L105">            return;</span>
+        }
+
+        // Try to attack target.
+<span class="fc" id="L109">        Entity target = ((BodyUserData) other.getBody().getUserData()).entity;</span>
+<span class="fc" id="L110">        CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (targetStats != null) {</span>
+<span class="fc" id="L112">            targetStats.hit(combatStats);</span>
+        }
+
+        // apply knock-back
+<span class="fc" id="L116">        PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);</span>
+<span class="fc" id="L117">        PhysicsMovementComponent movementComponent = target.getComponent(PhysicsMovementComponent.class);</span>
+
+<span class="pc bpc" id="L119" title="2 of 4 branches missed.">        if (physicsComponent != null &amp;&amp; knockbackForce &gt; 0f) {</span>
+            // Disable regular movement temporarily
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (movementComponent != null) {</span>
+<span class="nc" id="L122">                movementComponent.applyKnockback(0.5f);  // Disable movement for 0.5 seconds</span>
+            }
+
+<span class="nc" id="L125">            Body targetBody = physicsComponent.getBody();</span>
+<span class="nc" id="L126">            Vector2 direction = target.getCenterPosition().sub(entity.getCenterPosition()).nor();</span>
+<span class="nc" id="L127">            direction.y = 0;</span>
+<span class="nc" id="L128">            Vector2 impulse = direction.scl(knockbackForce);</span>
+<span class="nc" id="L129">            targetBody.applyLinearImpulse(impulse, targetBody.getWorldCenter(), true);</span>
+        }
+<span class="fc" id="L131">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

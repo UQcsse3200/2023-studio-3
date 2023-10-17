@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.services.ResourceServiceTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:48" hostname="DESKTOP-F4ACIG8" time="0.872">
+  <properties/>
+  <testcase name="shouldLoadTextures()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.217"/>
+  <testcase name="shouldLoadTextureAtlases()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.007"/>
+  <testcase name="shouldLoadSounds()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.009"/>
+  <testcase name="loadForMillisShouldLoadAssets()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.316"/>
+  <testcase name="shouldLoadMusic()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.007"/>
+  <testcase name="loadAllShouldLoadUnloadAssets()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.158"/>
+  <testcase name="shouldContainAndGetAssets()" classname="com.csse3200.game.services.ResourceServiceTest" time="0.152"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:48 PM com.csse3200.game.services.ResourceService loadForMillis
+SEVERE: com.badlogic.gdx.utils.GdxRuntimeException: Couldn't load dependencies of asset: test/files/missing.png
+Oct 10, 2023 12:49:49 PM com.csse3200.game.services.ResourceService loadAll
+SEVERE: com.badlogic.gdx.utils.GdxRuntimeException: Couldn't load dependencies of asset: test/files/missing.png
+Oct 10, 2023 12:49:49 PM com.csse3200.game.services.ResourceService unloadAssets
+SEVERE: Could not unload test/files/missing.png
+Oct 10, 2023 12:49:49 PM com.csse3200.game.services.ResourceService loadAll
+SEVERE: com.badlogic.gdx.utils.GdxRuntimeException: Couldn't load dependencies of asset: test/files/missing.png
+]]></system-err>
+</testsuite>

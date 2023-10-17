@@ -1,0 +1,979 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForestGameArea.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.areas</a> &gt; <span class="el_source">ForestGameArea.java</span></div><h1>ForestGameArea.java</h1><pre class="source lang-java linenums">package com.csse3200.game.areas;
+
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.areas.terrain.TerrainFactory;
+import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.*;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
+
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.areas.terrain.TerrainFactory;
+import com.csse3200.game.areas.terrain.TerrainFactory.TerrainType;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.*;
+
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.screens.AssetLoader;
+
+import com.csse3200.game.utils.math.RandomUtils;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.components.gamearea.GameAreaDisplay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.security.SecureRandom;
+import java.util.Random;
+import java.util.Timer;
+
+import static com.csse3200.game.entities.factories.NPCFactory.createGhost;
+import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
+import java.util.ArrayList;
+
+import java.util.TimerTask;
+
+/** Forest area for the demo game with trees, a player, and some enemies. */
+public class ForestGameArea extends GameArea {
+<span class="nc" id="L43">  private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);</span>
+  private static final int NUM_BUILDINGS = 4;
+  private static final int NUM_GHOSTS = 0;
+  private static final int NUM_GRUNTS = 5;
+  private static final int NUM_BOSS = 4;
+
+
+  private static final int NUM_MOBBOSS2=3;
+  private static final int NUM_MOBBOSS1=1;
+
+<span class="nc" id="L53">  private SecureRandom rand = new SecureRandom();</span>
+
+<span class="nc" id="L55">  private int wave = 0;</span>
+  private Timer waveTimer;
+
+  private static final int NUM_WEAPON_TOWERS = 3;
+<span class="nc" id="L59">  private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);</span>
+  // Temporary spawn point for testing
+  private static final float WALL_WIDTH = 0.1f;
+
+  // Required to load assets before using them
+<span class="nc" id="L64">  private static final String[] forestTextures = {</span>
+          &quot;images/desert_bg.png&quot;,
+          &quot;images/ice_bg.png&quot;,
+          &quot;images/lava_bg.png&quot;,
+          &quot;images/projectiles/projectile.png&quot;,
+          &quot;images/ingamebg.png&quot;,
+          &quot;images/box_boy_leaf.png&quot;,
+          &quot;images/background/building1.png&quot;,
+          &quot;images/ghost_1.png&quot;,
+          &quot;images/grass_2.png&quot;,
+          &quot;images/grass_3.png&quot;,
+          &quot;images/hex_grass_1.png&quot;,
+          &quot;images/background/mountain.png&quot;,
+          &quot;images/ghost_king.png&quot;,
+          &quot;images/ghost_1.png&quot;,
+          &quot;images/terrain 2 normal.png&quot;,
+          &quot;images/terrain 2 hex.png&quot;,
+          &quot;images/terrain_use.png&quot;,
+          &quot;images/hex_grass_2.png&quot;,
+          &quot;images/hex_grass_3.png&quot;,
+          &quot;images/iso_grass_1.png&quot;,
+          &quot;images/iso_grass_2.png&quot;,
+          &quot;images/iso_grass_3.png&quot;,
+          &quot;images/towers/turret.png&quot;,
+          &quot;images/towers/turret01.png&quot;,
+          &quot;images/towers/turret_deployed.png&quot;,
+          &quot;images/towers/fire_tower_atlas.png&quot;,
+          &quot;images/towers/stun_tower.png&quot;,
+          &quot;images/background/building2.png&quot;,
+          &quot;images/mobs/robot.png&quot;,
+          &quot;images/mobs/boss2.png&quot;,
+          &quot;images/mobs/Attack_1.png&quot;,
+          &quot;images/mobs/Attack_2.png&quot;,
+          &quot;images/mobs/Charge_1.png&quot;,
+          &quot;images/mobs/Charge_2.png&quot;,
+          &quot;images/mobs/Dead.png&quot;,
+          &quot;images/mobs/Enabling-5.png&quot;,
+          &quot;images/mobs/satyr.png&quot;,
+          &quot;images/mobs/Hurt.png&quot;,
+          &quot;images/mobs/Idle.png&quot;,
+          &quot;images/mobs/rangeBossRight.png&quot;,
+          &quot;images/towers/wall_tower.png&quot;,
+          &quot;images/background/building2.png&quot;,
+          &quot;images/iso_grass_3.png&quot;,
+          &quot;images/Dusty_MoonBG.png&quot;,
+          &quot;images/economy/scrap.png&quot;,
+          &quot;images/economy/crystal.png&quot;,
+          &quot;images/economy/econ-tower.png&quot;,
+          &quot;images/projectiles/bossProjectile.png&quot;,
+          &quot;images/towers/mine_tower.png&quot;,
+          &quot;images/towers/TNTTower.png&quot;,
+          &quot;images/towers/DroidTower.png&quot;,
+          &quot;images/projectiles/basic_projectile.png&quot;,
+          &quot;images/projectiles/mobProjectile.png&quot;,
+          &quot;images/projectiles/engineer_projectile.png&quot;,
+          &quot;images/projectiles/mobBoss_projectile.png&quot;,
+          &quot;images/projectiles/snow_ball.png&quot;,
+          &quot;images/projectiles/burn_effect.png&quot;,
+          &quot;images/projectiles/stun_effect.png&quot;,
+          &quot;images/projectiles/firework_anim.png&quot;,
+          &quot;images/projectiles/pierce_anim.png&quot;,
+          &quot;images/projectiles/snow_ball.png&quot;,
+          &quot;images/mobboss/demon.png&quot;,
+          &quot;images/mobboss/demon2.png&quot;,
+          &quot;images/mobs/fire_worm.png&quot;,
+          &quot;images/mobboss/patrick.png&quot;,
+          &quot;images/towers/fireworks_tower.png&quot;,
+          &quot;images/towers/barrier.png&quot;,
+          &quot;images/towers/wall_tower.png&quot;,
+          &quot;images/towers/PierceTower.png&quot;,
+          &quot;images/towers/RicochetTower.png&quot;,
+          &quot;images/GrassTile/grass_tile_1.png&quot;,
+          &quot;images/GrassTile/grass_tile_2.png&quot;,
+          &quot;images/GrassTile/grass_tile_3.png&quot;,
+          &quot;images/GrassTile/grass_tile_4.png&quot;,
+          &quot;images/GrassTile/grass_tile_5.png&quot;,
+          &quot;images/GrassTile/grass_tile_6.png&quot;,
+          &quot;images/GrassTile/grass_tile_7.png&quot;,
+          &quot;images/mobboss/iceBaby.png&quot;,
+          &quot;images/bombship/bombship.png&quot;
+  };
+<span class="nc" id="L145">  private static final String[] forestTextureAtlases = {</span>
+          &quot;images/economy/econ-tower.atlas&quot;,
+          &quot;images/terrain_iso_grass.atlas&quot;,
+          &quot;images/ghost.atlas&quot;,
+          &quot;images/mobs/boss2.atlas&quot;,
+          &quot;images/ghostKing.atlas&quot;,
+          &quot;images/towers/turret.atlas&quot;,
+          &quot;images/towers/turret01.atlas&quot;,
+          &quot;images/mobs/xenoGrunt.atlas&quot;,
+          &quot;images/towers/fire_tower_atlas.atlas&quot;,
+          &quot;images/towers/stun_tower.atlas&quot;,
+          &quot;images/mobs/xenoGruntRunning.atlas&quot;,
+          &quot;images/xenoGrunt.atlas&quot;,
+          &quot;images/mobs/robot.atlas&quot;,
+          &quot;images/mobs/rangeBossRight.atlas&quot;,
+          &quot;images/towers/DroidTower.atlas&quot;,
+          &quot;images/mobs/robot.atlas&quot;,
+          &quot;images/mobs/rangeBossRight.atlas&quot;,
+          &quot;images/towers/TNTTower.atlas&quot;,
+          &quot;images/projectiles/basic_projectile.atlas&quot;,
+          &quot;images/projectiles/bossProjectile.atlas&quot;,
+          &quot;images/projectiles/mobProjectile.atlas&quot;,
+          &quot;images/projectiles/mobProjectile.atlas&quot;,
+          &quot;images/projectiles/engineer_projectile.atlas&quot;,
+          &quot;images/projectiles/mobBoss_projectile.atlas&quot;,
+          &quot;images/projectiles/snow_ball.atlas&quot;,
+          &quot;images/projectiles/pierce_anim.atlas&quot;,
+          &quot;images/projectiles/burn_effect.atlas&quot;,
+          &quot;images/projectiles/firework_anim.atlas&quot;,
+          &quot;images/projectiles/mobProjectile.atlas&quot;,
+          &quot;images/projectiles/stun_effect.atlas&quot;,
+          &quot;images/mobboss/demon.atlas&quot;,
+          &quot;images/mobs/fire_worm.atlas&quot;,
+          &quot;images/mobs/dragon_knight.atlas&quot;,
+          &quot;images/mobs/skeleton.atlas&quot;,
+          &quot;images/mobs/wizard.atlas&quot;,
+          &quot;images/mobs/water_queen.atlas&quot;,
+          &quot;images/mobs/water_slime.atlas&quot;,
+          &quot;images/mobboss/patrick.atlas&quot;,
+          &quot;images/towers/fireworks_tower.atlas&quot;,
+          &quot;images/towers/barrier.atlas&quot;,
+          &quot;images/towers/PierceTower.atlas&quot;,
+          &quot;images/towers/RicochetTower.atlas&quot;,
+          &quot;images/mobboss/iceBaby.atlas&quot;,
+          &quot;images/bombship/bombship.atlas&quot;
+  };
+<span class="nc" id="L191">  private static final String[] forestSounds = {</span>
+          &quot;sounds/Impact4.ogg&quot;,
+          &quot;sounds/economy/click.wav&quot;,
+          &quot;sounds/economy/click_1.wav&quot;,
+          &quot;sounds/towers/gun_shot_trimmed.mp3&quot;,
+          &quot;sounds/towers/deploy.mp3&quot;,
+          &quot;sounds/towers/stow.mp3&quot;,
+          &quot;sounds/engineers/firing_auto.mp3&quot;,
+          &quot;sounds/engineers/firing_single.mp3&quot;,
+          &quot;sounds/projectiles/on_collision.mp3&quot;,
+          &quot;sounds/projectiles/explosion.mp3&quot;,
+          &quot;sounds/waves/wave-start/Wave_Start_Alarm.ogg&quot;,
+          &quot;sounds/waves/wave-end/Wave_Over_01.ogg&quot;,
+          &quot;sounds/mobBoss/iceBabySound.mp3&quot;,
+          &quot;sounds/mobBoss/mobSpawnStomp.mp3&quot;,
+          &quot;sounds/mobBoss/iceBabyAOE.mp3&quot;,
+          &quot;sounds/mobs/wizardSpell.mp3&quot;,
+          &quot;sounds/mobs/waterQueenSpell.mp3&quot;,
+          &quot;sounds/mobs/boneBreak.mp3&quot;,
+          &quot;sounds/mobs/fireWormRoar.mp3&quot;,
+          &quot;sounds/mobBoss/demonBreath.mp3&quot;,
+          &quot;sounds/mobBoss/demonSpawn.wav&quot;,
+          &quot;sounds/mobBoss/demonAttack.wav&quot;,
+          &quot;sounds/mobBoss/demonBreathIn.mp3&quot;,
+          &quot;sounds/mobBoss/demonLand.mp3&quot;,
+          &quot;sounds/mobBoss/demonJump.mp3&quot;,
+          &quot;sounds/mobBoss/demonHeal.mp3&quot;,
+          &quot;sounds/mobBoss/demonCleave.mp3&quot;,
+          &quot;sounds/mobBoss/demonDeath.mp3&quot;,
+          &quot;sounds/mobBoss/slimeySplat.mp3&quot;,
+          &quot;sounds/mobBoss/slimeJump.mp3&quot;,
+          &quot;sounds/mobBoss/slimePop.mp3&quot;,
+          &quot;sounds/mobBoss/patrickAttack.mp3&quot;,
+          &quot;sounds/mobBoss/patrickAppear.mp3&quot;,
+          &quot;sounds/mobBoss/patrickScream.mp3&quot;,
+          &quot;sounds/mobBoss/patrickSpell.mp3&quot;,
+          &quot;sounds/mobBoss/patrickSpawn.mp3&quot;,
+          &quot;sounds/mobBoss/patrickCast.mp3&quot;,
+          &quot;sounds/mobBoss/patrickThunder.mp3&quot;,
+          &quot;sounds/mobBoss/patrickHit.mp3&quot;
+  };
+  private static final String backgroundMusic = &quot;sounds/background/Sci-Fi1.ogg&quot;;
+
+<span class="nc" id="L234">  private static final String[] forestMusic = {backgroundMusic};</span>
+  private Entity player;
+  private Entity waves;
+
+  // Variables to be used with spawn projectile methods. This is the variable
+  // that should occupy the direction param.
+  private static final int towardsMobs = 100;
+  private Entity mobBoss2;
+  private Entity mobBoss1;
+
+  /**
+   * Initialise this ForestGameArea to use the provided TerrainFactory.
+   *
+   * @requires terrainFactory != null
+   */
+  public ForestGameArea() {
+<span class="nc" id="L250">    super();</span>
+<span class="nc" id="L251">  }</span>
+
+  /**
+   * Add this method to start the wave spawning timer when the game starts.
+   */
+//  private void startWaveTimer() {
+//    waveTimer = new Timer();
+//    waveTimer.scheduleAtFixedRate(new TimerTask() {
+//      @Override
+//      public void run() {
+//        spawnWave();
+//      }
+//    }, 0, 10000); // 10000 milliseconds = 10 seconds
+//  }
+
+  /**
+   * Add this method to stop the wave timer when the game ends or as needed.
+   */
+  private void stopWaveTimer() {
+<span class="nc bnc" id="L270" title="All 2 branches missed.">    if (waveTimer != null) {</span>
+<span class="nc" id="L271">      waveTimer.cancel();</span>
+<span class="nc" id="L272">      waveTimer = null;</span>
+    }
+<span class="nc" id="L274">  }</span>
+
+  /**
+   * Cases to spawn a wave
+   */
+//  private void spawnWave() {
+//    wave++;
+//    switch (wave) {
+//      case 1:
+//      case 2:
+//        spawnFireWorm();
+//        spawnDragonKnight();
+//
+//        break;
+//      case 3:
+//        spawnSkeleton();
+//        spawnWizard();
+//        // mobBoss2 = spawnMobBoss2();
+//        break;
+//      case 4:
+//        spawnWaterQueen();
+//        spawnWaterSlime();
+//        // mobBoss2 = spawnMobBoss2();
+//
+//        break;
+//      case 5:
+//        spawnDemonBoss();
+//      default:
+//        // Handle other wave scenarios if needed
+//        break;
+//    }
+//  }
+
+  /**
+   * Create the game area, including terrain, static entities (trees), dynamic entities (player)
+   */
+  @Override
+  public void create() {
+    // Load game assets
+
+<span class="nc" id="L314">    loadAllAssets();</span>
+<span class="nc" id="L315">    loadAssets();</span>
+<span class="nc" id="L316">    logger.info(&quot;selected towers in main game are &quot; + ServiceLocator.getTowerTypes());</span>
+<span class="nc" id="L317">    displayUI();</span>
+<span class="nc" id="L318">    spawnTerrain();</span>
+
+    // Set up infrastructure for end game tracking
+//    player = spawnPlayer();
+
+<span class="nc" id="L323">    waves = WaveFactory.createWaves();</span>
+<span class="nc" id="L324">    spawnEntity(waves);</span>
+<span class="nc" id="L325">    waves.getEvents().addListener(&quot;spawnWave&quot;, this::spawnMob);</span>
+
+<span class="nc" id="L327">    spawnScrap();</span>
+<span class="nc" id="L328">    spawnGapScanners();</span>
+
+//    spawnTNTTower();
+//    spawnWeaponTower();
+//    spawnGapScanners();
+//    spawnDroidTower();
+//     spawnFireWorksTower();  // Commented these out until they are needed for Demonstration
+//     spawnPierceTower();
+//     spawnRicochetTower();
+//    spawnBombship();
+<span class="nc" id="L338">  }</span>
+
+  private void displayUI() {
+<span class="nc" id="L341">    Entity ui = new Entity();</span>
+<span class="nc" id="L342">    ui.addComponent(new GameAreaDisplay(&quot;Box Forest&quot;));</span>
+<span class="nc" id="L343">    ui.addComponent(ServiceLocator.getGameEndService().getDisplay());</span>
+<span class="nc" id="L344">    ui.addComponent(ServiceLocator.getCurrencyService().getDisplay());</span>
+<span class="nc" id="L345">    spawnEntity(ui);</span>
+<span class="nc" id="L346">  }</span>
+
+  private void spawnTerrain() {
+
+<span class="nc" id="L350">    terrain = ServiceLocator.getMapService().getComponent();</span>
+<span class="nc" id="L351">    spawnEntity(ServiceLocator.getMapService().getEntity());</span>
+
+    // Terrain walls
+<span class="nc" id="L354">    float tileSize = terrain.getTileSize();</span>
+<span class="nc" id="L355">    GridPoint2 tileBounds = terrain.getMapBounds(0);</span>
+<span class="nc" id="L356">    Vector2 worldBounds = new Vector2(tileBounds.x * tileSize, tileBounds.y * tileSize);</span>
+
+    // Left
+<span class="nc" id="L359">    spawnEntityAt(</span>
+<span class="nc" id="L360">            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),</span>
+            new GridPoint2(0, 0),
+            false,
+            false);
+    // Right
+<span class="nc" id="L365">    spawnEntityAt(</span>
+<span class="nc" id="L366">            ObstacleFactory.createWall(WALL_WIDTH, worldBounds.y),</span>
+            new GridPoint2(tileBounds.x, 0),
+            false,
+            false);
+    // Top
+<span class="nc" id="L371">    spawnEntityAt(</span>
+<span class="nc" id="L372">            ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0),</span>
+            new GridPoint2(0, tileBounds.y),
+            false,
+            false);
+    // Bottom
+<span class="nc" id="L377">    Entity wall = ObstacleFactory.createWall(worldBounds.x, WALL_WIDTH * 0);</span>
+<span class="nc" id="L378">    wall.setPosition(0,-0.1f);</span>
+<span class="nc" id="L379">    ServiceLocator.getEntityService().register(wall);</span>
+
+<span class="nc" id="L381">  }</span>
+
+  private Entity spawnPlayer() {
+<span class="nc" id="L384">    Entity newPlayer = PlayerFactory.createPlayer();</span>
+<span class="nc" id="L385">    spawnEntityAt(newPlayer, PLAYER_SPAWN, true, true);</span>
+<span class="nc" id="L386">    return newPlayer;</span>
+  }
+
+  // Spawn player at a specific position
+  private Entity spawnPlayer(GridPoint2 position) {
+<span class="nc" id="L391">    Entity newPlayer = PlayerFactory.createPlayer();</span>
+<span class="nc" id="L392">    spawnEntityAt(newPlayer, position, true, true);</span>
+<span class="nc" id="L393">    return newPlayer;</span>
+  }
+
+  // commented 383 - 386 out as there was a missing arg?
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
+
+  private void spawnPatrick() {
+<span class="nc" id="L403">    Entity patrick = MobBossFactory.createPatrickBoss(3000);</span>
+<span class="nc" id="L404">    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);</span>
+<span class="nc" id="L405">  }</span>
+
+  private void spawnPatrickDeath() {
+<span class="nc" id="L408">    Entity patrickDeath = MobBossFactory.patrickDead();</span>
+<span class="nc" id="L409">    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);</span>
+<span class="nc" id="L410">  }</span>
+  // commented 398 - 401 out as there was a missing arg?
+//  private void spawnIceBaby() {
+//    Entity iceBaby = MobBossFactory.createIceBoss();
+//    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+//  }
+
+//  private void spawnDemonBoss() {
+//    Entity demon = MobBossFactory.createDemonBoss();
+//    spawnEntityAt(demon, new GridPoint2(19, 5), true, false);
+//  }
+
+//  private void spawnPatrick() {
+//    Entity patrick = MobBossFactory.createPatrickBoss(3000);
+//    spawnEntityAt(patrick, new GridPoint2(18, 5), true, false);
+//  }
+//
+//  private void spawnPatrickDeath() {
+//    Entity patrickDeath = MobBossFactory.patrickDead();
+//    spawnEntityAt(patrickDeath, new GridPoint2(18, 5), true, false);
+//  }
+//
+//  private void spawnIceBaby() {
+//    Entity iceBaby = MobBossFactory.createIceBoss();
+//    spawnEntityAt(iceBaby, new GridPoint2(19, 5), true, false);
+//  }
+
+  /**
+   * Spawns a projectile that only heads towards the enemies in its lane.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+<span class="nc" id="L446">    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y), speed);</span>
+<span class="nc" id="L447">    Projectile.setPosition(position);</span>
+<span class="nc" id="L448">    spawnEntity(Projectile);</span>
+<span class="nc" id="L449">  }</span>
+
+  /**
+   * Spawns a projectile specifically for general mobs/xenohunters
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnProjectileTest(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+<span class="nc" id="L460">    Entity Projectile = ProjectileFactory.createEngineerBullet(targetLayer, new Vector2(direction, position.y), speed);</span>
+<span class="nc" id="L461">    Projectile.setPosition(position);</span>
+<span class="nc" id="L462">    spawnEntity(Projectile);</span>
+<span class="nc" id="L463">  }</span>
+
+  /**
+   * Spawns a projectile to be used for multiple projectile function.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param space       The space between the projectiles' destination.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnProjectile(Vector2 position, short targetLayer, int space, int direction, Vector2 speed) {
+<span class="nc" id="L475">    Entity Projectile = ProjectileFactory.createFireBall(targetLayer, new Vector2(direction, position.y + space), speed);</span>
+<span class="nc" id="L476">    Projectile.setPosition(position);</span>
+<span class="nc" id="L477">    spawnEntity(Projectile);</span>
+<span class="nc" id="L478">  }</span>
+
+  /**
+   * Spawn an entity on the map. Is called during a wave. Add cases here for each mob type
+   * @param entity mob to be spawned
+   * @param randomPos position to be spawned at
+   * @param health health of the mob
+   */
+  public void spawnMob(String entity, GridPoint2 randomPos, int health) {
+    Entity mob;
+<span class="nc bnc" id="L488" title="All 10 branches missed.">    switch (entity) {</span>
+      case &quot;Xeno&quot;:
+<span class="nc" id="L490">        mob = NPCFactory.createXenoGrunt(health);</span>
+<span class="nc" id="L491">        break;</span>
+      case &quot;SplittingWaterSlime&quot;:
+<span class="nc" id="L493">        mob = NPCFactory.createSplittingWaterSlime(health);</span>
+<span class="nc" id="L494">        break;</span>
+      case &quot;DodgingDragon&quot;:
+<span class="nc" id="L496">        mob = NPCFactory.createDodgingDragonKnight(health);</span>
+<span class="nc" id="L497">        break;</span>
+      case &quot;FireWorm&quot;:
+<span class="nc" id="L499">        mob = NPCFactory.createFireWorm(health);</span>
+<span class="nc" id="L500">        break;</span>
+      case &quot;Skeleton&quot;:
+<span class="nc" id="L502">        mob = NPCFactory.createSkeleton(health);</span>
+<span class="nc" id="L503">        break;</span>
+      case &quot;DeflectWizard&quot;:
+<span class="nc" id="L505">        mob = NPCFactory.createDeflectWizard(health);</span>
+<span class="nc" id="L506">        break;</span>
+      case &quot;WaterQueen&quot;:
+<span class="nc" id="L508">        mob = NPCFactory.createWaterQueen(health);</span>
+<span class="nc" id="L509">        break;</span>
+        //TODO implement when boss is ready
+//      case &quot;FireBoss&quot;:
+//        mob = MobBossFactory.createDemonBoss(health);
+//        break;
+      case &quot;IceBoss&quot;:
+<span class="nc" id="L515">        mob = MobBossFactory.createIceBoss(health);</span>
+<span class="nc" id="L516">        break;</span>
+      case &quot;PatrickBoss&quot;:
+<span class="nc" id="L518">        mob = MobBossFactory.createPatrickBoss(health);</span>
+<span class="nc" id="L519">        break;</span>
+      default:
+<span class="nc" id="L521">        mob = NPCFactory.createXenoGrunt(health);</span>
+        break;
+    }
+
+<span class="nc bnc" id="L525" title="All 2 branches missed.">    if (entity.contains(&quot;Boss&quot;)) {</span>
+<span class="nc" id="L526">      mob.scaleHeight(5f);</span>
+<span class="nc" id="L527">      mob.scaleWidth(5f);</span>
+    } else {
+<span class="nc" id="L529">      mob.setScale(1.5f, 1.5f);</span>
+    }
+<span class="nc" id="L531">    spawnEntityAt(mob, randomPos, true, false);</span>
+<span class="nc" id="L532">  }</span>
+
+  // * TEMPORARY FOR TESTING
+//  private void spawnSplittingXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+
+  // * TEMPORARY FOR TESTING
+//  private void spawnDodgingDragonKnight(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+//    fireworm.setScale(1.5f, 1.5f);
+//    spawnEntityAt(fireworm, pos, true, true);
+//  }
+//
+//  // * TEMPORARY FOR TESTING
+//  private void spawnDeflectXenoGrunt(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createDeflectXenoGrunt();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+//
+//  private void spawnFireWorm() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createFireWorm();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnSkeleton() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity skeleton = NPCFactory.createSkeleton();
+//      skeleton.setScale(1.5f, 1.5f);
+//      spawnEntityAt(skeleton, randomPos, true, false);
+//    }
+//  }
+
+//  private void spawnDragonKnight() {
+//    int[] pickedLanes = random.ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createDragonKnight();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWizard() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity wizard = NPCFactory.createWizard();
+//      wizard.setScale(1.5f, 1.5f);
+//      spawnEntityAt(wizard, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterQueen() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterQueen = NPCFactory.createWaterQueen();
+//      waterQueen.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterQueen, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterSlime() {
+//    int[] pickedLanes = new Random().ints(1, 7)
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterSlime = NPCFactory.createWaterSlime();
+//      waterSlime.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterSlime, randomPos, true, false);
+//    }
+//  }
+  // private void spawnSplittingXenoGrunt(int x, int y) {
+  //   GridPoint2 pos = new GridPoint2(x, y);
+  //   Entity xenoGrunt = NPCFactory.createSplittingXenoGrunt();
+  //   xenoGrunt.setScale(1.5f, 1.5f);
+  //   spawnEntityAt(xenoGrunt, pos, true, true);
+  // }
+
+  // * TEMPORARY FOR TESTING
+//  private void spawnDodgingDragonKnight(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity fireworm = NPCFactory.createDodgingDragonKnight();
+//    fireworm.setScale(1.5f, 1.5f);
+//    spawnEntityAt(fireworm, pos, true, true);
+//  }
+//
+//  // * TEMPORARY FOR TESTING
+//  private void spawnDeflectWizard(int x, int y) {
+//    GridPoint2 pos = new GridPoint2(x, y);
+//    Entity xenoGrunt = NPCFactory.createDeflectWizard();
+//    xenoGrunt.setScale(1.5f, 1.5f);
+//    spawnEntityAt(xenoGrunt, pos, true, true);
+//  }
+//
+//  private void spawnFireWorm() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createFireWorm();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnSkeleton() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity skeleton = NPCFactory.createSkeleton();
+//      skeleton.setScale(1.5f, 1.5f);
+//      spawnEntityAt(skeleton, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnDragonKnight() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity fireWorm = NPCFactory.createDodgingDragonKnight();
+//      fireWorm.setScale(1.5f, 1.5f);
+//      spawnEntityAt(fireWorm, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWizard() {
+//
+//    int[] pickedLanes = rand.ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity wizard = NPCFactory.createDeflectWizard();
+//      wizard.setScale(1.5f, 1.5f);
+//      spawnEntityAt(wizard, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterQueen() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterQueen = NPCFactory.createWaterQueen();
+//      waterQueen.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterQueen, randomPos, true, false);
+//    }
+//  }
+//
+//  private void spawnWaterSlime() {
+//
+//    int[] pickedLanes = new Random().ints(0, ServiceLocator.getMapService().getHeight() )
+//
+//            .distinct().limit(5).toArray();
+//    for (int i = 0; i &lt; NUM_GRUNTS; i++) {
+//      GridPoint2 randomPos = new GridPoint2(19, pickedLanes[i]);
+//      Entity waterSlime = NPCFactory.createSplittingWaterSlime();
+//      waterSlime.setScale(1.5f, 1.5f);
+//      spawnEntityAt(waterSlime, randomPos, true, false);
+//    }
+//  }
+
+  /**
+   * Creates multiple projectiles that travel simultaneous. They all have same
+   * the starting point but different destinations.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param space       The space between the projectiles' destination.
+   * @param speed       The speed of the projectiles.
+   * @param quantity    The amount of projectiles to spawn.
+   */
+  private void spawnMultiProjectile(Vector2 position, short targetLayer, int direction, int space, Vector2 speed, int quantity) {
+<span class="nc" id="L735">    int half = quantity / 2;</span>
+<span class="nc bnc" id="L736" title="All 2 branches missed.">    for (int i = 0; i &lt; quantity; i++) {</span>
+<span class="nc" id="L737">      spawnProjectile(position, targetLayer, space * half, direction, speed);</span>
+<span class="nc" id="L738">      --half;</span>
+    }
+<span class="nc" id="L740">  }</span>
+
+  /**
+   * Returns projectile that can do an area of effect damage
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   * @param effect      Type of effect.
+   * @param aoe         Whether it is an aoe projectile.
+   */
+  private void spawnEffectProjectile(Vector2 position, short targetLayer, int direction, Vector2 speed,
+                                     ProjectileEffects effect, boolean aoe) {
+<span class="nc" id="L754">    Entity Projectile = ProjectileFactory.createEffectProjectile(targetLayer, new Vector2(direction, position.y), speed, effect, aoe);</span>
+<span class="nc" id="L755">    Projectile.setPosition(position);</span>
+<span class="nc" id="L756">    spawnEntity(Projectile);</span>
+<span class="nc" id="L757">  }</span>
+
+  /**
+   * Spawns a pierce fireball.
+   * Pierce fireball can go through targetlayers without disappearing but damage
+   * will still be applied.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnPierceFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+<span class="nc" id="L770">    Entity projectile = ProjectileFactory.createPierceFireBall(targetLayer, new Vector2(direction, position.y), speed);</span>
+<span class="nc" id="L771">    projectile.setPosition(position);</span>
+<span class="nc" id="L772">    spawnEntity(projectile);</span>
+<span class="nc" id="L773">  }</span>
+
+  /**
+   * Spawns a ricochet fireball
+   * Ricochet fireballs bounce off targets with a specified maximum count of 3
+   * Possible extensions: Make the bounce count flexible with a param.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should head towards.
+   * @param speed       The speed of the projectiles.
+   */
+  private void spawnRicochetFireball(Vector2 position, short targetLayer, int direction, Vector2 speed) {
+    // Bounce count set to 0.
+<span class="nc" id="L787">    Entity projectile = ProjectileFactory.createRicochetFireball(targetLayer, new Vector2(direction, position.y), speed, 0);</span>
+<span class="nc" id="L788">    projectile.setPosition(position);</span>
+<span class="nc" id="L789">    spawnEntity(projectile);</span>
+<span class="nc" id="L790">  }</span>
+
+  /**
+   * Spawns a split firework fireball.
+   * Splits into mini projectiles that spreads out after collision.
+   *
+   * @param position    The position of the Entity that's shooting the projectile.
+   * @param targetLayer The enemy layer of the &quot;shooter&quot;.
+   * @param direction   The direction the projectile should towards.
+   * @param speed       The speed of the projectiles.
+   * @param amount      The amount of projectiles appearing after collision.
+   */
+  private void spawnSplitFireWorksFireBall(Vector2 position, short targetLayer, int direction, Vector2 speed, int amount) {
+<span class="nc" id="L803">    Entity projectile = ProjectileFactory.createSplitFireWorksFireball(targetLayer, new Vector2(direction, position.y), speed, amount);</span>
+<span class="nc" id="L804">    projectile.setPosition(position);</span>
+<span class="nc" id="L805">    spawnEntity(projectile);</span>
+<span class="nc" id="L806">  }</span>
+
+  private void spawnWeaponTower() {
+<span class="nc" id="L809">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L810">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);</span>
+
+<span class="nc bnc" id="L812" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS + 7 ; i++) {</span>
+<span class="nc" id="L813">      GridPoint2 randomPos1 = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L814">      GridPoint2 randomPos2 = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L815">      Entity wallTower = TowerFactory.createWallTower();</span>
+<span class="nc" id="L816">      Entity fireTower = TowerFactory.createFireTower();</span>
+<span class="nc" id="L817">      Entity stunTower = TowerFactory.createStunTower();</span>
+<span class="nc" id="L818">      spawnEntityAt(fireTower, randomPos1, true, true);</span>
+<span class="nc" id="L819">      spawnEntityAt(stunTower, randomPos2, true, true);</span>
+<span class="nc" id="L820">      spawnEntityAt(wallTower, randomPos2, true, true);</span>
+    }
+<span class="nc" id="L822">  }</span>
+
+  // * TEMPORARY FOR TESTING
+  private void spawnFireTowerAt(int x, int y) {
+<span class="nc" id="L826">    GridPoint2 pos = new GridPoint2(x, y);</span>
+<span class="nc" id="L827">    Entity fireTower = TowerFactory.createFireTower();</span>
+
+<span class="nc" id="L829">    spawnEntityAt(fireTower, pos, true, true);</span>
+<span class="nc" id="L830">  }</span>
+  private void spawnDroidTowerAt(int x, int y) {
+<span class="nc" id="L832">    GridPoint2 pos = new GridPoint2(x, y);</span>
+<span class="nc" id="L833">    Entity droidTower = TowerFactory.createDroidTower();</span>
+
+<span class="nc" id="L835">    spawnEntityAt(droidTower, pos, true, true);</span>
+<span class="nc" id="L836">  }</span>
+
+  private void spawnTNTTower() {
+<span class="nc" id="L839">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L840">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);</span>
+
+<span class="nc bnc" id="L842" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS + 5; i++) {</span>
+<span class="nc" id="L843">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L844">      Entity weaponTower = TowerFactory.createTNTTower();</span>
+<span class="nc" id="L845">      spawnEntityAt(weaponTower, randomPos, true, true);</span>
+    }
+
+<span class="nc" id="L848">  }</span>
+  private void spawnFireWorksTower() {
+<span class="nc" id="L850">    GridPoint2 minPos = new GridPoint2(0, 2);</span>
+<span class="nc" id="L851">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1, 1);</span>
+
+<span class="nc bnc" id="L853" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS; i++) {</span>
+<span class="nc" id="L854">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L855">      Entity FireWorksTower = TowerFactory.createFireworksTower();</span>
+<span class="nc" id="L856">      spawnEntityAt(FireWorksTower, randomPos, true, true);</span>
+    }
+
+<span class="nc" id="L859">  }</span>
+  private void spawnPierceTower() {
+<span class="nc" id="L861">    GridPoint2 minPos = new GridPoint2(0, 2);</span>
+<span class="nc" id="L862">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(3, 3);</span>
+
+<span class="nc bnc" id="L864" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS; i++) {</span>
+<span class="nc" id="L865">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L866">      Entity PierceTower = TowerFactory.createPierceTower();</span>
+<span class="nc" id="L867">      spawnEntityAt(PierceTower, randomPos, true, true);</span>
+    }
+
+<span class="nc" id="L870">  }</span>
+  private void spawnRicochetTower() {
+<span class="nc" id="L872">    GridPoint2 minPos = new GridPoint2(0, 2);</span>
+<span class="nc" id="L873">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(0, 3);</span>
+
+<span class="nc bnc" id="L875" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS; i++) {</span>
+<span class="nc" id="L876">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L877">      Entity RicochetTower = TowerFactory.createRicochetTower();</span>
+<span class="nc" id="L878">      spawnEntityAt(RicochetTower, randomPos, true, true);</span>
+    }
+
+<span class="nc" id="L881">  }</span>
+
+  private void spawnBombship() {
+<span class="nc" id="L884">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L885">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);</span>
+<span class="nc" id="L886">    Entity bombship = BombshipFactory.createBombship();</span>
+<span class="nc" id="L887">    spawnEntityAt(bombship, minPos, true, true);</span>
+<span class="nc" id="L888">  }</span>
+
+  private void spawnDroidTower() {
+<span class="nc" id="L891">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L892">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);</span>
+
+<span class="nc bnc" id="L894" title="All 2 branches missed.">    for (int i = 0; i &lt; NUM_WEAPON_TOWERS + 5; i++) {</span>
+<span class="nc" id="L895">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L896">      Entity weaponTower = TowerFactory.createDroidTower();</span>
+<span class="nc" id="L897">      spawnEntityAt(weaponTower, randomPos, true, false);</span>
+    }
+<span class="nc" id="L899">  }</span>
+
+  private void playMusic() {
+<span class="nc" id="L902">    Music music = ServiceLocator.getResourceService().getAsset(backgroundMusic, Music.class);</span>
+<span class="nc" id="L903">    music.setLooping(true);</span>
+<span class="nc" id="L904">    music.setVolume(0.3f);</span>
+<span class="nc" id="L905">    music.play();</span>
+<span class="nc" id="L906">  }</span>
+
+  private void loadAssets() {
+<span class="nc" id="L909">    logger.debug(&quot;Loading assets&quot;);</span>
+<span class="nc" id="L910">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L911">    resourceService.loadTextures(forestTextures);</span>
+<span class="nc" id="L912">    resourceService.loadTextureAtlases(forestTextureAtlases);</span>
+<span class="nc" id="L913">    resourceService.loadSounds(forestSounds);</span>
+<span class="nc" id="L914">    resourceService.loadMusic(forestMusic);</span>
+
+<span class="nc bnc" id="L916" title="All 2 branches missed.">    while (!resourceService.loadForMillis(10)) {</span>
+      // This could be upgraded to a loading screen
+<span class="nc" id="L918">      logger.info(&quot;Loading... {}%&quot;, resourceService.getProgress());</span>
+    }
+<span class="nc" id="L920">  }</span>
+
+  private void unloadAssets() {
+<span class="nc" id="L923">    logger.debug(&quot;Unloading assets&quot;);</span>
+<span class="nc" id="L924">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L925">    resourceService.unloadAssets(forestTextures);</span>
+<span class="nc" id="L926">    resourceService.unloadAssets(forestTextureAtlases);</span>
+<span class="nc" id="L927">    resourceService.unloadAssets(forestSounds);</span>
+<span class="nc" id="L928">    resourceService.unloadAssets(forestMusic);</span>
+<span class="nc" id="L929">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L933">    super.dispose();</span>
+<span class="nc" id="L934">    this.unloadAssets();</span>
+<span class="nc" id="L935">    stopWaveTimer();</span>
+<span class="nc" id="L936">  }</span>
+
+  private void spawnScrap() {
+<span class="nc" id="L939">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L940">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);</span>
+
+<span class="nc bnc" id="L942" title="All 2 branches missed.">    for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L943">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L944">      Entity scrap = DropFactory.createScrapDrop();</span>
+<span class="nc" id="L945">      spawnEntityAt(scrap, randomPos, true, false);</span>
+    }
+
+<span class="nc bnc" id="L948" title="All 2 branches missed.">    for (int i = 0; i &lt; 5; i++) {</span>
+<span class="nc" id="L949">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L950">      Entity crystal = DropFactory.createCrystalDrop();</span>
+<span class="nc" id="L951">      spawnEntityAt(crystal, randomPos, true, false);</span>
+    }
+<span class="nc" id="L953">  }</span>
+
+  private void spawnIncome() {
+<span class="nc" id="L956">    GridPoint2 minPos = new GridPoint2(0, 0);</span>
+<span class="nc" id="L957">    GridPoint2 maxPos = terrain.getMapBounds(0).sub(2, 2);</span>
+
+<span class="nc bnc" id="L959" title="All 2 branches missed.">    for (int i = 0; i &lt; 50; i++) {</span>
+<span class="nc" id="L960">      GridPoint2 randomPos = RandomUtils.random(minPos, maxPos);</span>
+<span class="nc" id="L961">      Entity towerfactory = TowerFactory.createIncomeTower();</span>
+<span class="nc" id="L962">      spawnEntityAt(towerfactory, randomPos, true, true);</span>
+    }
+<span class="nc" id="L964">  }</span>
+
+  /**
+   * Creates the scanners (one per lane) that detect absence of towers and presence of mobs,
+   * and trigger engineer spawning
+   */
+  private void spawnGapScanners() {
+<span class="nc bnc" id="L971" title="All 2 branches missed.">    for (int i = 0; i &lt; terrain.getMapBounds(0).y; i++) {</span>
+<span class="nc" id="L972">      Entity scanner = GapScannerFactory.createScanner();</span>
+<span class="nc" id="L973">      spawnEntityAt(scanner, new GridPoint2(0, i), true, true);</span>
+    }
+<span class="nc" id="L975">  }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

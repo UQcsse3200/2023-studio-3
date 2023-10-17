@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.events.EventHandlerTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:42" hostname="DESKTOP-F4ACIG8" time="0.275">
+  <properties/>
+  <testcase name="shouldTriggerEvent()" classname="com.csse3200.game.events.EventHandlerTest" time="0.003"/>
+  <testcase name="shouldTriggerThreeArg()" classname="com.csse3200.game.events.EventHandlerTest" time="0.234"/>
+  <testcase name="shouldHandleNoListeners()" classname="com.csse3200.game.events.EventHandlerTest" time="0.001"/>
+  <testcase name="shouldTriggerCorrectEvent()" classname="com.csse3200.game.events.EventHandlerTest" time="0.011"/>
+  <testcase name="shouldFailIncorrectArgs()" classname="com.csse3200.game.events.EventHandlerTest" time="0.007"/>
+  <testcase name="shouldTriggerOneArg()" classname="com.csse3200.game.events.EventHandlerTest" time="0.005"/>
+  <testcase name="shouldTriggerTwoArg()" classname="com.csse3200.game.events.EventHandlerTest" time="0.002"/>
+  <testcase name="shouldTriggerMultiple()" classname="com.csse3200.game.events.EventHandlerTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

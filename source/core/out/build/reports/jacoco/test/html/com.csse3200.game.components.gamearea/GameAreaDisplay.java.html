@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameAreaDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.gamearea</a> &gt; <span class="el_source">GameAreaDisplay.java</span></div><h1>GameAreaDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.gamearea;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.csse3200.game.ui.UIComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+
+/**
+ * Displays the name of the current game area.
+ */
+public class GameAreaDisplay extends UIComponent {
+<span class="nc" id="L21">  private static final Logger logger = LoggerFactory.getLogger(GameAreaDisplay.class);</span>
+  private static final float Z_INDEX = 2f;
+  // Dialog for displaying tower details
+
+  private Vector2[] towerPositions1;
+  private Vector2[] towerPositions2; // Store the positions of the towers
+  private Vector2[] towerPositions3; // Store the positions of the towers
+
+  private Dialog towerDetailsDialog1;
+  private Dialog towerDetailsDialog2;
+  private Dialog towerDetailsDialog3;// Dialog for displaying tower details
+<span class="nc" id="L32">  private String gameAreaName = &quot;&quot;;</span>
+  private Label title;
+<span class="nc" id="L34">  private int numTowers1 = 2; // Total number of towers</span>
+<span class="nc" id="L35">  private int numTowers2 = 2; // Total number of towers</span>
+<span class="nc" id="L36">  private int numTowers3 = 2; // Total number of towers</span>
+  private Label numTowersLabel1;
+  private Label numTowersLabel2;
+  private Label numTowersLabel3;
+
+  private boolean[] towerMoved1;
+  private boolean[] towerMoved2;// Array of flags to track if each tower has been moved
+  private boolean[] towerMoved3;// Array of flags to track if each tower has been moved
+
+
+<span class="nc" id="L46">  public GameAreaDisplay(String gameAreaName) {</span>
+<span class="nc" id="L47">    this.gameAreaName = gameAreaName;</span>
+<span class="nc" id="L48">    towerPositions1 = new Vector2[2]; // Initialize for two towers</span>
+<span class="nc" id="L49">    towerMoved1 = new boolean[2]; // Initialize for two towers</span>
+
+<span class="nc" id="L51">    towerPositions2 = new Vector2[2]; // Initialize for two towers</span>
+<span class="nc" id="L52">    towerMoved2 = new boolean[2]; // Initialize for two towers</span>
+
+<span class="nc" id="L54">    towerPositions3 = new Vector2[2]; // Initialize for two towers</span>
+<span class="nc" id="L55">    towerMoved3 = new boolean[2]; // Initialize for two towers</span>
+
+<span class="nc" id="L57">    towerDetailsDialog1 = createTowerDetailsDialog(); // Create the tower details dialog</span>
+<span class="nc" id="L58">    towerDetailsDialog2 = createTowerDetailsDialog(); // Create the tower details dialog</span>
+<span class="nc" id="L59">    towerDetailsDialog3 = createTowerDetailsDialog(); // Create the tower details dialog</span>
+<span class="nc" id="L60">  }</span>
+
+  @Override
+  public void create() {
+<span class="nc" id="L64">    super.create();</span>
+<span class="nc" id="L65">    addActors();</span>
+<span class="nc" id="L66">    final Skin skin = new Skin();</span>
+
+
+
+
+<span class="nc" id="L71">    Image[] towers1 = new Image[2]; // Create an array for two towers</span>
+<span class="nc" id="L72">    Image[] towers2 = new Image[2]; // Create an array for two towers</span>
+<span class="nc" id="L73">    Image[] towers3 = new Image[3]; // Create an array for two towers</span>
+
+//    for (int i = 0; i &lt; 2; i++) {
+//      // Use &quot;building1&quot; for the first tower and &quot;building2&quot; for the second tower
+//      skin.add(&quot;default&quot;, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+//      skin.add(&quot;building1&quot;, new Texture(&quot;images/towers/wallTower.png&quot;));
+//      // Load textures for building1 and building2
+//      towers1[i] = new Image(skin, &quot;building1&quot;);
+//      towers1[i].setBounds(Gdx.graphics.getWidth() * 40f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
+//      // stage.addActor(towers1[i]);
+//
+//      final int towerIndex1 = i; // Capture the index in a final variable for the listener
+//      towerPositions1[towerIndex1] = new Vector2(towers1[towerIndex1].getX(), towers1[towerIndex1].getY());
+//
+//      towers1[i].addListener(new InputListener() {
+//        private float startX, startY;
+//
+//        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//          startX = towers1[towerIndex1].getX();
+//          startY = towers1[towerIndex1].getY();
+//          Gdx.app.log(&quot;GameAreaDisplay&quot;, &quot;Touch Down on Tower &quot; + towerIndex1);
+//          towerDetailsDialog1.setVisible(true);
+//          towerDetailsDialog1.show(stage);
+//
+//          return true; // Return true to indicate that the event was handled
+//        }
+//
+//        public void touchDragged(InputEvent event, float x, float y, int pointer) {
+//          float deltaX = towers1[towerIndex1].getX() - startX;
+//          float deltaY = towers1[towerIndex1].getY() - startY;
+//
+//          // Calculate the distance moved
+//          float distanceMoved = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+//
+//          // Check if the tower has been moved for a significant distance
+//          if (!towerMoved1[towerIndex1] &amp;&amp; distanceMoved &gt;= 100f) {
+//            // Decrement the number of towers and set the flag for this tower
+//            numTowers1--;
+//            towerMoved1[towerIndex1] = true; // Set the flag to indicate tower movement
+//          }
+//
+//          // Implement dragging logic here
+//          towers1[towerIndex1].moveBy(x - towers1[towerIndex1].getWidth() / 2,
+//                  y - towers1[towerIndex1].getHeight() / 2);
+//
+//          towerPositions1[towerIndex1] = new Vector2(towers1[towerIndex1].getX(), towers1[towerIndex1].getY());
+//          towerDetailsDialog1.setPosition(
+//                  towerPositions1[towerIndex1].x + towers1[towerIndex1].getWidth(),
+//                  towerPositions1[towerIndex1].y);
+//
+//        }
+//
+//        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//          towerDetailsDialog1.hide();
+//        }
+//      });
+//    }
+//    for (int i = 0; i &lt; 2; i++) {
+//      // Use &quot;building1&quot; for the first tower and &quot;building2&quot; for the second tower
+//      skin.add(&quot;default&quot;, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+//      skin.add(&quot;building2&quot;, new Texture(&quot;images/towers/wallTower.png&quot;));
+//      towers2[i] = new Image(skin, &quot;building2&quot;);
+//      towers2[i].setBounds(Gdx.graphics.getWidth() * 50f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
+//      stage.addActor(towers2[i]);
+//
+//      final int towerIndex2 = i; // Capture the index in a final variable for the listener
+//      towerPositions2[towerIndex2] = new Vector2(towers2[towerIndex2].getX(), towers2[towerIndex2].getY());
+//
+//      towers2[i].addListener(new InputListener() {
+//        private float startX, startY;
+//
+//        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//          startX = towers2[towerIndex2].getX();
+//          startY = towers2[towerIndex2].getY();
+//          Gdx.app.log(&quot;GameAreaDisplay&quot;, &quot;Touch Down on Tower &quot; + towerIndex2);
+//          towerDetailsDialog2.setVisible(true);
+//          towerDetailsDialog2.show(stage);
+//          return true; // Return true to indicate that the event was handled
+//        }
+//
+//        public void touchDragged(InputEvent event, float x, float y, int pointer) {
+//          float deltaX = towers2[towerIndex2].getX() - startX;
+//          float deltaY = towers2[towerIndex2].getY() - startY;
+//
+//          // Calculate the distance moved
+//          float distanceMoved = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+//
+//          // Check if the tower has been moved for a significant distance
+//          if (!towerMoved2[towerIndex2] &amp;&amp; distanceMoved &gt;= 100f) {
+//            // Decrement the number of towers and set the flag for this tower
+//            numTowers2--;
+//            numTowersLabel2.setText(&quot;TowersA: &quot; + numTowers2);
+//            towerMoved2[towerIndex2] = true; // Set the flag to indicate tower movement
+//          }
+//
+//          // Implement dragging logic here
+//          towers2[towerIndex2].moveBy(x - towers2[towerIndex2].getWidth() / 2,
+//                  y - towers2[towerIndex2].getHeight() / 2);
+//
+//          towerPositions2[towerIndex2] = new Vector2(towers2[towerIndex2].getX(), towers2[towerIndex2].getY());
+//          towerDetailsDialog2.setPosition(
+//                  towerPositions2[towerIndex2].x + towers2[towerIndex2].getWidth(),
+//                  towerPositions2[towerIndex2].y
+//          );
+//        }
+//
+//        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//          towerDetailsDialog2.hide();
+//        }
+//      });
+//    }
+//
+//    for (int i = 0; i &lt; 2; i++) {
+//      // Use &quot;building1&quot; for the first tower and &quot;building2&quot; for the second tower
+//      skin.add(&quot;default&quot;, new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+//      skin.add(&quot;building3&quot;, new Texture(&quot;images/towers/mine_tower.png&quot;));
+//      // Load textures for building1 and building2
+//      towers3[i] = new Image(skin, &quot;building3&quot;);
+//      towers3[i].setBounds(Gdx.graphics.getWidth() * 60f / 100f, Gdx.graphics.getHeight() * 80f / 100f, 100, 100);
+//      stage.addActor(towers3[i]);
+//
+//      final int towerIndex3 = i; // Capture the index in a final variable for the listener
+//      towerPositions3[towerIndex3] = new Vector2(towers3[towerIndex3].getX(), towers3[towerIndex3].getY());
+//
+//      towers3[i].addListener(new InputListener() {
+//        private float startX, startY;
+//
+//        public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+//          startX = towers3[towerIndex3].getX();
+//          startY = towers3[towerIndex3].getY();
+//          Gdx.app.log(&quot;GameAreaDisplay&quot;, &quot;Touch Down on Tower &quot; + towerIndex3);
+//          towerDetailsDialog3.setVisible(true);
+//          towerDetailsDialog3.show(stage);
+//          return true; // Return true to indicate that the event was handled
+//        }
+//
+//        public void touchDragged(InputEvent event, float x, float y, int pointer) {
+//          float deltaX = towers3[towerIndex3].getX() - startX;
+//          float deltaY = towers3[towerIndex3].getY() - startY;
+//
+//          // Calculate the distance moved
+//          float distanceMoved = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+//
+//          // Check if the tower has been moved for a significant distance
+//          if (!towerMoved3[towerIndex3] &amp;&amp; distanceMoved &gt;= 100f) {
+//            // Decrement the number of towers and set the flag for this tower
+//            numTowers3--;
+//            numTowersLabel3.setText(&quot;TowersB: &quot; + numTowers3);
+//            towerMoved3[towerIndex3] = true; // Set the flag to indicate tower movement
+//          }
+//
+//          // Implement dragging logic here
+//          towers3[towerIndex3].moveBy(x - towers3[towerIndex3].getWidth() / 2,
+//                  y - towers3[towerIndex3].getHeight() / 2);
+//
+//          towerPositions3[towerIndex3] = new Vector2(towers3[towerIndex3].getX(), towers3[towerIndex3].getY());
+//          towerDetailsDialog3.setPosition(
+//                  towerPositions3[towerIndex3].x + towers3[towerIndex3].getWidth(),
+//                  towerPositions3[towerIndex3].y
+//          );
+//
+//        }
+//
+//        public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+//          towerDetailsDialog3.hide();
+//        }
+//      });
+//    }
+
+    // Create and add the label for the number of towers
+//    numTowersLabel1 = new Label(&quot;TowersA: &quot; + numTowers1, skin);
+//    numTowersLabel1.setPosition(Gdx.graphics.getWidth() * 41f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    //  stage.addActor(numTowersLabel1);
+//
+//    numTowersLabel2 = new Label(&quot;TowersA: &quot; + numTowers2, skin);
+//    numTowersLabel2.setPosition(Gdx.graphics.getWidth() * 51f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    stage.addActor(numTowersLabel2);
+//
+//    numTowersLabel3 = new Label(&quot;TowersB: &quot; + numTowers3, skin);
+//    numTowersLabel3.setPosition(Gdx.graphics.getWidth() * 61f / 100f, Gdx.graphics.getHeight() * 75f / 100f); // Adjust the position as needed
+//    stage.addActor(numTowersLabel3);
+<span class="nc" id="L254">  }</span>
+
+  public void render(float delta) {
+    // ... other rendering logic ...
+
+    // Update the stage
+<span class="nc" id="L260">    stage.act(delta);</span>
+<span class="nc" id="L261">    stage.draw();</span>
+<span class="nc" id="L262">  }</span>
+
+  private Dialog createTowerDetailsDialog() {
+<span class="nc" id="L265">    Skin skin = new Skin(Gdx.files.internal(&quot;images/ui/buttons/glass.json&quot;));</span>
+
+    // Register a label style named &quot;default&quot; with the skin
+<span class="nc" id="L268">    Label.LabelStyle labelStyle = new Label.LabelStyle();</span>
+<span class="nc" id="L269">    labelStyle.font = new BitmapFont();</span>
+<span class="nc" id="L270">    labelStyle.fontColor = Color.WHITE;</span>
+<span class="nc" id="L271">    skin.add(&quot;default&quot;, labelStyle);</span>
+
+    // Create the dialog using the registered label style
+<span class="nc" id="L274">    Dialog dialog = new Dialog(&quot;Tower Details&quot;, skin,&quot;default&quot;);</span>
+<span class="nc" id="L275">    dialog.text(&quot;Health: 100&quot;); // Set tower health here</span>
+<span class="nc" id="L276">    dialog.getContentTable().row();</span>
+<span class="nc" id="L277">    dialog.text(&quot;Attack: 50&quot;); // Set tower attack here</span>
+<span class="nc" id="L278">    dialog.button(&quot;Close&quot;);</span>
+<span class="nc" id="L279">    dialog.setVisible(false); // Hide the dialog initially</span>
+<span class="nc" id="L280">    return dialog;</span>
+  }
+  private void addActors() {
+<span class="nc" id="L283">    title = new Label(this.gameAreaName, skin, &quot;default&quot;);</span>
+<span class="nc" id="L284">    stage.addActor(title);</span>
+<span class="nc" id="L285">  }</span>
+
+  @Override
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L289">    int screenHeight = Gdx.graphics.getHeight();</span>
+<span class="nc" id="L290">    float offsetX = 10f;</span>
+<span class="nc" id="L291">    float offsetY = 30f;</span>
+
+<span class="nc" id="L293">    title.setPosition(offsetX, screenHeight - offsetY);</span>
+
+<span class="nc" id="L295">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L299">    super.dispose();</span>
+<span class="nc" id="L300">    title.remove();</span>
+<span class="nc" id="L301">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.factories.ProjectileFactoryTest" tests="31" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:38" hostname="DESKTOP-F4ACIG8" time="2.744">
+  <properties/>
+  <testcase name="testBaseProjectileColliderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.088"/>
+  <testcase name="testMobBossBallAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.08"/>
+  <testcase name="testStunProjectileCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.084"/>
+  <testcase name="testEngineerBulletCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.081"/>
+  <testcase name="testBurnProjectileAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.074"/>
+  <testcase name="testSlowProjectileAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.085"/>
+  <testcase name="createBaseProjectile()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.079"/>
+  <testcase name="testBaseProjectilePhysicsMovement()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.087"/>
+  <testcase name="testBurnProjectileAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.085"/>
+  <testcase name="testBaseProjectileDeleteOnMapEdgeComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.12"/>
+  <testcase name="testStunProjectileAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.096"/>
+  <testcase name="testMobBallProjectileAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.072"/>
+  <testcase name="testBaseProjectileHitbox()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.076"/>
+  <testcase name="testMobBossBallAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.066"/>
+  <testcase name="testEngineerBulletAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.077"/>
+  <testcase name="testBurnProjectileCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.092"/>
+  <testcase name="testSlowProjectileCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.087"/>
+  <testcase name="testSlowProjectileAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.103"/>
+  <testcase name="testFireBallProjectileCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.091"/>
+  <testcase name="createMobBallProjectile()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.078"/>
+  <testcase name="testBaseProjectilePhysics()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.075"/>
+  <testcase name="testFireBallAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.085"/>
+  <testcase name="testEngineerAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.081"/>
+  <testcase name="testBaseProjectileSpeed()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.094"/>
+  <testcase name="testBaseProjectileTouchAttackComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.09"/>
+  <testcase name="testFireworkProjectileCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.097"/>
+  <testcase name="testFireworkProjectileAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.083"/>
+  <testcase name="testStunProjectileAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.072"/>
+  <testcase name="testFireworkProjectileAnimationController()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.079"/>
+  <testcase name="testFireBallAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.132"/>
+  <testcase name="testMobBossBallCreation()" classname="com.csse3200.game.entities.factories.ProjectileFactoryTest" time="0.107"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

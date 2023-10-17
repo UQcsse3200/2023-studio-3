@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WaveFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">WaveFactory.java</span></div><h1>WaveFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.tasks.waves.LevelWaves;
+import com.csse3200.game.components.tasks.waves.WaveClass;
+import com.csse3200.game.components.tasks.waves.WaveTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.screens.GameLevelData;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
+
+
+public class WaveFactory {
+  /**
+   * Create a Wave entity.
+   * Each wave class represents a single wave, then they are appended to a level.
+   * Cases can be written in here to set what happens for each level.
+   *
+   * @return entity
+   */
+
+<span class="fc" id="L28">  private static final Logger logger = LoggerFactory.getLogger(WaveFactory.class);</span>
+<span class="fc" id="L29">  private static Random rand = new Random();</span>
+
+  // Base health of the mobs
+<span class="fc" id="L32">  private static int BASE_HEALTH = 60;</span>
+
+  // Base health of the boss
+<span class="fc" id="L35">  private static int BOSS_BASE_HEALTH = 80;</span>
+
+  /**
+   * The function will create the waves depending on the level selected by the user.
+   * */
+  public static Entity createWaves() {
+
+<span class="fc" id="L42">    int chosenLevel = GameLevelData.getSelectedLevel();</span>
+    int difficulty;
+    int maxWaves;
+<span class="fc bfc" id="L45" title="All 3 branches covered.">    switch (chosenLevel) {</span>
+      case 0:
+<span class="fc" id="L47">        difficulty = 3;</span>
+<span class="fc" id="L48">        maxWaves = 10;</span>
+<span class="fc" id="L49">        break;</span>
+      case 2:
+<span class="fc" id="L51">        difficulty = 5;</span>
+<span class="fc" id="L52">        maxWaves = 15;</span>
+<span class="fc" id="L53">        break;</span>
+      default:
+<span class="fc" id="L55">        difficulty = 2;</span>
+<span class="fc" id="L56">        maxWaves = 5;</span>
+    }
+
+<span class="fc" id="L59">    LevelWaves level = createLevel(difficulty, maxWaves, chosenLevel);</span>
+<span class="fc" id="L60">    AITaskComponent aiComponent =</span>
+        new AITaskComponent()
+<span class="fc" id="L62">            .addTask(new WaveTask());</span>
+<span class="fc" id="L63">    return level.addComponent(aiComponent);</span>
+  }
+
+  /**
+   * This function is responsible for creating the level and all the waves associated with it.
+   * It takes in the difficulty, number of waves and level selected by the user. From the level
+   * selected by the user, it will produce the waves for the level.
+   *
+   * Depending on the level selected (1 easy, 2 medium, 3 hard), the number of waves will increase as well as
+   * the number of mobs per wave and the health of the mobs. Based on the level the mobs will change and waves will be
+   * constructed from two random mobs of the possible ones allocated for that level. Based on the level chosen the health of the mobs will increase at a greater rate. For wave i the
+   * health will be increased from BASE_HEALTH to BASE_HEALTH + (I * chosen_level) so the difficulty
+   * increases quicker.
+   *
+   * Bosses are spawned every 5 waves and the health of the bosses increases as the level increases.
+   * For every 5 levels another boss is included (5th wave -&gt; 1 boss, 10th wave -&gt; 2 bosses etc.)
+   *
+   * @param maxDiff - the maximum difficulty of the level (the start number of mobs - 3)
+   * @param maxWaves - the maximum number of waves for the level
+   * @param chosenLevel - the level selected by the user
+   *
+   * @return level - the level constructed with all the waves of mobs
+   * */
+  public static LevelWaves createLevel(int maxDiff, int maxWaves, int chosenLevel) {
+<span class="fc" id="L87">    int minMobs = 3 + maxDiff;</span>
+    // These are the mobs assigned to the associated levels (planets)
+<span class="fc" id="L89">    ArrayList&lt;String&gt; level1Mobs = new ArrayList&lt;&gt;(Arrays.asList(&quot;Xeno&quot;, &quot;SplittingWaterSlime&quot;, &quot;WaterQueen&quot;));</span>
+    // TODO switch to hashed to demo the bosses and make sure to do this for mobs as well
+    // TODO hash out level1 test in NPCFactory when doing this. 
+//    ArrayList&lt;String&gt; level1Mobs = new ArrayList&lt;&gt;(Arrays.asList(&quot;Xeno&quot;, &quot;PatrickBoss&quot;, &quot;WaterQueen&quot;));
+//    ArrayList&lt;String&gt; level1Mobs = new ArrayList&lt;&gt;(Arrays.asList(&quot;Xeno&quot;, &quot;IceBoss&quot;, &quot;WaterQueen&quot;));
+<span class="fc" id="L94">    ArrayList&lt;String&gt; level2Mobs = new ArrayList&lt;&gt;(Arrays.asList(&quot;Xeno&quot;, &quot;Skeleton&quot;, &quot;DeflectWizard&quot;));</span>
+<span class="fc" id="L95">    ArrayList&lt;String&gt; level3Mobs = new ArrayList&lt;&gt;(Arrays.asList(&quot;Xeno&quot;, &quot;DodgingDragon&quot;, &quot;FireWorm&quot;));</span>
+
+    // The mob bosses assigned to the associated levels (planets)
+<span class="fc" id="L98">    String boss1 = &quot;IceBoss&quot;;</span>
+//    String boss1 = &quot;PatrickBoss&quot;;
+<span class="fc" id="L100">    String boss2 = &quot;PatrickBoss&quot;;</span>
+    //String boss3 = &quot;IceBoss&quot;;
+
+<span class="fc" id="L103">    String boss3 = &quot;FireBoss&quot;;</span>
+
+<span class="fc" id="L105">    int spawnDelay = 5;</span>
+
+    // Create new level entity with spawn delay of 5 seconds
+<span class="fc" id="L108">    LevelWaves level = new LevelWaves(spawnDelay);</span>
+    // Tell the waveService what the spawn delay for levels will be (for UI team).
+<span class="fc" id="L110">    ServiceLocator.getWaveService().setSpawnDelay(spawnDelay);</span>
+
+    ArrayList&lt;String&gt; possibleMobs;
+
+    // set the possible mobs and boss for the level
+<span class="fc" id="L115">    String boss = &quot;&quot;;</span>
+<span class="fc bfc" id="L116" title="All 3 branches covered.">    switch (chosenLevel) {</span>
+      case 0:
+<span class="fc" id="L118">        boss = boss2;</span>
+<span class="fc" id="L119">        possibleMobs = level2Mobs;</span>
+<span class="fc" id="L120">        chosenLevel = 2;</span>
+<span class="fc" id="L121">        break;</span>
+      case 2:
+<span class="fc" id="L123">        boss = boss3;</span>
+<span class="fc" id="L124">        possibleMobs = level3Mobs;</span>
+<span class="fc" id="L125">        chosenLevel = 3;</span>
+<span class="fc" id="L126">        break;</span>
+      default:
+<span class="fc" id="L128">        boss = boss1;</span>
+<span class="fc" id="L129">        possibleMobs = level1Mobs;</span>
+<span class="fc" id="L130">        chosenLevel = 1;</span>
+        break;
+    }
+
+    // Create mxWaves number of waves with mob stats increasing
+<span class="fc bfc" id="L135" title="All 2 branches covered.">    for (int i = 1; i &lt;= maxWaves; i++) {</span>
+<span class="fc" id="L136">      HashMap&lt;String, int[]&gt; mobs = new HashMap&lt;&gt;();</span>
+
+      // add i/5 bosses every 5 waves with increased health where i is the i^th wave
+      // 5/5 -&gt; 1 boss, 10/5 -&gt; 2 bosses etc
+<span class="fc bfc" id="L140" title="All 2 branches covered.">      if (i % 5 == 0) {</span>
+<span class="fc" id="L141">        int[] bossStats = {i/5, BOSS_BASE_HEALTH + (chosenLevel * i)};</span>
+<span class="fc" id="L142">        mobs.put(boss, bossStats);</span>
+      }
+
+      // select 2 random mobs from the possible mobs
+<span class="fc" id="L146">      String mob1 = possibleMobs.get(rand.nextInt(possibleMobs.size()));</span>
+<span class="fc" id="L147">      String mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));</span>
+
+      // ensure the mobs are different
+<span class="fc bfc" id="L150" title="All 2 branches covered.">      while (mob2 == mob1) {</span>
+<span class="fc" id="L151">        mob2 = possibleMobs.get(rand.nextInt(possibleMobs.size()));</span>
+      }
+
+<span class="fc" id="L154">      int mob1Num = rand.nextInt(minMobs - 3) + 2;</span>
+<span class="fc" id="L155">      int mob2Num = minMobs - mob1Num;</span>
+
+<span class="fc" id="L157">      int[] mob1Stats = {mob1Num, BASE_HEALTH + (chosenLevel * i)};</span>
+<span class="fc" id="L158">      int[] mob2Stats = {mob2Num, BASE_HEALTH + (chosenLevel * i)};</span>
+
+
+<span class="fc" id="L161">      mobs.put(mob1, mob1Stats);</span>
+<span class="fc" id="L162">      mobs.put(mob2, mob2Stats);</span>
+
+<span class="fc" id="L164">      level.addWave(new WaveClass(mobs));</span>
+<span class="fc" id="L165">      minMobs ++;</span>
+    }
+
+<span class="fc" id="L168">    logger.info(&quot;Level created: &quot; + level);</span>
+<span class="fc" id="L169">    return level;</span>
+  }
+
+<span class="nc" id="L172">  private WaveFactory() {</span>
+<span class="nc" id="L173">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

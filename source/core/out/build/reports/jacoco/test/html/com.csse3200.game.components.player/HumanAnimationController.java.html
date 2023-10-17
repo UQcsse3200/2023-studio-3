@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HumanAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.player</a> &gt; <span class="el_source">HumanAnimationController.java</span></div><h1>HumanAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.player;
+
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Listens for events relevant to a Human character (Just engineers at this stage)
+ * Each event will trigger a certain animation
+ */
+<span class="fc" id="L13">public class HumanAnimationController extends Component {</span>
+    // Event name constants
+    private static final String IDLEL = &quot;idleLeft&quot;;
+    private static final String IDLER = &quot;idleRight&quot;;
+    private static final String WALKL = &quot;walkLeftStart&quot;;
+    private static final String WALKR = &quot;walkRightStart&quot;;
+    private static final String WALK_PREP = &quot;walkPrepStart&quot;;
+    private static final String PREP = &quot;prepStart&quot;;
+    private static final String FIRING_AUTO = &quot;firingAutoStart&quot;;
+    private static final String FIRING_SINGLE = &quot;firingSingleStart&quot;;
+    private static final String HIT = &quot;hitStart&quot;;
+    private static final String DEATH = &quot;deathStart&quot;;
+    // Animation name constants
+    private static final String IDLEL_ANIM = &quot;idle_left&quot;;
+    private static final String IDLER_ANIM = &quot;idle_right&quot;;
+    private static final String WALKL_ANIM = &quot;walk_left&quot;;
+    private static final String WALKR_ANIM = &quot;walk_right&quot;;
+    private static final String WALK_PREP_ANIM = &quot;walk_prep&quot;;
+    private static final String FIRE_AUTO_ANIM = &quot;firing_auto&quot;;
+    private static final String FIRE_SINGLE_ANIM = &quot;firing_single&quot;;
+    private static final String HIT_ANIM = &quot;hit&quot;;
+    private static final String DEATH_ANIM = &quot;death&quot;;
+
+    private static final String IDLEL_ANIM_OUTLINE = &quot;idle_left_outline&quot;;
+    private static final String IDLER_ANIM_OUTLINE = &quot;idle_right_outline&quot;;
+    private static final String WALKL_ANIM_OUTLINE = &quot;walk_left_outline&quot;;
+    private static final String WALKR_ANIM_OUTLINE = &quot;walk_right_outline&quot;;
+    private static final String WALK_PREP_ANIM_OUTLINE = &quot;walk_prep_outline&quot;;
+    private static final String FIRE_AUTO_ANIM_OUTLINE = &quot;firing_auto_outline&quot;;
+    private static final String FIRE_SINGLE_ANIM_OUTLINE = &quot;firing_single_outline&quot;;
+    private static final String PREP_ANIM_OUTLINE = &quot;prep_outline&quot;;
+    private static final String HIT_ANIM_OUTLINE = &quot;hit_outline&quot;;
+    private static final String DEATH_ANIM_OUTLINE = &quot;death_outline&quot;;
+
+    // Sound effects constants
+    private static final String FIRE_AUTO_SFX = &quot;sounds/engineers/firing_auto.mp3&quot;;
+    private static final String FIRE_SINGLE_SFX = &quot;sounds/engineers/firing_single.mp3&quot;;
+
+    private AnimationRenderComponent animator;
+<span class="fc" id="L52">    private final Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(</span>
+            FIRE_AUTO_SFX, Sound.class);
+<span class="fc" id="L54">    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(</span>
+            FIRE_SINGLE_SFX, Sound.class);
+
+<span class="fc" id="L57">    private boolean clicked = false;</span>
+
+
+    /**
+     * Instantiates a HumanAnimationController and adds all the event listeners for the
+     * Human entity - Just engineers at this stage.
+     */
+    @Override
+    public void create() {
+<span class="fc" id="L66">        super.create();</span>
+<span class="fc" id="L67">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="fc" id="L68">        entity.getEvents().addListener(IDLEL, this::animateIdleLeft);</span>
+<span class="fc" id="L69">        entity.getEvents().addListener(IDLER, this::animateIdleRight);</span>
+<span class="fc" id="L70">        entity.getEvents().addListener(WALKL, this::animateLeftWalk);</span>
+<span class="fc" id="L71">        entity.getEvents().addListener(WALKR, this::animateRightWalk);</span>
+<span class="fc" id="L72">        entity.getEvents().addListener(PREP, this::animatePrep);</span>
+<span class="fc" id="L73">        entity.getEvents().addListener(WALK_PREP, this::animatePrepWalk);</span>
+<span class="fc" id="L74">        entity.getEvents().addListener(FIRING_SINGLE, this::animateSingleFiring);</span>
+<span class="fc" id="L75">        entity.getEvents().addListener(FIRING_AUTO, this::animateFiringAuto);</span>
+<span class="fc" id="L76">        entity.getEvents().addListener(HIT, this::animateHit);</span>
+<span class="fc" id="L77">        entity.getEvents().addListener(DEATH, this::animateDeath);</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Callback that starts the idle animation facing left
+     */
+    void animateIdleLeft() {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L85">            animator.startAnimation(IDLEL_ANIM_OUTLINE);</span>
+        } else {
+<span class="nc" id="L87">            animator.startAnimation(IDLEL_ANIM);</span>
+        }
+<span class="nc" id="L89">    }</span>
+
+    /**
+     * Callback that starts the idle animation facing right
+     */
+    void animateIdleRight() {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L96">            animator.startAnimation(IDLER_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L98">            animator.startAnimation(IDLER_ANIM);</span>
+        }
+<span class="fc" id="L100">    }</span>
+
+    /**
+     * Callback that starts the walk animation for left movement
+     */
+    void animateLeftWalk() {
+<span class="pc bpc" id="L106" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L107">            animator.startAnimation(WALKL_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L109">            animator.startAnimation(WALKL_ANIM);</span>
+        }
+//        runSound.play();
+<span class="fc" id="L112">    }</span>
+
+    /**
+     * Callback that starts the walk animation for right movement
+     */
+    void animateRightWalk() {
+<span class="pc bpc" id="L118" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L119">            animator.startAnimation(WALKR_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L121">            animator.startAnimation(WALKR_ANIM);</span>
+        }
+<span class="fc" id="L123">    }</span>
+
+    /**
+     * Callback that starts the walk animation in the 'prepared' state, i.e., weapon up and ready to fight - currently
+     * unused, but intended to be incorporated as engineer functionality expands
+     */
+    void animatePrepWalk() {
+<span class="nc bnc" id="L130" title="All 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L131">            animator.startAnimation(WALK_PREP_ANIM_OUTLINE);</span>
+        } else {
+<span class="nc" id="L133">            animator.startAnimation(WALK_PREP_ANIM);</span>
+        }
+<span class="nc" id="L135">    }</span>
+
+    /**
+     * Callback that starts the shoot animation in single fire mode, and plays the single fire sound
+     */
+    void animateSingleFiring() {
+<span class="pc bpc" id="L141" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L142">            animator.startAnimation(FIRE_SINGLE_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L144">            animator.startAnimation(FIRE_SINGLE_ANIM);</span>
+        }
+<span class="fc" id="L146">        fireSingleSound.play();</span>
+<span class="fc" id="L147">    }</span>
+
+    /**
+     * Callback that starts the shoot animation in auto mode and plays the auto fire sound.
+     * Currently unused, but intended to be incorporated as engineer functionality expands.
+     */
+    void animateFiringAuto() {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L155">            animator.startAnimation(FIRE_AUTO_ANIM_OUTLINE);</span>
+        } else {
+<span class="nc" id="L157">            animator.startAnimation(FIRE_AUTO_ANIM);</span>
+        }
+<span class="nc" id="L159">        fireAutoSound.play();</span>
+<span class="nc" id="L160">    }</span>
+
+    /**
+     * Callback that starts the 'prep' animation, i.e., raising weapon in preparation for firing
+     */
+    void animatePrep() {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L167">            animator.startAnimation(PREP_ANIM_OUTLINE);</span>
+        } else {
+<span class="nc" id="L169">            animator.startAnimation(PREP);</span>
+        }
+<span class="nc" id="L171">    }</span>
+
+    /**
+     * Callback that starts the 'hit' animation when engineer is damaged
+     */
+    void animateHit() {
+<span class="pc bpc" id="L177" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L178">            animator.startAnimation(HIT_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L180">            animator.startAnimation(HIT_ANIM);</span>
+        }
+<span class="fc" id="L182">    }</span>
+
+    /**
+     * Callback that starts the 'death' animation when the engineer entity's health reaches zero.
+     */
+    void animateDeath() {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">        if (clicked) {</span>
+<span class="nc" id="L189">            animator.startAnimation(DEATH_ANIM_OUTLINE);</span>
+        } else {
+<span class="fc" id="L191">            animator.startAnimation(DEATH_ANIM);</span>
+        }
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * @return true if the entity has been clicked/selected, false otherwise
+     */
+    public boolean isClicked() {
+<span class="nc" id="L199">        return clicked;</span>
+    }
+
+    /**
+     * Sets the clicked state of the entity
+     * @param clicked true if the entity has been clicked/selected, false otherwise
+     */
+    public void setClicked(boolean clicked) {
+<span class="nc" id="L207">        this.clicked = clicked;</span>
+<span class="nc" id="L208">    }</span>
+
+    /**
+     * Deseelects the engineer entity by starting the appropriate animation without an outline
+     * and removes the engineer menu from the stage
+     * @param currentAnimation the current animation of the entity
+     */
+    public void deselectEngineer(String currentAnimation) {
+<span class="nc" id="L216">        AnimationRenderComponent animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L217">        EngineerMenuComponent menu = this.entity.getComponent(EngineerMenuComponent.class);</span>
+
+<span class="nc" id="L219">        animator.startAnimation(currentAnimation.substring(0, currentAnimation.lastIndexOf('_')));</span>
+<span class="nc" id="L220">        menu.removeMenu();</span>
+<span class="nc" id="L221">        setClicked(false);</span>
+<span class="nc" id="L222">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

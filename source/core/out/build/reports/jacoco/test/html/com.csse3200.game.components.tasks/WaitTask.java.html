@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WaitTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">WaitTask.java</span></div><h1>WaitTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Task that does nothing other than waiting for a given time. Status is Finished
+ * after the time has passed.
+ */
+public class WaitTask extends DefaultTask {
+  private final GameTime timeSource;
+  private final float duration;
+  private long endTime;
+
+  /**
+   * @param duration How long to wait for, in seconds.
+   */
+<span class="fc" id="L19">  public WaitTask(float duration) {</span>
+<span class="fc" id="L20">    timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L21">    this.duration = duration;</span>
+<span class="fc" id="L22">  }</span>
+
+  /**
+   * Start waiting from now until duration has passed.
+   */
+  @Override
+  public void start() {
+<span class="fc" id="L29">    super.start();</span>
+<span class="fc" id="L30">    endTime = timeSource.getTime() + (int)(duration * 1000);</span>
+<span class="fc" id="L31">  }</span>
+
+  @Override
+  public void update() {
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="fc" id="L36">      status = Status.FINISHED;</span>
+    }
+<span class="fc" id="L38">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

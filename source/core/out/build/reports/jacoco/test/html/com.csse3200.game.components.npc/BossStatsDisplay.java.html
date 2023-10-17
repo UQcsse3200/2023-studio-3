@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BossStatsDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.npc</a> &gt; <span class="el_source">BossStatsDisplay.java</span></div><h1>BossStatsDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.npc;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.UIComponent;
+
+<span class="nc" id="L12">public class BossStatsDisplay extends UIComponent {</span>
+
+        Table table;
+        private Image bossImage;
+        private Label healthLabel;
+
+        /**
+         * Creates reusable ui styles and adds actors to the stage.
+         */
+        @Override
+        public void create() {
+<span class="nc" id="L23">            super.create();</span>
+<span class="nc" id="L24">            addActors();</span>
+
+<span class="nc" id="L26">            entity.getEvents().addListener(&quot;updateHealth&quot;, this::updatePlayerHealthUI);</span>
+<span class="nc" id="L27">        }</span>
+
+        /**
+         * Creates actors and positions them on the stage using a table.
+         * @see Table for positioning options
+         */
+        private void addActors() {
+<span class="nc" id="L34">            table = new Table();</span>
+<span class="nc" id="L35">            table.top().left();</span>
+<span class="nc" id="L36">            table.setFillParent(true);</span>
+<span class="nc" id="L37">            table.padTop(60f).padLeft(5f);</span>
+
+            // Heart image
+<span class="nc" id="L40">            float bossSideLength = 30f;</span>
+<span class="nc" id="L41">            bossImage = new Image(ServiceLocator.getResourceService().getAsset(&quot;images/mobs/boss_health.png&quot;, Texture.class));</span>
+
+            // Health text
+<span class="nc" id="L44">            int health = entity.getComponent(CombatStatsComponent.class).getHealth();</span>
+<span class="nc" id="L45">            CharSequence healthText = String.format(&quot;Health: %d&quot;, health);</span>
+<span class="nc" id="L46">            healthLabel = new Label(healthText, skin, &quot;large&quot;);</span>
+
+<span class="nc" id="L48">            table.add(bossImage).size(bossSideLength).pad(5);</span>
+<span class="nc" id="L49">            table.add(healthLabel);</span>
+<span class="nc" id="L50">            stage.addActor(table);</span>
+<span class="nc" id="L51">        }</span>
+
+        @Override
+        public void draw(SpriteBatch batch)  {
+            // draw is handled by the stage
+<span class="nc" id="L56">        }</span>
+
+        /**
+         * Updates the player's health on the ui.
+         * @param health player health
+         */
+        public void updatePlayerHealthUI(int health) {
+<span class="nc" id="L63">            CharSequence text = String.format(&quot;Health: %d&quot;, health);</span>
+<span class="nc" id="L64">            healthLabel.setText(text);</span>
+<span class="nc" id="L65">        }</span>
+
+        @Override
+        public void dispose() {
+<span class="nc" id="L69">            super.dispose();</span>
+<span class="nc" id="L70">            bossImage.remove();</span>
+<span class="nc" id="L71">            healthLabel.remove();</span>
+<span class="nc" id="L72">        }</span>
+    }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

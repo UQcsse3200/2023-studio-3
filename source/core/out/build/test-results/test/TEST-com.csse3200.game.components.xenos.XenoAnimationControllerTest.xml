@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.xenos.XenoAnimationControllerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:26" hostname="DESKTOP-F4ACIG8" time="0.194">
+  <properties/>
+  <testcase name="testAnimateMelee1()" classname="com.csse3200.game.components.xenos.XenoAnimationControllerTest" time="0.056"/>
+  <testcase name="testAnimateDie()" classname="com.csse3200.game.components.xenos.XenoAnimationControllerTest" time="0.042"/>
+  <testcase name="testAnimateWander()" classname="com.csse3200.game.components.xenos.XenoAnimationControllerTest" time="0.048"/>
+  <testcase name="testAnimateHurt()" classname="com.csse3200.game.components.xenos.XenoAnimationControllerTest" time="0.042"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

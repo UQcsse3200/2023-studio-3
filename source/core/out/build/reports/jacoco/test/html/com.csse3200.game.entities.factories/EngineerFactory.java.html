@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EngineerFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">EngineerFactory.java</span></div><h1>EngineerFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
+import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.tasks.human.HumanWanderTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.configs.*;
+import com.csse3200.game.files.FileLoader;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+
+/**
+ * Factory to create non-playable human character (NPC) entities with predefined components.
+ *
+ * These may be modified to become controllable characters in future sprints.
+ *
+ * &lt;p&gt;Each NPC entity type should have a creation method that returns a corresponding entity.
+ * Predefined entity properties can be loaded from configs stored as json files which are defined in
+ * &quot;NPCConfigs&quot;.
+ *
+ * &lt;p&gt;If needed, this factory can be separated into more specific factories for entities with
+ * similar characteristics.
+ */
+public class EngineerFactory {
+  
+  private static final int COMBAT_TASK_PRIORITY = 2;
+  private static final int ENGINEER_RANGE = 10;
+<span class="fc" id="L38">  private static final EngineerConfigs configs =</span>
+<span class="fc" id="L39">          FileLoader.readClass(EngineerConfigs.class, &quot;configs/Engineers.json&quot;);</span>
+  
+  private static final float HUMAN_SCALE_X = 1f;
+  private static final float HUMAN_SCALE_Y = 0.8f;
+  
+  /**
+   * Creates an Engineer entity, based on a base Human entity, with the appropriate components and animations
+   *
+   *
+   * @return entity
+   */
+  public static Entity createEngineer() {
+<span class="fc" id="L51">    Entity engineer = createBaseHumanNPC();</span>
+<span class="fc" id="L52">    BaseEntityConfig config = configs.engineer;</span>
+    
+<span class="fc" id="L54">    AITaskComponent aiComponent = new AITaskComponent();</span>
+<span class="fc" id="L55">    AnimationRenderComponent animator = createAnimationRenderComponent();</span>
+    
+<span class="fc" id="L57">    engineer</span>
+<span class="fc" id="L58">            .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L59">            .addComponent(animator)</span>
+<span class="fc" id="L60">            .addComponent(new HumanAnimationController())</span>
+<span class="fc" id="L61">            .addComponent(new EngineerMenuComponent())</span>
+<span class="fc" id="L62">            .addComponent(aiComponent);</span>
+    
+<span class="fc" id="L64">    engineer.getComponent(AITaskComponent.class).addTask(new HumanWanderTask(COMBAT_TASK_PRIORITY, ENGINEER_RANGE));</span>
+<span class="fc" id="L65">    engineer.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L66">    engineer.setScale(HUMAN_SCALE_X, HUMAN_SCALE_Y);</span>
+<span class="fc" id="L67">    return engineer;</span>
+  }
+  
+  public static AnimationRenderComponent createAnimationRenderComponent() {
+<span class="fc" id="L71">    String atlasPath = &quot;images/engineers/engineer.atlas&quot;;</span>
+<span class="fc" id="L72">    String atlasOutlinePath = &quot;images/engineers/engineer_outline.atlas&quot;;</span>
+<span class="fc" id="L73">    AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+            new TextureAtlas(atlasPath), new TextureAtlas(atlasOutlinePath));
+<span class="fc" id="L75">    animator.addAnimation(&quot;walk_left&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L76">    animator.addAnimation(&quot;walk_right&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L77">    animator.addAnimation(&quot;walk_prep&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L78">    animator.addAnimation(&quot;idle_right&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L79">    animator.addAnimation(&quot;firing_auto&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L80">    animator.addAnimation(&quot;firing_single&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L81">    animator.addAnimation(&quot;prep&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L82">    animator.addAnimation(&quot;hit&quot;, 0.01f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L83">    animator.addAnimation(&quot;death&quot;, 0.1f, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L85">    animator.addAnimation(&quot;walk_left_outline&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L86">    animator.addAnimation(&quot;walk_right_outline&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L87">    animator.addAnimation(&quot;walk_prep_outline&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L88">    animator.addAnimation(&quot;idle_right_outline&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L89">    animator.addAnimation(&quot;firing_auto_outline&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L90">    animator.addAnimation(&quot;firing_single_outline&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L91">    animator.addAnimation(&quot;prep_outline&quot;, 0.05f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L92">    animator.addAnimation(&quot;hit_outline&quot;, 0.01f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L93">    animator.addAnimation(&quot;death_outline&quot;, 0.1f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L94">    return animator;</span>
+  }
+  
+  /**
+   * Creates a generic human npc to be used as a base entity by more specific NPC creation methods.
+   *
+   * @return entity
+   */
+  public static Entity createBaseHumanNPC() {
+    
+    
+<span class="fc" id="L105">    Entity human =</span>
+            new Entity()
+<span class="fc" id="L107">                    .addComponent(new PhysicsComponent())</span>
+<span class="fc" id="L108">                    .addComponent(new PhysicsMovementComponent())</span>
+<span class="fc" id="L109">                    .addComponent(new ColliderComponent())</span>
+<span class="fc" id="L110">                    .addComponent(new HitboxComponent().setLayer(PhysicsLayer.ENGINEER))</span>
+<span class="fc" id="L111">                    .addComponent(new TouchAttackComponent(PhysicsLayer.NPC, 1.5f));</span>
+    
+    
+<span class="fc" id="L114">    PhysicsUtils.setScaledCollider(human, 0.9f, 0.4f);</span>
+<span class="fc" id="L115">    return human;</span>
+  }
+  
+<span class="nc" id="L118">  private EngineerFactory() {</span>
+<span class="nc" id="L119">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

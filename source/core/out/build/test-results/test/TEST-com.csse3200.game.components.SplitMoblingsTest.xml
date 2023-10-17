@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.SplitMoblingsTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:21" hostname="DESKTOP-F4ACIG8" time="1.876">
+  <properties/>
+  <testcase name="shouldSpawnWithinRangeAmountOne()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.671"/>
+  <testcase name="shouldSplitCorrectAmount()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.112"/>
+  <testcase name="shouldScaleXAndYbasedOnParamsMultiAmt()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.113"/>
+  <testcase name="shouldInvokeDieStartEventAfterDeath()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.196"/>
+  <testcase name="shouldNotBeNull()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.086"/>
+  <testcase name="shouldSpawnWithinRangeMultipleAmount()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.145"/>
+  <testcase name="shouldNotInvokeDieStartEventNoDeath()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.101"/>
+  <testcase name="shouldScaleBasedOnParamsSingleAmt()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.11"/>
+  <testcase name="shouldNotSplitCorrectAmountOutOfBounds()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.119"/>
+  <testcase name="shouldBeDisposedAfterDeath()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.105"/>
+  <testcase name="shouldHaveAsset()" classname="com.csse3200.game.components.SplitMoblingsTest" time="0.088"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:22 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:22 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:22 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:22 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -2 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -3 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+Oct 10, 2023 12:49:23 PM com.csse3200.game.services.WaveService updateEnemyCount
+INFO: -1 enemies remaining in wave
+]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.utils.math.GridPoint2UtilsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:49" hostname="DESKTOP-F4ACIG8" time="0.023">
+  <properties/>
+  <testcase name="testInstantiation()" classname="com.csse3200.game.utils.math.GridPoint2UtilsTest" time="0.02"/>
+  <testcase name="testZero()" classname="com.csse3200.game.utils.math.GridPoint2UtilsTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

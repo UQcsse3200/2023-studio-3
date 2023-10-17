@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">InputService.java</span></div><h1>InputService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Provides a global access point for handling user input and creating input handlers. All active
+ * input handlers should be registered here.
+ *
+ * &lt;p&gt;When an input is received, it is passed to registered input handlers in descending priority
+ * order and stops as soon as the input is handled.
+ */
+public class InputService implements InputProcessor, GestureDetector.GestureListener {
+<span class="fc" id="L22">  private static final Logger logger = LoggerFactory.getLogger(InputService.class);</span>
+<span class="fc" id="L23">  private static final InputFactory.InputType inputType = InputFactory.InputType.KEYBOARD;</span>
+
+<span class="fc" id="L25">  private static final Comparator&lt;InputComponent&gt; comparator =</span>
+<span class="fc" id="L26">      Collections.reverseOrder(Comparator.comparingInt(InputComponent::getPriority));</span>
+
+<span class="fc" id="L28">  private final List&lt;InputComponent&gt; inputHandlers = new ArrayList&lt;&gt;();</span>
+  private final InputFactory inputFactory;
+  private EngineerInputComponent engineerInputComponent;
+
+  public InputService() {
+<span class="fc" id="L33">    this(InputFactory.createFromInputType(inputType));</span>
+<span class="fc" id="L34">  }</span>
+
+
+<span class="fc" id="L37">  public InputService(InputFactory inputFactory) {</span>
+<span class="fc" id="L38">    this.inputFactory = inputFactory;</span>
+<span class="fc" id="L39">    Gdx.input.setInputProcessor(this);</span>
+<span class="fc" id="L40">  }</span>
+
+  /**
+   * Get the input factory to create input handlers
+   *
+   * @return input factory
+   */
+  public InputFactory getInputFactory() {
+<span class="nc" id="L48">    return inputFactory;</span>
+  }
+
+  public EngineerInputComponent getEngineerInput() {
+<span class="nc" id="L52">    return engineerInputComponent;</span>
+  }
+
+  /**
+   * Register an input handler based on its priority and reorder inputHandlers.
+   *
+   * @param inputHandler input handler
+   */
+  public void register(InputComponent inputHandler) {
+<span class="fc" id="L61">    logger.debug(&quot;Registering input handler {}&quot;, inputHandler);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">    if (inputHandler instanceof EngineerInputComponent) {</span>
+<span class="nc" id="L63">      engineerInputComponent = (EngineerInputComponent) inputHandler;</span>
+    }
+<span class="fc" id="L65">    inputHandlers.add(inputHandler);</span>
+<span class="fc" id="L66">    inputHandlers.sort(comparator);</span>
+<span class="fc" id="L67">  }</span>
+
+  /**
+   * Unregister an input handler
+   *
+   * @param inputHandler input handler
+   */
+  public void unregister(InputComponent inputHandler) {
+<span class="fc" id="L75">    logger.debug(&quot;Unregistering input handler {}&quot;, inputHandler);</span>
+<span class="fc" id="L76">    inputHandlers.remove(inputHandler);</span>
+<span class="fc" id="L77">  }</span>
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed.
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#keyDown(int)
+   */
+  @Override
+  public boolean keyDown(int keycode) {
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L89" title="All 2 branches covered.">      if (inputHandler.keyDown(keycode)) {</span>
+<span class="fc" id="L90">        logger.debug(&quot;keyDown input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L91">        return true;</span>
+      }
+<span class="fc" id="L93">    }</span>
+<span class="fc" id="L94">    logger.debug(&quot;keyDown input was not handled&quot;);</span>
+<span class="fc" id="L95">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#keyTyped(char)
+   */
+  @Override
+  public boolean keyTyped(char character) {
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">      if (inputHandler.keyTyped(character)) {</span>
+<span class="fc" id="L109">        logger.debug(&quot;keyTyped input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L110">        return true;</span>
+      }
+<span class="fc" id="L112">    }</span>
+<span class="nc" id="L113">    logger.debug(&quot;keyTyped input was not handled&quot;);</span>
+<span class="nc" id="L114">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#keyUp(int)
+   */
+  @Override
+  public boolean keyUp(int keycode) {
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">      if (inputHandler.keyUp(keycode)) {</span>
+<span class="fc" id="L128">        logger.debug(&quot;keyUp input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L129">        return true;</span>
+      }
+<span class="fc" id="L131">    }</span>
+<span class="nc" id="L132">    logger.debug(&quot;keyUp input was not handled&quot;);</span>
+<span class="nc" id="L133">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#mouseMoved(int, int)
+   */
+  @Override
+  public boolean mouseMoved(int screenX, int screenY) {
+<span class="pc bpc" id="L145" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">      if (inputHandler.mouseMoved(screenX, screenY)) {</span>
+<span class="fc" id="L147">        logger.debug(&quot;mouseMoved input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L148">        return true;</span>
+      }
+<span class="fc" id="L150">    }</span>
+<span class="nc" id="L151">    logger.debug(&quot;mouseMoved input was not handled&quot;);</span>
+<span class="nc" id="L152">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#scrolled(float, float)
+   */
+  @Override
+  public boolean scrolled(float amountX, float amountY) {
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">      if (inputHandler.scrolled(amountX, amountY)) {</span>
+<span class="fc" id="L166">        logger.debug(&quot;scrolled input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L167">        return true;</span>
+      }
+<span class="fc" id="L169">    }</span>
+<span class="nc" id="L170">    logger.debug(&quot;scrolled input was not handled&quot;);</span>
+<span class="nc" id="L171">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#touchDown(int, int, int, int)
+   */
+  @Override
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="pc bpc" id="L183" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">      if (inputHandler.touchDown(screenX, screenY, pointer, button)) {</span>
+<span class="fc" id="L185">        logger.debug(&quot;touchDown input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L186">        return true;</span>
+      }
+<span class="fc" id="L188">    }</span>
+<span class="nc" id="L189">    logger.debug(&quot;touchDown input was not handled&quot;);</span>
+<span class="nc" id="L190">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#touchDragged(int, int, int)
+   */
+  @Override
+  public boolean touchDragged(int screenX, int screenY, int pointer) {
+<span class="pc bpc" id="L202" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">      if (inputHandler.touchDragged(screenX, screenY, pointer)) {</span>
+<span class="fc" id="L204">        logger.debug(&quot;touchDragged input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L205">        return true;</span>
+      }
+<span class="fc" id="L207">    }</span>
+<span class="nc" id="L208">    logger.debug(&quot;touchDragged input was not handled&quot;);</span>
+<span class="nc" id="L209">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#touchUp(int, int, int, int)
+   */
+  @Override
+  public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+<span class="pc bpc" id="L221" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">      if (inputHandler.touchUp(screenX, screenY, pointer, button)) {</span>
+<span class="fc" id="L223">        logger.debug(&quot;touchUp input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L224">        return true;</span>
+      }
+<span class="fc" id="L226">    }</span>
+<span class="nc" id="L227">    logger.debug(&quot;touchUp input was not handled&quot;);</span>
+<span class="nc" id="L228">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#fling(float, float, int)
+   */
+  @Override
+  public boolean fling(float velocityX, float velocityY, int button) {
+<span class="pc bpc" id="L240" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L241" title="All 2 branches covered.">      if (inputHandler.fling(velocityX, velocityY, button)) {</span>
+<span class="fc" id="L242">        logger.debug(&quot;fling input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L243">        return true;</span>
+      }
+<span class="fc" id="L245">    }</span>
+<span class="nc" id="L246">    logger.debug(&quot;fling input was not handled&quot;);</span>
+<span class="nc" id="L247">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#longPress(float, float)
+   */
+  @Override
+  public boolean longPress(float x, float y) {
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">      if (inputHandler.longPress(x, y)) {</span>
+<span class="fc" id="L261">        logger.debug(&quot;longPress input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L262">        return true;</span>
+      }
+<span class="fc" id="L264">    }</span>
+<span class="nc" id="L265">    logger.debug(&quot;longPress input was not handled&quot;);</span>
+<span class="nc" id="L266">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#pan(float, float, float, float)
+   */
+  @Override
+  public boolean pan(float x, float y, float deltaX, float deltaY) {
+<span class="pc bpc" id="L278" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L279" title="All 2 branches covered.">      if (inputHandler.pan(x, y, deltaX, deltaY)) {</span>
+<span class="fc" id="L280">        logger.debug(&quot;pan input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L281">        return true;</span>
+      }
+<span class="fc" id="L283">    }</span>
+<span class="nc" id="L284">    logger.debug(&quot;pan input was not handled&quot;);</span>
+<span class="nc" id="L285">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#panStop(float, float, int, int)
+   */
+  @Override
+  public boolean panStop(float x, float y, int pointer, int button) {
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L298" title="All 2 branches covered.">      if (inputHandler.panStop(x, y, pointer, button)) {</span>
+<span class="fc" id="L299">        logger.debug(&quot;panStop input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L300">        return true;</span>
+      }
+<span class="fc" id="L302">    }</span>
+<span class="nc" id="L303">    logger.debug(&quot;panStop input was not handled&quot;);</span>
+<span class="nc" id="L304">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#pinch(Vector2, Vector2, Vector2, Vector2)
+   */
+  @Override
+  public boolean pinch(
+      Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+<span class="pc bpc" id="L317" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L318" title="All 2 branches covered.">      if (inputHandler.pinch(initialPointer1, initialPointer2, pointer1, pointer2)) {</span>
+<span class="fc" id="L319">        logger.debug(&quot;pinch input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L320">        return true;</span>
+      }
+<span class="fc" id="L322">    }</span>
+<span class="nc" id="L323">    logger.debug(&quot;pinch input was not handled&quot;);</span>
+<span class="nc" id="L324">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @see GestureDetector.GestureListener#pinchStop()
+   */
+  @Override
+  public void pinchStop() {
+<span class="nc bnc" id="L335" title="All 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="nc bnc" id="L336" title="All 2 branches missed.">      if (inputHandler.pinchStopHandled()) {</span>
+<span class="nc" id="L337">        logger.debug(&quot;pinchStop input handled by {}&quot;, inputHandler);</span>
+<span class="nc" id="L338">        return;</span>
+      }
+<span class="nc" id="L340">    }</span>
+<span class="nc" id="L341">    logger.debug(&quot;pinchStop input was not handled&quot;);</span>
+<span class="nc" id="L342">  }</span>
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#tap(float, float, int, int)
+   */
+  @Override
+  public boolean tap(float x, float y, int count, int button) {
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L354" title="All 2 branches covered.">      if (inputHandler.tap(x, y, count, button)) {</span>
+<span class="fc" id="L355">        logger.debug(&quot;tap input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L356">        return true;</span>
+      }
+<span class="fc" id="L358">    }</span>
+<span class="nc" id="L359">    logger.debug(&quot;tap input was not handled&quot;);</span>
+<span class="nc" id="L360">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#touchDown(float, float, int, int)
+   */
+  @Override
+  public boolean touchDown(float x, float y, int pointer, int button) {
+<span class="pc bpc" id="L372" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L373" title="All 2 branches covered.">      if (inputHandler.touchDown(x, y, pointer, button)) {</span>
+<span class="fc" id="L374">        logger.debug(&quot;touchDown (gesture) input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L375">        return true;</span>
+      }
+<span class="fc" id="L377">    }</span>
+<span class="nc" id="L378">    logger.debug(&quot;touchDown input was not handled&quot;);</span>
+<span class="nc" id="L379">    return false;</span>
+  }
+
+  /**
+   * Iterates over registered input handlers in descending priority and stops as soon as the input is
+   * processed
+   *
+   * @return whether the input was processed
+   * @see GestureDetector.GestureListener#zoom(float, float)
+   */
+  @Override
+  public boolean zoom(float initialDistance, float distance) {
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">    for (InputComponent inputHandler : inputHandlers) {</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">      if (inputHandler.zoom(initialDistance, distance)) {</span>
+<span class="fc" id="L393">        logger.debug(&quot;zoom input handled by {}&quot;, inputHandler);</span>
+<span class="fc" id="L394">        return true;</span>
+      }
+<span class="fc" id="L396">    }</span>
+<span class="nc" id="L397">    logger.debug(&quot;zoom input was not handled&quot;);</span>
+<span class="nc" id="L398">    return false;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

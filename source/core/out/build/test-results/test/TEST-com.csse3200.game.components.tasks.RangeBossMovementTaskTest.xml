@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tasks.RangeBossMovementTaskTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:25" hostname="DESKTOP-F4ACIG8" time="0.026">
+  <properties/>
+  <testcase name="shouldTriggerEvent()" classname="com.csse3200.game.components.tasks.RangeBossMovementTaskTest" time="0.026"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

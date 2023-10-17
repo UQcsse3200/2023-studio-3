@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.rendering.AnimationRenderComponentTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:45" hostname="DESKTOP-F4ACIG8" time="0.739">
+  <properties/>
+  <testcase name="shouldAddRemoveAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.352"/>
+  <testcase name="shouldFailDuplicateAddAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.004"/>
+  <testcase name="shouldFinish()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.346"/>
+  <testcase name="shouldPlayAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.017"/>
+  <testcase name="shouldHaveAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.003"/>
+  <testcase name="shouldFailRemoveInvalidAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.003"/>
+  <testcase name="shouldStopAnimation()" classname="com.csse3200.game.rendering.AnimationRenderComponentTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:46 PM com.csse3200.game.rendering.AnimationRenderComponent addAnimation
+WARNING: Animation test_name already added in texture atlas. Animations should only be added once.
+Oct 10, 2023 12:49:46 PM com.csse3200.game.rendering.AnimationRenderComponent addAnimation
+WARNING: Animation test_name not found in texture atlas
+]]></system-err>
+</testsuite>

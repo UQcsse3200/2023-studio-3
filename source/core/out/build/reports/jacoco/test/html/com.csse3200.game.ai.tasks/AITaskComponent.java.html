@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AITaskComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.ai.tasks</a> &gt; <span class="el_source">AITaskComponent.java</span></div><h1>AITaskComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.ai.tasks;
+
+import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ComponentType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+/**
+ * Task-based AI component. Given a list of tasks with priorities, the AI component will run the
+ * highest priority task each frame. Tasks can be made up of smaller sub-tasks. A negative priority
+ * indicates that the task should not be run.
+ *
+ * &lt;p&gt;This is a simple implementation of Goal-Oriented Action Planning (GOAP), a common AI decision
+ * algorithm in games that's more powerful than Finite State Machines (FSMs) (State pattern).
+ */
+<span class="fc" id="L18">public class AITaskComponent extends Component implements TaskRunner {</span>
+<span class="fc" id="L19">  private static final Logger logger = LoggerFactory.getLogger(AITaskComponent.class);</span>
+
+<span class="fc" id="L21">  private final List&lt;PriorityTask&gt; priorityTasks = new ArrayList&lt;&gt;(2);</span>
+<span class="fc" id="L22">  private final List&lt;PriorityTask&gt; priorityTasksToBeRestored = new ArrayList&lt;&gt;(2);</span>
+  private PriorityTask currentTask;
+  
+<span class="fc" id="L25">  public boolean freezed = false;</span>
+  /**
+   * Add a priority task to the list of tasks. This task will be run only when it has the highest
+   * priority, and can be stopped to run a higher priority task.
+   *
+   * @param task Task to add
+   * @return self
+   */
+  public AITaskComponent addTask(PriorityTask task) {
+<span class="fc" id="L34">    logger.debug(&quot;{} Adding task {}&quot;, this, task);</span>
+<span class="fc" id="L35">    priorityTasks.add(task);</span>
+<span class="fc" id="L36">    task.create(this);</span>
+
+<span class="fc" id="L38">    return this;</span>
+  }
+
+  /**
+   * Get a task from the list of tasks. This can be used to get a reference to
+   * a task to modify it. This is inspired from Entity.getComponent().
+   *
+   * @param task The task to get
+   * @return A reference to a task with the given class
+   * @param &lt;T&gt; The type of task to get
+   */
+  public &lt;T extends PriorityTask&gt; T getTask(Class&lt;T&gt; task) {
+<span class="nc bnc" id="L50" title="All 2 branches missed.">    for (PriorityTask priorityTask : priorityTasks) {</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">      if (priorityTask.getClass() == task) {</span>
+<span class="nc" id="L52">        return (T) priorityTask;</span>
+      }
+<span class="nc" id="L54">    }</span>
+<span class="nc" id="L55">    logger.info(&quot;Task {} not found&quot;, task);</span>
+<span class="nc" id="L56">    return null;</span>
+  }
+
+  /**
+   * On update, run the current highest priority task. If it's a different one, stop the old one and
+   * start the new one. If the highest priority task has negative priority, no task will be run.
+   */
+  @Override
+  public void update() {
+<span class="fc" id="L65">    PriorityTask desiredtask = getHighestPriorityTask();</span>
+<span class="fc bfc" id="L66" title="All 4 branches covered.">    if (desiredtask == null || desiredtask.getPriority() &lt; 0) {</span>
+<span class="fc" id="L67">      return;</span>
+    }
+
+<span class="pc bpc" id="L70" title="1 of 4 branches missed.">    if (desiredtask != currentTask &amp;&amp; !freezed) {</span>
+<span class="fc" id="L71">      changeTask(desiredtask);</span>
+    }
+<span class="fc" id="L73">    currentTask.update();</span>
+<span class="fc" id="L74">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="fc bfc" id="L78" title="All 2 branches covered.">    if (currentTask != null) {</span>
+<span class="fc" id="L79">      currentTask.stop();</span>
+    }
+<span class="fc" id="L81">  }</span>
+
+  /**
+   * Empties the priorityTasks List. Disposes all of the entity's tasks.
+   */
+  public void disposeAll() {
+<span class="fc" id="L87">    currentTask = null;</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">    for (int i = 0; i &lt; priorityTasks.size(); i++) {</span>
+<span class="fc" id="L89">      priorityTasksToBeRestored.add(priorityTasks.get(i));</span>
+    }
+<span class="fc bfc" id="L91" title="All 2 branches covered.">    for (int i = 0; i &lt; priorityTasks.size(); i++) {</span>
+<span class="fc" id="L92">      priorityTasks.remove(i);</span>
+    }
+<span class="fc" id="L94">  }</span>
+
+  /**
+   * Restores the priorityTasks List. Adds all of the entity's disposed tasks 
+   * back into priorityTasks.
+   */
+  public void restore() {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">    for (int i = 0; i &lt; priorityTasksToBeRestored.size(); i++) {</span>
+<span class="nc" id="L102">      priorityTasks.add(priorityTasksToBeRestored.get(i));</span>
+    }
+<span class="nc bnc" id="L104" title="All 2 branches missed.">    for (int i = 0; i &lt; priorityTasksToBeRestored.size(); i++) {</span>
+<span class="nc" id="L105">      priorityTasksToBeRestored.remove(i);</span>
+    }
+<span class="nc" id="L107">    this.update();</span>
+<span class="nc" id="L108">  }</span>
+
+  public PriorityTask getHighestPriorityTask() {
+    try {
+<span class="fc" id="L112">      return Collections.max(priorityTasks, Comparator.comparingInt(PriorityTask::getPriority));</span>
+<span class="fc" id="L113">    } catch (NoSuchElementException e) {</span>
+<span class="fc" id="L114">      return null;</span>
+    }
+  }
+
+  public void changeTask(PriorityTask desiredTask) {
+<span class="fc" id="L119">    logger.debug(&quot;{} Changing to task {}&quot;, this, desiredTask);</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">    if (currentTask != null) {</span>
+<span class="fc" id="L121">      currentTask.stop();</span>
+    }
+<span class="fc" id="L123">    currentTask = desiredTask;</span>
+<span class="pc bpc" id="L124" title="1 of 2 branches missed.">    if (desiredTask != null) {</span>
+<span class="fc" id="L125">      desiredTask.start();</span>
+    }
+<span class="fc" id="L127">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

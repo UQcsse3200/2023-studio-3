@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SelfDestructOnHitComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components</a> &gt; <span class="el_source">SelfDestructOnHitComponent.java</span></div><h1>SelfDestructOnHitComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components;
+
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+
+/**
+ * This specific entity will self-destruct after the collisionEnd
+ * event if the targetLayer matches.
+ * Possible extensions to take in an array of entities instead.
+ */
+public class SelfDestructOnHitComponent extends Component {
+  private short targetLayer;
+  private HitboxComponent hitboxComponent;
+
+  /**
+   * Create a component that self-destructs based on a specified targetLayer.
+   * @param targetLayer Physic's layer of the target collider.
+   */
+<span class="nc" id="L22">  public SelfDestructOnHitComponent(short targetLayer) {</span>
+<span class="nc" id="L23">    this.targetLayer = targetLayer;</span>
+<span class="nc" id="L24">  }</span>
+
+  @Override
+  public void create() {
+<span class="nc" id="L28">    entity.getEvents().addListener(&quot;collisionEnd&quot;, this::onCollisionEnd);</span>
+<span class="nc" id="L29">    hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="nc" id="L30">  }</span>
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">    if (hitboxComponent.getFixture() != me)</span>
+<span class="nc" id="L34">      return;</span>
+
+<span class="nc bnc" id="L36" title="All 2 branches missed.">    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits))</span>
+<span class="nc" id="L37">      return;</span>
+
+<span class="nc" id="L39">    Entity selfEntity = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+
+<span class="nc" id="L41">    selfEntity.setFlagForDelete(true);</span>
+<span class="nc" id="L42">  }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

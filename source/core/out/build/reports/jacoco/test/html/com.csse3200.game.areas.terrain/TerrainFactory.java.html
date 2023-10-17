@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TerrainFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.areas.terrain</a> &gt; <span class="el_source">TerrainFactory.java</span></div><h1>TerrainFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.areas.terrain;
+
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
+import com.badlogic.gdx.math.GridPoint2;
+import com.csse3200.game.components.CameraComponent;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+
+/** Factory for creating game terrains. */
+public class TerrainFactory {
+
+
+  private final OrthographicCamera camera;
+  private final TerrainComponent.TerrainOrientation orientation;
+
+  /**
+   * Create a terrain factory with Orthogonal orientation
+   *
+   * @param cameraComponent Camera to render terrains to. Must be ortographic.
+   */
+  public TerrainFactory(CameraComponent cameraComponent) {
+<span class="fc" id="L31">    this(cameraComponent, TerrainComponent.TerrainOrientation.ORTHOGONAL);</span>
+<span class="fc" id="L32">  }</span>
+
+  /**
+   * Create a terrain factory
+   *
+   * @param cameraComponent Camera to render terrains to. Must be orthographic.
+   * @param orientation orientation to render terrain at
+   */
+<span class="fc" id="L40">  public TerrainFactory(CameraComponent cameraComponent, TerrainComponent.TerrainOrientation orientation) {</span>
+<span class="fc" id="L41">    this.camera = (OrthographicCamera) cameraComponent.getCamera();</span>
+<span class="fc" id="L42">    this.orientation = orientation;</span>
+<span class="fc" id="L43">  }</span>
+
+  /**
+   * Create a terrain of the given type, using the orientation of the factory.
+   * This can be extended to add additional game terrains.
+   * @param terrainType Terrain to create
+   * @return Terrain component which renders the terrain
+   */
+  public TerrainComponent createTerrain(TerrainType terrainType) {
+<span class="fc" id="L52">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="fc" id="L53">    resourceService.loadTextures(new String[]{&quot;images/terrain_use.png&quot;});</span>
+<span class="fc" id="L54">    resourceService.loadAll();</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">    switch (terrainType) {</span>
+      case ALL_DEMO:
+<span class="fc" id="L57">        TextureRegion orthogonal =</span>
+<span class="fc" id="L58">                new TextureRegion(resourceService.getAsset(&quot;images/terrain_use.png&quot;, Texture.class));</span>
+<span class="fc" id="L59">        return createTerrain(1f, orthogonal);</span>
+      default:
+<span class="nc" id="L61">        return null;</span>
+    }
+  }
+
+  /**
+   * Creates and returns a terrain component .
+   *
+   * @param tileWorldSize The world size of a tile.
+   * @param terrain The texture region representing grass.
+   * @return A TerrainComponent instance representing the created terrain.
+   */
+
+  private TerrainComponent createTerrain(float tileWorldSize, TextureRegion terrain) {
+<span class="fc" id="L74">    GridPoint2 tilePixelSize = new GridPoint2(terrain.getRegionWidth(), terrain.getRegionHeight());</span>
+<span class="fc" id="L75">    TiledMap tiledMap = createTiles(tilePixelSize, terrain);</span>
+<span class="fc" id="L76">    TiledMapRenderer renderer = createRenderer(tiledMap, tileWorldSize / tilePixelSize.x);</span>
+<span class="fc" id="L77">    return new TerrainComponent(camera, tiledMap, renderer, orientation, tileWorldSize);</span>
+  }
+
+  /**
+   * Creates and returns a renderer for the provided tiled map and scale.
+   *
+   * @param tiledMap The tiled map for which the renderer is created.
+   * @param tileScale The scale factor for the tiles.
+   * @return A TiledMapRenderer instance suitable for the given map and scale.
+   */
+
+  public TiledMapRenderer createRenderer(TiledMap tiledMap, float tileScale) {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">    switch (orientation) {</span>
+      case ORTHOGONAL:
+<span class="nc" id="L91">        return new OrthogonalTiledMapRenderer(tiledMap, tileScale);</span>
+      default:
+<span class="nc" id="L93">        return null;</span>
+    }
+  }
+
+  /**
+   * Creates a tiled map filled with forest demo tiles using the provided grass texture.
+   *
+   * @param tileSize The dimensions (width and height) of a tile in pixels.
+   * @param terrain The texture region representing grass.
+   * @return A TiledMap instance representing the created map.
+   */
+  private TiledMap createTiles(GridPoint2 tileSize, TextureRegion terrain) {
+<span class="fc" id="L105">    TiledMap tiledMap = new TiledMap();</span>
+
+<span class="fc" id="L107">    TiledMapTileLayer Layer = new TiledMapTileLayer(20, 6, tileSize.x, tileSize.y);</span>
+<span class="fc" id="L108">    fillInvisibleTiles(Layer, new GridPoint2(20, 6), terrain);</span>
+<span class="fc" id="L109">    tiledMap.getLayers().add(Layer);</span>
+
+<span class="fc" id="L111">    return tiledMap;</span>
+  }
+
+
+  /**
+   * Fills the provided tile layer with invisible tiles to create a transparent layer.
+   *
+   * @param layer The tile layer to fill.
+   * @param mapSize The size of the map in tiles.
+   * @param terrain The tile used to fill the layer.
+   */
+  private void fillInvisibleTiles(TiledMapTileLayer layer, GridPoint2 mapSize, TextureRegion terrain) {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">    for (int x = 0; x &lt; mapSize.x; x++) {</span>
+<span class="fc bfc" id="L124" title="All 2 branches covered.">      for (int y = 0; y &lt; mapSize.y; y++) {</span>
+<span class="fc" id="L125">        TerrainTile tile = new TerrainTile(terrain);</span>
+<span class="fc" id="L126">        Cell cell = new Cell();</span>
+<span class="fc" id="L127">        cell.setTile(tile);</span>
+<span class="fc" id="L128">        layer.setCell(x, y, cell);</span>
+      }
+    }
+<span class="fc" id="L131">  }</span>
+
+<span class="fc" id="L133">  public enum TerrainType {</span>
+<span class="fc" id="L134">    ALL_DEMO</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

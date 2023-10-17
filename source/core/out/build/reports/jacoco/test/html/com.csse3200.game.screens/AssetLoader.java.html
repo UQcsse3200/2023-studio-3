@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssetLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">AssetLoader.java</span></div><h1>AssetLoader.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+
+<span class="nc" id="L10">public class AssetLoader {</span>
+    // Define your asset file paths here
+<span class="nc" id="L12">    public static final String[] textures = {</span>
+            &quot;images/desert_bg.png&quot;,
+            &quot;images/ice_bg.png&quot;,
+            &quot;images/lava_bg.png&quot;,
+            &quot;images/projectiles/projectile.png&quot;,
+            &quot;images/ingamebg.png&quot;,
+            &quot;images/box_boy_leaf.png&quot;,
+            &quot;images/background/building1.png&quot;,
+            &quot;images/ghost_1.png&quot;,
+            &quot;images/grass_2.png&quot;,
+            &quot;images/grass_3.png&quot;,
+            &quot;images/hex_grass_1.png&quot;,
+            &quot;images/background/mountain.png&quot;,
+            &quot;images/ghost_king.png&quot;,
+            &quot;images/ghost_1.png&quot;,
+            &quot;images/terrain 2 normal.png&quot;,
+            &quot;images/terrain 2 hex.png&quot;,
+            &quot;images/hex_grass_2.png&quot;,
+            &quot;images/hex_grass_3.png&quot;,
+            &quot;images/iso_grass_1.png&quot;,
+            &quot;images/iso_grass_2.png&quot;,
+            &quot;images/iso_grass_3.png&quot;,
+            &quot;images/towers/turret.png&quot;,
+            &quot;images/towers/turret01.png&quot;,
+            &quot;images/towers/turret_deployed.png&quot;,
+            &quot;images/towers/fire_tower_atlas.png&quot;,
+            &quot;images/towers/stun_tower.png&quot;,
+            &quot;images/background/building2.png&quot;,
+            &quot;images/mobs/robot.png&quot;,
+            &quot;images/mobs/boss2.png&quot;,
+            &quot;images/mobs/Attack_1.png&quot;,
+            &quot;images/mobs/Attack_2.png&quot;,
+            &quot;images/mobs/Charge_1.png&quot;,
+            &quot;images/mobs/Charge_2.png&quot;,
+            &quot;images/mobs/Dead.png&quot;,
+            &quot;images/mobs/Enabling-5.png&quot;,
+            &quot;images/mobs/satyr.png&quot;,
+            &quot;images/mobs/Hurt.png&quot;,
+            &quot;images/mobs/Idle.png&quot;,
+            &quot;images/mobs/rangeBossRight.png&quot;,
+            &quot;images/towers/wallTower.png&quot;,
+            &quot;images/background/building2.png&quot;,
+            &quot;images/iso_grass_3.png&quot;,
+            &quot;images/terrain_use.png&quot;,
+            &quot;images/Dusty_MoonBG.png&quot;,
+            &quot;images/economy/scrap.png&quot;,
+            &quot;images/economy/crystal.png&quot;,
+            &quot;images/economy/econ-tower.png&quot;,
+            &quot;images/projectiles/bossProjectile.png&quot;,
+            &quot;images/towers/mine_tower.png&quot;,
+            &quot;images/towers/TNTTower.png&quot;,
+            &quot;images/towers/DroidTower.png&quot;,
+            &quot;images/projectiles/basic_projectile.png&quot;,
+            &quot;images/projectiles/mobProjectile.png&quot;,
+            &quot;images/projectiles/engineer_projectile.png&quot;,
+            &quot;images/projectiles/mobBoss_projectile.png&quot;,
+            &quot;images/projectiles/snow_ball.png&quot;,
+            &quot;images/projectiles/burn_effect.png&quot;,
+            &quot;images/projectiles/stun_effect.png&quot;,
+            &quot;images/projectiles/firework_anim.png&quot;,
+            &quot;images/projectiles/pierce_anim.png&quot;,
+            &quot;images/projectiles/snow_ball.png&quot;,
+            &quot;images/mobboss/demon.png&quot;,
+            &quot;images/mobboss/demon2.png&quot;,
+            &quot;images/mobs/fire_worm.png&quot;,
+            &quot;images/mobboss/patrick.png&quot;,
+            &quot;images/GrassTile/grass_tile_1.png&quot;,
+            &quot;images/GrassTile/grass_tile_2.png&quot;,
+            &quot;images/GrassTile/grass_tile_3.png&quot;,
+            &quot;images/GrassTile/grass_tile_4.png&quot;,
+            &quot;images/GrassTile/grass_tile_5.png&quot;,
+            &quot;images/GrassTile/grass_tile_6.png&quot;,
+            &quot;images/GrassTile/grass_tile_7.png&quot;,
+            &quot;images/highlight_tile.png&quot;,
+            &quot;images/ui/Sprites/UI_Glass_Toggle_Bar_01a.png&quot;
+    };
+
+<span class="nc" id="L89">    public static final String[] textureAtlases = {</span>
+            &quot;images/economy/econ-tower.atlas&quot;,
+            &quot;images/terrain_iso_grass.atlas&quot;,
+            &quot;images/ghost.atlas&quot;,
+            &quot;images/mobs/boss2.atlas&quot;,
+            &quot;images/ghostKing.atlas&quot;,
+            &quot;images/towers/turret.atlas&quot;,
+            &quot;images/towers/turret01.atlas&quot;,
+            &quot;images/mobs/xenoGrunt.atlas&quot;,
+            &quot;images/towers/fire_tower_atlas.atlas&quot;,
+            &quot;images/towers/stun_tower.atlas&quot;,
+            &quot;images/mobs/xenoGruntRunning.atlas&quot;,
+            &quot;images/xenoGrunt.atlas&quot;,
+            &quot;images/mobs/robot.atlas&quot;,
+            &quot;images/mobs/rangeBossRight.atlas&quot;,
+            &quot;images/towers/DroidTower.atlas&quot;,
+            &quot;images/mobs/robot.atlas&quot;,
+            &quot;images/mobs/rangeBossRight.atlas&quot;,
+            &quot;images/towers/TNTTower.atlas&quot;,
+            &quot;images/projectiles/basic_projectile.atlas&quot;,
+            &quot;images/projectiles/bossProjectile.atlas&quot;,
+            &quot;images/projectiles/mobProjectile.atlas&quot;,
+            &quot;images/projectiles/mobProjectile.atlas&quot;,
+            &quot;images/projectiles/engineer_projectile.atlas&quot;,
+            &quot;images/projectiles/mobBoss_projectile.atlas&quot;,
+            &quot;images/projectiles/snow_ball.atlas&quot;,
+            &quot;images/projectiles/pierce_anim.atlas&quot;,
+            &quot;images/projectiles/burn_effect.atlas&quot;,
+            &quot;images/projectiles/firework_anim.atlas&quot;,
+            &quot;images/projectiles/mobProjectile.atlas&quot;,
+            &quot;images/projectiles/stun_effect.atlas&quot;,
+            &quot;images/mobboss/demon.atlas&quot;,
+            &quot;images/mobs/fire_worm.atlas&quot;,
+            &quot;images/mobs/dragon_knight.atlas&quot;,
+            &quot;images/mobs/skeleton.atlas&quot;,
+            &quot;images/mobs/wizard.atlas&quot;,
+            &quot;images/mobs/water_queen.atlas&quot;,
+            &quot;images/mobs/water_slime.atlas&quot;,
+            &quot;images/mobboss/patrick.atlas&quot;,
+            &quot;images/mobboss/iceBaby.atlas&quot;
+    };
+
+
+<span class="nc" id="L132">    public static final String[] music = {</span>
+            &quot;sounds/background/Sci-Fi1.ogg&quot;
+    };
+
+<span class="nc" id="L136">    public static final String[] Sounds = {</span>
+            &quot;sounds/Impact4.ogg&quot;,
+            &quot;sounds/economy/click.wav&quot;,
+            &quot;sounds/economy/click_1.wav&quot;,
+            &quot;sounds/economy/buildSound.ogg&quot;,
+            &quot;sounds/towers/gun_shot_trimmed.mp3&quot;,
+            &quot;sounds/towers/deploy.mp3&quot;,
+            &quot;sounds/towers/stow.mp3&quot;,
+            &quot;sounds/engineers/firing_auto.mp3&quot;,
+            &quot;sounds/engineers/firing_single.mp3&quot;,
+            &quot;sounds/projectiles/on_collision.mp3&quot;,
+            &quot;sounds/projectiles/explosion.mp3&quot;,
+            &quot;sounds/waves/wave-start/Wave_Start_Alarm.ogg&quot;,
+            &quot;sounds/waves/wave-end/Wave_Over_01.ogg&quot;,
+            &quot;sounds/mobBoss/iceBabySound.mp3&quot;,
+            &quot;sounds/mobBoss/mobSpawnStomp.mp3&quot;,
+            &quot;sounds/mobBoss/iceBabyAOE.mp3&quot;,
+            &quot;sounds/mobs/wizardSpell.mp3&quot;,
+            &quot;sounds/mobs/waterQueenSpell.mp3&quot;,
+            &quot;sounds/mobs/boneBreak.mp3&quot;,
+            &quot;sounds/mobs/fireWormRoar.mp3&quot;,
+            &quot;sounds/mobBoss/demonBreath.mp3&quot;,
+            &quot;sounds/mobBoss/demonSpawn.wav&quot;,
+            &quot;sounds/mobBoss/demonAttack.wav&quot;,
+            &quot;sounds/mobBoss/demonBreathIn.mp3&quot;,
+            &quot;sounds/mobBoss/demonLand.mp3&quot;,
+            &quot;sounds/mobBoss/demonJump.mp3&quot;,
+            &quot;sounds/mobBoss/demonHeal.mp3&quot;,
+            &quot;sounds/mobBoss/demonCleave.mp3&quot;,
+            &quot;sounds/mobBoss/demonDeath.mp3&quot;,
+            &quot;sounds/mobBoss/slimeySplat.mp3&quot;,
+            &quot;sounds/mobBoss/slimeJump.mp3&quot;,
+            &quot;sounds/mobBoss/slimePop.mp3&quot;,
+            &quot;sounds/mobBoss/patrickAttack.mp3&quot;,
+            &quot;sounds/mobBoss/patrickAppear.mp3&quot;,
+            &quot;sounds/mobBoss/patrickScream.mp3&quot;,
+            &quot;sounds/mobBoss/patrickSpell.mp3&quot;,
+            &quot;sounds/mobBoss/patrickSpawn.mp3&quot;,
+            &quot;sounds/mobBoss/patrickCast.mp3&quot;,
+            &quot;sounds/mobBoss/patrickThunder.mp3&quot;,
+            &quot;sounds/mobBoss/patrickHit.mp3&quot;,
+            &quot;sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg&quot;,
+            &quot;sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg&quot;,
+            &quot;sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg&quot;,
+            &quot;sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg&quot;,
+            &quot;sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg&quot;,
+            &quot;sounds/background/desert/Elements.ogg&quot;,
+            &quot;sounds/background/desert/Rocks1.ogg&quot;,
+            &quot;sounds/background/desert/Rocks2.ogg&quot;,
+            &quot;sounds/background/ice/Sequences1.ogg&quot;,
+            &quot;sounds/background/ice/Sequences2.ogg&quot;,
+            &quot;sounds/background/ice/Sequences3.ogg&quot;,
+            &quot;sounds/background/lava/Burst.ogg&quot;,
+            &quot;sounds/background/lava/Glitch_ripples.ogg&quot;,
+            &quot;sounds/background/lava/Sizzling.ogg&quot;,
+            &quot;sounds/background/lava/Swoosh.ogg&quot;,
+            &quot;sounds/background/loss/RisingScreams.ogg&quot;,
+            &quot;sounds/waves/wave-start/Wave_Start_Alarm.ogg&quot;,
+            &quot;sounds/waves/wave-end/Wave_Over_01.ogg&quot;
+    };
+
+
+    public static void loadAllAssets() {
+<span class="nc" id="L199">        ResourceService resourceService = ServiceLocator.getResourceService();</span>
+
+<span class="nc" id="L201">        resourceService.loadTextures(textures);</span>
+<span class="nc" id="L202">        resourceService.loadTextureAtlases(textureAtlases);</span>
+<span class="nc" id="L203">        resourceService.loadSounds(Sounds);</span>
+<span class="nc" id="L204">        resourceService.loadMusic(music);</span>
+
+        // Wait for the assets to finish loading (you can implement a loading screen)
+<span class="nc bnc" id="L207" title="All 2 branches missed.">        while (!resourceService.loadForMillis(10)) {</span>
+            // Display loading progress if needed
+        }
+<span class="nc" id="L210">    }</span>
+
+    public static void unloadAllAssets() {
+<span class="nc" id="L213">        ResourceService resourceService = ServiceLocator.getResourceService();</span>
+
+<span class="nc" id="L215">        resourceService.unloadAssets(textures);</span>
+<span class="nc" id="L216">        resourceService.unloadAssets(textureAtlases);</span>
+<span class="nc" id="L217">        resourceService.unloadAssets(Sounds);</span>
+<span class="nc" id="L218">        resourceService.unloadAssets(music);</span>
+<span class="nc" id="L219">    }</span>
+
+    public static Texture getTexture(String assetPath) {
+<span class="nc" id="L222">        return ServiceLocator.getResourceService().getAsset(assetPath, Texture.class);</span>
+    }
+
+    public static TextureAtlas getTextureAtlas(String assetPath) {
+<span class="nc" id="L226">        return ServiceLocator.getResourceService().getAsset(assetPath, TextureAtlas.class);</span>
+    }
+
+    public static Sound getSound(String assetPath) {
+<span class="nc" id="L230">        return ServiceLocator.getResourceService().getAsset(assetPath, Sound.class);</span>
+    }
+
+    public static Music getMusic(String assetPath) {
+<span class="nc" id="L234">        return ServiceLocator.getResourceService().getAsset(assetPath, Music.class);</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

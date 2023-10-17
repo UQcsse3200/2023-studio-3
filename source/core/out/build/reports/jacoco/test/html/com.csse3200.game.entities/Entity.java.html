@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Entity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities</a> &gt; <span class="el_source">Entity.java</span></div><h1>Entity.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ComponentType;
+import com.csse3200.game.events.EventHandler;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Core entity class. Entities exist in the game and are updated each frame. All entities have a
+ * position and scale, but have no default behaviour. Components should be added to an entity to
+ * give it specific behaviour. This class should not be inherited or modified directly.
+ *
+ * &lt;p&gt;Example use:
+ *
+ * &lt;pre&gt;
+ * Entity player = new Entity()
+ *   .addComponent(new RenderComponent())
+ *   .addComponent(new PlayerControllerComponent());
+ * ServiceLocator.getEntityService().register(player);
+ * &lt;/pre&gt;
+ */
+public class Entity {
+<span class="fc" id="L28">  private static final Logger logger = LoggerFactory.getLogger(Entity.class);</span>
+<span class="fc" id="L29">  private static int nextId = 0;</span>
+  private static final String EVT_NAME_POS = &quot;setPosition&quot;;
+
+  private final int id;
+  private final IntMap&lt;Component&gt; components;
+  private final EventHandler eventHandler;
+<span class="fc" id="L35">  private boolean enabled = true;</span>
+<span class="fc" id="L36">  private boolean created = false;</span>
+<span class="fc" id="L37">  private Vector2 position = Vector2.Zero.cpy();</span>
+<span class="fc" id="L38">  private Vector2 scale = new Vector2(1, 1);</span>
+  private Array&lt;Component&gt; createdComponents;
+
+<span class="fc" id="L41">  private int layer = 2;</span>
+
+  // Check if the entity is flagged for deletion
+<span class="fc" id="L44">  private boolean isFlaggedForDelete = false;</span>
+
+<span class="fc" id="L46">  public Entity() {</span>
+<span class="fc" id="L47">    id = nextId;</span>
+<span class="fc" id="L48">    nextId++;</span>
+
+<span class="fc" id="L50">    components = new IntMap&lt;&gt;(4);</span>
+<span class="fc" id="L51">    eventHandler = new EventHandler();</span>
+<span class="fc" id="L52">  }</span>
+
+  /**
+   * Enable or disable an entity. Disabled entities do not run update() or earlyUpdate() on their
+   * components, but can still be disposed.
+   *
+   * @param enabled true for enable, false for disable.
+   */
+  public void setEnabled(boolean enabled) {
+<span class="fc" id="L61">    logger.debug(&quot;Setting enabled={} on entity {}&quot;, enabled, this);</span>
+<span class="fc" id="L62">    this.enabled = enabled;</span>
+<span class="fc" id="L63">  }</span>
+
+  /**
+   * Get the entity's game position.
+   *
+   * @return position
+   */
+  public Vector2 getPosition() {
+<span class="fc" id="L71">    return position.cpy(); // Cpy gives us pass-by-value to prevent bugs</span>
+  }
+
+  /**
+   * Set the entity's game position.
+   *
+   * @param position new position.
+   */
+  public void setPosition(Vector2 position) {
+<span class="fc" id="L80">    this.position = position.cpy();</span>
+<span class="fc" id="L81">    getEvents().trigger(EVT_NAME_POS, position.cpy());</span>
+<span class="fc" id="L82">  }</span>
+
+  /**
+   * Set the entity's game position.
+   *
+   * @param x new x position
+   * @param y new y position
+   */
+  public void setPosition(float x, float y) {
+<span class="fc" id="L91">    this.position.x = x;</span>
+<span class="fc" id="L92">    this.position.y = y;</span>
+<span class="fc" id="L93">    getEvents().trigger(EVT_NAME_POS, position.cpy());</span>
+<span class="fc" id="L94">  }</span>
+
+  /**
+   * Set the entity's game position and optionally notifies listeners.
+   *
+   * @param position new position.
+   * @param notify true to notify (default), false otherwise
+   */
+  public void setPosition(Vector2 position, boolean notify) {
+<span class="fc" id="L103">    this.position = position;</span>
+<span class="pc bpc" id="L104" title="1 of 2 branches missed.">    if (notify) {</span>
+<span class="nc" id="L105">      getEvents().trigger(EVT_NAME_POS, position);</span>
+    }
+<span class="fc" id="L107">  }</span>
+
+  /**
+   * Get the entity's scale. Used for rendering and physics bounding box calculations.
+   *
+   * @return Scale in x and y directions. 1 = 1 metre.
+   */
+  public Vector2 getScale() {
+<span class="fc" id="L115">    return scale.cpy(); // Cpy gives us pass-by-value to prevent bugs</span>
+  }
+
+  /**
+   * Set the entity's scale.
+   *
+   * @param scale new scale in metres
+   */
+  public void setScale(Vector2 scale) {
+<span class="fc" id="L124">    this.scale = scale.cpy();</span>
+<span class="fc" id="L125">  }</span>
+
+  /**
+   * Set the entity's scale.
+   *
+   * @param x width in metres
+   * @param y height in metres
+   * @return
+   */
+  public Entity setScale(float x, float y) {
+<span class="fc" id="L135">    this.scale.x = x;</span>
+<span class="fc" id="L136">    this.scale.y = y;</span>
+<span class="fc" id="L137">    return null;</span>
+  }
+
+  /**
+   * Set the entity's width and scale the height to maintain aspect ratio.
+   *
+   * @param x width in metres
+   */
+  public void scaleWidth(float x) {
+<span class="fc" id="L146">    this.scale.y = this.scale.y / this.scale.x * x;</span>
+<span class="fc" id="L147">    this.scale.x = x;</span>
+<span class="fc" id="L148">  }</span>
+
+  /**
+   * Set the entity's height and scale the width to maintain aspect ratio.
+   *
+   * @param y height in metres
+   */
+  public void scaleHeight(float y) {
+<span class="fc" id="L156">    this.scale.x = this.scale.x / this.scale.y * y;</span>
+<span class="fc" id="L157">    this.scale.y = y;</span>
+<span class="fc" id="L158">  }</span>
+
+  /**
+   * Get the entity's center position
+   *
+   * @return center position
+   */
+  public Vector2 getCenterPosition() {
+<span class="fc" id="L166">    return getPosition().mulAdd(getScale(), 0.5f);</span>
+  }
+
+  /**
+   * Get a component of type T on the entity.
+   *
+   * @param type The component class, e.g. RenderComponent.class
+   * @param &lt;T&gt; The component type, e.g. RenderComponent
+   * @return The entity component, or null if nonexistent.
+   */
+  @SuppressWarnings(&quot;unchecked&quot;)
+  public &lt;T extends Component&gt; T getComponent(Class&lt;T&gt; type) {
+<span class="fc" id="L178">    ComponentType componentType = ComponentType.getFrom(type);</span>
+<span class="fc" id="L179">    return (T) components.get(componentType.getId());</span>
+  }
+
+  /**
+   * Add a component to the entity. Can only be called before the entity is registered in the world.
+   *
+   * @param component The component to add. Only one component of a type can be added to an entity.
+   * @return Itself
+   */
+  public Entity addComponent(Component component) {
+<span class="fc bfc" id="L189" title="All 2 branches covered.">    if (created) {</span>
+<span class="fc" id="L190">      logger.error(</span>
+          &quot;Adding {} to {} after creation is not supported and will be ignored&quot;, component, this);
+<span class="fc" id="L192">      return this;</span>
+    }
+<span class="fc" id="L194">    ComponentType componentType = ComponentType.getFrom(component.getClass());</span>
+<span class="fc bfc" id="L195" title="All 2 branches covered.">    if (components.containsKey(componentType.getId())) {</span>
+<span class="fc" id="L196">      logger.error(</span>
+          &quot;Attempted to add multiple components of class {} to {}. Only one component of a class &quot;
+              + &quot;can be added to an entity, this will be ignored.&quot;,
+          component,
+          this);
+<span class="fc" id="L201">      return this;</span>
+    }
+<span class="fc" id="L203">    components.put(componentType.getId(), component);</span>
+<span class="fc" id="L204">    component.setEntity(this);</span>
+
+<span class="fc" id="L206">    return this;</span>
+  }
+
+  public void removeComponent(Class&lt;? extends Component&gt; componentClass) {
+<span class="nc" id="L210">    ComponentType componentType = ComponentType.getFrom(componentClass);</span>
+<span class="nc" id="L211">    int id = componentType.getId();</span>
+
+<span class="nc bnc" id="L213" title="All 2 branches missed.">    if (components.containsKey(id)) {</span>
+<span class="nc" id="L214">      Component removedComponent = components.remove(id);</span>
+<span class="nc" id="L215">      removedComponent.dispose();</span>
+    }
+<span class="nc" id="L217">  }</span>
+
+  /** Dispose of the entity. This will dispose of all components on this entity. */
+  public void dispose() {
+<span class="fc bfc" id="L221" title="All 2 branches covered.">    for (Component component : createdComponents) {</span>
+<span class="fc" id="L222">      component.dispose();</span>
+<span class="fc" id="L223">    }</span>
+<span class="fc" id="L224">    ServiceLocator.getEntityService().unregister(this);</span>
+<span class="fc" id="L225">  }</span>
+
+  /**
+   * Create the entity and start running. This is called when the entity is registered in the world,
+   * and should not be called manually.
+   */
+  public void create() {
+<span class="pc bpc" id="L232" title="1 of 2 branches missed.">    if (created) {</span>
+<span class="nc" id="L233">      logger.error(</span>
+          &quot;{} was created twice. Entity should only be registered with the entity service once.&quot;,
+          this);
+<span class="nc" id="L236">      return;</span>
+    }
+<span class="fc" id="L238">    createdComponents = components.values().toArray();</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">    for (Component component : createdComponents) {</span>
+<span class="fc" id="L240">      component.create();</span>
+<span class="fc" id="L241">    }</span>
+<span class="fc" id="L242">    created = true;</span>
+<span class="fc" id="L243">  }</span>
+
+  /**
+   * Perform an early update on all components. This is called by the entity service and should not
+   * be called manually.
+   */
+  public void earlyUpdate() {
+<span class="fc bfc" id="L250" title="All 2 branches covered.">    if (!enabled) {</span>
+<span class="fc" id="L251">      return;</span>
+    }
+<span class="fc bfc" id="L253" title="All 2 branches covered.">    for (Component component : createdComponents) {</span>
+<span class="fc" id="L254">      component.triggerEarlyUpdate();</span>
+<span class="fc" id="L255">    }</span>
+<span class="fc" id="L256">  }</span>
+
+  /**
+   * Perform an update on all components. This is called by the entity service and should not be
+   * called manually.
+   */
+  public void update() {
+<span class="fc bfc" id="L263" title="All 2 branches covered.">    if (!enabled) {</span>
+<span class="fc" id="L264">      return;</span>
+    }
+
+    // ! ITERATOR CAUSES PROBLEMS
+    // for (Component component : createdComponents) {
+    //   component.triggerUpdate();
+    // }
+    
+<span class="fc bfc" id="L272" title="All 2 branches covered.">    for (int i = 0; i &lt; createdComponents.size; i++) {</span>
+<span class="fc" id="L273">      createdComponents.get(i).triggerUpdate();</span>
+    } 
+
+    // if (isFlaggedForDelete) {
+    //   dispose();
+    //   return;
+    // }
+<span class="fc" id="L280">  }</span>
+
+  /**
+   * This entity's unique ID. Used for equality checks
+   *
+   * @return unique ID
+   */
+  public int getId() {
+<span class="fc" id="L288">    return id;</span>
+  }
+
+  /**
+   * Get the event handler attached to this entity. Can be used to trigger events from an attached
+   * component, or listen to events from a component.
+   *
+   * @return entity's event handler
+   */
+  public EventHandler getEvents() {
+<span class="fc" id="L298">    return eventHandler;</span>
+  }
+
+  public boolean getFlagForDelete() {
+<span class="fc" id="L302">    return isFlaggedForDelete;</span>
+  }
+  /**
+   * Flag the entity for deletion. This will be deleted at the end of the frame.
+   * @param condition true to flag for deletion, false to unflag
+   */
+  public void setFlagForDelete(boolean condition) {
+<span class="fc" id="L309">    this.isFlaggedForDelete = condition;</span>
+<span class="fc" id="L310">  }</span>
+
+  @Override
+  public boolean equals(Object obj) {
+<span class="pc bpc" id="L314" title="1 of 4 branches missed.">    return (obj instanceof Entity &amp;&amp; ((Entity) obj).getId() == this.getId());</span>
+  }
+
+  @Override
+  public int hashCode() {
+<span class="nc" id="L319">    return super.hashCode();</span>
+  }
+
+  @Override
+  public String toString() {
+<span class="fc" id="L324">    return String.format(&quot;Entity{id=%d}&quot;, id);</span>
+  }
+
+  public int getLayer() {
+<span class="fc" id="L328">    return layer;</span>
+  }
+
+  public int setLayer(int layer) {
+<span class="fc" id="L332">    this.layer = layer;</span>
+<span class="fc" id="L333">    return layer;</span>
+  }
+
+    public String getName() {
+<span class="nc" id="L337">    return this.getClass().getSimpleName();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

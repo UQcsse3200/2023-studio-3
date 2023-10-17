@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireTowerCombatTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">FireTowerCombatTask.java</span></div><h1>FireTowerCombatTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+import static java.lang.Math.round;
+
+/**
+ * The FireTowerCombatTask runs the AI for the FireTower class. The tower implementing this task will scan for enemies
+ * in a straight line from the current position to a maxRange, and change the state of the tower.
+ */
+public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
+    //constants
+    private static final int INTERVAL = 1; //time interval to scan for enemies in seconds
+    private static final short TARGET = PhysicsLayer.NPC; //the type of targets this tower will detect
+    //The constants are names of events that will be triggered in the state machine
+    public static final String IDLE = &quot;startIdle&quot;;
+    public static final String PREP_ATTACK = &quot;startAttackPrep&quot;;
+    public static final String ATTACK = &quot;startAttack&quot;;
+    public static final String DEATH = &quot;startDeath&quot;;
+
+
+    //Class attributes
+    private final int priority;
+    private final float maxRange;
+
+    private float fireRateInterval;
+<span class="fc" id="L39">    private Vector2 towerPosition = new Vector2(10, 10);</span>
+<span class="fc" id="L40">    private final Vector2 maxRangePosition = new Vector2();</span>
+    private PhysicsEngine physics;
+    private GameTime timeSource;
+    private long endTime;
+<span class="fc" id="L44">    private final RaycastHit hit = new RaycastHit();</span>
+
+<span class="fc" id="L46">    public enum STATE {</span>
+<span class="fc" id="L47">        IDLE, PREP_ATTACK, ATTACK, DEATH</span>
+    }
+<span class="fc" id="L49">    public STATE towerState = STATE.IDLE;</span>
+
+    /**
+     * Starts the task running, triggers the initial 'IDLE' event
+     */
+<span class="fc" id="L54">    public FireTowerCombatTask(int priority, float maxRange) {</span>
+<span class="fc" id="L55">        this.priority = priority;</span>
+<span class="fc" id="L56">        this.maxRange = maxRange;</span>
+<span class="fc" id="L57">        this.fireRateInterval = 1;</span>
+<span class="fc" id="L58">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L59">        timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * starts this task and triggers the IDLE animation
+     */
+    @Override
+    public void start()  {
+<span class="fc" id="L67">        super.start();</span>
+        // get the tower coordinates
+<span class="fc" id="L69">        this.towerPosition = owner.getEntity().getCenterPosition();</span>
+<span class="fc" id="L70">        this.maxRangePosition.set(towerPosition.x  + maxRange, towerPosition.y);</span>
+<span class="fc" id="L71">        owner.getEntity().getEvents().addListener(&quot;addFireRate&quot;,this::changeFireRateInterval);</span>
+        //default to idle state
+<span class="fc" id="L73">        owner.getEntity().getEvents().trigger(IDLE);</span>
+
+<span class="fc" id="L75">        endTime = timeSource.getTime() + (INTERVAL *  500);</span>
+<span class="fc" id="L76">    }</span>
+
+    /**
+     * this method is called everytime state of the tower needs to be changed.
+     */
+    @Override
+    public void update()  {
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if  (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L84">            updateTowerState();</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">            if (towerState == STATE.ATTACK) {</span>
+<span class="nc" id="L86">                endTime = timeSource.getTime() + round(fireRateInterval * 1000);</span>
+            } else
+<span class="nc" id="L88">                endTime = timeSource.getTime() + (INTERVAL * 1000);</span>
+        }
+<span class="fc" id="L90">    }</span>
+
+    /**
+     * finite state machine for the FireTower. Detects mobs in a straight line and changes the state of the tower.
+     */
+    public void updateTowerState()  {
+<span class="pc bpc" id="L96" title="3 of 4 branches missed.">        if (owner.getEntity().getComponent(CombatStatsComponent.class).getHealth() &lt;= 0 &amp;&amp; towerState != STATE.DEATH) {</span>
+<span class="nc" id="L97">            owner.getEntity().getEvents().trigger(DEATH);</span>
+<span class="nc" id="L98">            towerState = STATE.DEATH;</span>
+<span class="nc" id="L99">            return;</span>
+        }
+<span class="pc bpc" id="L101" title="3 of 5 branches missed.">        switch (towerState) {</span>
+            case IDLE -&gt; {
+<span class="fc bfc" id="L103" title="All 2 branches covered.">                if (isTargetVisible())  {</span>
+<span class="fc" id="L104">                    owner.getEntity().getEvents().trigger(PREP_ATTACK);</span>
+<span class="fc" id="L105">                    towerState = STATE.PREP_ATTACK;</span>
+                }
+            }
+            case PREP_ATTACK -&gt; {
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                if (isTargetVisible()) {</span>
+<span class="fc" id="L110">                    owner.getEntity().getEvents().trigger(ATTACK);</span>
+<span class="fc" id="L111">                    towerState = STATE.ATTACK;</span>
+                } else {
+<span class="nc" id="L113">                    owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L114">                    towerState = STATE.IDLE;</span>
+                }
+<span class="nc" id="L116">            }</span>
+            case ATTACK -&gt; {
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                if (!isTargetVisible()) {</span>
+<span class="nc" id="L119">                    owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L120">                    towerState = STATE.IDLE;</span>
+                } else {
+<span class="nc" id="L122">                    owner.getEntity().getEvents().trigger(ATTACK);</span>
+<span class="nc" id="L123">                    Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,</span>
+<span class="nc" id="L124">                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f), ProjectileEffects.BURN, false);</span>
+<span class="nc" id="L125">                    newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.25),</span>
+<span class="nc" id="L126">                            (float) (owner.getEntity().getPosition().y + 0.25));</span>
+<span class="nc" id="L127">                    ServiceLocator.getEntityService().register(newProjectile);</span>
+                }
+<span class="nc" id="L129">            }</span>
+            case DEATH -&gt; {
+<span class="nc bnc" id="L131" title="All 2 branches missed.">                if (owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {</span>
+<span class="nc" id="L132">                    owner.getEntity().setFlagForDelete(true);</span>
+                }
+            }
+        }
+<span class="fc" id="L136">    }</span>
+
+    /**
+     * stops the current animation.
+     */
+    public void stop() {
+<span class="nc" id="L142">        super.stop();</span>
+<span class="nc" id="L143">        owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L144">    }</span>
+
+    /**
+     * @return returns the current state of the tower
+     */
+    public STATE getState() {
+<span class="fc" id="L150">        return this.towerState;</span>
+    }
+
+    /**
+     * gets the priority for the current task.
+     * @return (int) active priority if target is visible and inactive priority otherwise
+     */
+    public int getPriority() {
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        return !isTargetVisible() ? 0 : priority;</span>
+    }
+
+    /**
+     * not currently used.
+     * @return the priority for this task
+     */
+    private int getActivePriority() {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">        return !isTargetVisible() ? 0 : priority;</span>
+    }
+
+    /**
+     * not currently used.
+     * @return
+     */
+    private int getInactivePriority() {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">        return isTargetVisible() ? priority : 0;</span>
+    }
+
+    /**
+     * detects targets from the centre of the tower to maxRange in a straight line.
+     * @return true if mobs are present and false otherwise.
+     */
+    public boolean isTargetVisible() {
+<span class="fc" id="L182">        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);</span>
+    }
+
+    private void changeFireRateInterval(int newInterval) {
+<span class="nc" id="L186">        fireRateInterval = 1 / ((float) newInterval / 5);</span>
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Function for getting the turret's fire rate.
+     *
+     * @return The fireRateInterval variable
+     */
+    public float getFireRateInterval() {
+<span class="nc" id="L195">        return fireRateInterval;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

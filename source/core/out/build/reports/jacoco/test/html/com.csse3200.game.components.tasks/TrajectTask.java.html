@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TrajectTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">TrajectTask.java</span></div><h1>TrajectTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.services.GameTime;
+
+/** Trajects a projectile from an entity towards the enemy entities */
+public class TrajectTask extends DefaultTask implements PriorityTask {
+<span class="fc" id="L10">  private final int priority = 10;</span>
+  private MovementTask movementTask;
+  private Vector2 destination;
+  private static final String START = &quot;startProjectile&quot;;
+  private static final String FINAL = &quot;startProjectileFinal&quot;;
+
+<span class="fc" id="L16">  private enum STATE {</span>
+<span class="fc" id="L17">    START, FINAL</span>
+  }
+<span class="fc" id="L19">  private STATE projectileState = STATE.START;</span>
+
+  private GameTime projectSpawn;
+
+  /**
+   * @param destination The destination that the projectile will move towards.
+   */
+<span class="fc" id="L26">  public TrajectTask(Vector2 destination) {</span>
+<span class="fc" id="L27">    this.destination = destination;</span>
+<span class="fc" id="L28">  }</span>
+
+  /**
+   * Start moving in the indicated direction.
+   */
+  @Override
+  public void start() {
+<span class="fc" id="L35">    super.start();</span>
+<span class="fc" id="L36">    movementTask = new MovementTask(destination);</span>
+<span class="fc" id="L37">    movementTask.create(owner);</span>
+<span class="fc" id="L38">    movementTask.start();</span>
+
+<span class="fc" id="L40">    this.owner.getEntity().getEvents().trigger(START);</span>
+<span class="fc" id="L41">    this.owner.getEntity().getEvents().trigger(&quot;rotate&quot;);</span>
+<span class="fc" id="L42">    this.owner.getEntity().getEvents().trigger(&quot;start&quot;);</span>
+<span class="fc" id="L43">    this.owner.getEntity().getEvents().trigger(&quot;startMobBoss&quot;);</span>
+<span class="fc" id="L44">  }</span>
+
+  public void switchProjectileState() {
+<span class="nc bnc" id="L47" title="All 2 branches missed.">    switch (projectileState) {</span>
+      case START:
+<span class="nc" id="L49">        this.owner.getEntity().getEvents().trigger(FINAL);</span>
+<span class="nc" id="L50">        projectileState = STATE.FINAL;</span>
+    }
+<span class="nc" id="L52">  }</span>
+
+  @Override
+  public void update() {
+<span class="fc" id="L56">    movementTask.setTarget(destination);</span>
+<span class="fc" id="L57">    movementTask.update();</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">    if (movementTask.getStatus() != Status.ACTIVE) {</span>
+<span class="nc" id="L59">      movementTask.start();</span>
+<span class="nc" id="L60">      switchProjectileState();</span>
+    }
+<span class="fc" id="L62">  }</span>
+
+  @Override
+  public void stop() {
+<span class="nc" id="L66">    super.stop();</span>
+<span class="nc" id="L67">    movementTask.stop();</span>
+<span class="nc" id="L68">    this.owner.getEntity().getEvents().trigger(FINAL);</span>
+<span class="nc" id="L69">  }</span>
+
+  @Override
+  public int getPriority() {
+<span class="fc" id="L73">    return priority;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

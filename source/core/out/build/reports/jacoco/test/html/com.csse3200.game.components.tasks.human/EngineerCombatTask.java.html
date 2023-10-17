@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EngineerCombatTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.human</a> &gt; <span class="el_source">EngineerCombatTask.java</span></div><h1>EngineerCombatTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.human;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ArrayList;
+
+/**
+ * The AI Task for the Engineer entity. The Engineer will scan for targets within its detection range
+ * and trigger events to change its state accordingly. This task must be called once the Engineer has
+ * appropiately moved into position.
+ */
+public class EngineerCombatTask extends DefaultTask implements PriorityTask {
+    
+    private static final int INTERVAL = 1; // The time interval for each target scan from the Engineer.
+    private static final int PRIORITY = 3; // Default priority of the combat task when mobs are in range.
+    private static final short TARGET = PhysicsLayer.NPC; // The type of targets that the Engineer will detect.
+    
+    // Animation event names for the Engineer's state machine.
+    private static final String FIRING = &quot;firingSingleStart&quot;;
+    private static final String IDLE_RIGHT = &quot;idleRight&quot;;
+    private static final String ENGINEER_PROJECTILE_FIRED = &quot;engineerProjectileFired&quot;;
+    
+    // The Engineer's attributes.
+    private final float maxRange; // The maximum range of the Engineer's weapon.
+    // weaponCapacity is the number of shots fired before the engineer has to reload
+    private static final int weaponCapacity = 10;
+<span class="fc" id="L36">    private int shotsFired = 0;  // Tracks the number of shots fired in the current cycle</span>
+    
+<span class="fc" id="L38">    private Vector2 engineerPosition = new Vector2(10, 50); // Placeholder value for the Engineer's position.</span>
+<span class="fc" id="L39">    private final Vector2 maxRangePosition = new Vector2();</span>
+    private PhysicsEngine physics;
+    private GameTime timeSource;
+    private long endTime;
+    private long reloadTime;
+
+<span class="fc" id="L45">    private ArrayList&lt;RaycastHit&gt; hits = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L46">    private final RaycastHit hit = new RaycastHit();</span>
+<span class="fc" id="L47">    private ArrayList&lt;Vector2&gt; targets = new ArrayList&lt;&gt;();</span>
+    
+    /** The Engineer's states. */
+<span class="fc" id="L50">    private enum STATE {</span>
+<span class="fc" id="L51">        IDLE_RIGHT, FIRING</span>
+    }
+<span class="fc" id="L53">    private STATE engineerState = STATE.IDLE_RIGHT;</span>
+    
+    /**
+     * @param maxRange The maximum range of the Engineer's weapon.
+     */
+<span class="fc" id="L58">    public EngineerCombatTask(float maxRange) {</span>
+<span class="fc" id="L59">        this.maxRange = maxRange;</span>
+<span class="fc" id="L60">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L61">        timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L62">    }</span>
+    
+    /**
+     * Runs the task and triggers Engineer's idle animation.
+     */
+    @Override
+    public void start() {
+<span class="fc" id="L69">        super.start();</span>
+        // Set the tower's coordinates
+<span class="fc" id="L71">        this.engineerPosition = owner.getEntity().getCenterPosition();</span>
+<span class="fc" id="L72">        this.maxRangePosition.set(engineerPosition.x + maxRange, engineerPosition.y);</span>
+        // Default to idle mode
+<span class="fc" id="L74">        owner.getEntity().getEvents().trigger(IDLE_RIGHT);</span>
+        
+<span class="fc" id="L76">        endTime = timeSource.getTime() + (INTERVAL * 500);</span>
+<span class="fc" id="L77">    }</span>
+    
+    /**
+     * The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().
+     * triggers events depending on the presence or otherwise of targets in the detection range
+     */
+    @Override
+    public void update() {
+<span class="nc bnc" id="L85" title="All 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L86">            updateEngineerState();</span>
+<span class="nc" id="L87">            endTime = timeSource.getTime() + (INTERVAL * 1000);</span>
+        }
+<span class="nc" id="L89">    }</span>
+    
+    /**
+     * Engineer state machine
+     */
+    public void updateEngineerState() {
+        // configure engineer state depending on target visibility
+<span class="pc bpc" id="L96" title="1 of 3 branches missed.">        switch (engineerState) {</span>
+            case IDLE_RIGHT -&gt; {
+                // targets detected in idle mode - start deployment
+<span class="fc bfc" id="L99" title="All 2 branches covered.">                if (isTargetVisible()) {</span>
+<span class="fc" id="L100">                    combatState();</span>
+                }
+            }
+            case FIRING -&gt; {
+                // targets gone - stop firing
+<span class="fc bfc" id="L105" title="All 2 branches covered.">                if (!isTargetVisible()) {</span>
+<span class="fc" id="L106">                    owner.getEntity().getEvents().trigger(IDLE_RIGHT);</span>
+<span class="fc" id="L107">                    engineerState = STATE.IDLE_RIGHT;</span>
+                } else {
+<span class="pc bpc" id="L109" title="1 of 2 branches missed.">                    if (shotsFired &lt;= weaponCapacity) {</span>
+<span class="fc" id="L110">                        owner.getEntity().getEvents().trigger(FIRING);</span>
+<span class="fc" id="L111">                        owner.getEntity().getEvents().trigger(ENGINEER_PROJECTILE_FIRED);</span>
+                        // this might be changed to an event which gets triggered everytime the tower enters the firing state
+<span class="fc" id="L113">                        Entity newProjectile = ProjectileFactory.createEngineerBullet(PhysicsLayer.NPC,</span>
+<span class="fc" id="L114">                                new Vector2(100, owner.getEntity().getPosition().y),</span>
+                                new Vector2(4f, 4f));
+<span class="fc" id="L116">                        newProjectile.setScale(0.8f, 0.8f);</span>
+<span class="fc" id="L117">                        newProjectile.setPosition((float) (owner.getEntity().getPosition().x + 0.3),</span>
+<span class="fc" id="L118">                                (float) (owner.getEntity().getPosition().y + 0.15));</span>
+<span class="fc" id="L119">                        ServiceLocator.getEntityService().register(newProjectile);</span>
+<span class="fc" id="L120">                        shotsFired ++;</span>
+<span class="fc" id="L121">                        reloadTime = timeSource.getTime();</span>
+<span class="fc" id="L122">                    } else {</span>
+                        // engineer needs to reload
+<span class="nc bnc" id="L124" title="All 2 branches missed.">                        if (reloadTime &lt; timeSource.getTime()) {</span>
+                            // engineer has reloaded
+<span class="nc" id="L126">                            shotsFired = 0;</span>
+<span class="nc" id="L127">                            reloadTime = timeSource.getTime();</span>
+                        }
+                    }
+                }
+            }
+        }
+<span class="fc" id="L133">    }</span>
+
+    /**
+     * Puts the engineerCombatTask state into combat mode
+     */
+    private void combatState() {
+<span class="fc" id="L139">        owner.getEntity().getEvents().trigger(FIRING);</span>
+<span class="fc" id="L140">        engineerState = STATE.FIRING;</span>
+<span class="fc" id="L141">    }</span>
+    /**
+     * For stopping the running task
+     */
+    @Override
+    public void stop() {
+<span class="nc" id="L147">        super.stop();</span>
+<span class="nc" id="L148">    }</span>
+
+    /**
+     * Simplified getPriority function, returns the priority of the task
+     * @return priority as an integer value. If mobs are visible, return the current priority, otherwise return 0.
+     */
+    @Override
+    public int getPriority() {
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        return isTargetVisible() ? PRIORITY : 0;</span>
+    }
+
+    /**
+     * Uses a raycast to determine whether there are any targets in detection range. Performs multiple raycasts
+     * to a range of points at x = engineer.x + maxRange, and a range of y values above and below current y position.
+     * Allows the engineer entity to detect mobs in adjacent lanes.
+     * @return true if a target is detected, false otherwise
+     */
+    public boolean isTargetVisible() {
+        // If there is an obstacle in the path to the max range point, mobs visible.
+<span class="fc" id="L167">        Vector2 position = owner.getEntity().getCenterPosition();</span>
+<span class="fc" id="L168">        hits.clear();</span>
+<span class="fc bfc" id="L169" title="All 2 branches covered.">        for (int i = 5; i &gt; -5; i--) {</span>
+<span class="fc bfc" id="L170" title="All 2 branches covered.">            if (physics.raycast(position, new Vector2(position.x + maxRange, position.y + i), TARGET, hit)) {</span>
+<span class="fc" id="L171">                hits.add(hit);</span>
+<span class="fc" id="L172">                targets.add(new Vector2(position.x + maxRange, position.y + i));</span>
+            }
+        }
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        return !hits.isEmpty();</span>
+    }
+
+    /**
+     * Fetches the nearest target from the array of detected target positions created during the last call of
+     * isTargetVisible
+     * @return a Vector2 position of the nearest mob detected.
+     */
+    public Vector2 fetchTarget() {
+        // Initial nearest position for comparison
+<span class="nc" id="L185">        int lowest = 10;</span>
+
+<span class="nc" id="L187">        Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,</span>
+<span class="nc" id="L188">                owner.getEntity().getCenterPosition().y);</span>
+
+        // Find the nearest target from the array of targets
+<span class="nc bnc" id="L191" title="All 2 branches missed.">        for (Vector2 tgt : targets){</span>
+<span class="nc bnc" id="L192" title="All 2 branches missed.">            if (Math.abs(tgt.y - nearest.y) &lt; lowest) {</span>
+<span class="nc" id="L193">                lowest = (int)Math.abs(tgt.y - nearest.y);</span>
+<span class="nc" id="L194">                nearest = tgt;</span>
+            }
+<span class="nc" id="L196">        }</span>
+<span class="nc" id="L197">        return nearest;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ColliderComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.physics.components</a> &gt; <span class="el_source">ColliderComponent.java</span></div><h1>ColliderComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.physics.components;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.PhysicsComponent.AlignX;
+import com.csse3200.game.physics.components.PhysicsComponent.AlignY;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Attaches a physics collider to an entity. By default, this is a rectangle the same size as the
+ * entity's scale. This allows an entity to collide with other physics objects, or detect collisions
+ * without interaction (if sensor = true)
+ */
+public class ColliderComponent extends Component {
+<span class="fc" id="L18">  private static final Logger logger = LoggerFactory.getLogger(ColliderComponent.class);</span>
+
+  private final FixtureDef fixtureDef;
+  private Fixture fixture;
+
+<span class="fc" id="L23">  public ColliderComponent() {</span>
+<span class="fc" id="L24">    fixtureDef = new FixtureDef();</span>
+<span class="fc" id="L25">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">    if (fixtureDef.shape == null) {</span>
+<span class="fc" id="L30">      logger.trace(&quot;{} Setting default bounding box&quot;, this);</span>
+<span class="fc" id="L31">      fixtureDef.shape = makeBoundingBox();</span>
+    }
+
+<span class="fc" id="L34">    Body physBody = entity.getComponent(PhysicsComponent.class).getBody();</span>
+<span class="fc" id="L35">    fixture = physBody.createFixture(fixtureDef);</span>
+<span class="fc" id="L36">  }</span>
+
+  /**
+   * Set physics as a box with a given size. Box is centered around the entity.
+   *
+   * @param size size of the box
+   * @return self
+   */
+  public ColliderComponent setAsBox(Vector2 size) {
+<span class="fc" id="L45">    return setAsBox(size, entity.getCenterPosition());</span>
+  }
+
+  /**
+   * Set physics as a box with a given size. Box is aligned based on alignment.
+   *
+   * @param size size of the box
+   * @param alignX how to align x relative to entity
+   * @param alignY how to align y relative to entity
+   * @return self
+   */
+  public ColliderComponent setAsBoxAligned(Vector2 size, AlignX alignX, AlignY alignY) {
+<span class="fc" id="L57">    Vector2 position = new Vector2();</span>
+<span class="pc bpc" id="L58" title="1 of 4 branches missed.">    switch (alignX) {</span>
+      case LEFT:
+<span class="fc" id="L60">        position.x = size.x / 2;</span>
+<span class="fc" id="L61">        break;</span>
+      case CENTER:
+<span class="fc" id="L63">        position.x = entity.getCenterPosition().x;</span>
+<span class="fc" id="L64">        break;</span>
+      case RIGHT:
+<span class="fc" id="L66">        position.x = entity.getScale().x - (size.x / 2);</span>
+        break;
+    }
+
+<span class="pc bpc" id="L70" title="1 of 4 branches missed.">    switch (alignY) {</span>
+      case BOTTOM:
+<span class="fc" id="L72">        position.y = size.y / 2;</span>
+<span class="fc" id="L73">        break;</span>
+      case CENTER:
+<span class="fc" id="L75">        position.y = entity.getCenterPosition().y;</span>
+<span class="fc" id="L76">        break;</span>
+      case TOP:
+<span class="fc" id="L78">        position.y = entity.getScale().y - (size.y / 2);</span>
+        break;
+    }
+
+<span class="fc" id="L82">    return setAsBox(size, position);</span>
+  }
+
+  /**
+   * Set physics as a box with a given size and local position. Box is centered around the position.
+   *
+   * @param size size of the box
+   * @param position position of the box center relative to the entity.
+   * @return self
+   */
+  public ColliderComponent setAsBox(Vector2 size, Vector2 position) {
+<span class="fc" id="L93">    PolygonShape bbox = new PolygonShape();</span>
+<span class="fc" id="L94">    bbox.setAsBox(size.x / 2, size.y / 2, position, 0f);</span>
+<span class="fc" id="L95">    setShape(bbox);</span>
+<span class="fc" id="L96">    return this;</span>
+  }
+
+  /**
+   * Set friction. This affects the object when touching other objects, but does not affect friction
+   * with the ground.
+   *
+   * @param friction friction, default = 0
+   * @return self
+   */
+  public ColliderComponent setFriction(float friction) {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">    if (fixture == null) {</span>
+<span class="fc" id="L108">      fixtureDef.friction = friction;</span>
+    } else {
+<span class="fc" id="L110">      fixture.setFriction(friction);</span>
+    }
+<span class="fc" id="L112">    return this;</span>
+  }
+
+  /**
+   * Set whether this physics component is a sensor. Sensors don't collide with other objects but
+   * still trigger collision events. See: https://www.iforce2d.net/b2dtut/sensors
+   *
+   * @param isSensor true if sensor, false if not. default = false.
+   * @return self
+   */
+  public ColliderComponent setSensor(boolean isSensor) {
+<span class="fc bfc" id="L123" title="All 2 branches covered.">    if (fixture == null) {</span>
+<span class="fc" id="L124">      fixtureDef.isSensor = isSensor;</span>
+    } else {
+<span class="fc" id="L126">      fixture.setSensor(isSensor);</span>
+    }
+<span class="fc" id="L128">    return this;</span>
+  }
+
+  /**
+   * Set density
+   *
+   * @param density Density and size of the physics component determine the object's mass. default =
+   *     0
+   * @return self
+   */
+  public ColliderComponent setDensity(float density) {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">    if (fixture == null) {</span>
+<span class="fc" id="L140">      fixtureDef.density = density;</span>
+    } else {
+<span class="fc" id="L142">      fixture.setDensity(density);</span>
+    }
+<span class="fc" id="L144">    return this;</span>
+  }
+
+  /**
+   * Set restitution
+   *
+   * @param restitution restitution is the 'bounciness' of an object, default = 0
+   * @return self
+   */
+  public ColliderComponent setRestitution(float restitution) {
+<span class="fc bfc" id="L154" title="All 2 branches covered.">    if (fixture == null) {</span>
+<span class="fc" id="L155">      fixtureDef.restitution = restitution;</span>
+    } else {
+<span class="fc" id="L157">      fixture.setRestitution(restitution);</span>
+    }
+<span class="fc" id="L159">    return this;</span>
+  }
+
+  /**
+   * Set shape
+   *
+   * @param shape shape, default = bounding box the same size as the entity
+   * @return self
+   */
+  public ColliderComponent setShape(Shape shape) {
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">    if (fixture == null) {</span>
+<span class="fc" id="L170">      fixtureDef.shape = shape;</span>
+    } else {
+<span class="nc" id="L172">      logger.error(&quot;{} Cannot set Collider shape after create(), ignoring.&quot;, this);</span>
+    }
+<span class="fc" id="L174">    return this;</span>
+  }
+
+  /** @return Physics fixture of this collider. Null before created() */
+  public Fixture getFixture() {
+<span class="fc" id="L179">    return fixture;</span>
+  }
+
+  /**
+   * Set the collider layer, used in collision logic
+   * @param layerMask Bitmask of {@link PhysicsLayer} this collider belongs to
+   * @return self
+   */
+  public ColliderComponent setLayer(short layerMask) {
+<span class="pc bpc" id="L188" title="1 of 2 branches missed.">    if (fixture == null) {</span>
+<span class="fc" id="L189">      fixtureDef.filter.categoryBits = layerMask;</span>
+    } else {
+<span class="nc" id="L191">      Filter filter = fixture.getFilterData();</span>
+<span class="nc" id="L192">      filter.categoryBits = layerMask;</span>
+<span class="nc" id="L193">      fixture.setFilterData(filter);</span>
+    }
+<span class="fc" id="L195">    return this;</span>
+  }
+
+  /**
+   * @return The {@link PhysicsLayer} this collider belongs to
+   */
+  public short getLayer() {
+<span class="fc bfc" id="L202" title="All 2 branches covered.">    if (fixture == null) {</span>
+<span class="fc" id="L203">      return fixtureDef.filter.categoryBits;</span>
+    }
+<span class="fc" id="L205">    return fixture.getFilterData().categoryBits;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="fc" id="L210">    super.dispose();</span>
+<span class="fc" id="L211">    Body physBody = entity.getComponent(PhysicsComponent.class).getBody();</span>
+<span class="pc bpc" id="L212" title="1 of 2 branches missed.">    if (physBody.getFixtureList().contains(fixture, true)) {</span>
+<span class="fc" id="L213">      physBody.destroyFixture(fixture);</span>
+    }
+<span class="fc" id="L215">  }</span>
+
+  private Shape makeBoundingBox() {
+<span class="fc" id="L218">    PolygonShape bbox = new PolygonShape();</span>
+<span class="fc" id="L219">    Vector2 center = entity.getScale().scl(0.5f);</span>
+<span class="fc" id="L220">    bbox.setAsBox(center.x, center.y, center, 0f);</span>
+<span class="fc" id="L221">    return bbox;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

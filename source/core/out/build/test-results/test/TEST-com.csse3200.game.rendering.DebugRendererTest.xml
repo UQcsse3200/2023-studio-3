@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.rendering.DebugRendererTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:46" hostname="DESKTOP-F4ACIG8" time="0.95">
+  <properties/>
+  <testcase name="shouldNotRenderWhenDisabled()" classname="com.csse3200.game.rendering.DebugRendererTest" time="0.897"/>
+  <testcase name="shouldRenderLine()" classname="com.csse3200.game.rendering.DebugRendererTest" time="0.015"/>
+  <testcase name="shouldRenderRect()" classname="com.csse3200.game.rendering.DebugRendererTest" time="0.022"/>
+  <testcase name="shouldRenderPhysics()" classname="com.csse3200.game.rendering.DebugRendererTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:47 PM com.csse3200.game.rendering.DebugRenderer setActive
+INFO: Set debug to: false
+]]></system-err>
+</testsuite>

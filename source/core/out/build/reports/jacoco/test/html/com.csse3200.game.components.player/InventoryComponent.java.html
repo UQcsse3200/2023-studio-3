@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.player</a> &gt; <span class="el_source">InventoryComponent.java</span></div><h1>InventoryComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.player;
+
+import com.csse3200.game.components.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * A component intended to be used by the player to track their inventory.
+ *
+ * Currently only stores the gold amount but can be extended for more advanced functionality such as storing items.
+ * Can also be used as a more generic component for other entities.
+ */
+public class InventoryComponent extends Component {
+<span class="fc" id="L14">  private static final Logger logger = LoggerFactory.getLogger(InventoryComponent.class);</span>
+  private int gold;
+
+<span class="fc" id="L17">  public InventoryComponent(int gold) {</span>
+<span class="fc" id="L18">    setGold(gold);</span>
+<span class="fc" id="L19">  }</span>
+
+  /**
+   * Returns the player's gold.
+   *
+   * @return entity's health
+   */
+  public int getGold() {
+<span class="fc" id="L27">    return this.gold;</span>
+  }
+
+  /**
+   * Returns if the player has a certain amount of gold.
+   * @param gold required amount of gold
+   * @return player has greater than or equal to the required amount of gold
+   */
+  public Boolean hasGold(int gold) {
+<span class="fc bfc" id="L36" title="All 2 branches covered.">    return this.gold &gt;= gold;</span>
+  }
+
+  /**
+   * Sets the player's gold. Gold has a minimum bound of 0.
+   *
+   * @param gold gold
+   */
+  public void setGold(int gold) {
+<span class="fc" id="L45">    this.gold = Math.max(gold, 0);</span>
+<span class="fc" id="L46">    logger.debug(&quot;Setting gold to {}&quot;, this.gold);</span>
+<span class="fc" id="L47">  }</span>
+
+  /**
+   * Adds to the player's gold. The amount added can be negative.
+   * @param gold gold to add
+   */
+  public void addGold(int gold) {
+<span class="fc" id="L54">    setGold(this.gold + gold);</span>
+<span class="fc" id="L55">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

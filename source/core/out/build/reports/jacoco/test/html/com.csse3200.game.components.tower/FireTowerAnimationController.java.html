@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FireTowerAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">FireTowerAnimationController.java</span></div><h1>FireTowerAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Listens for events relevant to a weapon tower state.
+ * Each event will have a trigger phrase and have a certain animation attached.
+ */
+<span class="fc" id="L12">public class FireTowerAnimationController extends Component{</span>
+    //Event name constants
+    private static final String IDLE = &quot;startIdle&quot;;
+    private static final String PREP_ATTACK = &quot;startAttackPrep&quot;;
+    private static final String ATTACK = &quot;startAttack&quot;;
+    private static final String DEATH = &quot;startDeath&quot;;
+
+    //animation name constants
+    private static final String IDLE_ANIM = &quot;idle&quot;;
+    private static final String PREP_ATTACK_ANIM = &quot;prepAttack&quot;;
+    private static final String ATTACK_ANIM = &quot;attack&quot;;
+    private static final String DEATH_ANIM = &quot;death&quot;;
+    //here we can add the sounds for the implemented animations
+
+    AnimationRenderComponent animator;
+
+    /**
+     * Create method for FireTowerAnimationController.
+     */
+    @Override
+    public void create() {
+<span class="fc" id="L33">        super.create();</span>
+<span class="fc" id="L34">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="fc" id="L35">        entity.getEvents().addListener(IDLE, this::animateIdle);</span>
+<span class="fc" id="L36">        entity.getEvents().addListener(PREP_ATTACK, this::animatePrepAttack);</span>
+<span class="fc" id="L37">        entity.getEvents().addListener(ATTACK, this::animateAttack);</span>
+<span class="fc" id="L38">        entity.getEvents().addListener(DEATH, this::animateDeath);</span>
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Starts the idle animation.
+     */
+    void animateIdle() {
+<span class="fc" id="L45">        animator.startAnimation(IDLE_ANIM);</span>
+<span class="fc" id="L46">    }</span>
+
+    /**
+     * Starts the prep_attack animation.
+     */
+    void animatePrepAttack() {
+<span class="fc" id="L52">        animator.startAnimation(PREP_ATTACK_ANIM);</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Starts the attack animation.
+     */
+    void animateAttack() {
+<span class="fc" id="L59">        animator.startAnimation(ATTACK_ANIM);</span>
+<span class="fc" id="L60">    }</span>
+
+    void animateDeath() {
+<span class="fc" id="L63">        animator.startAnimation(DEATH_ANIM);</span>
+<span class="fc" id="L64">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

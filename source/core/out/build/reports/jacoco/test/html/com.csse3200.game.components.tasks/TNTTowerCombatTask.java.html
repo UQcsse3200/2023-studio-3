@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TNTTowerCombatTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">TNTTowerCombatTask.java</span></div><h1>TNTTowerCombatTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * The TNTTowerCombatTask runs the AI for the TNTTower class. The tower will scan for targets in a straight line
+ * from its center point until a point at (x + maxRange, y), where x,y are the coordinates of the tower's center
+ * position. This component should be added to an AiTaskComponent attached to the tower instance.
+ */
+public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
+    // Constants
+    private static final int INTERVAL = 1;  // time interval to scan for enemies in seconds
+    private static final short TARGET = PhysicsLayer.NPC;  // The type of targets that the tower will detect
+    // the following four constants are the event names that will be triggered in the state machine
+    public static final String DIG = &quot;digStart&quot;;
+    public static final String EXPLOSION = &quot;explodeStart&quot;;
+    public static final String DEFAULT = &quot;defaultStart&quot;;
+    public static final String DAMAGE = &quot;TNTDamageStart&quot;;
+
+
+    // class attributes
+    private final int priority;  // The active priority this task will have
+    private final float maxRange;
+<span class="fc" id="L32">    private Vector2 towerPosition = new Vector2(10, 10); // initial placeholder value - will be overwritten</span>
+<span class="fc" id="L33">    private final Vector2 maxRangePosition = new Vector2();</span>
+    private final PhysicsEngine physics;
+    private final GameTime timeSource;
+    private long endTime;
+<span class="fc" id="L37">    private final RaycastHit hit = new RaycastHit();</span>
+<span class="fc" id="L38">    public boolean readToDelete = false;</span>
+
+<span class="fc" id="L40">    public enum STATE {</span>
+<span class="fc" id="L41">        IDLE, EXPLODE, REMOVE</span>
+    }
+<span class="fc" id="L43">    private STATE towerState = STATE.IDLE;</span>
+
+    /**
+     * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
+     * @param maxRange Maximum effective range of the weapon tower. This determines the detection distance of targets
+     */
+<span class="fc" id="L49">    public TNTTowerCombatTask(int priority, float maxRange) {</span>
+<span class="fc" id="L50">        this.priority = priority;</span>
+<span class="fc" id="L51">        this.maxRange = maxRange;</span>
+<span class="fc" id="L52">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L53">        timeSource = ServiceLocator.getTimeSource();</span>
+
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Starts the Task running, triggers the initial &quot;defaultStart&quot; event.
+     */
+    @Override
+    public void start() {
+<span class="fc" id="L62">        super.start();</span>
+        // Set the tower's coordinates
+<span class="fc" id="L64">        this.towerPosition = owner.getEntity().getCenterPosition();</span>
+<span class="fc" id="L65">        this.maxRangePosition.set(towerPosition.x + maxRange, towerPosition.y);</span>
+        // Default mode
+<span class="fc" id="L67">        owner.getEntity().getEvents().trigger(DEFAULT);</span>
+
+<span class="fc" id="L69">        endTime = timeSource.getTime() + (INTERVAL * 500);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().
+     * triggers events depending on the presence or otherwise of targets in the detection range
+     */
+    @Override
+    public void update() {
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L79">            updateTowerState();</span>
+<span class="nc" id="L80">            endTime = timeSource.getTime() + (INTERVAL * 1000);</span>
+        }
+<span class="fc" id="L82">    }</span>
+
+    /**
+     * TNT tower state machine. Updates tower state by scanning for mobs, and
+     * triggers the appropriate events corresponding to the STATE enum.
+     */
+    public void updateTowerState() {
+        // configure tower state depending on target visibility
+
+<span class="pc bpc" id="L91" title="1 of 4 branches missed.">        switch (towerState) {</span>
+            case IDLE -&gt; {
+                // targets detected in idle mode - start deployment
+<span class="fc bfc" id="L94" title="All 2 branches covered.">                if (isTargetVisible()) {</span>
+<span class="fc" id="L95">                    owner.getEntity().getEvents().trigger(DIG);</span>
+<span class="fc" id="L96">                    towerState = STATE.EXPLODE;</span>
+                } else {
+<span class="fc" id="L98">                    owner.getEntity().getEvents().trigger(DEFAULT);</span>
+                }
+<span class="fc" id="L100">            }</span>
+            case EXPLODE -&gt; {
+<span class="fc" id="L102">                owner.getEntity().getEvents().trigger(EXPLOSION);</span>
+<span class="fc" id="L103">                owner.getEntity().getEvents().trigger(DAMAGE);</span>
+<span class="fc" id="L104">                towerState = STATE.REMOVE;</span>
+<span class="fc" id="L105">            }</span>
+            case REMOVE -&gt; {
+<span class="fc" id="L107">                readToDelete = true;</span>
+            }
+        }
+
+
+<span class="fc" id="L112">    }</span>
+    /**
+     * For stopping the running task
+     */
+    @Override
+    public void stop() {
+<span class="nc" id="L118">        super.stop();</span>
+<span class="nc" id="L119">    }</span>
+
+    /**
+     * Returns the current priority of the task.
+     * @return active priority value if targets detected, inactive priority otherwise
+     */
+    @Override
+    public int getPriority() {
+
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">        if (isReadyToDelete()) {</span>
+<span class="nc" id="L129">            owner.getEntity().setFlagForDelete(true);</span>
+<span class="nc" id="L130">            return -1;</span>
+        } else {
+<span class="fc" id="L132">            return priority;</span>
+        }
+    }
+
+    /**
+     * Returns the current state of the tower.
+     *
+     * @return the current state of the tower.
+     */
+    public STATE getState() {
+<span class="fc" id="L142">        return this.towerState;</span>
+    }
+
+    /**
+     * Uses a raycast to determine whether there are any targets in detection range
+     * @return true if a target is visible, false otherwise
+     */
+    public boolean isTargetVisible() {
+        // If there is an obstacle in the path to the max range point, mobs visible.
+<span class="fc" id="L151">        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);</span>
+    }
+
+    public boolean isReadyToDelete() {
+
+<span class="fc" id="L156">        return readToDelete;</span>
+    }
+
+
+}
+
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

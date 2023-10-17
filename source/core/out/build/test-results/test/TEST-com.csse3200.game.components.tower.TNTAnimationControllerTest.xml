@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tower.TNTAnimationControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:26" hostname="DESKTOP-F4ACIG8" time="0.07">
+  <properties/>
+  <testcase name="testAnimateDefault()" classname="com.csse3200.game.components.tower.TNTAnimationControllerTest" time="0.028"/>
+  <testcase name="testAnimateDig()" classname="com.csse3200.game.components.tower.TNTAnimationControllerTest" time="0.015"/>
+  <testcase name="testAnimateExplode()" classname="com.csse3200.game.components.tower.TNTAnimationControllerTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

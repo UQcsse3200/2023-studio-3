@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TextureRenderComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.rendering</a> &gt; <span class="el_source">TextureRenderComponent.java</span></div><h1>TextureRenderComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.rendering;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.services.ServiceLocator;
+
+/** Render a static texture. */
+public class TextureRenderComponent extends RenderComponent {
+  private final Texture texture;
+
+  /**
+   * @param texturePath Internal path of static texture to render.
+   *                    Will be scaled to the entity's scale.
+   */
+  public TextureRenderComponent(String texturePath) {
+<span class="fc" id="L17">    this(ServiceLocator.getResourceService().getAsset(texturePath, Texture.class));</span>
+<span class="fc" id="L18">  }</span>
+//...
+  /** @param texture Static texture to render. Will be scaled to the entity's scale. */
+<span class="fc" id="L21">  public TextureRenderComponent(Texture texture) {</span>
+<span class="fc" id="L22">    this.texture = texture;</span>
+<span class="fc" id="L23">  }</span>
+
+  /** Scale the entity to a width of 1 and a height matching the texture's ratio */
+  public void scaleEntity() {
+<span class="fc" id="L27">    entity.setScale(1f, (float) texture.getHeight() / texture.getWidth());</span>
+<span class="fc" id="L28">  }</span>
+
+  @Override
+  protected void draw(SpriteBatch batch) {
+<span class="fc" id="L32">    Vector2 position = entity.getPosition();</span>
+<span class="fc" id="L33">    Vector2 scale = entity.getScale();</span>
+<span class="fc" id="L34">    batch.draw(texture, position.x, position.y, scale.x, scale.y);</span>
+<span class="fc" id="L35">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

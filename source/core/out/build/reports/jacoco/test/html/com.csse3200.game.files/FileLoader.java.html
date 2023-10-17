@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FileLoader.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.files</a> &gt; <span class="el_source">FileLoader.java</span></div><h1>FileLoader.java</h1><pre class="source lang-java linenums">package com.csse3200.game.files;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.Json;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Wrapper for reading Java objects from JSON files.
+ *
+ * &lt;p&gt;A generic method is provided already, but methods for reading specific classes can be added
+ * for more control.
+ */
+<span class="nc" id="L15">public class FileLoader {</span>
+<span class="fc" id="L16">  private static final Logger logger = LoggerFactory.getLogger(FileLoader.class);</span>
+<span class="fc" id="L17">  static final Json json = new Json();</span>
+
+  /**
+   * Read generic Java classes from a JSON file. Properties in the JSON file will override class
+   * defaults.
+   *
+   * @param type class type
+   * @param filename file to read from
+   * @param &lt;T&gt; Class type to read JSON into
+   * @return instance of class, may be null
+   */
+  public static &lt;T&gt; T readClass(Class&lt;T&gt; type, String filename) {
+<span class="fc" id="L29">    return readClass(type, filename, Location.INTERNAL);</span>
+  }
+
+  /**
+   * Read generic Java classes from a JSON file. Properties in the JSON file will override class
+   * defaults.
+   *
+   * @param type class type
+   * @param filename file to read from
+   * @param location File storage type. See
+   *     https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
+   * @param &lt;T&gt; Class type to read JSON into
+   * @return instance of class, may be null
+   */
+  public static &lt;T&gt; T readClass(Class&lt;T&gt; type, String filename, Location location) {
+<span class="fc" id="L44">    logger.debug(&quot;Reading class {} from {}&quot;, type.getSimpleName(), filename);</span>
+<span class="fc" id="L45">    FileHandle file = getFileHandle(filename, location);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">    if (file == null) {</span>
+<span class="nc" id="L47">      logger.error(&quot;Failed to create file handle for {}&quot;, filename);</span>
+<span class="nc" id="L48">      return null;</span>
+    }
+
+    T object;
+    try {
+<span class="fc" id="L53">      object = json.fromJson(type, file);</span>
+<span class="fc" id="L54">    } catch (Exception e) {</span>
+<span class="fc" id="L55">      logger.error(e.getMessage());</span>
+<span class="fc" id="L56">      return null;</span>
+<span class="fc" id="L57">    }</span>
+<span class="pc bpc" id="L58" title="1 of 2 branches missed.">    if (object == null) {</span>
+<span class="nc" id="L59">      String path = file.path();</span>
+<span class="nc" id="L60">      logger.error(&quot;Error creating {} class instance from {}&quot;, type.getSimpleName(), path);</span>
+    }
+<span class="fc" id="L62">    return object;</span>
+  }
+
+  /**
+   * Write generic Java classes to a JSON file.
+   *
+   * @param object Java object to write.
+   * @param filename File to write to.
+   */
+  public static void writeClass(Object object, String filename) {
+<span class="nc" id="L72">    writeClass(object, filename, Location.EXTERNAL);</span>
+<span class="nc" id="L73">  }</span>
+
+  /**
+   * Write generic Java classes to a JSON file.
+   *
+   * @param object Java object to write.
+   * @param filename File to write to.
+   * @param location File storage type. See
+   *     https://github.com/libgdx/libgdx/wiki/File-handling#file-storage-types
+   */
+  public static void writeClass(Object object, String filename, Location location) {
+<span class="nc" id="L84">    logger.debug(&quot;Reading class {} from {}&quot;, object.getClass().getSimpleName(), filename);</span>
+<span class="nc" id="L85">    FileHandle file = getFileHandle(filename, location);</span>
+<span class="nc bnc" id="L86" title="All 2 branches missed.">    assert file != null;</span>
+<span class="nc" id="L87">    file.writeString(json.prettyPrint(object), false);</span>
+<span class="nc" id="L88">  }</span>
+
+  private static FileHandle getFileHandle(String filename, Location location) {
+<span class="pc bpc" id="L91" title="5 of 6 branches missed.">    switch (location) {</span>
+      case CLASSPATH:
+<span class="nc" id="L93">        return Gdx.files.classpath(filename);</span>
+      case INTERNAL:
+<span class="fc" id="L95">        return Gdx.files.internal(filename);</span>
+      case LOCAL:
+<span class="nc" id="L97">        return Gdx.files.local(filename);</span>
+      case EXTERNAL:
+<span class="nc" id="L99">        return Gdx.files.external(filename);</span>
+      case ABSOLUTE:
+<span class="nc" id="L101">        return Gdx.files.absolute(filename);</span>
+      default:
+<span class="nc" id="L103">        return null;</span>
+    }
+  }
+
+<span class="fc" id="L107">  public enum Location {</span>
+<span class="fc" id="L108">    CLASSPATH,</span>
+<span class="fc" id="L109">    INTERNAL,</span>
+<span class="fc" id="L110">    LOCAL,</span>
+<span class="fc" id="L111">    EXTERNAL,</span>
+<span class="fc" id="L112">    ABSOLUTE</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Renderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.rendering</a> &gt; <span class="el_source">Renderer.java</span></div><h1>Renderer.java</h1><pre class="source lang-java linenums">package com.csse3200.game.rendering;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.csse3200.game.components.CameraComponent;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Core rendering system for the game. Controls the game's camera and runs rendering on all
+ * renderables each frame.
+ */
+public class Renderer implements Disposable {
+  private static final float GAME_SCREEN_WIDTH = 20f;
+<span class="fc" id="L21">  private static final Logger logger = LoggerFactory.getLogger(Renderer.class);</span>
+
+  private CameraComponent camera;
+  private float gameWidth;
+  private SpriteBatch batch;
+  private Stage stage;
+  private RenderService renderService;
+  private DebugRenderer debugRenderer;
+
+  /**
+   * Create a new renderer with default settings
+   * @param camera camera to render to
+   */
+<span class="nc" id="L34">  public Renderer(CameraComponent camera) {</span>
+<span class="nc" id="L35">    SpriteBatch spriteBatch = new SpriteBatch();</span>
+<span class="nc" id="L36">    DebugRenderer debugRenderer = new DebugRenderer();</span>
+<span class="nc" id="L37">    debugRenderer.setActive(false);</span>
+
+<span class="nc" id="L39">    init(</span>
+        camera,
+        GAME_SCREEN_WIDTH,
+        spriteBatch,
+        new Stage(new ScreenViewport(), spriteBatch),
+<span class="nc" id="L44">        ServiceLocator.getRenderService(),</span>
+        debugRenderer);
+<span class="nc" id="L46">  }</span>
+
+  /**
+   * Create a renderer
+   *
+   * @param camera Camera to use for rendering.
+   * @param gameWidth Desired game width in metres the screen should show. Height is then based on *
+   *     the aspect ratio.
+   * @param batch Batch to render to.
+   * @param stage Scene2D stage for UI rendering
+   * @param renderService Render service to use
+   * @param debugRenderer Debug renderer to render
+   */
+  public Renderer(
+      CameraComponent camera,
+      float gameWidth,
+      SpriteBatch batch,
+      Stage stage,
+      RenderService renderService,
+<span class="fc" id="L65">      DebugRenderer debugRenderer) {</span>
+<span class="fc" id="L66">    init(camera, gameWidth, batch, stage, renderService, debugRenderer);</span>
+<span class="fc" id="L67">  }</span>
+
+  private void init(
+      CameraComponent camera,
+      float gameWidth,
+      SpriteBatch batch,
+      Stage stage,
+      RenderService renderService,
+      DebugRenderer debugRenderer) {
+
+<span class="fc" id="L77">    this.camera = camera;</span>
+<span class="fc" id="L78">    this.gameWidth = gameWidth;</span>
+<span class="fc" id="L79">    this.batch = batch;</span>
+<span class="fc" id="L80">    this.stage = stage;</span>
+<span class="fc" id="L81">    this.renderService = renderService;</span>
+<span class="fc" id="L82">    this.debugRenderer = debugRenderer;</span>
+
+<span class="fc" id="L84">    renderService.setStage(stage);</span>
+<span class="fc" id="L85">    renderService.setDebug(debugRenderer);</span>
+<span class="fc" id="L86">    resizeCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+<span class="fc" id="L87">  }</span>
+
+  public CameraComponent getCamera() {
+<span class="nc" id="L90">    return camera;</span>
+  }
+
+  /** Render everything to the render service. */
+  public void render() {
+<span class="fc" id="L95">    Matrix4 projMatrix = camera.getProjectionMatrix();</span>
+<span class="fc" id="L96">    camera.update();</span>
+<span class="fc" id="L97">    batch.setProjectionMatrix(projMatrix);</span>
+
+<span class="fc" id="L99">    batch.begin();</span>
+<span class="fc" id="L100">    renderService.render(batch);</span>
+<span class="fc" id="L101">    batch.end();</span>
+<span class="fc" id="L102">    debugRenderer.render(projMatrix);</span>
+
+<span class="fc" id="L104">    stage.act();</span>
+<span class="fc" id="L105">    stage.draw();</span>
+<span class="fc" id="L106">  }</span>
+
+  /**
+   * Resize the renderer to a new screen size.
+   *
+   * @param width new screen width
+   * @param height new screen height
+   */
+  public void resize(int width, int height) {
+<span class="fc" id="L115">    resizeCamera(width, height);</span>
+<span class="fc" id="L116">    resizeStage(width, height);</span>
+<span class="fc" id="L117">    logger.debug(&quot;Resizing to ({}x{})&quot;, width, height);</span>
+<span class="fc" id="L118">  }</span>
+
+  /** @return The debug renderer attached to this renderer */
+  public DebugRenderer getDebug() {
+<span class="nc" id="L122">    return debugRenderer;</span>
+  }
+
+  private void resizeCamera(int screenWidth, int screenHeight) {
+<span class="fc" id="L126">    camera.resize(screenWidth, screenHeight, gameWidth);</span>
+<span class="fc" id="L127">  }</span>
+
+  private void resizeStage(int screenWidth, int screenHeight) {
+<span class="fc" id="L130">    stage.getViewport().update(screenWidth, screenHeight, true);</span>
+<span class="fc" id="L131">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L135">    stage.dispose();</span>
+<span class="nc" id="L136">    batch.dispose();</span>
+<span class="nc" id="L137">  }</span>
+
+  public Stage getStage() {
+<span class="nc" id="L140">    return stage;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

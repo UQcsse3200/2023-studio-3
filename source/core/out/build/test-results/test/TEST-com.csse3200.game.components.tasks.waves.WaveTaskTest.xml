@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tasks.waves.WaveTaskTest" tests="6" skipped="6" failures="0" errors="0" timestamp="2023-10-10T07:19:25" hostname="DESKTOP-F4ACIG8" time="0.005">
+  <properties/>
+  <testcase name="testUpdateOnEmptyWaveAndNextWave()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.001">
+    <skipped/>
+  </testcase>
+  <testcase name="testStartFirstWave()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="testLoadSounds()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="testGetPriority()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="testIsWaveInProgress()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="testUpdateOnEmptyWaveAndNoNextWave()" classname="com.csse3200.game.components.tasks.waves.WaveTaskTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

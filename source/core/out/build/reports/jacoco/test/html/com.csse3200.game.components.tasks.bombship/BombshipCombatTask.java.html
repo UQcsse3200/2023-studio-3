@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BombshipCombatTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bombship</a> &gt; <span class="el_source">BombshipCombatTask.java</span></div><h1>BombshipCombatTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bombship;
+
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+
+import java.util.ArrayList;
+
+/**
+ * The AI Task for the Engineer entity. The Engineer will scan for targets within its detection range
+ * and trigger events to change its state accordingly. This task must be called once the Engineer has
+ * appropiately moved into position.
+ */
+public class BombshipCombatTask extends DefaultTask implements PriorityTask {
+
+    private static final int INTERVAL = 1; // The time interval for each target scan from the Engineer.
+    private static final int PRIORITY = 3; // Default priority of the combat task when mobs are in range.
+    private static final short TARGET1 = PhysicsLayer.BOSS; // The type of targets that the Engineer will detect.
+    private static final short TARGET2 = PhysicsLayer.XENO;
+
+    // Animation event names for the Engineer's state machine.
+    private static final String START = &quot;start&quot;;
+    private static final String IDLE = &quot;idle&quot;;
+    private static final String DESTROY = &quot;destroy&quot;;
+
+    // The Engineer's attributes.
+    private final float maxRange; // The maximum range of the bombship.
+
+<span class="nc" id="L38">    private Vector2 bombShipPosition = new Vector2(0, 0); // Placeholder value for the Bombship's position.</span>
+<span class="nc" id="L39">    private final Vector2 maxRangePosition = new Vector2();</span>
+    private PhysicsEngine physics;
+    private GameTime timeSource;
+    private long endTime;
+    private long reloadTime;
+/**
+    private ArrayList&lt;RaycastHit&gt; hits = new ArrayList&lt;&gt;();
+    private final RaycastHit hit = new RaycastHit();
+    private ArrayList&lt;Vector2&gt; targets = new ArrayList&lt;&gt;();
+*/
+    /** The Engineer's states. */
+<span class="nc" id="L50">    private enum STATE {</span>
+<span class="nc" id="L51">        IDLE, START , DESTROY</span>
+    }
+<span class="nc" id="L53">    private STATE bombshipState = STATE.IDLE;</span>
+
+<span class="nc" id="L55">    public BombshipCombatTask(float maxRange) {</span>
+<span class="nc" id="L56">        this.maxRange = maxRange;</span>
+<span class="nc" id="L57">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="nc" id="L58">        timeSource = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L59">    }</span>
+
+    /**
+     * Runs the task and triggers Bombship's idle animation.
+     */
+    @Override
+    public void start() {
+<span class="nc" id="L66">        super.start();</span>
+<span class="nc" id="L67">        this.bombShipPosition = owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L68">        this.maxRangePosition.set(bombShipPosition.x + maxRange, bombShipPosition.y);</span>
+        // Default to idle mode
+<span class="nc" id="L70">        owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L71">        endTime = timeSource.getTime() + (INTERVAL * 500);</span>
+<span class="nc" id="L72">    }</span>
+
+    /**
+     * The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().
+     * triggers events depending on the presence or otherwise of targets in the detection range
+     */
+    @Override
+    public void update() {
+<span class="nc bnc" id="L80" title="All 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L81">            updateBombshipState();</span>
+<span class="nc" id="L82">            endTime = timeSource.getTime() + (INTERVAL * 1000);</span>
+        }
+<span class="nc" id="L84">    }</span>
+
+    /**
+     * Bombship state machine
+     */
+    public void updateBombshipState() {
+        // configure engineer state depending on target visibility
+<span class="nc bnc" id="L91" title="All 4 branches missed.">        switch (bombshipState) {</span>
+            case IDLE -&gt; {
+                // targets detected in idle mode - start deployment
+<span class="nc bnc" id="L94" title="All 2 branches missed.">                if (isEngineerDied()) {</span>
+<span class="nc" id="L95">                    combatState();</span>
+                }
+            }
+            case START -&gt; {
+                // targets gone - stop firing
+<span class="nc bnc" id="L100" title="All 2 branches missed.">                if (!isEngineerDied()) {</span>
+<span class="nc" id="L101">                    owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L102">                    bombshipState = STATE.IDLE;</span>
+                } else {
+<span class="nc" id="L104">                    owner.getEntity().getEvents().trigger(START);</span>
+                }
+<span class="nc" id="L106">            }</span>
+            case DESTROY -&gt; {
+<span class="nc" id="L108">                owner.getEntity().getEvents().trigger(DESTROY);</span>
+            }
+        }
+<span class="nc" id="L111">    }</span>
+
+    /**
+     * Puts the BombshipCombatTask state into combat mode
+     */
+    private void combatState() {
+<span class="nc" id="L117">        owner.getEntity().getEvents().trigger(START);</span>
+<span class="nc" id="L118">        bombshipState = STATE.START;</span>
+<span class="nc" id="L119">    }</span>
+    /**
+     * For stopping the running task
+     */
+    @Override
+    public void stop() {
+<span class="nc" id="L125">        super.stop();</span>
+<span class="nc" id="L126">    }</span>
+
+    /**
+     * Simplified getPriority function, returns the priority of the task
+     * @return priority as an integer value. If mobs are visible, return the current priority, otherwise return 0.
+     */
+    @Override
+    public int getPriority() {
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        return isEngineerDied() ? PRIORITY : 0;</span>
+    }
+
+    /**
+     * Uses a raycast to determine whether there are any targets in detection range. Performs multiple raycasts
+     * to a range of points at x = engineer.x + maxRange, and a range of y values above and below current y position.
+     * Allows the bombship entity to detect mobs in adjacent lanes.
+     * @return true if a target is detected, false otherwise
+     */
+    public boolean isEngineerDied() {
+        //if (engineerCount &lt; maxEngineers) {
+<span class="nc" id="L145">            return true;</span>
+        //}
+    }
+
+    /**
+     * Fetches the nearest target from the array of detected target positions created during the last call of
+     * this could be done in the next sprint , the scan doesnt work as of now !
+     * @return a Vector2 position of the nearest mob detected.
+     */
+   /** public Vector2 fetchTarget() {
+        // Initial nearest position for comparison
+        int lowest = 10;
+
+        Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
+                owner.getEntity().getCenterPosition().y);
+
+        // Find the nearest target from the array of targets
+        for (Vector2 tgt : targets){
+            if (Math.abs(tgt.y - nearest.y) &lt; lowest) {
+                lowest = (int)Math.abs(tgt.y - nearest.y);
+                nearest = tgt;
+            }
+        }
+        return nearest;
+    }
+    */
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurrencyTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">CurrencyTask.java</span></div><h1>CurrencyTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.currency.Scrap;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The CurrencyTask updates the in-game currency based on time intervals.
+ */
+public class CurrencyTask extends DefaultTask implements PriorityTask {
+<span class="fc" id="L16">    private static final Logger logger = LoggerFactory.getLogger(CurrencyTask.class);</span>
+    private final int priority;  // The active priority this task will have
+    private final GameTime timeSource;
+    private long endTime;
+    private int interval;
+<span class="fc" id="L21">    private final Scrap scrap = new Scrap(); // currency to update</span>
+<span class="fc" id="L22">    private final int currencyAmount = scrap.getAmount(); // amount of currency to update</span>
+    private static final String IDLE = &quot;idleStartEco&quot;;
+    private static final String MOVE = &quot;moveStartEco&quot;;
+
+    /**
+     * @param priority Task priority for currency updates. Must be a positive integer.
+     */
+<span class="fc" id="L29">    public CurrencyTask(int priority, int interval) {</span>
+<span class="fc" id="L30">        this.priority = priority;</span>
+<span class="fc" id="L31">        this.interval = interval;</span>
+<span class="fc" id="L32">        this.timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L33">    }</span>
+
+
+    /**
+     * Starts the Task running and initializes currency-related variables.
+     */
+    @Override
+    public void start() {
+<span class="fc" id="L41">        super.start();</span>
+<span class="fc" id="L42">        owner.getEntity().getEvents().addListener(&quot;addIncome&quot;,this::changeInterval);</span>
+<span class="fc" id="L43">        endTime = timeSource.getTime() + (30 * 1000L);</span>
+<span class="fc" id="L44">        owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().
+     * Updates the currency based on time intervals.
+     */
+
+    @Override
+    public void update() {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+<span class="nc" id="L55">            owner.getEntity().getEvents().trigger(MOVE);</span>
+<span class="nc" id="L56">            updateCurrency(); // update currency</span>
+<span class="nc" id="L57">            logger.info(String.format(&quot;Interval: %d&quot;, interval));</span>
+<span class="nc" id="L58">            endTime = timeSource.getTime() + (interval * 1000L); // reset end time</span>
+
+        }
+<span class="nc" id="L61">    }</span>
+
+    /**
+     * Updates the currency based on time intervals.
+     */
+    public void updateCurrency() {
+        //logger.info(&quot;Updating currency&quot;);
+<span class="nc" id="L68">        ServiceLocator.getCurrencyService().getScrap().modify(currencyAmount/2);</span>
+
+<span class="nc" id="L70">        Vector2 coordinates = this.owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L71">        ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(coordinates.x, coordinates.y, currencyAmount/2, 25);</span>
+
+<span class="nc" id="L73">        ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats(); // update currency display</span>
+
+<span class="nc" id="L75">    }</span>
+
+    /**
+     * For stopping the running task
+     */
+    @Override
+    public void stop() {
+<span class="nc" id="L82">        super.stop();</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Returns the current priority of the task.
+     * @return active priority value
+     */
+    @Override
+    public int getPriority() {
+<span class="nc" id="L91">        return priority;</span>
+    }
+
+    public void changeInterval(int newInterval) {
+<span class="fc" id="L95">        interval = newInterval;</span>
+<span class="fc" id="L96">        logger.info(&quot;Interval changed to: &quot; + interval);</span>
+<span class="fc" id="L97">    }</span>
+
+    public void setInterval(int interval) {
+<span class="nc" id="L100">        this.interval = interval;</span>
+<span class="nc" id="L101">    }</span>
+
+    public int getInterval() {
+<span class="fc" id="L104">        return interval;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

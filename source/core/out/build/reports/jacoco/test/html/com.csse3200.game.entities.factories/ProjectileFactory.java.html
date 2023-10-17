@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProjectileFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">ProjectileFactory.java</span></div><h1>ProjectileFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.csse3200.game.components.*;
+import com.csse3200.game.components.MobProjectileAnimationController;
+import com.csse3200.game.components.tasks.TrajectTask;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.projectile.*;
+import com.csse3200.game.entities.configs.BaseEntityConfig;
+import com.csse3200.game.entities.configs.NPCConfigs;
+import com.csse3200.game.files.FileLoader;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.badlogic.gdx.math.Vector2;
+
+/**
+ * Responsible for creating projectiles within the game.
+ */
+public class ProjectileFactory {
+  /**
+   * Animation constants
+   */
+  private static final String BASE_PROJECTILE_ATLAS = &quot;images/projectiles/basic_projectile.atlas&quot;;
+  private static final String START_ANIM = &quot;projectile&quot;;
+  private static final String FINAL_ANIM = &quot;projectileFinal&quot;;
+  private static final float START_SPEED = 0.1f;
+  private static final float FINAL_SPEED = 0.1f;
+
+<span class="fc" id="L37">  private static final NPCConfigs configs =</span>
+<span class="fc" id="L38">          FileLoader.readClass(NPCConfigs.class, &quot;configs/NPCs.json&quot;);</span>
+
+  /**
+   * Creates a single-targeting projectile with specified effect
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed       The speed of the projectile.
+   * @param effect      Specified effect from the ProjectileEffects enums
+   * @return Returns a new single-target projectile entity
+   */
+  public static Entity createEffectProjectile(short targetLayer, Vector2 destination, Vector2 speed, ProjectileEffects effect, boolean aoe) {
+<span class="fc" id="L50">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="pc bpc" id="L52" title="2 of 5 branches missed.">    switch (effect) {</span>
+      case FIREBALL -&gt; {
+<span class="nc" id="L54">        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.FIREBALL, aoe));</span>
+<span class="nc" id="L55">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="nc" id="L57">                        ServiceLocator.getResourceService()</span>
+<span class="nc" id="L58">                                .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));</span>
+<span class="nc" id="L59">        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L60">        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L61">		animator.addAnimation(&quot;projectileCollide&quot;, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L62">        projectile</span>
+<span class="nc" id="L63">                .addComponent(animator)</span>
+<span class="nc" id="L64">                .addComponent(new ProjectileAnimationController());</span>
+<span class="nc" id="L65">      }</span>
+      case BURN -&gt; {
+<span class="fc" id="L67">        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));</span>
+<span class="fc" id="L68">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L70">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L71">                                .getAsset(&quot;images/projectiles/burn_effect.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L72">        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L73">        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L75">        projectile</span>
+<span class="fc" id="L76">                .addComponent(animator)</span>
+<span class="fc" id="L77">                .addComponent(new BurnEffectProjectileAnimationController());</span>
+<span class="fc" id="L78">      }</span>
+      case SLOW -&gt; {
+<span class="fc" id="L80">        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));</span>
+<span class="fc" id="L81">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L83">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L84">                                .getAsset(&quot;images/projectiles/snow_ball.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L85">        animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L86">        animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L87">		animator.addAnimation(&quot;collision&quot;, START_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L89">        projectile</span>
+<span class="fc" id="L90">                .addComponent(animator)</span>
+<span class="fc" id="L91">                .addComponent(new SnowBallProjectileAnimationController());</span>
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+<span class="fc" id="L96">        return projectile;</span>
+      }
+      case STUN -&gt; {
+<span class="fc" id="L99">        projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.STUN, aoe));</span>
+<span class="fc" id="L100">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L102">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L103">                                .getAsset(&quot;images/projectiles/stun_effect.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L104">        animator.addAnimation(START_ANIM, 0.1f, Animation.PlayMode.LOOP);</span>
+
+<span class="fc" id="L106">        projectile</span>
+<span class="fc" id="L107">                .addComponent(animator)</span>
+<span class="fc" id="L108">                .addComponent(new StunEffectProjectileAnimationController());</span>
+      }
+    }
+<span class="fc" id="L111">    return projectile;</span>
+  }
+
+  /**
+   * Create a pierce fireball.
+   * Pierce fireball is basically a fireball that does damage but won't self destruct on hit.
+   */
+  public static Entity createPierceFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="nc" id="L119">    Entity fireBall = createPierceBallAnim(targetLayer, destination, speed);</span>
+<span class="nc" id="L120">    fireBall.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);</span>
+<span class="nc" id="L121">    fireBall.getComponent(TouchAttackComponent.class).setKnockBack(0f);</span>
+
+<span class="nc" id="L123">    return fireBall;</span>
+  }
+
+  /**
+   * Create a ricochet fireball.
+   * Ricochet fireball bounces off specified targets while applying intended effects i.e. damage
+   */
+  public static Entity createRicochetFireball(short targetLayer, Vector2 destination, Vector2 speed, int bounceCount) {
+<span class="fc" id="L131">    Entity fireBall = createFireBall(targetLayer, destination, speed);</span>
+<span class="fc" id="L132">    fireBall</span>
+<span class="fc" id="L133">            .addComponent(new RicochetComponent(targetLayer, bounceCount));</span>
+
+<span class="fc" id="L135">    setColliderSize(fireBall, (float) 0.1, (float) 0.1);</span>
+
+<span class="fc" id="L137">    return fireBall;</span>
+  }
+
+  public static Entity createSplitFireWorksFireball(short targetLayer, Vector2 destination, Vector2 speed, int amount) {
+<span class="fc" id="L141">    Entity fireBall = createFireBall(targetLayer, destination, speed);</span>
+<span class="fc" id="L142">    fireBall</span>
+<span class="fc" id="L143">            .addComponent(new SplitFireworksComponent(targetLayer, amount));</span>
+
+<span class="fc" id="L145">    return fireBall;</span>
+  }
+
+  /**
+   * Creates a fireball Entity.
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed       The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createFireBall(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="fc" id="L157">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="fc" id="L159">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="fc" id="L161">                    ServiceLocator.getResourceService()</span>
+<span class="fc" id="L162">                            .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));</span>
+<span class="fc" id="L163">    animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L164">    animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L165">	animator.addAnimation(&quot;projectileCollide&quot;, START_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L167">    projectile</span>
+<span class="fc" id="L168">            .addComponent(animator)</span>
+<span class="fc" id="L169">            .addComponent(new ProjectileAnimationController());</span>
+    // * TEMPORARY
+    // .addComponent(new DeleteOnMapEdgeComponent());
+    // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+<span class="fc" id="L174">    return projectile;</span>
+  }
+
+  /**
+   * Creates new animation and fireballs for SplitFireworkComponent.
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed       The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createFireworks(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="fc" id="L186">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="fc" id="L188">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="fc" id="L190">                    ServiceLocator.getResourceService()</span>
+<span class="fc" id="L191">                            .getAsset(&quot;images/projectiles/firework_anim.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L192">    animator.addAnimation(START_ANIM, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L193">    projectile</span>
+<span class="fc" id="L194">            .addComponent(animator)</span>
+<span class="fc" id="L195">            .addComponent(new FireworkAnimationController());</span>
+
+<span class="fc" id="L197">    return projectile;</span>
+  }
+
+  public static Entity createPierceBallAnim(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="nc" id="L201">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="nc" id="L203">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="nc" id="L205">                    ServiceLocator.getResourceService()</span>
+<span class="nc" id="L206">                            .getAsset(&quot;images/projectiles/pierce_anim.atlas&quot;, TextureAtlas.class));</span>
+<span class="nc" id="L207">    animator.addAnimation(START_ANIM, 0.05f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L208">    projectile</span>
+<span class="nc" id="L209">            .addComponent(animator)</span>
+<span class="nc" id="L210">            .addComponent(new PierceProjectileAnimationController());</span>
+
+<span class="nc" id="L212">    return projectile;</span>
+  }
+
+
+  /**
+   * Creates a engineer bullet
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createEngineerBullet(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="fc" id="L225">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="fc" id="L227">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="fc" id="L229">                    ServiceLocator.getResourceService()</span>
+<span class="fc" id="L230">                            .getAsset(&quot;images/projectiles/engineer_projectile.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L231">    animator.addAnimation(&quot;bullet&quot;, START_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L232">    animator.addAnimation(&quot;bulletFinal&quot;, FINAL_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L233">    animator.addAnimation(&quot;bulletCollide&quot;, START_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L235">    projectile</span>
+<span class="fc" id="L236">        .addComponent(animator)</span>
+<span class="fc" id="L237">        .addComponent(new EngineerBulletsAnimationController());</span>
+        // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
+
+<span class="fc" id="L240">    return projectile;</span>
+  }
+  
+  /**
+   * Creates a projectile specifically for mobs to shoot
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createMobBall(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="fc" id="L252">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="fc" id="L254">    AnimationRenderComponent animator = </span>
+      new AnimationRenderComponent(
+<span class="fc" id="L256">        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L257">          .getAsset(&quot;images/projectiles/mobProjectile.atlas&quot;, TextureAtlas.class));</span>
+
+<span class="fc" id="L259">      animator.addAnimation(&quot;rotate&quot;, 0.15f, Animation.PlayMode.LOOP);</span>
+
+<span class="fc" id="L261">    projectile</span>
+<span class="fc" id="L262">        .addComponent(animator)</span>
+<span class="fc" id="L263">        .addComponent(new MobProjectileAnimationController());</span>
+        // * TEMPORARY
+        // .addComponent(new DeleteOnMapEdgeComponent());
+
+<span class="fc" id="L267">    projectile</span>
+<span class="fc" id="L268">        .getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+
+
+
+<span class="fc" id="L272">    return projectile;</span>
+  }
+  public static Entity createBossBall(short targetLayer, Vector2 destination, Vector2 speed) {  // function added by team 7 for Boss projectile
+<span class="nc" id="L275">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="nc" id="L277">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="nc" id="L279">                    ServiceLocator.getResourceService()</span>
+<span class="nc" id="L280">                            .getAsset(&quot;images/projectiles/bossProjectile.atlas&quot;, TextureAtlas.class));</span>
+
+<span class="nc" id="L282">    animator.addAnimation(&quot;rotate&quot;, 0.15f, Animation.PlayMode.LOOP);</span>
+
+<span class="nc" id="L284">    projectile</span>
+<span class="nc" id="L285">            .addComponent(animator)</span>
+<span class="nc" id="L286">            .addComponent(new BossProjectileAnimationController());</span>
+
+<span class="nc" id="L288">    projectile</span>
+<span class="nc" id="L289">            .getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L290">    projectile.setScale(2,2);</span>
+
+<span class="nc" id="L292">    return projectile;</span>
+  }
+
+  /**
+   * Creates a projectile to be used by the MobBoss
+   *
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a new fireball projectile entity.
+   */
+  public static Entity createMobBossBall(short targetLayer, Vector2 destination, Vector2 speed) {
+<span class="fc" id="L304">    Entity projectile = createBaseProjectile(targetLayer, destination, speed);</span>
+
+<span class="fc" id="L306">    AnimationRenderComponent animator =</span>
+            new AnimationRenderComponent(
+<span class="fc" id="L308">                    ServiceLocator.getResourceService()</span>
+<span class="fc" id="L309">                            .getAsset(&quot;images/projectiles/mobBoss_projectile.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L310">    animator.addAnimation(&quot;mob_boss&quot;, 0.17f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L311">    animator.addAnimation(&quot;mob_bossFinal&quot;, 0.17f, Animation.PlayMode.NORMAL);</span>
+
+
+<span class="fc" id="L314">    projectile</span>
+<span class="fc" id="L315">            .addComponent(animator)</span>
+<span class="fc" id="L316">            .addComponent(new MobBossProjectAnimController());</span>
+
+<span class="fc" id="L318">    projectile</span>
+<span class="fc" id="L319">            .getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+
+<span class="fc" id="L321">    return projectile;</span>
+  }
+
+  /**
+   * Creates a generic projectile entity that can be used for multiple types of * projectiles.
+   * 
+   * @param targetLayer The enemy layer that the projectile collides with.
+   * @param destination The destination the projectile heads towards.
+   * @param speed The speed of the projectile.
+   * @return Returns a generic projectile entity.
+   */
+  public static Entity createBaseProjectile(short targetLayer, Vector2
+  destination, Vector2 speed) {
+<span class="fc" id="L334">    BaseEntityConfig config = configs.fireBall;</span>
+
+<span class="fc" id="L336">    AITaskComponent aiComponent =</span>
+        new AITaskComponent()
+<span class="fc" id="L338">            .addTask(new TrajectTask(destination));</span>
+    
+<span class="fc" id="L340">    Entity projectile = new Entity()</span>
+<span class="fc" id="L341">        .addComponent(new PhysicsComponent())</span>
+<span class="fc" id="L342">        .addComponent(new PhysicsMovementComponent())</span>
+<span class="fc" id="L343">        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.PROJECTILE))</span>
+<span class="fc" id="L344">        .addComponent(aiComponent)</span>
+<span class="fc" id="L345">        .addComponent(new ColliderComponent().setSensor(true))</span>
+        // This is the component that allows the projectile to damage a
+        // specified target.
+        // Original knockback value: 1.5f
+<span class="fc" id="L349">        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))</span>
+<span class="fc" id="L350">        .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+        // *TEMPORARY
+<span class="fc" id="L352">        .addComponent(new DeleteOnMapEdgeComponent());</span>
+
+<span class="fc" id="L354">        projectile</span>
+<span class="fc" id="L355">        .getComponent(PhysicsMovementComponent.class).setSpeed(speed);</span>
+
+<span class="fc" id="L357">    return projectile;</span>
+  }
+
+  /**
+   * Sets the projectile collider so that the collider size can be altered for flexibility.
+   * @param projectile Projectile's size collider to be scaled upon.
+   * @param x Horizontal scaling of the collider in respect ot the size of the entity
+   * @param y Veritcal scaling of the collider in respect to the size of the entity
+   */
+  public static void setColliderSize(Entity projectile, float x, float y) {
+<span class="fc" id="L367">    PhysicsUtils.setScaledCollider(projectile, x, y);</span>
+<span class="fc" id="L368">  }</span>
+
+  /**
+   * Prevents the creation of a Projectile Factory entity being created
+   */
+<span class="nc" id="L373">  private ProjectileFactory() {</span>
+<span class="nc" id="L374">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

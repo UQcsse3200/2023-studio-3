@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.input.InputFactoryTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:44" hostname="DESKTOP-F4ACIG8" time="0.011">
+  <properties/>
+  <testcase name="shouldGiveKeyboardFactoryType()" classname="com.csse3200.game.input.InputFactoryTest" time="0.004"/>
+  <testcase name="shouldGiveNoFactory()" classname="com.csse3200.game.input.InputFactoryTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:44 PM com.csse3200.game.input.InputFactory createFromInputType
+SEVERE: Null is not a valid input type
+]]></system-err>
+</testsuite>

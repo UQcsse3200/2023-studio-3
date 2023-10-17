@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">SettingsScreen.java</span></div><h1>SettingsScreen.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.settingsmenu.SettingsMenuDisplay;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.InputDecorator;
+import com.csse3200.game.input.InputService;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/** The game screen containing the settings. */
+public class SettingsScreen extends ScreenAdapter {
+<span class="nc" id="L26">  private static final Logger logger = LoggerFactory.getLogger(SettingsScreen.class);</span>
+
+  private final GdxGame game;
+  private final Renderer renderer;
+  private Texture backgroundTexture;
+  private final SpriteBatch batch;
+<span class="nc" id="L32">  private static final String[] SettingsTextures = {&quot;images/background/settings/settings_bg.png&quot;};</span>
+
+<span class="nc" id="L34">  public SettingsScreen(GdxGame game) {</span>
+<span class="nc" id="L35">    this.game = game;</span>
+<span class="nc" id="L36">    this.batch = new SpriteBatch();</span>
+<span class="nc" id="L37">    backgroundTexture = new Texture(&quot;images/background/settings/settings_bg.png&quot;);</span>
+
+<span class="nc" id="L39">    logger.debug(&quot;Initialising settings screen services&quot;);</span>
+<span class="nc" id="L40">    ServiceLocator.registerInputService(new InputService());</span>
+<span class="nc" id="L41">    ServiceLocator.registerResourceService(new ResourceService());</span>
+<span class="nc" id="L42">    ServiceLocator.registerEntityService(new EntityService());</span>
+<span class="nc" id="L43">    ServiceLocator.registerRenderService(new RenderService());</span>
+<span class="nc" id="L44">    ServiceLocator.registerTimeSource(new GameTime());</span>
+
+<span class="nc" id="L46">    renderer = RenderFactory.createRenderer();</span>
+<span class="nc" id="L47">    renderer.getCamera().getEntity().setPosition(5f, 5f);</span>
+
+<span class="nc" id="L49">    loadAssets();</span>
+<span class="nc" id="L50">    createUI();</span>
+<span class="nc" id="L51">  }</span>
+
+  /**
+   * Renders the main gameplay screen.
+   *
+   * @param delta The time elapsed since the last frame in seconds.
+   */
+  @Override
+  public void render(float delta) {
+<span class="nc" id="L60">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L61">    ServiceLocator.getEntityService().update();</span>
+
+    // Render the background
+<span class="nc" id="L64">    float screenWidth = Gdx.graphics.getWidth();</span>
+<span class="nc" id="L65">    float screenHeight = Gdx.graphics.getHeight();</span>
+
+<span class="nc" id="L67">    batch.begin();</span>
+<span class="nc" id="L68">    batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);</span>
+<span class="nc" id="L69">    batch.end();</span>
+
+<span class="nc" id="L71">    renderer.render();</span>
+<span class="nc" id="L72">  }</span>
+
+  /**
+   * Called when the game window is resized.
+   *
+   * @param width  The new width of the window.
+   * @param height The new height of the window.
+   */
+  @Override
+  public void resize(int width, int height) {
+<span class="nc" id="L82">    renderer.resize(width, height);</span>
+    // Add the below line to update the stage's viewport
+<span class="nc" id="L84">    ServiceLocator.getRenderService().getStage().getViewport().update(width, height, true);</span>
+<span class="nc" id="L85">    logger.trace(&quot;Resized renderer: ({} x {})&quot;, width, height);</span>
+<span class="nc" id="L86">    renderer.resize(width, height);</span>
+<span class="nc" id="L87">  }</span>
+
+  /**
+   * Disposes of resources and services associated with the main menu screen.
+   * This method performs cleanup tasks such as disposing of the renderer, unloading assets, disposing of the render service,
+   * disposing of the entity service, disposing of the batch, and clearing the service locator.
+   */
+  @Override
+  public void dispose() {
+<span class="nc" id="L96">    logger.debug(&quot;Disposing main menu screen&quot;);</span>
+<span class="nc" id="L97">    renderer.dispose();</span>
+<span class="nc" id="L98">    unloadAssets();</span>
+<span class="nc" id="L99">    ServiceLocator.getRenderService().dispose();</span>
+<span class="nc" id="L100">    ServiceLocator.getEntityService().dispose();</span>
+<span class="nc" id="L101">    batch.dispose();</span>
+
+<span class="nc" id="L103">    ServiceLocator.clear();</span>
+<span class="nc" id="L104">  }</span>
+
+  /**
+   * Loads the assets required for the settings screen.
+   * This method initializes and loads textures, including the background texture and any other assets specified in SettingsTextures.
+   */
+  private void loadAssets() {
+<span class="nc" id="L111">    logger.debug(&quot;Loading assets&quot;);</span>
+<span class="nc" id="L112">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L113">    resourceService.loadTextures(SettingsTextures);</span>
+<span class="nc" id="L114">    backgroundTexture = new Texture(&quot;images/background/settings/settings_bg.png&quot;);</span>
+<span class="nc" id="L115">    ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L116">  }</span>
+
+  /**
+   * Unloads the assets that were previously loaded for the settings screen.
+   * This method disposes of textures and assets specified in SettingsTextures to release resources.
+   */
+  private void unloadAssets() {
+<span class="nc" id="L123">    logger.debug(&quot;Unloading assets&quot;);</span>
+<span class="nc" id="L124">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L125">    resourceService.unloadAssets(SettingsTextures);</span>
+<span class="nc" id="L126">  }</span>
+
+  /**
+   * Creates the setting screen's ui including components for rendering ui elements to the screen
+   * and capturing and handling ui input.
+   */
+  private void createUI() {
+<span class="nc" id="L133">    logger.debug(&quot;Creating ui&quot;);</span>
+<span class="nc" id="L134">    Stage stage = ServiceLocator.getRenderService().getStage();</span>
+<span class="nc" id="L135">    Entity ui = new Entity();</span>
+<span class="nc" id="L136">    ui.addComponent(new SettingsMenuDisplay(game)).addComponent(new InputDecorator(stage, 10));</span>
+<span class="nc" id="L137">    ServiceLocator.getEntityService().register(ui);</span>
+<span class="nc" id="L138">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

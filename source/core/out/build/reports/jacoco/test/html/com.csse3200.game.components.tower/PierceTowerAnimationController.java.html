@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PierceTowerAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">PierceTowerAnimationController.java</span></div><h1>PierceTowerAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+
+/**
+ * Listens to triggers phrases and executes the required animations.
+ */
+<span class="nc" id="L9">public class PierceTowerAnimationController extends Component {</span>
+    //Event name constants
+    private static final String IDLE = &quot;startIdle&quot;;
+    private static final String ATTACK = &quot;startAttack&quot;;
+    private static final String DEATH = &quot;startDeath&quot;;
+    private static final String ALERT = &quot;startAlert&quot;;
+    //animation name constants
+    private static final String IDLE_ANIM = &quot;Idle&quot;;
+    private static final String ATTACK_ANIM = &quot;Attack&quot;;
+    private static final String DEATH_ANIM = &quot;Death&quot;;
+    private static final String ALERT_ANIM = &quot;Warning&quot;;
+
+    //further sounds can be added for the tower attacks/movement
+
+    AnimationRenderComponent animator;
+
+    /**
+     * Creation method for StunTowerAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations.
+     */
+    @Override
+    public void create() {
+<span class="nc" id="L31">        super.create();</span>
+<span class="nc" id="L32">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L33">        entity.getEvents().addListener(IDLE, this::animateIdle);</span>
+<span class="nc" id="L34">        entity.getEvents().addListener(ATTACK, this::animateAttack);</span>
+<span class="nc" id="L35">        entity.getEvents().addListener(DEATH, this::animateDeath);</span>
+<span class="nc" id="L36">        entity .getEvents().addListener(ALERT,this::animateAlert);</span>
+<span class="nc" id="L37">    }</span>
+
+    /**
+     * Starts the idle animation
+     */
+    void animateIdle() {
+<span class="nc" id="L43">        animator.startAnimation(IDLE_ANIM);</span>
+<span class="nc" id="L44">    }</span>
+
+    /**
+     * starts the attack animation
+     */
+    void animateAttack() {
+<span class="nc" id="L50">        animator.startAnimation(ATTACK_ANIM);</span>
+<span class="nc" id="L51">    }</span>
+
+    /**
+     * starts the death animation
+     */
+    void animateDeath() {
+<span class="nc" id="L57">        animator.startAnimation(DEATH_ANIM);</span>
+<span class="nc" id="L58">    }</span>
+
+    /**
+     * starts the alert animation when enemy in range
+     */
+    void animateAlert() {
+<span class="nc" id="L64">        animator.startAnimation(ALERT_ANIM);</span>
+<span class="nc" id="L65">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

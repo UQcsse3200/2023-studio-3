@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MobAttackTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">MobAttackTask.java</span></div><h1>MobAttackTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Task that allows mobs to shoot projectiles or melee attack towers
+ */
+public class MobAttackTask extends DefaultTask implements PriorityTask {
+  private static final int INTERVAL = 1; // time interval to scan for towers in
+  private static final short TARGET = PhysicsLayer.HUMANS; // mobs detecting for towers
+  // ^ fix this
+
+  private static final String STOW = &quot;wanderStart&quot;;
+  private static final String DEPLOY = &quot;deployStart&quot;;
+  private static final String FIRING = &quot;shootStart&quot;;
+  private static final String IDLE = &quot;stop&quot;;
+
+  private Fixture target;
+
+  private final int priority;
+  private final float maxRange;
+<span class="nc" id="L37">  private Vector2 mobPosition = new Vector2(10f,10f);</span>
+<span class="nc" id="L38">  private final Vector2 maxRangePosition = new Vector2();</span>
+  private final PhysicsEngine physics;
+  private GameTime timeSource;
+  private long endTime;
+<span class="nc" id="L42">  private final RaycastHit hit = new RaycastHit();</span>
+
+<span class="nc" id="L44">  private final long delay = 1000; // delay between shots</span>
+  private long startTime;
+
+<span class="nc" id="L47">  private enum STATE {</span>
+<span class="nc" id="L48">    IDLE, DEPLOY, FIRING, STOW</span>
+  }
+
+<span class="nc" id="L51">  private STATE mobState = STATE.IDLE;</span>
+
+  /**
+   * @param priority Task priority when targets are detected (0 when nothing detected). Must be a positive integer.
+   * @param maxRange Maximum effective range of the weapon mob. This determines the detection distance of targets
+   */
+<span class="nc" id="L57">  public MobAttackTask(int priority, float maxRange) {</span>
+<span class="nc" id="L58">    this.priority = priority;</span>
+<span class="nc" id="L59">    this.maxRange = maxRange;</span>
+<span class="nc" id="L60">    startTime = 0;</span>
+
+<span class="nc" id="L62">    physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="nc" id="L63">    timeSource = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L64">  }</span>
+
+  /**
+   * Starts the task running, triggers the initial &quot;idleStart&quot; event.
+   */
+  @Override
+  public void start() {
+<span class="nc" id="L71">    super.start();</span>
+<span class="nc" id="L72">    startTime = timeSource.getTime();</span>
+<span class="nc" id="L73">    this.mobPosition = owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L74">    this.maxRangePosition.set(0, mobPosition.y);</span>
+    //owner.getEntity().getEvents().trigger(IDLE);
+<span class="nc" id="L76">    endTime = timeSource.getTime() + (INTERVAL * 500);</span>
+//    owner.getEntity().getEvents().trigger(&quot;shootStart&quot;);
+<span class="nc" id="L78">  }</span>
+
+  /**
+   * The update method is what is run every time the TaskRunner in the AiTaskComponent calls update().
+   * Triggers events depending on the presence or otherwise of targets in the detection range
+   */
+  @Override
+  public void update() {
+<span class="nc" id="L86">    updateMobState();</span>
+
+<span class="nc bnc" id="L88" title="All 2 branches missed.">    if (mobState == STATE.STOW) {</span>
+<span class="nc" id="L89">      status = Status.FINISHED;</span>
+    }
+<span class="nc" id="L91">  }</span>
+
+  /**
+   * Mob state machine. Updates mob state by scanning for towers, and
+   * triggers the appropriate events corresponding to the STATE enum.
+   */
+  public void updateMobState() {
+<span class="nc bnc" id="L98" title="All 5 branches missed.">    switch (mobState) {</span>
+
+      case IDLE -&gt; {
+<span class="nc bnc" id="L101" title="All 2 branches missed.">        if (isTargetVisible()) {</span>
+          // targets detected in idle mode - start deployment
+<span class="nc" id="L103">          owner.getEntity().getEvents().trigger(DEPLOY);</span>
+<span class="nc" id="L104">          mobState = STATE.DEPLOY;</span>
+        }
+      }
+
+      case DEPLOY -&gt; {
+        // currently deploying,
+<span class="nc bnc" id="L110" title="All 4 branches missed.">        if (isTargetVisible() || this.meleeOrProjectile() != null) {</span>
+<span class="nc" id="L111">          owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(false);</span>
+<span class="nc" id="L112">          this.owner.getEntity().getEvents().trigger(FIRING);</span>
+<span class="nc" id="L113">          mobState = STATE.FIRING;</span>
+        } else {
+<span class="nc" id="L115">          this.owner.getEntity().getEvents().trigger(STOW);</span>
+<span class="nc" id="L116">          mobState = STATE.STOW;</span>
+        }
+<span class="nc" id="L118">      }</span>
+
+      case FIRING -&gt; {
+        // targets gone or cannot be attacked - stop firing
+<span class="nc bnc" id="L122" title="All 4 branches missed.">        if (!isTargetVisible() || this.meleeOrProjectile() == null) {</span>
+<span class="nc" id="L123">          this.owner.getEntity().getEvents().trigger(STOW);</span>
+<span class="nc" id="L124">          mobState = STATE.STOW;</span>
+        } else {
+<span class="nc bnc" id="L126" title="All 2 branches missed.">          if (this.meleeOrProjectile() instanceof Melee) {</span>
+<span class="nc" id="L127">            TouchAttackComponent attackComp = owner.getEntity().getComponent(TouchAttackComponent.class);</span>
+<span class="nc" id="L128">            HitboxComponent hitboxComp = owner.getEntity().getComponent(HitboxComponent.class);</span>
+<span class="nc" id="L129">            attackComp.onCollisionStart(hitboxComp.getFixture(), target);</span>
+<span class="nc" id="L130">            this.owner.getEntity().getEvents().trigger(&quot;meleeStart&quot;);</span>
+<span class="nc" id="L131">          } else {</span>
+<span class="nc" id="L132">            Entity newProjectile = ProjectileFactory.createMobBall(PhysicsLayer.HUMANS, new Vector2(0, owner.getEntity().getPosition().y), new Vector2(2f,2f));</span>
+<span class="nc" id="L133">            newProjectile.setPosition((float) (owner.getEntity().getPosition().x), (float) (owner.getEntity().getPosition().y));</span>
+<span class="nc" id="L134">            newProjectile.setScale(-1f, 1f);</span>
+<span class="nc" id="L135">            ServiceLocator.getEntityService().register(newProjectile);</span>
+
+//            System.out.printf(&quot;ANIMATION: &quot; + owner.getEntity().getComponent(AnimationRenderComponent.class).getCurrentAnimation() + &quot;\n&quot;);
+<span class="nc" id="L138">            this.owner.getEntity().getEvents().trigger(FIRING);</span>
+<span class="nc" id="L139">            mobState = STATE.STOW;</span>
+          }
+        }
+<span class="nc" id="L142">        owner.getEntity().getComponent(PhysicsMovementComponent.class).setEnabled(true);</span>
+
+<span class="nc" id="L144">      }</span>
+
+      case STOW -&gt; {
+        // currently stowing
+<span class="nc bnc" id="L148" title="All 2 branches missed.">        if (isTargetVisible()) {</span>
+<span class="nc" id="L149">          owner.getEntity().getEvents().trigger(DEPLOY);</span>
+<span class="nc" id="L150">          mobState = STATE.DEPLOY;</span>
+        } else {
+<span class="nc" id="L152">          owner.getEntity().getEvents().trigger(IDLE);</span>
+<span class="nc" id="L153">          mobState = STATE.IDLE;</span>
+        }
+      }
+    }
+<span class="nc" id="L157">  }</span>
+
+  /**
+   * For stopping the attack task
+   */
+  @Override
+  public void stop() {
+<span class="nc bnc" id="L164" title="All 4 branches missed.">    if (mobState == STATE.FIRING || mobState == STATE.DEPLOY) {</span>
+<span class="nc" id="L165">      this.updateMobState();</span>
+    } else {
+<span class="nc" id="L167">      super.stop();</span>
+<span class="nc" id="L168">      owner.getEntity().getEvents().trigger(STOW);</span>
+    }
+<span class="nc" id="L170">  }</span>
+
+  /**
+   * Returns the current priority of the task.
+   * @return active priority value if targets detected, inactive priority otherwise
+   */
+  @Override
+  public int getPriority() {
+<span class="nc bnc" id="L178" title="All 2 branches missed.">    if (status == Status.ACTIVE) {</span>
+<span class="nc" id="L179">      return getActivePriority();</span>
+    }
+<span class="nc" id="L181">    return getInactivePriority();</span>
+  }
+
+  /**
+   * Fetches the active priority of the Task if a target is visible.
+   * @return (int) active priority if a target is visible, -1 otherwise
+   */
+  private int getActivePriority() {
+<span class="nc bnc" id="L189" title="All 6 branches missed.">     if ((startTime + delay) &lt; timeSource.getTime() &amp;&amp; isTargetVisible() &amp;&amp; this.meleeOrProjectile() != null) {</span>
+<span class="nc" id="L190">       return priority;</span>
+     }
+<span class="nc" id="L192">    return -1;</span>
+  }
+
+  /**
+   * Fetches the inactive priority of the Task if a target is not visible.
+   * @return (int) -1 if a target is not visible, active priority otherwise
+   */
+  private int getInactivePriority() {
+<span class="nc bnc" id="L200" title="All 6 branches missed.">    if ((startTime + delay) &lt; timeSource.getTime() &amp;&amp; isTargetVisible() &amp;&amp; this.meleeOrProjectile() != null) {</span>
+<span class="nc" id="L201">      return priority;</span>
+    }
+<span class="nc" id="L203">    return -1;</span>
+  }
+
+  /**
+   * Uses a raycast to determine whether there are any targets in detection range
+   * @return true if a target is visible, false otherwise
+   */
+  private boolean isTargetVisible() {
+<span class="nc" id="L211">    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);</span>
+<span class="nc" id="L212">    return physics.raycast(owner.getEntity().getPosition(), newVector, TARGET, hit);</span>
+  }
+
+  /**
+   * Uses a custom raycast method to find the closest target to the mob. Based on the distance to the
+   * target, the mob will choose a weapon to attack with.
+   *
+   * If the object does not have a CombatStatsComponent (which handles dealing damage etc), then
+   * the function will return null. If it returns null when the mob is in state FIRING or DEPLOY, it will not fire
+   * and will STOW.
+   *
+   * returns the Weapon (Melee or Projectile) the mob will use to attack the target. null if immune target or no target
+   * */
+  private Weapon meleeOrProjectile() {
+//    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);
+//    Fixture hitraycast = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);
+<span class="nc" id="L228">    setTarget();</span>
+<span class="nc" id="L229">    TouchAttackComponent comp = owner.getEntity().getComponent(TouchAttackComponent.class);</span>
+<span class="nc" id="L230">    Weapon chosenWeapon = null;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">    if (comp != null) {</span>
+<span class="nc" id="L232">      chosenWeapon = comp.chooseWeapon(target);</span>
+    }
+
+<span class="nc" id="L235">    return chosenWeapon;</span>
+  }
+
+  private void setTarget() {
+<span class="nc" id="L239">    Vector2 newVector = new Vector2(owner.getEntity().getPosition().x - 10f, owner.getEntity().getPosition().y - 2f);</span>
+<span class="nc" id="L240">    target = physics.raycastGetHit(owner.getEntity().getPosition(), newVector, TARGET);</span>
+<span class="nc" id="L241">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

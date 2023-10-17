@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Melee.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities</a> &gt; <span class="el_source">Melee.java</span></div><h1>Melee.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities;
+
+/**
+ * Melee is a Weapon which has a minimum range to be used at
+ *
+ * damage: the damage of the weapon
+ * attackRange: the minimum range of the weapon (target must be less than or equal to this distance away)
+ * element: the element of the weapon (fire, water, earth, air, etc)
+ * castTime: the time it takes to cast the weapon
+ * cooldown: the time it takes to be used again
+ * */
+public class Melee implements Weapon {
+    private final int damage;
+
+    private final int attackRange;
+
+    private final String element;
+
+    private final int castTime;
+
+    private final int cooldown;
+
+
+<span class="fc" id="L24">    public Melee(int damage, int attackRange, String Element, int castTime, int cooldown) {</span>
+<span class="fc" id="L25">        this.damage = damage;</span>
+<span class="fc" id="L26">        this.attackRange = attackRange;</span>
+<span class="fc" id="L27">        this.element = Element;</span>
+<span class="fc" id="L28">        this.castTime = castTime;</span>
+<span class="fc" id="L29">        this.cooldown = cooldown;</span>
+<span class="fc" id="L30">    }</span>
+
+    public int getDamage() {
+<span class="nc" id="L33">        return damage;</span>
+    }
+
+    public int getAttackRange() {
+<span class="nc" id="L37">        return attackRange;</span>
+    }
+
+    public String getElement() {
+<span class="nc" id="L41">        return element;</span>
+    }
+
+    public int getCastTime() {
+<span class="nc" id="L45">        return castTime;</span>
+    }
+
+    public int getCooldown() {
+<span class="nc" id="L49">        return cooldown;</span>
+    }
+
+    public String toString() {
+<span class="fc" id="L53">        return &quot;Melee: &quot; + damage + &quot; &quot; + attackRange + &quot; &quot; + element;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

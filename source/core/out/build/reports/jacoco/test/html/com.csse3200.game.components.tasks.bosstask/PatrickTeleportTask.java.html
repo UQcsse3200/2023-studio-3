@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatrickTeleportTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bosstask</a> &gt; <span class="el_source">PatrickTeleportTask.java</span></div><h1>PatrickTeleportTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bosstask;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.MovementTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class PatrickTeleportTask extends DefaultTask {
+<span class="nc" id="L14">    private static final Logger logger = LoggerFactory.getLogger(MovementTask.class);</span>
+    private Entity patrick;
+    private final Vector2 location;
+<span class="nc" id="L17">    private PatrickState state = PatrickState.IDLE;</span>
+    private PatrickState prevState;
+    private AnimationRenderComponent animation;
+<span class="nc" id="L20">    private Status status = Status.INACTIVE;</span>
+    private CombatStatsComponent combatStats;
+    private int health;
+<span class="nc" id="L23">    private enum PatrickState {</span>
+<span class="nc" id="L24">        CAST, APPEAR, SPELL, IDLE</span>
+    }
+
+<span class="nc" id="L27">    public PatrickTeleportTask(Entity patrick, Vector2 location) {</span>
+<span class="nc" id="L28">        this.patrick = patrick;</span>
+<span class="nc" id="L29">        this.location = location;</span>
+<span class="nc" id="L30">    }</span>
+
+    @Override
+    public void start() {
+<span class="nc" id="L34">        super.start();</span>
+<span class="nc" id="L35">        animation = owner.getEntity().getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L36">        combatStats = owner.getEntity().getComponent(CombatStatsComponent.class);</span>
+<span class="nc" id="L37">        health = combatStats.getHealth();</span>
+<span class="nc" id="L38">        changeState(PatrickState.CAST);</span>
+<span class="nc" id="L39">        patrick.getEvents().trigger(&quot;patrick_thunder_sound&quot;);</span>
+<span class="nc" id="L40">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L43">                patrick.getEvents().trigger(</span>
+                        &quot;patrick_cast_sound&quot;);
+<span class="nc" id="L45">            }</span>
+        }, 0.3f);
+<span class="nc" id="L47">    }</span>
+
+    @Override
+    public void update() {
+<span class="nc" id="L51">        animate();</span>
+
+<span class="nc bnc" id="L53" title="All 4 branches missed.">        switch (state) {</span>
+            case CAST -&gt; {
+<span class="nc bnc" id="L55" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L56">                    health = combatStats.getHealth();</span>
+<span class="nc" id="L57">                    patrick.setPosition(location);</span>
+<span class="nc" id="L58">                    changeState(PatrickState.SPELL);</span>
+                }
+            }
+            case SPELL -&gt; {
+<span class="nc bnc" id="L62" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L63">                    changeState(PatrickState.APPEAR);</span>
+<span class="nc" id="L64">                    combatStats.setHealth(health);</span>
+<span class="nc" id="L65">                    patrick.getEvents().trigger(&quot;patrick_appear_sound&quot;);</span>
+                }
+            }
+            case APPEAR -&gt; {
+<span class="nc bnc" id="L69" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L70">                    status = Status.FINISHED;</span>
+                }
+            }
+        }
+<span class="nc" id="L74">    }</span>
+
+    /**
+     * Changes the state of patrick
+     * @param state state to be changed to
+     */
+    private void changeState(PatrickState state) {
+<span class="nc" id="L81">        prevState = this.state;</span>
+<span class="nc" id="L82">        this.state = state;</span>
+<span class="nc" id="L83">    }</span>
+
+    /**
+     * Changes the animation of the demon if a state change occurs
+     */
+    private void animate() {
+        // Check if same animation is being called
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        if (prevState.equals(state)) {</span>
+<span class="nc" id="L91">            return; // skip rest of function</span>
+        }
+
+<span class="nc bnc" id="L94" title="All 4 branches missed.">        switch (state) {</span>
+<span class="nc" id="L95">            case SPELL -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_spell&quot;);</span>
+<span class="nc" id="L96">            case APPEAR -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_death&quot;);</span>
+<span class="nc" id="L97">            case CAST -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_cast&quot;);</span>
+<span class="nc" id="L98">            default -&gt; logger.debug(&quot;Patrick animation {state} not found&quot;);</span>
+        }
+<span class="nc" id="L100">        prevState = state;</span>
+<span class="nc" id="L101">    }</span>
+
+    @Override
+    public Status getStatus() {
+<span class="nc" id="L105">        return status;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

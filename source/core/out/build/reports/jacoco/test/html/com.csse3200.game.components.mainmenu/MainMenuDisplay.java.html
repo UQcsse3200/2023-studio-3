@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainMenuDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.mainmenu</a> &gt; <span class="el_source">MainMenuDisplay.java</span></div><h1>MainMenuDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.mainmenu;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
+import com.csse3200.game.ui.UIComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+<span class="nc" id="L20">public class MainMenuDisplay extends UIComponent {</span>
+
+<span class="nc" id="L22">    private static final Logger logger = LoggerFactory.getLogger(MainMenuDisplay.class);</span>
+    private static final float Z_INDEX = 2f;
+    private Table table;
+    private Table table1;
+    private Sound clickSound;
+
+    @Override
+    public void create() {
+<span class="nc" id="L30">        super.create();</span>
+<span class="nc" id="L31">        addActors();</span>
+<span class="nc" id="L32">        loadSounds();</span>
+<span class="nc" id="L33">    }</span>
+    private void loadSounds() {
+<span class="nc" id="L35">        clickSound = Gdx.audio.newSound(Gdx.files.internal(&quot;sounds/Modern4.ogg&quot;));</span>
+<span class="nc" id="L36">    }</span>
+
+    private void addActors() {
+        /**
+         * Loads a custom cursor image and sets it as the system cursor.
+         *
+         * This method loads an image file named &quot;mouse_effect.png&quot; from the &quot;images/ui&quot; directory
+         * and sets it as the system cursor. After setting the custom cursor, it disposes of the
+         * Pixmap object used for loading the cursor image to release system resources.
+         *
+         * @param none
+         * @return none
+         */
+        // Load the custom cursor image
+<span class="nc" id="L50">        Pixmap cursorPixmap = new Pixmap(Gdx.files.internal(&quot;images/ui/mouse_effect.png&quot;));</span>
+<span class="nc" id="L51">        Cursor customCursor = Gdx.graphics.newCursor(cursorPixmap, 0, 0);</span>
+<span class="nc" id="L52">        Gdx.graphics.setCursor(customCursor);</span>
+<span class="nc" id="L53">        cursorPixmap.dispose(); // Dispose of the Pixmap to release resources</span>
+
+<span class="nc" id="L55">        table = new Table();</span>
+<span class="nc" id="L56">        table1 = new Table();</span>
+<span class="nc" id="L57">        table.setFillParent(true);</span>
+<span class="nc" id="L58">        table1.setFillParent(true);</span>
+
+<span class="nc" id="L60">        Image title =</span>
+                new Image(
+<span class="nc" id="L62">                        ServiceLocator.getResourceService()</span>
+<span class="nc" id="L63">                                .getAsset(&quot;images/background/main_menu/main_menu_bg.png&quot;, Texture.class));</span>
+<span class="nc" id="L64">        title.setWidth(Gdx.graphics.getWidth());</span>
+<span class="nc" id="L65">        title.setHeight(Gdx.graphics.getHeight());</span>
+<span class="nc" id="L66">        title.setPosition(0, 0);</span>
+
+// Create a &quot;Start&quot; TextButton using the default style
+//        TextButton startBtn = ButtonFactory.createButton(&quot;Start&quot;);
+<span class="nc" id="L70">        TextButton startBtn = new TextButton(&quot;Start&quot;, skin);</span>
+
+// Create a &quot;Help&quot; TextButton using the default style
+//        TextButton helpBtn = ButtonFactory.createButton(&quot;Help&quot;);
+<span class="nc" id="L74">        TextButton helpBtn = new TextButton(&quot;Help&quot;, skin);</span>
+
+// Create a &quot;Settings&quot; TextButton with a custom image
+//        TextButton settingsBtn =ButtonFactory.createButton(&quot;Settings&quot;);
+<span class="nc" id="L78">        TextButton settingsBtn =new TextButton(&quot;Settings&quot;, skin);</span>
+
+// Create a &quot;Quit&quot; TextButton with a custom image
+//        TextButton exitBtn = ButtonFactory.createButton(&quot;Quit&quot;);
+<span class="nc" id="L82">        TextButton exitBtn = new TextButton(&quot;Quit&quot;, skin);</span>
+
+        // Triggers an event when the button is pressed
+<span class="nc" id="L85">        startBtn.addListener(</span>
+<span class="nc" id="L86">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L89">                        logger.debug(&quot;Start button clicked&quot;);</span>
+<span class="nc" id="L90">                        entity.getEvents().trigger(&quot;start&quot;);</span>
+<span class="nc" id="L91">                        clickSound.play();</span>
+<span class="nc" id="L92">                    }</span>
+                });
+
+<span class="nc" id="L95">        helpBtn.addListener(</span>
+<span class="nc" id="L96">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L99">                        logger.debug(&quot;Help button clicked&quot;);</span>
+<span class="nc" id="L100">                        entity.getEvents().trigger(&quot;help&quot;);</span>
+<span class="nc" id="L101">                        clickSound.play();</span>
+<span class="nc" id="L102">                    }</span>
+                });
+
+<span class="nc" id="L105">        settingsBtn.addListener(</span>
+<span class="nc" id="L106">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L109">                        logger.debug(&quot;Settings button clicked&quot;);</span>
+<span class="nc" id="L110">                        entity.getEvents().trigger(&quot;settings&quot;);</span>
+<span class="nc" id="L111">                        clickSound.play();</span>
+<span class="nc" id="L112">                    }</span>
+                });
+
+<span class="nc" id="L115">        exitBtn.addListener(</span>
+<span class="nc" id="L116">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L119">                        logger.debug(&quot;Exit button clicked&quot;);</span>
+<span class="nc" id="L120">                        entity.getEvents().trigger(&quot;exit&quot;);</span>
+<span class="nc" id="L121">                        clickSound.play();</span>
+<span class="nc" id="L122">                    }</span>
+                });
+
+        // Proportional padding values based on original screen or background dimensions
+<span class="nc" id="L126">        float originalScreenWidth = 1920;  // Replace with the original width if different</span>
+<span class="nc" id="L127">        float originalScreenHeight = 1080; // Replace with the original height if different</span>
+
+<span class="nc" id="L129">        float padTopStartBtn = 260f / originalScreenHeight * Gdx.graphics.getHeight();</span>
+<span class="nc" id="L130">        float padTopOtherBtns = 15f / originalScreenHeight * Gdx.graphics.getHeight();</span>
+
+
+<span class="nc" id="L133">        table.add(title);</span>
+<span class="nc" id="L134">        table1.row();</span>
+<span class="nc" id="L135">        table1.add(startBtn).padTop(padTopStartBtn);</span>
+<span class="nc" id="L136">        table1.row();</span>
+<span class="nc" id="L137">        table1.add(helpBtn).padTop(padTopOtherBtns);</span>
+<span class="nc" id="L138">        table1.row();</span>
+<span class="nc" id="L139">        table1.add(settingsBtn).padTop(padTopOtherBtns);</span>
+<span class="nc" id="L140">        table1.row();</span>
+<span class="nc" id="L141">        table1.add(exitBtn).padTop(padTopOtherBtns);</span>
+
+<span class="nc" id="L143">        stage.addActor(table);</span>
+<span class="nc" id="L144">        stage.addActor(table1);</span>
+<span class="nc" id="L145">    }</span>
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        // draw is handled by the stage
+<span class="nc" id="L150">    }</span>
+
+    @Override
+    public float getZIndex() {
+<span class="nc" id="L154">        return Z_INDEX;</span>
+    }
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L159">        table.clear();</span>
+<span class="nc" id="L160">        super.dispose();</span>
+<span class="nc" id="L161">        clickSound.dispose();</span>
+<span class="nc" id="L162">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

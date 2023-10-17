@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WaveService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.services</a> &gt; <span class="el_source">WaveService.java</span></div><h1>WaveService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.services;
+
+import com.csse3200.game.components.maingame.UIElementsDisplay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class WaveService {
+<span class="fc" id="L8">    private static final Logger logger = LoggerFactory.getLogger(WaveService.class);</span>
+    private int enemyCount;
+<span class="fc" id="L10">    private boolean gameOver = false;</span>
+    private int lane;
+
+<span class="fc" id="L13">    private int waveCount = 1;</span>
+
+<span class="fc" id="L15">    private boolean levelCompleted = false;</span>
+
+    private long nextWaveTime;
+    private final UIElementsDisplay display;
+
+    private int spawnDelay;
+
+<span class="fc" id="L22">    private boolean skipDelay = false;</span>
+
+
+    /**
+     * Constructor for the Wave Service
+     */
+<span class="fc" id="L28">    public WaveService() {</span>
+<span class="fc" id="L29">        this.enemyCount = 0;</span>
+<span class="fc" id="L30">        this.display = new UIElementsDisplay();</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Set the enemy limit. During instantiation, limit defaults to 0.
+     * @param newLimit as an integer representing the maximum number of enemy deaths
+     */
+    public void setEnemyCount(int newLimit) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (newLimit &gt; 0) {</span>
+<span class="nc" id="L39">            enemyCount = newLimit;</span>
+<span class="nc" id="L40">            display.updateMobCount();</span>
+        }
+<span class="nc" id="L42">    }</span>
+
+    /**
+     * Returns the number of enemy left
+     * @return (int) enemy count
+     */
+
+    public int getEnemyCount() {
+<span class="fc" id="L50">        return enemyCount;</span>
+    }
+
+    /**
+     * Updates enemy count
+     * If enemy count is 0, the game is over.
+     */
+    public void updateEnemyCount() {
+<span class="fc" id="L58">        enemyCount -= 1;</span>
+<span class="fc" id="L59">        logger.info(&quot;{} enemies remaining in wave&quot;, getEnemyCount());</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Set the level to be completed. Will be called when there are no waves remaining.
+     */
+    public void setLevelCompleted() {
+<span class="nc bnc" id="L66" title="All 2 branches missed.">        if (!levelCompleted) {</span>
+<span class="nc" id="L67">            levelCompleted = true;</span>
+        }
+<span class="nc" id="L69">    }</span>
+
+    /**
+     * Sets the waveCount
+     * @param lane as an integer representing the next lane of a mob.
+     */
+    public void setNextLane(int lane) {
+<span class="nc" id="L76">        this.lane = lane;</span>
+<span class="nc" id="L77">    }</span>
+
+    /**
+     * Returns the next lane number of a mob
+     * @return (int) lane number
+     */
+    public int getNextLane() {
+<span class="nc" id="L84">        return lane;</span>
+    }
+
+    /**
+     * Returns the game over state
+     * @return (boolean) true if the game is over; false otherwise
+     */
+    public boolean isLevelCompleted() {
+<span class="nc" id="L92">        return levelCompleted;</span>
+    }
+
+    /**
+     * Returns the game over state
+     * @return (boolean) true if the game is over; false otherwise
+     */
+    public int getWaveCount() {
+<span class="nc" id="L100">        return this.waveCount;</span>
+    }
+
+    /**
+     * Sets the waveCount
+     * @param waveCount as an integer representing the current wave number.
+     *                  This will be added to the current wave number.
+     */
+    public void setWaveCount(int waveCount) {
+<span class="nc" id="L109">        this.waveCount += waveCount;</span>
+<span class="nc" id="L110">    }</span>
+
+    /**
+     * Returns time of the next wave.
+     * @return (long) A timestamp of when the next mobs will spawn. Used for UI elements.
+     */
+    public long getNextWaveTime() {
+<span class="nc" id="L117">        return this.nextWaveTime;</span>
+    }
+
+    /**
+     * Sets the next wave timestamp
+     * @param nextWaveTime as a long which is the time when then next mobs will spawn.
+     */
+    public void setNextWaveTime(long nextWaveTime) {
+<span class="fc" id="L125">        this.nextWaveTime = nextWaveTime;</span>
+<span class="fc" id="L126">    }</span>
+
+    /**
+     * Sets the spawn delay between levels
+     * @param spawnDelay representing the spawnDelay between levels.
+     */
+<span class="fc" id="L132">    public void setSpawnDelay(int spawnDelay) {this.spawnDelay = spawnDelay;}</span>
+
+    /**
+     * Returns the spawn delay between levels
+     * @return (int) The spawn delay between levels.
+     */
+<span class="nc" id="L138">    public int getSpawnDelay() {return this.spawnDelay;}</span>
+
+
+    /**
+     * Used for adding this instance of UIElementsDisplay to the mainGameScreen. This is needed as update is performed
+     * for this instance of the display.
+     * @return the updating instance of UIElementsDisplay
+     */
+    public UIElementsDisplay getDisplay() {
+<span class="nc" id="L147">        return this.display;</span>
+    }
+
+    /**
+     * This will invert the value of the skipDelay boolean
+     * */
+    public void toggleDelay() {
+<span class="nc bnc" id="L154" title="All 2 branches missed.">        this.skipDelay = !this.skipDelay;</span>
+<span class="nc" id="L155">    }</span>
+
+    /**
+     * retrieve the skipDelay condition
+     * */
+    public boolean shouldSkip() {
+<span class="nc" id="L161">      return this.skipDelay;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

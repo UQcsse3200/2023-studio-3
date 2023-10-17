@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RicochetComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components</a> &gt; <span class="el_source">RicochetComponent.java</span></div><h1>RicochetComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Ricochet based on target layers.
+ * A bouncing effect that continues to bounce off desired entities.
+ */
+public class RicochetComponent extends Component {
+  private short targetLayer;
+  private HitboxComponent hitBoxComponent;
+  private int bounceCount;
+<span class="fc" id="L19">  private static int MAX_BOUNCE_Y_DIRECTION = 250;</span>
+<span class="fc" id="L20">  private static int MIN_BOUNCE_Y_DIRECTION = -250;</span>
+
+  /**
+   * Initialise a RicochetComponent that spawns another projectile upon collision.
+   * Projectile has a chance to head upwards or downwards and upon spawning,
+   * it will be slighlty up or down in respect to original disappearance.
+   * @param targetLayer Target layer upon collision
+   * @param bounceCount Keeps track of the bounce count upon initial collision
+   *  Stops self-spawning when bounce count is greater or equal than two.
+   */
+<span class="fc" id="L30">  public RicochetComponent(short targetLayer, int bounceCount) {</span>
+<span class="fc" id="L31">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L32">    this.bounceCount = bounceCount;</span>
+<span class="fc" id="L33">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L37">    entity.getEvents().addListener(&quot;collisionEnd&quot;, this::onCollisionEnd);</span>
+<span class="fc" id="L38">    hitBoxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L39">  }</span>
+
+  /**
+   * After collision ends, make another fireball that spawns just before the
+   * original one. This assumes
+   * that the original fireball is already deleted. Set TouchAttackComponent
+   * disposeOnHit to true.
+   * 
+   * @param me
+   * @param other
+   */
+  private void onCollisionEnd(Fixture me, Fixture other) {
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">    if (hitBoxComponent.getFixture() != me</span>
+<span class="pc bpc" id="L52" title="1 of 4 branches missed.">        || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)</span>
+        || bounceCount &gt;= 3) // BounceCount base case of 3
+<span class="fc" id="L54">      return;</span>
+
+<span class="fc" id="L56">    Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+
+    // Projectile heads upwards or downwards.
+<span class="fc" id="L59">    int randomDirection = getRandomNumFrom(MIN_BOUNCE_Y_DIRECTION, MAX_BOUNCE_Y_DIRECTION);</span>
+
+    // Spawning of the projectile to be above (+ve) or below (-ve) upon
+    // collision
+<span class="fc bfc" id="L63" title="All 2 branches covered.">    int up_or_down = randomDirection &lt;= 0 ? -1 : 1;</span>
+
+<span class="fc" id="L65">    float newXPosition = (float) (projectile.getPosition().x - 0.75);</span>
+<span class="fc" id="L66">    float newYPosition = (float) (projectile.getPosition().y + (0.65 * up_or_down));</span>
+
+    // Prevent spawn of new projectile if it goes out of boundaries.
+<span class="pc bpc" id="L69" title="3 of 8 branches missed.">    if (newYPosition &gt;= 8 || newYPosition &lt;= 1 || newXPosition &gt;= 17 || newXPosition &lt;= 1)</span>
+<span class="fc" id="L70">      return;</span>
+
+    // * RIGHT NOW TARGET IS NPC, SUBJECT TO CHANGE
+<span class="fc" id="L73">    Entity newProjectile = ProjectileFactory.createRicochetFireball(PhysicsLayer.NPC,</span>
+<span class="fc" id="L74">        new Vector2(100, projectile.getPosition().y + randomDirection), new Vector2(2f, 2f), ++bounceCount); // Increment bounceCount</span>
+
+<span class="fc" id="L76">    newProjectile.setPosition(newXPosition, newYPosition);</span>
+<span class="fc" id="L77">    newProjectile.setScale(0.75f, 0.75f);</span>
+
+<span class="fc" id="L79">    ServiceLocator.getEntityService().register(newProjectile);</span>
+<span class="fc" id="L80">  }</span>
+
+  private int getRandomNumFrom(int min, int max) {
+<span class="fc" id="L83">    return (int) (Math.random() * (max - min) + min);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

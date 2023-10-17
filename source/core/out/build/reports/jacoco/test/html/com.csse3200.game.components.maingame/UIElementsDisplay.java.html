@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UIElementsDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.maingame</a> &gt; <span class="el_source">UIElementsDisplay.java</span></div><h1>UIElementsDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.maingame;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.TowerFactory;
+import com.csse3200.game.screens.TowerType;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.ButtonFactory;
+import com.csse3200.game.ui.UIComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Displays a button to represent the remaining mobs left in the current wave and a button to skip to the next wave.
+ */
+<span class="fc" id="L31">public class UIElementsDisplay extends UIComponent {</span>
+<span class="fc" id="L32">    private static final Logger logger = LoggerFactory.getLogger(MainGameExitDisplay.class);</span>
+    private static final float Z_INDEX = 2f;
+<span class="fc" id="L34">    private final Table buttonTable = new Table();</span>
+<span class="fc" id="L35">    private final Table towerTable = new Table();</span>
+<span class="fc" id="L36">    Skin skin = new Skin(Gdx.files.internal(&quot;images/ui/buttons/glass.json&quot;));</span>
+<span class="fc" id="L37">    private String[] sounds = {</span>
+            &quot;sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg&quot;,
+            &quot;sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg&quot;
+    };
+    private Sound click;
+    private Sound hover;
+//    private TextButton remainingMobsButton = new ButtonFactory().createButton(&quot;Mobs left:&quot;);
+//    private final TextButton timerButton = new ButtonFactory().createButton(&quot;Next wave:&quot;);
+    private TextButton remainingMobsButton;
+    private TextButton timerButton;
+<span class="fc" id="L47">    private final int timer = 110;</span>
+
+    @Override
+    public void create() {
+<span class="nc" id="L51">        super.create();</span>
+<span class="nc" id="L52">        addActors();</span>
+<span class="nc" id="L53">        loadSounds();</span>
+<span class="nc" id="L54">    }</span>
+
+    /**
+     * This method creates the buttons, adds them to the respective tables and draws them on the screen.
+     */
+    private void addActors() {
+//        remainingMobsButton = new ButtonFactory().createButton(&quot;Mobs:&quot;
+//                + ServiceLocator.getWaveService().getEnemyCount());
+<span class="nc" id="L62">        remainingMobsButton = new TextButton(&quot;Mobs:&quot;</span>
+<span class="nc" id="L63">                + ServiceLocator.getWaveService().getEnemyCount(), skin);</span>
+<span class="nc" id="L64">        buttonTable.top().right();</span>
+<span class="nc" id="L65">        towerTable.top();</span>
+
+<span class="nc" id="L67">        buttonTable.setFillParent(true);</span>
+<span class="nc" id="L68">        towerTable.setFillParent(true);</span>
+
+<span class="nc" id="L70">        towerTable.setDebug(true);</span>
+<span class="nc" id="L71">        towerTable.padTop(50f);</span>
+
+<span class="nc" id="L73">        TowerType[] defaultTowers = {</span>
+                TowerType.TNT,
+                TowerType.DROID,
+                TowerType.INCOME,
+                TowerType.WALL,
+                TowerType.WEAPON
+        };
+
+        // Fetch the selected tower types if set
+<span class="nc" id="L82">        Array&lt;TowerType&gt; towers = new Array&lt;&gt;();</span>
+
+<span class="nc bnc" id="L84" title="All 2 branches missed.">        for (TowerType tower : ServiceLocator.getTowerTypes()) {</span>
+<span class="nc" id="L85">            towers.add(tower);</span>
+<span class="nc" id="L86">        }</span>
+
+        // If no towers set, populate with default towers
+<span class="nc bnc" id="L89" title="All 4 branches missed.">        if (towers.isEmpty() || towers.size &lt; 5) {</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">            if (towers.isEmpty()) {</span>
+<span class="nc" id="L91">                towers.addAll(defaultTowers);</span>
+            } else {
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                for (TowerType tower : defaultTowers) {</span>
+<span class="nc bnc" id="L94" title="All 4 branches missed.">                    if (towers.size &lt; 5 &amp;&amp; !towers.contains(tower, false)) {</span>
+<span class="nc" id="L95">                        towers.add(tower);</span>
+                    }
+                }
+            }
+        }
+
+<span class="nc" id="L101">        TextButton tower1 = new TextButton(towers.get(0).getTowerName(), skin);</span>
+<span class="nc" id="L102">        TextButton tower2 = new TextButton(towers.get(1).getTowerName(), skin);</span>
+<span class="nc" id="L103">        TextButton tower3 = new TextButton(towers.get(2).getTowerName(), skin);</span>
+<span class="nc" id="L104">        TextButton tower4 = new TextButton(towers.get(3).getTowerName(), skin);</span>
+<span class="nc" id="L105">        TextButton tower5 = new TextButton(towers.get(4).getTowerName(), skin);</span>
+
+        // Triggers an event when the button is pressed.
+<span class="nc" id="L108">        tower1.addListener(</span>
+<span class="nc" id="L109">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L112">                        logger.debug(&quot;Tower 1 build button clicked&quot;);</span>
+<span class="nc" id="L113">                        ServiceLocator.getCurrencyService().setTowerType(towers.get(0));</span>
+<span class="nc" id="L114">                        click.play(0.4f);</span>
+<span class="nc" id="L115">                    }</span>
+                });
+
+        // Triggers an event when the button is pressed.
+<span class="nc" id="L119">        tower2.addListener(</span>
+<span class="nc" id="L120">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L123">                        logger.debug(&quot;Tower 2 build button clicked&quot;);</span>
+<span class="nc" id="L124">                        ServiceLocator.getCurrencyService().setTowerType(towers.get(1));</span>
+<span class="nc" id="L125">                        click.play(0.4f);</span>
+<span class="nc" id="L126">                    }</span>
+                });
+
+<span class="nc" id="L129">        tower3.addListener(</span>
+<span class="nc" id="L130">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L133">                        logger.debug(&quot;Tower 3 build button clicked&quot;);</span>
+<span class="nc" id="L134">                        ServiceLocator.getCurrencyService().setTowerType(towers.get(2));</span>
+<span class="nc" id="L135">                        click.play(0.4f);</span>
+<span class="nc" id="L136">                    }</span>
+                });
+
+<span class="nc" id="L139">        tower4.addListener(</span>
+<span class="nc" id="L140">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L143">                        logger.debug(&quot;Tower 4 build button clicked&quot;);</span>
+<span class="nc" id="L144">                        ServiceLocator.getCurrencyService().setTowerType(towers.get(3));</span>
+<span class="nc" id="L145">                        click.play(0.4f);</span>
+<span class="nc" id="L146">                    }</span>
+                });
+
+<span class="nc" id="L149">        tower5.addListener(</span>
+<span class="nc" id="L150">                new ChangeListener() {</span>
+                    @Override
+                    public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L153">                        logger.debug(&quot;Tower 5 build button clicked&quot;);</span>
+<span class="nc" id="L154">                        ServiceLocator.getCurrencyService().setTowerType(towers.get(4));</span>
+<span class="nc" id="L155">                        click.play(0.4f);</span>
+<span class="nc" id="L156">                    }</span>
+                });
+
+<span class="nc" id="L159">        buttonTable.add(remainingMobsButton).padTop(10f).padRight(10f);</span>
+<span class="nc" id="L160">        buttonTable.row();</span>
+<span class="nc" id="L161">        buttonTable.add(timerButton).padRight(10f);</span>
+
+<span class="nc" id="L163">        towerTable.add(tower1).padRight(10f);</span>
+<span class="nc" id="L164">        towerTable.add(tower2).padRight(10f);</span>
+<span class="nc" id="L165">        towerTable.add(tower3).padRight(10f);</span>
+<span class="nc" id="L166">        towerTable.add(tower4).padRight(10f);</span>
+<span class="nc" id="L167">        towerTable.add(tower5).padRight(10f);</span>
+
+<span class="nc" id="L169">        stage.addActor(buttonTable);</span>
+<span class="nc" id="L170">        stage.addActor(towerTable);</span>
+
+<span class="nc" id="L172">        createTimerButton();</span>
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * This method updates the mob count button as mobs die in the game
+     */
+    public void updateMobCount() {
+<span class="nc" id="L179">        remainingMobsButton.setText(&quot;Mobs:&quot; + ServiceLocator.getWaveService().getEnemyCount());</span>
+<span class="nc" id="L180">    }</span>
+
+    /**
+     * This method creates the timer button.
+     */
+    public void createTimerButton() {
+
+//        timerButton = new ButtonFactory().createButton(&quot;Next wave in:&quot;
+//                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000));
+<span class="nc" id="L189">        timerButton = new TextButton(&quot;Next wave in:&quot;</span>
+<span class="nc" id="L190">                + (ServiceLocator.getWaveService().getNextWaveTime() / 1000), skin);</span>
+<span class="nc" id="L191">        buttonTable.row();</span>
+<span class="nc" id="L192">        buttonTable.add(timerButton).padRight(10f);</span>
+<span class="nc" id="L193">    }</span>
+
+    /**
+     * This method updates the text for timer button.
+     */
+    public void updateTimerButton() {
+<span class="nc" id="L199">        int totalSecs = (int) (timer - (ServiceLocator.getTimeSource().getTime() / 1000));</span>
+<span class="nc" id="L200">        int seconds = totalSecs % 60;</span>
+<span class="nc" id="L201">        int minutes = (totalSecs % 3600) / 60;</span>
+<span class="nc" id="L202">        String finalTime = String.format(&quot;%02d:%02d&quot;, minutes, seconds);</span>
+<span class="nc" id="L203">        timerButton.setText(&quot;Next wave in:&quot; + finalTime);</span>
+<span class="nc" id="L204">    }</span>
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        // drawing is handled by the stage
+<span class="nc" id="L209">    }</span>
+
+    /**
+     * @return returns the Z_INDEX for this display
+     */
+    @Override
+    public float getZIndex() {
+<span class="nc" id="L216">        return Z_INDEX;</span>
+    }
+
+    private void loadSounds() {
+<span class="nc" id="L220">        ServiceLocator.getResourceService().loadSounds(sounds);</span>
+<span class="nc" id="L221">        ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L222">        click = ServiceLocator.getResourceService().getAsset(sounds[0], Sound.class);</span>
+<span class="nc" id="L223">        hover = ServiceLocator.getResourceService().getAsset(sounds[1], Sound.class);</span>
+<span class="nc" id="L224">    }</span>
+
+    /**
+     * Disposes off the tables and buttons created using this display
+     */
+    @Override
+    public void dispose() {
+<span class="nc" id="L231">        super.dispose();</span>
+<span class="nc" id="L232">        buttonTable.clear();</span>
+<span class="nc" id="L233">        towerTable.clear();</span>
+<span class="nc" id="L234">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

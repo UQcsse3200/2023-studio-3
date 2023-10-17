@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EntityService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities</a> &gt; <span class="el_source">EntityService.java</span></div><h1>EntityService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities;
+
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.areas.terrain.TerrainComponent;
+import com.csse3200.game.areas.terrain.TerrainFactory;
+import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.input.DropInputComponent;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Comparator;
+
+/**
+ * Provides a global access point for entities to register themselves. This allows for iterating
+ * over entities to perform updates each loop. All game entities should be registered here.
+ *
+ * Avoid adding additional state here! Global access is often the easy but incorrect answer to
+ * sharing data.
+ */
+<span class="fc" id="L29">public class EntityService {</span>
+<span class="fc" id="L30">  private static final Logger logger = LoggerFactory.getLogger(EntityService.class);</span>
+  private static final int INITIAL_CAPACITY = 16;
+<span class="fc" id="L32">  private final Array&lt;Entity&gt; entities = new Array&lt;&gt;(false, INITIAL_CAPACITY);</span>
+  private static final float MAX_RADIUS = 50f;
+  public static void removeEntity(Entity clickedEntity) {
+<span class="nc" id="L35">    clickedEntity.dispose();</span>
+<span class="nc" id="L36">  }</span>
+
+  /**
+   * Register a new entity with the entity service. The entity will be created and start updating.
+   * @param entity new entity.
+   */
+  public void register(Entity entity) {
+<span class="fc" id="L43">    logger.debug(&quot;Registering {} in entity service&quot;, entity);</span>
+<span class="fc" id="L44">    entities.add(entity);</span>
+<span class="fc" id="L45">    entity.create();</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Unregister an entity with the entity service. The entity will be removed and stop updating.
+   * @param entity entity to be removed.
+   */
+  public void unregister(Entity entity) {
+<span class="fc" id="L53">    logger.debug(&quot;Unregistering {} in entity service&quot;, entity);</span>
+<span class="fc" id="L54">    entities.removeValue(entity, true);</span>
+<span class="fc" id="L55">  }</span>
+
+  /**
+   * Update all registered entities. Should only be called from the main game loop.
+   */
+  public void update() {
+<span class="fc bfc" id="L61" title="All 2 branches covered.">    for (Entity entity : entities) {</span>
+<span class="fc" id="L62">      entity.earlyUpdate();</span>
+<span class="fc" id="L63">      entity.update();</span>
+<span class="fc" id="L64">    }</span>
+<span class="fc" id="L65">  }</span>
+
+  /**
+   * Dispose all entities.
+   */
+  public void dispose() {
+<span class="fc bfc" id="L71" title="All 2 branches covered.">    for (Entity entity : entities) {</span>
+<span class="fc" id="L72">      entity.dispose();</span>
+<span class="fc" id="L73">    }</span>
+<span class="fc" id="L74">  }</span>
+
+  /**
+   * Find an entity by its ID, if it exists return true, else return false
+   * @param id id of entity to find
+   * @return boolean true if entity exists, false if not
+   */
+  public boolean findEntityExistence(int id) {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">    for (Entity entity : entities) {</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">      if (entity.getId() == id) {</span>
+<span class="nc" id="L84">        return true;</span>
+      }
+<span class="nc" id="L86">    }</span>
+<span class="nc" id="L87">    return false;</span>
+  }
+
+  /**
+   * Get all entities
+   */
+  public Array&lt;Entity&gt; getEntities() {
+<span class="fc" id="L94">    return entities;</span>
+  }
+
+  /**
+   * Get entities within a certain radius of a given entity.
+   *
+   * @param source The reference entity to check distance from.
+   * @param radius The radius within which to fetch entities.
+   * @return An array containing entities within the given radius.
+   */
+  public Array&lt;Entity&gt; getNearbyEntities(Entity source, float radius) {
+<span class="fc" id="L105">    Array&lt;Entity&gt; nearbyEntities = new Array&lt;Entity&gt;();</span>
+<span class="fc" id="L106">    Array&lt;Entity&gt; allEntities = ServiceLocator.getEntityService().getEntities();</span>
+<span class="fc bfc" id="L107" title="All 2 branches covered.">    for (int i = 0; i &lt; allEntities.size; i++) {</span>
+<span class="fc" id="L108">      Entity otherEntity = allEntities.get(i);</span>
+
+<span class="fc bfc" id="L110" title="All 2 branches covered.">      if (source == otherEntity) continue; // Skip the source entity</span>
+
+<span class="fc" id="L112">      Vector2 positionSource = source.getPosition();</span>
+<span class="fc" id="L113">      Vector2 positionOther = otherEntity.getPosition();</span>
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">      if (positionSource.dst(positionOther) &lt;= radius) {</span>
+<span class="fc" id="L116">        nearbyEntities.add(otherEntity);</span>
+      }
+    }
+<span class="fc" id="L119">    return nearbyEntities;</span>
+  }
+
+  /**
+   * Get entities within a certain radius of a given entity.
+   *
+   * @param source The reference entity to check distance from.
+   * @param radius The radius within which to fetch entities.
+   * @param layer Desired layer for entities to be in
+   * @return An array containing entities within the given radius.
+   */
+  public Array&lt;Entity&gt; getEntitiesInLayer(Entity source, float radius, short layer) {
+<span class="nc" id="L131">    Array&lt;Entity&gt; entities = new Array&lt;Entity&gt;();</span>
+<span class="nc" id="L132">    Array&lt;Entity&gt; allEntities = getNearbyEntities(source, radius);</span>
+
+<span class="nc bnc" id="L134" title="All 2 branches missed.">    for (int i = 0; i &lt; allEntities.size; i++) {</span>
+<span class="nc" id="L135">      Entity targetEntity = allEntities.get(i);</span>
+
+      // check targets layer
+<span class="nc" id="L138">      HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);</span>
+<span class="nc bnc" id="L139" title="All 2 branches missed.">      if (targetHitbox == null) {</span>
+<span class="nc" id="L140">        continue;</span>
+      }
+<span class="nc bnc" id="L142" title="All 2 branches missed.">      if (!PhysicsLayer.contains(layer, targetHitbox.getLayer())) {</span>
+<span class="nc" id="L143">        continue;</span>
+      }
+<span class="nc" id="L145">      entities.add(targetEntity);</span>
+    }
+<span class="nc" id="L147">    return entities;</span>
+  }
+
+  /**
+   * Returns the closest entity to the source of provided layer
+   * @param source source entity
+   * @param layer layer for desired entity to be returned
+   * @return closest entity of correct layer
+   */
+  public Entity getClosestEntityOfLayer(Entity source, short layer) {
+<span class="nc" id="L157">    Entity closestHuman = null;</span>
+<span class="nc" id="L158">    Vector2 sourcePos = source.getPosition();</span>
+<span class="nc" id="L159">    float closestDistance = MAX_RADIUS;</span>
+<span class="nc" id="L160">    Array&lt;Entity&gt; entitiesInLayer = getEntitiesInLayer(source, MAX_RADIUS, layer);</span>
+
+<span class="nc bnc" id="L162" title="All 2 branches missed.">    for (int i = 0; i &lt; entitiesInLayer.size; i++) {</span>
+<span class="nc" id="L163">      Entity targetEntity = entitiesInLayer.get(i);</span>
+
+      // check how close target is to source
+<span class="nc" id="L166">      Vector2 targetPosition = targetEntity.getPosition();</span>
+<span class="nc" id="L167">      float distance = sourcePos.dst(targetPosition);</span>
+<span class="nc bnc" id="L168" title="All 2 branches missed.">      if (distance &lt; closestDistance) {</span>
+<span class="nc" id="L169">        closestHuman = targetEntity;</span>
+<span class="nc" id="L170">        closestDistance = distance;</span>
+      }
+    }
+<span class="nc" id="L173">    return closestHuman;</span>
+  }
+  
+  public Entity getEntityAtPosition(float x, float y) {
+<span class="fc" id="L177">    entities.sort(Comparator.comparingInt(Entity::getLayer));</span>
+<span class="pc bpc" id="L178" title="1 of 2 branches missed.">    for (Entity entity : entities) {</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">      if (entityContainsPosition(entity, x, y)) {</span>
+<span class="fc" id="L180">        return entity;</span>
+      }
+<span class="fc" id="L182">    }</span>
+<span class="nc" id="L183">    return null;</span>
+  }
+
+  /**
+   * Checks for the presence of an Entity at a specified position (x, y).
+   *
+   * @param x The x-coordinate of the position to check.
+   * @param y The y-coordinate of the position to check.
+   * @return The Entity found at the specified position, or null if no Entity is present.
+   */
+  public Entity checkEntityAtPosition(int x, int y) {
+<span class="nc" id="L194">    entities.sort(Comparator.comparingInt(Entity::getLayer));</span>
+<span class="nc bnc" id="L195" title="All 2 branches missed.">    for (Entity entity : entities) {</span>
+<span class="nc bnc" id="L196" title="All 4 branches missed.">      if (entity.getPosition().x == x &amp;&amp; entity.getPosition().y == y) {</span>
+<span class="nc" id="L197">        return entity;</span>
+      }
+<span class="nc" id="L199">    }</span>
+<span class="nc" id="L200">    return null;</span>
+  }
+
+
+  private boolean entityContainsPosition(Entity entity, float x, float y) {
+<span class="fc" id="L205">    float entityX = entity.getPosition().x;</span>
+<span class="fc" id="L206">    float entityY = entity.getPosition().y;</span>
+<span class="fc" id="L207">    float entityWidth = entity.getScale().x;</span>
+<span class="fc" id="L208">    float entityHeight = entity.getScale().y;</span>
+<span class="pc bpc" id="L209" title="2 of 8 branches missed.">    return (x &gt;= entityX &amp;&amp; x &lt;= entityX + entityWidth &amp;&amp; y &gt;= entityY &amp;&amp; y &lt;= entityY + entityHeight);</span>
+  }
+
+  /**
+   * Determine whether there are any entities within the given tile position (x and y range). Checks for out of bounds
+   * click location
+   * @param x_coord the top right x coordinate of the tile
+   * @param y_coord the top right y coordinate of the tile
+   * @return true if the tile is occupied, false otherwise
+   */
+  public boolean entitiesInTile(int x_coord, int y_coord) {
+    TiledMapTileLayer mp;
+    try {
+<span class="nc" id="L222">      mp = (TiledMapTileLayer)ServiceLocator.getMapService().getComponent().getMap().getLayers().get(0);</span>
+<span class="nc" id="L223">    } catch (NullPointerException e) {</span>
+      // MapService is not running
+<span class="nc" id="L225">      return true;</span>
+<span class="nc" id="L226">    }</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">    if (mp.getCell(x_coord, y_coord) != null) {</span>
+<span class="nc" id="L228">      Entity entity = checkEntityAtPosition(x_coord, y_coord);</span>
+<span class="nc bnc" id="L229" title="All 2 branches missed.">      return entity != null;</span>
+    }
+<span class="nc" id="L231">    return true;</span>
+  }
+
+  public Entity getEntityAtPositionLayer(float x, float y, short layer) {
+<span class="nc bnc" id="L235" title="All 2 branches missed.">    for (int i = 0; i &lt; entities.size; i++) {</span>
+<span class="nc" id="L236">      Entity entity = entities.get(i);</span>
+<span class="nc bnc" id="L237" title="All 2 branches missed.">      if (entityContainsPosition(entity, x, y)) {</span>
+<span class="nc" id="L238">        HitboxComponent hitBox = entity.getComponent(HitboxComponent.class);</span>
+<span class="nc bnc" id="L239" title="All 4 branches missed.">        if (hitBox != null &amp;&amp; PhysicsLayer.contains(layer, hitBox.getLayer())) {</span>
+<span class="nc" id="L240">          return entity;</span>
+        }
+      }
+    }
+<span class="nc" id="L244">    return null;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

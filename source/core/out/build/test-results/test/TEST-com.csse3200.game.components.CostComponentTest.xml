@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.CostComponentTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:17" hostname="DESKTOP-F4ACIG8" time="0.025">
+  <properties/>
+  <testcase name="testSetAndGetPositiveCost()" classname="com.csse3200.game.components.CostComponentTest" time="0.005"/>
+  <testcase name="testCostComponentConstructorWithPositiveValue()" classname="com.csse3200.game.components.CostComponentTest" time="0.002"/>
+  <testcase name="testSetAndGetZeroCost()" classname="com.csse3200.game.components.CostComponentTest" time="0.004"/>
+  <testcase name="testNegativeCostIsNormalizedToZero()" classname="com.csse3200.game.components.CostComponentTest" time="0.002"/>
+  <testcase name="testCostComponentConstructorWithNegativeValue()" classname="com.csse3200.game.components.CostComponentTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

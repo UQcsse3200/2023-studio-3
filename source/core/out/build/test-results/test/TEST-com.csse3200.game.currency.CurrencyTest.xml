@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.currency.CurrencyTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:27" hostname="DESKTOP-F4ACIG8" time="0.31">
+  <properties/>
+  <testcase name="shouldCreateCurrencyWithAmount()" classname="com.csse3200.game.currency.CurrencyTest" time="0.205"/>
+  <testcase name="shouldCreateCurrency()" classname="com.csse3200.game.currency.CurrencyTest" time="0.019"/>
+  <testcase name="shouldSetAndGetAmount()" classname="com.csse3200.game.currency.CurrencyTest" time="0.013"/>
+  <testcase name="scrapIsNotNull()" classname="com.csse3200.game.currency.CurrencyTest" time="0.011"/>
+  <testcase name="testCanBuy()" classname="com.csse3200.game.currency.CurrencyTest" time="0.016"/>
+  <testcase name="shouldModifyAmount()" classname="com.csse3200.game.currency.CurrencyTest" time="0.026"/>
+  <testcase name="testCreateScrapComponentNotNull()" classname="com.csse3200.game.currency.CurrencyTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

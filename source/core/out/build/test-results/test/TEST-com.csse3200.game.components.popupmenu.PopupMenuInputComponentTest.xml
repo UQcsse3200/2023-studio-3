@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.popupmenu.PopupMenuInputComponentTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:24" hostname="DESKTOP-F4ACIG8" time="0.045">
+  <properties/>
+  <testcase name="handlesTouchDownEntityIncluded()" classname="com.csse3200.game.components.popupmenu.PopupMenuInputComponentTest" time="0.045"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tasks.ChaseTaskTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:24" hostname="DESKTOP-F4ACIG8" time="0.041">
+  <properties/>
+  <testcase name="shouldMoveTowardsTarget()" classname="com.csse3200.game.components.tasks.ChaseTaskTest" time="0.026"/>
+  <testcase name="shouldChaseOnlyWhenInDistance()" classname="com.csse3200.game.components.tasks.ChaseTaskTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

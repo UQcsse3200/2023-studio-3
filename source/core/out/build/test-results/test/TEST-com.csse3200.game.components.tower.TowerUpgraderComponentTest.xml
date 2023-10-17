@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tower.TowerUpgraderComponentTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:26" hostname="DESKTOP-F4ACIG8" time="0.259">
+  <properties/>
+  <testcase name="divideByZeroDefaultToIgnore()" classname="com.csse3200.game.components.tower.TowerUpgraderComponentTest" time="0.2"/>
+  <testcase name="increaseMaxHealthStat()" classname="com.csse3200.game.components.tower.TowerUpgraderComponentTest" time="0.008"/>
+  <testcase name="incomeRate()" classname="com.csse3200.game.components.tower.TowerUpgraderComponentTest" time="0.019"/>
+  <testcase name="increaseAttackStat()" classname="com.csse3200.game.components.tower.TowerUpgraderComponentTest" time="0.008"/>
+  <testcase name="increaseFireRate()" classname="com.csse3200.game.components.tower.TowerUpgraderComponentTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:26 PM com.csse3200.game.components.tasks.TowerCombatTask start
+INFO: TowerCombatTask started
+Oct 10, 2023 12:49:26 PM com.csse3200.game.components.tasks.TowerCombatTask changeFireRateInterval
+INFO: Changing fire rate to: 60
+Oct 10, 2023 12:49:26 PM com.csse3200.game.components.tasks.CurrencyTask changeInterval
+INFO: Interval changed to: 60
+Oct 10, 2023 12:49:26 PM com.csse3200.game.components.tasks.TowerCombatTask start
+INFO: TowerCombatTask started
+Oct 10, 2023 12:49:26 PM com.csse3200.game.components.tasks.TowerCombatTask changeFireRateInterval
+INFO: Changing fire rate to: 60
+]]></system-err>
+</testsuite>

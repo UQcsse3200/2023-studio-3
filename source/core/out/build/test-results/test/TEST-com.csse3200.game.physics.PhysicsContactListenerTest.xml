@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.physics.PhysicsContactListenerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:45" hostname="DESKTOP-F4ACIG8" time="0.034">
+  <properties/>
+  <testcase name="shouldTriggerCollisionStart()" classname="com.csse3200.game.physics.PhysicsContactListenerTest" time="0.016"/>
+  <testcase name="shouldTriggerCollisionEnd()" classname="com.csse3200.game.physics.PhysicsContactListenerTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

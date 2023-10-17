@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputDecorator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">InputDecorator.java</span></div><h1>InputDecorator.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import com.badlogic.gdx.InputProcessor;
+
+/**
+ * Generic class to wrap an InputProcessor so that it acts like an InputComponent. This was
+ * initially created to wrap the stage in, but can be used for any class that implements
+ * InputProcessor.
+ */
+public class InputDecorator extends InputComponent {
+  private final InputProcessor inputProcessor;
+
+  public InputDecorator(InputProcessor inputProcessor, int priority) {
+<span class="fc" id="L14">    super(priority);</span>
+<span class="fc" id="L15">    this.inputProcessor = inputProcessor;</span>
+<span class="fc" id="L16">  }</span>
+
+  @Override
+  public boolean keyDown(int keycode) {
+<span class="fc" id="L20">    return inputProcessor.keyDown(keycode);</span>
+  }
+
+  @Override
+  public boolean keyTyped(char character) {
+<span class="fc" id="L25">    return inputProcessor.keyTyped(character);</span>
+  }
+
+  @Override
+  public boolean keyUp(int keycode) {
+<span class="fc" id="L30">    return inputProcessor.keyUp(keycode);</span>
+  }
+
+  @Override
+  public boolean mouseMoved(int screenX, int screenY) {
+<span class="fc" id="L35">    return inputProcessor.mouseMoved(screenX, screenY);</span>
+  }
+
+  @Override
+  public boolean scrolled(float amountX, float amountY) {
+<span class="fc" id="L40">    return inputProcessor.scrolled(amountX, amountY);</span>
+  }
+
+  @Override
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="fc" id="L45">    return inputProcessor.touchDown(screenX, screenY, pointer, button);</span>
+  }
+
+  @Override
+  public boolean touchDragged(int screenX, int screenY, int pointer) {
+<span class="fc" id="L50">    return inputProcessor.touchDragged(screenX, screenY, pointer);</span>
+  }
+
+  @Override
+  public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+<span class="fc" id="L55">    return inputProcessor.touchUp(screenX, screenY, pointer, button);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

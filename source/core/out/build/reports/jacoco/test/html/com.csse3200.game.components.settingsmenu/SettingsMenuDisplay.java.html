@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SettingsMenuDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.settingsmenu</a> &gt; <span class="el_source">SettingsMenuDisplay.java</span></div><h1>SettingsMenuDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.settingsmenu;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
+import com.badlogic.gdx.Graphics.Monitor;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.GdxGame.ScreenType;
+import com.csse3200.game.files.UserSettings;
+import com.csse3200.game.files.UserSettings.DisplaySettings;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.UIComponent;
+import com.csse3200.game.utils.StringDecorator;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Scaling;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Settings menu display and logic. If you bork the settings, they can be changed manually in
+ * CSSE3200Game/settings.json under your home directory (This is C:/users/[username] on Windows).
+ */
+public class SettingsMenuDisplay extends UIComponent {
+<span class="nc" id="L32">  private static final Logger logger = LoggerFactory.getLogger(SettingsMenuDisplay.class);</span>
+  private final GdxGame game;
+
+  private Table rootTable;
+  private TextField fpsText;
+  private CheckBox fullScreenCheck;
+  private CheckBox vsyncCheck;
+  private Slider uiScaleSlider;
+  private SelectBox&lt;StringDecorator&lt;DisplayMode&gt;&gt; displayModeSelect;
+
+  public SettingsMenuDisplay(GdxGame game) {
+<span class="nc" id="L43">    super();</span>
+<span class="nc" id="L44">    this.game = game;</span>
+<span class="nc" id="L45">  }</span>
+
+  @Override
+  public void create() {
+<span class="nc" id="L49">    super.create();</span>
+<span class="nc" id="L50">    addActors();</span>
+<span class="nc" id="L51">  }</span>
+
+  /**
+   * Adds various actors to the stage for the settings screen.
+   * This method sets up and adds elements such as a custom cursor, background image, title label, settings table, and menu buttons.
+   */
+  private void addActors() {
+    // Load the custom cursor image
+<span class="nc" id="L59">    Pixmap cursorPixmap = new Pixmap(Gdx.files.internal(&quot;images/ui/mouse_effect.png&quot;));</span>
+<span class="nc" id="L60">    Cursor customCursor = Gdx.graphics.newCursor(cursorPixmap, 0, 0);</span>
+<span class="nc" id="L61">    Gdx.graphics.setCursor(customCursor);</span>
+<span class="nc" id="L62">    cursorPixmap.dispose();</span>
+
+<span class="nc" id="L64">    Image background = new Image(ServiceLocator.getResourceService()</span>
+<span class="nc" id="L65">            .getAsset(&quot;images/background/settings/settings_bg.png&quot;, Texture.class));</span>
+<span class="nc" id="L66">    background.setScaling(Scaling.stretch);</span>
+<span class="nc" id="L67">    background.setFillParent(true);</span>
+
+<span class="nc" id="L69">    Label title = new Label(&quot;Settings&quot;, skin, &quot;title&quot;);</span>
+<span class="nc" id="L70">    Table settingsTable = makeSettingsTable();</span>
+<span class="nc" id="L71">    Table menuBtns = makeMenuBtns();</span>
+
+<span class="nc" id="L73">    rootTable = new Table();</span>
+<span class="nc" id="L74">    rootTable.setFillParent(true);</span>
+
+<span class="nc" id="L76">    rootTable.add(title).expandX().top().padTop(20f);</span>
+
+<span class="nc" id="L78">    rootTable.row().padTop(30f);</span>
+<span class="nc" id="L79">    rootTable.add(settingsTable).expandX().expandY();</span>
+
+<span class="nc" id="L81">    rootTable.row();</span>
+<span class="nc" id="L82">    rootTable.add(menuBtns).fillX();</span>
+
+<span class="nc" id="L84">    stage.addActor(background);</span>
+<span class="nc" id="L85">    stage.addActor(rootTable);</span>
+<span class="nc" id="L86">  }</span>
+
+  private Table makeSettingsTable() {
+    // Get current values
+<span class="nc" id="L90">    UserSettings.Settings settings = UserSettings.get();</span>
+
+    // Create components
+<span class="nc" id="L93">    Label fpsLabel = new Label(&quot;FPS Cap:&quot;, skin);</span>
+<span class="nc" id="L94">    fpsText = new TextField(Integer.toString(settings.fps), skin);</span>
+
+<span class="nc" id="L96">    Label fullScreenLabel = new Label(&quot;Fullscreen:&quot;, skin);</span>
+<span class="nc" id="L97">    fullScreenCheck = new CheckBox(&quot;&quot;, skin);</span>
+<span class="nc" id="L98">    fullScreenCheck.setChecked(settings.fullscreen);</span>
+
+<span class="nc" id="L100">    Label vsyncLabel = new Label(&quot;VSync:&quot;, skin);</span>
+<span class="nc" id="L101">    vsyncCheck = new CheckBox(&quot;&quot;, skin);</span>
+<span class="nc" id="L102">    vsyncCheck.setChecked(settings.vsync);</span>
+
+<span class="nc" id="L104">    Label uiScaleLabel = new Label(&quot;ui Scale (Unused):&quot;, skin);</span>
+<span class="nc" id="L105">    uiScaleSlider = new Slider(0.2f, 2f, 0.1f, false, skin);</span>
+<span class="nc" id="L106">    uiScaleSlider.setValue(settings.uiScale);</span>
+<span class="nc" id="L107">    Label uiScaleValue = new Label(String.format(&quot;%.2fx&quot;, settings.uiScale), skin);</span>
+
+<span class="nc" id="L109">    Label displayModeLabel = new Label(&quot;Resolution:&quot;, skin);</span>
+<span class="nc" id="L110">    displayModeSelect = new SelectBox&lt;&gt;(skin);</span>
+<span class="nc" id="L111">    Monitor selectedMonitor = Gdx.graphics.getMonitor();</span>
+<span class="nc" id="L112">    displayModeSelect.setItems(getDisplayModes(selectedMonitor));</span>
+<span class="nc" id="L113">    displayModeSelect.setSelected(getActiveMode(displayModeSelect.getItems()));</span>
+
+    // Position Components on table
+<span class="nc" id="L116">    Table table = new Table();</span>
+
+<span class="nc" id="L118">    table.add(fpsLabel).right().padRight(15f);</span>
+<span class="nc" id="L119">    table.add(fpsText).width(100).left();</span>
+
+<span class="nc" id="L121">    table.row().padTop(10f);</span>
+<span class="nc" id="L122">    table.add(fullScreenLabel).right().padRight(15f);</span>
+<span class="nc" id="L123">    table.add(fullScreenCheck).left();</span>
+
+<span class="nc" id="L125">    table.row().padTop(10f);</span>
+<span class="nc" id="L126">    table.add(vsyncLabel).right().padRight(15f);</span>
+<span class="nc" id="L127">    table.add(vsyncCheck).left();</span>
+
+<span class="nc" id="L129">    table.row().padTop(10f);</span>
+<span class="nc" id="L130">    Table uiScaleTable = new Table();</span>
+<span class="nc" id="L131">    uiScaleTable.add(uiScaleSlider).width(100).left();</span>
+<span class="nc" id="L132">    uiScaleTable.add(uiScaleValue).left().padLeft(5f).expandX();</span>
+
+<span class="nc" id="L134">    table.add(uiScaleLabel).right().padRight(15f);</span>
+<span class="nc" id="L135">    table.add(uiScaleTable).left();</span>
+
+<span class="nc" id="L137">    table.row().padTop(10f);</span>
+<span class="nc" id="L138">    table.add(displayModeLabel).right().padRight(15f);</span>
+<span class="nc" id="L139">    table.add(displayModeSelect).left();</span>
+
+    // Events on inputs
+<span class="nc" id="L142">    uiScaleSlider.addListener(</span>
+        (Event event) -&gt; {
+<span class="nc" id="L144">          float value = uiScaleSlider.getValue();</span>
+<span class="nc" id="L145">          uiScaleValue.setText(String.format(&quot;%.2fx&quot;, value));</span>
+<span class="nc" id="L146">          return true;</span>
+        });
+
+<span class="nc" id="L149">    return table;</span>
+  }
+
+  private StringDecorator&lt;DisplayMode&gt; getActiveMode(Array&lt;StringDecorator&lt;DisplayMode&gt;&gt; modes) {
+<span class="nc" id="L153">    DisplayMode active = Gdx.graphics.getDisplayMode();</span>
+
+<span class="nc bnc" id="L155" title="All 2 branches missed.">    for (StringDecorator&lt;DisplayMode&gt; stringMode : modes) {</span>
+<span class="nc" id="L156">      DisplayMode mode = stringMode.object;</span>
+<span class="nc bnc" id="L157" title="All 6 branches missed.">      if (active.width == mode.width</span>
+          &amp;&amp; active.height == mode.height
+          &amp;&amp; active.refreshRate == mode.refreshRate) {
+<span class="nc" id="L160">        return stringMode;</span>
+      }
+<span class="nc" id="L162">    }</span>
+<span class="nc" id="L163">    return null;</span>
+  }
+
+  private Array&lt;StringDecorator&lt;DisplayMode&gt;&gt; getDisplayModes(Monitor monitor) {
+<span class="nc" id="L167">    DisplayMode[] displayModes = Gdx.graphics.getDisplayModes(monitor);</span>
+<span class="nc" id="L168">    Array&lt;StringDecorator&lt;DisplayMode&gt;&gt; arr = new Array&lt;&gt;();</span>
+
+<span class="nc bnc" id="L170" title="All 2 branches missed.">    for (DisplayMode displayMode : displayModes) {</span>
+<span class="nc" id="L171">      arr.add(new StringDecorator&lt;&gt;(displayMode, this::prettyPrint));</span>
+    }
+
+<span class="nc" id="L174">    return arr;</span>
+  }
+
+  private String prettyPrint(DisplayMode displayMode) {
+<span class="nc" id="L178">    return displayMode.width + &quot;x&quot; + displayMode.height + &quot;, &quot; + displayMode.refreshRate + &quot;hz&quot;;</span>
+  }
+
+  private Table makeMenuBtns() {
+<span class="nc" id="L182">    TextButton exitBtn = new TextButton(&quot;Exit&quot;, skin);</span>
+<span class="nc" id="L183">    TextButton applyBtn = new TextButton(&quot;Apply&quot;, skin);</span>
+
+<span class="nc" id="L185">    exitBtn.addListener(</span>
+<span class="nc" id="L186">        new ChangeListener() {</span>
+          @Override
+          public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L189">            logger.debug(&quot;Exit button clicked&quot;);</span>
+<span class="nc" id="L190">            exitMenu();</span>
+<span class="nc" id="L191">          }</span>
+        });
+
+<span class="nc" id="L194">    applyBtn.addListener(</span>
+<span class="nc" id="L195">        new ChangeListener() {</span>
+          @Override
+          public void changed(ChangeEvent changeEvent, Actor actor) {
+<span class="nc" id="L198">            logger.debug(&quot;Apply button clicked&quot;);</span>
+<span class="nc" id="L199">            applyChanges();</span>
+<span class="nc" id="L200">          }</span>
+        });
+
+<span class="nc" id="L203">    Table table = new Table();</span>
+<span class="nc" id="L204">    table.add(exitBtn).expandX().left().pad(0f, 15f, 15f, 0f);</span>
+<span class="nc" id="L205">    table.add(applyBtn).expandX().right().pad(0f, 0f, 15f, 15f);</span>
+<span class="nc" id="L206">    return table;</span>
+  }
+
+  private void applyChanges() {
+<span class="nc" id="L210">    UserSettings.Settings settings = UserSettings.get();</span>
+
+<span class="nc" id="L212">    Integer fpsVal = parseOrNull(fpsText.getText());</span>
+<span class="nc bnc" id="L213" title="All 2 branches missed.">    if (fpsVal != null) {</span>
+<span class="nc" id="L214">      settings.fps = fpsVal;</span>
+    }
+<span class="nc" id="L216">    settings.fullscreen = fullScreenCheck.isChecked();</span>
+<span class="nc" id="L217">    settings.uiScale = uiScaleSlider.getValue();</span>
+<span class="nc" id="L218">    settings.displayMode = new DisplaySettings(displayModeSelect.getSelected().object);</span>
+<span class="nc" id="L219">    settings.vsync = vsyncCheck.isChecked();</span>
+
+<span class="nc" id="L221">    UserSettings.set(settings, true);</span>
+<span class="nc" id="L222">  }</span>
+
+  private void exitMenu() {
+<span class="nc" id="L225">    game.setScreen(ScreenType.MAIN_MENU);</span>
+<span class="nc" id="L226">  }</span>
+
+  private Integer parseOrNull(String num) {
+    try {
+<span class="nc" id="L230">      return Integer.parseInt(num, 10);</span>
+<span class="nc" id="L231">    } catch (NumberFormatException e) {</span>
+<span class="nc" id="L232">      return null;</span>
+    }
+  }
+
+  @Override
+  protected void draw(SpriteBatch batch) {
+    // draw is handled by the stage
+<span class="nc" id="L239">  }</span>
+
+  @Override
+  public void update() {
+<span class="nc" id="L243">    stage.act(ServiceLocator.getTimeSource().getDeltaTime());</span>
+<span class="nc" id="L244">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L248">    rootTable.clear();</span>
+<span class="nc" id="L249">    super.dispose();</span>
+<span class="nc" id="L250">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

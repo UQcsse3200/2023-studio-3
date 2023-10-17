@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GdxGame.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game</a> &gt; <span class="el_source">GdxGame.java</span></div><h1>GdxGame.java</h1><pre class="source lang-java linenums">package com.csse3200.game;
+
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.csse3200.game.files.UserSettings;
+import com.csse3200.game.screens.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static com.badlogic.gdx.Gdx.app;
+
+/**
+ * Entry point of the non-platform-specific game logic. Controls which screen is currently running.
+ * The current screen triggers transitions to other screens. This works similarly to a finite state
+ * machine (See the State Pattern).
+ */
+<span class="nc" id="L18">public class GdxGame extends Game {</span>
+<span class="fc" id="L19">  private static final Logger logger = LoggerFactory.getLogger(GdxGame.class);</span>
+
+  @Override
+  public void create() {
+<span class="nc" id="L23">    logger.info(&quot;Creating game&quot;);</span>
+<span class="nc" id="L24">    loadSettings();</span>
+
+    // Sets background to light yellow
+<span class="nc" id="L27">    Gdx.gl.glClearColor(248f/255f, 249/255f, 178/255f, 1);</span>
+
+<span class="nc" id="L29">    setScreen(ScreenType.MAIN_MENU);</span>
+<span class="nc" id="L30">  }</span>
+
+  /**
+   * Loads the game's settings.
+   */
+  private void loadSettings() {
+<span class="nc" id="L36">    logger.debug(&quot;Loading game settings&quot;);</span>
+<span class="nc" id="L37">    UserSettings.Settings settings = UserSettings.get();</span>
+<span class="nc" id="L38">    UserSettings.applySettings(settings);</span>
+<span class="nc" id="L39">  }</span>
+
+  /**
+   * Sets the game's screen to a new screen of the provided type.
+   * @param screenType screen type
+   */
+  public void setScreen(ScreenType screenType) {
+<span class="nc" id="L46">    logger.info(&quot;Setting game screen to {}&quot;, screenType);</span>
+<span class="nc" id="L47">    Screen currentScreen = getScreen();</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">    if (currentScreen != null) {</span>
+<span class="nc" id="L49">      currentScreen.dispose();</span>
+    }
+<span class="nc" id="L51">    setScreen(newScreen(screenType));</span>
+<span class="nc" id="L52">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L56">    logger.debug(&quot;Disposing of current screen&quot;);</span>
+<span class="nc" id="L57">    getScreen().dispose();</span>
+<span class="nc" id="L58">  }</span>
+
+  /**
+   * Create a new screen of the provided type.
+   * @param screenType screen type
+   * @return new screen
+   */
+  private Screen newScreen(ScreenType screenType) {
+<span class="nc bnc" id="L66" title="All 9 branches missed.">    switch (screenType) {</span>
+      case MAIN_MENU:
+<span class="nc" id="L68">        return new MainMenuScreen(this);</span>
+      case MAIN_GAME:
+<span class="nc" id="L70">        return new MainGameScreen(this);</span>
+      case SETTINGS:
+<span class="nc" id="L72">        return new SettingsScreen(this);</span>
+      case STORY_SCREEN:
+<span class="nc" id="L74">        return new StoryScreen(this);</span>
+      case LEVEL_SELECT:
+<span class="nc" id="L76">        return new LevelSelectScreen(this);</span>
+      case LOSING_SCREEN:
+<span class="nc" id="L78">        return new LosingScreen(this);</span>
+      case TURRET_SELECTION:
+<span class="nc" id="L80">        return new TurretSelectionScreen(this);</span>
+      case HELP_SCREEN:
+<span class="nc" id="L82">        return new HelpScreen(this);</span>
+      default:
+<span class="nc" id="L84">        return null;</span>
+    }
+  }
+
+<span class="nc" id="L88">  public enum ScreenType {</span>
+<span class="nc" id="L89">    MAIN_MENU, MAIN_GAME, SETTINGS, STORY_SCREEN, LEVEL_SELECT, TURRET_SELECTION, LOSING_SCREEN, HELP_SCREEN</span>
+  }
+
+  /**
+   * Exit the game.
+   */
+  public void exit() {
+<span class="nc" id="L96">    app.exit();</span>
+<span class="nc" id="L97">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

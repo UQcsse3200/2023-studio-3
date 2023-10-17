@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">InputComponent.java</span></div><h1>InputComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * An InputComponent that supports keyboard and touch input and touch gestures. By default an
+ * InputComponent does not handle any input events.
+ *
+ * &lt;p&gt;Subclasses of InputComponent should override relevant methods to handle input. Ensure the
+ * priority is set in the subclass' constructor.
+ */
+public abstract class InputComponent extends Component
+    implements InputProcessor, GestureDetector.GestureListener {
+  /** The priority that the input handler is visited in by InputService. */
+  protected int priority;
+
+  /**
+   * Sets priority to the default value;
+   */
+  protected InputComponent() {
+<span class="fc" id="L25">    this(0);</span>
+<span class="fc" id="L26">  }</span>
+
+  /**
+   * Sets input handler priority to a given value.
+   * @param priority input handler's priority
+   */
+<span class="fc" id="L32">  protected InputComponent(int priority) {</span>
+<span class="fc" id="L33">    this.priority = priority;</span>
+<span class="fc" id="L34">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L38">    ServiceLocator.getInputService().register(this);</span>
+<span class="fc" id="L39">  }</span>
+
+  public void setPriority(int priority) {
+<span class="fc" id="L42">    this.priority = priority;</span>
+<span class="fc" id="L43">  }</span>
+
+  public int getPriority() {
+<span class="fc" id="L46">    return priority;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L51">    super.dispose();</span>
+<span class="nc" id="L52">    ServiceLocator.getInputService().unregister(this);</span>
+<span class="nc" id="L53">  }</span>
+
+  /**
+   * Below methods are for supporting keyboard and touch.
+   */
+
+  /** @see InputProcessor#keyDown(int) */
+  @Override
+  public boolean keyDown(int keycode) {
+<span class="fc" id="L62">    return false;</span>
+  }
+
+  /** @see InputProcessor#keyTyped(char) */
+  @Override
+  public boolean keyTyped(char character) {
+<span class="fc" id="L68">    return false;</span>
+  }
+
+  /** @see InputProcessor#keyUp(int) */
+  @Override
+  public boolean keyUp(int keycode) {
+<span class="fc" id="L74">    return false;</span>
+  }
+
+  /** @see InputProcessor#mouseMoved(int, int) */
+  @Override
+  public boolean mouseMoved(int screenX, int screenY) {
+<span class="fc" id="L80">    return false;</span>
+  }
+
+  /** @see InputProcessor#scrolled(float, float) */
+  @Override
+  public boolean scrolled(float amountX, float amountY) {
+<span class="fc" id="L86">    return false;</span>
+  }
+
+  /** @see InputProcessor#touchDown(int, int, int, int) */
+  @Override
+  public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="fc" id="L92">    return false;</span>
+  }
+
+  /** @see InputProcessor#touchDragged(int, int, int) */
+  @Override
+  public boolean touchDragged(int screenX, int screenY, int pointer) {
+<span class="fc" id="L98">    return false;</span>
+  }
+
+  /** @see InputProcessor#touchUp(int, int, int, int) */
+  @Override
+  public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+<span class="fc" id="L104">    return false;</span>
+  }
+
+  /**
+   * Below methods are for supporting touch gestures.
+   */
+
+  /** @see GestureDetector.GestureListener#fling(float, float, int) */
+  @Override
+  public boolean fling(float velocityX, float velocityY, int button) {
+<span class="fc" id="L114">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#longPress(float, float) */
+  @Override
+  public boolean longPress(float x, float y) {
+<span class="fc" id="L120">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#pan(float, float, float, float) */
+  @Override
+  public boolean pan(float x, float y, float deltaX, float deltaY) {
+<span class="fc" id="L126">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#panStop(float, float, int, int) */
+  @Override
+  public boolean panStop(float x, float y, int pointer, int button) {
+<span class="fc" id="L132">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#pinch(Vector2, Vector2, Vector2, Vector2) */
+  @Override
+  public boolean pinch(
+      Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+<span class="fc" id="L139">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#pinchStop() */
+  @Override
+<span class="nc" id="L144">  public void pinchStop() {}</span>
+
+  /**
+   * Wrapper for pinch stop that can be overridden.
+   * This was created because the pinchStop() doesn't have a return value.
+   *
+   * @return whether the input was processed
+   */
+  public boolean pinchStopHandled() {
+<span class="nc" id="L153">    this.pinchStop();</span>
+<span class="nc" id="L154">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#tap(float, float, int, int) */
+  @Override
+  public boolean tap(float x, float y, int count, int button) {
+<span class="fc" id="L160">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#touchDown(float, float, int, int) */
+  @Override
+  public boolean touchDown(float x, float y, int pointer, int button) {
+<span class="fc" id="L166">    return false;</span>
+  }
+
+  /** @see GestureDetector.GestureListener#zoom(float, float) */
+  @Override
+  public boolean zoom(float initialDistance, float distance) {
+<span class="fc" id="L172">    return false;</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

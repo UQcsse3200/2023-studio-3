@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainMenuScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">MainMenuScreen.java</span></div><h1>MainMenuScreen.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.mainmenu.MainMenuActions;
+import com.csse3200.game.components.mainmenu.MainMenuDisplay;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.InputDecorator;
+import com.csse3200.game.input.InputService;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+
+/**
+ * The game screen containing the main menu.
+ */
+public class MainMenuScreen extends ScreenAdapter {
+<span class="nc" id="L32">  private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);</span>
+  private final GdxGame game;
+  private final Renderer renderer;
+  private Texture backgroundTexture;
+  private final SpriteBatch batch;
+<span class="nc" id="L37">  private static final String[] mainMenuAtlases = {</span>
+          &quot;images/ui/buttons/glass.atlas&quot;
+  };
+<span class="nc" id="L40">  private static final String[] titleMusic = {&quot;sounds/background/title_screen/ScifiAmbient.ogg&quot;};</span>
+  private Animation&lt;TextureRegion&gt; MM_Star1_animation;
+  private Animation&lt;TextureRegion&gt; MM_Galaxy1_animation;
+  private Animation&lt;TextureRegion&gt; MM_Planet1_animation;
+  private Animation&lt;TextureRegion&gt; MM_Planet2_animation;
+  private Animation&lt;TextureRegion&gt; MM_Planet3_animation;
+//  private Animation&lt;TextureRegion&gt; MM_MonitorFace1_animation;
+  private Texture MM_Star1_Texture;
+  private Texture MM_Galaxy1_Texture;
+  private Texture MM_Planet1_Texture;
+  private Texture MM_Planet2_Texture;
+  private Texture MM_Planet3_Texture;
+//  private Texture MM_MonitorFace1_Texture;
+<span class="nc" id="L53">  private float elapsedTime = 0;</span>
+  private int MM_Star1_frameWidth;
+  private int MM_Star1_frameHeight;
+  private int MM_Galaxy1_frameWidth;
+  private int MM_Galaxy1_frameHeight;
+  private int MM_Planet1_frameWidth;
+  private int MM_Planet1_frameHeight;
+  private int MM_Planet2_frameWidth;
+  private int MM_Planet2_frameHeight;
+  private int MM_Planet3_frameWidth;
+  private int MM_Planet3_frameHeight;
+
+//  private int MM_MonitorFace1_frameWidth;
+//  private int MM_MonitorFace1_frameHeight;
+<span class="nc" id="L67">  private static final String[] mainMenuTextures = {&quot;images/background/main_menu/main_menu_bg.png&quot;};</span>
+
+<span class="nc" id="L69">  public MainMenuScreen(GdxGame game) {</span>
+<span class="nc" id="L70">    this.game = game;</span>
+
+<span class="nc" id="L72">    logger.debug(&quot;Initialising main menu screen services&quot;);</span>
+<span class="nc" id="L73">    ServiceLocator.registerInputService(new InputService());</span>
+<span class="nc" id="L74">    ServiceLocator.registerResourceService(new ResourceService());</span>
+<span class="nc" id="L75">    ServiceLocator.registerEntityService(new EntityService());</span>
+<span class="nc" id="L76">    ServiceLocator.registerRenderService(new RenderService());</span>
+
+<span class="nc" id="L78">    renderer = RenderFactory.createRenderer();</span>
+<span class="nc" id="L79">    batch = new SpriteBatch();</span>
+<span class="nc" id="L80">    Gdx.gl.glClearColor(0.5f, 0.6f, 0.19f, 1);</span>
+
+
+<span class="nc" id="L83">    loadAssets();</span>
+<span class="nc" id="L84">    createUI();</span>
+<span class="nc" id="L85">  }</span>
+
+  /**
+   * Loads the assets required for the main menu screen, including textures and animations.
+   * This method initializes and loads sprite sheets for various celestial objects like stars, planets, and galaxies.
+   * Each sprite sheet is divided into individual frames for animation purposes.
+   */
+  @Override
+  public void render(float delta) {
+<span class="nc" id="L94">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+<span class="nc" id="L95">    ServiceLocator.getEntityService().update();</span>
+
+<span class="nc" id="L97">    float screenWidth = Gdx.graphics.getWidth();</span>
+<span class="nc" id="L98">    float screenHeight = Gdx.graphics.getHeight();</span>
+
+    // Draw the background image
+<span class="nc" id="L101">    batch.begin();</span>
+<span class="nc" id="L102">    batch.draw(backgroundTexture, 0, 0, screenWidth, screenHeight);</span>
+<span class="nc" id="L103">    batch.end();</span>
+
+<span class="nc" id="L105">    renderer.render();</span>
+
+<span class="nc" id="L107">    batch.begin();</span>
+<span class="nc" id="L108">    elapsedTime += delta;</span>
+
+    // MM_Star1
+    // Determine the proportional offset of the MM_Star1 sprite
+<span class="nc" id="L112">    float MM_Star1_proportionalOffsetX = 830f / backgroundTexture.getWidth();</span>
+<span class="nc" id="L113">    float MM_Star1_proportionalOffsetY = 650f / backgroundTexture.getHeight();</span>
+    // Calculate the scaling factor based on how the background is stretched to fit the screen
+<span class="nc" id="L115">    float scaleX = screenWidth / backgroundTexture.getWidth();</span>
+<span class="nc" id="L116">    float scaleY = screenHeight / backgroundTexture.getHeight();</span>
+    // Calculate the position of the MM_Star1 sprite on the screen
+<span class="nc" id="L118">    float MM_Star1_spriteX = MM_Star1_proportionalOffsetX * screenWidth;</span>
+<span class="nc" id="L119">    float MM_Star1_spriteY = MM_Star1_proportionalOffsetY * screenHeight;</span>
+    // Size adjustments
+<span class="nc" id="L121">    float MM_Star1_ScaleFactor = 0.3f;</span>
+<span class="nc" id="L122">    float MM_Star1_Width = MM_Star1_frameWidth * MM_Star1_ScaleFactor;</span>
+<span class="nc" id="L123">    float MM_Star1_Height = MM_Star1_frameHeight * MM_Star1_ScaleFactor;</span>
+<span class="nc" id="L124">    batch.draw(MM_Star1_animation.getKeyFrame(elapsedTime, true), MM_Star1_spriteX, MM_Star1_spriteY, MM_Star1_Width, MM_Star1_Height);</span>
+
+    // MM_Galaxy1
+    // Determine the proportional offset of the MM_Star1 sprite
+<span class="nc" id="L128">    float MM_Galaxy1_proportionalOffsetX = 2000f / backgroundTexture.getWidth();</span>
+<span class="nc" id="L129">    float MM_Galaxy1_proportionalOffsetY = 1075f / backgroundTexture.getHeight();</span>
+    // Calculate the position of the MM_Star1 sprite on the screen
+<span class="nc" id="L131">    float MM_Galaxy1_spriteX = MM_Galaxy1_proportionalOffsetX * screenWidth;</span>
+<span class="nc" id="L132">    float MM_Galaxy1_spriteY = MM_Galaxy1_proportionalOffsetY * screenHeight;</span>
+    // Size adjustments
+<span class="nc" id="L134">    float MM_Galaxy1_ScaleFactor = 0.95f;</span>
+<span class="nc" id="L135">    float MM_Galaxy1_Width = MM_Galaxy1_frameWidth * MM_Galaxy1_ScaleFactor;</span>
+<span class="nc" id="L136">    float MM_Galaxy1_Height = MM_Galaxy1_frameHeight * MM_Galaxy1_ScaleFactor;</span>
+<span class="nc" id="L137">    batch.draw(MM_Galaxy1_animation.getKeyFrame(elapsedTime, true), MM_Galaxy1_spriteX, MM_Galaxy1_spriteY, MM_Galaxy1_Width, MM_Galaxy1_Height);</span>
+
+    // MM_Planet1
+    // Determine the proportional offset of the MM_Star1 sprite
+<span class="nc" id="L141">    float MM_Planet1_proportionalOffsetX = 1630f / backgroundTexture.getWidth();</span>
+<span class="nc" id="L142">    float MM_Planet1_proportionalOffsetY = 800f / backgroundTexture.getHeight();</span>
+    // Calculate the position of the MM_Star1 sprite on the screen
+<span class="nc" id="L144">    float MM_Planet1_spriteX = MM_Planet1_proportionalOffsetX * screenWidth;</span>
+<span class="nc" id="L145">    float MM_Planet1_spriteY = MM_Planet1_proportionalOffsetY * screenHeight;</span>
+    // Size adjustments
+<span class="nc" id="L147">    float MM_Planet1_ScaleFactor = 0.5f;</span>
+<span class="nc" id="L148">    float MM_Planet1_Width = MM_Planet1_frameWidth * MM_Planet1_ScaleFactor;</span>
+<span class="nc" id="L149">    float MM_Planet1_Height = MM_Planet1_frameHeight * MM_Planet1_ScaleFactor;</span>
+<span class="nc" id="L150">    batch.draw(MM_Planet1_animation.getKeyFrame(elapsedTime, true), MM_Planet1_spriteX, MM_Planet1_spriteY, MM_Planet1_Width, MM_Planet1_Height);</span>
+
+    // MM_Planet2
+    // Determine the proportional offset of the MM_Star1 sprite
+<span class="nc" id="L154">    float MM_Planet2_proportionalOffsetX = 1290f / backgroundTexture.getWidth();</span>
+<span class="nc" id="L155">    float MM_Planet2_proportionalOffsetY = 1200f / backgroundTexture.getHeight();</span>
+    // Calculate the position of the MM_Star1 sprite on the screen
+<span class="nc" id="L157">    float MM_Planet2_spriteX = MM_Planet2_proportionalOffsetX * screenWidth;</span>
+<span class="nc" id="L158">    float MM_Planet2_spriteY = MM_Planet2_proportionalOffsetY * screenHeight;</span>
+    // Size adjustments
+<span class="nc" id="L160">    float MM_Planet2_ScaleFactor = 0.7f;</span>
+<span class="nc" id="L161">    float MM_Planet2_Width = MM_Planet2_frameWidth * MM_Planet2_ScaleFactor;</span>
+<span class="nc" id="L162">    float MM_Planet2_Height = MM_Planet2_frameHeight * MM_Planet2_ScaleFactor;</span>
+<span class="nc" id="L163">    batch.draw(MM_Planet2_animation.getKeyFrame(elapsedTime, true), MM_Planet2_spriteX, MM_Planet2_spriteY, MM_Planet2_Width, MM_Planet2_Height);</span>
+
+    // MM_Planet3
+    // Determine the proportional offset of the MM_Star1 sprite
+<span class="nc" id="L167">    float MM_Planet3_proportionalOffsetX = 420f / backgroundTexture.getWidth();</span>
+<span class="nc" id="L168">    float MM_Planet3_proportionalOffsetY = 990f / backgroundTexture.getHeight();</span>
+    // Calculate the position of the MM_Star1 sprite on the screen
+<span class="nc" id="L170">    float MM_Planet3_spriteX = MM_Planet3_proportionalOffsetX * screenWidth;</span>
+<span class="nc" id="L171">    float MM_Planet3_spriteY = MM_Planet3_proportionalOffsetY * screenHeight;</span>
+    // Size adjustments
+<span class="nc" id="L173">    float MM_Planet3_ScaleFactor = 0.65f;</span>
+<span class="nc" id="L174">    float MM_Planet3_Width = MM_Planet3_frameWidth * MM_Planet3_ScaleFactor;</span>
+<span class="nc" id="L175">    float MM_Planet3_Height = MM_Planet3_frameHeight * MM_Planet3_ScaleFactor;</span>
+<span class="nc" id="L176">    batch.draw(MM_Planet3_animation.getKeyFrame(elapsedTime, true), MM_Planet3_spriteX, MM_Planet3_spriteY, MM_Planet3_Width, MM_Planet3_Height);</span>
+
+<span class="nc" id="L178">    batch.end();</span>
+<span class="nc" id="L179">  }</span>
+
+  @Override
+  public void resize(int width, int height) {
+<span class="nc" id="L183">    renderer.resize(width, height);</span>
+<span class="nc" id="L184">    logger.trace(&quot;Resized renderer: ({} x {})&quot;, width, height);</span>
+<span class="nc" id="L185">  }</span>
+
+  @Override
+  public void pause() {
+<span class="nc" id="L189">    logger.info(&quot;Game paused&quot;);</span>
+<span class="nc" id="L190">  }</span>
+
+  @Override
+  public void resume() {
+<span class="nc" id="L194">    logger.info(&quot;Game resumed&quot;);</span>
+<span class="nc" id="L195">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L199">    logger.debug(&quot;Disposing main menu screen&quot;);</span>
+
+<span class="nc" id="L201">    renderer.dispose();</span>
+<span class="nc" id="L202">    unloadAssets();</span>
+<span class="nc" id="L203">    ServiceLocator.getRenderService().dispose();</span>
+<span class="nc" id="L204">    ServiceLocator.getEntityService().dispose();</span>
+<span class="nc" id="L205">    batch.dispose();</span>
+
+<span class="nc" id="L207">    ServiceLocator.clear();</span>
+<span class="nc" id="L208">  }</span>
+
+  /**
+   * Loads the assets required for the main menu screen, including textures and animations.
+   * This method initializes and loads sprite sheets for various celestial objects such as stars, galaxies, and planets.
+   * Each sprite sheet is divided into individual frames for animation purposes.
+   */
+  private void loadAssets() {
+<span class="nc" id="L216">    logger.debug(&quot;Loading assets&quot;);</span>
+<span class="nc" id="L217">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L218">    resourceService.loadTextures(mainMenuTextures);</span>
+<span class="nc" id="L219">    resourceService.loadTextureAtlases(mainMenuAtlases);</span>
+<span class="nc" id="L220">    ServiceLocator.getResourceService().loadMusic(titleMusic);</span>
+<span class="nc" id="L221">    backgroundTexture = new Texture(&quot;images/background/main_menu/main_menu_bg.png&quot;);</span>
+
+    // MM_Star1
+<span class="nc" id="L224">    MM_Star1_Texture = new Texture(Gdx.files.internal(&quot;images/background/main_menu/MM_Objects/MM_Star1.png&quot;));</span>
+
+<span class="nc" id="L226">    int MM_Star1_totalColumns=60;</span>
+<span class="nc" id="L227">    MM_Star1_frameWidth = MM_Star1_Texture.getWidth() / MM_Star1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet</span>
+<span class="nc" id="L228">    int MM_Star1_totalRows=1;</span>
+<span class="nc" id="L229">    MM_Star1_frameHeight = MM_Star1_Texture.getHeight() / MM_Star1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet</span>
+
+<span class="nc" id="L231">    TextureRegion[][] MM_Star1_Frames = TextureRegion.split(MM_Star1_Texture, MM_Star1_frameWidth, MM_Star1_frameHeight);</span>
+
+<span class="nc" id="L233">    TextureRegion[] MM_Star1_animationFrames = new TextureRegion[MM_Star1_totalColumns];</span>
+
+<span class="nc" id="L235">    System.arraycopy(MM_Star1_Frames[0], 0, MM_Star1_animationFrames, 0, MM_Star1_totalColumns);</span>
+
+<span class="nc" id="L237">    MM_Star1_animation = new Animation&lt;&gt;(0.17f, MM_Star1_animationFrames);</span>
+
+
+    // MM_Galaxy1
+<span class="nc" id="L241">    MM_Galaxy1_Texture = new Texture(Gdx.files.internal(&quot;images/background/main_menu/MM_Objects/MM_Galaxy1.png&quot;));</span>
+
+<span class="nc" id="L243">    int MM_Galaxy1_totalColumns=60;</span>
+<span class="nc" id="L244">    MM_Galaxy1_frameWidth = MM_Galaxy1_Texture.getWidth() / MM_Galaxy1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet</span>
+<span class="nc" id="L245">    int MM_Galaxy1_totalRows=1;</span>
+<span class="nc" id="L246">    MM_Galaxy1_frameHeight = MM_Galaxy1_Texture.getHeight() / MM_Galaxy1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet</span>
+
+<span class="nc" id="L248">    TextureRegion[][] MM_Galaxy1_Frames = TextureRegion.split(MM_Galaxy1_Texture, MM_Galaxy1_frameWidth, MM_Galaxy1_frameHeight);</span>
+
+<span class="nc" id="L250">    TextureRegion[] MM_Galaxy1_animationFrames = new TextureRegion[MM_Galaxy1_totalColumns];</span>
+
+<span class="nc" id="L252">    System.arraycopy(MM_Galaxy1_Frames[0], 0, MM_Galaxy1_animationFrames, 0, MM_Galaxy1_totalColumns);</span>
+
+<span class="nc" id="L254">    MM_Galaxy1_animation = new Animation&lt;&gt;(0.17f, MM_Galaxy1_animationFrames);</span>
+
+
+    // MM_Planet1
+<span class="nc" id="L258">    MM_Planet1_Texture = new Texture(Gdx.files.internal(&quot;images/background/main_menu/MM_Objects/MM_Planet1.png&quot;));</span>
+
+<span class="nc" id="L260">    int MM_Planet1_totalColumns=60;</span>
+<span class="nc" id="L261">    MM_Planet1_frameWidth = MM_Planet1_Texture.getWidth() / MM_Planet1_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet</span>
+<span class="nc" id="L262">    int MM_Planet1_totalRows=1;</span>
+<span class="nc" id="L263">    MM_Planet1_frameHeight = MM_Planet1_Texture.getHeight() / MM_Planet1_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet</span>
+
+<span class="nc" id="L265">    TextureRegion[][] MM_Planet1_Frames = TextureRegion.split(MM_Planet1_Texture, MM_Planet1_frameWidth, MM_Planet1_frameHeight);</span>
+
+<span class="nc" id="L267">    TextureRegion[] MM_Planet1_animationFrames = new TextureRegion[MM_Planet1_totalColumns];</span>
+
+<span class="nc" id="L269">    System.arraycopy(MM_Planet1_Frames[0], 0, MM_Planet1_animationFrames, 0, MM_Planet1_totalColumns);</span>
+
+<span class="nc" id="L271">    MM_Planet1_animation = new Animation&lt;&gt;(0.17f, MM_Planet1_animationFrames);</span>
+
+
+    // MM_Planet2
+<span class="nc" id="L275">    MM_Planet2_Texture = new Texture(Gdx.files.internal(&quot;images/background/main_menu/MM_Objects/MM_Planet2.png&quot;));</span>
+
+<span class="nc" id="L277">    int MM_Planet2_totalColumns=60;</span>
+<span class="nc" id="L278">    MM_Planet2_frameWidth = MM_Planet2_Texture.getWidth() / MM_Planet2_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet</span>
+<span class="nc" id="L279">    int MM_Planet2_totalRows=1;</span>
+<span class="nc" id="L280">    MM_Planet2_frameHeight = MM_Planet2_Texture.getHeight() / MM_Planet2_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet</span>
+
+<span class="nc" id="L282">    TextureRegion[][] MM_Planet2_Frames = TextureRegion.split(MM_Planet2_Texture, MM_Planet2_frameWidth, MM_Planet2_frameHeight);</span>
+
+<span class="nc" id="L284">    TextureRegion[] MM_Planet2_animationFrames = new TextureRegion[MM_Planet2_totalColumns];</span>
+
+<span class="nc" id="L286">    System.arraycopy(MM_Planet2_Frames[0], 0, MM_Planet2_animationFrames, 0, MM_Planet2_totalColumns);</span>
+
+<span class="nc" id="L288">    MM_Planet2_animation = new Animation&lt;&gt;(0.17f, MM_Planet2_animationFrames);</span>
+
+
+    // MM_Planet3
+<span class="nc" id="L292">    MM_Planet3_Texture = new Texture(Gdx.files.internal(&quot;images/background/main_menu/MM_Objects/MM_Planet3.png&quot;));</span>
+
+<span class="nc" id="L294">    int MM_Planet3_totalColumns=54;</span>
+<span class="nc" id="L295">    MM_Planet3_frameWidth = MM_Planet3_Texture.getWidth() / MM_Planet3_totalColumns; // totalColumns = no. of columns in MM_Star1 sprite sheet</span>
+<span class="nc" id="L296">    int MM_Planet3_totalRows=1;</span>
+<span class="nc" id="L297">    MM_Planet3_frameHeight = MM_Planet3_Texture.getHeight() / MM_Planet3_totalRows;  // totalRows = no. of rows in MM_Star1 sprite sheet</span>
+
+<span class="nc" id="L299">    TextureRegion[][] MM_Planet3_Frames = TextureRegion.split(MM_Planet3_Texture, MM_Planet3_frameWidth, MM_Planet3_frameHeight);</span>
+
+<span class="nc" id="L301">    TextureRegion[] MM_Planet3_animationFrames = new TextureRegion[MM_Planet3_totalColumns];</span>
+
+<span class="nc" id="L303">    System.arraycopy(MM_Planet3_Frames[0], 0, MM_Planet3_animationFrames, 0, MM_Planet3_totalColumns);</span>
+
+<span class="nc" id="L305">    MM_Planet3_animation = new Animation&lt;&gt;(0.17f, MM_Planet3_animationFrames);</span>
+
+<span class="nc" id="L307">    ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L308">  }</span>
+
+  /**
+   * Unloads the assets that were previously loaded for the main menu screen.
+   * This method disposes of textures and sprite sheets used for celestial objects such as stars, galaxies, and planets.
+   */
+  private void unloadAssets() {
+<span class="nc" id="L315">    logger.debug(&quot;Unloading assets&quot;);</span>
+<span class="nc" id="L316">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L317">    resourceService.unloadAssets(mainMenuTextures);</span>
+<span class="nc" id="L318">    resourceService.unloadAssets(mainMenuAtlases);</span>
+<span class="nc" id="L319">    resourceService.unloadAssets(titleMusic);</span>
+<span class="nc" id="L320">    MM_Star1_Texture.dispose();</span>
+<span class="nc" id="L321">    MM_Galaxy1_Texture.dispose();</span>
+<span class="nc" id="L322">    MM_Planet1_Texture.dispose();</span>
+<span class="nc" id="L323">    MM_Planet2_Texture.dispose();</span>
+<span class="nc" id="L324">    MM_Planet3_Texture.dispose();</span>
+<span class="nc" id="L325">  }</span>
+
+  /**
+   * Creates the main menu's ui including components for rendering ui elements to the screen and
+   * capturing and handling ui input.
+   */
+  private void createUI() {
+<span class="nc" id="L332">    logger.debug(&quot;Creating ui&quot;);</span>
+<span class="nc" id="L333">    Stage stage = ServiceLocator.getRenderService().getStage();</span>
+<span class="nc" id="L334">    Entity ui = new Entity();</span>
+<span class="nc" id="L335">    ui.addComponent(new MainMenuDisplay())</span>
+<span class="nc" id="L336">            .addComponent(new InputDecorator(stage, 10))</span>
+<span class="nc" id="L337">            .addComponent(new MainMenuActions(game));</span>
+<span class="nc" id="L338">    ServiceLocator.getEntityService().register(ui);</span>
+<span class="nc" id="L339">    Music music = ServiceLocator.getResourceService().getAsset(titleMusic[0], Music.class);</span>
+<span class="nc" id="L340">    music.setLooping(true);</span>
+<span class="nc" id="L341">    music.setVolume(0.3f);</span>
+<span class="nc" id="L342">    music.play();</span>
+<span class="nc" id="L343">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

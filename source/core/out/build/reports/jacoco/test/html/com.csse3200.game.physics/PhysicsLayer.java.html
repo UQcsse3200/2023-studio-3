@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhysicsLayer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.physics</a> &gt; <span class="el_source">PhysicsLayer.java</span></div><h1>PhysicsLayer.java</h1><pre class="source lang-java linenums">package com.csse3200.game.physics;
+
+public class PhysicsLayer {
+  public static final short NONE = 0;
+  public static final short DEFAULT = (1 &lt;&lt; 0);
+  public static final short ENGINEER = (1 &lt;&lt; 1);
+  public static final short BOMBSHIP = (1 &lt;&lt; 1);
+  // Terrain obstacle, e.g. trees
+  public static final short OBSTACLE = (1 &lt;&lt; 2);
+  // NPC (Non-Playable Character) colliders
+  public static final short NPC = (1 &lt;&lt; 3);
+  public static final short PROJECTILE = (1 &lt;&lt; 4);
+  public static final short TOWER = (1 &lt;&lt; 5);
+  // * TEMPORARY WALL BOUNDARIES?
+  public static final short WALL = (1 &lt;&lt; 6);
+
+  public static final short XENO = (1 &lt;&lt; 3);
+  public static final short BOSS = (1 &lt;&lt; 3);
+  public static final short HUMANS = (1 &lt;&lt; 1) | (1 &lt;&lt; 5);
+  public static final short ALL = ~0;
+
+  public static boolean contains(short filterBits, short layer) {
+<span class="fc bfc" id="L23" title="All 2 branches covered.">    return (filterBits &amp; layer) != 0;</span>
+  }
+
+<span class="nc" id="L26">  private PhysicsLayer() {</span>
+<span class="nc" id="L27">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

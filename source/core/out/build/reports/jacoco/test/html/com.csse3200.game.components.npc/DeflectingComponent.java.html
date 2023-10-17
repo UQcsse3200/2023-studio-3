@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeflectingComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.npc</a> &gt; <span class="el_source">DeflectingComponent.java</span></div><h1>DeflectingComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.npc;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.tasks.TrajectTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+
+/**
+ * A component that deflects incoming projectiles a set amount of projectile
+ * collision events.
+ * 
+ * The target layer to be deflected is flexible, meaning it can deflect other
+ * entities as well, including but not limited to it's own target layer.
+ * &lt;p&gt;
+ * This class assumes the projectile has only a TrajectTask. If there are
+ * multiple tasks, the other tasks will be disposed.
+ * &lt;/p&gt;
+ */
+public class DeflectingComponent extends Component {
+  private short targetLayer;
+  private short dmgLayer;
+  private HitboxComponent hitboxComponent;
+  private int deflectLimitAmount;
+  private int maxHealth;
+
+  /**
+   * Initialise a Deflecting component that deflects projectile, reversing the
+   * incoming direcition of the entity. Any effects, such as damage, will be
+   * negated when deflected.
+   * 
+   * The projectile's damage target layer will also be changed.
+   * 
+   * @param targetLayer        Target layer to deflect on
+   * @param dmgLayer           Target layer for the projectile to hit.
+   * @param deflectLimitAmount Amount of deflections to occur for the disabling of
+   *                           this component.
+   */
+  public DeflectingComponent(short targetLayer, short dmgLayer,
+<span class="fc" id="L47">      int deflectLimitAmount) {</span>
+<span class="fc" id="L48">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L49">    this.dmgLayer = dmgLayer;</span>
+<span class="fc" id="L50">    this.deflectLimitAmount = deflectLimitAmount; // Assumes deflect amount &gt; 0.</span>
+<span class="fc" id="L51">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L55">    entity.getEvents().addListener(&quot;collisionStart&quot;, this::deflectProj);</span>
+<span class="fc" id="L56">    hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L57">    maxHealth = entity.getComponent(CombatStatsComponent.class)</span>
+<span class="fc" id="L58">        .getMaxHealth();</span>
+<span class="fc" id="L59">  }</span>
+
+  @Override
+  public void update() {
+<span class="fc" id="L63">    resetHealth();</span>
+<span class="fc" id="L64">  }</span>
+
+  /**
+   * Deflects projectile to the opposite direction
+   * 
+   * @param me    Self entity fixture
+   * @param other Colliding projectile fixture.
+   */
+  private void deflectProj(Fixture me, Fixture other) {
+    // If self fixture does not match to the colliding target return;
+<span class="fc bfc" id="L74" title="All 2 branches covered.">    if (hitboxComponent.getFixture() != me</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits))</span>
+<span class="fc" id="L76">      return;</span>
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">    if (deflectLimitAmount-- &lt;= 0) { // Reached deflect limit amt, return.</span>
+<span class="nc" id="L79">      entity.getComponent(this.getClass()).setEnabled(false);</span>
+      // reset health
+<span class="nc" id="L81">      resetHealth();</span>
+<span class="nc" id="L82">      return;</span>
+    }
+
+    // Obtain projectile entity.
+<span class="fc" id="L86">    Entity projectile = ((BodyUserData) other.getBody().getUserData()).entity;</span>
+
+    // Disposes all tasks for the curr projectile. At this curr time, it assumes
+    // projectile only has one significant task, and that is the TrajectTask.
+<span class="fc" id="L90">    projectile.getComponent(AITaskComponent.class).dispose(); // stop task</span>
+<span class="fc" id="L91">    projectile.getComponent(AITaskComponent.class).disposeAll();</span>
+
+    // Obtain current direction of projectile
+<span class="fc" id="L94">    Vector2 direction = projectile.getComponent(</span>
+<span class="fc" id="L95">        PhysicsMovementComponent.class).getTarget();</span>
+
+    // Rare occurence that the direction is null if target isn't set.
+<span class="pc bpc" id="L98" title="1 of 2 branches missed.">    if (direction == null)</span>
+<span class="nc" id="L99">      return;</span>
+
+    // // Add new traject task with the target in the opposite x-direction.
+<span class="fc" id="L102">    projectile.getComponent(AITaskComponent.class)</span>
+<span class="fc" id="L103">        .addTask(new TrajectTask(new Vector2(-direction.x, direction.y)));</span>
+
+    // Reverse visual image of projectile
+<span class="fc" id="L106">    Vector2 scale = projectile.getScale();</span>
+<span class="fc" id="L107">    projectile.setScale(-scale.x, scale.y);</span>
+
+    // Change target layer of projectile.
+<span class="fc" id="L110">    projectile.getComponent(TouchAttackComponent.class)</span>
+<span class="fc" id="L111">        .setTargetLayer(dmgLayer);</span>
+<span class="fc" id="L112">    entity.getEvents().trigger(&quot;shootStart&quot;);</span>
+
+    // Make sure projectile is not deleted in the next frame.
+<span class="fc" id="L115">    projectile.setFlagForDelete(false);</span>
+
+    // Reset health
+<span class="fc" id="L118">    resetHealth();</span>
+<span class="fc" id="L119">  }</span>
+
+  /**
+   * Reverses the entity's health ater each subsequent collisions.
+   */
+  private void resetHealth() {
+<span class="fc" id="L125">    entity.getComponent(CombatStatsComponent.class).setHealth(maxHealth);</span>
+<span class="fc" id="L126">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

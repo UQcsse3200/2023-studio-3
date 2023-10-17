@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.factories.NPCFactoryTest" tests="40" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:32" hostname="DESKTOP-F4ACIG8" time="5.667">
+  <properties/>
+  <testcase name="testCreateMeleeBaseNpcNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.141"/>
+  <testcase name="fireWormHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.149"/>
+  <testcase name="testFireWormCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.142"/>
+  <testcase name="testCreateWaterQueenHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.137"/>
+  <testcase name="testCreateWaterSlime()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.141"/>
+  <testcase name="testCreateMeleeBaseNpcHasAIComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.182"/>
+  <testcase name="testCreateMeleeBaseNpcHasPhysicsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.137"/>
+  <testcase name="testCreateDragonKnightNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.143"/>
+  <testcase name="dragonKnightHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.134"/>
+  <testcase name="testWizardCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.136"/>
+  <testcase name="testCreateRangedBaseNpcHasPhysicsMovementComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.137"/>
+  <testcase name="testCreateRangedBaseNpcHasHitboxComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.141"/>
+  <testcase name="testCreateMeleeBaseNpcHasHitboxComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.157"/>
+  <testcase name="testCreateMeleeBaseNpcHasColliderComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.151"/>
+  <testcase name="testCreateRangedBaseNpcNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.13"/>
+  <testcase name="testCreateWaterQueenNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.141"/>
+  <testcase name="testSplitWaterSlimeHasSplittingComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.139"/>
+  <testcase name="wizardHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.14"/>
+  <testcase name="testCreateWizardNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.136"/>
+  <testcase name="testCreateRangedBaseNpcHasColliderComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.156"/>
+  <testcase name="testCreateMeleeBaseNpcHasPhysicsMovementComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.137"/>
+  <testcase name="dodgingDragonKnightHasDodgingComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.153"/>
+  <testcase name="waterSlimeHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.133"/>
+  <testcase name="skeletonHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.138"/>
+  <testcase name="testDragonKnightCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.127"/>
+  <testcase name="dragonKnightHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.127"/>
+  <testcase name="dodgingWizardHasDeflectingComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.135"/>
+  <testcase name="wizardHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.144"/>
+  <testcase name="waterQueenHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.132"/>
+  <testcase name="testCreateWaterSlimeHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.129"/>
+  <testcase name="testSplitWaterSlime()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.124"/>
+  <testcase name="testWaterQueenCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.131"/>
+  <testcase name="testCreateFireWormNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.123"/>
+  <testcase name="testCreateSkeletonNotNull()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.139"/>
+  <testcase name="testWaterSlimeCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.173"/>
+  <testcase name="testSkeletonCombatStatsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.147"/>
+  <testcase name="fireWormHasAnimationController()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.131"/>
+  <testcase name="skeletonHasAnimationComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.13"/>
+  <testcase name="testCreateRangedBaseNpcHasAIComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.125"/>
+  <testcase name="testCreateRangedBaseNpcHasPhysicsComponent()" classname="com.csse3200.game.entities.factories.NPCFactoryTest" time="0.129"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

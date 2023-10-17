@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>IceBabyAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.bosses</a> &gt; <span class="el_source">IceBabyAnimationController.java</span></div><h1>IceBabyAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.bosses;
+
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.services.ServiceLocator;
+
+<span class="fc" id="L8">public class IceBabyAnimationController extends Component {</span>
+    AnimationRenderComponent animator;
+
+    /** Animation constants*/
+    private static final String IDLE_ANIM = &quot;idle&quot;;
+    private static final String ATK1_ANIM = &quot;1_atk&quot;;
+    private static final String ATK2_ANIM = &quot;2_atk&quot;;
+    private static final String ATK3_ANIM = &quot;3_atk&quot;;
+    private static final String DEATH_ANIM = &quot;death&quot;;
+    private static final String INTRO_ANIM = &quot;intro_or_revive&quot;;
+    private static final String STAGGER_ANIM = &quot;stagger&quot;;
+    private static final String TAKEHIT_ANIM = &quot;take_hit&quot;;
+    private static final String WALK_ANIM = &quot;walk&quot;;
+
+    /** Event name constants*/
+    private static final String IDLE = &quot;startIdle&quot;;
+    private static final String ATK1 = &quot;start1_atk&quot;;
+    private static final String ATK2 = &quot;start2_atk&quot;;
+    private static final String ATK3 = &quot;start3_atk&quot;;
+    private static final String DEATH = &quot;startDeath&quot;;
+    private static final String INTRO = &quot;startIntro_or_revive&quot;;
+    private static final String STAGGER = &quot;startStagger&quot;;
+    private static final String TAKEHIT = &quot;startTake_hit&quot;;
+    private static final String WALK = &quot;startWalk&quot;;
+
+    /** Sound variables */
+    private static final String SPAWN_SOUND = &quot;sounds/mobBoss/iceBabySound.mp3&quot;;
+<span class="fc" id="L35">    Sound spawnSound = ServiceLocator.getResourceService().getAsset(</span>
+            SPAWN_SOUND, Sound.class);
+    private static final String MOB_SPAWN_SOUND = &quot;sounds/mobBoss/mobSpawnStomp.mp3&quot;;
+<span class="fc" id="L38">    Sound mobSpawnSound = ServiceLocator.getResourceService().getAsset(</span>
+            MOB_SPAWN_SOUND, Sound.class);
+    private static final String AOE_SOUND = &quot;sounds/mobBoss/iceBabyAOE.mp3&quot;;
+<span class="fc" id="L41">    Sound AOESound = ServiceLocator.getResourceService().getAsset(</span>
+            AOE_SOUND, Sound.class);
+
+    @Override
+    public void create() {
+<span class="nc" id="L46">        super.create();</span>
+<span class="nc" id="L47">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L48">        entity.getEvents().addListener(IDLE, this::animateIdle);</span>
+<span class="nc" id="L49">        entity.getEvents().addListener(ATK1, this::animateATK1);</span>
+<span class="nc" id="L50">        entity.getEvents().addListener(ATK2, this::animateATK2);</span>
+<span class="nc" id="L51">        entity.getEvents().addListener(ATK3, this::animateATK3);</span>
+<span class="nc" id="L52">        entity.getEvents().addListener(DEATH, this::animateDeath);</span>
+<span class="nc" id="L53">        entity.getEvents().addListener(INTRO, this::animateIntro);</span>
+<span class="nc" id="L54">        entity.getEvents().addListener(STAGGER, this::animateStagger);</span>
+<span class="nc" id="L55">        entity.getEvents().addListener(TAKEHIT, this::animateTakeHit);</span>
+<span class="nc" id="L56">        entity.getEvents().addListener(WALK, this::animateWalk);</span>
+<span class="nc" id="L57">    }</span>
+
+    void animateIdle() {
+<span class="nc" id="L60">        animator.startAnimation(IDLE_ANIM);</span>
+<span class="nc" id="L61">    }</span>
+    void animateATK1() {
+<span class="nc" id="L63">        animator.startAnimation(ATK1_ANIM);</span>
+<span class="nc" id="L64">    }</span>
+    void animateATK2() {
+<span class="nc" id="L66">        animator.startAnimation(ATK2_ANIM);</span>
+        //volume does not work
+<span class="nc" id="L68">        mobSpawnSound.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L69">        mobSpawnSound.play();</span>
+<span class="nc" id="L70">    }</span>
+    void animateATK3() {
+<span class="nc" id="L72">        animator.startAnimation(ATK3_ANIM);</span>
+<span class="nc" id="L73">        AOESound.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L74">        AOESound.play();</span>
+<span class="nc" id="L75">    }</span>
+    void animateDeath() {
+<span class="nc" id="L77">        animator.startAnimation(DEATH_ANIM);</span>
+<span class="nc" id="L78">    }</span>
+    void animateIntro() {
+<span class="nc" id="L80">        animator.startAnimation(INTRO_ANIM);</span>
+<span class="nc" id="L81">        spawnSound.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L82">        spawnSound.play();</span>
+<span class="nc" id="L83">    }</span>
+    void animateTakeHit() {
+<span class="nc" id="L85">        animator.startAnimation(TAKEHIT_ANIM);</span>
+<span class="nc" id="L86">    }</span>
+    void animateStagger() {
+<span class="nc" id="L88">        animator.startAnimation(STAGGER_ANIM);</span>
+<span class="nc" id="L89">    }</span>
+    void animateWalk() {
+<span class="nc" id="L91">        animator.startAnimation(WALK_ANIM);</span>
+<span class="nc" id="L92">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

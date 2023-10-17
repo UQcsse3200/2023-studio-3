@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.physics.ColliderComponentTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:44" hostname="DESKTOP-F4ACIG8" time="0.04">
+  <properties/>
+  <testcase name="shouldSetBox()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.003"/>
+  <testcase name="shouldSetDensity()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.002"/>
+  <testcase name="shouldSetSensor()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.002"/>
+  <testcase name="shouldSetRestitution()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.002"/>
+  <testcase name="shouldSetShape()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.011"/>
+  <testcase name="shouldSetAligned()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.005"/>
+  <testcase name="shouldSetFriction()" classname="com.csse3200.game.physics.ColliderComponentTest" time="0.005"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

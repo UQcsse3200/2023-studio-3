@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tasks.EngineerCombatTaskTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:24" hostname="DESKTOP-F4ACIG8" time="0.343">
+  <properties/>
+  <testcase name="testIdleEvent()" classname="com.csse3200.game.components.tasks.EngineerCombatTaskTest" time="0.086"/>
+  <testcase name="testIdleAfterMobKilled()" classname="com.csse3200.game.components.tasks.EngineerCombatTaskTest" time="0.08"/>
+  <testcase name="testFiringEvent()" classname="com.csse3200.game.components.tasks.EngineerCombatTaskTest" time="0.077"/>
+  <testcase name="testProjectileFired()" classname="com.csse3200.game.components.tasks.EngineerCombatTaskTest" time="0.091"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

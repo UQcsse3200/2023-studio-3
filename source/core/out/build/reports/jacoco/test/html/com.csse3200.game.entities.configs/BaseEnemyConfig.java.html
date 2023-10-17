@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseEnemyConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.configs</a> &gt; <span class="el_source">BaseEnemyConfig.java</span></div><h1>BaseEnemyConfig.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.configs;
+
+import com.csse3200.game.entities.Melee;
+import com.csse3200.game.entities.Weapon;
+
+import java.util.*;
+
+/**
+ * Defines all enemy configs to be loaded by the Enemy Factory.
+ * Variables:
+ *      idCounter - counter for the unique id of the enemy
+ *      speed - factor of how fast the enemy moves
+ *      fullHealth - the full health of the enemy
+ *      health - the current health of the enemy
+ *      id - unique identifier for the enemy
+ *      drops - the items that the enemy drops when it dies
+ *      views - the different images of enemy over different states
+ *      state - the current state of the enemy (full health, half health, low health)
+ *      baseAttack - the base damage of an enemy's attack
+ * Functions
+ *      takeDamage - process the damge taken by the enemy
+ *      attack - process an attack
+ *      die - process of death (remove from game and drop resources)
+ *
+ */
+public class BaseEnemyConfig extends BaseEntityConfig {
+
+<span class="fc" id="L28">    private static int idCounter = 0;</span>
+
+    public final int speed;
+
+    public final int fullHeath;
+
+    private final int id;
+
+    //TODO: change to item class
+    private final ArrayList&lt;Currency&gt; drops;
+    private ArrayList&lt;Melee&gt; closeRangeAbilities;
+    private ArrayList&lt;Weapon&gt; longRangeAbilities;
+
+    /**
+     * Creates a new enemy config with default values.
+     */
+    public BaseEnemyConfig(ArrayList&lt;Currency&gt; drops,
+                           ArrayList&lt;Melee&gt; closeRangeAbilities,
+<span class="fc" id="L46">                           ArrayList&lt;Weapon&gt; longRangeAbilities) {</span>
+<span class="fc" id="L47">        this.speed = 1;</span>
+<span class="fc" id="L48">        this.drops = drops;</span>
+<span class="fc" id="L49">        this.fullHeath = this.health;</span>
+<span class="fc" id="L50">        this.closeRangeAbilities = closeRangeAbilities;</span>
+<span class="fc" id="L51">        this.longRangeAbilities = longRangeAbilities;</span>
+
+<span class="fc" id="L53">        this.id = generateId();</span>
+
+<span class="fc" id="L55">    }</span>
+
+    /**
+     * Creates a new enemy config with the given values.
+     *
+     * @param speed the speed of the enemy
+     * @param health the full of the enemy
+     * @param drops the drops of the enemy
+     * @param baseAttack the base damage to the target
+     */
+    public BaseEnemyConfig(int speed, int health, ArrayList&lt;Currency&gt; drops,
+<span class="fc" id="L66">                           ArrayList&lt;Melee&gt; closeRangeAbilities, ArrayList&lt;Weapon&gt; longRangeAbilities, int baseAttack) {</span>
+<span class="fc" id="L67">        this.speed = speed;</span>
+<span class="fc" id="L68">        this.health = health;</span>
+<span class="fc" id="L69">        this.fullHeath = health;</span>
+<span class="fc" id="L70">        this.drops = drops;</span>
+<span class="fc" id="L71">        this.closeRangeAbilities = closeRangeAbilities;</span>
+<span class="fc" id="L72">        this.longRangeAbilities = longRangeAbilities;</span>
+<span class="fc" id="L73">        this.baseAttack = baseAttack;</span>
+<span class="fc" id="L74">        this.id = generateId();</span>
+<span class="fc" id="L75">    }</span>
+
+    /**
+     * Generate a unique id based on the previous enemy id
+     * */
+    public int generateId() {
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        if (idCounter == 0) {</span>
+<span class="fc" id="L82">            idCounter = this.hashCode();</span>
+<span class="fc" id="L83">            return idCounter;</span>
+        }
+<span class="fc" id="L85">        return ++idCounter;</span>
+    }
+
+    /** return the unique id of the enemy */
+    public int getId() {
+<span class="fc" id="L90">        return this.id;</span>
+    }
+
+    /** return the currency the enemy will drop when it dies */
+    //TODO change to Currency class
+    public String getDrops() {
+<span class="nc" id="L96">        return this.drops.toString();</span>
+    }
+
+    /*** return the close range (Melee) attacks of the enemy */
+    public ArrayList&lt;Melee&gt; getCloseRangeAbilities() {
+<span class="nc" id="L101">        return this.closeRangeAbilities;</span>
+    }
+
+    /** return the long range (Projectile) attacks of the enemy */
+    //TODO change to projectile
+    public ArrayList&lt;Weapon&gt; getLongRangeAbilities() {
+<span class="nc" id="L107">        return this.longRangeAbilities;</span>
+    }
+
+    public String toString() {
+<span class="fc" id="L111">        return &quot;Enemy: &quot; + this.id + &quot; Drops: &quot; + this.drops + &quot; Close Range: &quot;</span>
+                + this.closeRangeAbilities + &quot; Long Range: &quot; + this.longRangeAbilities
+                + &quot; Speed: &quot; + this.speed + &quot; Full Health: &quot; + this.fullHeath
+                + &quot; Current Health: &quot; + this.health + &quot; Base Attack: &quot; + this.baseAttack;
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

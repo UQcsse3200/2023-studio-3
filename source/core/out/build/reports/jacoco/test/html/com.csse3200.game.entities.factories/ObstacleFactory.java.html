@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ObstacleFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">ObstacleFactory.java</span></div><h1>ObstacleFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
+
+/**
+ * Factory to create obstacle entities.
+ *
+ * &lt;p&gt;Each obstacle entity type should have a creation method that returns a corresponding entity.
+ */
+public class ObstacleFactory {
+
+  /**
+   * Creates a tree entity.
+   * @return entity
+   */
+  public static Entity createBuilding1() {
+<span class="nc" id="L23">    Entity building1 =</span>
+        new Entity()
+<span class="nc" id="L25">            .addComponent(new TextureRenderComponent(&quot;images/background/building1.png&quot;))</span>
+<span class="nc" id="L26">            .addComponent(new PhysicsComponent())</span>
+<span class="nc" id="L27">            .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));</span>
+
+<span class="nc" id="L29">    building1.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);</span>
+<span class="nc" id="L30">    building1.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L31">    building1.scaleHeight(1.5f);</span>
+<span class="nc" id="L32">    PhysicsUtils.setScaledCollider(building1, 0.5f, 0.2f);</span>
+<span class="nc" id="L33">    return building1;</span>
+  }
+  public static Entity createBuilding2() {
+<span class="nc" id="L36">    Entity building2 =</span>
+            new Entity()
+<span class="nc" id="L38">                    .addComponent(new TextureRenderComponent(&quot;images/background/building2.png&quot;))</span>
+<span class="nc" id="L39">                    .addComponent(new PhysicsComponent())</span>
+<span class="nc" id="L40">                    .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));</span>
+
+<span class="nc" id="L42">    building2.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);</span>
+<span class="nc" id="L43">    building2.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L44">    building2.scaleHeight(1.5f);</span>
+<span class="nc" id="L45">    PhysicsUtils.setScaledCollider(building2, 0.5f, 0.2f);</span>
+<span class="nc" id="L46">    return building2;</span>
+  }
+
+  public static Entity createMountain() {
+<span class="nc" id="L50">      Entity mountain =</span>
+              new Entity()
+<span class="nc" id="L52">                      .addComponent(new TextureRenderComponent(&quot;images/background/mountain.png&quot;))</span>
+<span class="nc" id="L53">                      .addComponent(new PhysicsComponent())</span>
+<span class="nc" id="L54">                      .addComponent(new ColliderComponent().setLayer(PhysicsLayer.OBSTACLE));</span>
+
+<span class="nc" id="L56">      mountain.getComponent(PhysicsComponent.class).setBodyType(BodyType.StaticBody);</span>
+<span class="nc" id="L57">      mountain.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L58">      mountain.scaleHeight(2.0f);</span>
+<span class="nc" id="L59">      PhysicsUtils.setScaledCollider(mountain, 0.6f, 0.4f);</span>
+<span class="nc" id="L60">      return mountain;</span>
+    }
+
+  /**
+   * Creates an invisible physics wall.
+   * @param width Wall width in world units
+   * @param height Wall height in world units
+   * @return Wall entity of given width and height
+   */
+  public static Entity createWall(float width, float height) {
+<span class="nc" id="L70">    Entity wall = new Entity()</span>
+<span class="nc" id="L71">        .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))</span>
+        // * TMEPORARRYY WALLL
+<span class="nc" id="L73">        .addComponent(new ColliderComponent().setLayer(PhysicsLayer.WALL));</span>
+<span class="nc" id="L74">    wall.setScale(width, height);</span>
+<span class="nc" id="L75">    return wall;</span>
+  }
+
+<span class="nc" id="L78">  private ObstacleFactory() {</span>
+<span class="nc" id="L79">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

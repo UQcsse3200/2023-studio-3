@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.areas.terrain.TerrainComponentTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:14" hostname="DESKTOP-F4ACIG8" time="2.748">
+  <properties/>
+  <testcase name="shouldConvertPositionHexagonal()" classname="com.csse3200.game.areas.terrain.TerrainComponentTest" time="0.669"/>
+  <testcase name="shouldHighlightTileOnHover1()" classname="com.csse3200.game.areas.terrain.TerrainComponentTest" time="2.04"/>
+  <testcase name="shouldConvertPositionIsometric()" classname="com.csse3200.game.areas.terrain.TerrainComponentTest" time="0.014"/>
+  <testcase name="shouldConvertPositionOrthogonal()" classname="com.csse3200.game.areas.terrain.TerrainComponentTest" time="0.015"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

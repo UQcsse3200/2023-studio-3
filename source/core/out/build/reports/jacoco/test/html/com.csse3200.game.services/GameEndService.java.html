@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameEndService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.services</a> &gt; <span class="el_source">GameEndService.java</span></div><h1>GameEndService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.services;
+
+import com.csse3200.game.components.gamearea.EngineerCountDisplay;
+
+public class GameEndService {
+
+    private int engineerCount;
+
+<span class="nc" id="L9">    private boolean gameOver = false;</span>
+
+    private EngineerCountDisplay display;
+
+    /**
+     * Constructor for the Game End Service
+     */
+<span class="nc" id="L16">    public GameEndService() {</span>
+<span class="nc" id="L17">        this.engineerCount = 5;</span>
+<span class="nc" id="L18">        this.display = new EngineerCountDisplay();</span>
+<span class="nc" id="L19">    }</span>
+
+    /**
+     * Set the engineer limit. During instantiation, limit defaults to 5.
+     * @param newLimit as an integer representing the maximum number of engineer deaths
+     */
+    public void setEngineerCount(int newLimit) {
+<span class="nc bnc" id="L26" title="All 4 branches missed.">        if (newLimit &gt; 0 &amp;&amp; newLimit &lt; 1000) {</span>
+<span class="nc" id="L27">            engineerCount = newLimit;</span>
+<span class="nc" id="L28">            display.updateCount();</span>
+        }
+<span class="nc" id="L30">    }</span>
+
+    /**
+     * Returns the number of engineers left
+     * @return (int) engineer count
+     */
+
+    public int getEngineerCount() {
+<span class="nc" id="L38">        return engineerCount;</span>
+    }
+
+    /**
+     * Updates engineer count and the UI display
+     * If engineer count is 0, the game is over.
+     */
+    public void updateEngineerCount() {
+<span class="nc" id="L46">        engineerCount -= 1;</span>
+<span class="nc" id="L47">        display.updateCount();</span>
+
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if (engineerCount == 0) {</span>
+<span class="nc" id="L50">            gameOver = true;</span>
+        }
+<span class="nc" id="L52">    }</span>
+
+    /**
+     * Returns the game over state
+     * @return (boolean) true if the game is over; false otherwise
+     */
+    public boolean hasGameEnded() {
+<span class="nc" id="L59">        return gameOver;</span>
+    }
+
+    /**
+     * Returns the Engineer Count UI component
+     */
+    public EngineerCountDisplay getDisplay() {
+<span class="nc" id="L66">        return display;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

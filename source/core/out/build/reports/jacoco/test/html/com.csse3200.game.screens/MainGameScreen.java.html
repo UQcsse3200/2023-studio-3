@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainGameScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">MainGameScreen.java</span></div><h1>MainGameScreen.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.components.gamearea.PerformanceDisplay;
+import com.csse3200.game.components.maingame.MainGameActions;
+import com.csse3200.game.components.maingame.MainGameLoseDisplay;
+import com.csse3200.game.components.maingame.MainGamePauseDisplay;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.input.*;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsService;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.rendering.Renderer;
+import com.csse3200.game.services.*;
+import com.csse3200.game.ui.terminal.Terminal;
+import com.csse3200.game.ui.terminal.TerminalDisplay;
+import com.csse3200.game.components.maingame.MainGameExitDisplay;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The game screen containing the main game.
+ *
+ * &lt;p&gt;Details on libGDX screens: https://happycoding.io/tutorials/libgdx/game-screens
+ */
+public class MainGameScreen extends ScreenAdapter {
+<span class="nc" id="L42">  private static final Logger logger = LoggerFactory.getLogger(MainGameScreen.class);</span>
+<span class="nc" id="L43">  private static final String[] mainGameTextures = {</span>
+          &quot;images/heart.png&quot;,
+          &quot;images/ice_bg.png&quot;,
+          &quot;images/lava_bg.png&quot;,
+          &quot;images/desert_bg.png&quot;
+  };
+
+<span class="nc" id="L50">  private static final String ICE_BACKDROP = mainGameTextures[1];</span>
+<span class="nc" id="L51">  private static final String LAVA_BACKDROP = mainGameTextures[2];</span>
+<span class="nc" id="L52">  private static final String DESERT_BACKDROP = mainGameTextures[3];</span>
+<span class="nc" id="L53">  private static final String[] backgroundMusic = {</span>
+          &quot;sounds/background/ice/ice_bgm.ogg&quot;,
+          &quot;sounds/background/lava/lava_bgm.ogg&quot;,
+          &quot;sounds/background/desert/desert_bgm.ogg&quot;
+  };
+<span class="nc" id="L58">  private static final String[] uiSounds = {</span>
+          &quot;sounds/ui/Click/NA_SFUI_Vol1_Click_01.ogg&quot;,
+          &quot;sounds/ui/Hover/NA_SFUI_Vol1_hover_01.ogg&quot;,
+          &quot;sounds/ui/Open_Close/NA_SFUI_Vol1_Close_01.ogg&quot;,
+          &quot;sounds/ui/Open_Close/NA_SFUI_Vol1_Open_01.ogg&quot;,
+          &quot;sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg&quot;
+  };
+<span class="nc" id="L65">  private static final String[] desertSounds = {</span>
+          &quot;sounds/background/desert/Elements.ogg&quot;,
+          &quot;sounds/background/desert/Rocks1.ogg&quot;,
+          &quot;sounds/background/desert/Rocks2.ogg&quot;
+  };
+<span class="nc" id="L70">  private static final String[] iceSounds = {</span>
+          &quot;sounds/background/ice/Sequences1.ogg&quot;,
+          &quot;sounds/background/ice/Sequences2.ogg&quot;,
+          &quot;sounds/background/ice/Sequences3.ogg&quot;
+  };
+<span class="nc" id="L75">  private static final String[] lavaSounds = {</span>
+          &quot;sounds/background/lava/Burst.ogg&quot;,
+          &quot;sounds/background/lava/Glitch_ripples.ogg&quot;,
+          &quot;sounds/background/lava/Sizzling.ogg&quot;,
+          &quot;sounds/background/lava/Swoosh.ogg&quot;
+  };
+<span class="nc" id="L81">  private static final String ICE_BGM = backgroundMusic[0];</span>
+<span class="nc" id="L82">  private static final String LAVA_BGM = backgroundMusic[1];</span>
+<span class="nc" id="L83">  private static final String DESERT_BGM = backgroundMusic[2];</span>
+<span class="nc" id="L84">  private static final Vector2 CAMERA_POSITION = new Vector2(10f, 5.64f);</span>
+
+  private final GdxGame game;
+  private final Renderer renderer;
+  private final PhysicsEngine physicsEngine;
+
+  private InputComponent upgradedInputHandler;
+  private final Stage stage;
+<span class="nc" id="L92">  static int screenWidth = Gdx.graphics.getWidth();</span>
+<span class="nc" id="L93">  static int screenHeight = Gdx.graphics.getHeight();</span>
+  private Entity ui;
+<span class="nc" id="L95">  private int random = 0;</span>
+<span class="nc" id="L96">  public static int viewportWidth = screenWidth;</span>
+<span class="nc" id="L97">  public static int viewportHeight= screenHeight;</span>
+<span class="nc" id="L98">  int selectedLevel = GameLevelData.getSelectedLevel();</span>
+
+  private OrthographicCamera camera;
+  private SpriteBatch batch;
+
+  private Texture backgroundTexture;
+  private Music music;
+<span class="nc" id="L105">  private Array&lt;String&gt; ambientSounds = new Array&lt;&gt;(false, 5, String.class);</span>
+
+<span class="nc" id="L107">  public MainGameScreen(GdxGame game) {</span>
+<span class="nc" id="L108">    this.game = game;</span>
+<span class="nc" id="L109">    camera = new OrthographicCamera();</span>
+<span class="nc" id="L110">    camera.setToOrtho(false, viewportWidth, viewportHeight);</span>
+<span class="nc" id="L111">    camera.position.set((float) (viewportWidth) / 2, (float) (viewportHeight) / 2, 0);</span>
+
+<span class="nc" id="L113">    batch = new SpriteBatch();</span>
+
+<span class="nc" id="L115">    stage = new Stage(new ScreenViewport());</span>
+
+
+<span class="nc" id="L118">    logger.debug(&quot;Initialising main game screen services&quot;);</span>
+<span class="nc" id="L119">    ServiceLocator.registerTimeSource(new GameTime());</span>
+
+<span class="nc" id="L121">    PhysicsService physicsService = new PhysicsService();</span>
+<span class="nc" id="L122">    ServiceLocator.registerPhysicsService(physicsService);</span>
+<span class="nc" id="L123">    physicsEngine = physicsService.getPhysics();</span>
+
+<span class="nc" id="L125">    ServiceLocator.registerInputService(new InputService());</span>
+<span class="nc" id="L126">    ServiceLocator.registerResourceService(new ResourceService());</span>
+
+<span class="nc" id="L128">    ServiceLocator.registerCurrencyService(new CurrencyService());</span>
+
+<span class="nc" id="L130">    ServiceLocator.registerEntityService(new EntityService());</span>
+<span class="nc" id="L131">    ServiceLocator.registerRenderService(new RenderService());</span>
+<span class="nc" id="L132">    ServiceLocator.registerGameEndService(new GameEndService());</span>
+<span class="nc" id="L133">    ServiceLocator.registerWaveService(new WaveService());</span>
+
+<span class="nc" id="L135">    renderer = RenderFactory.createRenderer();</span>
+<span class="nc" id="L136">    renderer.getCamera().getEntity().setPosition(CAMERA_POSITION);</span>
+<span class="nc" id="L137">    renderer.getDebug().renderPhysicsWorld(physicsEngine.getWorld());</span>
+<span class="nc" id="L138">    InputComponent inputHandler = new DropInputComponent(renderer.getCamera().getCamera());</span>
+<span class="nc" id="L139">    InputComponent buildHandler = new BuildInputComponent(renderer.getCamera().getCamera());</span>
+<span class="nc" id="L140">    upgradedInputHandler = new UpgradeUIComponent(renderer.getCamera().getCamera(), renderer.getStage());</span>
+<span class="nc" id="L141">    InputComponent engineerInputHandler = new EngineerInputComponent(game, renderer.getCamera().getCamera());</span>
+<span class="nc" id="L142">    ServiceLocator.getInputService().register(inputHandler);</span>
+<span class="nc" id="L143">    ServiceLocator.getInputService().register(buildHandler);</span>
+<span class="nc" id="L144">    ServiceLocator.getInputService().register(engineerInputHandler);</span>
+<span class="nc" id="L145">    ServiceLocator.getInputService().register(upgradedInputHandler);</span>
+<span class="nc" id="L146">    ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());</span>
+
+<span class="nc" id="L148">    loadAssets();</span>
+<span class="nc" id="L149">    createUI();</span>
+<span class="nc" id="L150">    ServiceLocator.registerMapService(new MapService(renderer.getCamera()));</span>
+<span class="nc" id="L151">    logger.debug(&quot;Initialising main game screen entities&quot;);</span>
+<span class="nc" id="L152">    ForestGameArea forestGameArea = new ForestGameArea();</span>
+<span class="nc" id="L153">    forestGameArea.create();</span>
+<span class="nc" id="L154">  }</span>
+
+  /**
+   * Retrieves the background texture based on the currently selected game level.
+   *
+   * &lt;p&gt;The method returns different textures for each game level:
+   * &lt;ul&gt;
+   *     &lt;li&gt;Ice Level: &quot;images/ice_bg.png&quot;&lt;/li&gt;
+   *     &lt;li&gt;Lava Level: &quot;images/lava_bg.png&quot;&lt;/li&gt;
+   *     &lt;li&gt;Any other level: Default to &quot;images/desert_bg.png&quot;&lt;/li&gt;
+   * &lt;/ul&gt;
+   *
+   * @return The background {@link Texture} corresponding to the selected level.
+   */
+  public Texture getBackgroundTexture() {
+    Texture background;
+<span class="nc bnc" id="L170" title="All 3 branches missed.">    switch (selectedLevel) {</span>
+      // Desert
+      case 1: // Ice
+<span class="nc" id="L173">        background = ServiceLocator.getResourceService().getAsset(ICE_BACKDROP, Texture.class);</span>
+<span class="nc" id="L174">        music = ServiceLocator.getResourceService().getAsset(ICE_BGM, Music.class);</span>
+<span class="nc" id="L175">        ambientSounds.addAll(iceSounds);</span>
+<span class="nc" id="L176">        break;</span>
+      case 2: // Lava
+<span class="nc" id="L178">        background = ServiceLocator.getResourceService().getAsset(LAVA_BACKDROP, Texture.class);</span>
+<span class="nc" id="L179">        music = ServiceLocator.getResourceService().getAsset(LAVA_BGM, Music.class);</span>
+<span class="nc" id="L180">        ambientSounds.addAll(lavaSounds);</span>
+<span class="nc" id="L181">        break;</span>
+      default:
+        // Use a default background for other levels or planets
+<span class="nc" id="L184">        background = ServiceLocator.getResourceService().getAsset(DESERT_BACKDROP, Texture.class);</span>
+<span class="nc" id="L185">        music = ServiceLocator.getResourceService().getAsset(DESERT_BGM, Music.class);</span>
+<span class="nc" id="L186">        ambientSounds.addAll(desertSounds);</span>
+        break;
+    }
+<span class="nc" id="L189">    return background;</span>
+  }
+
+  @Override
+  public void render(float delta) {
+    // Clear the screen
+<span class="nc" id="L195">    Gdx.gl.glClearColor(0, 0, 0, 1);</span>
+<span class="nc" id="L196">    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+    // Update the camera and set the batch's projection matrix
+<span class="nc" id="L199">    camera.update();</span>
+<span class="nc" id="L200">    batch.setProjectionMatrix(camera.combined);</span>
+
+    // Begin the batch
+<span class="nc" id="L203">    batch.begin();</span>
+
+    // Draw the background texture.
+<span class="nc" id="L206">    batch.draw(backgroundTexture, 0, 0, viewportWidth, viewportHeight);</span>
+
+    // End the batch
+<span class="nc" id="L209">    batch.end();</span>
+
+    // Continue with other rendering logic
+<span class="nc" id="L212">    physicsEngine.update();</span>
+<span class="nc" id="L213">    ServiceLocator.getEntityService().update();</span>
+
+    // Checks if tower selected is dead
+<span class="nc" id="L216">    this.getUpgradedInputHandler().checkForDispose();</span>
+
+    // Check if the game has ended
+<span class="nc bnc" id="L219" title="All 2 branches missed.">    if (ServiceLocator.getGameEndService().hasGameEnded()) {</span>
+<span class="nc" id="L220">      ui.getEvents().trigger(&quot;lose&quot;);</span>
+    }
+
+<span class="nc" id="L223">    ServiceLocator.getWaveService().getDisplay().updateTimerButton();</span>
+<span class="nc" id="L224">    ServiceLocator.getWaveService().getDisplay().updateMobCount();</span>
+<span class="nc" id="L225">    renderer.render();</span>
+<span class="nc" id="L226">  }</span>
+
+  @Override
+  public void resize(int width, int height) {
+<span class="nc" id="L230">    renderer.resize(width, height);</span>
+<span class="nc" id="L231">    logger.trace(&quot;Resized renderer: ({} x {})&quot;, width, height);</span>
+<span class="nc" id="L232">  }</span>
+
+  @Override
+  public void pause() {
+<span class="nc" id="L236">    logger.info(&quot;Game paused&quot;);</span>
+<span class="nc" id="L237">  }</span>
+
+  @Override
+  public void resume() {
+<span class="nc" id="L241">    logger.info(&quot;Game resumed&quot;);</span>
+<span class="nc" id="L242">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L246">    logger.debug(&quot;Disposing main game screen&quot;);</span>
+
+<span class="nc" id="L248">    renderer.dispose();</span>
+<span class="nc" id="L249">    unloadAssets();</span>
+
+<span class="nc" id="L251">    ServiceLocator.getEntityService().dispose();</span>
+<span class="nc" id="L252">    ServiceLocator.getRenderService().dispose();</span>
+<span class="nc" id="L253">    ServiceLocator.getResourceService().dispose();</span>
+
+<span class="nc" id="L255">    ServiceLocator.clear();</span>
+<span class="nc" id="L256">  }</span>
+
+  private void loadAssets() {
+<span class="nc" id="L259">    logger.debug(&quot;Loading assets&quot;);</span>
+<span class="nc" id="L260">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L261">    resourceService.loadTextures(mainGameTextures);</span>
+<span class="nc" id="L262">    ServiceLocator.getResourceService().loadMusic(backgroundMusic);</span>
+<span class="nc" id="L263">    ServiceLocator.getResourceService().loadSounds(iceSounds);</span>
+<span class="nc" id="L264">    ServiceLocator.getResourceService().loadSounds(desertSounds);</span>
+<span class="nc" id="L265">    ServiceLocator.getResourceService().loadSounds(lavaSounds);</span>
+<span class="nc" id="L266">    ServiceLocator.getResourceService().loadSounds(uiSounds);</span>
+<span class="nc" id="L267">    ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L268">    backgroundTexture = getBackgroundTexture(); // Load the background image</span>
+<span class="nc" id="L269">  }</span>
+
+  private void unloadAssets() {
+<span class="nc" id="L272">    logger.debug(&quot;Unloading assets&quot;);</span>
+<span class="nc" id="L273">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="nc" id="L274">    resourceService.unloadAssets(mainGameTextures);</span>
+<span class="nc" id="L275">    ServiceLocator.getResourceService().unloadAssets(backgroundMusic);</span>
+<span class="nc" id="L276">    ServiceLocator.getResourceService().unloadAssets(iceSounds);</span>
+<span class="nc" id="L277">    ServiceLocator.getResourceService().unloadAssets(desertSounds);</span>
+<span class="nc" id="L278">    ServiceLocator.getResourceService().unloadAssets(lavaSounds);</span>
+<span class="nc" id="L279">    ServiceLocator.getResourceService().unloadAssets(uiSounds);</span>
+<span class="nc" id="L280">  }</span>
+
+  /**
+   * Creates the main game's ui including components for rendering ui elements to the screen and
+   * capturing and handling ui input.
+   */
+  private void createUI() {
+<span class="nc" id="L287">    logger.debug(&quot;Creating ui&quot;);</span>
+<span class="nc" id="L288">    Stage stage = ServiceLocator.getRenderService().getStage();</span>
+    InputComponent inputComponent =
+<span class="nc" id="L290">            ServiceLocator.getInputService().getInputFactory().createForTerminal();</span>
+
+<span class="nc" id="L292">    ui = new Entity();</span>
+<span class="nc" id="L293">    ui.addComponent(new InputDecorator(stage, 10))</span>
+
+<span class="nc" id="L295">        .addComponent(new PerformanceDisplay())</span>
+<span class="nc" id="L296">            .addComponent(new MainGameActions(this.game))</span>
+<span class="nc" id="L297">            .addComponent(ServiceLocator.getWaveService().getDisplay())</span>
+<span class="nc" id="L298">            .addComponent(new MainGameExitDisplay())</span>
+<span class="nc" id="L299">            .addComponent(new MainGameLoseDisplay())</span>
+<span class="nc" id="L300">            .addComponent(new MainGamePauseDisplay(this.game))</span>
+<span class="nc" id="L301">            .addComponent(new Terminal())</span>
+<span class="nc" id="L302">            .addComponent(inputComponent)</span>
+<span class="nc" id="L303">            .addComponent(new TerminalDisplay());</span>
+
+
+<span class="nc" id="L306">    ServiceLocator.getEntityService().register(ui);</span>
+
+<span class="nc" id="L308">    music.setLooping(true);</span>
+<span class="nc" id="L309">    music.setVolume(0.3f);</span>
+<span class="nc" id="L310">    music.play();</span>
+<span class="nc" id="L311">    playAmbientSound();</span>
+<span class="nc" id="L312">  }</span>
+
+  /**
+   * Plays one of the ambient sounds for the level at random
+   */
+  private void playAmbientSound() {
+
+<span class="nc" id="L319">     ServiceLocator.getResourceService().getAsset(ambientSounds.random(), Sound.class).play(0.2f);</span>
+<span class="nc" id="L320">  }</span>
+
+  private UpgradeUIComponent getUpgradedInputHandler() {
+<span class="nc" id="L323">    return (UpgradeUIComponent) upgradedInputHandler;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

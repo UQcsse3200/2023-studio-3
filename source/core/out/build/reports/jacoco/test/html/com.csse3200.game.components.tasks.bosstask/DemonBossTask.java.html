@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemonBossTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bosstask</a> &gt; <span class="el_source">DemonBossTask.java</span></div><h1>DemonBossTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bosstask;
+
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.components.tasks.MovementTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * The AI Task for the demon boss entity. The demon boss will first play its transform animation
+ * before beginning its sequence. Its sequence is based on its state and the different game
+ * scenarios that happen in game dictate its state.
+ */
+public class DemonBossTask extends DefaultTask implements PriorityTask {
+
+    // Constants
+    private static final int PRIORITY = 3;
+<span class="fc" id="L34">    private static final Vector2 DEMON_SPEED = new Vector2(1f, 1f);</span>
+    private static final float STOP_DISTANCE = 0.1f;
+    private static final float JUMP_DISTANCE = 3.0f;
+    private static final int Y_TOP_BOUNDARY = 6;
+    private static final int Y_BOT_BOUNDARY = 1;
+    private static final int BREATH_ANIM_TIME = 2;
+    private static final int SMASH_RADIUS = 3;
+    private static final int MOVE_FORWARD_DELAY = 15;
+    private static final float BREATH_DURATION = 4.2f;
+    private static final int SMASH_DAMAGE = 30;
+    private static final int CLEAVE_DAMAGE = 50;
+    private static final int HEAL_TIMES = 10;
+    private static final int HEALTH_TO_ADD = 10;
+
+    // Private variables
+<span class="fc" id="L49">    private static final Logger logger = LoggerFactory.getLogger(DemonBossTask.class);</span>
+    private Vector2 currentPos;
+    private final PhysicsEngine physics;
+    private final GameTime gameTime;
+    private Vector2 jumpPos;
+    private MovementTask jumpTask;
+<span class="fc" id="L55">    private DemonState state = DemonState.IDLE;</span>
+    private DemonState prevState;
+    private AnimationRenderComponent animation;
+    private Entity demon;
+<span class="fc" id="L59">    private int numBalls = 3;</span>
+<span class="fc" id="L60">    private static int xRightBoundary = 17;</span>
+<span class="fc" id="L61">    private static int xLeftBoundary = 12;</span>
+<span class="fc" id="L62">    private ProjectileEffects effect = ProjectileEffects.BURN;</span>
+<span class="fc" id="L63">    private boolean aoe = true;</span>
+
+    // Flags
+<span class="fc" id="L66">    private boolean startFlag = false;</span>
+    private boolean isJumping;
+<span class="fc" id="L68">    private boolean halfHealthFlag = false;</span>
+<span class="fc" id="L69">    private boolean isHealing = false;</span>
+
+    /**
+     * The different demon states.
+     */
+<span class="fc" id="L74">    private enum DemonState {</span>
+<span class="fc" id="L75">        TRANSFORM, IDLE, CAST, CLEAVE, DEATH, BREATH, SMASH, TAKE_HIT, WALK</span>
+    }
+
+    /**
+     * The demon boss task constructor. Initialises the physics and time.
+     */
+<span class="fc" id="L81">    public DemonBossTask() {</span>
+<span class="fc" id="L82">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L83">        gameTime = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L84">    }</span>
+
+    /**
+     * Starts transform animation, triggers idle animation which starts 
+     * sequence, and dynamically shifts the demons boundary to the left.
+     */
+    @Override
+    public void start() {
+<span class="nc" id="L92">        super.start();</span>
+<span class="nc" id="L93">        demon = owner.getEntity();</span>
+<span class="nc" id="L94">        animation = demon.getComponent(AnimationRenderComponent.class); // get animation</span>
+<span class="nc" id="L95">        currentPos = demon.getPosition(); // get current position</span>
+<span class="nc" id="L96">        demon.getComponent(PhysicsMovementComponent.class).setSpeed(DEMON_SPEED); // set speed</span>
+
+<span class="nc" id="L98">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L101">                changeState(DemonState.TRANSFORM);</span>
+<span class="nc" id="L102">                animate();</span>
+<span class="nc" id="L103">                demon.getEvents().trigger(&quot;demon_spawn_sound&quot;);</span>
+<span class="nc" id="L104">                startFlag = true;</span>
+<span class="nc" id="L105">            }</span>
+        }, 0.1f);
+
+        // shift demon's boundary left every 30s
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        for (int i = 1; i &lt; 6; i++) {</span>
+<span class="nc" id="L110">            Timer.schedule(new Timer.Task() {</span>
+                @Override
+                public void run() {
+<span class="nc" id="L113">                    xLeftBoundary -= 2;</span>
+<span class="nc" id="L114">                    xRightBoundary -= 2;</span>
+<span class="nc" id="L115">                }</span>
+            }, MOVE_FORWARD_DELAY * i);
+        }
+<span class="nc" id="L118">    }</span>
+
+    /**
+     * This function is called every frame and is responsible for updating the 
+     * animation, the position and the state scenarios.
+     */
+    @Override
+    public void update() {
+      // * Don't know if this is actually needed.
+<span class="nc bnc" id="L127" title="All 2 branches missed.">      if(ServiceLocator.getGameEndService().hasGameEnded()) {</span>
+<span class="nc" id="L128">        stop();</span>
+      }
+        // give game time to load in then start
+<span class="nc bnc" id="L131" title="All 2 branches missed.">        if (!startFlag) {</span>
+<span class="nc" id="L132">            return;</span>
+        }
+
+<span class="nc" id="L135">        animate();</span>
+<span class="nc" id="L136">        currentPos = demon.getPosition();</span>
+<span class="nc" id="L137">        int health = demon.getComponent(CombatStatsComponent.class).getHealth();</span>
+
+        // handle initial demon transformation
+<span class="nc bnc" id="L140" title="All 4 branches missed.">        if (animation.getCurrentAnimation().equals(&quot;transform&quot;) &amp;&amp; animation.isFinished()) {</span>
+<span class="nc" id="L141">            changeState(DemonState.IDLE); // start sequence</span>
+        }
+
+        // detect death stage
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        if (health &lt;= 0) {</span>
+            // spawn slimey boy
+<span class="nc" id="L147">            Entity slimey = MobBossFactory.createSlimeyBoy();</span>
+<span class="nc" id="L148">            slimey.setPosition(demon.getPosition().x, demon.getPosition().y);</span>
+<span class="nc" id="L149">            slimey.setScale(5f, 5f);</span>
+<span class="nc" id="L150">            ServiceLocator.getEntityService().register(slimey);</span>
+<span class="nc" id="L151">            demon.setFlagForDelete(true);</span>
+        }
+
+        // detect half health
+<span class="nc bnc" id="L155" title="All 4 branches missed.">        if (health &lt;= demon.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &amp;&amp;</span>
+                !halfHealthFlag) {
+<span class="nc" id="L157">            changeState(DemonState.TAKE_HIT);</span>
+        }
+
+        // detect sequence changes and runs the relevant state accordingly
+<span class="nc bnc" id="L161" title="All 7 branches missed.">        switch (state) {</span>
+<span class="nc" id="L162">            case IDLE -&gt; jump(getJumpPos());</span>
+            case SMASH -&gt; {
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                if (jumpComplete()) {</span>
+<span class="nc bnc" id="L165" title="All 2 branches missed.">                    if (getNearbyHumans(SMASH_RADIUS).isEmpty()) {</span>
+<span class="nc" id="L166">                        fireBreath();</span>
+                    }
+                    else {
+<span class="nc" id="L169">                        cleave();</span>
+                    }
+                }
+            }
+            case BREATH, CLEAVE -&gt; {
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L175">                    changeState(DemonState.IDLE);</span>
+                }
+            }
+            case CAST -&gt; {
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                if (!isHealing) {</span>
+<span class="nc" id="L180">                    changeState(DemonState.IDLE);</span>
+                }
+            }
+            case TRANSFORM -&gt; {
+<span class="nc bnc" id="L184" title="All 2 branches missed.">                if (health &lt;= 0) {</span>
+<span class="nc bnc" id="L185" title="All 2 branches missed.">                    if (animation.isFinished()) {</span>
+<span class="nc" id="L186">                        changeState(DemonState.DEATH);</span>
+                    }
+                }
+            }
+            case TAKE_HIT -&gt; {
+<span class="nc bnc" id="L191" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L192">                    halfHealth();</span>
+<span class="nc" id="L193">                    halfHealthFlag = true;</span>
+                }
+            }
+        }
+<span class="nc" id="L197">    }</span>
+
+    /**
+     * Changes the state of the demon.
+     * 
+     * @param state state to be changed to
+     */
+    private void changeState(DemonState state) {
+<span class="nc" id="L205">        prevState = this.state;</span>
+<span class="nc" id="L206">        this.state = state;</span>
+<span class="nc" id="L207">    }</span>
+
+    /**
+     * Changes the animation of the demon if a state change occurs.
+     */
+    private void animate() {
+        // Check if same animation is being called
+<span class="nc bnc" id="L214" title="All 2 branches missed.">        if (prevState.equals(state)) {</span>
+<span class="nc" id="L215">            return; // skip rest of function</span>
+        }
+
+<span class="nc bnc" id="L218" title="All 10 branches missed.">        switch (state) {</span>
+<span class="nc" id="L219">            case CAST -&gt; demon.getEvents().trigger(&quot;demon_cast_spell&quot;);</span>
+<span class="nc" id="L220">            case IDLE -&gt; demon.getEvents().trigger(&quot;demon_idle&quot;);</span>
+<span class="nc" id="L221">            case WALK -&gt; demon.getEvents().trigger(&quot;demon_walk&quot;);</span>
+<span class="nc" id="L222">            case DEATH -&gt; demon.getEvents().trigger(&quot;demon_death&quot;);</span>
+<span class="nc" id="L223">            case BREATH -&gt; demon.getEvents().trigger(&quot;demon_fire_breath&quot;);</span>
+<span class="nc" id="L224">            case SMASH -&gt; demon.getEvents().trigger(&quot;demon_smash&quot;);</span>
+<span class="nc" id="L225">            case CLEAVE -&gt; demon.getEvents().trigger(&quot;demon_cleave&quot;);</span>
+<span class="nc" id="L226">            case TAKE_HIT -&gt; demon.getEvents().trigger(&quot;demon_take_hit&quot;);</span>
+<span class="nc" id="L227">            case TRANSFORM -&gt; demon.getEvents().trigger(&quot;transform&quot;);</span>
+<span class="nc" id="L228">            default -&gt; logger.debug(&quot;Demon animation {state} not found&quot;);</span>
+        }
+<span class="nc" id="L230">        prevState = state;</span>
+<span class="nc" id="L231">    }</span>
+
+    /**
+     * Returns the priority of this task.
+     * 
+     * @return priority of task
+     */
+    @Override
+    public int getPriority() {
+<span class="nc" id="L240">        return PRIORITY;</span>
+    }
+
+    /**
+     * Returns a list of nearby entities with PhysicsLayer.HUMAN.
+     * 
+     * @return nearby entities with the PhysicsLayer of HUMAN
+     */
+    private Array&lt;Entity&gt; getNearbyHumans(int radius) {
+<span class="nc" id="L249">        Array&lt;Entity&gt; nearbyEntities = ServiceLocator.getEntityService().</span>
+<span class="nc" id="L250">                getNearbyEntities(demon, radius);</span>
+<span class="nc" id="L251">        Array&lt;Entity&gt; nearbyHumans = new Array&lt;&gt;();</span>
+
+        // iterate through nearby entities checking if they have desired properties
+<span class="nc bnc" id="L254" title="All 2 branches missed.">        for (int i = 0; i &lt; nearbyEntities.size; i++) {</span>
+<span class="nc" id="L255">            Entity targetEntity = nearbyEntities.get(i);</span>
+<span class="nc" id="L256">            HitboxComponent targetHitbox = targetEntity.getComponent(HitboxComponent.class);</span>
+<span class="nc bnc" id="L257" title="All 2 branches missed.">            if (targetHitbox == null) {</span>
+<span class="nc" id="L258">                break;</span>
+            }
+
+            // check target layer
+<span class="nc bnc" id="L262" title="All 2 branches missed.">            if (!PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.</span>
+<span class="nc" id="L263">                    getLayer())) {</span>
+<span class="nc" id="L264">                break;</span>
+            }
+
+<span class="nc" id="L267">            nearbyHumans.add(targetEntity);</span>
+        }
+<span class="nc" id="L269">        return nearbyHumans;</span>
+    }
+
+    /**
+     * Changes state of demon and moves it to the desired position.
+     * 
+     * @param finalPos position for demon to jump to
+     */
+    private void jump(Vector2 finalPos) {
+<span class="nc" id="L278">        changeState(DemonState.SMASH);</span>
+<span class="nc" id="L279">        isJumping = true;</span>
+
+<span class="nc" id="L281">        demon.getEvents().trigger(&quot;demon_roar_sound&quot;);</span>
+
+        // play landing sound
+<span class="nc" id="L284">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L287">                demon.getEvents().trigger(&quot;demon_landing_sound&quot;);</span>
+<span class="nc" id="L288">            }</span>
+        }, 1.8f);
+
+<span class="nc" id="L291">        jumpTask = new MovementTask(finalPos);</span>
+<span class="nc" id="L292">        jumpTask.create(owner);</span>
+<span class="nc" id="L293">        jumpTask.start();</span>
+
+<span class="nc" id="L295">        logger.debug(&quot;Demon jump starting&quot;);</span>
+<span class="nc" id="L296">    }</span>
+
+    /**
+     * Returns a random position 3 units away for the demon to jump to.
+     *
+     * @return a position 3 units away from the demon to jump to
+     */
+    private Vector2 getJumpPos() {
+        // check if boundary has shifted causing demon to be out of bounds
+<span class="nc bnc" id="L305" title="All 2 branches missed.">        if (currentPos.x &gt; xRightBoundary) {</span>
+<span class="nc" id="L306">            jumpPos = new Vector2(currentPos.x - JUMP_DISTANCE, currentPos.y); //jump back into boundary</span>
+<span class="nc" id="L307">            return jumpPos;</span>
+        }
+
+        // jump backwards if right next to tower
+<span class="nc bnc" id="L311" title="All 2 branches missed.">        if (currentPos.dst(ServiceLocator.getEntityService().getClosestEntityOfLayer(</span>
+<span class="nc" id="L312">                demon, PhysicsLayer.HUMANS).getPosition()) &lt; 2f) {</span>
+<span class="nc" id="L313">            jumpPos = new Vector2(currentPos.x + JUMP_DISTANCE, currentPos.y);</span>
+        }
+
+<span class="nc" id="L316">        float randomAngle = MathUtils.random(0, 2 * MathUtils.PI);</span>
+<span class="nc" id="L317">        float x = JUMP_DISTANCE * MathUtils.cos(randomAngle);</span>
+<span class="nc" id="L318">        float y = JUMP_DISTANCE * MathUtils.sin(randomAngle);</span>
+
+        // check boundaries
+<span class="nc bnc" id="L321" title="All 4 branches missed.">        if (x + currentPos.x &gt; xRightBoundary || x + currentPos.x &lt; xLeftBoundary) {</span>
+<span class="nc" id="L322">            x *= -1;</span>
+        }
+<span class="nc bnc" id="L324" title="All 4 branches missed.">        if (y + currentPos.y &gt; Y_TOP_BOUNDARY || y + currentPos.y &lt; Y_BOT_BOUNDARY) {</span>
+<span class="nc" id="L325">            y *= -1;</span>
+        }
+
+        // get final jump position
+<span class="nc" id="L329">        float finalX = x + currentPos.x;</span>
+<span class="nc" id="L330">        float finalY = y + currentPos.y;</span>
+<span class="nc" id="L331">        jumpPos = new Vector2(finalX, finalY);</span>
+<span class="nc" id="L332">        return jumpPos;</span>
+    }
+
+    /**
+     * Returns a boolean to confirm whether the demon has completed a jump or not.
+     *
+     * @return if demon has completed jump or not
+     */
+    private boolean jumpComplete() {
+<span class="nc bnc" id="L341" title="All 4 branches missed.">        if (currentPos.dst(jumpPos) &lt;= STOP_DISTANCE &amp;&amp; isJumping) {</span>
+<span class="nc" id="L342">            applyAoeDamage(getNearbyHumans(SMASH_RADIUS), SMASH_DAMAGE); // do damage upon landing</span>
+<span class="nc" id="L343">            isJumping = false;</span>
+<span class="nc" id="L344">            jumpTask.stop();</span>
+<span class="nc" id="L345">            return true;</span>
+        }
+<span class="nc" id="L347">        return false;</span>
+    }
+
+    /**
+     * Changes current breath attack with the given parameters.
+     * 
+     * @param numBalls numbers of projectiles to be fired
+     * @param effect effect the projectile will apply
+     * @param aoe whether the effect will be applied in a radius or not
+     */
+    public void changeBreathAttack(int numBalls, ProjectileEffects effect, boolean aoe) {
+<span class="nc" id="L358">        this.numBalls = numBalls;</span>
+<span class="nc" id="L359">        this.effect = effect;</span>
+<span class="nc" id="L360">        this.aoe = aoe;</span>
+<span class="nc" id="L361">    }</span>
+
+    /**
+     * Fire breath attack that launches an amount of projectiles with a given effect at the humans.
+     */
+    private void fireBreath() {
+<span class="nc" id="L367">        changeState(DemonState.BREATH);</span>
+<span class="nc" id="L368">        demon.getEvents().trigger(&quot;demon_breath_in_sound&quot;);</span>
+
+<span class="nc" id="L370">        float delay = (BREATH_DURATION - BREATH_ANIM_TIME) / numBalls;</span>
+
+<span class="nc" id="L372">        float startAngle = (float) Math.toRadians(135);</span>
+<span class="nc" id="L373">        float endAngle = (float) Math.toRadians(225);</span>
+<span class="nc" id="L374">        float angleIncrement = (endAngle - startAngle) / (numBalls - 1);</span>
+
+        // spawn projectiles
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        for (int i = 0; i &lt; numBalls; i++) {</span>
+            // calculate unit vectors for projectiles
+<span class="nc" id="L379">            float currentAngle = startAngle + i * angleIncrement;</span>
+<span class="nc" id="L380">            float x = MathUtils.cos(currentAngle) * 20;</span>
+<span class="nc" id="L381">            float y = MathUtils.sin(currentAngle) * 20;</span>
+<span class="nc" id="L382">            Vector2 destination = new Vector2(x, y);</span>
+
+            // Create burn projectiles
+<span class="nc" id="L385">            Timer.schedule(new Timer.Task() {</span>
+                @Override
+                public void run() {
+                  // service locator getting a service could be anything here.
+<span class="nc bnc" id="L389" title="All 2 branches missed.">                  if(ServiceLocator.getTimeSource() == null) {</span>
+<span class="nc" id="L390">                    stop();</span>
+<span class="nc" id="L391">                    return; // prevent current iteration from running.</span>
+                  }
+<span class="nc" id="L393">                    Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS, destination,</span>
+                            new Vector2(2, 2), effect, aoe);
+<span class="nc" id="L395">                    projectile.setPosition(demon.getPosition().x, demon.getPosition().y);</span>
+<span class="nc" id="L396">                    projectile.setScale(-1f, 1f);</span>
+<span class="nc" id="L397">                    ServiceLocator.getEntityService().register(projectile);</span>
+<span class="nc" id="L398">                }</span>
+            }, delay * i + BREATH_ANIM_TIME);
+        }
+<span class="nc" id="L401">    }</span>
+
+    /**
+     * Applies aoe damage to nearby human entities.
+     * 
+     * @param targets array of human entities to deal damage to
+     */
+    private void applyAoeDamage(Array&lt;Entity&gt; targets, int damage) {
+<span class="nc bnc" id="L409" title="All 2 branches missed.">        for (int i = 0; i &lt; targets.size; i++) {</span>
+<span class="nc" id="L410">            Entity targetEntity = targets.get(i);</span>
+
+<span class="nc" id="L412">            CombatStatsComponent targetCombatStats = targetEntity.</span>
+<span class="nc" id="L413">                    getComponent(CombatStatsComponent.class);</span>
+<span class="nc bnc" id="L414" title="All 2 branches missed.">            if (targetCombatStats != null) {</span>
+<span class="nc" id="L415">                targetCombatStats.hit(damage);</span>
+            }
+        }
+<span class="nc" id="L418">    }</span>
+
+    /**
+     * Change state to cleave and deals damage to target
+     */
+    private void cleave() {
+<span class="nc" id="L424">        changeState(DemonState.CLEAVE);</span>
+<span class="nc" id="L425">        demon.getEvents().trigger(&quot;demon_roar_sound&quot;);</span>
+<span class="nc" id="L426">        Entity target = ServiceLocator.getEntityService().getClosestEntityOfLayer(demon,</span>
+                PhysicsLayer.HUMANS);
+<span class="nc" id="L428">        CombatStatsComponent targetCombatStats = target.</span>
+<span class="nc" id="L429">                getComponent(CombatStatsComponent.class);</span>
+<span class="nc" id="L430">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L433">                demon.getEvents().trigger(&quot;demon_cleave_sound&quot;);</span>
+<span class="nc" id="L434">                targetCombatStats.hit(CLEAVE_DAMAGE);</span>
+<span class="nc" id="L435">            }</span>
+        }, 2f);
+<span class="nc" id="L437">    }</span>
+
+    /**
+     * When at half health demon starts healing by a certain amount every second
+     */
+    private void halfHealth() {
+<span class="nc" id="L443">        changeState(DemonState.CAST);</span>
+<span class="nc" id="L444">        isHealing = true;</span>
+<span class="nc" id="L445">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L448">                isHealing = false;</span>
+<span class="nc" id="L449">            }</span>
+        }, (float) HEAL_TIMES / 2);
+
+        // add health every 10s
+<span class="nc bnc" id="L453" title="All 2 branches missed.">        for (int i = 0; i &lt; HEAL_TIMES; i++) {</span>
+<span class="nc" id="L454">            Timer.schedule(new Timer.Task() {</span>
+                @Override
+                public void run() {
+<span class="nc" id="L457">                    demon.getEvents().trigger(&quot;demon_heal_sound&quot;);</span>
+<span class="nc" id="L458">                    demon.getComponent(CombatStatsComponent.class).addHealth(HEALTH_TO_ADD);</span>
+<span class="nc" id="L459">                }</span>
+            }, (float) i /2);
+        }
+<span class="nc" id="L462">    }</span>
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

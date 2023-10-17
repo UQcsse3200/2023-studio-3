@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MobWanderTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks</a> &gt; <span class="el_source">MobWanderTask.java</span></div><h1>MobWanderTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.DropFactory;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Wander around by moving a random position within a range of the starting position. Wait a little
+ * bit between movements. Requires an entity with a PhysicsMovementComponent.
+ */
+public class MobWanderTask extends DefaultTask implements PriorityTask {
+<span class="fc" id="L20">  private static final Logger logger = LoggerFactory.getLogger(MobWanderTask.class);</span>
+
+  private final Vector2 wanderRange;
+  private final float waitTime;
+  private Vector2 startPos;
+  private MovementTask movementTask;
+  private WaitTask waitTask;
+  private Task currentTask;
+<span class="fc" id="L28">  private boolean isDead = false;</span>
+  private Vector2 mobPosition;
+
+  /**
+   * @param wanderRange Distance in X and Y the entity can move from its position when start() is
+   *     called.
+   * @param waitTime How long in seconds to wait between wandering.
+   */
+<span class="fc" id="L36">  public MobWanderTask(Vector2 wanderRange, float waitTime) {</span>
+<span class="fc" id="L37">    this.wanderRange = wanderRange;</span>
+<span class="fc" id="L38">    this.waitTime = waitTime;</span>
+<span class="fc" id="L39">  }</span>
+
+  @Override
+  public int getPriority() {
+<span class="fc" id="L43">    return 1; // Low priority task</span>
+  }
+
+  @Override
+  public void start() {
+<span class="fc" id="L48">    super.start();</span>
+<span class="fc" id="L49">    startPos = owner.getEntity().getPosition();</span>
+
+<span class="fc" id="L51">    waitTask = new WaitTask(waitTime);</span>
+<span class="fc" id="L52">    waitTask.create(owner);</span>
+
+<span class="fc" id="L54">    movementTask = new MovementTask(getDirection());</span>
+<span class="fc" id="L55">    movementTask.create(owner);</span>
+
+<span class="fc" id="L57">    movementTask.start();</span>
+
+<span class="fc" id="L59">    currentTask = movementTask;</span>
+
+
+    // this.owner.getEntity().getEvents().trigger(&quot;wanderStart&quot;);
+<span class="fc" id="L63">  }</span>
+
+  @Override
+  public void update() {
+
+    // Update the position of the mob
+<span class="fc" id="L69">    mobPosition = owner.getEntity().getPosition();</span>
+
+    // If the mob is at zero health, kill the mob,
+    // play the death animation and stop the task
+    // This method is the idea of Ahmad who very kindly helped with section, massive props to him for his help!
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">    if (!isDead &amp;&amp; owner.getEntity().getComponent(CombatStatsComponent.class).isDead()) {</span>
+<span class="fc" id="L75">      this.owner.getEntity().getEvents().trigger(&quot;dieStart&quot;);</span>
+<span class="fc" id="L76">      currentTask.stop();</span>
+<span class="fc" id="L77">      isDead = true;</span>
+<span class="fc" id="L78">      ServiceLocator.getWaveService().updateEnemyCount();</span>
+    }
+
+    // Check if the mob has finished death animation
+<span class="pc bpc" id="L82" title="3 of 4 branches missed.">    else if (isDead &amp;&amp; owner.getEntity().getComponent(AnimationRenderComponent.class).isFinished()) {</span>
+      // Drop scrap at the mobs location
+<span class="nc" id="L84">      Entity scrap = DropFactory.createScrapDrop();</span>
+<span class="nc" id="L85">      scrap.setPosition(mobPosition.x,mobPosition.y);</span>
+<span class="nc" id="L86">      ServiceLocator.getEntityService().register(scrap);</span>
+
+      // Delete the mob and update count for number of mobs remaining in the wave
+<span class="nc" id="L89">      owner.getEntity().setFlagForDelete(true);</span>
+
+<span class="nc" id="L91">    }</span>
+    // If not dead, do normal things...
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">    else if (!isDead) {</span>
+
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">      if (currentTask.getStatus() != Status.ACTIVE) {</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if (currentTask == movementTask) {</span>
+<span class="nc" id="L97">          startWaiting();</span>
+        } else {
+<span class="nc" id="L99">          startMoving();</span>
+        }
+      }
+<span class="fc" id="L102">      currentTask.update();</span>
+    }
+<span class="fc" id="L104">  }</span>
+
+  private void startWaiting() {
+<span class="nc" id="L107">    logger.debug(&quot;Starting waiting&quot;);</span>
+<span class="nc" id="L108">    this.owner.getEntity().getEvents().trigger(&quot;stop&quot;);</span>
+<span class="nc" id="L109">    swapTask(waitTask);</span>
+<span class="nc" id="L110">  }</span>
+
+  private void startMoving() {
+<span class="nc" id="L113">    logger.debug(&quot;Starting moving&quot;);</span>
+<span class="nc" id="L114">    movementTask.setTarget(getDirection());</span>
+<span class="nc" id="L115">    this.owner.getEntity().getEvents().trigger(&quot;wanderStart&quot;);</span>
+<span class="nc" id="L116">    swapTask(movementTask);</span>
+<span class="nc" id="L117">  }</span>
+
+  private void swapTask(Task newTask) {
+<span class="nc bnc" id="L120" title="All 2 branches missed.">    if (currentTask != null) {</span>
+<span class="nc" id="L121">      currentTask.stop();</span>
+    }
+<span class="nc" id="L123">    currentTask = newTask;</span>
+<span class="nc" id="L124">    currentTask.start();</span>
+<span class="nc" id="L125">  }</span>
+
+  private Vector2 getDirection() {
+<span class="fc" id="L128">    float y = startPos.y;</span>
+<span class="fc" id="L129">    return new Vector2(0, y);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

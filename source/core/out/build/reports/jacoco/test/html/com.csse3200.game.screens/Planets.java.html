@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Planets.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">Planets.java</span></div><h1>Planets.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Gdx;
+
+<span class="nc" id="L5">public class Planets {</span>
+
+    // Stores the posx and posy in form of constants for each planet and some form of ID.
+<span class="nc" id="L8">    public final static int[] DESERT = {</span>
+<span class="nc" id="L9">            (int) (Gdx.graphics.getWidth() / 6.0f),  // pos x</span>
+<span class="nc" id="L10">            (int) (Gdx.graphics.getHeight() / 2.3f), // pos y</span>
+            150,                                     // width
+            150,                                     // height
+            0                                        // ID
+    };
+
+<span class="nc" id="L16">    public final static int[] ICE = {</span>
+<span class="nc" id="L17">            (int) (Gdx.graphics.getWidth() / 3.0f),</span>
+<span class="nc" id="L18">            (int) (Gdx.graphics.getHeight() / 1.4f),</span>
+            150,
+            150,
+            1
+    };
+
+<span class="nc" id="L24">    public final static int[] LAVA = {</span>
+<span class="nc" id="L25">            (int) (Gdx.graphics.getWidth() / 2.2f),</span>
+<span class="nc" id="L26">            (int) (Gdx.graphics.getHeight() / 7f),</span>
+            200,
+            200,
+            2
+    };
+
+<span class="nc" id="L32">    public final static int[][] PLANETS = {DESERT, ICE, LAVA};</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

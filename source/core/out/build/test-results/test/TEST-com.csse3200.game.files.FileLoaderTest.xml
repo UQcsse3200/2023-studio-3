@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.files.FileLoaderTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:43" hostname="DESKTOP-F4ACIG8" time="0.036">
+  <properties/>
+  <testcase name="loadFromValidFile()" classname="com.csse3200.game.files.FileLoaderTest" time="0.013"/>
+  <testcase name="loadFromInvalidFile()" classname="com.csse3200.game.files.FileLoaderTest" time="0.006"/>
+  <testcase name="loadFromMissingFile()" classname="com.csse3200.game.files.FileLoaderTest" time="0.003"/>
+  <testcase name="loadFromEmptyFile()" classname="com.csse3200.game.files.FileLoaderTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:43 PM com.csse3200.game.files.FileLoader readClass
+SEVERE: Error reading file: test/files/invalid.json
+Oct 10, 2023 12:49:43 PM com.csse3200.game.files.FileLoader readClass
+SEVERE: Error reading file: test/files/missing.json
+]]></system-err>
+</testsuite>

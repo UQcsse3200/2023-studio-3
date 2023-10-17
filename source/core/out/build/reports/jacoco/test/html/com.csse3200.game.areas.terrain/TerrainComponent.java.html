@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TerrainComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.areas.terrain</a> &gt; <span class="el_source">TerrainComponent.java</span></div><h1>TerrainComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.areas.terrain;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.GridPoint2;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
+import com.csse3200.game.rendering.RenderComponent;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Render a tiled terrain for a given tiled map and orientation. A terrain is a map of tiles that
+ * shows the 'ground' in the game. Enabling/disabling this component will show/hide the terrain.
+ */
+public class TerrainComponent extends RenderComponent {
+<span class="fc" id="L26">  private static final Logger logger = LoggerFactory.getLogger(TerrainComponent.class);</span>
+  private static final int TERRAIN_LAYER = 0;
+
+  private final TiledMap tiledMap;
+  private final TiledMapRenderer tiledMapRenderer;
+  private final OrthographicCamera camera;
+  private final TerrainOrientation orientation;
+  private final float tileSize;
+<span class="fc" id="L34">  private TiledMapTileLayer.Cell lastHoveredCell = null;</span>
+<span class="fc" id="L35">  private TiledMapTile originalTile = null;</span>
+<span class="fc" id="L36">  private TextureRegion originalRegion = null;</span>
+
+
+
+  public TerrainComponent(
+      OrthographicCamera camera,
+      TiledMap map,
+      TiledMapRenderer renderer,
+      TerrainOrientation orientation,
+<span class="fc" id="L45">      float tileSize) {</span>
+<span class="fc" id="L46">    this.camera = camera;</span>
+<span class="fc" id="L47">    this.tiledMap = map;</span>
+<span class="fc" id="L48">    this.orientation = orientation;</span>
+<span class="fc" id="L49">    this.tileSize = tileSize;</span>
+<span class="fc" id="L50">    this.tiledMapRenderer = renderer;</span>
+
+<span class="fc" id="L52">  }</span>
+
+  public Vector2 tileToWorldPosition(GridPoint2 tilePos) {
+<span class="nc" id="L55">    return tileToWorldPosition(tilePos.x, tilePos.y);</span>
+  }
+
+  public Vector2 tileToWorldPosition(int x, int y) {
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">    switch (orientation) {</span>
+      case HEXAGONAL:
+<span class="nc" id="L61">        float hexLength = tileSize / 2;</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        float yOffset = (x % 2 == 0) ? 0.5f * tileSize : 0f;</span>
+<span class="nc" id="L63">        return new Vector2(x * (tileSize + hexLength) / 2, y + yOffset);</span>
+      case ISOMETRIC:
+<span class="fc" id="L65">        return new Vector2((x + y) * tileSize / 2, (y - x) * tileSize / 2);</span>
+      case ORTHOGONAL:
+<span class="fc" id="L67">        return new Vector2(x * tileSize, y * tileSize);</span>
+      default:
+<span class="nc" id="L69">        return null;</span>
+    }
+  }
+
+  public float getTileSize() {
+<span class="nc" id="L74">    return tileSize;</span>
+  }
+
+  public GridPoint2 getMapBounds(int layer) {
+<span class="nc" id="L78">    TiledMapTileLayer terrainLayer = (TiledMapTileLayer)tiledMap.getLayers().get(layer);</span>
+<span class="nc" id="L79">    return new GridPoint2(terrainLayer.getWidth(), terrainLayer.getHeight());</span>
+  }
+
+  public TiledMap getMap() {
+<span class="fc" id="L83">    return tiledMap;</span>
+  }
+
+  @Override
+  public void draw(SpriteBatch batch) {
+<span class="nc" id="L88">    tiledMapRenderer.setView(camera);</span>
+<span class="nc" id="L89">    hoverHighlight();</span>
+<span class="nc" id="L90">    tiledMapRenderer.render();</span>
+<span class="nc" id="L91">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L95">    tiledMap.dispose();</span>
+<span class="nc" id="L96">    super.dispose();</span>
+<span class="nc" id="L97">  }</span>
+
+  @Override
+  public float getZIndex() {
+<span class="nc" id="L101">    return 0f;</span>
+  }
+
+  @Override
+  public int getLayer() {
+<span class="nc" id="L106">    return TERRAIN_LAYER;</span>
+  }
+
+   // TODO : This is just a visual effect that we might not need in the end but just keeping it here for now
+  public void colorTile(final int x, final int y) {
+<span class="nc" id="L111">    final TiledMapTileLayer tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);</span>
+<span class="nc" id="L112">    final TiledMapTile originalTile = tileLayer.getCell(x, y).getTile();</span>
+
+<span class="nc" id="L114">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+
+    // Load all the tiles into an array
+<span class="nc" id="L117">    final TerrainTile[] terrainTiles = new TerrainTile[7];</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">    for (int i = 0; i &lt; 7; i++) {</span>
+<span class="nc" id="L119">      Texture texture = resourceService.getAsset(&quot;images/GrassTile/grass_tile_&quot; + (i + 1) + &quot;.png&quot;, Texture.class);</span>
+<span class="nc" id="L120">      terrainTiles[i] = new TerrainTile(new TextureRegion(texture));</span>
+    }
+
+<span class="nc" id="L123">    final float interval = 0.2f; // Switch every 0.2 seconds</span>
+<span class="nc" id="L124">    final float duration = 1.4f; // 7 images * 0.2 seconds each</span>
+
+<span class="nc" id="L126">    Timer.schedule(new Timer.Task() {</span>
+<span class="nc" id="L127">      float timeElapsed = 0.0f;</span>
+
+      @Override
+      public void run() {
+<span class="nc" id="L131">        timeElapsed += interval;</span>
+
+<span class="nc bnc" id="L133" title="All 2 branches missed.">        if (timeElapsed &gt;= duration) {</span>
+<span class="nc" id="L134">          tileLayer.getCell(x, y).setTile(originalTile); // Reset to original tile after the total duration</span>
+<span class="nc" id="L135">          this.cancel(); // End the timer task</span>
+        } else {
+<span class="nc" id="L137">          int index = (int) (timeElapsed / interval);</span>
+<span class="nc" id="L138">          tileLayer.getCell(x, y).setTile(terrainTiles[index]);</span>
+        }
+<span class="nc" id="L140">      }</span>
+    }, 0, interval, (int) (duration / interval) - 1); // Scheduling the task
+<span class="nc" id="L142">  }</span>
+
+  /**
+   * Highlights the tile under the mouse cursor by changing its texture region.
+   *
+   * When hovering over a tile on the terrain, this method performs the following:
+   * 
+   * 1-Unprojects the mouse's screen position to the world position using the camera.
+   * 2-Calculates the tile's coordinates based on the world position and tile size.
+   * 3-If there was a previously highlighted tile, it restores its original texture region.
+   * 4-If the current tile under the mouse is different from the last hovered tile, it updates.
+   * 5-the tile's texture region to a highlight texture.
+   * 6-Updates the reference to the last hovered tile.
+   *
+   * @see TiledMapTileLayer
+   * @see TiledMapTileLayer.Cell
+   * @see TextureRegion
+   */
+
+  public void hoverHighlight() {
+<span class="fc" id="L162">    Vector3 mousePos = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);</span>
+<span class="fc" id="L163">    camera.unproject(mousePos);</span>
+
+
+<span class="fc" id="L166">    int tileX = (int) (mousePos.x / tileSize);</span>
+<span class="fc" id="L167">    int tileY = (int) (mousePos.y / tileSize);</span>
+
+<span class="fc" id="L169">    final TiledMapTileLayer tileLayer = (TiledMapTileLayer) tiledMap.getLayers().get(0);</span>
+<span class="fc" id="L170">    TiledMapTileLayer.Cell currentCell = tileLayer.getCell(tileX, tileY);</span>
+
+
+<span class="pc bpc" id="L173" title="5 of 6 branches missed.">    if (lastHoveredCell != null &amp;&amp; lastHoveredCell != currentCell &amp;&amp; originalRegion != null) {</span>
+<span class="nc" id="L174">      lastHoveredCell.getTile().setTextureRegion(originalRegion);</span>
+    }
+
+
+<span class="pc bpc" id="L178" title="2 of 4 branches missed.">    if (currentCell != null &amp;&amp; currentCell != lastHoveredCell) {</span>
+<span class="fc" id="L179">      originalRegion = currentCell.getTile().getTextureRegion();</span>
+
+<span class="fc" id="L181">      ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="fc" id="L182">      Texture texture = resourceService.getAsset(&quot;images/highlight_tile.png&quot;, Texture.class);</span>
+<span class="fc" id="L183">      currentCell.getTile().setTextureRegion(new TextureRegion(texture));</span>
+    }
+
+<span class="fc" id="L186">    lastHoveredCell = currentCell;</span>
+<span class="fc" id="L187">  }</span>
+
+<span class="fc" id="L189">  public enum TerrainOrientation {</span>
+<span class="fc" id="L190">    ORTHOGONAL,</span>
+<span class="fc" id="L191">    ISOMETRIC,</span>
+<span class="fc" id="L192">    HEXAGONAL</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

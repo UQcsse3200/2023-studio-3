@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DemonAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.bosses</a> &gt; <span class="el_source">DemonAnimationController.java</span></div><h1>DemonAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.bosses;
+
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+<span class="fc" id="L8">public class DemonAnimationController extends Component {</span>
+    AnimationRenderComponent animator;
+//    private static final String DEMON_JUMP = &quot;sounds/mobBoss/demonBreath.mp3&quot;;
+<span class="fc" id="L11">    Sound demonBreath = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonBreath.mp3&quot;, Sound.class);
+<span class="fc" id="L13">    Sound demonSpawn = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonSpawn.wav&quot;, Sound.class);
+<span class="fc" id="L15">    Sound demonAttack = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonAttack.wav&quot;, Sound.class);
+<span class="fc" id="L17">    Sound demonBreathIn = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonBreathIn.mp3&quot;, Sound.class);
+<span class="fc" id="L19">    Sound demonLand = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonLand.mp3&quot;, Sound.class);
+<span class="fc" id="L21">    Sound demonRoar = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonJump.mp3&quot;, Sound.class);
+<span class="fc" id="L23">    Sound demonHeal = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonHeal.mp3&quot;, Sound.class);
+<span class="fc" id="L25">    Sound demonCleave = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonCleave.mp3&quot;, Sound.class);
+<span class="fc" id="L27">    Sound demonDeath = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/demonDeath.mp3&quot;, Sound.class);
+<span class="fc" id="L29">    Sound slimeySplat = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/slimeySplat.mp3&quot;, Sound.class);
+<span class="fc" id="L31">    Sound slimeJump = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/slimeJump.mp3&quot;, Sound.class);
+<span class="fc" id="L33">    Sound slimePop = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/slimePop.mp3&quot;, Sound.class);
+
+    /**
+     * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations and sounds.
+     */
+    @Override
+    public void create() {
+<span class="nc" id="L42">        super.create();</span>
+<span class="nc" id="L43">        animator = entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L44">        entity.getEvents().addListener(&quot;demon_walk&quot;, this::demonWalk);</span>
+<span class="nc" id="L45">        entity.getEvents().addListener(&quot;demon_cleave&quot;, this::demonCleave);</span>
+<span class="nc" id="L46">        entity.getEvents().addListener(&quot;demon_idle&quot;, this::demonIdle);</span>
+<span class="nc" id="L47">        entity.getEvents().addListener(&quot;demon_death&quot;, this::demonDeath);</span>
+<span class="nc" id="L48">        entity.getEvents().addListener(&quot;demon_cast_spell&quot;, this::demonCastSpell);</span>
+<span class="nc" id="L49">        entity.getEvents().addListener(&quot;demon_fire_breath&quot;, this::demonFireBreath);</span>
+<span class="nc" id="L50">        entity.getEvents().addListener(&quot;demon_smash&quot;, this::demonSmash);</span>
+<span class="nc" id="L51">        entity.getEvents().addListener(&quot;demon_take_hit&quot;, this::demonTakeHit);</span>
+<span class="nc" id="L52">        entity.getEvents().addListener(&quot;idle&quot;, this::idle);</span>
+<span class="nc" id="L53">        entity.getEvents().addListener(&quot;move&quot;, this::move);</span>
+<span class="nc" id="L54">        entity.getEvents().addListener(&quot;projectile_explosion&quot;, this::projectileExplosion);</span>
+<span class="nc" id="L55">        entity.getEvents().addListener(&quot;projectile_idle&quot;, this::projectileIdle);</span>
+<span class="nc" id="L56">        entity.getEvents().addListener(&quot;take_hit&quot;, this::takeHit);</span>
+<span class="nc" id="L57">        entity.getEvents().addListener(&quot;transform&quot;, this::transform);</span>
+<span class="nc" id="L58">        entity.getEvents().addListener(&quot;demon_spawn_sound&quot;, this::demonSpawnSound);</span>
+<span class="nc" id="L59">        entity.getEvents().addListener(&quot;demon_attack_sound&quot;, this::demonAttackSound);</span>
+<span class="nc" id="L60">        entity.getEvents().addListener(&quot;demon_breath_in_sound&quot;, this::demonBreathInSound);</span>
+<span class="nc" id="L61">        entity.getEvents().addListener(&quot;demon_landing_sound&quot;, this::demonLandSound);</span>
+<span class="nc" id="L62">        entity.getEvents().addListener(&quot;demon_roar_sound&quot;, this::demonRoarSound);</span>
+<span class="nc" id="L63">        entity.getEvents().addListener(&quot;demon_heal_sound&quot;, this::demonHealSound);</span>
+<span class="nc" id="L64">        entity.getEvents().addListener(&quot;demon_cleave_sound&quot;, this::demonCleaveSound);</span>
+<span class="nc" id="L65">        entity.getEvents().addListener(&quot;demon_death_sound&quot;, this::demonDeathSound);</span>
+<span class="nc" id="L66">        entity.getEvents().addListener(&quot;slimey_splat_sound&quot;, this::slimeySplatSound);</span>
+<span class="nc" id="L67">        entity.getEvents().addListener(&quot;slime_jump_sound&quot;, this::slimeJumpSound);</span>
+<span class="nc" id="L68">        entity.getEvents().addListener(&quot;slime_pop_sound&quot;, this::slimePopSound);</span>
+<span class="nc" id="L69">    }</span>
+
+    private void demonWalk() {
+<span class="nc" id="L72">        animator.startAnimation(&quot;demon_walk&quot;);</span>
+<span class="nc" id="L73">    }</span>
+    private void demonCleave() {
+<span class="nc" id="L75">        animator.startAnimation(&quot;demon_cleave&quot;);</span>
+<span class="nc" id="L76">    }</span>
+    private void demonIdle() {
+<span class="nc" id="L78">        animator.startAnimation(&quot;demon_idle&quot;);</span>
+<span class="nc" id="L79">    }</span>
+    private void demonDeath() {
+<span class="nc" id="L81">        animator.startAnimation(&quot;demon_death&quot;);</span>
+<span class="nc" id="L82">    }</span>
+    private void demonCastSpell() {
+<span class="nc" id="L84">        animator.startAnimation(&quot;demon_cast_spell&quot;);</span>
+<span class="nc" id="L85">    }</span>
+    private void demonFireBreath() {
+<span class="nc" id="L87">        animator.startAnimation(&quot;demon_fire_breath&quot;);</span>
+<span class="nc" id="L88">        demonBreath.setVolume(1000,5.5f);</span>
+<span class="nc" id="L89">        demonBreath.play();</span>
+<span class="nc" id="L90">    }</span>
+    private void demonSmash() {
+<span class="nc" id="L92">        animator.startAnimation(&quot;demon_smash&quot;);</span>
+<span class="nc" id="L93">    }</span>
+    private void demonTakeHit() {
+<span class="nc" id="L95">        animator.startAnimation(&quot;demon_take_hit&quot;);</span>
+<span class="nc" id="L96">    }</span>
+    private void idle() {
+<span class="nc" id="L98">        animator.startAnimation(&quot;idle&quot;);</span>
+<span class="nc" id="L99">    }</span>
+    private void move() {
+<span class="nc" id="L101">        animator.startAnimation(&quot;move&quot;);</span>
+<span class="nc" id="L102">    }</span>
+    private void projectileExplosion() {
+<span class="nc" id="L104">        animator.startAnimation(&quot;projectile_explosion&quot;);</span>
+<span class="nc" id="L105">    }</span>
+    private void projectileIdle() {
+<span class="nc" id="L107">        animator.startAnimation(&quot;projectile_idle&quot;);</span>
+<span class="nc" id="L108">    }</span>
+    private void takeHit() {
+<span class="nc" id="L110">        animator.startAnimation(&quot;take_hit&quot;);</span>
+<span class="nc" id="L111">    }</span>
+    private void transform() {
+<span class="nc" id="L113">        animator.startAnimation(&quot;transform&quot;);</span>
+<span class="nc" id="L114">    }</span>
+    private void demonSpawnSound() {
+<span class="nc" id="L116">        demonSpawn.setVolume(1000,5.5f);</span>
+<span class="nc" id="L117">        demonSpawn.play();</span>
+<span class="nc" id="L118">    }</span>
+    private void demonAttackSound() {
+<span class="nc" id="L120">        demonAttack.setVolume(1000,5.5f);</span>
+<span class="nc" id="L121">        demonAttack.play();</span>
+<span class="nc" id="L122">    }</span>
+    private void demonBreathInSound() {
+<span class="nc" id="L124">        demonBreathIn.setVolume(1000,5.5f);</span>
+<span class="nc" id="L125">        demonBreathIn.play();</span>
+<span class="nc" id="L126">    }</span>
+    private void demonLandSound() {
+<span class="nc" id="L128">        demonLand.setVolume(1000,5.5f);</span>
+<span class="nc" id="L129">        demonLand.play();</span>
+<span class="nc" id="L130">    }</span>
+    private void demonRoarSound() {
+<span class="nc" id="L132">        demonRoar.setVolume(1000,5.5f);</span>
+<span class="nc" id="L133">        demonRoar.play();</span>
+<span class="nc" id="L134">    }</span>
+    private void demonHealSound() {
+<span class="nc" id="L136">        demonHeal.setVolume(1000,5.5f);</span>
+<span class="nc" id="L137">        demonHeal.play();</span>
+<span class="nc" id="L138">    }</span>
+    private void demonCleaveSound() {
+<span class="nc" id="L140">        demonCleave.setVolume(1000,5.5f);</span>
+<span class="nc" id="L141">        demonCleave.play();</span>
+<span class="nc" id="L142">    }</span>
+    private void demonDeathSound() {
+<span class="nc" id="L144">        demonDeath.setVolume(1000,5.5f);</span>
+<span class="nc" id="L145">        demonDeath.play();</span>
+<span class="nc" id="L146">    }</span>
+    private void slimeySplatSound() {
+<span class="nc" id="L148">        slimeySplat.setVolume(1000,5.5f);</span>
+<span class="nc" id="L149">        slimeySplat.play();</span>
+<span class="nc" id="L150">    }</span>
+    private void slimeJumpSound() {
+<span class="nc" id="L152">        slimeJump.setVolume(1000,5.5f);</span>
+<span class="nc" id="L153">        slimeJump.play();</span>
+<span class="nc" id="L154">    }</span>
+    private void slimePopSound() {
+<span class="nc" id="L156">        slimePop.setVolume(1000,5.5f);</span>
+<span class="nc" id="L157">        slimePop.play();</span>
+<span class="nc" id="L158">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

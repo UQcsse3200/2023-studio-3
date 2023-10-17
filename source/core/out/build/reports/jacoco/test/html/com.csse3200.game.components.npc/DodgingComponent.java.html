@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DodgingComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.npc</a> &gt; <span class="el_source">DodgingComponent.java</span></div><h1>DodgingComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.npc;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * A component that adds a dodging event listener to the current attached
+ * entity. The entity will dodge another entity that is presumably coming at its
+ * current position. It will dodge at a certain angle in the vertical direction
+ * with an altered speed.
+ * &lt;p&gt;
+ * This component handles the detection of a certain mob layer within a certain
+ * horizontal range using a raycast. It also handles the vertical speed doding
+ * configuration.
+ * &lt;/p&gt;
+ * 
+ * &lt;p&gt;
+ * Created for the mob entity to dodge incoming projectiles but can be used for
+ * other entities and functionalities if needed.
+ * &lt;/p&gt;
+ */
+public class DodgingComponent extends Component {
+<span class="pc" id="L27">  private final RaycastHit hit = new RaycastHit();</span>
+  private short targetLayer;
+  private float rangeDetection;
+<span class="pc" id="L30">  private float dodgeSpeed = 1.75f; </span>
+  private float originalSpeed; // Original entity vertical speed
+  private PhysicsEngine physics;
+
+  // Sometimes the raycast mechanic doesn't detect the other entity because of the
+  // target's (or self) collider size does not match. This value makes sure the
+  // top and bottom detection is also taken care of, ensuring the entity will
+  // dodge.
+  private static final float Y_OFFSET_MOB_DETECTION = 0.35f;
+  public static final String DODGE_EVENT = &quot;dodgeIncomingEntity&quot;;
+
+  /**
+   * Initialises a component that dodges an incoming entity based on its target
+   * layer. The range detection is defaultto 0.25f.
+   * 
+   * @param targetLayer The target layer to be detected horizontally.
+   */
+<span class="nc" id="L47">  public DodgingComponent(short targetLayer) {</span>
+<span class="nc" id="L48">    this.targetLayer = targetLayer;</span>
+<span class="nc" id="L49">    this.rangeDetection = 0.25f;</span>
+<span class="nc" id="L50">  }</span>
+
+  /**
+   * Initialises a component that dodges an incoming entity based on its target
+   * layer. This initialisation also sets the range detection whereby the dodge
+   * event is triggered.
+   * 
+   * @param targetLayer    The target layer to be detected horizontally.
+   * @param rangeDetection The range where the entity of the target layer is
+   *                       detected, activating the dodge event.
+   */
+<span class="fc" id="L61">  public DodgingComponent(short targetLayer, float rangeDetection) {</span>
+<span class="fc" id="L62">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L63">    this.rangeDetection = rangeDetection;</span>
+<span class="fc" id="L64">  }</span>
+
+<span class="fc" id="L66">  public DodgingComponent(short targetLayer, float rangeDetection, float dodgeSpeed) {</span>
+<span class="fc" id="L67">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L68">    this.rangeDetection = rangeDetection;</span>
+<span class="fc" id="L69">    this.dodgeSpeed = dodgeSpeed;</span>
+<span class="fc" id="L70">  }</span>
+
+  /**
+   * Called when the entity is created and registered.
+   * 
+   * Entity created will have the dodge entity event. Also registers the original
+   * speed of the current entity.
+   */
+  @Override
+  public void create() {
+<span class="fc" id="L80">    physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L81">    entity.getEvents().addListener(DODGE_EVENT, this::changeTraverseDirection);</span>
+<span class="fc" id="L82">    originalSpeed = entity.getComponent(PhysicsMovementComponent.class).getSpeed().y;</span>
+<span class="fc" id="L83">  }</span>
+
+  /**
+   * Changes the moving direction of the attached entity with this component.
+   * &lt;p&gt;
+   * Relies heavily on the isTargetVisible() method, and setting the vertical
+   * angle direction and speed helper methods found in this component class.
+   * &lt;/p&gt;
+   * 
+   * @param mobPos The current Vector2 mob position in the map.
+   */
+  public void changeTraverseDirection(Vector2 mobPos) {
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">    if (isTargetVisible(mobPos)) {</span>
+      // If mob is in the top half quadrant of the map grid, make the entity dodge
+      // downwards.
+<span class="nc bnc" id="L98" title="All 2 branches missed.">      setVerticalAngleDirection(mobPos.y &gt; 3.5 ? mobPos.y - 15 : mobPos.y + 15);</span>
+<span class="nc" id="L99">      setVerticalSpeed(dodgeSpeed);</span>
+    } else {
+<span class="fc" id="L101">      setVerticalAngleDirection(mobPos.y);</span>
+<span class="fc" id="L102">      setVerticalSpeed(originalSpeed);</span>
+    }
+<span class="fc" id="L104">  }</span>
+
+  /**
+   * Detects if the a target is visible based on the range detection, current
+   * Vector2 position of the mob and the target layer initialised with this class.
+   * 
+   * @param mobPos The current Vector2 position of the mob
+   * @return True if a target is visible, false otherwise.
+   */
+  private boolean isTargetVisible(Vector2 mobPos) {
+<span class="fc" id="L114">    Vector2 maxRange = new Vector2(mobPos.x - rangeDetection, mobPos.y);</span>
+    // check also the upper and lower boundaries of the mob with the offset y mob
+    // detection.
+<span class="fc" id="L117">    Vector2 upperYMaxRangePos = new Vector2(mobPos.x - 3, mobPos.y - Y_OFFSET_MOB_DETECTION);</span>
+<span class="fc" id="L118">    Vector2 lowerYMaxRangePos = new Vector2(mobPos.x - 3, mobPos.y + Y_OFFSET_MOB_DETECTION);</span>
+
+    // Raycast the upper, middle and lower detection range.
+<span class="pc bpc" id="L121" title="1 of 2 branches missed.">    return physics.raycast(mobPos, maxRange, targetLayer, hit)</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        || physics.raycast(mobPos, upperYMaxRangePos, targetLayer, hit)</span>
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        || physics.raycast(mobPos, lowerYMaxRangePos, targetLayer, hit);</span>
+  }
+
+  /**
+   * Sets vertical direction of the moving entity based on a float value. This
+   * method alters the setaTarget method in the PhysicsMovementComponent of the
+   * entity.
+   * 
+   * @param y A float value that alters the moving direction of the entity.
+   */
+  private void setVerticalAngleDirection(float y) {
+<span class="fc" id="L134">    entity.getComponent(PhysicsMovementComponent.class).setTarget(new Vector2(0, y));</span>
+<span class="fc" id="L135">  }</span>
+
+  /**
+   * Sets the vertical speed of the entity based on a float value. This method
+   * alters the setSpeed method in the PhysicsMovementComponent of the entity.
+   * 
+   * @param y Float value that alters the entity's vertical movement speed.
+   */
+  private void setVerticalSpeed(float y) {
+<span class="fc" id="L144">    entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(1f, y));</span>
+<span class="fc" id="L145">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

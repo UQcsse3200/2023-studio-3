@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.ui.terminal.TerminalTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:49" hostname="DESKTOP-F4ACIG8" time="0.033">
+  <properties/>
+  <testcase name="shouldModifyEnteredMessage()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.002"/>
+  <testcase name="shouldToggleIsOpen()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.006"/>
+  <testcase name="shouldSetOpenClosed()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.005"/>
+  <testcase name="shouldProcessMessageMultipleArgs()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.009"/>
+  <testcase name="shouldAddCommand()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.001"/>
+  <testcase name="shouldProcessMessageNoArgs()" classname="com.csse3200.game.ui.terminal.TerminalTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:49 PM com.csse3200.game.ui.terminal.Terminal addCommand
+SEVERE: Command test2 is already registered
+]]></system-err>
+</testsuite>

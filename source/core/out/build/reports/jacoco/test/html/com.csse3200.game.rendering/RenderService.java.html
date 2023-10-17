@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RenderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.rendering</a> &gt; <span class="el_source">RenderService.java</span></div><h1>RenderService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.rendering;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
+import com.csse3200.game.utils.SortedIntMap;
+
+/**
+ * Globally accessible service for registering renderable components. Any renderable registered with
+ * this service has render() called once per frame.
+ */
+<span class="fc" id="L13">public class RenderService implements Disposable {</span>
+  private static final int INITIAL_LAYER_CAPACITY = 4;
+  private static final int INITIAL_CAPACITY = 4;
+  private Stage stage;
+  private DebugRenderer debugRenderer;
+
+  /**
+   * Map from layer to list of renderables, allows us to render each layer in the correct order
+   */
+<span class="fc" id="L22">  private final SortedIntMap&lt;Array&lt;Renderable&gt;&gt; renderables =</span>
+      new SortedIntMap&lt;&gt;(INITIAL_LAYER_CAPACITY);
+
+  /**
+   * Register a new renderable.
+   *
+   * @param renderable new renderable.
+   */
+  public void register(Renderable renderable) {
+<span class="fc" id="L31">    int layerIndex = renderable.getLayer();</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    if (!renderables.containsKey(layerIndex)) {</span>
+<span class="fc" id="L33">      renderables.put(layerIndex, new Array&lt;&gt;(INITIAL_CAPACITY));</span>
+    }
+<span class="fc" id="L35">    Array&lt;Renderable&gt; layer = renderables.get(layerIndex);</span>
+<span class="fc" id="L36">    layer.add(renderable);</span>
+<span class="fc" id="L37">  }</span>
+
+  /**
+   * Unregister a renderable.
+   *
+   * @param renderable renderable to unregister.
+   */
+  public void unregister(Renderable renderable) {
+<span class="fc" id="L45">    Array&lt;Renderable&gt; layer = renderables.get(renderable.getLayer());</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">    if (layer != null) {</span>
+<span class="fc" id="L47">      layer.removeValue(renderable, true);</span>
+    }
+<span class="fc" id="L49">  }</span>
+
+  /**
+   * Trigger rendering on the given batch. This should be called only from the main renderer.
+   *
+   * @param batch batch to render to.
+   */
+  public void render(SpriteBatch batch) {
+
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    for (Array&lt;Renderable&gt; layer : renderables) {</span>
+      // Sort into rendering order
+<span class="fc" id="L60">      layer.sort();</span>
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">      for (Renderable renderable : layer) {</span>
+<span class="fc" id="L63">        renderable.render(batch);</span>
+<span class="fc" id="L64">      }</span>
+<span class="fc" id="L65">    }</span>
+<span class="fc" id="L66">  }</span>
+
+  public void setStage(Stage stage) {
+<span class="nc" id="L69">    this.stage = stage;</span>
+<span class="nc" id="L70">  }</span>
+
+  public Stage getStage() {
+<span class="fc" id="L73">    return stage;</span>
+  }
+
+  public void setDebug(DebugRenderer debugRenderer) {
+<span class="fc" id="L77">    this.debugRenderer = debugRenderer;</span>
+<span class="fc" id="L78">  }</span>
+
+  public DebugRenderer getDebug() {
+<span class="fc" id="L81">    return debugRenderer;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L86">    renderables.clear();</span>
+<span class="nc" id="L87">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

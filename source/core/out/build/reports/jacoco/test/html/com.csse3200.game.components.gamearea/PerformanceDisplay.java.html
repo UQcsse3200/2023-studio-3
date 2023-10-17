@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PerformanceDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.gamearea</a> &gt; <span class="el_source">PerformanceDisplay.java</span></div><h1>PerformanceDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.gamearea;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.UIComponent;
+
+/**
+ * Displays performance stats about the game for debugging purposes.
+ */
+<span class="nc" id="L12">public class PerformanceDisplay extends UIComponent {</span>
+  private static final float Z_INDEX = 5f;
+  private Label profileLabel;
+
+  @Override
+  public void create() {
+<span class="nc" id="L18">    super.create();</span>
+<span class="nc" id="L19">    addActors();</span>
+<span class="nc" id="L20">  }</span>
+
+  private void addActors() {
+<span class="nc" id="L23">    profileLabel = new Label(getStats(), skin, &quot;default&quot;);</span>
+<span class="nc" id="L24">    stage.addActor(profileLabel);</span>
+<span class="nc" id="L25">  }</span>
+
+  @Override
+  public void draw(SpriteBatch batch) {
+<span class="nc bnc" id="L29" title="All 2 branches missed.">    if (ServiceLocator.getRenderService().getDebug().getActive()) {</span>
+<span class="nc" id="L30">      profileLabel.setVisible(true);</span>
+<span class="nc" id="L31">      profileLabel.setText(getStats());</span>
+
+<span class="nc" id="L33">      int screenHeight = stage.getViewport().getScreenHeight();</span>
+<span class="nc" id="L34">      float offsetX = 5f;</span>
+<span class="nc" id="L35">      float offsetY = 180f;</span>
+<span class="nc" id="L36">      profileLabel.setPosition(offsetX, screenHeight - offsetY);</span>
+<span class="nc" id="L37">    } else {</span>
+<span class="nc" id="L38">      profileLabel.setVisible(false);</span>
+    }
+<span class="nc" id="L40">  }</span>
+
+  private String getStats() {
+<span class="nc" id="L43">    String message = &quot;Debug\n&quot;;</span>
+<span class="nc" id="L44">    message =</span>
+        message
+<span class="nc" id="L46">            .concat(String.format(&quot;FPS: %d fps%n&quot;, Gdx.graphics.getFramesPerSecond()))</span>
+<span class="nc" id="L47">            .concat(String.format(&quot;RAM: %d MB%n&quot;, Gdx.app.getJavaHeap() / 1000000));</span>
+<span class="nc" id="L48">    return message;</span>
+  }
+
+  @Override
+  public float getZIndex() {
+<span class="nc" id="L53">    return Z_INDEX;</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L58">    super.dispose();</span>
+<span class="nc" id="L59">    profileLabel.remove();</span>
+<span class="nc" id="L60">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

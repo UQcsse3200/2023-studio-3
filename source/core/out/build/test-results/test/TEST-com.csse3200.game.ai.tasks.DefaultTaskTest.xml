@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.ai.tasks.DefaultTaskTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:13" hostname="DESKTOP-F4ACIG8" time="0.506">
+  <properties/>
+  <testcase name="shouldHaveCorrectStatus()" classname="com.csse3200.game.ai.tasks.DefaultTaskTest" time="0.506"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.CombatStatsComponentTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:17" hostname="DESKTOP-F4ACIG8" time="0.133">
+  <properties/>
+  <testcase name="shouldAddHealth()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.006"/>
+  <testcase name="testDamageStateChange()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.002"/>
+  <testcase name="shouldSetGetHealth()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.002"/>
+  <testcase name="shouldBeRandom()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.021"/>
+  <testcase name="shouldSetGetBaseAttack()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.08"/>
+  <testcase name="shouldCheckIsDead()" classname="com.csse3200.game.components.CombatStatsComponentTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:17 PM com.csse3200.game.components.CombatStatsComponent setBaseAttack
+SEVERE: Can not set base attack to a negative attack value
+]]></system-err>
+</testsuite>

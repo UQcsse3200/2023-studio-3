@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TowerUpgraderComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">TowerUpgraderComponent.java</span></div><h1>TowerUpgraderComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.Component;
+
+import static com.csse3200.game.screens.TowerType.INCOME;
+
+/**
+ * Listens for an event from the popup menu to upgrade
+ *     the turret entity this component is attached to.
+ */
+<span class="fc" id="L12">public class TowerUpgraderComponent extends Component {</span>
+<span class="fc" id="L13">    public enum UPGRADE {</span>
+<span class="fc" id="L14">        ATTACK, MAXHP, FIRERATE, REPAIR, INCOME</span>
+    }
+
+    @Override
+    public void create() {
+<span class="fc" id="L19">        super.create();</span>
+<span class="fc" id="L20">        entity.getEvents().addListener(&quot;upgradeTower&quot;, this::upgradeTower);</span>
+<span class="fc" id="L21">    }</span>
+
+    /**
+     * Determines which type of upgrade to perform based on arguments provided by the event trigger.
+     * Note: The fire rate upgrade is in shots per minute.
+     *
+     * @param upgradeType An enum indicating the type of upgrade to do
+     * @param value How much the upgrade should change the tower's stats, if applicable
+     */
+    public void upgradeTower(UPGRADE upgradeType, int value) {
+<span class="pc bpc" id="L31" title="2 of 6 branches missed.">        switch (upgradeType) {</span>
+<span class="fc" id="L32">            case INCOME -&gt; {getEntity().getEvents().trigger(&quot;addIncome&quot;, value);}</span>
+<span class="fc" id="L33">            case ATTACK -&gt; {upgradeTowerAttack(value);}</span>
+<span class="fc" id="L34">            case MAXHP -&gt; {upgradeTowerMaxHealth( value);}</span>
+<span class="fc" id="L35">            case FIRERATE -&gt; {getEntity().getEvents().trigger(&quot;addFireRate&quot;, value);}</span>
+<span class="nc" id="L36">            case REPAIR -&gt; {repairTower();}</span>
+
+        }
+<span class="fc" id="L39">    }</span>
+
+    /**
+     * Increases the tower's attack stat.
+     *
+     * @param increase The amount that the attack stat should increase by.
+     */
+    void upgradeTowerAttack(int increase) {
+<span class="fc" id="L47">        int oldAttack = getEntity().getComponent(CombatStatsComponent.class).getBaseAttack();</span>
+<span class="fc" id="L48">        getEntity().getComponent(CombatStatsComponent.class).setBaseAttack(oldAttack + increase);</span>
+<span class="fc" id="L49">    }</span>
+
+    /**
+     * Increases the tower's maximum health, and restores the tower's health to the new maximum.
+     *
+     * @param increase The amount that the max health stat should increase by.
+     */
+    void upgradeTowerMaxHealth(int increase) {
+<span class="fc" id="L57">        int oldMaxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();</span>
+<span class="fc" id="L58">        getEntity().getComponent(CombatStatsComponent.class).setMaxHealth(oldMaxHealth + increase);</span>
+<span class="fc" id="L59">        getEntity().getComponent(CombatStatsComponent.class).setHealth(oldMaxHealth + increase);</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Restores the tower's health to its maximum health.
+     */
+    public void repairTower() {
+<span class="nc" id="L66">        int maxHealth = getEntity().getComponent(CombatStatsComponent.class).getMaxHealth();</span>
+<span class="nc" id="L67">        getEntity().getComponent(CombatStatsComponent.class).setHealth(maxHealth);</span>
+<span class="nc" id="L68">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

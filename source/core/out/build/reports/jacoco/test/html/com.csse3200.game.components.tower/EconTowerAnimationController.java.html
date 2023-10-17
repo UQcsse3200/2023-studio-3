@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EconTowerAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">EconTowerAnimationController.java</span></div><h1>EconTowerAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+
+/**
+ * Listens for events relevant to a weapon tower state.
+ * Each event will trigger a certain animation
+ */
+<span class="nc" id="L10">public class EconTowerAnimationController extends Component {</span>
+    // Event name constants
+    private static final String IDLE = &quot;idleStartEco&quot;;
+    private static final String MOVE = &quot;moveStartEco&quot;;
+    // Animation name constants
+    private static final String ECO_MOVE = &quot;move1&quot;;
+    private static final String ECO_IDLE = &quot;idle&quot;;
+
+    AnimationRenderComponent animator;
+
+    /**
+     * Creation call for a TowerAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations and sounds.
+     */
+    @Override
+    public void create() {
+<span class="nc" id="L26">        super.create();</span>
+<span class="nc" id="L27">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L28">        entity.getEvents().addListener(IDLE, this::animateIdle);</span>
+<span class="nc" id="L29">        entity.getEvents().addListener(MOVE, this::animateMove);</span>
+<span class="nc" id="L30">    }</span>
+
+    /**
+     * Starts the
+     */
+    void animateIdle() {
+<span class="nc" id="L36">        animator.startAnimation(ECO_IDLE);</span>
+<span class="nc" id="L37">    }</span>
+
+<span class="nc" id="L39">    void animateMove() { animator.startAnimation(ECO_MOVE); }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

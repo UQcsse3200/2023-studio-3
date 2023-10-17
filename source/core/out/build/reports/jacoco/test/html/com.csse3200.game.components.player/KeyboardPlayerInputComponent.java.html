@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>KeyboardPlayerInputComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.player</a> &gt; <span class="el_source">KeyboardPlayerInputComponent.java</span></div><h1>KeyboardPlayerInputComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.player;
+
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.input.InputComponent;
+import com.csse3200.game.utils.math.Vector2Utils;
+
+/**
+ * Input handler for the player for keyboard and touch (mouse) input.
+ * This input handler only uses keyboard input.
+ */
+public class KeyboardPlayerInputComponent extends InputComponent {
+<span class="fc" id="L14">  private final Vector2 walkDirection = Vector2.Zero.cpy();</span>
+
+  public KeyboardPlayerInputComponent() {
+<span class="fc" id="L17">    super(5);</span>
+<span class="fc" id="L18">  }</span>
+
+  /**
+   * Triggers player events on specific keycodes.
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#keyDown(int)
+   */
+  @Override
+  public boolean keyDown(int keycode) {
+<span class="nc bnc" id="L28" title="All 6 branches missed.">    switch (keycode) {</span>
+      case Keys.W:
+<span class="nc" id="L30">        walkDirection.add(Vector2Utils.UP);</span>
+<span class="nc" id="L31">        triggerWalkEvent();</span>
+<span class="nc" id="L32">        return true;</span>
+      case Keys.A:
+<span class="nc" id="L34">        walkDirection.add(Vector2Utils.LEFT);</span>
+<span class="nc" id="L35">        triggerWalkEvent();</span>
+<span class="nc" id="L36">        return true;</span>
+      case Keys.S:
+<span class="nc" id="L38">        walkDirection.add(Vector2Utils.DOWN);</span>
+<span class="nc" id="L39">        triggerWalkEvent();</span>
+<span class="nc" id="L40">        return true;</span>
+      case Keys.D:
+<span class="nc" id="L42">        walkDirection.add(Vector2Utils.RIGHT);</span>
+<span class="nc" id="L43">        triggerWalkEvent();</span>
+<span class="nc" id="L44">        return true;</span>
+      case Keys.SPACE:
+<span class="nc" id="L46">        entity.getEvents().trigger(&quot;attack&quot;);</span>
+<span class="nc" id="L47">        return true;</span>
+      default:
+<span class="nc" id="L49">        return false;</span>
+    }
+  }
+
+  /**
+   * Triggers player events on specific keycodes.
+   *
+   * @return whether the input was processed
+   * @see InputProcessor#keyUp(int)
+   */
+  @Override
+  public boolean keyUp(int keycode) {
+<span class="nc bnc" id="L61" title="All 5 branches missed.">    switch (keycode) {</span>
+      case Keys.W:
+<span class="nc" id="L63">        walkDirection.sub(Vector2Utils.UP);</span>
+<span class="nc" id="L64">        triggerWalkEvent();</span>
+<span class="nc" id="L65">        return true;</span>
+      case Keys.A:
+<span class="nc" id="L67">        walkDirection.sub(Vector2Utils.LEFT);</span>
+<span class="nc" id="L68">        triggerWalkEvent();</span>
+<span class="nc" id="L69">        return true;</span>
+      case Keys.S:
+<span class="nc" id="L71">        walkDirection.sub(Vector2Utils.DOWN);</span>
+<span class="nc" id="L72">        triggerWalkEvent();</span>
+<span class="nc" id="L73">        return true;</span>
+      case Keys.D:
+<span class="nc" id="L75">        walkDirection.sub(Vector2Utils.RIGHT);</span>
+<span class="nc" id="L76">        triggerWalkEvent();</span>
+<span class="nc" id="L77">        return true;</span>
+      default:
+<span class="nc" id="L79">        return false;</span>
+    }
+  }
+
+  private void triggerWalkEvent() {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (walkDirection.epsilonEquals(Vector2.Zero)) {</span>
+<span class="nc" id="L85">      entity.getEvents().trigger(&quot;walkStop&quot;);</span>
+    } else {
+<span class="nc" id="L87">      entity.getEvents().trigger(&quot;walk&quot;, walkDirection);</span>
+    }
+<span class="nc" id="L89">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

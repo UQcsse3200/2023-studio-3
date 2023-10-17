@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatrickAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.bosses</a> &gt; <span class="el_source">PatrickAnimationController.java</span></div><h1>PatrickAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.bosses;
+
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+<span class="fc" id="L8">public class PatrickAnimationController extends Component {</span>
+    AnimationRenderComponent animator;
+<span class="fc" id="L10">    Sound patrickAttack = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickAttack.mp3&quot;, Sound.class);
+<span class="fc" id="L12">    Sound patrickAppear = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickAppear.mp3&quot;, Sound.class);
+<span class="fc" id="L14">    Sound patrickScream = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickScream.mp3&quot;, Sound.class);
+<span class="fc" id="L16">    Sound patrickSpell = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickSpell.mp3&quot;, Sound.class);
+<span class="fc" id="L18">    Sound patrickSpawn = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickSpawn.mp3&quot;, Sound.class);
+<span class="fc" id="L20">    Sound patrickCast = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickCast.mp3&quot;, Sound.class);
+<span class="fc" id="L22">    Sound patrickThunder = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickThunder.mp3&quot;, Sound.class);
+<span class="fc" id="L24">    Sound patrickHit = ServiceLocator.getResourceService().getAsset(</span>
+            &quot;sounds/mobBoss/patrickHit.mp3&quot;, Sound.class);
+
+    /**
+     * Creation call for a DemonAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations and sounds.
+     */
+    @Override
+    public void create() {
+<span class="nc" id="L33">        super.create();</span>
+<span class="nc" id="L34">        animator = entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L35">        entity.getEvents().addListener(&quot;patrick_attack&quot;, this::patrickAttack);</span>
+<span class="nc" id="L36">        entity.getEvents().addListener(&quot;patrick_cast&quot;, this::patrickCast);</span>
+<span class="nc" id="L37">        entity.getEvents().addListener(&quot;patrick_death&quot;, this::patrickDeath);</span>
+<span class="nc" id="L38">        entity.getEvents().addListener(&quot;patrick_hurt&quot;, this::patrickHurt);</span>
+<span class="nc" id="L39">        entity.getEvents().addListener(&quot;patrick_idle&quot;, this::patrickIdle);</span>
+<span class="nc" id="L40">        entity.getEvents().addListener(&quot;patrick_spell&quot;, this::patrickSpell);</span>
+<span class="nc" id="L41">        entity.getEvents().addListener(&quot;patrick_walk&quot;, this::patrickWalk);</span>
+<span class="nc" id="L42">        entity.getEvents().addListener(&quot;patrick_appear_sound&quot;, this::patrickAppearSound);</span>
+<span class="nc" id="L43">        entity.getEvents().addListener(&quot;patrick_scream_sound&quot;, this::patrickScreamSound);</span>
+<span class="nc" id="L44">        entity.getEvents().addListener(&quot;patrick_spawn_sound&quot;, this::patrickSpawnSound);</span>
+<span class="nc" id="L45">        entity.getEvents().addListener(&quot;patrick_cast_sound&quot;, this::patrickCastSound);</span>
+<span class="nc" id="L46">        entity.getEvents().addListener(&quot;patrick_thunder_sound&quot;, this::patrickThunderSound);</span>
+<span class="nc" id="L47">        entity.getEvents().addListener(&quot;patrick_hit_sound&quot;, this::patrickHitSound);</span>
+
+<span class="nc" id="L49">    }</span>
+
+    private void patrickAttack() {
+<span class="nc" id="L52">        animator.startAnimation(&quot;patrick_attack&quot;);</span>
+<span class="nc" id="L53">        patrickAttack.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L54">        patrickAttack.play();</span>
+<span class="nc" id="L55">    }</span>
+    private void patrickCast() {
+<span class="nc" id="L57">        animator.startAnimation(&quot;patrick_cast&quot;);</span>
+<span class="nc" id="L58">    }</span>
+    private void patrickDeath() {
+<span class="nc" id="L60">        animator.startAnimation(&quot;patrick_death&quot;);</span>
+<span class="nc" id="L61">    }</span>
+    private void patrickHurt() {
+<span class="nc" id="L63">        animator.startAnimation(&quot;patrick_hurt&quot;);</span>
+<span class="nc" id="L64">    }</span>
+    private void patrickIdle() {
+<span class="nc" id="L66">        animator.startAnimation(&quot;patrick_idle&quot;);</span>
+<span class="nc" id="L67">    }</span>
+    private void patrickSpell() {
+<span class="nc" id="L69">        animator.startAnimation(&quot;patrick_spell&quot;);</span>
+<span class="nc" id="L70">        patrickSpell.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L71">        patrickSpell.play();</span>
+<span class="nc" id="L72">    }</span>
+    private void patrickWalk() {
+<span class="nc" id="L74">        animator.startAnimation(&quot;patrick_walk&quot;);</span>
+<span class="nc" id="L75">    }</span>
+    private void patrickAppearSound() {
+<span class="nc" id="L77">        patrickAppear.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L78">        patrickAppear.play();</span>
+<span class="nc" id="L79">    }</span>
+    private void patrickScreamSound() {
+<span class="nc" id="L81">        patrickScream.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L82">        patrickScream.play();</span>
+<span class="nc" id="L83">    }</span>
+    private void patrickSpawnSound() {
+<span class="nc" id="L85">        patrickSpawn.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L86">        patrickSpawn.play();</span>
+<span class="nc" id="L87">    }</span>
+    private void patrickCastSound() {
+<span class="nc" id="L89">        patrickCast.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L90">        patrickCast.play();</span>
+<span class="nc" id="L91">    }</span>
+    private void patrickThunderSound() {
+<span class="nc" id="L93">        patrickThunder.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L94">        patrickThunder.play();</span>
+<span class="nc" id="L95">    }</span>
+    private void patrickHitSound() {
+<span class="nc" id="L97">        patrickHit.setVolume(1000, 5.5f);</span>
+<span class="nc" id="L98">        patrickHit.play();</span>
+<span class="nc" id="L99">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

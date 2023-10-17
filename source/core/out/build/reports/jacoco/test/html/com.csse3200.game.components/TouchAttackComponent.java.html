@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TouchAttackComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components</a> &gt; <span class="el_source">TouchAttackComponent.java</span></div><h1>TouchAttackComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.components.npc.DeflectingComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.Weapon;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.components.projectile.EngineerBulletsAnimationController;
+import com.csse3200.game.components.projectile.ProjectileAnimationController;
+import com.csse3200.game.components.projectile.SnowBallProjectileAnimationController;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import java.util.Timer;
+import java.util.TimerTask;
+import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+
+/**
+ * When this entity touches a valid enemy's hitbox, deal damage to them and
+ * apply a knockback.
+ * Has an optional disposeOnHit property that disposes projectile upon
+ * collision.
+ *
+ * &lt;p&gt;
+ * Requires CombatStatsComponent, HitboxComponent on this entity.
+ *
+ * &lt;p&gt;
+ * Damage is only applied if target entity has a CombatStatsComponent. Knockback
+ * is only applied
+ * if target entity has a PhysicsComponent.
+ */
+public class TouchAttackComponent extends Component {
+  private short targetLayer;
+<span class="fc" id="L38">  private float knockbackForce = 0f;</span>
+<span class="fc" id="L39">  private boolean disposeOnHit = false;</span>
+<span class="fc" id="L40">  private int aoeSize = 0;</span>
+  private CombatStatsComponent combatStats;
+  private HitboxComponent hitboxComponent;
+
+  /**
+   * Create a component which attacks entities on collision, without knockback.
+   * 
+   * @param targetLayer The physics layer of the target's collider.
+   */
+<span class="fc" id="L49">  public TouchAttackComponent(short targetLayer) {</span>
+<span class="fc" id="L50">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L51">  }</span>
+
+  /**
+   * Create a component which attacks entities on collision, with knockback.
+   * 
+   * @param targetLayer The physics layer of the target's collider.
+   * @param knockback   The magnitude of the knockback applied to the entity.
+   */
+<span class="fc" id="L59">  public TouchAttackComponent(short targetLayer, float knockback) {</span>
+<span class="fc" id="L60">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L61">    this.knockbackForce = knockback;</span>
+<span class="fc" id="L62">  }</span>
+
+  /**
+   * Create a component which attacks entities on collision, with knockback and
+   * self-dispose.
+   * 
+   * @param targetLayer  The physics layer of the target's collider.
+   * @param knockback    The magnitude of the knockback applied to the entity.
+   * @param disposeOnHit Whether this entity should be disposed on hit.
+   */
+<span class="fc" id="L72">  public TouchAttackComponent(short targetLayer, float knockback, boolean disposeOnHit) {</span>
+<span class="fc" id="L73">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L74">    this.knockbackForce = knockback;</span>
+<span class="fc" id="L75">    this.disposeOnHit = disposeOnHit;</span>
+<span class="fc" id="L76">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L80">    entity.getEvents().addListener(&quot;collisionStart&quot;, this::onCollisionStart);</span>
+<span class="fc" id="L81">    entity.getEvents().addListener(&quot;collisionEnd&quot;, this::onCollisionEnd);</span>
+<span class="fc" id="L82">    combatStats = entity.getComponent(CombatStatsComponent.class);</span>
+<span class="fc" id="L83">    hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L84">  }</span>
+
+  public void onCollisionStart(Fixture me, Fixture other) {
+<span class="fc bfc" id="L87" title="All 2 branches covered.">    if (hitboxComponent.getFixture() != me) {</span>
+      // Not triggered by hitbox, ignore
+<span class="fc" id="L89">      return;</span>
+    }
+
+<span class="fc bfc" id="L92" title="All 2 branches covered.">    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {</span>
+      // Doesn't match our target layer, ignore
+<span class="fc" id="L94">      return;</span>
+    }
+
+    // Try to attack target.
+<span class="fc" id="L98">    Entity target = ((BodyUserData) other.getBody().getUserData()).entity;</span>
+
+    // If enemy has deflecting component, don't delete it.
+<span class="fc" id="L101">    Component deflectComponent = target.getComponent(DeflectingComponent.class);</span>
+<span class="fc bfc" id="L102" title="All 4 branches covered.">    if (deflectComponent != null &amp;&amp; deflectComponent.enabled)</span>
+<span class="fc" id="L103">      return;</span>
+  
+	EngineerBulletsAnimationController engineerBulletsAnimationController;
+	ProjectileAnimationController projectileAnimationController;
+	SnowBallProjectileAnimationController snowBallProjectileAnimationController;
+<span class="pc bpc" id="L108" title="1 of 2 branches missed.">	if((engineerBulletsAnimationController=entity.getComponent(EngineerBulletsAnimationController.class)) != null)</span>
+	{
+<span class="nc" id="L110">		engineerBulletsAnimationController.animateCollide();</span>
+<span class="nc" id="L111">		setDisposeOnHit(false);</span>
+<span class="nc" id="L112">		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));</span>
+<span class="nc" id="L113">		new Timer().schedule(new TimerTask() {</span>
+		  public void run() {
+<span class="nc" id="L115">			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+<span class="nc" id="L116">			projectile.setFlagForDelete(true);</span>
+<span class="nc" id="L117">		  }</span>
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+<span class="fc bfc" id="L120" title="All 2 branches covered.">	if((projectileAnimationController=entity.getComponent(ProjectileAnimationController.class)) != null)</span>
+	{
+<span class="fc" id="L122">		projectileAnimationController.animateCollide();</span>
+<span class="fc" id="L123">		setDisposeOnHit(false);</span>
+<span class="fc" id="L124">		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));</span>
+<span class="fc" id="L125">		new Timer().schedule(new TimerTask() {</span>
+		  public void run() {
+<span class="fc" id="L127">			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+<span class="fc" id="L128">			projectile.setFlagForDelete(true);</span>
+<span class="fc" id="L129">		  }</span>
+		}, 300/*START_SPEED*frames*1000ms*/);
+	}else
+<span class="pc bpc" id="L132" title="1 of 2 branches missed.">	if((snowBallProjectileAnimationController=entity.getComponent(SnowBallProjectileAnimationController.class)) != null)</span>
+	{
+<span class="nc" id="L134">		snowBallProjectileAnimationController.animateCollide();</span>
+<span class="nc" id="L135">		setDisposeOnHit(false);</span>
+<span class="nc" id="L136">		entity.getComponent(PhysicsMovementComponent.class).setSpeed(new Vector2(0, 0));</span>
+<span class="nc" id="L137">		new Timer().schedule(new TimerTask() {</span>
+		  public void run() {
+<span class="nc" id="L139">			Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+<span class="nc" id="L140">			projectile.setFlagForDelete(true);</span>
+<span class="nc" id="L141">		  }</span>
+		}, 200/*START_SPEED*frames*1000ms*/);
+		
+		AITaskComponent aiTaskComponent;
+<span class="nc bnc" id="L145" title="All 2 branches missed.">		if((aiTaskComponent=target.getComponent(AITaskComponent.class))!=null)</span>
+<span class="nc" id="L146">			aiTaskComponent.freezed = true;</span>
+		
+		XenoAnimationController xenoAnimationController; 
+<span class="nc bnc" id="L149" title="All 2 branches missed.">		if((xenoAnimationController=target.getComponent(XenoAnimationController.class))!=null)</span>
+<span class="nc" id="L150">			xenoAnimationController.animateFreeze();</span>
+		else
+<span class="nc bnc" id="L152" title="All 2 branches missed.">			if(aiTaskComponent!=null)</span>
+<span class="nc" id="L153">				aiTaskComponent.freezed = false;</span>
+	}
+<span class="fc" id="L155">    CombatStatsComponent targetStats = target.getComponent(CombatStatsComponent.class);</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">    if (targetStats != null) {</span>
+      // If entity has abilities, pick one at random and apply it else use baseAttack
+      // damage
+<span class="pc bpc" id="L159" title="1 of 2 branches missed.">      if (combatStats.getWeapon(target) != null) {</span>
+<span class="nc" id="L160">        targetStats.hit(combatStats.getWeapon(target).getDamage());</span>
+      } else {
+<span class="fc" id="L162">        targetStats.hit(combatStats.getBaseAttack());</span>
+      }
+    }
+    // Apply knockback
+<span class="fc" id="L166">    PhysicsComponent physicsComponent = target.getComponent(PhysicsComponent.class);</span>
+<span class="pc bpc" id="L167" title="1 of 4 branches missed.">    if (physicsComponent != null &amp;&amp; knockbackForce &gt; 0f) {</span>
+<span class="fc" id="L168">      Body targetBody = physicsComponent.getBody();</span>
+<span class="fc" id="L169">      Vector2 direction = target.getCenterPosition().sub(entity.getCenterPosition());</span>
+<span class="fc" id="L170">      Vector2 impulse = direction.setLength(knockbackForce);</span>
+<span class="fc" id="L171">      targetBody.applyLinearImpulse(impulse, targetBody.getWorldCenter(), true);</span>
+    }
+
+<span class="fc bfc" id="L174" title="All 2 branches covered.">    if (disposeOnHit) {</span>
+<span class="fc" id="L175">      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+<span class="fc" id="L176">      projectile.setFlagForDelete(true);</span>
+    }
+<span class="fc" id="L178">  }</span>
+
+  public void setDisposeOnHit(boolean disposeOnHit) {
+<span class="fc" id="L181">    this.disposeOnHit = disposeOnHit;</span>
+<span class="fc" id="L182">  }</span>
+
+  public void setKnockBack(float knockback) {
+<span class="nc" id="L185">    this.knockbackForce = knockback;</span>
+<span class="nc" id="L186">  }</span>
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+    // Nothing to do on collision end
+<span class="fc bfc" id="L190" title="All 2 branches covered.">    if (hitboxComponent.getFixture() != me) {</span>
+      // Not triggered by hitbox, ignore
+<span class="fc" id="L192">      return;</span>
+    }
+
+<span class="pc bpc" id="L195" title="1 of 2 branches missed.">    if (!PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)) {</span>
+      // Doesn't match our target layer, ignore
+<span class="nc" id="L197">      return;</span>
+    }
+
+<span class="fc" id="L200">    Entity otherEntity = ((BodyUserData) other.getBody().getUserData()).entity;</span>
+
+    // If enemy has enabled deflection component, don't dispose it.
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">    if (otherEntity.getComponent(DeflectingComponent.class) != null)</span>
+<span class="nc" id="L204">      return;</span>
+
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">    if (disposeOnHit) {</span>
+<span class="fc" id="L207">      Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+<span class="fc" id="L208">      projectile.setFlagForDelete(true);</span>
+    }
+<span class="fc" id="L210">  }</span>
+
+  /**
+   * Choose the weapon to use against the given fixture.
+   *
+   * If the fixture has been removed (died) return null, else return the weapon to use.
+   * */
+  public Weapon chooseWeapon(Fixture other) {
+<span class="nc bnc" id="L218" title="All 2 branches missed.">    if (other == null) {</span>
+<span class="nc" id="L219">      return null;</span>
+    }
+<span class="nc" id="L221">    BodyUserData data = ((BodyUserData) other.getBody().getUserData());</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">    if (data == null) {</span>
+<span class="nc" id="L223">      return null;</span>
+    }
+<span class="nc" id="L225">    Entity target = data.entity;</span>
+<span class="nc" id="L226">    Weapon weapon = null;</span>
+<span class="nc bnc" id="L227" title="All 2 branches missed.">    if (target.getComponent(CombatStatsComponent.class) != null) {</span>
+<span class="nc" id="L228">      weapon = combatStats.getWeapon(target);</span>
+    }
+<span class="nc" id="L230">    return weapon;</span>
+  }
+
+  /**
+   * Sets the target layer of this component, changing which entity to &quot;attack&quot;
+   * and/or apply knockback to.
+   * 
+   * @param targetLayer
+   */
+  public void setTargetLayer(short targetLayer) {
+<span class="fc" id="L240">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L241">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

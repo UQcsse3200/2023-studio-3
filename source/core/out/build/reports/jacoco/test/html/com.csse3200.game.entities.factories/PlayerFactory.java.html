@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">PlayerFactory.java</span></div><h1>PlayerFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.TouchAttackComponent;
+import com.csse3200.game.components.player.InventoryComponent;
+import com.csse3200.game.components.player.PlayerActions;
+import com.csse3200.game.components.player.PlayerStatsDisplay;
+import com.csse3200.game.components.tasks.waves.WaveTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.configs.PlayerConfig;
+import com.csse3200.game.files.FileLoader;
+import com.csse3200.game.input.InputComponent;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Factory to create a player entity.
+ *
+ * &lt;p&gt;Predefined player properties are loaded from a config stored as a json file and should have
+ * the properties stores in 'PlayerConfig'.
+ */
+public class PlayerFactory {
+<span class="nc" id="L29">    private static final PlayerConfig stats =</span>
+<span class="nc" id="L30">            FileLoader.readClass(PlayerConfig.class, &quot;configs/player.json&quot;);</span>
+
+    /**
+     * Create a player entity.
+     * @return entity
+     */
+    public static Entity createPlayer() {
+        InputComponent inputComponent =
+<span class="nc" id="L38">                ServiceLocator.getInputService().getInputFactory().createForPlayer();</span>
+<span class="nc" id="L39">        Entity player =</span>
+                new Entity()
+<span class="nc" id="L41">                        .addComponent(new TextureRenderComponent(&quot;images/box_boy_leaf.png&quot;))</span>
+<span class="nc" id="L42">                        .addComponent(new PhysicsComponent())</span>
+<span class="nc" id="L43">                        .addComponent(new ColliderComponent())</span>
+<span class="nc" id="L44">                        .addComponent(new TouchAttackComponent(PhysicsLayer.NPC))</span>
+<span class="nc" id="L45">                        .addComponent(new HitboxComponent().setLayer(PhysicsLayer.HUMANS))</span>
+<span class="nc" id="L46">                        .addComponent(new PlayerActions())</span>
+<span class="nc" id="L47">                        .addComponent(new CombatStatsComponent(1000, 0))</span>
+<span class="nc" id="L48">                        .addComponent(new InventoryComponent(stats.gold))</span>
+<span class="nc" id="L49">                        .addComponent(inputComponent)</span>
+<span class="nc" id="L50">                        .addComponent(new PlayerStatsDisplay());</span>
+
+<span class="nc" id="L52">        PhysicsUtils.setScaledCollider(player, 0.6f, 0.3f);</span>
+<span class="nc" id="L53">        player.getComponent(ColliderComponent.class).setDensity(1.5f);</span>
+<span class="nc" id="L54">        player.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L55">        return player;</span>
+    }
+
+<span class="nc" id="L58">    private PlayerFactory() {</span>
+<span class="nc" id="L59">        throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

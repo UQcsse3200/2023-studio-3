@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.factories.EngineerFactoryTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:28" hostname="DESKTOP-F4ACIG8" time="0.66">
+  <properties/>
+  <testcase name="testEngineerPhysicsComponents()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.059"/>
+  <testcase name="testDeleteEngineer()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.072"/>
+  <testcase name="testEngineerTouchAttackAndCombatStatsComponents()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.085"/>
+  <testcase name="testEngineerColliderAndHitboxComponents()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.057"/>
+  <testcase name="testEngineerConfig()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.068"/>
+  <testcase name="testEngineerCollisions()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.071"/>
+  <testcase name="createBaseHumanNPC()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.024"/>
+  <testcase name="testEngineerAnimationAndAITaskComponents()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.076"/>
+  <testcase name="testCreateEngineer()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.062"/>
+  <testcase name="testEngineerAnimations()" classname="com.csse3200.game.entities.factories.EngineerFactoryTest" time="0.072"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

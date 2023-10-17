@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhysicsEngine.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.physics</a> &gt; <span class="el_source">PhysicsEngine.java</span></div><h1>PhysicsEngine.java</h1><pre class="source lang-java linenums">package com.csse3200.game.physics;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Disposable;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.raycast.AllHitCallback;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.physics.raycast.SingleHitCallback;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Process game physics using the Box2D library. See the Box2D documentation for examples or use
+ * cases.
+ */
+public class
+PhysicsEngine implements Disposable {
+<span class="fc" id="L22">  private static final Logger logger = LoggerFactory.getLogger(PhysicsEngine.class);</span>
+  private static final float MAX_UPDATE_TIME = 0.25f;
+  private static final float PHYSICS_TIMESTEP = 0.016f;
+<span class="fc" id="L25">  private static final Vector2 GRAVITY = new Vector2(0f, -0f);</span>
+  private static final int VELOCITY_ITERATIONS = 6;
+  private static final int POSITION_ITERATIONS = 2;
+
+  private final World world;
+  private final GameTime timeSource;
+<span class="fc" id="L31">  private final SingleHitCallback singleHitCallback = new SingleHitCallback();</span>
+<span class="fc" id="L32">  private final AllHitCallback allHitCallback = new AllHitCallback();</span>
+  private float accumulator;
+
+  public PhysicsEngine() {
+<span class="fc" id="L36">    this(new World(GRAVITY, true), ServiceLocator.getTimeSource());</span>
+<span class="fc" id="L37">  }</span>
+
+<span class="fc" id="L39">  public PhysicsEngine(World world, GameTime timeSource) {</span>
+<span class="fc" id="L40">    this.world = world;</span>
+<span class="fc" id="L41">    world.setContactListener(new PhysicsContactListener());</span>
+<span class="fc" id="L42">    this.timeSource = timeSource;</span>
+<span class="fc" id="L43">  }</span>
+
+  public void update() {
+    // Check for deleted bodies and joints
+<span class="fc" id="L47">    checkAndDeleteBodies();</span>
+
+    // Updating physics isn't as easy as triggering an update every frame. Each frame could take a
+    // different amount of time to run, but physics simulations are only stable if computed at a
+    // consistent frame rate! See: https://gafferongames.com/post/fix_your_timestep/
+<span class="fc" id="L52">    float deltaTime = timeSource.getDeltaTime();</span>
+<span class="fc" id="L53">    float maxTime = Math.min(deltaTime,MAX_UPDATE_TIME);</span>
+<span class="fc" id="L54">    accumulator += maxTime;</span>
+
+    // Depending on how much time has passed, we may compute 0 or more physics steps in one go. If
+    // we need to catch up, we'll compute multiple in a row before getting to rendering.
+<span class="fc bfc" id="L58" title="All 2 branches covered.">    while (accumulator &gt;= PHYSICS_TIMESTEP) {</span>
+<span class="fc" id="L59">      world.step(PHYSICS_TIMESTEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);</span>
+<span class="fc" id="L60">      accumulator -= PHYSICS_TIMESTEP;</span>
+    }
+<span class="fc" id="L62">  }</span>
+
+  public Body createBody(BodyDef bodyDef) {
+<span class="fc" id="L65">    logger.debug(&quot;Creating physics body {}&quot;, bodyDef);</span>
+<span class="fc" id="L66">    return world.createBody(bodyDef);</span>
+  }
+
+  public void destroyBody(Body body) {
+<span class="fc" id="L70">    logger.debug(&quot;Destroying physics body {}&quot;, body);</span>
+<span class="fc" id="L71">    world.destroyBody(body);</span>
+<span class="fc" id="L72">  }</span>
+
+  public Joint createJoint(JointDef jointDef) {
+<span class="fc" id="L75">    logger.debug(&quot;Creating physics joint {}&quot;, jointDef);</span>
+<span class="fc" id="L76">    return world.createJoint(jointDef);</span>
+  }
+
+  public void destroyJoint(Joint joint) {
+<span class="fc" id="L80">    logger.debug(&quot;Destroying physics joint {}&quot;, joint);</span>
+<span class="fc" id="L81">    world.destroyJoint(joint);</span>
+<span class="fc" id="L82">  }</span>
+
+  // This is needed since it's not possible to destroy bodies or joints while
+  // the world is stepping/simulating.
+  // FIXME : THIS
+  public void checkAndDeleteBodies() {
+<span class="fc" id="L88">    Array&lt;Body&gt; bodies = new Array&lt;Body&gt;();</span>
+
+<span class="fc" id="L90">    world.getBodies(bodies);</span>
+
+    // ! CANNOT USE ITERATOR HERE
+    // ! If you do: &quot;ERROR: #ITERATOR CAN'T BE NESTED&quot;
+<span class="fc bfc" id="L94" title="All 2 branches covered.">    for(int i = 0; i &lt; bodies.size; i++) {</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">      if(bodies.get(i) != null </span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">          &amp;&amp; bodies.get(i).getUserData() != null </span>
+<span class="pc bpc" id="L97" title="1 of 2 branches missed.">          &amp;&amp; (BodyUserData) bodies.get(i).getUserData() != null) {</span>
+<span class="fc" id="L98">            Entity entity = ((BodyUserData) bodies.get(i).getUserData()).entity;</span>
+
+<span class="fc bfc" id="L100" title="All 2 branches covered.">            if(entity.getFlagForDelete()) {</span>
+<span class="fc" id="L101">              entity.dispose();</span>
+            }
+      }
+    }
+<span class="fc" id="L105">  }</span>
+
+  public World getWorld() {
+<span class="nc" id="L108">    return world;</span>
+  }
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for a collision against any
+   * colliders.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param hit The raycast result will be stored in this class
+   * @return true if a collider was hit, false otherwise.
+   */
+  public boolean raycast(Vector2 from, Vector2 to, RaycastHit hit) {
+<span class="nc" id="L121">    return raycast(from, to, PhysicsLayer.ALL, hit);</span>
+  }
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for a collision against
+   * colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param hit The hit of the closest collider will be stored in this.
+   * @param layerMask The physics layer mask which specifies layers that can be hit. Other layers
+   *     will be ignored.
+   * @return true if a collider was hit, false otherwise.
+   */
+  public boolean raycast(Vector2 from, Vector2 to, short layerMask, RaycastHit hit) {
+<span class="fc" id="L136">    singleHitCallback.didHit = false;</span>
+<span class="fc" id="L137">    singleHitCallback.layerMask = layerMask;</span>
+<span class="fc" id="L138">    singleHitCallback.hit = hit;</span>
+<span class="fc" id="L139">    world.rayCast(singleHitCallback, from, to);</span>
+<span class="fc" id="L140">    return singleHitCallback.didHit;</span>
+  }
+
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for a collision
+   * against colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param layerMask The physics layer mask which specifies layers that can be hit. Other layers
+   *                  will be ignored.
+   * @return The fixture of the closest collider hit by the ray, or null if no collider was hit.
+   * */
+  public Fixture raycastGetHit(Vector2 from, Vector2 to, short layerMask) {
+<span class="nc" id="L155">    singleHitCallback.didHit = false;</span>
+<span class="nc" id="L156">    singleHitCallback.layerMask = layerMask;</span>
+<span class="nc" id="L157">    world.rayCast(singleHitCallback, from, to);</span>
+<span class="nc" id="L158">    return singleHitCallback.hit.fixture;</span>
+  }
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for all collision against
+   * colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @return All hits made by the ray, unordered. Empty if no hits were made.
+   */
+  public RaycastHit[] raycastAll(Vector2 from, Vector2 to) {
+<span class="nc" id="L170">    return raycastAll(from, to, PhysicsLayer.ALL);</span>
+  }
+
+  /**
+   * Cast a ray in a straight line from one point to another, checking for all collision against
+   * colliders in the specified layers.
+   *
+   * @param from The starting point of the ray.
+   * @param to The end point of the ray.
+   * @param layerMask The physics layer mask which specifies layers that can be hit. Other layers
+   *     will be ignored.
+   * @return All hits made by the ray, unordered. Empty if no hits were made.
+   */
+  public RaycastHit[] raycastAll(Vector2 from, Vector2 to, short layerMask) {
+<span class="nc" id="L184">    allHitCallback.layerMask = layerMask;</span>
+<span class="nc" id="L185">    world.rayCast(allHitCallback, from, to);</span>
+<span class="nc" id="L186">    return allHitCallback.getHitsAndClear();</span>
+  }
+
+  @Override
+  public void dispose() {
+<span class="fc" id="L191">    world.dispose();</span>
+<span class="fc" id="L192">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

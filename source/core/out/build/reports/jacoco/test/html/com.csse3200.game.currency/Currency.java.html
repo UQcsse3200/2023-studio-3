@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Currency.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.currency</a> &gt; <span class="el_source">Currency.java</span></div><h1>Currency.java</h1><pre class="source lang-java linenums">package com.csse3200.game.currency;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public abstract class Currency {
+
+<span class="fc" id="L8">    private static final Logger logger = LoggerFactory.getLogger(Currency.class);</span>
+
+    // The logo of the currency
+    private final String logoFilePath;
+
+    // Stores the amount of currency there is
+    private int amount;
+
+    private final String name;
+
+    /**
+     * Constructor for the currency object.
+     * @param logoFilePath the file path of the logo
+     */
+<span class="fc" id="L22">    public Currency(String logoFilePath, String name) {</span>
+<span class="fc" id="L23">        this.logoFilePath = logoFilePath;</span>
+<span class="fc" id="L24">        this.name = name;</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getName() {
+<span class="nc" id="L28">        return this.name;</span>
+    }
+
+    public int getAmount() {
+<span class="fc" id="L32">        return this.amount;</span>
+    }
+
+    public void setAmount(int amount) {
+<span class="fc" id="L36">        this.amount = amount;</span>
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * Getter for the logo of the currency.
+     *
+     * @return the logo of the currency in a Texture format.
+     */
+    public String getTexture() {
+<span class="fc" id="L45">        return this.logoFilePath;</span>
+    }
+
+    /**
+     * This method increments the currency amount by a given amount.
+     * Added amount is assumed to be larger than negative the currency's amount.
+     *
+     * @requires addedAmount &gt;= -this.amount
+     * @param addedAmount The amount the currency will be incremented by.
+     */
+    public void modify(int addedAmount) {
+<span class="fc" id="L56">        logger.debug(&quot;Modifying &quot; + this.getClass().getSimpleName() + &quot;by &quot; + addedAmount);</span>
+<span class="fc" id="L57">        this.amount += addedAmount;</span>
+<span class="fc" id="L58">    }</span>
+
+    /**
+     * Checks if you can buy some item with a given cost.
+     *
+     * @param cost the cost of the item.
+     * @return boolean representing if you can buy that object or not.
+     */
+    public boolean canBuy(int cost) {
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        return this.getAmount() &gt;= cost;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc" id="L72">        return this.getClass().getSimpleName() + &quot;: &quot; + this.getAmount();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

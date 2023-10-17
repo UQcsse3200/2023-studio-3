@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MobBossFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">MobBossFactory.java</span></div><h1>MobBossFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.*;
+import com.csse3200.game.components.bosses.DemonAnimationController;
+import com.csse3200.game.components.bosses.PatrickAnimationController;
+import com.csse3200.game.components.bosses.IceBabyAnimationController;
+import com.csse3200.game.components.npc.Boss1AnimationController;
+import com.csse3200.game.components.npc.Boss2AnimationController;
+import com.csse3200.game.components.tasks.bosstask.*;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.configs.MobBossConfigs;
+import com.csse3200.game.entities.configs.NPCConfigs;
+import com.csse3200.game.files.FileLoader;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.*;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Where all entities of mob bosses are created
+ */
+public class MobBossFactory {
+
+<span class="fc" id="L28">    private static final NPCConfigs configs = FileLoader.readClass(NPCConfigs.class, &quot;configs/Boss.json&quot;);</span>
+    private static final int PRIORITY = 1;
+    private static final int BOSS_MOB_AGRO_RANGE = 10;
+    private static final int DEMON_HEALTH = 5000;
+    private static final int DEMON_ATTACK = 0;
+    private static final int PATRICK_ATTACK = 0;
+    private static final int PATRICK_HEALTH = 2500;
+    private static final int ICEBABY_ATTACK = 0;
+    private static final int ICEBABY_HEALTH = 3000;
+
+    /**
+     * Creates new Demon boss with its correlating tasks and animations
+     *
+     * @return Demon boss
+     */
+//    public static Entity createDemonBoss() {
+    // Create Demon Boss
+    public static Entity createDemonBoss(int health) {
+<span class="fc" id="L46">        Entity demon = createBaseBoss();</span>
+
+        // Animation addition
+<span class="fc" id="L49">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="fc" id="L50">                ServiceLocator.getResourceService().getAsset(&quot;images/mobboss/demon.atlas&quot;,</span>
+                        TextureAtlas.class));
+<span class="fc" id="L52">        animator.addAnimation(&quot;demon_cast_spell&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L53">        animator.addAnimation(&quot;demon_cleave&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L54">        animator.addAnimation(&quot;demon_death&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L55">        animator.addAnimation(&quot;demon_fire_breath&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L56">        animator.addAnimation(&quot;demon_idle&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L57">        animator.addAnimation(&quot;demon_smash&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L58">        animator.addAnimation(&quot;demon_take_hit&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L59">        animator.addAnimation(&quot;demon_walk&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L60">        animator.addAnimation(&quot;transform&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+
+        // AI task addition
+<span class="fc" id="L63">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L64">                .addTask(new DemonBossTask());</span>
+
+        // Component addition
+<span class="fc" id="L67">        demon</span>
+<span class="fc" id="L68">                .addComponent(animator)</span>
+<span class="fc" id="L69">                .addComponent(new DemonAnimationController())</span>
+<span class="fc" id="L70">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L71">                .addComponent(new CombatStatsComponent(health, DEMON_ATTACK));</span>
+//                .addComponent(new CombatStatsComponent(DEMON_HEALTH, DEMON_ATTACK));
+
+        // Scale demon
+<span class="fc" id="L75">        demon.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L76">        demon.scaleHeight(5f);</span>
+<span class="fc" id="L77">        demon.scaleWidth(5f);</span>
+<span class="fc" id="L78">        return demon;</span>
+    }
+
+    /**
+     * Creates end state of demon boss
+     *
+     * @return Slimey Boy
+     */
+    public static Entity createSlimeyBoy() {
+<span class="fc" id="L87">        Entity slimeyBoy = createBaseBoss();</span>
+
+        // Animation
+<span class="fc" id="L90">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="fc" id="L91">                ServiceLocator.getResourceService().getAsset(&quot;images/mobboss/demon.atlas&quot;,</span>
+                        TextureAtlas.class));
+<span class="fc" id="L93">        animator.addAnimation(&quot;idle&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L94">        animator.addAnimation(&quot;move&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L95">        animator.addAnimation(&quot;projectile_explosion&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L96">        animator.addAnimation(&quot;projectile_idle&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L97">        animator.addAnimation(&quot;take_hit&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L98">        animator.addAnimation(&quot;transform&quot;, 0.2f, Animation.PlayMode.REVERSED);</span>
+
+        // AI task addition
+<span class="fc" id="L101">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L102">                .addTask(new SlimeyBoyTask());</span>
+
+        // Component addition
+<span class="fc" id="L105">        slimeyBoy</span>
+<span class="fc" id="L106">                .addComponent(animator)</span>
+<span class="fc" id="L107">                .addComponent(new DemonAnimationController())</span>
+<span class="fc" id="L108">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L109">                .addComponent(new CombatStatsComponent(80, 0));</span>
+
+        // Scale demon
+<span class="fc" id="L112">        slimeyBoy.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L113">        slimeyBoy.scaleHeight(5f);</span>
+<span class="fc" id="L114">        slimeyBoy.scaleWidth(5f);</span>
+<span class="fc" id="L115">        return slimeyBoy;</span>
+    }
+
+    /**
+     * Creates new Patrick boss with correlating tasks and animations
+     *
+     * @param health - health of the boss
+     * @return Patrick Boss
+     */
+    public static Entity createPatrickBoss(int health) {
+<span class="fc" id="L125">        Entity patrick = createBaseBoss();</span>
+
+        // Animation addition
+<span class="fc" id="L128">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="fc" id="L129">                ServiceLocator.getResourceService().getAsset(&quot;images/mobboss/patrick.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L130">        animator.addAnimation(&quot;patrick_attack&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L131">        animator.addAnimation(&quot;patrick_cast&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L132">        animator.addAnimation(&quot;patrick_death&quot;, 0.2f, Animation.PlayMode.REVERSED);</span>
+<span class="fc" id="L133">        animator.addAnimation(&quot;patrick_hurt&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L134">        animator.addAnimation(&quot;patrick_idle&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L135">        animator.addAnimation(&quot;patrick_spell&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L136">        animator.addAnimation(&quot;patrick_walk&quot;, 0.2f, Animation.PlayMode.LOOP);</span>
+
+        // AI task addition
+<span class="fc" id="L139">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L140">                .addTask(new PatrickTask());</span>
+
+        // Component addition
+<span class="fc" id="L143">        patrick</span>
+<span class="fc" id="L144">                .addComponent(animator)</span>
+<span class="fc" id="L145">                .addComponent(new PatrickAnimationController())</span>
+<span class="fc" id="L146">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L147">                .addComponent(new CombatStatsComponent(health, PATRICK_ATTACK));</span>
+
+        // Scale demon
+<span class="fc" id="L150">        patrick.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L151">        patrick.scaleHeight(4f);</span>
+<span class="fc" id="L152">        patrick.scaleWidth(4f);</span>
+<span class="fc" id="L153">        return patrick;</span>
+    }
+
+    /**
+     * Creates a patrick entity whose sole purpose is to display death animation
+     * @return patrick death entity
+     */
+    public static Entity patrickDead() {
+<span class="fc" id="L161">        Entity patrick = createBaseBoss();</span>
+
+        // Animation addition
+<span class="fc" id="L164">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="fc" id="L165">                ServiceLocator.getResourceService().getAsset(&quot;images/mobboss/patrick.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L166">        animator.addAnimation(&quot;patrick_death&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+
+        // AI task addition
+<span class="fc" id="L169">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L170">                .addTask(new PatrickDeathTask());</span>
+
+        // Component addition
+<span class="fc" id="L173">        patrick</span>
+<span class="fc" id="L174">                .addComponent(animator)</span>
+<span class="fc" id="L175">                .addComponent(new PatrickAnimationController())</span>
+<span class="fc" id="L176">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L177">                .addComponent(new CombatStatsComponent(1, 0));</span>
+
+        // Scale patrick
+<span class="fc" id="L180">        patrick.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L181">        patrick.scaleHeight(4f);</span>
+<span class="fc" id="L182">        patrick.scaleWidth(4f);</span>
+<span class="fc" id="L183">        return patrick;</span>
+    }
+
+    /**
+     * Creates a new ice boss and adds its correlating animations and tasks
+     *
+     * @return - Ice Baby Boss
+     */
+    public static Entity createIceBoss(int health) {
+<span class="fc" id="L192">        Entity iceBaby = createBaseBoss();</span>
+<span class="fc" id="L193">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L194">                .addTask(new IceBabyTask());</span>
+
+<span class="fc" id="L196">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="fc" id="L197">                ServiceLocator.getResourceService().getAsset(&quot;images/mobboss/iceBaby.atlas&quot;, TextureAtlas.class));</span>
+<span class="fc" id="L198">        animator.addAnimation(&quot;idle&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L199">        animator.addAnimation(&quot;1_atk&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L200">        animator.addAnimation(&quot;2_atk&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L201">        animator.addAnimation(&quot;3_atk&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L202">        animator.addAnimation(&quot;death&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L203">        animator.addAnimation(&quot;intro_or_revive&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L204">        animator.addAnimation(&quot;stagger&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L205">        animator.addAnimation(&quot;take_hit&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L206">        animator.addAnimation(&quot;walk&quot;, 0.2f, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L208">        iceBaby.addComponent(aiTaskComponent);</span>
+
+<span class="fc" id="L210">        iceBaby</span>
+<span class="fc" id="L211">                .addComponent(animator)</span>
+<span class="fc" id="L212">                .addComponent(new IceBabyAnimationController())</span>
+<span class="fc" id="L213">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L214">                .addComponent(new CombatStatsComponent(health, ICEBABY_ATTACK));</span>
+
+<span class="fc" id="L216">        iceBaby.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L217">        iceBaby.scaleHeight(4f);</span>
+<span class="fc" id="L218">        iceBaby.scaleWidth(4f);</span>
+
+<span class="fc" id="L220">        return iceBaby;</span>
+    }
+
+    // Create Boss King 1
+    public static Entity createMobBoss1(int numLane) {
+<span class="nc" id="L225">        MobBossConfigs config = configs.mobBoss;</span>
+<span class="nc" id="L226">        Entity mobBoss1 = createBaseBoss();</span>
+
+<span class="nc" id="L228">        AITaskComponent aiTaskComponent1 = new AITaskComponent()</span>
+<span class="nc" id="L229">                .addTask(new FinalBossMovementTask(1f, numLane))</span>
+<span class="nc" id="L230">                .addTask(new MobBossDeathTask(1));;</span>
+
+        // Animation section
+<span class="nc" id="L233">        AnimationRenderComponent animator1 = new AnimationRenderComponent(</span>
+<span class="nc" id="L234">                ServiceLocator.getResourceService().getAsset(&quot;images/mobs/robot.atlas&quot;, TextureAtlas.class));</span>
+<span class="nc" id="L235">        animator1.addAnimation(&quot;Walk&quot;, 0.3f, Animation.PlayMode.LOOP_REVERSED);</span>
+
+<span class="nc" id="L237">        mobBoss1.addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L238">                .addComponent(animator1)</span>
+<span class="nc" id="L239">                .addComponent(aiTaskComponent1)</span>
+<span class="nc" id="L240">                .addComponent(new Boss1AnimationController());</span>
+
+<span class="nc" id="L242">        mobBoss1.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L243">        mobBoss1.setScale(1f, 1f);</span>
+
+<span class="nc" id="L245">        return mobBoss1;</span>
+    }
+
+    // Create Boss King 2
+    public static Entity createMobBoss2() {
+<span class="nc" id="L250">        MobBossConfigs config = configs.mobBoss;</span>
+<span class="nc" id="L251">        Entity mobBoss2 = createBaseBoss();</span>
+
+<span class="nc" id="L253">        AITaskComponent aiTaskComponent2 = new AITaskComponent()</span>
+<span class="nc" id="L254">                .addTask(new RangeBossTask(2f));</span>
+
+        // Animation section
+<span class="nc" id="L257">        AnimationRenderComponent animator2 = new AnimationRenderComponent(</span>
+<span class="nc" id="L258">                ServiceLocator.getResourceService().getAsset(&quot;images/mobs/boss2.atlas&quot;, TextureAtlas.class));</span>
+<span class="nc" id="L259">        animator2.addAnimation(&quot;boss_death&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L260">        animator2.addAnimation(&quot;Idle&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L261">        animator2.addAnimation(&quot;Walk&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L262">        animator2.addAnimation(&quot;Charging&quot;, 0.3f, Animation.PlayMode.LOOP_REVERSED);</span>
+<span class="nc" id="L263">        animator2.addAnimation(&quot;A1&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L264">        animator2.addAnimation(&quot;A2&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L265">        animator2.addAnimation(&quot;Hurt&quot;, 0.3f, Animation.PlayMode.LOOP);</span>
+
+<span class="nc" id="L267">        mobBoss2.addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L268">                .addComponent(animator2)</span>
+<span class="nc" id="L269">                .addComponent(aiTaskComponent2)</span>
+<span class="nc" id="L270">                .addComponent(new Boss2AnimationController())</span>
+<span class="nc" id="L271">                .addComponent(new PhysicsComponent());</span>
+
+<span class="nc" id="L273">        mobBoss2.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L274">        mobBoss2.scaleHeight(3f);</span>
+<span class="nc" id="L275">        mobBoss2.scaleWidth(3f);</span>
+
+<span class="nc" id="L277">        return mobBoss2;</span>
+    }
+
+
+    /**
+     * Create base boss entity that all boss mobs will inherit
+     * @return base mob boss entity
+     */
+    public static Entity createBaseBoss() {
+<span class="fc" id="L286">        Entity boss = new Entity()</span>
+<span class="fc" id="L287">                .addComponent(new PhysicsComponent())</span>
+<span class="fc" id="L288">                .addComponent(new ColliderComponent())</span>
+<span class="fc" id="L289">                .addComponent(new PhysicsMovementComponent())</span>
+<span class="fc" id="L290">                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.NPC))</span>
+<span class="fc" id="L291">                .addComponent(new TouchAttackComponent(PhysicsLayer.HUMANS, 1.5f));</span>
+
+<span class="fc" id="L293">        PhysicsUtils.setScaledCollider(boss, 0.9f, 0.4f);</span>
+
+<span class="fc" id="L295">        return boss;</span>
+    }
+
+    /**
+     * Throw IllegalStateException
+     */
+<span class="nc" id="L301">    private MobBossFactory() {</span>
+<span class="nc" id="L302">        throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

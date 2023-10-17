@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TowerType.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">TowerType.java</span></div><h1>TowerType.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+<span class="nc" id="L3">public enum TowerType {</span>
+<span class="nc" id="L4">    WEAPON(&quot;Weapon Tower&quot;, &quot;The Weapon Tower is a simple and basic turret that fires rapid shots at enemies dealing damage over time.&quot;,</span>
+            0, &quot;0&quot;, &quot;images/turret-select/Weapon-Tower-Default.png&quot;, &quot;images/turret-select/Weapon-Tower-Clicked.png&quot;),
+<span class="nc" id="L6">    TNT(&quot;TNT Tower&quot;, &quot;The TNT Tower launches explosive projectiles, dealing area damage to groups of enemies.&quot;,</span>
+            1, &quot;0&quot;, &quot;images/turret-select/tnt-tower-default.png&quot;, &quot;images/turret-select/tnt-tower-clicked.png&quot;),
+<span class="nc" id="L8">    DROID(&quot;Droid Tower&quot;, &quot;Droid Towers deploy robotic helpers that assist in combat and provide support to nearby turrets.&quot;,</span>
+            2, &quot;0&quot;, &quot;images/turret-select/droid-tower-default.png&quot;, &quot;images/turret-select/droid-tower-clicked.png&quot;),
+<span class="nc" id="L10">    WALL(&quot;Wall Tower&quot;, &quot;The Wall Tower creates barriers to block enemy paths, slowing down their progress.&quot;,</span>
+            3, &quot;100&quot;, &quot;images/turret-select/wall-tower-default.png&quot;, &quot;images/turret-select/wall-tower-clicked.png&quot;),
+<span class="nc" id="L12">    FIRE(&quot;Fire Tower&quot;, &quot;The Fire Tower emits flames, causing damage over time to enemies caught in its fiery radius.&quot;,</span>
+            4, &quot;0&quot;, &quot;images/turret-select/fire-tower-default.png&quot;, &quot;images/turret-select/fire-tower-clicked.png&quot;),
+<span class="nc" id="L14">    STUN(&quot;Stun Tower&quot;, &quot;The Stun Tower releases electric shocks that temporarily immobilize and damage enemies.&quot;,</span>
+            5, &quot;1000&quot;, &quot;images/turret-select/stun-tower-default.png&quot;, &quot;images/turret-select/stun-tower-clicked.png&quot;),
+<span class="nc" id="L16">    INCOME(&quot;Income Tower&quot;, &quot;The Income Tower generates additional in-game currency over time.&quot;,</span>
+            5, &quot;0&quot;, &quot;images/turret-select/mine-tower-default.png&quot;, &quot;images/turret-select/mine-tower-clicked.png&quot;);
+
+    private final String towerName;
+    private final String description;
+    private final int id;
+    private final String cost;
+    private final String defaultImage;
+    private final String clickedImage;
+
+
+<span class="nc" id="L27">    TowerType(String towerName, String description, int id, String cost, String defaultImage, String clickedImage) {</span>
+<span class="nc" id="L28">        this.towerName = towerName;</span>
+<span class="nc" id="L29">        this.description = description;</span>
+<span class="nc" id="L30">        this.id = id;</span>
+<span class="nc" id="L31">        this.cost = cost;</span>
+<span class="nc" id="L32">        this.defaultImage = defaultImage;</span>
+<span class="nc" id="L33">        this.clickedImage = clickedImage;</span>
+<span class="nc" id="L34">    }</span>
+
+<span class="nc" id="L36">    public int getID() { return id; }</span>
+
+<span class="nc" id="L38">    public String getTowerName() { return towerName; }</span>
+
+<span class="nc" id="L40">    public String getDescription() { return description; }</span>
+
+<span class="nc" id="L42">    public String getPrice() { return cost; }</span>
+
+<span class="nc" id="L44">    public String getDefaultImage() {return defaultImage;}</span>
+
+<span class="nc" id="L46">    public String getClickedImage() {return clickedImage;}</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

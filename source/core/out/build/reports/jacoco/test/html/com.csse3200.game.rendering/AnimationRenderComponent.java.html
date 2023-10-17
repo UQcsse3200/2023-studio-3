@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnimationRenderComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.rendering</a> &gt; <span class="el_source">AnimationRenderComponent.java</span></div><h1>AnimationRenderComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.rendering;
+
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Renders animations from a texture atlas on an entity.
+ *
+ * &lt;p&gt;Example usage:
+ *
+ * &lt;pre&gt;
+ *   AnimationRenderComponent animator = new AnimationRenderComponent(&quot;player.atlas&quot;);
+ *   entity.addComponent(animator);
+ *   animator.addAnimation(&quot;attack&quot;, 0.1f); // Only need to add animation once per entity
+ *   animator.startAnimation(&quot;attack&quot;);
+ * &lt;/pre&gt;
+ *
+ * Texture atlases can be created using: &lt;br&gt;
+ * - libgdx texture packer (included in External Libraries/gdx-tools) &lt;br&gt;
+ * - gdx-texture-packer-gui (recommended) https://github.com/crashinvaders/gdx-texture-packer-gui &lt;br&gt;
+ * - other third-party tools, e.g. https://www.codeandweb.com/texturepacker &lt;br&gt;
+ */
+public class AnimationRenderComponent extends RenderComponent {
+<span class="fc" id="L37">  private static final Logger logger = LoggerFactory.getLogger(AnimationRenderComponent.class);</span>
+  private final GameTime timeSource;
+  private final TextureAtlas atlas;
+  private final TextureAtlas atlas2;
+  private final Map&lt;String, Animation&lt;TextureRegion&gt;&gt; animations;
+  private Animation&lt;TextureRegion&gt; currentAnimation;
+  private String currentAnimationName;
+  private float animationPlayTime;
+
+  /**
+   * Create the component for a given texture atlas.
+   * @param atlas libGDX-supported texture atlas containing desired animations
+   */
+<span class="fc" id="L50">  public AnimationRenderComponent(TextureAtlas atlas) {</span>
+<span class="fc" id="L51">    this.atlas = atlas;</span>
+<span class="fc" id="L52">    this.atlas2 = null;</span>
+<span class="fc" id="L53">    this.animations = new HashMap&lt;&gt;(4);</span>
+<span class="fc" id="L54">    timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L55">  }</span>
+
+<span class="fc" id="L57">  public AnimationRenderComponent(TextureAtlas atlas1, TextureAtlas atlas2) {</span>
+<span class="fc" id="L58">    this.atlas = atlas1;</span>
+<span class="fc" id="L59">    this.atlas2 = atlas2;</span>
+<span class="fc" id="L60">    this.animations = new HashMap&lt;&gt;(4);</span>
+<span class="fc" id="L61">    timeSource = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L62">  }</span>
+
+  /**
+   * Register an animation from the texture atlas. Will play once when called with startAnimation()
+   * @param name Name of the animation. Must match the name of this animation inside the texture
+   *             atlas.
+   * @param frameDuration How long, in seconds, to show each frame of the animation for when playing
+   * @return true if added successfully, false otherwise
+   */
+  public boolean addAnimation(String name, float frameDuration) {
+<span class="fc" id="L72">    return addAnimation(name, frameDuration, PlayMode.NORMAL);</span>
+  }
+
+  /**
+   * Register an animation from the texture atlas.
+   * @param name Name of the animation. Must match the name of this animation inside the texture
+   *             atlas.
+   * @param frameDuration How long, in seconds, to show each frame of the animation for when playing
+   * @param playMode How the animation should be played (e.g. looping, backwards)
+   * @return true if added successfully, false otherwise
+   */
+  public boolean addAnimation(String name, float frameDuration, PlayMode playMode) {
+<span class="fc" id="L84">    Array&lt;AtlasRegion&gt; regions = atlas.findRegions(name);</span>
+    Array&lt;AtlasRegion&gt; regions2;
+
+<span class="fc bfc" id="L87" title="All 4 branches covered.">    if (regions == null || regions.size == 0) {</span>
+      // check if there is a second atlas file
+<span class="fc bfc" id="L89" title="All 2 branches covered.">      if (atlas2 != null) {</span>
+<span class="fc" id="L90">        regions2 = atlas2.findRegions(name);</span>
+
+<span class="pc bpc" id="L92" title="2 of 4 branches missed.">        if (regions2 == null || regions2.size == 0) {</span>
+<span class="nc" id="L93">          logger.warn(&quot;Animation {} not found in texture atlas 2&quot;, name);</span>
+<span class="nc" id="L94">          return false;</span>
+        } else {
+<span class="fc" id="L96">          Animation&lt;TextureRegion&gt; animation = new Animation&lt;&gt;(frameDuration, regions2, playMode);</span>
+<span class="fc" id="L97">          animations.put(name, animation);</span>
+<span class="fc" id="L98">          logger.debug(&quot;Adding animation {}&quot;, name);</span>
+<span class="fc" id="L99">          return true;</span>
+        }
+      } else {
+<span class="fc" id="L102">        logger.warn(&quot;Animation {} not found in texture atlas&quot;, name);</span>
+<span class="fc" id="L103">        return false;</span>
+      }
+<span class="fc bfc" id="L105" title="All 2 branches covered.">    } else if (animations.containsKey(name)) {</span>
+<span class="fc" id="L106">      logger.warn(</span>
+              &quot;Animation {} already added in texture atlas. Animations should only be added once.&quot;,
+              name);
+<span class="fc" id="L109">      return false;</span>
+    } else {
+<span class="fc" id="L111">      Animation&lt;TextureRegion&gt; animation = new Animation&lt;&gt;(frameDuration, regions, playMode);</span>
+<span class="fc" id="L112">      animations.put(name, animation);</span>
+<span class="fc" id="L113">      logger.debug(&quot;Adding animation {}&quot;, name);</span>
+<span class="fc" id="L114">      return true;</span>
+    }
+  }
+
+  /** Scale the entity to a width of 1 and a height matching the texture's ratio */
+  public void scaleEntity() {
+<span class="fc" id="L120">    TextureRegion defaultTexture = this.atlas.findRegion(&quot;default&quot;);</span>
+<span class="fc" id="L121">    entity.setScale(1f, (float) defaultTexture.getRegionHeight() / defaultTexture.getRegionWidth());</span>
+<span class="fc" id="L122">  }</span>
+
+  /**
+   * Remove an animation from this animator. This is not required before disposing.
+   * @param name Name of the previously added animation.
+   * @return true if removed, false if animation was not found.
+   */
+  public boolean removeAnimation(String name) {
+<span class="fc" id="L130">    logger.debug(&quot;Removing animation {}&quot;, name);</span>
+<span class="fc bfc" id="L131" title="All 2 branches covered.">    return animations.remove(name) != null;</span>
+  }
+
+  /**
+   * Whether the animator has added the given animation.
+   * @param name Name of the added animation.
+   * @return true if added, false otherwise.
+   */
+  public boolean hasAnimation(String name) {
+<span class="fc" id="L140">    return animations.containsKey(name);</span>
+  }
+
+  /**
+   * Start playback of an animation. The animation must have been added using addAnimation().
+   * @param name Name of the animation to play.
+   */
+  public void startAnimation(String name) {
+<span class="fc" id="L148">    Animation&lt;TextureRegion&gt; animation = animations.getOrDefault(name, null);</span>
+<span class="pc bpc" id="L149" title="1 of 2 branches missed.">    if (animation == null) {</span>
+<span class="nc" id="L150">      logger.error(</span>
+          &quot;Attempted to play unknown animation {}. Ensure animation is added before playback.&quot;,
+          name);
+<span class="nc" id="L153">      return;</span>
+    }
+
+<span class="fc" id="L156">    currentAnimation = animation;</span>
+<span class="fc" id="L157">    currentAnimationName = name;</span>
+<span class="fc" id="L158">    animationPlayTime = 0f;</span>
+<span class="fc" id="L159">    logger.debug(&quot;Starting animation {}&quot;, name);</span>
+<span class="fc" id="L160">  }</span>
+
+  /**
+   * Stop the currently running animation. Does nothing if no animation is playing.
+   * @return true if animation was stopped, false if no animation is playing.
+   */
+  public boolean stopAnimation() {
+<span class="fc bfc" id="L167" title="All 2 branches covered.">    if (currentAnimation == null) {</span>
+<span class="fc" id="L168">      return false;</span>
+    }
+
+<span class="fc" id="L171">    logger.debug(&quot;Stopping animation {}&quot;, currentAnimationName);</span>
+<span class="fc" id="L172">    currentAnimation = null;</span>
+<span class="fc" id="L173">    currentAnimationName = null;</span>
+<span class="fc" id="L174">    animationPlayTime = 0f;</span>
+<span class="fc" id="L175">    return true;</span>
+  }
+
+  /**
+   * Get the name of the animation currently being played.
+   * @return current animation name, or null if not playing.
+   */
+  public String getCurrentAnimation() {
+<span class="fc" id="L183">    return currentAnimationName;</span>
+  }
+
+  /**
+   * Has the playing animation finished? This will always be false for looping animations.
+   * @return true if animation was playing and has now finished, false otherwise.
+   */
+  public boolean isFinished() {
+<span class="fc bfc" id="L191" title="All 4 branches covered.">    return currentAnimation != null &amp;&amp; currentAnimation.isAnimationFinished(animationPlayTime);</span>
+  }
+
+  @Override
+  protected void draw(SpriteBatch batch) {
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">    if (currentAnimation == null) {</span>
+<span class="nc" id="L197">      return;</span>
+    }
+<span class="fc" id="L199">    TextureRegion region = currentAnimation.getKeyFrame(animationPlayTime);</span>
+<span class="fc" id="L200">    Vector2 pos = entity.getPosition();</span>
+<span class="fc" id="L201">    Vector2 scale = entity.getScale();</span>
+<span class="fc" id="L202">    batch.draw(region, pos.x, pos.y, scale.x, scale.y);</span>
+<span class="fc" id="L203">    animationPlayTime += timeSource.getDeltaTime();</span>
+<span class="fc" id="L204">  }</span>
+
+  @Override
+  public void dispose() {
+   // atlas.dispose(); // this has to be disabled to keep the atlas file for other entities that rely on it
+<span class="fc" id="L209">    super.dispose();</span>
+<span class="fc" id="L210">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

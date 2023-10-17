@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EngineerInputComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">EngineerInputComponent.java</span></div><h1>EngineerInputComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.components.npc.EngineerMenuComponent;
+import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.tasks.human.HumanMovementTask;
+import com.csse3200.game.components.tasks.human.HumanWanderTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.EngineerFactory;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class EngineerInputComponent extends InputComponent {
+
+<span class="nc" id="L26">    private static final Logger logger = LoggerFactory.getLogger(EngineerInputComponent.class);</span>
+    private Game game;
+    private Camera camera;
+    private EntityService entityService;
+
+<span class="nc" id="L31">    private Entity selectedEngineer = null;</span>
+<span class="nc" id="L32">    private boolean moveClicked = false;</span>
+
+<span class="nc" id="L34">    public EngineerInputComponent(Game game, Camera camera) {</span>
+<span class="nc" id="L35">        this.game = game;</span>
+<span class="nc" id="L36">        this.camera = camera;</span>
+<span class="nc" id="L37">        this.entityService = ServiceLocator.getEntityService();</span>
+<span class="nc" id="L38">    }</span>
+
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="nc" id="L41">        Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);</span>
+<span class="nc" id="L42">        camera.unproject(worldCoordinates);</span>
+<span class="nc" id="L43">        Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);</span>
+<span class="nc" id="L44">        camera.project(worldCoordinates);</span>
+<span class="nc" id="L45">        Entity engineer = entityService.getEntityAtPositionLayer(cursorPosition.x, cursorPosition.y, PhysicsLayer.ENGINEER);</span>
+        //logger.info(&quot;Clicked entity: &quot; + engineer);
+
+        // Case when engineer is not clicked
+<span class="nc bnc" id="L49" title="All 4 branches missed.">        if (engineer == null || engineer.getComponent(HumanAnimationController.class) == null) {</span>
+<span class="nc bnc" id="L50" title="All 4 branches missed.">            if (selectedEngineer != null &amp;&amp; moveClicked) {</span>
+<span class="nc" id="L51">                moveEngineer(cursorPosition);</span>
+<span class="nc" id="L52">                selectedEngineer = null;</span>
+<span class="nc" id="L53">                moveClicked = false;</span>
+<span class="nc" id="L54">                return true;</span>
+            } else {
+<span class="nc" id="L56">                return false;</span>
+            }
+        }
+        // Case when engineer is clicked
+<span class="nc" id="L60">        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L61">        String currentAnimation = animator.getCurrentAnimation();</span>
+<span class="nc" id="L62">        HumanAnimationController controller = engineer.getComponent(HumanAnimationController.class);</span>
+<span class="nc" id="L63">        EngineerMenuComponent menu = engineer.getComponent(EngineerMenuComponent.class);</span>
+
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (engineer.equals(selectedEngineer)) {</span>
+            // Deselect the engineer by clicking on itself
+<span class="nc" id="L67">            this.getWanderTask().setSelected(false);</span>
+<span class="nc" id="L68">            selectedEngineer = null;</span>
+<span class="nc" id="L69">            moveClicked = false;</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (currentAnimation.contains(&quot;_outline&quot;)) {</span>
+<span class="nc" id="L71">                controller.deselectEngineer(currentAnimation);</span>
+                //logger.info(&quot;Engineer deselected&quot;);
+            }
+        } else {
+<span class="nc" id="L75">            this.selectedEngineer = engineer;</span>
+<span class="nc" id="L76">            this.getWanderTask().setSelected(true);</span>
+<span class="nc" id="L77">            moveClicked = false;</span>
+<span class="nc" id="L78">            logger.info(&quot;Engineer size: {}&quot;, engineer.getScale());</span>
+
+            // outline image if it is not already outlined and vice versa
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (!currentAnimation.contains(&quot;_outline&quot;)) {</span>
+<span class="nc" id="L82">                animator.startAnimation(currentAnimation + &quot;_outline&quot;);</span>
+<span class="nc" id="L83">                menu.createMenu(cursorPosition.x, cursorPosition.y, camera);</span>
+<span class="nc" id="L84">                controller.setClicked(true);</span>
+            }
+        }
+<span class="nc" id="L87">        return true;</span>
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (selectedEngineer == null) {</span>
+<span class="nc" id="L93">            return false;</span>
+        }
+
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if (Gdx.input.isKeyPressed(Input.Keys.P)) {</span>
+<span class="nc" id="L98">            manualShoot();</span>
+        }
+<span class="nc" id="L100">        return true;</span>
+    }
+
+    private void manualShoot() {
+<span class="nc" id="L104">        HumanWanderTask wander = this.getWanderTask();</span>
+<span class="nc" id="L105">        wander.startWaiting();</span>
+<span class="nc" id="L106">        wander.startCombat();</span>
+<span class="nc" id="L107">    }</span>
+
+    private HumanWanderTask getWanderTask() {
+<span class="nc" id="L110">        AITaskComponent movementTask = selectedEngineer.getComponent(AITaskComponent.class);</span>
+<span class="nc" id="L111">        return movementTask.getTask(HumanWanderTask.class);</span>
+    }
+
+    private void moveEngineer(Vector2 cursorPosition) {
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (selectedEngineer == null) {</span>
+<span class="nc" id="L116">            logger.info(&quot;Trying to move an engineer that is not selected&quot;);</span>
+        }
+
+<span class="nc" id="L119">        HumanWanderTask wander = this.getWanderTask();</span>
+<span class="nc" id="L120">        wander.startWaiting();</span>
+<span class="nc" id="L121">        Vector2 enggpos = selectedEngineer.getPosition();</span>
+<span class="nc bnc" id="L122" title="All 4 branches missed.">        Vector2 offset = new Vector2(cursorPosition.x &gt; enggpos.x ? 0.17f : -0.6f , cursorPosition.y &gt; enggpos.y ? 0.0f : -0.5f);</span>
+<span class="nc" id="L123">        Vector2 dest = cursorPosition.add(offset);</span>
+<span class="nc" id="L124">        wander.startMoving(dest);</span>
+<span class="nc" id="L125">    }</span>
+
+    public void setMoveClicked(boolean moveClicked) {
+<span class="nc" id="L128">        this.moveClicked = moveClicked;</span>
+<span class="nc" id="L129">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

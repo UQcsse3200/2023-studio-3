@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DroidAnimationController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tower</a> &gt; <span class="el_source">DroidAnimationController.java</span></div><h1>DroidAnimationController.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tower;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * This class listens to events relevant to DroidTower entity's state and plays the animation when one
+ * of the events is triggered.
+ */
+<span class="fc" id="L16">public class DroidAnimationController extends Component {</span>
+    private AnimationRenderComponent animator;
+
+    /**
+     * Creation call for a DroidAnimationController, fetches the animationRenderComponent that this controller will
+     * be attached to and registers all the event listeners required to trigger the animations and sounds.
+     */
+    @Override
+    public void create() {
+<span class="fc" id="L25">        super.create();</span>
+<span class="fc" id="L26">        animator = this.entity.getComponent(AnimationRenderComponent.class);</span>
+<span class="fc" id="L27">        entity.getEvents().addListener(&quot;walkStart&quot;, this::animateWalk);</span>
+<span class="fc" id="L28">        entity.getEvents().addListener(&quot;idleStart&quot;, this::animateDefault);</span>
+<span class="fc" id="L29">        entity.getEvents().addListener(&quot;goUpStart&quot;,this::animateGoUp);</span>
+<span class="fc" id="L30">        entity.getEvents().addListener(&quot;goDownStart&quot;,this::animateGoDown);</span>
+<span class="fc" id="L31">        entity.getEvents().addListener(&quot;attackUpStart&quot;,this::animateAttackUp);</span>
+<span class="fc" id="L32">        entity.getEvents().addListener(&quot;attackDownStart&quot;,this::animateAttackDown);</span>
+<span class="fc" id="L33">        entity.getEvents().addListener(&quot;deathStart&quot;,this::animateDeath);</span>
+<span class="fc" id="L34">        entity.getEvents().addListener(&quot;ShootUp&quot;,this::shootUp);</span>
+<span class="fc" id="L35">        entity.getEvents().addListener(&quot;ShootDown&quot;,this::shootDown);</span>
+
+<span class="fc" id="L37">    }</span>
+
+    /**
+     * Initiates the walking animation for the robot.
+     * This method should be invoked when the robot is moving but not in combat.
+     */
+    void animateWalk() {
+<span class="fc" id="L44">        animator.startAnimation(&quot;walk&quot;);</span>
+<span class="fc" id="L45">    }</span>
+
+    /**
+     * Starts the animation sequence for switching aim from above.
+     * Use this method when the robot is preparing to target mobs after aiming from below.
+     */
+    void animateGoUp() {
+<span class="fc" id="L52">        animator.startAnimation(&quot;goUp&quot;);</span>
+<span class="fc" id="L53">    }</span>
+
+    /**
+     * Activates the animation sequence for switching aim from below.
+     * Use this method when the robot is preparing to target mobs after aiming from above.
+     */
+    void animateGoDown() {
+<span class="fc" id="L60">        animator.startAnimation(&quot;goDown&quot;);</span>
+<span class="fc" id="L61">    }</span>
+
+    /**
+     * Triggers the animation for firing projectiles from an elevated aim.
+     * Invoke this method when the robot engages with mobs and aiming above.
+     */
+    void animateAttackUp() {
+<span class="fc" id="L68">        animator.startAnimation(&quot;attackUp&quot;);</span>
+<span class="fc" id="L69">    }</span>
+
+    /**
+     * Starts the animation sequence for firing projectiles from a lowered aim.
+     * Use this method when the robot engages with mobs and aiming below.
+     */
+    void animateAttackDown() {
+<span class="fc" id="L76">        animator.startAnimation(&quot;attackDown&quot;);</span>
+<span class="fc" id="L77">    }</span>
+
+    /**
+     * Triggers the robot's death animation.
+     * This method should be invoked when the robot's health reaches zero.
+     */
+    void animateDeath() {
+<span class="fc" id="L84">        animator.startAnimation(&quot;death&quot;);</span>
+<span class="fc" id="L85">    }</span>
+
+
+    /**
+     * Triggers the &quot;default&quot; animation for the entity.
+     * This method should be invoked when the entity returns to its default state.
+     */
+<span class="fc" id="L92">    void animateDefault() { animator.startAnimation(&quot;idle&quot;);}</span>
+
+
+    //TODO: For the time being, these items will be positioned here. Next, we should create a component that enables an entity to fire projectiles.
+
+    /**
+     * Fires a projectile upwards from the entity's current position.
+     */
+    void shootUp() {
+<span class="nc" id="L101">        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,</span>
+<span class="nc" id="L102">                entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);</span>
+<span class="nc" id="L103">        Projectile.setScale(new Vector2(0.5f,0.5f));</span>
+<span class="nc" id="L104">        Projectile.setPosition((float) (entity.getPosition().x + 0.2),</span>
+<span class="nc" id="L105">                (float) (entity.getPosition().y + 0.5));</span>
+<span class="nc" id="L106">        ServiceLocator.getEntityService().register(Projectile);</span>
+<span class="nc" id="L107">    }</span>
+
+    /**
+     * Fires a projectile downwards from the entity's current position.
+     */
+    void shootDown() {
+<span class="nc" id="L113">        Entity Projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC, new Vector2(100,</span>
+<span class="nc" id="L114">                entity.getPosition().y), new Vector2(2,2), ProjectileEffects.SLOW, false);</span>
+<span class="nc" id="L115">        Projectile.setScale(new Vector2(0.5f,0.5f));</span>
+<span class="nc" id="L116">        Projectile.setPosition((float) (entity.getPosition().x + 0.2),</span>
+<span class="nc" id="L117">                (float) (entity.getPosition().y - 0.2));</span>
+<span class="nc" id="L118">        ServiceLocator.getEntityService().register(Projectile);</span>
+
+<span class="nc" id="L120">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

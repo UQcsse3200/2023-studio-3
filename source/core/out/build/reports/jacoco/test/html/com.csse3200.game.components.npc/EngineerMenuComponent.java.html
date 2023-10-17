@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EngineerMenuComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.npc</a> &gt; <span class="el_source">EngineerMenuComponent.java</span></div><h1>EngineerMenuComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.npc;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.components.player.HumanAnimationController;
+import com.csse3200.game.components.tower.TowerUpgraderComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.input.EngineerInputComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.UIComponent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+<span class="fc" id="L29">public class EngineerMenuComponent extends UIComponent {</span>
+<span class="fc" id="L30">    private Logger logger = LoggerFactory.getLogger(EngineerMenuComponent.class);</span>
+    Table table;
+
+    @Override
+    public void create() {
+<span class="fc" id="L35">        super.create();</span>
+<span class="fc" id="L36">    }</span>
+
+    @Override
+    public void draw(SpriteBatch batch)  {
+        // draw is handled by the stage
+<span class="nc" id="L41">    }</span>
+
+    /**
+     * Creates a menu for the engineer
+     * @param x cursor x coordinate
+     * @param y cursor y coordinate
+     * @param camera camera of the game
+     */
+    public void createMenu(float x, float y, Camera camera) {
+<span class="nc" id="L50">        this.table = createTable(x, y, camera);</span>
+
+        // add buttons
+<span class="nc" id="L53">        TextButton moveButton = createButton(&quot;Move&quot;);</span>
+<span class="nc" id="L54">        TextButton repairButton = createButton(&quot;Repair&quot;);</span>
+
+        // add listeners to buttons
+<span class="nc" id="L57">        AnimationRenderComponent animator = getEntity().getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L58">        HumanAnimationController controller = getEntity().getComponent(HumanAnimationController.class);</span>
+<span class="nc" id="L59">        EngineerInputComponent input = ServiceLocator.getInputService().getEngineerInput();</span>
+
+<span class="nc" id="L61">        moveButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L64">                input.setMoveClicked(true);</span>
+<span class="nc" id="L65">                controller.deselectEngineer(animator.getCurrentAnimation());</span>
+
+                //logger.info(&quot;Move button clicked&quot;);
+<span class="nc" id="L68">            }</span>
+        });
+
+<span class="nc" id="L71">        repairButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L74">                controller.deselectEngineer(animator.getCurrentAnimation());</span>
+<span class="nc" id="L75">                EntityService entityService = ServiceLocator.getEntityService();</span>
+<span class="nc" id="L76">                Array&lt;Entity&gt; tower = entityService.getEntitiesInLayer(getEntity(), 0.1f, PhysicsLayer.TOWER);</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">                if (tower.size == 0) {</span>
+<span class="nc" id="L78">                    logger.info(&quot;No tower to repair&quot;);</span>
+<span class="nc" id="L79">                    return;</span>
+                }
+<span class="nc" id="L81">                logger.info(&quot;repairing&quot;);</span>
+<span class="nc" id="L82">                tower.get(0).getComponent(TowerUpgraderComponent.class).repairTower();</span>
+                //logger.info(&quot;Repair button clicked&quot;);
+<span class="nc" id="L84">            }</span>
+        });
+
+<span class="nc" id="L87">        table.add(moveButton).grow();</span>
+<span class="nc" id="L88">        table.row();</span>
+<span class="nc" id="L89">        table.add(repairButton).grow();</span>
+<span class="nc" id="L90">        table.row();</span>
+<span class="nc" id="L91">        stage.addActor(table);</span>
+
+<span class="nc" id="L93">    }</span>
+
+    /**
+     * Creates a table for the menu
+     * @param x cursor x coordinate
+     * @param y cursor y coordinate
+     * @param camera camera of the game
+     * @return table for the menu
+     */
+    private Table createTable(float x, float y, Camera camera) {
+<span class="nc" id="L103">        Table table = new Table();</span>
+<span class="nc" id="L104">        table.top();</span>
+<span class="nc" id="L105">        table.defaults().pad(0).space(0);</span>
+<span class="nc" id="L106">        table.setSize(90, 60); // fixed table size</span>
+
+        // convert cursor position to stage coordinates
+<span class="nc" id="L109">        Vector3 entityCoordinates = new Vector3(x, y, 0);</span>
+<span class="nc" id="L110">        Vector3 entityScreenCoordinate = camera.project(entityCoordinates);</span>
+<span class="nc" id="L111">        Vector2 stageCoordinates = stage.screenToStageCoordinates(</span>
+                new Vector2(entityScreenCoordinate.x, entityScreenCoordinate.y));
+<span class="nc" id="L113">        stage.getViewport().unproject(stageCoordinates);</span>
+<span class="nc" id="L114">        table.setPosition(stageCoordinates.x, stageCoordinates.y);</span>
+
+        // set table background
+<span class="nc" id="L117">        String imageFilePath = &quot;images/ui/Sprites/UI_Glass_Frame_Standard_01a.png&quot;;</span>
+<span class="nc" id="L118">        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));</span>
+<span class="nc" id="L119">        table.setBackground(drawable);</span>
+
+<span class="nc" id="L121">        return table;</span>
+    }
+
+    /**
+     * Creates a button for the menu
+     * @param text text to be displayed on the button
+     * @return the button
+     */
+    private TextButton createButton(String text) {
+<span class="nc" id="L130">        String upImageFilePath = &quot;images/ui/Sprites/UI_Glass_Button_Medium_Lock_01a2.png&quot;;</span>
+<span class="nc" id="L131">        String downImageFilePath = &quot;images/ui/Sprites/UI_Glass_Button_Medium_Press_01a2.png&quot;;</span>
+
+<span class="nc" id="L133">        Drawable upDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(upImageFilePath)));</span>
+<span class="nc" id="L134">        Drawable downDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(downImageFilePath)));</span>
+<span class="nc" id="L135">        TextButton button = new TextButton(text,</span>
+                new TextButton.TextButtonStyle(upDrawable, downDrawable, null, new BitmapFont()));
+
+<span class="nc" id="L138">        button.setTransform(true);</span>
+<span class="nc" id="L139">        return button;</span>
+    }
+
+    /**
+     * Removes the menu from the stage
+     */
+    public void removeMenu() {
+<span class="nc" id="L146">        table.clear();</span>
+<span class="nc" id="L147">        table.remove();</span>
+<span class="nc" id="L148">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HumanMovementTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.human</a> &gt; <span class="el_source">HumanMovementTask.java</span></div><h1>HumanMovementTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.human;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Move a human entity to a given position, finishing when you get close enough. Requires an entity with a
+ * PhysicsMovementComponent.
+ */
+public class HumanMovementTask extends DefaultTask implements PriorityTask {
+  private final GameTime gameTime;
+  private Vector2 target;
+<span class="nc" id="L17">  private float stopDistance = 0.01f;</span>
+  private long lastTimeMoved;
+  private Vector2 lastPos;
+  private PhysicsMovementComponent movementComponent;
+
+<span class="nc" id="L22">  private int priority = 1000; // default priority</span>
+
+<span class="nc" id="L24">  public HumanMovementTask(Vector2 target) {</span>
+<span class="nc" id="L25">    this.target = target;</span>
+<span class="nc" id="L26">    this.gameTime = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L27">  }</span>
+
+  public HumanMovementTask(Vector2 target, float stopDistance) {
+<span class="nc" id="L30">    this(target);</span>
+<span class="nc" id="L31">    this.stopDistance = stopDistance;</span>
+<span class="nc" id="L32">  }</span>
+
+  @Override
+  public void start() {
+<span class="nc" id="L36">    super.start();</span>
+<span class="nc" id="L37">    this.movementComponent = owner.getEntity().getComponent(PhysicsMovementComponent.class);</span>
+<span class="nc" id="L38">    movementComponent.setTarget(target);</span>
+<span class="nc" id="L39">    movementComponent.setMoving(true);</span>
+
+    // Trigger the correct walk animation depending on the target location.
+<span class="nc bnc" id="L42" title="All 2 branches missed.">    if (target.x &lt; owner.getEntity().getPosition().x) {</span>
+<span class="nc" id="L43">      owner.getEntity().getEvents().trigger(&quot;walkLeftStart&quot;);</span>
+    } else {
+<span class="nc" id="L45">      owner.getEntity().getEvents().trigger(&quot;walkRightStart&quot;);</span>
+    }
+
+<span class="nc" id="L48">    lastTimeMoved = gameTime.getTime();</span>
+<span class="nc" id="L49">    lastPos = owner.getEntity().getPosition();</span>
+<span class="nc" id="L50">  }</span>
+
+  @Override
+  public void update() {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">    if (isAtTarget()) {</span>
+<span class="nc" id="L55">      movementComponent.setMoving(false);</span>
+<span class="nc" id="L56">      owner.getEntity().getEvents().trigger(&quot;idleStart&quot;);</span>
+<span class="nc" id="L57">      status = Status.FINISHED;</span>
+    } else {
+<span class="nc" id="L59">      checkIfStuck();</span>
+    }
+<span class="nc" id="L61">  }</span>
+
+  public void setTarget(Vector2 target) {
+<span class="nc" id="L64">    this.target = target;</span>
+<span class="nc" id="L65">    movementComponent.setTarget(target);</span>
+<span class="nc" id="L66">  }</span>
+
+  @Override
+  public void stop() {
+<span class="nc" id="L70">    super.stop();</span>
+<span class="nc" id="L71">    movementComponent.setMoving(false);</span>
+<span class="nc" id="L72">  }</span>
+
+  private boolean isAtTarget() {
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    return owner.getEntity().getPosition().dst(target) &lt;= stopDistance;</span>
+  }
+
+  private void checkIfStuck() {
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    if (didMove()) {</span>
+<span class="nc" id="L80">      lastTimeMoved = gameTime.getTime();</span>
+<span class="nc" id="L81">      lastPos = owner.getEntity().getPosition();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">    } else if (gameTime.getTimeSince(lastTimeMoved) &gt; 500L) {</span>
+<span class="nc" id="L83">      movementComponent.setMoving(false);</span>
+<span class="nc" id="L84">      status = Status.FAILED;</span>
+    }
+<span class="nc" id="L86">  }</span>
+
+  private boolean didMove() {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">    return owner.getEntity().getPosition().dst2(lastPos) &gt; 0.001f;</span>
+  }
+
+  @Override
+  public int getPriority() {
+<span class="nc" id="L94">    return priority;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TurretSelectionScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">TurretSelectionScreen.java</span></div><h1>TurretSelectionScreen.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+import java.util.*;
+
+public class TurretSelectionScreen extends ScreenAdapter {
+
+    private static final int MAX_SELECTED_TURRETS = 5;
+    private Stage stage;
+    private Label descText;
+    private List&lt;TowerType&gt; turretList;
+    private TextButton confirmButton;
+    private String turretDescriptionText;
+
+    private GdxGame game;
+
+    private SpriteBatch batch;
+    private String turretDescription;
+    private String turretName;
+
+    TextButton turretDescriptionLabel;
+    private Sprite introSprite;
+
+    private Label message;
+    private Table table;
+    private TextButton descriptionLabel;
+    private static final String TEXTURE = &quot;planets/background.png&quot;;
+<span class="nc" id="L55">    private Set&lt;TowerType&gt; selectedTurrets = new HashSet&lt;&gt;();</span>
+    private TextButton backButton;
+<span class="nc" id="L57">    private String[] bgm = {</span>
+            &quot;sounds/background/pre_game/Sci-Fi7Loop.ogg&quot;
+    };
+    private Music music;
+<span class="nc" id="L61">    private static final Logger logger = LoggerFactory.getLogger(MainMenuScreen.class);</span>
+
+    /**
+     * Constructor for the TurretSelectionScreen
+     * @param game The game object
+     */
+<span class="nc" id="L67">    public TurretSelectionScreen(GdxGame game) {</span>
+<span class="nc" id="L68">        this.game = game;</span>
+<span class="nc" id="L69">        stage = new Stage(new ScreenViewport());</span>
+<span class="nc" id="L70">        table = new Table();</span>
+
+<span class="nc" id="L72">        ServiceLocator.registerResourceService(new ResourceService());</span>
+<span class="nc" id="L73">        ServiceLocator.getResourceService().loadMusic(bgm);</span>
+<span class="nc" id="L74">        ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L75">        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);</span>
+
+        // Set up the background
+<span class="nc" id="L78">        batch = new SpriteBatch();</span>
+<span class="nc" id="L79">        Texture backgroundImage = new Texture(TEXTURE);</span>
+<span class="nc" id="L80">        introSprite = new Sprite(backgroundImage);</span>
+<span class="nc" id="L81">        introSprite.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+
+        // Add all turrets to turret list
+<span class="nc" id="L84">        turretList = new ArrayList&lt;&gt;();</span>
+        // Add turrets to the list
+<span class="nc" id="L86">        turretList.addAll(Arrays.asList(TowerType.values()));</span>
+        // Restrictions can be added to the arrays i.e. map == &quot;Forest&quot; &amp;&amp; level == 1 using for loop
+
+<span class="nc" id="L89">        Skin skin = new Skin(Gdx.files.internal(&quot;images/ui/buttons/glass.json&quot;));</span>
+//=======
+//        Skin skin = new Skin(Gdx.files.internal(&quot;flat-earth/skin/flat-earth-ui.json&quot;));
+<span class="nc" id="L92">        backButton = new TextButton(&quot;Back&quot;, skin);</span>
+<span class="nc" id="L93">        backButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Handle the &quot;back&quot; action, e.g., return to the previous screen
+<span class="nc" id="L97">                game.setScreen(GdxGame.ScreenType.MAIN_MENU); // Replace PREVIOUS_SCREEN with the appropriate screen type</span>
+<span class="nc" id="L98">            }</span>
+        });
+<span class="nc" id="L100">        Table topRightTable = new Table();</span>
+<span class="nc" id="L101">        topRightTable.top().right();</span>
+<span class="nc" id="L102">        topRightTable.add(backButton).pad(10);</span>
+
+<span class="nc" id="L104">        stage.addActor(topRightTable);</span>
+
+<span class="nc" id="L106">        message = new Label(&quot;Select your turrets&quot;, skin);</span>
+
+<span class="nc" id="L108">        confirmButton = createButton(&quot;images/turret-select/imageedit_4_5616741474.png&quot;,</span>
+                &quot;images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png&quot;, &quot;Continue&quot;, &quot;&quot;, &quot;&quot;);
+<span class="nc" id="L110">        Drawable pressDrawable = new TextureRegionDrawable(new TextureRegion(</span>
+                new Texture(&quot;images/ui/Sprites/UI_Glass_Button_Large_Press_01a1.png&quot;)));
+<span class="nc" id="L112">        confirmButton.getStyle().down = pressDrawable;</span>
+<span class="nc" id="L113">        confirmButton.pad(0,0,6,0);</span>
+<span class="nc" id="L114">        confirmButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                // Store the selected towers in the ServiceLocator for transferring across screens
+<span class="nc" id="L118">                ServiceLocator.setTowerTypes(selectedTurrets);;</span>
+<span class="nc" id="L119">                game.setScreen(GdxGame.ScreenType.MAIN_GAME);</span>
+<span class="nc" id="L120">            }</span>
+        });
+
+<span class="nc" id="L123">        turretDescriptionLabel = createButton(&quot;images/turret-select/imageedit_28_4047785594.png&quot;,</span>
+                &quot;images/turret-select/imageedit_28_4047785594.png&quot;, &quot;&quot;, &quot;&quot;, turretDescriptionText);
+
+<span class="nc" id="L126">        BitmapFont font = new BitmapFont();</span>
+<span class="nc" id="L127">        Label.LabelStyle labelStyle = new Label.LabelStyle();</span>
+<span class="nc" id="L128">        labelStyle.font = font;  // Set your desired BitmapFont</span>
+<span class="nc" id="L129">        descText = new Label(turretDescriptionText, labelStyle);</span>
+<span class="nc" id="L130">        descText.setWrap(true);</span>
+<span class="nc" id="L131">        descText.setWidth(190f);</span>
+
+<span class="nc" id="L133">        turretName = &quot;&quot;;</span>
+
+        // Centered the message and turrets label
+<span class="nc" id="L136">        table.add(message).center().colspan(4).row();</span>
+<span class="nc" id="L137">        int towersPerRow = 4; // Set the number of towers to display per row</span>
+<span class="nc" id="L138">        int numRows = (int) Math.ceil((double)turretList.size() / towersPerRow); // Calculate the number of rows</span>
+
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for (int row = 0; row &lt; numRows; row++) {</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">            for (int col = 0; col &lt; towersPerRow; col++) {</span>
+<span class="nc" id="L142">                int index = row * towersPerRow + col;</span>
+<span class="nc bnc" id="L143" title="All 2 branches missed.">                if (index &gt;= turretList.size()) {</span>
+<span class="nc" id="L144">                    break; // Ensure we don't try to access a turret beyond the list size</span>
+                }
+
+<span class="nc" id="L147">                TowerType turret = turretList.get(index);</span>
+
+                // Create a nested table for each turret
+<span class="nc" id="L150">                Table turretTable = new Table();</span>
+<span class="nc" id="L151">                turretTable.center(); // Center the contents of the nested table</span>
+
+<span class="nc" id="L153">                descriptionLabel = createButton(&quot;images/turret-select/imageedit_15_5627113584.png&quot;,</span>
+                        &quot;images/turret-select/imageedit_15_5627113584.png&quot;, &quot;Description: &quot;, turretName, &quot;&quot;);
+
+                //turretDescriptionText = createButton(&quot;images/turret-select/imageedit_20_9050213399.png&quot;,
+                       // &quot;images/turret-select/imageedit_20_9050213399.png&quot;, )
+
+
+<span class="nc" id="L160">                TextButton button = createButton(turret.getDefaultImage(),</span>
+<span class="nc" id="L161">                        turret.getClickedImage(), turret.getPrice(), turret.getTowerName(), turret.getDescription());</span>
+
+<span class="nc" id="L163">                button.pad(103, 15, 0, 0);</span>
+<span class="nc" id="L164">                button.addListener(new ClickListener() {</span>
+
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L168">                        logger.info(String.valueOf(selectedTurrets.size()));</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">                        if (selectedTurrets.size() &gt; MAX_SELECTED_TURRETS) {</span>
+<span class="nc" id="L170">                            message.setText(&quot;You can only select up to 5 turrets.&quot;);</span>
+                        } else {
+<span class="nc" id="L172">                            message.setText(&quot;Select your turrets&quot;);</span>
+                        }
+<span class="nc bnc" id="L174" title="All 2 branches missed.">                        if (selectedTurrets.contains(turret)) {</span>
+                            // Turret is already selected, unselect it
+<span class="nc" id="L176">                            selectedTurrets.remove(turret);</span>
+                            // You can also change the button appearance to indicate unselection
+<span class="nc" id="L178">                            logger.info(selectedTurrets.toString());</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">                        } else if (selectedTurrets.size() == MAX_SELECTED_TURRETS) {</span>
+                            // Turret is not selected, but the max number of turrets has been reached
+<span class="nc" id="L181">                            message.setText(&quot;You can only select up to 5 turrets.&quot;);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">                        } else if (selectedTurrets.size() &lt; MAX_SELECTED_TURRETS) {</span>
+                            // Turret is not selected, select it
+<span class="nc" id="L184">                            selectedTurrets.add(turret);</span>
+<span class="nc" id="L185">                            logger.info(selectedTurrets.toString());</span>
+                        }
+                        else {
+                            // Turret is not selected, select it
+<span class="nc" id="L189">                            selectedTurrets.add(turret);</span>
+                            //logger.info(selectedTurrets.toString());
+
+                            // You can change the button appearance to indicate selection
+                        }
+<span class="nc" id="L194">                    }</span>
+                });
+
+                // Add the image to the nested table
+<span class="nc" id="L198">                turretTable.add(button).pad(10).row();</span>
+
+                // Add the nested table to the main table
+<span class="nc" id="L201">                table.add(turretTable).pad(10).center();</span>
+
+                // Center the contents of the main table cell
+<span class="nc" id="L204">                table.getCells().peek().center();</span>
+            }
+
+            // Center the entire row
+<span class="nc" id="L208">            table.row().center();</span>
+
+        }
+
+        // Centered the &quot;continue&quot; button
+<span class="nc" id="L213">        table.add(confirmButton).center().colspan(4).padBottom(20).row();</span>
+
+<span class="nc" id="L215">        descriptionLabel.setPosition(Gdx.graphics.getWidth() - descriptionLabel.getWidth(), Gdx.graphics.getHeight() - descriptionLabel.getHeight());</span>
+<span class="nc" id="L216">        float turretDescriptionLabelX = Gdx.graphics.getWidth() - turretDescriptionLabel.getWidth() - 11;</span>
+<span class="nc" id="L217">        float turretDescriptionLabelY = Gdx.graphics.getHeight() - descriptionLabel.getHeight() - turretDescriptionLabel.getHeight() - 7;  // Adjusted vertical position</span>
+
+// Set the position for turretDescriptionLabel
+<span class="nc" id="L220">        turretDescriptionLabel.setPosition(turretDescriptionLabelX, turretDescriptionLabelY);</span>
+<span class="nc" id="L221">        descText.setPosition(turretDescriptionLabelX + 18, turretDescriptionLabelY + 70);</span>
+
+// Add the actors to the stage
+<span class="nc" id="L224">        stage.addActor(turretDescriptionLabel);</span>
+<span class="nc" id="L225">        stage.addActor(descriptionLabel);</span>
+<span class="nc" id="L226">        stage.addActor(descText);</span>
+
+
+
+        // Center the table within the stage
+<span class="nc" id="L231">        table.center();</span>
+<span class="nc" id="L232">        stage.addActor(table);</span>
+<span class="nc" id="L233">        table.setFillParent(true);</span>
+<span class="nc" id="L234">        Gdx.input.setInputProcessor(stage);</span>
+
+<span class="nc" id="L236">        music.setVolume(0.4f);</span>
+<span class="nc" id="L237">        music.setLooping(true);</span>
+<span class="nc" id="L238">        music.play();</span>
+
+<span class="nc" id="L240">    }</span>
+    @Override
+    public void render(float delta) {
+<span class="nc" id="L243">        Gdx.gl.glClearColor(0, 0, 0, 1);</span>
+<span class="nc" id="L244">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L246">        batch.begin();</span>
+<span class="nc" id="L247">        introSprite.draw(batch);</span>
+<span class="nc" id="L248">        batch.end();</span>
+
+<span class="nc" id="L250">        stage.act();  // Update the stage</span>
+<span class="nc" id="L251">        stage.draw();  // Draw the stage</span>
+<span class="nc" id="L252">    }</span>
+
+    /**
+     * Returns the list of selected turrets
+     * @return The list of selected turrets
+     */
+    public List&lt;TowerType&gt; getTurretList() {
+<span class="nc" id="L259">        return turretList;</span>
+    }
+
+    /**
+     * Creates a button with the specified images and text
+     * @param defaultImageFilePath The file path to the default image
+     * @param alternateImageFilePath The file path to the alternate image
+     * @param cost The cost of the turret
+     * @param towerName The name of the turret
+     * @param turretDesc The description of the turret
+     * @return The created button
+     */
+    private TextButton createButton(String defaultImageFilePath, String alternateImageFilePath, String cost,
+                                    String towerName, String turretDesc) {
+<span class="nc" id="L273">        Drawable defaultDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(defaultImageFilePath)));</span>
+<span class="nc" id="L274">        Drawable alternateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(alternateImageFilePath)));</span>
+
+<span class="nc" id="L276">        TextButton.TextButtonStyle buttonStyle = new TextButton.TextButtonStyle();</span>
+<span class="nc" id="L277">        buttonStyle.font = new BitmapFont(); // Set your desired font</span>
+<span class="nc" id="L278">        buttonStyle.up = defaultDrawable; // Default state</span>
+
+        // Create button
+<span class="nc" id="L281">        TextButton tb = new TextButton(cost, buttonStyle);</span>
+
+<span class="nc" id="L283">        final boolean[] isDefaultImage = {true}; // Keep track of the image state</span>
+
+<span class="nc" id="L285">        tb.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L288">                super.clicked(event, x, y);</span>
+
+                // Toggle the image
+<span class="nc bnc" id="L291" title="All 2 branches missed.">                if (isDefaultImage[0]) {</span>
+<span class="nc" id="L292">                    tb.getStyle().up = alternateDrawable;</span>
+                } else {
+<span class="nc" id="L294">                    tb.getStyle().up = defaultDrawable;</span>
+                }
+
+                // Update the image state
+<span class="nc bnc" id="L298" title="All 2 branches missed.">                isDefaultImage[0] = !isDefaultImage[0];</span>
+<span class="nc" id="L299">            }</span>
+        });
+
+        // Add a hover listener to update turretName when hovered over
+<span class="nc" id="L303">        tb.addListener(new InputListener() {</span>
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor fromActor) {
+<span class="nc" id="L306">                super.enter(event, x, y, pointer, fromActor);</span>
+<span class="nc" id="L307">                turretDescription = towerName;  // Update turretDescription when hovering over the button</span>
+<span class="nc" id="L308">                turretDescriptionText = turretDesc;</span>
+<span class="nc" id="L309">                updateDescriptionLabel();</span>
+<span class="nc" id="L310">                updateDescriptionText();</span>
+<span class="nc" id="L311">            }</span>
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, com.badlogic.gdx.scenes.scene2d.Actor toActor) {
+<span class="nc" id="L315">                super.exit(event, x, y, pointer, toActor);</span>
+<span class="nc" id="L316">                turretDescription = &quot;&quot;;  // Reset turretDescription when exiting the button</span>
+<span class="nc" id="L317">                turretDescriptionText = &quot;&quot;;</span>
+<span class="nc" id="L318">                updateDescriptionLabel();</span>
+<span class="nc" id="L319">                updateDescriptionText();</span>
+<span class="nc" id="L320">            }</span>
+        });
+
+<span class="nc" id="L323">        tb.setDisabled(true);</span>
+
+<span class="nc" id="L325">        return tb;</span>
+    }
+
+    /**
+     * Updates the description label
+     */
+    private void updateDescriptionLabel() {
+<span class="nc" id="L332">        descriptionLabel.setText(&quot;Description: &quot; + turretDescription);</span>
+<span class="nc" id="L333">    }</span>
+
+    /**
+     * Updates the description text
+     */
+    private void updateDescriptionText() {
+<span class="nc" id="L339">        descText.setText(turretDescriptionText);</span>
+<span class="nc" id="L340">    }</span>
+
+    /**
+     * Disposes of the stage
+     */
+    @Override
+    public void dispose() {
+<span class="nc" id="L347">        stage.dispose();</span>
+<span class="nc" id="L348">        music.dispose();</span>
+<span class="nc" id="L349">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

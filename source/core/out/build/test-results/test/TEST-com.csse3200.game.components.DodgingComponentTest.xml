@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.DodgingComponentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:19" hostname="DESKTOP-F4ACIG8" time="0.254">
+  <properties/>
+  <testcase name="shouldInvokeDodgeEvent()" classname="com.csse3200.game.components.DodgingComponentTest" time="0.22"/>
+  <testcase name="shouldNotBeNullTask()" classname="com.csse3200.game.components.DodgingComponentTest" time="0.014"/>
+  <testcase name="shouldNotBeNullComponent()" classname="com.csse3200.game.components.DodgingComponentTest" time="0.016"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:20 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class CombatStatsComponent to Entity{id=23}. Only one component of a class can be added to an entity, this will be ignored.
+]]></system-err>
+</testsuite>

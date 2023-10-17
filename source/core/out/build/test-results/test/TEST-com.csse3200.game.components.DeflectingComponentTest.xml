@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.DeflectingComponentTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:17" hostname="DESKTOP-F4ACIG8" time="1.987">
+  <properties/>
+  <testcase name="shouldReverseProjScaleX()" classname="com.csse3200.game.components.DeflectingComponentTest" time="1.33"/>
+  <testcase name="shouldNotChangeHealthWhenDisabled()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.035"/>
+  <testcase name="shouldRemainSameHealth()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.035"/>
+  <testcase name="shouldBeDisposedWhenDisabled()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.037"/>
+  <testcase name="shouldNotBeNull()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.034"/>
+  <testcase name="shouldInvokeAtMostOnce()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.168"/>
+  <testcase name="shouldInvokeXAmtTimes()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.16"/>
+  <testcase name="shouldInvokeDeflectProjEvent()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.073"/>
+  <testcase name="shouldNotBeDisposed()" classname="com.csse3200.game.components.DeflectingComponentTest" time="0.084"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

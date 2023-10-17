@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InputFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">InputFactory.java</span></div><h1>InputFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * InputFactory creates inputType-specific inputFactories which can handle various types of input.
+ * Currently only keyboard input and touch is implemented, but InputFactory can be expanded to
+ * include more, e.g. touch gestures.
+ *
+ * &lt;p&gt;Methods to get new input handlers should be defined here.
+ */
+<span class="fc" id="L13">public abstract class InputFactory {</span>
+<span class="fc" id="L14">  private static final Logger logger = LoggerFactory.getLogger(InputFactory.class);</span>
+
+  /** Input device types */
+<span class="fc" id="L17">  public enum InputType {</span>
+<span class="fc" id="L18">    KEYBOARD, // keyboard and touch</span>
+<span class="fc" id="L19">    TOUCH // alternate keyboard and touch</span>
+  }
+
+  /**
+   * @param inputType the type of input ot be handled by the game
+   * @return an InputFactory for the specified input type
+   */
+  public static InputFactory createFromInputType(InputType inputType) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">    if (inputType == null) {</span>
+<span class="fc" id="L28">      logger.error(&quot;Null is not a valid input type&quot;);</span>
+<span class="fc" id="L29">      return null;</span>
+    }
+
+<span class="pc bpc" id="L32" title="1 of 2 branches missed.">    if (inputType == InputType.KEYBOARD) {</span>
+<span class="fc" id="L33">      logger.debug(&quot;Creating keyboard input factory&quot;);</span>
+<span class="fc" id="L34">      return new KeyboardInputFactory();</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">    } else if (inputType == InputType.TOUCH) {</span>
+<span class="nc" id="L36">      logger.debug(&quot;Creating touch input factory&quot;);</span>
+<span class="nc" id="L37">      return new TouchInputFactory();</span>
+    }
+    // Add other input types here
+
+<span class="nc" id="L41">    logger.error(&quot;Unrecognised input type: {} &quot;, inputType);</span>
+<span class="nc" id="L42">    return null;</span>
+  }
+
+  /**
+   * Creates an input handler for the player
+   *
+   * @return Player input handler
+   */
+  public abstract InputComponent createForPlayer();
+
+  /**
+   * Creates an input handler for the terminal
+   *
+   * @return Terminal input handler
+   */
+  public abstract InputComponent createForTerminal();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

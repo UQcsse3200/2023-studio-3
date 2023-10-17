@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BombshipWanderTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bombship</a> &gt; <span class="el_source">BombshipWanderTask.java</span></div><h1>BombshipWanderTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bombship;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * BombshipWanderTask is the entry point for the engineer entity's behaviour. Instantiates subtasks HumanWaitTask,
+ * BombshipMovementTask and BombshipCombatTask, and manages transitions between the tasks. Bombship damage and destruction is
+ * handled in this class.
+ */
+public class BombshipWanderTask extends DefaultTask implements PriorityTask {
+  private static final int TOLERANCE = 1;
+  private static final float STOP_DISTANCE = 0.5f;
+  private static final int DEFAULT_PRIORITY = 1;
+  private static final String START = &quot;start&quot;;
+  private static final String DESTROY = &quot;destroy&quot;;
+  private static final String IDLE = &quot;idle&quot;;
+  private AnimationRenderComponent animator;
+  private final float maxRange;
+  private final float waitTime;
+  private BombshipMovementTask movementTask;
+  private BombshipWaitTask waitTask;
+  private BombshipCombatTask combatTask;
+  private Task currentTask;
+<span class="nc" id="L33">  private boolean isDestroyed = false;</span>
+
+  /**
+   * Constructor of BombshipWanderTask
+   *
+   * @param waitTime How long in seconds to wait between wandering.
+   * @param maxRange Maximum of the entity to fight
+   */
+<span class="nc" id="L41">  public BombshipWanderTask(float waitTime, float maxRange) {</span>
+<span class="nc" id="L42">    this.waitTime = waitTime;</span>
+<span class="nc" id="L43">    this.maxRange = maxRange;</span>
+<span class="nc" id="L44">  }</span>
+
+  /**
+   * Fetches the priority of this task.
+   * @return current priority of this task. Priority for this task is a set value and does not change.
+   */
+  @Override
+  public int getPriority() {
+<span class="nc" id="L52">    return DEFAULT_PRIORITY; // Low priority task</span>
+  }
+
+  /**
+   * Starts the BombshipWanderTask instance and instantiates subtasks (BombshipWaitTask, BombshipWanderTask, BombshipCombatTask).
+   */
+  @Override
+  public void start() {
+<span class="nc" id="L60">    super.start();</span>
+<span class="nc" id="L61">    Vector2 startPos = owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L62">    waitTask = new BombshipWaitTask(waitTime);</span>
+<span class="nc" id="L63">    waitTask.create(owner);</span>
+
+<span class="nc" id="L65">    movementTask = new BombshipMovementTask(startPos, STOP_DISTANCE);</span>
+<span class="nc" id="L66">    movementTask.create(owner);</span>
+<span class="nc" id="L67">    movementTask.start();</span>
+
+<span class="nc" id="L69">    combatTask = new BombshipCombatTask(maxRange);</span>
+<span class="nc" id="L70">    combatTask.create(owner);</span>
+<span class="nc" id="L71">    combatTask.start();</span>
+
+<span class="nc" id="L73">    currentTask = movementTask;</span>
+
+<span class="nc" id="L75">    animator = owner.getEntity().getComponent(AnimationRenderComponent.class);</span>
+<span class="nc" id="L76">  }</span>
+
+  /**
+   * Operates the main logic of the entity in this task. All calls to switch to particular states are determined during
+   * the update phase.
+   * The logical flow is:
+   *      - Check if the entity has died since last update
+   *      - Check if the entity has finished dying
+   *      - If not dead
+   */
+  @Override
+  public void update() {
+<span class="nc bnc" id="L88" title="All 2 branches missed.">    if (!isDestroyed) {</span>
+<span class="nc" id="L89">      startDestroying();</span>
+    }
+
+    // Check if bombship has destroyed since last update
+<span class="nc bnc" id="L93" title="All 2 branches missed.">    if (!isDestroyed) {</span>
+<span class="nc" id="L94">      startDestroying();</span>
+<span class="nc bnc" id="L95" title="All 4 branches missed.">    } else if (isDestroyed &amp;&amp; animator.isFinished()) {</span>
+<span class="nc" id="L96">      owner.getEntity().setFlagForDelete(true);</span>
+    }
+
+    // otherwise doing engineer things since engineer is alive
+<span class="nc bnc" id="L100" title="All 2 branches missed.">    else if (!isDestroyed){</span>
+<span class="nc" id="L101">      doBombshipThings();</span>
+
+<span class="nc" id="L103">      currentTask.update();</span>
+    }
+<span class="nc" id="L105">  }</span>
+
+  private void doBombshipThings() {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">    if (currentTask.getStatus() != Status.ACTIVE) {</span>
+
+      // if the engineer is in move state and update has been called, engineer has arrived at destination
+<span class="nc bnc" id="L111" title="All 2 branches missed.">      if (currentTask == movementTask) {</span>
+<span class="nc" id="L112">        startWaiting();</span>
+<span class="nc" id="L113">        owner.getEntity().getEvents().trigger(IDLE);</span>
+
+<span class="nc bnc" id="L115" title="All 2 branches missed.">      } else if (combatTask.isEngineerDied()) {</span>
+<span class="nc" id="L116">        owner.getEntity().getEvents().trigger(START);</span>
+      }
+    }
+<span class="nc" id="L119">  }</span>
+  /**
+   * Handle the dying phase of the entity. Triggers an event to play the appropriate media,
+   * sets HitBox and Collider components to ignore contact (stops the body being pushed around)
+   * and stops the current task.
+   */
+  private void startDestroying() {
+<span class="nc" id="L126">    owner.getEntity().getEvents().trigger(DESTROY);</span>
+<span class="nc" id="L127">    owner.getEntity().getComponent(ColliderComponent.class).setLayer(PhysicsLayer.NONE);</span>
+<span class="nc" id="L128">    owner.getEntity().getComponent(HitboxComponent.class).setLayer(PhysicsLayer.NONE);</span>
+<span class="nc" id="L129">    currentTask.stop();</span>
+<span class="nc" id="L130">    isDestroyed = true;</span>
+<span class="nc" id="L131">  }</span>
+
+  /**
+   * Starts the wait task.
+   */
+  private void startWaiting() {
+<span class="nc" id="L137">    swapTask(waitTask);</span>
+<span class="nc" id="L138">  }</span>
+
+  /**
+   * Starts the movement task, to a particular destination
+   * @param destination the Vector2 position to which the entity needs to move
+   */
+  private void startMoving(Vector2 destination) {
+<span class="nc" id="L145">    movementTask.setTarget(destination);</span>
+<span class="nc" id="L146">    swapTask(movementTask);</span>
+<span class="nc" id="L147">  }</span>
+
+  /**
+   * Starts the combat task.
+   */
+  private void startCombat() {
+<span class="nc" id="L153">    swapTask(combatTask);</span>
+<span class="nc" id="L154">  }</span>
+
+  /**
+   * Allows manual switching of tasks, from the current task to the supplied newTask.
+   * @param newTask the task being switched to.
+   */
+  private void swapTask(Task newTask) {
+<span class="nc bnc" id="L161" title="All 2 branches missed.">    if (currentTask != null) {</span>
+<span class="nc" id="L162">      currentTask.stop();</span>
+    }
+<span class="nc" id="L164">    currentTask = newTask;</span>
+<span class="nc" id="L165">    currentTask.start();</span>
+<span class="nc" id="L166">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BuildInputComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">BuildInputComponent.java</span></div><h1>BuildInputComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.entities.factories.TowerFactory;
+import com.csse3200.game.screens.TowerType;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+/**
+ * Input component for handling in-game tower building. Based on Team 5 implementation of
+ * DropInputComponent
+ */
+public class BuildInputComponent extends InputComponent {
+<span class="nc" id="L22">    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);</span>
+    private final EntityService entityService;
+    private final Camera camera;
+<span class="nc" id="L25">    private final String[] sounds = {</span>
+            &quot;sounds/economy/buildSound.ogg&quot;,
+            &quot;sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg&quot;
+    };
+    private Sound buildSound;
+    private Sound errorSound;
+
+    /**
+     * Constructor for the BuildInputComponent
+     * @param camera the camera to be used, this is the camera that the game is rendered with
+     */
+<span class="nc" id="L36">    public BuildInputComponent(Camera camera) {</span>
+<span class="nc" id="L37">        this.entityService = ServiceLocator.getEntityService();</span>
+<span class="nc" id="L38">        this.camera = camera;</span>
+<span class="nc" id="L39">        loadSounds();</span>
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Getter for the camera
+     * @return the camera
+     */
+    public Camera getCamera() {
+<span class="nc" id="L47">        return camera;</span>
+    }
+
+    /**
+     * When the mouse is clicked, this method is called.
+     * Checks that the mouse is clicked on an empty tile
+     * Instantiates a new Tower entity at the clicked location if valid, and decrements the
+     * cost of the build from the currency pool
+     *
+     * @param screenX The x coordinate, origin is in the upper left corner
+     * @param screenY The y coordinate, origin is in the upper left corner
+     * @param pointer the pointer for the event.
+     * @param button the button
+     * @return true if successful, false otherwise
+     */
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+<span class="nc" id="L65">        Vector3 worldCoordinates = new Vector3((float)  screenX , (float) screenY, 0);</span>
+<span class="nc" id="L66">        getCamera().unproject(worldCoordinates); // translate from screen to world coordinates</span>
+<span class="nc" id="L67">        Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);</span>
+
+        // determine if the tile is unoccupied
+<span class="nc" id="L70">        boolean tileOccupied = entityService.entitiesInTile((int)cursorPosition.x, (int)cursorPosition.y);</span>
+<span class="nc" id="L71">        logger.debug(&quot;Tile is occupied: &quot; + tileOccupied );</span>
+
+        // check that no entities are occupying the tile
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (!tileOccupied) {</span>
+<span class="nc" id="L75">            buildTower((int)cursorPosition.x, (int)cursorPosition.y);</span>
+<span class="nc" id="L76">            logger.debug(&quot;spawning a tower at {}, {}&quot;, cursorPosition.x, cursorPosition.y);</span>
+<span class="nc" id="L77">            return true;</span>
+        }
+<span class="nc" id="L79">        return false;</span>
+    }
+
+    /**
+     * Instantiates and spawns the selected tower at the given x y coordinates on the tile map. Assumes that the given
+     * x and y coordinate is valid and that the TowerType exists in the CurrencyService.
+     *
+     * @param x x-coordinate int value
+     * @param y y-coordinate int value
+     */
+    public void buildTower(int x, int y) {
+        // fetch the currently set TowerType in the currency service, and its associated build cost.
+<span class="nc" id="L91">        TowerType tower = ServiceLocator.getCurrencyService().getTower();</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">        if (tower != null) {</span>
+            // fetch the price of the selected tower and attempt to instantiate
+<span class="nc" id="L94">            int cost = Integer.parseInt(ServiceLocator.getCurrencyService().getTower().getPrice());</span>
+
+<span class="nc bnc" id="L96" title="All 2 branches missed.">            if (cost &lt;= ServiceLocator.getCurrencyService().getScrap().getAmount()) {</span>
+<span class="nc bnc" id="L97" title="All 8 branches missed.">                Entity newTower = switch (tower) {</span>
+<span class="nc" id="L98">                    case WEAPON -&gt; TowerFactory.createWeaponTower();</span>
+<span class="nc" id="L99">                    case INCOME -&gt; TowerFactory.createIncomeTower();</span>
+<span class="nc" id="L100">                    case TNT    -&gt; TowerFactory.createTNTTower();</span>
+<span class="nc" id="L101">                    case DROID  -&gt; TowerFactory.createDroidTower();</span>
+<span class="nc" id="L102">                    case WALL   -&gt; TowerFactory.createWallTower();</span>
+<span class="nc" id="L103">                    case FIRE   -&gt; TowerFactory.createFireTower();</span>
+<span class="nc" id="L104">                    case STUN   -&gt; TowerFactory.createStunTower();</span>
+                };
+                // build the selected tower
+<span class="nc" id="L107">                newTower.setPosition(x, y);</span>
+<span class="nc" id="L108">                ServiceLocator.getEntityService().register(newTower);</span>
+                // Decrement currency and show a popup that reflects the cost of the build
+<span class="nc" id="L110">                ServiceLocator.getCurrencyService().getScrap().modify(-cost);</span>
+<span class="nc" id="L111">                ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+<span class="nc" id="L112">                ServiceLocator.getCurrencyService().getDisplay().currencyPopUp(x, y, -cost, 10);</span>
+
+<span class="nc" id="L114">                long soundId = buildSound.play();</span>
+<span class="nc" id="L115">                buildSound.setVolume(soundId, 0.4f);</span>
+<span class="nc" id="L116">            } else {</span>
+                // play a sound to indicate an invalid action
+<span class="nc" id="L118">                long soundId = errorSound.play();</span>
+<span class="nc" id="L119">                errorSound.setVolume(soundId, 0.5f);</span>
+            }
+        }
+<span class="nc" id="L122">    }</span>
+
+    /**
+     * Load the sound assets related to in-game tower building activity
+     */
+    private void loadSounds() {
+<span class="nc" id="L128">        ServiceLocator.getResourceService().loadSounds(sounds);</span>
+<span class="nc" id="L129">        ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L130">        buildSound = ServiceLocator.getResourceService().getAsset(&quot;sounds/economy/buildSound.ogg&quot;, Sound.class);</span>
+<span class="nc" id="L131">        errorSound = ServiceLocator.getResourceService().getAsset(&quot;sounds/ui/Switch/NA_SFUI_Vol1_switch_01.ogg&quot;, Sound.class);</span>
+<span class="nc" id="L132">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DebugRenderer.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.rendering</a> &gt; <span class="el_source">DebugRenderer.java</span></div><h1>DebugRenderer.java</h1><pre class="source lang-java linenums">package com.csse3200.game.rendering;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/** Provides functionality to draw lines/shapes to the screen for debug purposes. */
+public class DebugRenderer {
+<span class="fc" id="L16">  private static final Logger logger = LoggerFactory.getLogger(DebugRenderer.class);</span>
+  private final Box2DDebugRenderer physicsRenderer;
+  private final ShapeRenderer shapeRenderer;
+
+  private World physicsWorld;
+<span class="fc" id="L21">  private boolean active = true;</span>
+<span class="fc" id="L22">  private DrawRequest[] drawRequests = new DrawRequest[10];</span>
+<span class="fc" id="L23">  private int requestCount = 0;</span>
+
+  public DebugRenderer() {
+<span class="nc" id="L26">    this(new Box2DDebugRenderer(), new ShapeRenderer());</span>
+<span class="nc" id="L27">  }</span>
+
+<span class="fc" id="L29">  public DebugRenderer(Box2DDebugRenderer physicsRenderer, ShapeRenderer shapeRenderer) {</span>
+<span class="fc" id="L30">    this.physicsRenderer = physicsRenderer;</span>
+<span class="fc" id="L31">    this.shapeRenderer = shapeRenderer;</span>
+
+<span class="fc bfc" id="L33" title="All 2 branches covered.">    for (int i = 0; i &lt; drawRequests.length; i++) {</span>
+<span class="fc" id="L34">      drawRequests[i] = new DrawRequest();</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  public void renderPhysicsWorld(World physicsWorld) {
+<span class="fc" id="L39">    this.physicsWorld = physicsWorld;</span>
+<span class="fc" id="L40">  }</span>
+
+  /**
+   * Draw a line between two positions
+   *
+   * @param from start position
+   * @param to end position
+   */
+  public void drawLine(Vector2 from, Vector2 to) {
+<span class="fc" id="L49">    drawLine(from, to, Color.WHITE, 1f);</span>
+<span class="fc" id="L50">  }</span>
+
+  /**
+   * Draw a line between two positions
+   *
+   * @param from start position
+   * @param to end position
+   * @param color line color
+   * @param lineWidth line width
+   */
+  public void drawLine(Vector2 from, Vector2 to, Color color, float lineWidth) {
+<span class="fc" id="L61">    ensureCapacity();</span>
+<span class="fc" id="L62">    DrawRequest request = drawRequests[requestCount];</span>
+<span class="fc" id="L63">    request.drawRequestType = DrawRequestType.LINE;</span>
+<span class="fc" id="L64">    request.pos = from;</span>
+<span class="fc" id="L65">    request.end = to;</span>
+<span class="fc" id="L66">    request.color = color;</span>
+<span class="fc" id="L67">    request.lineWidth = lineWidth;</span>
+<span class="fc" id="L68">    requestCount++;</span>
+<span class="fc" id="L69">  }</span>
+
+  /**
+   * Draw a rectangle
+   *
+   * @param pos position of bottom left corner
+   * @param size width/height
+   */
+  public void drawRectangle(Vector2 pos, Vector2 size) {
+<span class="fc" id="L78">    drawRectangle(pos, size, Color.WHITE, 1f);</span>
+<span class="fc" id="L79">  }</span>
+
+  /**
+   * Draw a rectangle
+   *
+   * @param pos position of bottom left corner
+   * @param size width/height
+   * @param color line color
+   * @param lineWidth line width
+   */
+  public void drawRectangle(Vector2 pos, Vector2 size, Color color, float lineWidth) {
+<span class="fc" id="L90">    ensureCapacity();</span>
+<span class="fc" id="L91">    DrawRequest request = drawRequests[requestCount];</span>
+<span class="fc" id="L92">    request.drawRequestType = DrawRequestType.RECT;</span>
+<span class="fc" id="L93">    request.pos = pos;</span>
+<span class="fc" id="L94">    request.end = size;</span>
+<span class="fc" id="L95">    request.color = color;</span>
+<span class="fc" id="L96">    request.lineWidth = lineWidth;</span>
+<span class="fc" id="L97">    requestCount++;</span>
+<span class="fc" id="L98">  }</span>
+
+  /** @param active true to enable debug drawing, false to disable */
+  public void setActive(boolean active) {
+<span class="fc" id="L102">    logger.info(&quot;Set debug to: {}&quot;, active);</span>
+<span class="fc" id="L103">    this.active = active;</span>
+<span class="fc" id="L104">  }</span>
+
+  public boolean getActive() {
+<span class="nc" id="L107">    return active;</span>
+  }
+
+  public void render(Matrix4 projMatrix) {
+<span class="fc bfc" id="L111" title="All 2 branches covered.">    if (!active) {</span>
+<span class="fc" id="L112">      return;</span>
+    }
+
+<span class="fc bfc" id="L115" title="All 2 branches covered.">    if (physicsWorld != null) {</span>
+<span class="fc" id="L116">      physicsRenderer.render(physicsWorld, projMatrix);</span>
+    }
+
+<span class="fc" id="L119">    shapeRenderer.setProjectionMatrix(projMatrix);</span>
+<span class="fc" id="L120">    shapeRenderer.begin(ShapeType.Line);</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">    for (int i = 0; i &lt; requestCount; i++) {</span>
+<span class="pc bpc" id="L122" title="1 of 3 branches missed.">      switch (drawRequests[i].drawRequestType) {</span>
+        case LINE:
+<span class="fc" id="L124">          renderLine(drawRequests[i]);</span>
+<span class="fc" id="L125">          break;</span>
+        case RECT:
+<span class="fc" id="L127">          renderRect(drawRequests[i]);</span>
+<span class="fc" id="L128">          break;</span>
+        default:
+<span class="nc" id="L130">          logger.error(&quot;Attempting to draw unsupported shape!&quot;);</span>
+          break;
+      }
+    }
+<span class="fc" id="L134">    shapeRenderer.end();</span>
+<span class="fc" id="L135">    requestCount = 0;</span>
+<span class="fc" id="L136">  }</span>
+
+  private void renderLine(DrawRequest request) {
+<span class="fc" id="L139">    Gdx.gl.glLineWidth(request.lineWidth);</span>
+<span class="fc" id="L140">    shapeRenderer.setColor(request.color);</span>
+<span class="fc" id="L141">    shapeRenderer.line(request.pos, request.end);</span>
+<span class="fc" id="L142">  }</span>
+
+  private void renderRect(DrawRequest request) {
+<span class="fc" id="L145">    Gdx.gl.glLineWidth(request.lineWidth);</span>
+<span class="fc" id="L146">    shapeRenderer.setColor(request.color);</span>
+<span class="fc" id="L147">    shapeRenderer.rect(request.pos.x, request.pos.y, request.end.x, request.end.y);</span>
+<span class="fc" id="L148">  }</span>
+
+  /**
+   * Use a custom resizing array instead of an array list to avoid allocating/deallocating requests
+   * every render. Does not shrink, so a large amount of debug drawing on a single frame can
+   * permanently use memory.
+   */
+  private void ensureCapacity() {
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">    if (requestCount &gt;= drawRequests.length - 1) {</span>
+<span class="nc" id="L157">      DrawRequest[] newArr = new DrawRequest[(int) (requestCount * 1.4f)];</span>
+<span class="nc" id="L158">      System.arraycopy(drawRequests, 0, newArr, 0, drawRequests.length);</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">      for (int i = drawRequests.length; i &lt; newArr.length; i++) {</span>
+<span class="nc" id="L160">        newArr[i] = new DrawRequest();</span>
+      }
+<span class="nc" id="L162">      drawRequests = newArr;</span>
+    }
+<span class="fc" id="L164">  }</span>
+
+  /**
+   * Stores a draw request. One class stores the potential options for all shapes, to prevent
+   * allocating/deallocating new instances every render.
+   */
+<span class="fc" id="L170">  static class DrawRequest {</span>
+    public DrawRequestType drawRequestType;
+    public Vector2 pos;
+    public Color color;
+    public float lineWidth;
+
+    public Vector2 end;
+  }
+
+<span class="fc" id="L179">  enum DrawRequestType {</span>
+<span class="fc" id="L180">    LINE,</span>
+<span class="fc" id="L181">    RECT</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

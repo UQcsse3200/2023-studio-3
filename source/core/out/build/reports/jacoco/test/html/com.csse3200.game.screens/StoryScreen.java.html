@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StoryScreen.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.screens</a> &gt; <span class="el_source">StoryScreen.java</span></div><h1>StoryScreen.java</h1><pre class="source lang-java linenums">package com.csse3200.game.screens;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ScreenAdapter;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Screen that displays a story with images and text.
+ */
+public class StoryScreen extends ScreenAdapter {
+    private final GdxGame game;
+    private SpriteBatch batch;
+    private Texture[] images;
+    private String[] texts;
+    private int currentIndex;
+    private float imageDuration;
+    private float elapsedTime;
+    private BitmapFont font;
+    private BitmapFont boldFont;
+    private Stage stage;
+    private TextButton continueButton;
+    private TextButton skipButton; // Universal Skip button
+    private ShapeRenderer shapeRenderer;
+    // Image file paths
+<span class="nc" id="L42">    private static final String[] IMAGE_PATHS = {</span>
+            &quot;images/ui/game screen/1 earth before.png&quot;,
+            &quot;images/ui/game screen/1.1 earth before.png&quot;,
+            &quot;images/ui/game screen/2.0 earth dying.png&quot;,
+            &quot;images/ui/game screen/2.1 earth dying.png&quot;,
+            &quot;images/ui/game screen/3. meeting.png&quot;,
+            &quot;images/ui/game screen/3.1 meeting turret.png&quot;,
+            &quot;images/ui/game screen/4.0 spaceship built.png&quot;,
+            &quot;images/ui/game screen/4.1 spaceship leaving.png&quot;,
+            &quot;images/ui/game screen/5.1 arrival.png&quot;,
+            &quot;images/ui/game screen/5.1 arrival.png&quot;,
+            &quot;images/ui/game screen/6.0 survey.png&quot;,
+            &quot;images/ui/game screen/6.1 survey.png&quot;,
+            // Add more image paths as needed
+    };
+    // Texts to display
+<span class="nc" id="L58">    private static final String[] TEXTS = {</span>
+            &quot;Over a century ago, a tranquil world basked in an era of serenity. &quot;,
+            &quot;Nature's embrace cradled humanity, and life flourished abundantly. &quot;,
+            &quot;However, this harmony soon succumbed to the relentless grip of human greed. &quot;,
+            &quot;As desires grew insatiable, the delicate balance fractured, and the world's vitality waned&quot;,
+            &quot;as everything was about to be lost a group of people cam together to save humanity and an idea was born&quot;,
+            &quot;to set out towards the stars and conquer planets&quot;,
+            &quot;humanity pooled its resources together and made giant ships called ARKs that would carry us onto the stars&quot;,
+            &quot;we set out with our iron will and firm resolve to not fade away &quot;,
+            &quot;we arrived at planets and built outposts that would help us survive this harsh environment &quot;,
+            &quot;we terraformed and procured resources that would help the future generations survive &quot;,
+            &quot;the brightest and best began researching anf evaluating the newly found planets&quot;,
+            &quot;all seems perfect until we picked up on a looming threat that maybe we aren't alone......&quot;,
+            // Add more text as needed
+    };
+<span class="nc" id="L73">    private String[] bgm = {</span>
+            &quot;sounds/background/pre_game/Sci-Fi8Loop_story.ogg&quot;
+    };
+    private Music music;
+    /**
+     * Creates a new StoryScreen.
+     *
+     * @param game The game instance
+     */
+<span class="nc" id="L82">    public StoryScreen(GdxGame game) {</span>
+<span class="nc" id="L83">        this.game = game;</span>
+<span class="nc" id="L84">        this.images = new Texture[IMAGE_PATHS.length];</span>
+<span class="nc" id="L85">        this.texts = TEXTS;</span>
+<span class="nc" id="L86">        this.currentIndex = 0;</span>
+<span class="nc" id="L87">        this.imageDuration = 2.0f; // Time (in seconds) per image</span>
+<span class="nc" id="L88">        this.elapsedTime = 0f;</span>
+
+<span class="nc bnc" id="L90" title="All 2 branches missed.">        for (int i = 0; i &lt; IMAGE_PATHS.length; i++) {</span>
+<span class="nc" id="L91">            images[i] = new Texture(IMAGE_PATHS[i]);</span>
+        }
+<span class="nc" id="L93">        ServiceLocator.registerResourceService(new ResourceService());</span>
+<span class="nc" id="L94">        ServiceLocator.getResourceService().loadMusic(bgm);</span>
+<span class="nc" id="L95">        ServiceLocator.getResourceService().loadAll();</span>
+<span class="nc" id="L96">        music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);</span>
+<span class="nc" id="L97">    }</span>
+
+    @Override
+    public void show() {
+        // Initialize assets
+<span class="nc" id="L102">        batch = new SpriteBatch();</span>
+<span class="nc" id="L103">        font = new BitmapFont();</span>
+<span class="nc" id="L104">        boldFont = new BitmapFont();</span>
+<span class="nc" id="L105">        boldFont.getData().setScale(1.5f); // Set the font scale for bold text</span>
+<span class="nc" id="L106">        boldFont.setColor(Color.WHITE); // Set the font color to white for bold text</span>
+<span class="nc" id="L107">        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));</span>
+<span class="nc" id="L108">        Gdx.input.setInputProcessor(stage);</span>
+<span class="nc" id="L109">        shapeRenderer = new ShapeRenderer();</span>
+
+<span class="nc" id="L111">        Skin skin = new Skin(Gdx.files.internal(&quot;images/ui/buttons/glass.json&quot;));</span>
+//
+//        // Create UI
+//        Skin skin = new Skin(Gdx.files.internal(&quot;flat-earth/skin/flat-earth-ui.json&quot;));
+<span class="nc" id="L115">        continueButton = new TextButton(&quot;Continue&quot;, skin);</span>
+<span class="nc" id="L116">        continueButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+<span class="nc" id="L119">                next();</span>
+<span class="nc" id="L120">            }</span>
+        });
+
+<span class="nc" id="L123">        skipButton = new TextButton(&quot;Skip&quot;, skin); // Universal Skip button</span>
+<span class="nc" id="L124">        skipButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(com.badlogic.gdx.scenes.scene2d.InputEvent event, float x, float y) {
+<span class="nc" id="L127">                currentIndex = images.length; // Skip to the end</span>
+<span class="nc" id="L128">                next();</span>
+<span class="nc" id="L129">            }</span>
+        });
+        // Add buttons to table
+<span class="nc" id="L132">        Table buttonTable = new Table();</span>
+<span class="nc" id="L133">        buttonTable.add(continueButton).padRight(10); // Add Continue button</span>
+<span class="nc" id="L134">        buttonTable.add(skipButton); // Add Universal Skip button</span>
+
+<span class="nc" id="L136">        Table table = new Table();</span>
+<span class="nc" id="L137">        table.setFillParent(true);</span>
+<span class="nc" id="L138">        table.top().right(); // Align to the top-right corner</span>
+<span class="nc" id="L139">        table.pad(20); // Add padding to the top-right corner</span>
+<span class="nc" id="L140">        table.add(buttonTable).row(); // Add button table and move to the next row</span>
+<span class="nc" id="L141">        stage.addActor(table);</span>
+<span class="nc" id="L142">        music.setVolume(0.4f);</span>
+<span class="nc" id="L143">        music.setLooping(true);</span>
+<span class="nc" id="L144">        music.play();</span>
+<span class="nc" id="L145">    }</span>
+
+    @Override
+    public void render(float delta) {
+        // Clear the screen outside the loop
+<span class="nc" id="L150">        Gdx.gl.glClearColor(0, 0, 0, 1F);</span>
+<span class="nc" id="L151">        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);</span>
+
+<span class="nc" id="L153">        elapsedTime += delta;</span>
+
+<span class="nc" id="L155">        batch.begin();</span>
+
+<span class="nc bnc" id="L157" title="All 2 branches missed.">        if (currentIndex &lt; images.length) {</span>
+            // Display the current image
+<span class="nc" id="L159">            batch.draw(images[currentIndex], 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());</span>
+
+            // Display text if enough time has passed
+<span class="nc bnc" id="L162" title="All 2 branches missed.">            if (elapsedTime &gt;= imageDuration) {</span>
+<span class="nc" id="L163">                float textX = 100;</span>
+<span class="nc" id="L164">                float textY = 100;</span>
+<span class="nc" id="L165">                float padding = 10; // Padding around the text</span>
+
+                // Calculate the text bounds for box size
+<span class="nc" id="L168">                GlyphLayout glyphLayout = new GlyphLayout(boldFont, texts[currentIndex]);</span>
+<span class="nc" id="L169">                float boxWidth = glyphLayout.width + 2 * padding;</span>
+<span class="nc" id="L170">                float boxHeight = glyphLayout.height + 2 * padding;</span>
+
+                // Draw a black background box
+<span class="nc" id="L173">                shapeRenderer.begin(ShapeType.Filled);</span>
+<span class="nc" id="L174">                shapeRenderer.setColor(Color.BLACK);</span>
+<span class="nc" id="L175">                shapeRenderer.rect(textX - padding, textY - padding, boxWidth, boxHeight);</span>
+<span class="nc" id="L176">                shapeRenderer.end();</span>
+
+                // Draw the text in white
+<span class="nc" id="L179">                batch.setShader(null); // Reset the shader</span>
+<span class="nc" id="L180">                boldFont.setColor(Color.WHITE);</span>
+<span class="nc" id="L181">                boldFont.draw(batch, texts[currentIndex], textX, textY + glyphLayout.height); // Adjust text position</span>
+            }
+        }
+
+<span class="nc" id="L185">        batch.end();</span>
+
+        // Draw UI
+<span class="nc" id="L188">        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));</span>
+<span class="nc" id="L189">        stage.draw();</span>
+<span class="nc" id="L190">    }</span>
+    /**
+     * Advances to next image/text.
+     */
+    private void next() {
+<span class="nc" id="L195">        currentIndex++;</span>
+<span class="nc bnc" id="L196" title="All 2 branches missed.">        if (currentIndex &lt; images.length) {</span>
+<span class="nc" id="L197">            elapsedTime = 0;</span>
+        } else {
+<span class="nc" id="L199">            game.setScreen(GdxGame.ScreenType.LEVEL_SELECT);</span>
+        }
+<span class="nc" id="L201">    }</span>
+
+    @Override
+    public void resize(int width, int height) {
+<span class="nc" id="L205">        stage.getViewport().update(width, height, true);</span>
+<span class="nc" id="L206">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L210">        batch.dispose();</span>
+<span class="nc bnc" id="L211" title="All 2 branches missed.">        for (Texture texture : images) {</span>
+<span class="nc" id="L212">            texture.dispose();</span>
+        }
+<span class="nc" id="L214">        font.dispose();</span>
+<span class="nc" id="L215">        boldFont.dispose();</span>
+<span class="nc" id="L216">        stage.dispose();</span>
+<span class="nc" id="L217">        shapeRenderer.dispose();</span>
+<span class="nc" id="L218">        music.dispose();</span>
+<span class="nc" id="L219">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>WaveTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.waves</a> &gt; <span class="el_source">WaveTask.java</span></div><h1>WaveTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.waves;
+
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.ai.tasks.Task;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ResourceService;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+public class WaveTask extends DefaultTask implements PriorityTask {
+<span class="fc" id="L17">  private static final Logger logger = LoggerFactory.getLogger(WaveTask.class);</span>
+  private LevelWaves level;
+  private WaveClass currentWave;
+  private final GameTime globalTime;
+<span class="fc" id="L21">  private long nextWaveAt = 0;</span>
+<span class="fc" id="L22">  private int currentWaveIndex = 0;</span>
+  private boolean waveInProgress;
+<span class="fc" id="L24">  private float startTime = 0;</span>
+<span class="fc" id="L25">  private float endTime = 0;</span>
+<span class="fc" id="L26">  private final float INITIAL_WAIT_INTERVAL = 10;</span>
+<span class="fc" id="L27">  private final int SPAWNING_INTERVAL = 10;</span>
+
+<span class="fc" id="L29">  private static final String[] waveSounds = {</span>
+          &quot;sounds/waves/wave-start/Wave_Start_Alarm.ogg&quot;,
+          &quot;sounds/waves/wave-end/Wave_Over_01.ogg&quot;
+  };
+
+  private final Sound waveStart;
+  private final Sound waveEnd;
+
+  /**
+   * Constructor for the WaveTask
+   */
+<span class="fc" id="L40">  public WaveTask() {</span>
+<span class="fc" id="L41">    this.globalTime = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L42">    this.waveInProgress = false;</span>
+<span class="fc" id="L43">    loadSounds();</span>
+<span class="fc" id="L44">    this.waveStart = ServiceLocator.getResourceService().getAsset(waveSounds[0], Sound.class);</span>
+<span class="fc" id="L45">    this.waveEnd = ServiceLocator.getResourceService().getAsset(waveSounds[1], Sound.class);</span>
+<span class="fc" id="L46">  }</span>
+
+  /**
+   * Load the sounds to be played when a wave starts or ends
+   */
+  public void loadSounds() {
+<span class="fc" id="L52">    ResourceService resourceService = ServiceLocator.getResourceService();</span>
+<span class="fc" id="L53">    resourceService.loadSounds(waveSounds);</span>
+<span class="fc" id="L54">  }</span>
+
+    /**
+     * Get the sounds to be played when a wave starts or ends
+     * @return String array of sounds
+     */
+  public String[] getSounds() {
+<span class="nc" id="L61">    return waveSounds;</span>
+  }
+
+  /**
+   * Gets the priority of the current task
+   * @return priority of the WaveTask
+   */
+  @Override
+  public int getPriority() {
+<span class="nc" id="L70">    return 10; // High priority task</span>
+  }
+
+  /**
+   * Starts the WaveTask and initialises all relevant attributes.
+   * Sets the current count of enemies to be the size of the current wave.
+   */
+  @Override
+  public void start() {
+<span class="nc" id="L79">    super.start();</span>
+<span class="nc" id="L80">    this.owner.getEntity().getEvents().addListener(&quot;waveFinishedSpawning&quot;, () -&gt; waveInProgress = false);</span>
+<span class="nc" id="L81">    this.waveInProgress = true;</span>
+<span class="nc" id="L82">    this.level = (LevelWaves) this.owner.getEntity();</span>
+<span class="nc" id="L83">    this.currentWave = level.getWave(currentWaveIndex);</span>
+<span class="nc" id="L84">    ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());</span>
+//    logger.info(&quot;Wave {} starting with {} enemies&quot;, currentWaveIndex, ServiceLocator.getWaveService().getEnemyCount());
+<span class="nc" id="L86">    this.waveStart.play();</span>
+    // endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000);
+<span class="nc" id="L88">  }</span>
+
+  /**
+   * Checks if the current wave has finished (i.e. number of mobs left is 0) and calls the next wave
+   * to begin. If there are still mobs remaining, continue the wave.
+   */
+  @Override
+  public void update() {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">    if (ServiceLocator.getWaveService().getEnemyCount() == 0) {</span>
+//      currentWaveIndex++;
+
+<span class="nc" id="L99">      long currentTime = ServiceLocator.getTimeSource().getTime();</span>
+      // Setting the timestamp for when the next mobs will spawn.
+      // Currently, the delay of mobs spawning after wave start
+<span class="nc" id="L102">      int spawnDelay = ServiceLocator.getWaveService().getSpawnDelay();</span>
+<span class="nc" id="L103">      ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));</span>
+
+      // Check if level has been completed - no more waves remaining
+<span class="nc bnc" id="L106" title="All 2 branches missed.">      if (currentWaveIndex == this.level.getNumWaves()) {</span>
+<span class="nc" id="L107">        logger.info(&quot;No waves remaining, level completed&quot;);</span>
+<span class="nc" id="L108">        ServiceLocator.getWaveService().setLevelCompleted();</span>
+
+      } else {
+        // Spawn the next wave
+//        logger.info(&quot;No enemies remaining, begin next wave&quot;);
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (nextWaveAt == 0) {</span>
+<span class="nc" id="L114">          logger.info(&quot;Next wave in 10 seconds&quot;);</span>
+<span class="nc" id="L115">          nextWaveAt = globalTime.getTime() + 10000;</span>
+<span class="nc" id="L116">          ServiceLocator.getWaveService().setNextWaveTime(nextWaveAt);</span>
+        } else {
+<span class="nc bnc" id="L118" title="All 4 branches missed.">          if (globalTime.getTime() &gt;= nextWaveAt || ServiceLocator.getWaveService().shouldSkip()) {</span>
+<span class="nc" id="L119">            logger.info(&quot;Next wave starting&quot;);</span>
+<span class="nc" id="L120">            ServiceLocator.getWaveService().toggleDelay();</span>
+<span class="nc" id="L121">            currentWaveIndex++;</span>
+<span class="nc" id="L122">            ServiceLocator.getWaveService().setNextWaveTime(0);</span>
+<span class="nc" id="L123">            nextWaveAt = 0;</span>
+<span class="nc" id="L124">            this.waveEnd.play();</span>
+<span class="nc" id="L125">            this.waveInProgress = true;</span>
+<span class="nc" id="L126">            this.level.setWaveIndex(currentWaveIndex);</span>
+            // Set the service wave count to the current wave index.
+<span class="nc" id="L128">            ServiceLocator.getWaveService().setWaveCount(currentWaveIndex);</span>
+<span class="nc" id="L129">            this.currentWave = this.level.getWave(currentWaveIndex);</span>
+<span class="nc" id="L130">            ServiceLocator.getWaveService().setEnemyCount(currentWave.getSize());</span>
+            //endTime = globalTime.getTime() + (SPAWNING_INTERVAL * 1000L); // reset end time
+          }
+        }
+      }
+
+<span class="nc" id="L136">    } else {</span>
+        //logger.info(&quot;{} enemies remaining in wave {}&quot;, ServiceLocator.getWaveService().getEnemyCount(), currentWaveIndex);
+        //logger.info(&quot;WAVE SERVICE NUMBER: Wave Number {}&quot;,ServiceLocator.getWaveService().getWaveCount());
+        //logger.info(&quot;NEXT WAVE AT {}&quot;, ServiceLocator.getWaveService().getNextWaveTime());
+        //logger.info(&quot;TIME IS {}&quot;, ServiceLocator.getTimeSource().getTime());
+<span class="nc bnc" id="L141" title="All 2 branches missed.">      if (waveInProgress) {</span>
+<span class="nc" id="L142">        this.level.spawnWave();</span>
+      }
+    }
+<span class="nc" id="L145">  }</span>
+
+  /**
+   * Checks if the current wave is in progress
+   * @return true if the wave is in progress, false otherwise
+   */
+  public boolean isWaveInProgress() {
+<span class="nc" id="L152">    return waveInProgress;</span>
+    }
+
+    /**
+     * Gets the current wave index
+     * @return current wave index
+     */
+    public int getCurrentWaveIndex() {
+<span class="nc" id="L160">        return currentWaveIndex;</span>
+    }
+  }
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

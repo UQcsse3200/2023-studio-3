@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.factories.TowerFactoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:41" hostname="DESKTOP-F4ACIG8" time="0.755">
+  <properties/>
+  <testcase name="testCreateBaseTowerHasHitboxComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.102"/>
+  <testcase name="weaponTowerHasAnimationComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.086"/>
+  <testcase name="testCreateBaseTowerNotNull()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.082"/>
+  <testcase name="testAttackerCollisionWithWall()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.083"/>
+  <testcase name="testCreateBaseTowerPhysicsComponentStaticBody()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.074"/>
+  <testcase name="testCreateBaseTowerHasColliderComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.078"/>
+  <testcase name="testWeaponTowerCombatStatsComponentAndCostComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.081"/>
+  <testcase name="testCreateBaseTowerHasPhysicsComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.076"/>
+  <testcase name="testWallTowerCombatStatsComponentAndCostComponent()" classname="com.csse3200.game.entities.factories.TowerFactoryTest" time="0.076"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=827}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=834}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=841}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=848}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=856}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=863}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:41 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=870}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:42 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=877}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:42 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class UpgradableStatsComponent to Entity{id=884}. Only one component of a class can be added to an entity, this will be ignored.
+]]></system-err>
+</testsuite>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Crystal.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.currency</a> &gt; <span class="el_source">Crystal.java</span></div><h1>Crystal.java</h1><pre class="source lang-java linenums">package com.csse3200.game.currency;
+
+public class Crystal extends Currency{
+
+    private static final int STARTING_CURRENCY = 100;
+
+    private static final String LOGO_FILE_PATH = &quot;images/economy/crystal.png&quot;; // The file path of the logo
+
+    /**
+     * Constructor for the crystal currency object.
+     * Sets the amount of scrap to the starting amount.
+     */
+    public Crystal() {
+<span class="fc" id="L14">        super(LOGO_FILE_PATH, &quot;Crystal&quot;);</span>
+<span class="fc" id="L15">        this.setAmount(STARTING_CURRENCY);</span>
+<span class="fc" id="L16">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

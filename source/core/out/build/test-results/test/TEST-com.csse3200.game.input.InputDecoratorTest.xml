@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.input.InputDecoratorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:44" hostname="DESKTOP-F4ACIG8" time="0.063">
+  <properties/>
+  <testcase name="shouldCallMouse()" classname="com.csse3200.game.input.InputDecoratorTest" time="0.045"/>
+  <testcase name="shouldCallKeys()" classname="com.csse3200.game.input.InputDecoratorTest" time="0.008"/>
+  <testcase name="shouldcallTouch()" classname="com.csse3200.game.input.InputDecoratorTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

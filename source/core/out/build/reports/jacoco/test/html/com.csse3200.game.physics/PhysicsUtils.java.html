@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhysicsUtils.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.physics</a> &gt; <span class="el_source">PhysicsUtils.java</span></div><h1>PhysicsUtils.java</h1><pre class="source lang-java linenums">package com.csse3200.game.physics;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+
+public class PhysicsUtils {
+
+  // Set the collider to the base of the entity, scaled relative to the entity size.
+  public static void setScaledCollider(Entity entity, float scaleX, float scaleY) {
+<span class="fc" id="L12">    Vector2 boundingBox = entity.getScale().cpy().scl(scaleX, scaleY);</span>
+<span class="fc" id="L13">    entity</span>
+<span class="fc" id="L14">        .getComponent(ColliderComponent.class)</span>
+<span class="fc" id="L15">        .setAsBoxAligned(</span>
+            boundingBox, PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.BOTTOM);
+<span class="fc" id="L17">  }</span>
+
+<span class="nc" id="L19">  private PhysicsUtils() {</span>
+<span class="nc" id="L20">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

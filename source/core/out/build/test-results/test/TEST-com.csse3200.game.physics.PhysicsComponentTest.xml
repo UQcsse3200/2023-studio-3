@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.physics.PhysicsComponentTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:44" hostname="DESKTOP-F4ACIG8" time="0.501">
+  <properties/>
+  <testcase name="shouldMoveEntityToBody()" classname="com.csse3200.game.physics.PhysicsComponentTest" time="0.455"/>
+  <testcase name="shouldBecomeActiveOnCreate()" classname="com.csse3200.game.physics.PhysicsComponentTest" time="0.045"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

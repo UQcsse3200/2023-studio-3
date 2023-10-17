@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TowerFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">TowerFactory.java</span></div><h1>TowerFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.csse3200.game.components.tasks.DroidCombatTask;
+import com.csse3200.game.components.tasks.TNTTowerCombatTask;
+import com.csse3200.game.components.tasks.*;
+import com.csse3200.game.components.tower.*;
+import com.csse3200.game.entities.configs.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.CostComponent;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.PhysicsUtils;
+import com.csse3200.game.physics.components.ColliderComponent;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.physics.components.PhysicsComponent;
+import com.csse3200.game.files.FileLoader;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.rendering.TextureRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.input.UpgradeUIComponent;import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Factory to create a tower entity.
+ *
+ * Predefined tower properties are loaded from a config stored as a json file and should have
+ * the properties stores in 'baseTowerConfigs'.
+ */
+<span class="nc" id="L34">public class TowerFactory {</span>
+    // Define a set to keep track of occupied lanes
+<span class="fc" id="L36">    private static final Set&lt;Integer&gt; occupiedLanes = new HashSet&lt;&gt;();</span>
+
+    private static final int COMBAT_TASK_PRIORITY = 2;
+    private static final int WEAPON_TOWER_MAX_RANGE = 40;
+    private static final int TNT_TOWER_MAX_RANGE = 6;
+    private static final int TNT_TOWER_RANGE = 6;
+    private static final int TNT_KNOCK_BACK_FORCE = 10;
+    private static final String WALL_IMAGE = &quot;images/towers/wall_tower.png&quot;;
+    private static final String RESOURCE_TOWER = &quot;images/towers/mine_tower.png&quot;;
+    private static final String TURRET_ATLAS = &quot;images/towers/turret01.atlas&quot;;
+    private static final String FIRE_TOWER_ATLAS = &quot;images/towers/fire_tower_atlas.atlas&quot;;
+    private static final String STUN_TOWER_ATLAS = &quot;images/towers/stun_tower.atlas&quot;;
+    private static final String FIREWORKS_TOWER_ATLAS = &quot;images/towers/fireworks_tower.atlas&quot;;
+    private static final String PIERCE_TOWER_ATLAS = &quot;images/towers/PierceTower.atlas&quot;;
+    private static final String RICOCHET_TOWER_ATLAS = &quot;images/towers/RicochetTower.atlas&quot;;
+    private static final String TNT_ATLAS = &quot;images/towers/TNTTower.atlas&quot;;
+    private static final String WALL_ATLAS = &quot;images/towers/barrier.atlas&quot;;
+    private static final String DROID_ATLAS = &quot;images/towers/DroidTower.atlas&quot;;
+    private static final float DROID_SPEED = 0.25f;
+    private static final String DEFAULT_ANIM = &quot;default&quot;;
+    private static final String WALK_ANIM = &quot;walk&quot;;
+    private static final String DEATH_ANIM = &quot;death&quot;;
+    private static final String GO_UP = &quot;goUp&quot;;
+    private static final String GO_DOWN = &quot;goDown&quot;;
+    private static final String SHOOT_UP = &quot;attackUp&quot;;
+    private static final String SHOOT_DOWN = &quot;attackDown&quot;;
+    private static final float DEFAULT_SPEED= 0.2f;
+    private static final String DIG_ANIM = &quot;dig&quot;;
+    private static final float DIG_SPEED = 0.2f;
+    private static final String EXPLODE_ANIM = &quot;explode&quot;;
+    private static final float EXPLODE_SPEED = 0.2f;
+    private static final String IDLE_ANIM = &quot;idle&quot;;
+    private static final float IDLE_SPEED = 0.3f;
+    private static final String DEPLOY_ANIM = &quot;deploy&quot;;
+    private static final float DEPLOY_SPEED = 0.2f;
+    private static final String STOW_ANIM = &quot;stow&quot;;
+    private static final float STOW_SPEED = 0.2f;
+    private static final String FIRE_ANIM = &quot;firing&quot;;
+    private static final float FIRE_SPEED = 0.25f;
+    private static final String FIRE_TOWER_IDLE_ANIM = &quot;idle&quot;;
+    private static final float FIRE_TOWER_IDLE_SPEED = 0.3f;
+    private static final String FIRE_TOWER_PREP_ATTACK_ANIM = &quot;prepAttack&quot;;
+    private static final float FIRE_TOWER_PREP_ATTACK_SPEED = 0.2f;
+    private static final String FIRE_TOWER_ATTACK_ANIM = &quot;attack&quot;;
+    private static final float FIRE_TOWER_ATTACK_SPEED = 0.25f;
+    private static final String FIRE_TOWER_DEATH_ANIM = &quot;death&quot;;
+    private static final float FIRE_TOWER_DEATH_SPEED = 0.12f;
+    private static final String STUN_TOWER_IDLE_ANIM = &quot;idle&quot;;
+    private static final String WALL_TOWER_DEATH_ANIM = &quot;Death&quot;;
+    private static final String WALL_TOWER_IDLE_ANIM = &quot;Idle&quot;;
+    private static final float STUN_TOWER_IDLE_SPEED = 0.33f;
+    private static final String STUN_TOWER_ATTACK_ANIM = &quot;attack&quot;;
+    private static final float STUN_TOWER_ATTACK_SPEED = 0.12f;
+    private static final String STUN_TOWER_DEATH_ANIM = &quot;death&quot;;
+    private static final float STUN_TOWER_DEATH_SPEED = 0.12f;
+    private static final String FIREWORKS_TOWER_DEATH_ANIM =&quot;Death&quot;;
+    private static final float FIREWORKS_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final float FIREWORKS_TOWER_ANIM_SPEED = 0.06f;
+    private static final String FIREWORKS_TOWER_IDLE_ANIM =&quot;Idle&quot;;
+    private static final String FIREWORKS_TOWER_ATTACK_ANIM =&quot;Attack&quot;;
+    private static final String PIERCE_TOWER_IDLE_ANIM =&quot;Idle&quot;;
+    private static final String PIERCE_TOWER_ATTACK_ANIM =&quot;Attack&quot;;
+    private static final String PIERCE_TOWER_DEATH_ANIM =&quot;Death&quot;;
+    private static final String RICOCHET_TOWER_IDLE_ANIM =&quot;Idle&quot;;
+    private static final String RICOCHET_TOWER_ATTACK_ANIM =&quot;Attack&quot;;
+    private static final String RICOCHET_TOWER_DEATH_ANIM =&quot;Death&quot;;
+    private static final float RICOCHET_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final String PIERCE_TOWER_ALERT_ANIM =&quot;Warning&quot;;
+    private static final float PIERCE_TOWER_ANIM_ATTACK_SPEED = 0.12f;
+    private static final int INCOME_INTERVAL = 300;
+    private static final int INCOME_TASK_PRIORITY = 1;
+    private static final String ECO_ATLAS = &quot;images/economy/econ-tower.atlas&quot;;
+    private static final String ECO_MOVE = &quot;move1&quot;;
+    private static final String ECO_IDLE = &quot;idle&quot;;
+    private static final float ECO_IDLE_SPEED = 0.3f;
+
+<span class="fc" id="L112">    private static final baseTowerConfigs configs =</span>
+<span class="fc" id="L113">            FileLoader.readClass(baseTowerConfigs.class, &quot;configs/tower.json&quot;);</span>
+    /**
+     * Creates an income tower that generates scrap
+     * @return income
+     */
+    public static Entity createIncomeTower() {
+<span class="nc" id="L119">        Entity income = createBaseTower();</span>
+<span class="nc" id="L120">        IncomeTowerConfig config = configs.income;</span>
+
+        // Create the CurrencyIncomeTask and add it to the AITaskComponent
+<span class="nc" id="L123">        CurrencyTask currencyTask = new CurrencyTask(INCOME_TASK_PRIORITY, (int) config.incomeRate);</span>
+
+<span class="nc" id="L125">        AITaskComponent aiTaskComponent = new AITaskComponent().addTask(currencyTask);</span>
+
+
+        // Contains all the animations that the tower will have
+<span class="nc" id="L129">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="nc" id="L131">                        ServiceLocator.getResourceService()</span>
+<span class="nc" id="L132">                                .getAsset(ECO_ATLAS, TextureAtlas.class));</span>
+<span class="nc" id="L133">        animator.addAnimation(ECO_IDLE, ECO_IDLE_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L134">        animator.addAnimation(ECO_MOVE, ECO_IDLE_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="nc" id="L136">        income</span>
+<span class="nc" id="L137">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L138">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="nc" id="L139">                .addComponent(new CostComponent(config.cost))</span>
+<span class="nc" id="L140">                .addComponent(new IncomeUpgradeComponent(config.incomeRate))</span>
+<span class="nc" id="L141">                .addComponent(aiTaskComponent)</span>
+<span class="nc" id="L142">                .addComponent(animator)</span>
+<span class="nc" id="L143">                .addComponent(new EconTowerAnimationController());</span>
+
+<span class="nc" id="L145">        return income;</span>
+    }
+
+    public static Entity createWallTower() {
+<span class="fc" id="L149">        Entity wall = createBaseTower();</span>
+<span class="fc" id="L150">        WallTowerConfig config = configs.wall;</span>
+<span class="fc" id="L151">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L152">                .addTask(new WallTowerDestructionTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));</span>
+
+<span class="fc" id="L154">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L156">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L157">                                .getAsset(WALL_ATLAS, TextureAtlas.class));</span>
+
+<span class="fc" id="L159">        animator.addAnimation(WALL_TOWER_DEATH_ANIM,0.5f, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L160">        animator.addAnimation(WALL_TOWER_IDLE_ANIM,0.12f, Animation.PlayMode.LOOP);</span>
+
+<span class="fc" id="L162">        wall</span>
+<span class="fc" id="L163">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L164">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L165">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L166">                .addComponent(new CostComponent(config.cost))</span>
+<span class="fc" id="L167">                .addComponent(animator)</span>
+<span class="fc" id="L168">                .addComponent(new WallTowerAnimationController());</span>
+
+<span class="fc" id="L170">        wall.setScale(0.5f,0.5f);</span>
+<span class="fc" id="L171">        PhysicsUtils.setScaledCollider(wall, 0.5f, 0.5f);</span>
+<span class="fc" id="L172">        return wall;</span>
+    }
+
+
+    /**
+     * Create a type of TNT that explodes once it detects a mob within a certain range.
+     * Upon detonation, the TNT will apply both knock-back and health damage to the affected mobs
+     * @return entity
+     */
+    public static Entity createTNTTower() {
+<span class="fc" id="L182">        Entity TNTTower = createBaseTower();</span>
+<span class="fc" id="L183">        TNTTowerConfigs config = configs.TNTTower;</span>
+
+<span class="fc" id="L185">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L186">                .addTask(new TNTTowerCombatTask(COMBAT_TASK_PRIORITY,TNT_TOWER_MAX_RANGE));</span>
+
+<span class="fc" id="L188">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L190">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L191">                                .getAsset(TNT_ATLAS, TextureAtlas.class));</span>
+
+<span class="fc" id="L193">        animator.addAnimation(DIG_ANIM, DIG_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L194">        animator.addAnimation(DEFAULT_ANIM,DEFAULT_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L195">        animator.addAnimation(EXPLODE_ANIM,EXPLODE_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L197">        TNTTower</span>
+<span class="fc" id="L198">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L199">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L200">                .addComponent(new CostComponent(config.cost))</span>
+<span class="fc" id="L201">                .addComponent(new TNTDamageComponent(PhysicsLayer.NPC,TNT_KNOCK_BACK_FORCE,TNT_TOWER_RANGE))</span>
+<span class="fc" id="L202">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L203">                .addComponent(animator)</span>
+<span class="fc" id="L204">                .addComponent(new TNTAnimationController());</span>
+
+<span class="fc" id="L206">        TNTTower.getComponent(AnimationRenderComponent.class).scaleEntity();</span>
+
+<span class="fc" id="L208">        return TNTTower;</span>
+    }
+
+    /**
+     * This robotic unit is programmed to detect mobs within its vicinity and fire projectiles at them.
+     * The droid has the capability to switch its aim from high to low positions, thereby providing a versatile attack strategy.
+     * When it detects a mob, the droid releases a projectile that inflicts both physical damage and a slow-down effect on the target.
+     * @return entity
+     */
+    public static Entity createDroidTower() {
+<span class="fc" id="L218">        Entity DroidTower = createBaseTower();</span>
+<span class="fc" id="L219">        DroidTowerConfig config = configs.DroidTower;</span>
+
+<span class="fc" id="L221">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L222">                .addTask(new DroidCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+<span class="fc" id="L224">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L226">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L227">                                .getAsset(DROID_ATLAS, TextureAtlas.class));</span>
+
+<span class="fc" id="L229">        animator.addAnimation(IDLE_ANIM, DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L230">        animator.addAnimation(SHOOT_UP,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L231">        animator.addAnimation(SHOOT_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L232">        animator.addAnimation(WALK_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L233">        animator.addAnimation(DEATH_ANIM,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L234">        animator.addAnimation(GO_UP,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L235">        animator.addAnimation(GO_DOWN,DROID_SPEED, Animation.PlayMode.NORMAL);</span>
+
+
+
+<span class="fc" id="L239">        DroidTower</span>
+<span class="fc" id="L240">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L241">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L242">                .addComponent(new CostComponent(config.cost))</span>
+<span class="fc" id="L243">                .addComponent(new DroidAnimationController())</span>
+<span class="fc" id="L244">                .addComponent(animator)</span>
+<span class="fc" id="L245">                .addComponent(aiTaskComponent);</span>
+
+<span class="fc" id="L247">        return DroidTower;</span>
+    }
+
+
+    /**
+     * Creates a weaponry tower that shoots at mobs - This will most likely need to be extended
+     * once other types of weapon towers are developed
+     * @return entity
+     */
+    public static Entity createWeaponTower() {
+<span class="fc" id="L257">        Entity weapon = createBaseTower();</span>
+<span class="fc" id="L258">        WeaponTowerConfig config = configs.weapon;</span>
+
+        // AiTaskComponent will run the tower task which carries out detection of targets and trigger events
+<span class="fc" id="L261">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L262">                .addTask(new TowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+        // Contains all the animations that the tower will have
+<span class="fc" id="L265">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L267">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L268">                                .getAsset(TURRET_ATLAS, TextureAtlas.class));</span>
+<span class="fc" id="L269">        animator.addAnimation(IDLE_ANIM, IDLE_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L270">        animator.addAnimation(STOW_ANIM, STOW_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L271">        animator.addAnimation(DEPLOY_ANIM, DEPLOY_SPEED, Animation.PlayMode.REVERSED);</span>
+<span class="fc" id="L272">        animator.addAnimation(FIRE_ANIM, FIRE_SPEED, Animation.PlayMode.LOOP);</span>
+
+<span class="fc" id="L274">        weapon</span>
+<span class="fc" id="L275">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L276">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L277">                .addComponent(new CostComponent(config.cost))</span>
+<span class="fc" id="L278">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L279">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L280">                .addComponent(animator)</span>
+<span class="fc" id="L281">                .addComponent(new TowerAnimationController());</span>
+
+<span class="fc" id="L283">        return weapon;</span>
+
+    }
+
+    /**
+     * Creates the FireTower entity which shoots at mobs traversing in a straight line.
+     * @return FireTower entity with relevant components.
+     */
+    public static Entity createFireTower() {
+<span class="fc" id="L292">        Entity fireTower = createBaseTower();</span>
+<span class="fc" id="L293">        FireTowerConfig config = configs.fireTower;</span>
+
+        //Component that handles triggering events and animations
+<span class="fc" id="L296">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L297">                .addTask(new FireTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+<span class="fc" id="L299">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L301">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L302">                                .getAsset(FIRE_TOWER_ATLAS, TextureAtlas.class));</span>
+<span class="fc" id="L303">        animator.addAnimation(FIRE_TOWER_IDLE_ANIM, FIRE_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L304">        animator.addAnimation(FIRE_TOWER_PREP_ATTACK_ANIM,  FIRE_TOWER_PREP_ATTACK_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="fc" id="L305">        animator.addAnimation(FIRE_TOWER_ATTACK_ANIM, FIRE_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L306">        animator.addAnimation(FIRE_TOWER_DEATH_ANIM, FIRE_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L308">        fireTower</span>
+<span class="fc" id="L309">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L310">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L311">                .addComponent(new CostComponent(config.cost))</span>
+<span class="fc" id="L312">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L313">                .addComponent(animator)</span>
+<span class="fc" id="L314">                .addComponent(new FireTowerAnimationController());</span>
+<span class="fc" id="L315">        fireTower.setScale(1.25f, 1.25f);</span>
+<span class="fc" id="L316">        return fireTower;</span>
+    }
+
+    /**
+     * Creates the StunTower entity which shoots at mobs traversing in a straight line.
+     * @return StunTower entity with relevant components.
+     */
+    public static Entity createStunTower() {
+<span class="fc" id="L324">        Entity stunTower = createBaseTower();</span>
+<span class="fc" id="L325">        StunTowerConfig config = configs.stunTower;</span>
+
+<span class="fc" id="L327">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="fc" id="L328">                .addTask(new StunTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+<span class="fc" id="L330">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="fc" id="L332">                        ServiceLocator.getResourceService()</span>
+<span class="fc" id="L333">                                .getAsset(STUN_TOWER_ATLAS, TextureAtlas.class));</span>
+<span class="fc" id="L334">        animator.addAnimation(STUN_TOWER_IDLE_ANIM, STUN_TOWER_IDLE_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L335">        animator.addAnimation(STUN_TOWER_ATTACK_ANIM, STUN_TOWER_ATTACK_SPEED+ 0.25f, Animation.PlayMode.LOOP);</span>
+<span class="fc" id="L336">        animator.addAnimation(STUN_TOWER_DEATH_ANIM, STUN_TOWER_DEATH_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="fc" id="L338">        stunTower</span>
+<span class="fc" id="L339">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="fc" id="L340">                .addComponent(new UpgradableStatsComponent(config.attackRate))</span>
+<span class="fc" id="L341">                .addComponent((new CostComponent(config.cost)))</span>
+<span class="fc" id="L342">                .addComponent(aiTaskComponent)</span>
+<span class="fc" id="L343">                .addComponent(animator)</span>
+<span class="fc" id="L344">                .addComponent(new StunTowerAnimationController());</span>
+
+<span class="fc" id="L346">        stunTower.setScale(1.5f, 1.5f);</span>
+<span class="fc" id="L347">        PhysicsUtils.setScaledCollider(stunTower, 0.5f, 0.5f);</span>
+<span class="fc" id="L348">        return stunTower;</span>
+    }
+
+    /**
+     * Creates the FireworksTower entity which shoots at mobs traversing in a straight line.
+     * @return FireworksTower entity with relevant components.
+     */
+    public static Entity createFireworksTower() {
+<span class="nc" id="L356">        Entity fireworksTower = createBaseTower();</span>
+<span class="nc" id="L357">        FireworksTowerConfig config = configs.fireworksTower;</span>
+
+<span class="nc" id="L359">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="nc" id="L360">                .addTask(new FireworksTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+
+<span class="nc" id="L363">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="nc" id="L365">                        ServiceLocator.getResourceService()</span>
+<span class="nc" id="L366">                                .getAsset(FIREWORKS_TOWER_ATLAS, TextureAtlas.class));</span>
+<span class="nc" id="L367">        animator.addAnimation(FIREWORKS_TOWER_ATTACK_ANIM, FIREWORKS_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L368">        animator.addAnimation(FIREWORKS_TOWER_IDLE_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L369">        animator.addAnimation(FIREWORKS_TOWER_DEATH_ANIM, FIREWORKS_TOWER_ANIM_SPEED, Animation.PlayMode.NORMAL);</span>
+
+<span class="nc" id="L371">        fireworksTower</span>
+<span class="nc" id="L372">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L373">                .addComponent((new CostComponent(config.cost)))</span>
+<span class="nc" id="L374">                .addComponent(aiTaskComponent)</span>
+<span class="nc" id="L375">                .addComponent(animator)</span>
+<span class="nc" id="L376">                .addComponent(new FireworksTowerAnimationController());</span>
+
+<span class="nc" id="L378">        fireworksTower.setScale(1.5f, 1.5f);</span>
+<span class="nc" id="L379">        PhysicsUtils.setScaledCollider(fireworksTower, 0.2f, 0.2f);</span>
+<span class="nc" id="L380">        return fireworksTower;</span>
+    }
+
+    /**
+     * Creates the PierceTower entity which shoots at mobs traversing in a straight line.
+     * @return PierceTower entity with relevant components.
+     */
+    public static Entity createPierceTower() {
+<span class="nc" id="L388">        Entity pierceTower = createBaseTower();</span>
+<span class="nc" id="L389">        PierceTowerConfig config = configs.pierceTower;</span>
+
+<span class="nc" id="L391">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="nc" id="L392">                .addTask(new PierceTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+<span class="nc" id="L394">        AnimationRenderComponent animator =</span>
+                new AnimationRenderComponent(
+<span class="nc" id="L396">                        ServiceLocator.getResourceService()</span>
+<span class="nc" id="L397">                                .getAsset(PIERCE_TOWER_ATLAS, TextureAtlas.class));</span>
+<span class="nc" id="L398">        animator.addAnimation(PIERCE_TOWER_ATTACK_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L399">        animator.addAnimation(PIERCE_TOWER_IDLE_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L400">        animator.addAnimation(PIERCE_TOWER_DEATH_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L401">        animator.addAnimation(PIERCE_TOWER_ALERT_ANIM, PIERCE_TOWER_ANIM_ATTACK_SPEED, Animation.PlayMode.NORMAL);</span>
+
+
+<span class="nc" id="L404">        pierceTower</span>
+<span class="nc" id="L405">                .addComponent(animator)</span>
+<span class="nc" id="L406">                .addComponent(new PierceTowerAnimationController())</span>
+<span class="nc" id="L407">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L408">                .addComponent((new CostComponent(config.cost)))</span>
+<span class="nc" id="L409">                .addComponent(aiTaskComponent);</span>
+
+<span class="nc" id="L411">        pierceTower.setScale(1.5f, 1.5f);</span>
+<span class="nc" id="L412">        PhysicsUtils.setScaledCollider(pierceTower, 0.5f, 0.5f);</span>
+<span class="nc" id="L413">        return pierceTower;</span>
+    }
+
+    /**
+     * Creates the RicochetTower entity which shoots at mobs traversing in a straight line.
+     * @return RicochetTower entity with relevant components.
+     */
+    public static Entity createRicochetTower() {
+<span class="nc" id="L421">        Entity ricochetTower = createBaseTower();</span>
+<span class="nc" id="L422">        RicochetTowerConfig config = configs.ricochetTower;</span>
+
+<span class="nc" id="L424">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="nc" id="L425">                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+<span class="nc" id="L427">        AnimationRenderComponent animator = new AnimationRenderComponent(</span>
+<span class="nc" id="L428">                ServiceLocator.getResourceService().getAsset(RICOCHET_TOWER_ATLAS,TextureAtlas.class));</span>
+<span class="nc" id="L429">        animator.addAnimation(RICOCHET_TOWER_ATTACK_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L430">        animator.addAnimation(RICOCHET_TOWER_DEATH_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.NORMAL);</span>
+<span class="nc" id="L431">        animator.addAnimation(RICOCHET_TOWER_IDLE_ANIM,RICOCHET_TOWER_ANIM_ATTACK_SPEED,Animation.PlayMode.LOOP);</span>
+<span class="nc" id="L432">        ricochetTower</span>
+<span class="nc" id="L433">                .addComponent(animator)</span>
+<span class="nc" id="L434">                .addComponent(new RicochetTowerAnimationController())</span>
+<span class="nc" id="L435">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L436">                .addComponent((new CostComponent(config.cost)))</span>
+<span class="nc" id="L437">                .addComponent(aiTaskComponent);</span>
+                // ADD ANIMATION COMPONENTS
+
+<span class="nc" id="L440">        ricochetTower.setScale(1.5f, 1.5f);</span>
+<span class="nc" id="L441">        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);</span>
+<span class="nc" id="L442">        return ricochetTower;</span>
+    }
+    public static Entity createHealTower() {
+<span class="nc" id="L445">        Entity ricochetTower = createBaseTower();</span>
+<span class="nc" id="L446">        HealTowerConfig config = configs.HealTower;</span>
+
+<span class="nc" id="L448">        AITaskComponent aiTaskComponent = new AITaskComponent()</span>
+<span class="nc" id="L449">                .addTask(new RicochetTowerCombatTask(COMBAT_TASK_PRIORITY, WEAPON_TOWER_MAX_RANGE));</span>
+
+        // ADD AnimationRenderComponent
+
+<span class="nc" id="L453">        ricochetTower</span>
+<span class="nc" id="L454">                .addComponent(new CombatStatsComponent(config.health, config.baseAttack))</span>
+<span class="nc" id="L455">                .addComponent((new CostComponent(config.cost)))</span>
+<span class="nc" id="L456">                .addComponent(aiTaskComponent);</span>
+        // ADD ANIMATION COMPONENTS
+
+<span class="nc" id="L459">        ricochetTower.setScale(1.5f, 1.5f);</span>
+<span class="nc" id="L460">        PhysicsUtils.setScaledCollider(ricochetTower, 0.5f, 0.5f);</span>
+<span class="nc" id="L461">        return ricochetTower;</span>
+    }
+
+    /**
+     * Creates a generic tower entity to be used as a base entity by more specific tower creation methods.
+     * @return entity
+     */
+    public static Entity createBaseTower() {
+        // we're going to add more components later on
+<span class="fc" id="L470">        Entity tower = new Entity()</span>
+<span class="fc" id="L471">                .addComponent(new ColliderComponent())</span>
+<span class="fc" id="L472">                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers</span>
+<span class="fc" id="L473">                .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))</span>
+<span class="fc" id="L474">                .addComponent(new TowerUpgraderComponent());</span>
+
+<span class="fc" id="L476">        tower.setLayer(1); // Set priority to 1, which is 1 below scrap (which is 0)</span>
+
+<span class="fc" id="L478">        return tower;</span>
+    }
+    public static Entity createAndPlaceTower(int lane) {
+<span class="nc bnc" id="L481" title="All 2 branches missed.">        if (isLaneOccupied(lane)) {</span>
+<span class="nc" id="L482">            System.out.println(&quot;Lane &quot; + lane + &quot; is already occupied by a tower&quot;);</span>
+<span class="nc" id="L483">            return null;</span>
+        }
+
+<span class="nc" id="L486">        Entity tower = createBaseTower();</span>
+        // Customize the tower creation here based on the chosen tower type
+
+        // Add the lane to the set of occupied lanes
+<span class="nc" id="L490">        occupiedLanes.add(lane);</span>
+
+<span class="nc" id="L492">        return tower;</span>
+    }
+
+    /**
+     * Checks if a lane is already occupied by a tower.
+     * @param lane The lane to check.
+     * @return True if the lane is occupied, false otherwise.
+     */
+    public static boolean isLaneOccupied(int lane) {
+<span class="nc" id="L501">        return occupiedLanes.contains(lane);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

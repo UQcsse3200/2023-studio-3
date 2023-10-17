@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResourceService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.services</a> &gt; <span class="el_source">ResourceService.java</span></div><h1>ResourceService.java</h1><pre class="source lang-java linenums">package com.csse3200.game.services;
+
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.utils.Disposable;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Service for loading resources, e.g. textures, texture atlases, sounds, music, etc. Add new load
+ * methods when new types of resources are added to the game.
+ */
+public class ResourceService implements Disposable {
+
+
+<span class="fc" id="L20">  private static final Logger logger = LoggerFactory.getLogger(ResourceService.class);</span>
+  private final AssetManager assetManager;
+
+  public ResourceService() {
+<span class="fc" id="L24">    this(new AssetManager());</span>
+<span class="fc" id="L25">  }</span>
+
+  /**
+   * Initialise this ResourceService to use the provided AssetManager.
+   * @param assetManager AssetManager to use in this service.
+   * @requires assetManager != null
+   */
+<span class="fc" id="L32">  public ResourceService(AssetManager assetManager) {</span>
+<span class="fc" id="L33">    this.assetManager = assetManager;</span>
+<span class="fc" id="L34">  }</span>
+
+  /**
+   * Load an asset from a file.
+   * @param filename Asset path
+   * @param type     Class to load into
+   * @param &lt;T&gt;      Type of class to load into
+   * @return Instance of class loaded from path
+   * @see AssetManager#get(String, Class)
+   */
+  public &lt;T&gt; T getAsset(String filename, Class&lt;T&gt; type) {
+<span class="fc" id="L45">    return assetManager.get(filename, type);</span>
+  }
+
+  /**
+   * Check if an asset has been loaded already
+   * @param resourceName path of the asset
+   * @param type Class type of the asset
+   * @param &lt;T&gt; Type of the asset
+   * @return true if asset has been loaded, false otherwise
+   * @see AssetManager#contains(String)
+   */
+  public &lt;T&gt; boolean containsAsset(String resourceName, Class&lt;T&gt; type) {
+<span class="fc" id="L57">    return assetManager.contains(resourceName, type);</span>
+  }
+
+  /**
+   * Returns the loading completion progress as a percentage.
+   *
+   * @return progress
+   */
+  public int getProgress() {
+<span class="nc" id="L66">    return (int) (assetManager.getProgress() * 100);</span>
+  }
+
+  /**
+   * Blocking call to load all assets.
+   *
+   * @see AssetManager#finishLoading()
+   */
+  public void loadAll() {
+<span class="fc" id="L75">    logger.debug(&quot;Loading all assets&quot;);</span>
+    try {
+<span class="fc" id="L77">      assetManager.finishLoading();</span>
+<span class="fc" id="L78">    } catch (Exception e) {</span>
+<span class="fc" id="L79">      logger.error(e.getMessage());</span>
+<span class="fc" id="L80">    }</span>
+<span class="fc" id="L81">  }</span>
+
+  /**
+   * Loads assets for the specified duration in milliseconds.
+   *
+   * @param duration duration to load for
+   * @return finished loading
+   * @see AssetManager#update(int)
+   */
+  public boolean loadForMillis(int duration) {
+<span class="fc" id="L91">    logger.debug(&quot;Loading assets for {} ms&quot;, duration);</span>
+    try {
+<span class="fc" id="L93">      return assetManager.update(duration);</span>
+<span class="fc" id="L94">    } catch (Exception e) {</span>
+<span class="fc" id="L95">      logger.error(e.getMessage());</span>
+    }
+<span class="fc" id="L97">    return assetManager.isFinished();</span>
+  }
+
+  /**
+   * Clears all loaded assets and assets in the preloading queue.
+   *
+   * @see AssetManager#clear()
+   */
+  public void clearAllAssets() {
+<span class="nc" id="L106">    logger.debug(&quot;Clearing all assets&quot;);</span>
+<span class="nc" id="L107">    assetManager.clear();</span>
+<span class="nc" id="L108">  }</span>
+
+  /**
+   * Loads a single asset into the asset manager.
+   *
+   * @param assetName asset name
+   * @param type      asset type
+   * @param &lt;T&gt;       type
+   */
+  private &lt;T&gt; void loadAsset(String assetName, Class&lt;T&gt; type) {
+<span class="fc" id="L118">    logger.debug(&quot;Loading {}: {}&quot;, type.getSimpleName(), assetName);</span>
+    try {
+<span class="fc" id="L120">      assetManager.load(assetName, type);</span>
+<span class="nc" id="L121">    } catch (Exception e) {</span>
+<span class="nc" id="L122">      logger.error(&quot;Could not load {}: {}&quot;, type.getSimpleName(), assetName);</span>
+<span class="fc" id="L123">    }</span>
+<span class="fc" id="L124">  }</span>
+
+  /**
+   * Loads multiple assets into the asset manager.
+   *
+   * @param assetNames list of asset names
+   * @param type       asset type
+   * @param &lt;T&gt;        type
+   */
+  private &lt;T&gt; void loadAssets(String[] assetNames, Class&lt;T&gt; type) {
+<span class="fc bfc" id="L134" title="All 2 branches covered.">    for (String resource : assetNames) {</span>
+<span class="fc" id="L135">      loadAsset(resource, type);</span>
+    }
+<span class="fc" id="L137">  }</span>
+
+  /**
+   * Loads a list of texture assets into the asset manager.
+   *
+   * @param textureNames texture filenames
+   */
+  public void loadTextures(String[] textureNames) {
+<span class="fc" id="L145">    loadAssets(textureNames, Texture.class);</span>
+<span class="fc" id="L146">  }</span>
+
+  /**
+   * Loads a list of texture atlas assets into the asset manager.
+   *
+   * @param textureAtlasNames texture atlas filenames
+   */
+  public void loadTextureAtlases(String[] textureAtlasNames) {
+<span class="fc" id="L154">    loadAssets(textureAtlasNames, TextureAtlas.class);</span>
+<span class="fc" id="L155">  }</span>
+
+  /**
+   * Loads a list of sounds into the asset manager.
+   *
+   * @param soundNames sound filenames
+   */
+  public void loadSounds(String[] soundNames) {
+<span class="fc" id="L163">    loadAssets(soundNames, Sound.class);</span>
+<span class="fc" id="L164">  }</span>
+
+  /**
+   * Loads a list of music assets into the asset manager.
+   *
+   * @param musicNames music filenames
+   */
+  public void loadMusic(String[] musicNames) {
+<span class="fc" id="L172">    loadAssets(musicNames, Music.class);</span>
+<span class="fc" id="L173">  }</span>
+
+  public void unloadAssets(String[] assetNames) {
+<span class="fc bfc" id="L176" title="All 2 branches covered.">    for (String assetName : assetNames) {</span>
+<span class="fc" id="L177">      logger.debug(&quot;Unloading {}&quot;, assetName);</span>
+      try {
+<span class="fc" id="L179">        assetManager.unload(assetName);</span>
+<span class="fc" id="L180">      } catch (Exception e) {</span>
+<span class="fc" id="L181">        logger.error(&quot;Could not unload {}&quot;, assetName);</span>
+<span class="fc" id="L182">      }</span>
+    }
+<span class="fc" id="L184">  }</span>
+
+  @Override
+  public void dispose() {
+<span class="nc" id="L188">    assetManager.clear();</span>
+<span class="nc" id="L189">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

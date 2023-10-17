@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.factories.MobBossFactoryTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:28" hostname="DESKTOP-F4ACIG8" time="3.322">
+  <properties/>
+  <testcase name="testMobBossPhysicsComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.454"/>
+  <testcase name="testMobBossColliderComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.375"/>
+  <testcase name="testMobBossCombatStats()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.363"/>
+  <testcase name="testMobBossTouchAttackComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.331"/>
+  <testcase name="testMobBossAnimationController()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.375"/>
+  <testcase name="testCreateMobBossNotNull()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.339"/>
+  <testcase name="testMobBossHitboxComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.379"/>
+  <testcase name="testMobBossAnimationRenderComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.329"/>
+  <testcase name="testMobBossPhysicsMovementComponent()" classname="com.csse3200.game.entities.factories.MobBossFactoryTest" time="0.359"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:29 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=300}.AITaskComponent to Entity{id=300}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:29 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=306}.AITaskComponent to Entity{id=306}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:29 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=312}.AITaskComponent to Entity{id=312}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:30 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=318}.AITaskComponent to Entity{id=318}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:30 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=324}.AITaskComponent to Entity{id=324}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:31 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=330}.AITaskComponent to Entity{id=330}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:31 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=336}.AITaskComponent to Entity{id=336}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:31 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=342}.AITaskComponent to Entity{id=342}. Only one component of a class can be added to an entity, this will be ignored.
+Oct 10, 2023 12:49:32 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class Entity{id=348}.AITaskComponent to Entity{id=348}. Only one component of a class can be added to an entity, this will be ignored.
+]]></system-err>
+</testsuite>

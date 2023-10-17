@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DropFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.entities.factories</a> &gt; <span class="el_source">DropFactory.java</span></div><h1>DropFactory.java</h1><pre class="source lang-java linenums">package com.csse3200.game.entities.factories;
+
+import com.csse3200.game.components.npc.DropComponent;
+import com.csse3200.game.currency.Crystal;
+import com.csse3200.game.currency.Scrap;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.rendering.TextureRenderComponent;
+
+<span class="nc" id="L9">public class DropFactory {</span>
+
+    /**
+     * Creates a drop entity. This entity will have a texture and a drop component.
+     * @return entity
+     */
+
+    // We can make different drops for different currencies
+    public static Entity createScrapDrop() {
+<span class="fc" id="L18">        Scrap scrap = new Scrap();</span>
+<span class="fc" id="L19">        Entity drop = new Entity()</span>
+<span class="fc" id="L20">            .addComponent(new TextureRenderComponent(scrap.getTexture()))</span>
+<span class="fc" id="L21">            .addComponent(new DropComponent(scrap));</span>
+<span class="fc" id="L22">        drop.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="fc" id="L23">        drop.scaleHeight(0.5f);</span>
+<span class="fc" id="L24">        drop.scaleWidth(0.5f);</span>
+<span class="fc" id="L25">        drop.setLayer(0);</span>
+<span class="fc" id="L26">        return drop;</span>
+    }
+
+    public static Entity createCrystalDrop() {
+<span class="nc" id="L30">        Crystal crystal = new Crystal();</span>
+<span class="nc" id="L31">        Entity drop = new Entity()</span>
+<span class="nc" id="L32">                .addComponent(new TextureRenderComponent(crystal.getTexture()))</span>
+<span class="nc" id="L33">                .addComponent(new DropComponent(crystal));</span>
+<span class="nc" id="L34">        drop.getComponent(TextureRenderComponent.class).scaleEntity();</span>
+<span class="nc" id="L35">        drop.scaleHeight(0.5f);</span>
+<span class="nc" id="L36">        drop.scaleWidth(0.5f);</span>
+<span class="nc" id="L37">        drop.setLayer(0);</span>
+<span class="nc" id="L38">        return drop;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

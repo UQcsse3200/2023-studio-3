@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BombshipMovementTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bombship</a> &gt; <span class="el_source">BombshipMovementTask.java</span></div><h1>BombshipMovementTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bombship;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * Move the ship entity to a given position, finishing when you get close enough. Requires an entity with a
+ * PhysicsMovementComponent.
+ */
+public class BombshipMovementTask extends DefaultTask {
+
+  private final GameTime gameTime;
+  private Vector2 target;
+<span class="nc" id="L17">  private float stopDistance = 0.01f;</span>
+  private long lastTimeMoved;
+  private Vector2 lastPos;
+  private PhysicsMovementComponent movementComponent;
+
+<span class="nc" id="L22">  public BombshipMovementTask(Vector2 target) {</span>
+<span class="nc" id="L23">    this.target = target;</span>
+<span class="nc" id="L24">    this.gameTime = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L25">  }</span>
+
+  public BombshipMovementTask(Vector2 target, float stopDistance) {
+<span class="nc" id="L28">    this(target);</span>
+<span class="nc" id="L29">    this.stopDistance = stopDistance;</span>
+<span class="nc" id="L30">  }</span>
+
+  @Override
+  public void start() {
+<span class="nc" id="L34">    super.start();</span>
+<span class="nc" id="L35">    this.movementComponent = owner.getEntity().getComponent(PhysicsMovementComponent.class);</span>
+<span class="nc" id="L36">    movementComponent.setTarget(target);</span>
+<span class="nc" id="L37">    movementComponent.setMoving(true);</span>
+    //making the ship move
+<span class="nc" id="L39">    owner.getEntity().getEvents().trigger(&quot;start&quot;);</span>
+
+<span class="nc" id="L41">    lastTimeMoved = gameTime.getTime();</span>
+<span class="nc" id="L42">    lastPos = owner.getEntity().getPosition();</span>
+<span class="nc" id="L43">  }</span>
+
+  @Override
+  public void update() {
+<span class="nc bnc" id="L47" title="All 2 branches missed.">    if (isAtTarget()) {</span>
+<span class="nc" id="L48">      movementComponent.setMoving(false);</span>
+<span class="nc" id="L49">      owner.getEntity().getEvents().trigger(&quot;idle&quot;);</span>
+<span class="nc" id="L50">      status = Status.FINISHED;</span>
+    } else {
+<span class="nc" id="L52">      checkIfStuck();</span>
+    }
+<span class="nc" id="L54">  }</span>
+
+  public void setTarget(Vector2 target) {
+<span class="nc" id="L57">    this.target = target;</span>
+<span class="nc" id="L58">    movementComponent.setTarget(target);</span>
+<span class="nc" id="L59">  }</span>
+
+  @Override
+  public void stop() {
+<span class="nc" id="L63">    super.stop();</span>
+<span class="nc" id="L64">    movementComponent.setMoving(false);</span>
+<span class="nc" id="L65">  }</span>
+
+  private boolean isAtTarget() {
+<span class="nc bnc" id="L68" title="All 2 branches missed.">    return owner.getEntity().getPosition().dst(target) &lt;= stopDistance;</span>
+  }
+
+  private void checkIfStuck() {
+<span class="nc bnc" id="L72" title="All 2 branches missed.">    if (didMove()) {</span>
+<span class="nc" id="L73">      lastTimeMoved = gameTime.getTime();</span>
+<span class="nc" id="L74">      lastPos = owner.getEntity().getPosition();</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">    } else if (gameTime.getTimeSince(lastTimeMoved) &gt; 500L) {</span>
+<span class="nc" id="L76">      movementComponent.setMoving(false);</span>
+<span class="nc" id="L77">      status = Status.FAILED;</span>
+    }
+<span class="nc" id="L79">  }</span>
+
+  private boolean didMove() {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">    return owner.getEntity().getPosition().dst2(lastPos) &gt; 0.001f;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.input.InputServiceTest" tests="18" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:44" hostname="DESKTOP-F4ACIG8" time="0.332">
+  <properties/>
+  <testcase name="shouldHandleTouchUp()" classname="com.csse3200.game.input.InputServiceTest" time="0.018"/>
+  <testcase name="shouldHandleKeyDown()" classname="com.csse3200.game.input.InputServiceTest" time="0.017"/>
+  <testcase name="shouldHandlePanStop()" classname="com.csse3200.game.input.InputServiceTest" time="0.018"/>
+  <testcase name="shouldRegisterInputHandler()" classname="com.csse3200.game.input.InputServiceTest" time="0.004"/>
+  <testcase name="shouldHandlePan()" classname="com.csse3200.game.input.InputServiceTest" time="0.015"/>
+  <testcase name="shouldHandleTap()" classname="com.csse3200.game.input.InputServiceTest" time="0.024"/>
+  <testcase name="shouldHandleScrolled()" classname="com.csse3200.game.input.InputServiceTest" time="0.019"/>
+  <testcase name="shouldHandleMouseMoved()" classname="com.csse3200.game.input.InputServiceTest" time="0.014"/>
+  <testcase name="shouldHandleTouchDragged()" classname="com.csse3200.game.input.InputServiceTest" time="0.013"/>
+  <testcase name="shouldHandleLongPress()" classname="com.csse3200.game.input.InputServiceTest" time="0.014"/>
+  <testcase name="shouldHandleTouchDown()" classname="com.csse3200.game.input.InputServiceTest" time="0.016"/>
+  <testcase name="shouldHandleKeyTyped()" classname="com.csse3200.game.input.InputServiceTest" time="0.014"/>
+  <testcase name="shouldHandleZoom()" classname="com.csse3200.game.input.InputServiceTest" time="0.016"/>
+  <testcase name="shouldHandleTouchDownGesture()" classname="com.csse3200.game.input.InputServiceTest" time="0.02"/>
+  <testcase name="shouldUnregisterInputHandler()" classname="com.csse3200.game.input.InputServiceTest" time="0.007"/>
+  <testcase name="shouldHandleFling()" classname="com.csse3200.game.input.InputServiceTest" time="0.026"/>
+  <testcase name="shouldHandleKeyUp()" classname="com.csse3200.game.input.InputServiceTest" time="0.025"/>
+  <testcase name="shouldHandlePinch()" classname="com.csse3200.game.input.InputServiceTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PopupMenuInputComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.popupmenu</a> &gt; <span class="el_source">PopupMenuInputComponent.java</span></div><h1>PopupMenuInputComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.popupmenu;
+
+import com.csse3200.game.input.InputComponent;
+
+/**
+ * Input handler for the player for keyboard and touch (mouse) input.
+ * This input handler only uses keyboard input.
+ */
+public class PopupMenuInputComponent extends InputComponent{
+    /** TO DO:
+     * This component's end goal is to send a deactivation trigger when the
+     * user clicks on anything  other than the menu entity, and reactivate it
+     * if the user clicks on a tower, with the new tower's stats as per its
+     * config file.
+     * Current implementation step:  trigger a generic event whenever
+     * the mouse is clicked, with no checks for the entity clicked on.
+     */
+<span class="fc" id="L18">    public PopupMenuInputComponent() {super(1);}</span>
+    // Note: will need to change constructor's priority when merging with other
+    // branches that add other input components.
+    /**
+     * Triggers &quot;popupEvent&quot; when the mouse is clicked.
+     *
+     * @return whether the input was processed
+     */
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="fc" id="L28">        entity.getEvents().trigger(&quot;popupEvent&quot;);</span>
+<span class="fc" id="L29">        return true;</span>
+    }
+
+    /**
+     * Triggers &quot;popupEvent&quot; when the mouse is clicked.
+     *
+     * @return whether the input was processed
+     */
+    @Override
+    public boolean touchDown(float screenX, float screenY, int pointer, int button) {
+<span class="nc" id="L39">        entity.getEvents().trigger(&quot;popupEvent&quot;);</span>
+<span class="nc" id="L40">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

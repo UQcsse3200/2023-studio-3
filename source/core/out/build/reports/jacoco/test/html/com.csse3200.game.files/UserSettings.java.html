@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserSettings.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.files</a> &gt; <span class="el_source">UserSettings.java</span></div><h1>UserSettings.java</h1><pre class="source lang-java linenums">package com.csse3200.game.files;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics.DisplayMode;
+import com.csse3200.game.files.FileLoader.Location;
+
+import java.io.File;
+
+/**
+ * Reading, Writing, and applying user settings in the game.
+ */
+public class UserSettings {
+  private static final String ROOT_DIR = &quot;CSSE3200Game&quot;;
+  private static final String SETTINGS_FILE = &quot;settings.json&quot;;
+
+  private static final int WINDOW_WIDTH = 1280;
+  private static final int WINDOW_HEIGHT = 800;
+
+  /**
+   * Get the stored user settings
+   * @return Copy of the current settings
+   */
+  public static Settings get() {
+<span class="nc" id="L24">    String path = ROOT_DIR + File.separator + SETTINGS_FILE;</span>
+<span class="nc" id="L25">    Settings fileSettings = FileLoader.readClass(Settings.class, path, Location.EXTERNAL);</span>
+    // Use default values if file doesn't exist
+<span class="nc bnc" id="L27" title="All 2 branches missed.">    return fileSettings != null ? fileSettings : new Settings();</span>
+  }
+
+  /**
+   * Set the stored user settings
+   * @param settings New settings to store
+   * @param applyImmediate true to immediately apply new settings.
+   */
+  public static void set(Settings settings, boolean applyImmediate) {
+<span class="nc" id="L36">    String path = ROOT_DIR + File.separator + SETTINGS_FILE;</span>
+<span class="nc" id="L37">    FileLoader.writeClass(settings, path, Location.EXTERNAL);</span>
+
+<span class="nc bnc" id="L39" title="All 2 branches missed.">    if (applyImmediate) {</span>
+<span class="nc" id="L40">      applySettings(settings);</span>
+    }
+<span class="nc" id="L42">  }</span>
+
+  /**
+   * Apply the given settings without storing them.
+   * @param settings Settings to apply
+   */
+  public static void applySettings(Settings settings) {
+<span class="fc" id="L49">    Gdx.graphics.setForegroundFPS(settings.fps);</span>
+<span class="fc" id="L50">    Gdx.graphics.setVSync(settings.vsync);</span>
+
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">    if (settings.fullscreen) {</span>
+<span class="fc" id="L53">      DisplayMode displayMode = findMatching(settings.displayMode);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">      if (displayMode == null) {</span>
+<span class="fc" id="L55">        displayMode = Gdx.graphics.getDisplayMode();</span>
+      }
+<span class="fc" id="L57">      Gdx.graphics.setFullscreenMode(displayMode);</span>
+<span class="fc" id="L58">    } else {</span>
+<span class="nc" id="L59">      Gdx.graphics.setWindowedMode(WINDOW_WIDTH, WINDOW_HEIGHT);</span>
+    }
+<span class="fc" id="L61">  }</span>
+
+  private static DisplayMode findMatching(DisplaySettings desiredSettings) {
+<span class="fc bfc" id="L64" title="All 2 branches covered.">    if (desiredSettings == null) {</span>
+<span class="fc" id="L65">      return null;</span>
+    }
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    for (DisplayMode displayMode : Gdx.graphics.getDisplayModes()) {</span>
+<span class="pc bpc" id="L68" title="1 of 6 branches missed.">      if (displayMode.refreshRate == desiredSettings.refreshRate</span>
+          &amp;&amp; displayMode.height == desiredSettings.height
+          &amp;&amp; displayMode.width == desiredSettings.width) {
+<span class="fc" id="L71">        return displayMode;</span>
+      }
+    }
+
+<span class="nc" id="L75">    return null;</span>
+  }
+
+  /**
+   * Stores game settings, can be serialised/deserialised.
+   */
+<span class="fc" id="L81">  public static class Settings {</span>
+    /**
+     * FPS cap of the game. Independant of screen FPS.
+     */
+<span class="fc" id="L85">    public int fps = 60;</span>
+<span class="fc" id="L86">    public boolean fullscreen = true;</span>
+<span class="fc" id="L87">    public boolean vsync = true;</span>
+    /**
+     * ui Scale. Currently unused, but can be implemented.
+     */
+<span class="fc" id="L91">    public float uiScale = 1f;</span>
+<span class="fc" id="L92">    public DisplaySettings displayMode = null;</span>
+  }
+
+  /**
+   * Stores chosen display settings. Can be serialised/deserialised.
+   */
+  public static class DisplaySettings {
+    public int width;
+    public int height;
+    public int refreshRate;
+
+<span class="fc" id="L103">    public DisplaySettings() {}</span>
+
+<span class="nc" id="L105">    public DisplaySettings(DisplayMode displayMode) {</span>
+<span class="nc" id="L106">      this.width = displayMode.width;</span>
+<span class="nc" id="L107">      this.height = displayMode.height;</span>
+<span class="nc" id="L108">      this.refreshRate = displayMode.refreshRate;</span>
+<span class="nc" id="L109">    }</span>
+  }
+
+<span class="nc" id="L112">  private UserSettings() {</span>
+<span class="nc" id="L113">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

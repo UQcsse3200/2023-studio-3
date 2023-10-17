@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.services.WaveServiceTest" tests="1" skipped="1" failures="0" errors="0" timestamp="2023-10-10T07:19:49" hostname="DESKTOP-F4ACIG8" time="0.001">
+  <properties/>
+  <testcase name="shouldSetNextWaveTime()" classname="com.csse3200.game.services.WaveServiceTest" time="0.001">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

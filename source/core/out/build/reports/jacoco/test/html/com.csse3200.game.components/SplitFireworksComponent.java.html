@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SplitFireworksComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components</a> &gt; <span class="el_source">SplitFireworksComponent.java</span></div><h1>SplitFireworksComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.BodyUserData;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.HitboxComponent;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * A component that splits the projectile into multiple mini projectiles.
+ * Assumes projectile has a disposesOnHit functionality.
+ */
+public class SplitFireworksComponent extends Component {
+  private short targetLayer;
+  private HitboxComponent hitboxComponent;
+  private int amount;
+<span class="fc" id="L20">  private static int TOTAL_RANGE = 450;</span>
+<span class="fc" id="L21">  private static double SPAWN_OFFSET_X = 1.75;</span>
+
+  /**
+   * Initialises a component that splits the projectile into multiple fireballs
+   * upon collision on a specified target layer.
+   * The spawned projectiles will be spawned just before original projectile
+   * and spread out in multiple direction set by a certain range.
+   * Assumes amount of split projectiles is greater or equal than 2.
+   * 
+   * @param targetLayer Target layer upon collision.
+   * @param amount      Amount of projectiles that is split after collision event.
+   */
+<span class="fc" id="L33">  public SplitFireworksComponent(short targetLayer, int amount) {</span>
+<span class="fc" id="L34">    this.targetLayer = targetLayer;</span>
+<span class="fc" id="L35">    this.amount = amount;</span>
+<span class="fc" id="L36">  }</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L40">    entity.getEvents().addListener(&quot;collisionEnd&quot;, this::onCollisionEnd);</span>
+<span class="fc" id="L41">    hitboxComponent = entity.getComponent(HitboxComponent.class);</span>
+<span class="fc" id="L42">  }</span>
+
+  private void onCollisionEnd(Fixture me, Fixture other) {
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">    if (hitboxComponent.getFixture() != me</span>
+<span class="pc bpc" id="L46" title="2 of 4 branches missed.">        || !PhysicsLayer.contains(targetLayer, other.getFilterData().categoryBits)</span>
+        || amount &lt; 2) // Amount of split projectiles must be &gt;= 2
+<span class="nc" id="L48">      return;</span>
+
+<span class="fc" id="L50">    Entity projectile = ((BodyUserData) me.getBody().getUserData()).entity;</span>
+
+<span class="fc bfc" id="L52" title="All 2 branches covered.">    for (int i = 0; i &lt; amount; i++) {</span>
+<span class="fc" id="L53">      int newDirection = (i * TOTAL_RANGE) / (amount - 1);</span>
+
+      // Boundaries
+<span class="fc" id="L56">      float newXPosition = (float) (projectile.getPosition().x + SPAWN_OFFSET_X);</span>
+<span class="pc bpc" id="L57" title="1 of 4 branches missed.">      if (newXPosition &gt;= 18 || newXPosition &lt;= 1)</span>
+<span class="fc" id="L58">        return;</span>
+
+      // * RIGHT NOW TARGET IS NPC, SUBJECT TO CHANGE
+      // Speed is a bit faster than normal but can change.
+<span class="fc" id="L62">      Entity newProjectile = ProjectileFactory.createFireworks(PhysicsLayer.NPC,</span>
+<span class="fc" id="L63">          new Vector2(100, (float) (projectile.getPosition().y + (newDirection - (double) (TOTAL_RANGE/2)))), new Vector2(3f, 3f));</span>
+
+<span class="fc" id="L65">      newProjectile.setPosition(newXPosition, (float) projectile.getPosition().y);</span>
+
+<span class="fc" id="L67">      newProjectile.setScale(0.5f, 0.5f);</span>
+
+<span class="fc" id="L69">      ServiceLocator.getEntityService().register(newProjectile);</span>
+    }
+<span class="fc" id="L71">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

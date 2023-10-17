@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ScannerTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.scanner</a> &gt; <span class="el_source">ScannerTask.java</span></div><h1>ScannerTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.scanner;
+
+import com.badlogic.gdx.math.Vector2;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.EngineerFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.raycast.RaycastHit;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+/**
+ * ScannerTask implements the behaviour of GapScannerEntities that detect the
+ * conditions to trigger engineer spawning, i.e., No towers, no engineers, mobs within
+ * a certain distance.
+ */
+public class ScannerTask extends DefaultTask implements PriorityTask {
+
+    private static final int SCAN_INTERVAL = 1000;  // how often to scan, in milliseconds
+    private final PhysicsEngine physics;
+    private final GameTime timeSource;
+<span class="nc" id="L24">    private final RaycastHit hit = new RaycastHit();</span>
+    private Vector2 selfPosition;
+    private long endTime;
+
+    // booleans to track presence of towers, engineers and mobs
+<span class="nc" id="L29">    private boolean towers = false;</span>
+<span class="nc" id="L30">    private boolean engineers = false;</span>
+<span class="nc" id="L31">    private boolean mobs = false;</span>
+
+    // track the number of engineers spawned.
+    private static final int maxEngineers = 3;
+<span class="nc" id="L35">    private int engineerCount = 0;</span>
+
+    /**
+     * ScannerTask Constructor
+     */
+<span class="nc" id="L40">    public ScannerTask() {</span>
+<span class="nc" id="L41">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="nc" id="L42">        timeSource = ServiceLocator.getTimeSource();</span>
+<span class="nc" id="L43">    }</span>
+
+    /**
+     * Start method for the ScannerTask
+     */
+    @Override
+    public void start() {
+<span class="nc" id="L50">        super.start();</span>
+<span class="nc" id="L51">        endTime = timeSource.getTime() + (SCAN_INTERVAL);</span>
+<span class="nc" id="L52">        selfPosition = owner.getEntity().getCenterPosition();</span>
+<span class="nc" id="L53">    }</span>
+
+    /**
+     * Update method for the scanner task. Implements the scanning and spawning logic
+     * for populating the game area with engineers.
+     */
+    @Override
+    public void update() {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (timeSource.getTime() &gt;= endTime) {</span>
+            // clear all presence booleans
+<span class="nc" id="L63">            towers = false;</span>
+<span class="nc" id="L64">            engineers = false;</span>
+<span class="nc" id="L65">            mobs = false;</span>
+
+            // carry out scan and behave accordingly
+<span class="nc" id="L68">            scan();</span>
+<span class="nc bnc" id="L69" title="All 6 branches missed.">            if (!towers &amp;&amp; !engineers &amp;&amp; mobs) {</span>
+                // spawn engineers now
+<span class="nc bnc" id="L71" title="All 2 branches missed.">                if (engineerCount &lt; maxEngineers) {</span>
+<span class="nc" id="L72">                    Entity engineer = EngineerFactory.createEngineer();</span>
+
+<span class="nc" id="L74">                    engineer.setPosition(new Vector2((int)(selfPosition.x + 1),(int) selfPosition.y));</span>
+<span class="nc" id="L75">                    ServiceLocator.getEntityService().register(engineer);</span>
+<span class="nc" id="L76">                    engineerCount += 1;</span>
+                }
+            }
+<span class="nc" id="L79">            endTime = timeSource.getTime() + SCAN_INTERVAL;</span>
+        }
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Scanning method that detects the presence of towers/engineers/mobs.
+     * Sets the tracking booleans for each of the entity types
+     */
+    private void scan() {
+
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if (physics.raycast(selfPosition,</span>
+                new Vector2(selfPosition.x + 10, selfPosition.y),
+                PhysicsLayer.TOWER,
+                hit)) {
+<span class="nc" id="L93">            towers = true;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        } else if (physics.raycast(selfPosition,</span>
+                new Vector2(selfPosition.x + 10, selfPosition.y),
+                PhysicsLayer.ENGINEER,
+                hit)) {
+<span class="nc" id="L98">            engineers = true;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        } else if (physics.raycast(selfPosition,</span>
+                new Vector2(selfPosition.x + 10, selfPosition.y),
+                PhysicsLayer.NPC,
+                hit)) {
+<span class="nc" id="L103">            mobs = true;</span>
+        }
+<span class="nc" id="L105">    }</span>
+
+    /**
+     * Return the priority of the task.
+     * @return the default priority of this task (a fixed value - no other tasks to run)
+     */
+    @Override
+    public int getPriority() {
+<span class="nc" id="L113">        return 1;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

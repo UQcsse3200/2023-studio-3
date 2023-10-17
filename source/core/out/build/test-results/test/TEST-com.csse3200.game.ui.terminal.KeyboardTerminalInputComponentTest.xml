@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.ui.terminal.KeyboardTerminalInputComponentTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:49" hostname="DESKTOP-F4ACIG8" time="0.113">
+  <properties/>
+  <testcase name="shouldToggleTerminalOpenClose()" classname="com.csse3200.game.ui.terminal.KeyboardTerminalInputComponentTest" time="0.098"/>
+  <testcase name="shouldUpdateMessageOnKeyTyped()" classname="com.csse3200.game.ui.terminal.KeyboardTerminalInputComponentTest" time="0.009"/>
+  <testcase name="shouldHandleMessageWhenTerminalOpen()" classname="com.csse3200.game.ui.terminal.KeyboardTerminalInputComponentTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

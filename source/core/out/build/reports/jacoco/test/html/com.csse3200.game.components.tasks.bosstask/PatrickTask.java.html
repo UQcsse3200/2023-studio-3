@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PatrickTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bosstask</a> &gt; <span class="el_source">PatrickTask.java</span></div><h1>PatrickTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bosstask;
+
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.ProjectileEffects;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.factories.MobBossFactory;
+import com.csse3200.game.entities.factories.ProjectileFactory;
+import com.csse3200.game.physics.PhysicsEngine;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Patrick boss task that controls the boss' sequence and actions based on a predetermined sequence
+ * and the boss' current hp
+ */
+public class PatrickTask extends DefaultTask implements PriorityTask {
+
+    // Constants
+    private static final int PRIORITY = 3;
+<span class="fc" id="L30">    private static final Vector2 PATRICK_SPEED = new Vector2(1f, 1f);</span>
+    private static final float MAX_RADIUS = 20f;
+    private static final int ATTACK_DAMAGE = 100;
+    private static final float RANGE_MIN_X = 10f;
+    private static final float RANGE_MAX_X = 18f;
+    private static final float RANGE_MIN_Y = 1f;
+    private static final float RANGE_MAX_Y = 6f;
+    private static final int HALF_HEALTH_ATTACKS = 5;
+
+    // Private variables
+<span class="fc" id="L40">    private static final Logger logger = LoggerFactory.getLogger(PatrickTask.class);</span>
+    private Vector2 currentPos;
+    private PhysicsEngine physics;
+    private GameTime gameTime;
+<span class="fc" id="L44">    private PatrickState state = PatrickState.IDLE;</span>
+    private PatrickState prevState;
+    private AnimationRenderComponent animation;
+    private Entity patrick;
+    private int shotsFired;
+    private PatrickTeleportTask teleportTask;
+    private Vector2 initialPos;
+    private Entity meleeTarget;
+
+    // Flags
+<span class="fc" id="L54">    private boolean meleeFlag = false;</span>
+<span class="fc" id="L55">    private boolean rangeFlag = false;</span>
+<span class="fc" id="L56">    private boolean spawnFlag = false;</span>
+<span class="fc" id="L57">    private boolean halfHealthFlag = false;</span>
+<span class="fc" id="L58">    private boolean teleportFlag = false;</span>
+<span class="fc" id="L59">    private boolean startFlag = false;</span>
+<span class="fc" id="L60">    private  enum PatrickState {</span>
+<span class="fc" id="L61">        IDLE, WALK, ATTACK, HURT, DEATH, SPELL, APPEAR</span>
+    }
+
+    /**
+     * Constructor for PatrickTask
+     */
+<span class="fc" id="L67">    public PatrickTask() {</span>
+<span class="fc" id="L68">        physics = ServiceLocator.getPhysicsService().getPhysics();</span>
+<span class="fc" id="L69">        gameTime = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * What is called when the patrick task is assigned
+     */
+    @Override
+    public void start() {
+<span class="nc" id="L77">        super.start();</span>
+<span class="nc" id="L78">        patrick = owner.getEntity();</span>
+<span class="nc" id="L79">        animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation</span>
+<span class="nc" id="L80">        currentPos = owner.getEntity().getPosition(); // get current position</span>
+<span class="nc" id="L81">        patrick.getComponent(PhysicsMovementComponent.class).setSpeed(PATRICK_SPEED); // set speed</span>
+
+        // give game time to load
+<span class="nc" id="L84">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L87">                changeState(PatrickState.APPEAR);</span>
+<span class="nc" id="L88">                patrick.getEvents().trigger(&quot;patrick_appear_sound&quot;);</span>
+<span class="nc" id="L89">                patrick.getEvents().trigger(&quot;patrick_spawn_sound&quot;);</span>
+<span class="nc" id="L90">                startFlag = true;</span>
+<span class="nc" id="L91">                spawnFlag = true;</span>
+<span class="nc" id="L92">            }</span>
+        }, 0.1f);
+<span class="nc" id="L94">    }</span>
+
+    /**
+     * Updates the sequence every frame
+     */
+    @Override
+    public void update() {
+        // give game time to load
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if (!startFlag) {</span>
+<span class="nc" id="L103">            return;</span>
+        }
+
+        // update teleport task while teleporting
+<span class="nc bnc" id="L107" title="All 2 branches missed.">        if (teleportFlag) {</span>
+<span class="nc" id="L108">            teleportTask.update();</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (teleportTask.getStatus().equals(Status.FINISHED)) {</span>
+<span class="nc" id="L110">                teleportFlag = false;</span>
+<span class="nc" id="L111">                changeState(PatrickState.APPEAR);</span>
+            } else {
+<span class="nc" id="L113">                return;</span>
+            }
+        }
+
+        // check if patrick is dead
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        if (patrick.getComponent(CombatStatsComponent.class).getHealth() &lt;= 0) {</span>
+            // play patrick death animation
+<span class="nc" id="L120">            Entity deadPatrick = MobBossFactory.patrickDead();</span>
+<span class="nc" id="L121">            deadPatrick.setPosition(patrick.getPosition().x, patrick.getPosition().y);</span>
+<span class="nc" id="L122">            deadPatrick.setScale(4f, 4f);</span>
+<span class="nc" id="L123">            ServiceLocator.getEntityService().register(deadPatrick);</span>
+<span class="nc" id="L124">            patrick.getEvents().trigger(&quot;patrick_scream_sound&quot;);</span>
+<span class="nc" id="L125">            patrick.setFlagForDelete(true);</span>
+        }
+
+<span class="nc" id="L128">        animate();</span>
+<span class="nc" id="L129">        int health = patrick.getComponent(CombatStatsComponent.class).getHealth();</span>
+
+        // detect half health
+<span class="nc bnc" id="L132" title="All 4 branches missed.">        if (health &lt;= patrick.getComponent(CombatStatsComponent.class).getMaxHealth() / 2 &amp;&amp;</span>
+                !halfHealthFlag) {
+<span class="nc" id="L134">            patrick.getEvents().trigger(&quot;patrick_scream_sound&quot;);</span>
+<span class="nc" id="L135">            halfHealth();</span>
+<span class="nc" id="L136">            halfHealthFlag = true;</span>
+        }
+
+        // handle state switches
+<span class="nc bnc" id="L140" title="All 4 branches missed.">        switch (state) {</span>
+            case APPEAR -&gt; {
+<span class="nc bnc" id="L142" title="All 4 branches missed.">                if (spawnFlag &amp;&amp; animation.isFinished()) {</span>
+<span class="nc" id="L143">                    meleeAttack();</span>
+<span class="nc" id="L144">                    spawnFlag = false;</span>
+<span class="nc bnc" id="L145" title="All 2 branches missed.">                } else if (meleeFlag) {</span>
+<span class="nc" id="L146">                    Timer.schedule(new Timer.Task() {</span>
+                        @Override
+                        public void run() {
+<span class="nc" id="L149">                            patrick.getEvents().trigger(&quot;patrick_hit_sound&quot;);</span>
+<span class="nc" id="L150">                        }</span>
+                    }, 1f);
+<span class="nc" id="L152">                    changeState(PatrickState.ATTACK);</span>
+<span class="nc" id="L153">                    meleeFlag = false;</span>
+<span class="nc bnc" id="L154" title="All 2 branches missed.">                } else if (rangeFlag) {</span>
+                    // shoot 3 projectiles
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                    if (shotsFired &gt; 2) {</span>
+<span class="nc" id="L157">                        rangeFlag = false;</span>
+<span class="nc" id="L158">                        meleeAttack();</span>
+<span class="nc" id="L159">                        shotsFired = 0; // reset shots fired</span>
+                    } else {
+<span class="nc" id="L161">                        changeState(PatrickState.IDLE);</span>
+                    }
+                }
+            }
+            case IDLE -&gt; {
+<span class="nc bnc" id="L166" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L167">                    rangeAttack();</span>
+                }
+            }
+            case ATTACK -&gt; {
+<span class="nc bnc" id="L171" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L172">                    meleeTarget.getComponent(CombatStatsComponent.class).hit(ATTACK_DAMAGE);</span>
+<span class="nc" id="L173">                    teleport(initialPos);</span>
+<span class="nc" id="L174">                    rangeFlag = true;</span>
+                }
+            }
+        }
+<span class="nc" id="L178">    }</span>
+
+    /**
+     * Changes the state of patrick
+     * @param state state to be changed to
+     */
+    private void changeState(PatrickState state) {
+<span class="nc" id="L185">        prevState = this.state;</span>
+<span class="nc" id="L186">        this.state = state;</span>
+<span class="nc" id="L187">    }</span>
+
+    /**
+     * Changes the animation of the demon if a state change occurs
+     */
+    private void animate() {
+        // Check if same animation is being called
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (prevState.equals(state)) {</span>
+<span class="nc" id="L195">            return; // skip rest of function</span>
+        }
+
+<span class="nc bnc" id="L198" title="All 7 branches missed.">        switch (state) {</span>
+<span class="nc" id="L199">            case IDLE -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_idle&quot;);</span>
+<span class="nc" id="L200">            case WALK -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_walk&quot;);</span>
+<span class="nc" id="L201">            case HURT -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_hurt&quot;);</span>
+<span class="nc" id="L202">            case SPELL -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_spell&quot;);</span>
+<span class="nc" id="L203">            case APPEAR -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_death&quot;);</span>
+<span class="nc" id="L204">            case ATTACK -&gt; owner.getEntity().getEvents().trigger(&quot;patrick_attack&quot;);</span>
+<span class="nc" id="L205">            default -&gt; logger.debug(&quot;Patrick animation {state} not found&quot;);</span>
+        }
+<span class="nc" id="L207">        prevState = state;</span>
+<span class="nc" id="L208">    }</span>
+
+    /**
+     * @return priority of this task
+     */
+    @Override
+    public int getPriority() {
+<span class="nc" id="L215">        return PRIORITY;</span>
+    }
+
+    private ProjectileEffects getEffect() {
+<span class="nc" id="L219">        int randomNumber = MathUtils.random(0, 3);</span>
+<span class="nc bnc" id="L220" title="All 4 branches missed.">        switch (randomNumber) {</span>
+            case 1 -&gt; {
+<span class="nc" id="L222">                return ProjectileEffects.BURN;</span>
+            }
+            case 2 -&gt; {
+<span class="nc" id="L225">                return ProjectileEffects.SLOW;</span>
+            }
+            case 3 -&gt; {
+<span class="nc" id="L228">                return ProjectileEffects.STUN;</span>
+            }
+            default -&gt; {
+<span class="nc" id="L231">                return ProjectileEffects.FIREBALL;</span>
+            }
+        }
+    }
+
+    /**
+     * Teleports patrick to the position given
+     * @param pos position for patrick to teleport to
+     */
+    private void teleport(Vector2 pos) {
+<span class="nc" id="L241">        teleportTask = new PatrickTeleportTask(patrick, pos);</span>
+<span class="nc" id="L242">        teleportTask.create(owner);</span>
+<span class="nc" id="L243">        teleportTask.start();</span>
+<span class="nc" id="L244">        teleportFlag = true;</span>
+<span class="nc" id="L245">    }</span>
+
+    /**
+     * Patrick teleports to the closest human entity and attacks it
+     */
+    private void meleeAttack() {
+<span class="nc" id="L251">        initialPos = patrick.getPosition();</span>
+<span class="nc" id="L252">        meleeTarget = ServiceLocator.getEntityService().getClosestEntityOfLayer(</span>
+                patrick, PhysicsLayer.HUMANS);
+        // check if melee target exists
+<span class="nc bnc" id="L255" title="All 2 branches missed.">        if (meleeTarget == null) {</span>
+<span class="nc" id="L256">            return;</span>
+        }
+<span class="nc" id="L258">        teleport(meleeTarget.getPosition());</span>
+<span class="nc" id="L259">        meleeFlag = true;</span>
+<span class="nc" id="L260">    }</span>
+
+    /**
+     * spawns a random effect projectile and increments the shots fired counter
+     * @param destination destination for projectile to travel to
+     */
+    private void spawnRandProjectile(Vector2 destination, boolean aoe) {
+        // spawn random projectile
+<span class="nc" id="L268">        Entity projectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.HUMANS,</span>
+                destination, new Vector2(2, 2),
+<span class="nc" id="L270">                getEffect(), aoe);</span>
+<span class="nc" id="L271">        projectile.setPosition(patrick.getPosition().x, patrick.getPosition().y);</span>
+<span class="nc" id="L272">        projectile.setScale(-1f, 1f);</span>
+<span class="nc" id="L273">        ServiceLocator.getEntityService().register(projectile);</span>
+<span class="nc" id="L274">    }</span>
+
+    /**
+     * teleports to a random location within given range
+     */
+    private void randomTeleport() {
+        // teleport to random position
+<span class="nc" id="L281">        float randomX = MathUtils.random(RANGE_MIN_X, RANGE_MAX_X);</span>
+<span class="nc" id="L282">        float randomY = MathUtils.random(RANGE_MIN_Y, RANGE_MAX_Y);</span>
+<span class="nc" id="L283">        teleport(new Vector2(randomX, randomY));</span>
+<span class="nc" id="L284">    }</span>
+
+    /**
+     * performs a random teleport and a range attack
+     */
+    private void rangeAttack() {
+<span class="nc" id="L290">        randomTeleport();</span>
+<span class="nc" id="L291">        spawnRandProjectile(new Vector2(0f, patrick.getPosition().y), false);</span>
+<span class="nc" id="L292">        shotsFired++;</span>
+<span class="nc" id="L293">    }</span>
+
+    /**
+     * when patrick is at half health, he spawns a bunch of random aoe effect projectiles
+     */
+    private void halfHealth() {
+<span class="nc" id="L299">        float startAngle = (float) Math.toRadians(135);</span>
+<span class="nc" id="L300">        float endAngle = (float) Math.toRadians(225);</span>
+<span class="nc" id="L301">        float angleIncrement = (endAngle - startAngle) / (HALF_HEALTH_ATTACKS - 1);</span>
+
+<span class="nc bnc" id="L303" title="All 2 branches missed.">        for (int i = 0; i &lt; HALF_HEALTH_ATTACKS; i++) {</span>
+
+            // calculate unit vectors for projectiles
+<span class="nc" id="L306">            float currentAngle = startAngle + i * angleIncrement;</span>
+<span class="nc" id="L307">            float x = MathUtils.cos(currentAngle) * 20;</span>
+<span class="nc" id="L308">            float y = MathUtils.sin(currentAngle) * 20;</span>
+<span class="nc" id="L309">            Vector2 destination = new Vector2(x, y);</span>
+<span class="nc" id="L310">            spawnRandProjectile(destination, true);</span>
+        }
+<span class="nc bnc" id="L312" title="All 2 branches missed.">        if (shotsFired == HALF_HEALTH_ATTACKS) {</span>
+<span class="nc" id="L313">            meleeFlag = true;</span>
+        }
+<span class="nc" id="L315">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.components.tasks.MovementTaskTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:25" hostname="DESKTOP-F4ACIG8" time="0.024">
+  <properties/>
+  <testcase name="shouldMoveOnStart()" classname="com.csse3200.game.components.tasks.MovementTaskTest" time="0.011"/>
+  <testcase name="shouldStopWhenClose()" classname="com.csse3200.game.components.tasks.MovementTaskTest" time="0.008"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

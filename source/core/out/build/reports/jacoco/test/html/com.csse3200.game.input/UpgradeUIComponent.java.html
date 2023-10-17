@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpgradeUIComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.input</a> &gt; <span class="el_source">UpgradeUIComponent.java</span></div><h1>UpgradeUIComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.input;
+
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Scaling;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.areas.ForestGameArea;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.TowerCombatTask;
+import com.csse3200.game.components.tower.*;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+public class UpgradeUIComponent extends InputComponent {
+<span class="nc" id="L37">    private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);</span>
+    private final EntityService entityService;
+    private final Camera camera;
+    private final Stage stage;
+
+    private int value;
+
+    // Create a map to store upgrade tables for each turret entity
+<span class="nc" id="L45">    private Map&lt;Entity, Table&gt; upgradeTables = new HashMap&lt;&gt;();</span>
+
+    /**
+     * Constructor for the UpgradeUIComponent
+     * @param camera the camera to be used, this is the camera that the game is rendered with
+     */
+<span class="nc" id="L51">    public UpgradeUIComponent(Camera camera, Stage stage) {</span>
+<span class="nc" id="L52">        this.value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc" id="L53">        this.entityService = ServiceLocator.getEntityService();</span>
+<span class="nc" id="L54">        this.camera = camera;</span>
+<span class="nc" id="L55">        this.stage = stage;</span>
+<span class="nc" id="L56">    }</span>
+
+    /**
+     * Getter for the camera
+     * @return the camera
+     */
+    public Camera getCamera() {
+<span class="nc" id="L63">        return camera;</span>
+    }
+
+    /**
+     * Getter for the stage
+     * @return the stage
+     */
+    public Stage getStage() {
+<span class="nc" id="L71">        return stage;</span>
+    }
+
+    /**
+     * Method to handle the touch down event
+     * @param screenX the x coordinate of the touch
+     * @param screenY the y coordinate of the touch
+     * @param pointer the pointer
+     * @param button the button
+     */
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+<span class="nc" id="L83">        Vector3 worldCoordinates = new Vector3((float) screenX, (float) screenY, 0);</span>
+<span class="nc" id="L84">        getCamera().unproject(worldCoordinates);</span>
+<span class="nc" id="L85">        Vector2 cursorPosition = new Vector2(worldCoordinates.x, worldCoordinates.y);</span>
+<span class="nc" id="L86">        Entity clickedEntity = entityService.getEntityAtPosition(cursorPosition.x, cursorPosition.y);</span>
+
+        //temp fix to prevent upgrading of new towers
+<span class="nc bnc" id="L89" title="All 4 branches missed.">        if (clickedEntity!= null &amp;&amp; (clickedEntity.getComponent(RicochetTowerAnimationController.class) != null ||</span>
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                clickedEntity.getComponent(PierceTowerAnimationController.class) != null ||</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">                clickedEntity.getComponent(FireworksTowerAnimationController.class) != null)) {</span>
+<span class="nc" id="L92">            return false;</span>
+        }
+        //
+
+        // If the clicked position contains a turret, and the turret is upgradable and not a TNT tower
+<span class="nc bnc" id="L97" title="All 4 branches missed.">        if (clickedEntity != null &amp;&amp; clickedEntity.getComponent(TowerUpgraderComponent.class) != null</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">                &amp;&amp; clickedEntity.getComponent(TNTDamageComponent.class) == null) {</span>
+            // TNT TowerUpgraderComponent can be removed later, but possibly useful for future sprint.
+           // Clear all existing upgrade tables
+<span class="nc" id="L101">            logger.info(&quot;clickedEntity: &quot; + clickedEntity);</span>
+
+<span class="nc" id="L103">            clearUpgradeTables();</span>
+            // Check if there is an existing upgrade table for this turret entity
+<span class="nc" id="L105">            Table existingUpgradeTable = upgradeTables.get(clickedEntity);</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (existingUpgradeTable != null) {</span>
+                // If an upgrade table already exists, show it
+<span class="nc" id="L109">                stage.addActor(existingUpgradeTable);</span>
+            } else {
+                // If no upgrade table exists, create and store a new one
+<span class="nc" id="L112">                Table newUpgradeTable = createUpgradeTable(clickedEntity);</span>
+<span class="nc" id="L113">                Vector2 UICoordinates = stage.screenToStageCoordinates(new Vector2(screenX, screenY));</span>
+<span class="nc" id="L114">                newUpgradeTable.setPosition(UICoordinates.x, UICoordinates.y);</span>
+<span class="nc" id="L115">                stage.addActor(newUpgradeTable);</span>
+
+                // Store the new upgrade table in the map
+<span class="nc" id="L118">                upgradeTables.put(clickedEntity, newUpgradeTable);</span>
+
+            }
+
+<span class="nc" id="L122">            return true;</span>
+        }
+<span class="nc" id="L124">        return false;</span>
+    }
+
+    // Create a method to clear all existing upgrade tables
+    private void clearUpgradeTables() {
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        for (Table upgradeTable : upgradeTables.values()) {</span>
+<span class="nc" id="L130">            upgradeTable.remove();</span>
+<span class="nc" id="L131">        }</span>
+<span class="nc" id="L132">        upgradeTables.clear();</span>
+<span class="nc" id="L133">    }</span>
+
+    /**
+     * Creates the upgrade table for the associated turret entity
+     * &lt;p&gt;
+     * Each button has a listener that will upgrade the turret entity when clicked
+     * if the player has enough scrap. Additionally when the player hovers over a button
+     * the cost of the upgrade will be displayed in the cost display
+     * &lt;/p&gt;
+     *
+     * Currently, the cost of each upgrade is hardcoded to 10 scrap, this can be changed to global
+     * variables to make balancing easier (contact @Hasakev (Kevin) if confused)
+     *
+     * @param turretEntity the turret entity to create the upgrade table for (the entity that was clicked)
+     * @return the upgrade table for the turret entity
+     */
+    private Table createUpgradeTable(Entity turretEntity) {
+        // This is the overarching table that contains the close button, the inner table, and the cost display
+<span class="nc" id="L151">        Table upgradeTable = new Table();</span>
+<span class="nc" id="L152">        upgradeTable.top();</span>
+<span class="nc" id="L153">        upgradeTable.defaults().pad(0).space(0);</span>
+<span class="nc" id="L154">        upgradeTable.setSize(60, 60);</span>
+
+        // The inner table contains the upgrade buttons and the stats display
+<span class="nc" id="L157">        Table innerUpgradeTable = new Table();</span>
+<span class="nc" id="L158">        innerUpgradeTable.top();</span>
+<span class="nc" id="L159">        innerUpgradeTable.defaults().pad(10).space(0).padBottom(1);</span>
+<span class="nc" id="L160">        innerUpgradeTable.setSize(60, 60);</span>
+        // set table background
+<span class="nc" id="L162">        String imageFilePath = &quot;images/ui/Sprites/UI_Glass_Frame_Standard_01a.png&quot;;</span>
+<span class="nc" id="L163">        Drawable drawableBackground = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));</span>
+<span class="nc" id="L164">        innerUpgradeTable.setBackground(drawableBackground);</span>
+
+        // Stying for all the buttons
+<span class="nc" id="L167">        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/ui/Sprites/UI_Glass_Button_Small_Lock_01a2.png&quot;)));</span>
+<span class="nc" id="L168">        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(</span>
+                drawable, drawable, drawable, new BitmapFont());
+
+        // Default values for the stats
+<span class="nc" id="L172">        int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();</span>
+<span class="nc" id="L173">        int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();</span>
+<span class="nc" id="L174">        turretEntity.getComponent(CombatStatsComponent.class).setHealth(5); // for testing</span>
+<span class="nc" id="L175">        int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();</span>
+<span class="nc" id="L176">        float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();</span>
+<span class="nc" id="L177">        Label healthLabel = new Label(String.format(&quot;%d/%d&quot;, currentHealth, maxHealth), createLabelStyle());</span>
+<span class="nc" id="L178">        Label attackLabel = new Label(String.format(&quot;%d&quot;, attack), createLabelStyle());</span>
+<span class="nc" id="L179">        Label fireRateLabel = new Label(String.format(&quot;%.2f&quot;, fireRate), createLabelStyle());</span>
+<span class="nc" id="L180">        Table costDisplay = new Table();</span>
+<span class="nc" id="L181">        costDisplay.setWidth(0);</span>
+<span class="nc" id="L182">        costDisplay.setBackground(drawableBackground);</span>
+        // Create an Image for the scrap icon
+<span class="nc" id="L184">        Drawable costDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/economy/scrap.png&quot;)));</span>
+<span class="nc" id="L185">        Image costImage = new Image(costDrawable);</span>
+<span class="nc" id="L186">        costDisplay.add(costImage).center();</span>
+<span class="nc" id="L187">        costImage.setScaling(Scaling.none);</span>
+<span class="nc" id="L188">        Label costDisplayLabel = new Label(&quot;100&quot;, createLabelStyle());</span>
+<span class="nc" id="L189">        costDisplay.add(costDisplayLabel).padLeft(0);</span>
+
+<span class="nc" id="L191">        TextButton closeButton = new TextButton(&quot;X&quot;, style);</span>
+<span class="nc" id="L192">        closeButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L195">                upgradeTable.remove();</span>
+                // Remove the upgrade table from the map
+<span class="nc" id="L197">                upgradeTables.remove(turretEntity);</span>
+<span class="nc" id="L198">            }</span>
+        });
+
+        // Create an Image for the icons
+<span class="nc" id="L202">        Drawable healthIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/health.png&quot;)));</span>
+<span class="nc" id="L203">        Image healthIconImage = new Image(healthIconDrawable);</span>
+
+<span class="nc" id="L205">        Drawable attackIconDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/attack.png&quot;)));</span>
+<span class="nc" id="L206">        Image attackIconImage = new Image(attackIconDrawable);</span>
+
+<span class="nc" id="L208">        Drawable fireRateDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/hourglass.png&quot;)));</span>
+<span class="nc" id="L209">        Image fireRateImage = new Image(fireRateDrawable);</span>
+
+<span class="nc" id="L211">        Drawable healthStyle = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/heart_upgrade.png&quot;)));</span>
+<span class="nc" id="L212">        ImageButton upgradeHealth = new ImageButton(healthStyle);</span>
+
+        //// UPGRADE BUTTONS ////
+
+        // Health upgrade button
+<span class="nc" id="L217">        upgradeHealth.setScale(0.8f);</span>
+<span class="nc" id="L218">        upgradeHealth.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L221">                value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc" id="L222">                logger.info(&quot;clicked&quot;);</span>
+<span class="nc bnc" id="L223" title="All 2 branches missed.">                if (value &gt;= 100) {</span>
+<span class="nc" id="L224">                    value -= 100;</span>
+<span class="nc" id="L225">                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);</span>
+<span class="nc" id="L226">                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+
+<span class="nc" id="L228">                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.MAXHP, 10);</span>
+<span class="nc" id="L229">                    int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();</span>
+<span class="nc" id="L230">                    int maxHealth = turretEntity.getComponent(CombatStatsComponent.class).getMaxHealth();</span>
+<span class="nc" id="L231">                    healthLabel.setText(String.format(&quot;%d/%d&quot;, currentHealth, maxHealth));</span>
+                }
+<span class="nc" id="L233">            }</span>
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<span class="nc" id="L236">                costDisplayLabel.setText(&quot;10&quot;);</span>
+<span class="nc" id="L237">                costDisplay.setVisible(true);</span>
+<span class="nc" id="L238">            }</span>
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<span class="nc" id="L241">                costDisplay.setVisible(false);</span>
+<span class="nc" id="L242">            }</span>
+        });
+
+        // Attack upgrade button
+<span class="nc" id="L246">        Drawable attackStyle = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/damage_upgrade.png&quot;)));</span>
+<span class="nc" id="L247">        ImageButton upgradeAttack = new ImageButton(attackStyle);</span>
+<span class="nc" id="L248">        upgradeAttack.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L251">                value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc bnc" id="L252" title="All 2 branches missed.">                if (value &gt;= 10) {</span>
+<span class="nc" id="L253">                    value -= 10;</span>
+<span class="nc" id="L254">                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);</span>
+<span class="nc" id="L255">                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+<span class="nc" id="L256">                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.ATTACK, 5);</span>
+
+<span class="nc" id="L258">                    int attack = turretEntity.getComponent(CombatStatsComponent.class).getBaseAttack();</span>
+<span class="nc" id="L259">                    attackLabel.setText(String.format(&quot;%d&quot;, attack));</span>
+                }
+<span class="nc" id="L261">            }</span>
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<span class="nc" id="L264">                costDisplayLabel.setText(&quot;10&quot;);</span>
+<span class="nc" id="L265">                costDisplay.setVisible(true);</span>
+<span class="nc" id="L266">            }</span>
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<span class="nc" id="L269">                costDisplay.setVisible(false);</span>
+<span class="nc" id="L270">            }</span>
+        });
+
+
+        // Fire rate upgrade button
+<span class="nc" id="L275">        Drawable asStyle = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/hourglass_upgrade.png&quot;)));</span>
+<span class="nc" id="L276">        ImageButton upgradeFireRate = new ImageButton(asStyle);</span>
+<span class="nc" id="L277">        upgradeFireRate.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L280">                value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc bnc" id="L281" title="All 2 branches missed.">                if (value &gt;= 10) {</span>
+<span class="nc" id="L282">                    value -= 10;</span>
+<span class="nc" id="L283">                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);</span>
+<span class="nc" id="L284">                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+<span class="nc" id="L285">                    float newFireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate() + 0.2f;</span>
+<span class="nc" id="L286">                    turretEntity.getComponent(UpgradableStatsComponent.class).setAttackRate(newFireRate);</span>
+<span class="nc" id="L287">                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.FIRERATE, (int) newFireRate * 5);</span>
+
+<span class="nc" id="L289">                    float fireRate = turretEntity.getComponent(UpgradableStatsComponent.class).getAttackRate();</span>
+<span class="nc" id="L290">                    fireRateLabel.setText(String.format(&quot;%.2f&quot;, fireRate));</span>
+                }
+
+<span class="nc" id="L293">            }</span>
+
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<span class="nc" id="L298">                costDisplayLabel.setText(&quot;10&quot;);</span>
+<span class="nc" id="L299">                costDisplay.setVisible(true);</span>
+<span class="nc" id="L300">            }</span>
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<span class="nc" id="L303">                costDisplay.setVisible(false);</span>
+<span class="nc" id="L304">            }</span>
+        });
+
+        // Repair button
+<span class="nc" id="L308">        Drawable repair = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/hammer.png&quot;)));</span>
+<span class="nc" id="L309">        ImageButton repairButton = new ImageButton(repair);</span>
+<span class="nc" id="L310">        repairButton.addListener(new ClickListener() {</span>
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L313">                value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc bnc" id="L314" title="All 2 branches missed.">                if (value &gt;= 100) {</span>
+<span class="nc" id="L315">                    value -= 100;</span>
+<span class="nc" id="L316">                    ServiceLocator.getCurrencyService().getScrap().setAmount(value);</span>
+<span class="nc" id="L317">                    ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+<span class="nc" id="L318">                    turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.REPAIR, 0);</span>
+<span class="nc" id="L319">                    int currentHealth = turretEntity.getComponent(CombatStatsComponent.class).getHealth();</span>
+<span class="nc" id="L320">                    healthLabel.setText(String.format(&quot;%d/%d&quot;, currentHealth, maxHealth));</span>
+                }
+<span class="nc" id="L322">            }</span>
+
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<span class="nc" id="L326">                costDisplayLabel.setText(&quot;10&quot;);</span>
+<span class="nc" id="L327">                costDisplay.setVisible(true);</span>
+<span class="nc" id="L328">            }</span>
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<span class="nc" id="L331">                costDisplay.setVisible(false);</span>
+<span class="nc" id="L332">            }</span>
+
+
+        });
+
+<span class="nc" id="L337">        innerUpgradeTable.row();</span>
+<span class="nc" id="L338">        innerUpgradeTable.add(healthIconImage).padRight(5).width(32).height(32);  // Add health icon</span>
+<span class="nc" id="L339">        innerUpgradeTable.add(healthLabel).expandX().left();</span>
+<span class="nc" id="L340">        innerUpgradeTable.row();</span>
+<span class="nc" id="L341">        ImageButton upgradeIncome = null;</span>
+        // if the turret has an income upgrade component, add the income upgrade button
+<span class="nc bnc" id="L343" title="All 2 branches missed.">        if (turretEntity.getComponent(IncomeUpgradeComponent.class) != null) {</span>
+
+            // Income label and upgrade button
+<span class="nc" id="L346">            Drawable incomeDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/economy/scrap.png&quot;)));</span>
+<span class="nc" id="L347">            Image incomeImage = new Image(incomeDrawable);</span>
+<span class="nc" id="L348">            Label incomeLabel = new Label(String.format(&quot;%.2f&quot;, turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate()), createLabelStyle());</span>
+<span class="nc" id="L349">            innerUpgradeTable.add(incomeImage).padRight(5).width(32).height(32);</span>
+<span class="nc" id="L350">            innerUpgradeTable.add(incomeLabel).expandX().left();</span>
+<span class="nc" id="L351">            innerUpgradeTable.row();</span>
+
+<span class="nc" id="L353">            Drawable income = new TextureRegionDrawable(new TextureRegion(new Texture(&quot;images/scrap_upgrade.png&quot;)));</span>
+<span class="nc" id="L354">            upgradeIncome = new ImageButton(income);</span>
+<span class="nc" id="L355">            upgradeIncome.addListener(new ClickListener() {</span>
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+<span class="nc" id="L358">                    value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc bnc" id="L359" title="All 4 branches missed.">                    if (value &gt;= 10 &amp;&amp; turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() &gt;= 10) {</span>
+<span class="nc" id="L360">                        value -= 10;</span>
+<span class="nc" id="L361">                        ServiceLocator.getCurrencyService().getScrap().setAmount(value);</span>
+<span class="nc" id="L362">                        ServiceLocator.getCurrencyService().getDisplay().updateScrapsStats();</span>
+<span class="nc" id="L363">                        float newIncome = turretEntity.getComponent(IncomeUpgradeComponent.class).getIncomeRate() - 5;</span>
+<span class="nc" id="L364">                        turretEntity.getComponent(IncomeUpgradeComponent.class).setIncomeRate(newIncome);</span>
+<span class="nc" id="L365">                        turretEntity.getComponent(TowerUpgraderComponent.class).upgradeTower(TowerUpgraderComponent.UPGRADE.INCOME, (int) newIncome);</span>
+<span class="nc" id="L366">                        incomeLabel.setText(String.format(&quot;%.2f&quot;, newIncome));</span>
+                    }
+
+<span class="nc" id="L369">                }</span>
+
+
+                @Override
+                public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+<span class="nc" id="L374">                    costDisplayLabel.setText(&quot;10&quot;);</span>
+<span class="nc" id="L375">                    costDisplay.setVisible(true);</span>
+<span class="nc" id="L376">                }</span>
+                @Override
+                public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+<span class="nc" id="L379">                    costDisplay.setVisible(false);</span>
+<span class="nc" id="L380">                }</span>
+            });
+        }
+<span class="nc bnc" id="L383" title="All 2 branches missed.">        if (attack != 0) {</span>
+<span class="nc" id="L384">            innerUpgradeTable.add(attackIconImage).padRight(5).width(32).height(32);  // Add attack icon</span>
+<span class="nc" id="L385">            innerUpgradeTable.add(attackLabel).expandX().left();</span>
+<span class="nc" id="L386">            innerUpgradeTable.row();</span>
+
+<span class="nc" id="L388">            innerUpgradeTable.add(fireRateImage).padRight(5).width(32).height(32);  // Add fire rate icon</span>
+<span class="nc" id="L389">            innerUpgradeTable.add(fireRateLabel).expandX().right();</span>
+<span class="nc" id="L390">            innerUpgradeTable.row();</span>
+        }
+<span class="nc" id="L392">        innerUpgradeTable.add(upgradeHealth).expandX().fillX();</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">        if (attack != 0) {</span>
+<span class="nc" id="L394">            innerUpgradeTable.add(upgradeAttack).expandX().fillX();</span>
+<span class="nc" id="L395">            innerUpgradeTable.add(upgradeFireRate).expandX().fillX();</span>
+        }
+<span class="nc bnc" id="L397" title="All 2 branches missed.">        if (upgradeIncome != null) {</span>
+<span class="nc" id="L398">            innerUpgradeTable.add(upgradeIncome).expandX().fillX();</span>
+        }
+<span class="nc" id="L400">        innerUpgradeTable.add(repairButton).expandX().fillX();</span>
+<span class="nc" id="L401">        upgradeTable.add(closeButton).right().row();</span>
+<span class="nc" id="L402">        upgradeTable.add(innerUpgradeTable).center().expand().row();</span>
+
+<span class="nc" id="L404">        upgradeTable.add(costDisplay).left();</span>
+<span class="nc" id="L405">        costDisplay.setVisible(false);</span>
+<span class="nc" id="L406">        upgradeTable.setVisible(true);</span>
+
+<span class="nc" id="L408">        return upgradeTable;</span>
+    }
+
+    /**
+     * Creates a label style for the upgrade table
+     * @return the label style
+     */
+    private LabelStyle createLabelStyle() {
+<span class="nc" id="L416">        LabelStyle style = new LabelStyle();</span>
+<span class="nc" id="L417">        style.font = new BitmapFont();</span>
+<span class="nc" id="L418">        style.fontColor = Color.WHITE;</span>
+<span class="nc" id="L419">        return style;</span>
+    }
+
+
+    /**
+     * Update method for the UpgradeUIComponent, checks if the entity is disposed and removes the upgrade table
+     */
+    public void checkForDispose() {
+<span class="nc bnc" id="L427" title="All 2 branches missed.">        if (!upgradeTables.isEmpty()) {</span>
+            // Iterate over the entries in the upgradeTables map
+<span class="nc" id="L429">            Iterator&lt;Map.Entry&lt;Entity, Table&gt;&gt; iterator = upgradeTables.entrySet().iterator();</span>
+//            logger.info(&quot;upgradeTables size: &quot; + upgradeTables.size());
+<span class="nc bnc" id="L431" title="All 2 branches missed.">            while (iterator.hasNext()) {</span>
+<span class="nc" id="L432">                Map.Entry&lt;Entity, Table&gt; entry = iterator.next();</span>
+<span class="nc" id="L433">                Entity entity = entry.getKey();</span>
+//                logger.info(&quot;entity: &quot; + entity);
+                // Check if the entity is disposed (use your own disposal condition)
+<span class="nc bnc" id="L436" title="All 2 branches missed.">                if (!ServiceLocator.getEntityService().findEntityExistence(entity.getId())) {</span>
+<span class="nc" id="L437">                    Table upgradeTable = entry.getValue();</span>
+<span class="nc" id="L438">                    upgradeTable.remove();  // Remove the upgrade table</span>
+<span class="nc" id="L439">                    iterator.remove();      // Remove the entry from the map</span>
+                }
+<span class="nc" id="L441">            }</span>
+        }
+<span class="nc" id="L443">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

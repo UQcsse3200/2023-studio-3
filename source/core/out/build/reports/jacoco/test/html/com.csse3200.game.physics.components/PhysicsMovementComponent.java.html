@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PhysicsMovementComponent.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.physics.components</a> &gt; <span class="el_source">PhysicsMovementComponent.java</span></div><h1>PhysicsMovementComponent.java</h1><pre class="source lang-java linenums">package com.csse3200.game.physics.components;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.csse3200.game.ai.movement.MovementController;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.utils.math.Vector2Utils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/** Movement controller for a physics-based entity. */
+<span class="fc" id="L12">public class PhysicsMovementComponent extends Component implements MovementController {</span>
+<span class="fc" id="L13">  private static final Logger logger = LoggerFactory.getLogger(PhysicsMovementComponent.class);</span>
+<span class="fc" id="L14">  private Vector2 maxSpeed = Vector2Utils.ONE;</span>
+<span class="fc" id="L15">  private float skipMovementTime = 0f;  // in seconds, for knockback</span>
+
+  private PhysicsComponent physicsComponent;
+  private Vector2 targetPosition;
+<span class="fc" id="L19">  private boolean movementEnabled = true;</span>
+
+  @Override
+  public void create() {
+<span class="fc" id="L23">    physicsComponent = entity.getComponent(PhysicsComponent.class);</span>
+<span class="fc" id="L24">  }</span>
+
+  @Override
+  public void update() {
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">    if (skipMovementTime &gt; 0) {</span>
+<span class="nc" id="L29">      skipMovementTime -= 0.02f;</span>
+<span class="nc" id="L30">      return;</span>
+    }
+<span class="pc bpc" id="L32" title="1 of 4 branches missed.">    if (movementEnabled &amp;&amp; targetPosition != null) {</span>
+<span class="fc" id="L33">      Body body = physicsComponent.getBody();</span>
+<span class="fc" id="L34">      updateDirection(body);</span>
+    }
+<span class="fc" id="L36">  }</span>
+
+  /**
+   * Applies knock-back to the entity by disabling its movement for a specified duration.
+   * @param duration  The time (in seconds) for which the entity's movement will be disabled.
+   */
+  public void applyKnockback(float duration) {
+<span class="nc" id="L43">    this.skipMovementTime = duration;</span>
+<span class="nc" id="L44">  }</span>
+
+  /**
+   * Enable/disable movement for the controller. Disabling will immediately set velocity to 0.
+   *
+   * @param movementEnabled true to enable movement, false otherwise
+   */
+  @Override
+  public void setMoving(boolean movementEnabled) {
+<span class="fc" id="L53">    this.movementEnabled = movementEnabled;</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">    if (!movementEnabled) {</span>
+<span class="fc" id="L55">      Body body = physicsComponent.getBody();</span>
+<span class="fc" id="L56">      setToVelocity(body, Vector2.Zero);</span>
+    }
+<span class="fc" id="L58">  }</span>
+
+  @Override
+  public boolean getMoving() {
+<span class="fc" id="L62">    return movementEnabled;</span>
+  }
+
+  /** @return Target position in the world */
+  @Override
+  public Vector2 getTarget() {
+<span class="fc" id="L68">    return targetPosition;</span>
+  }
+
+  /**
+   * Set a target to move towards. The entity will be steered towards it in a straight line, not
+   * using pathfinding or avoiding other entities.
+   *
+   * @param target target position
+   */
+  @Override
+  public void setTarget(Vector2 target) {
+<span class="fc" id="L79">    logger.trace(&quot;Setting target to {}&quot;, target);</span>
+<span class="fc" id="L80">    this.targetPosition = target;</span>
+<span class="fc" id="L81">  }</span>
+
+  private void updateDirection(Body body) {
+<span class="fc" id="L84">    Vector2 desiredVelocity = getDirection().scl(maxSpeed);</span>
+<span class="fc" id="L85">    setToVelocity(body, desiredVelocity);</span>
+<span class="fc" id="L86">  }</span>
+
+  private void setToVelocity(Body body, Vector2 desiredVelocity) {
+    // impulse force = (desired velocity - current velocity) * mass
+<span class="fc" id="L90">    Vector2 velocity = body.getLinearVelocity();</span>
+<span class="fc" id="L91">    Vector2 impulse = desiredVelocity.cpy().sub(velocity).scl(body.getMass());</span>
+<span class="fc" id="L92">    body.applyLinearImpulse(impulse, body.getWorldCenter(), true);</span>
+<span class="fc" id="L93">  }</span>
+
+  private Vector2 getDirection() {
+    // Move towards targetPosition based on our current position
+<span class="fc" id="L97">    return targetPosition.cpy().sub(entity.getPosition()).nor();</span>
+  }
+
+  public void setSpeed(Vector2 speed) {
+<span class="fc" id="L101">    this.maxSpeed = speed;</span>
+<span class="fc" id="L102">  }</span>
+
+  public Vector2 getSpeed() {
+<span class="fc" id="L105">    return this.maxSpeed;</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.utils.SortedIntMapTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:49" hostname="DESKTOP-F4ACIG8" time="0.005">
+  <properties/>
+  <testcase name="shouldContains()" classname="com.csse3200.game.utils.SortedIntMapTest" time="0.001"/>
+  <testcase name="shouldClear()" classname="com.csse3200.game.utils.SortedIntMapTest" time="0.001"/>
+  <testcase name="shouldPutGetCorrectly()" classname="com.csse3200.game.utils.SortedIntMapTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

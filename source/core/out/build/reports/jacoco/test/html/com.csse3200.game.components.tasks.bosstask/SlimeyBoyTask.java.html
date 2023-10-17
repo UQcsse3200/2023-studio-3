@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SlimeyBoyTask.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.bosstask</a> &gt; <span class="el_source">SlimeyBoyTask.java</span></div><h1>SlimeyBoyTask.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.bosstask;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
+import com.csse3200.game.ai.tasks.DefaultTask;
+import com.csse3200.game.ai.tasks.PriorityTask;
+import com.csse3200.game.components.CombatStatsComponent;
+import com.csse3200.game.components.tasks.MovementTask;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
+import com.csse3200.game.physics.components.PhysicsMovementComponent;
+import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
+
+    // Constants
+    private static final int PRIORITY = 3;
+<span class="fc" id="L23">    private static final Vector2 SLIMEY_SPEED = new Vector2(0.5f, 0.5f);</span>
+<span class="fc" id="L24">    private static final Vector2 DEFAULT_POS = new Vector2(0, 4);</span>
+    private static final float MAX_RADIUS = 40f;
+
+    // Private variables
+<span class="fc" id="L28">    private static final Logger logger = LoggerFactory.getLogger(SlimeyBoyTask.class);</span>
+    private Entity slimey;
+    private AnimationRenderComponent animation;
+    private Vector2 currentPos;
+<span class="fc" id="L32">    private SlimeState state = SlimeState.IDLE; // set initial state to random unused state</span>
+    private SlimeState prevState;
+    private Entity targetEntity;
+    private final GameTime gameTime;
+    private long lastTimeBounced;
+    private static final long BOUNCE_TIME = 1600;
+
+    /**
+     * States that the slime cycles through
+     */
+<span class="fc" id="L42">    private enum SlimeState {</span>
+<span class="fc" id="L43">        IDLE, MOVE, PROJECTILE_EXPLOSION, PROJECTILE_IDLE, TAKE_HIT, TRANSFORM</span>
+    }
+
+    /**
+     * Constructor for this task
+     */
+<span class="fc" id="L49">    public SlimeyBoyTask() {</span>
+<span class="fc" id="L50">        gameTime = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L51">    }</span>
+
+    /**
+     * What is called when task is assigned
+     */
+    @Override
+    public void start() {
+<span class="nc" id="L58">        super.start();</span>
+<span class="nc" id="L59">        slimey = owner.getEntity();</span>
+<span class="nc" id="L60">        animation = owner.getEntity().getComponent(AnimationRenderComponent.class); // get animation</span>
+<span class="nc" id="L61">        currentPos = owner.getEntity().getPosition(); // get current position</span>
+<span class="nc" id="L62">        slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED); // set speed</span>
+<span class="nc" id="L63">        changeState(SlimeState.TRANSFORM);</span>
+<span class="nc" id="L64">        slimey.getEvents().trigger(&quot;demon_death_sound&quot;);</span>
+<span class="nc" id="L65">        Timer.schedule(new Timer.Task() {</span>
+            @Override
+            public void run() {
+<span class="nc" id="L68">                slimey.getEvents().trigger(&quot;slime_pop_sound&quot;);</span>
+<span class="nc" id="L69">            }</span>
+        }, 6f);
+<span class="nc" id="L71">    }</span>
+
+    /**
+     * What is run every frame update
+     */
+    @Override
+    public void update() {
+<span class="nc" id="L78">        animate();</span>
+<span class="nc" id="L79">        currentPos = slimey.getPosition();</span>
+<span class="nc" id="L80">        int health = slimey.getComponent(CombatStatsComponent.class).getHealth();</span>
+
+<span class="nc bnc" id="L82" title="All 4 branches missed.">        switch (state) {</span>
+            case TRANSFORM -&gt; {
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (animation.isFinished()) {</span>
+<span class="nc" id="L85">                    seekAndDestroy();</span>
+                }
+            }
+            case MOVE -&gt; {
+<span class="nc bnc" id="L89" title="All 2 branches missed.">                if (targetFound()) {</span>
+                    // do aoe damage based on how much health slime has left
+<span class="nc" id="L91">                    applyAoeDamage(ServiceLocator.getEntityService().getEntitiesInLayer(</span>
+                            slimey, MAX_RADIUS, PhysicsLayer.HUMANS), health);
+<span class="nc" id="L93">                    changeState(SlimeState.TAKE_HIT);</span>
+                }
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                if (gameTime.getTime() - lastTimeBounced &gt;= BOUNCE_TIME) {</span>
+<span class="nc" id="L96">                    lastTimeBounced = gameTime.getTime();</span>
+<span class="nc" id="L97">                    slimey.getEvents().trigger(&quot;slime_jump_sound&quot;);</span>
+                }
+            }
+            case TAKE_HIT -&gt; {
+<span class="nc" id="L101">                slimey.getEvents().trigger(&quot;slimey_splat_sound&quot;);</span>
+<span class="nc" id="L102">                slimey.setFlagForDelete(true);</span>
+            }
+        }
+<span class="nc" id="L105">    }</span>
+
+    /**
+     * Changes the state of the demon
+     * @param state state to be changed to
+     */
+    private void changeState(SlimeState state) {
+<span class="nc" id="L112">        prevState = this.state;</span>
+<span class="nc" id="L113">        this.state = state;</span>
+<span class="nc" id="L114">    }</span>
+
+    /**
+     * Changes the animation of the demon if a state change occurs
+     */
+    private void animate() {
+        // Check if same animation is being called
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        if (prevState.equals(state)) {</span>
+<span class="nc" id="L122">            return; // skip rest of function</span>
+        }
+
+<span class="nc bnc" id="L125" title="All 7 branches missed.">        switch (state) {</span>
+<span class="nc" id="L126">            case IDLE -&gt; slimey.getEvents().trigger(&quot;idle&quot;);</span>
+<span class="nc" id="L127">            case MOVE -&gt; slimey.getEvents().trigger(&quot;move&quot;);</span>
+<span class="nc" id="L128">            case PROJECTILE_EXPLOSION -&gt; slimey.getEvents().trigger(&quot;projectile_explosion&quot;);</span>
+<span class="nc" id="L129">            case PROJECTILE_IDLE -&gt; slimey.getEvents().trigger(&quot;projectile_idle&quot;);</span>
+<span class="nc" id="L130">            case TAKE_HIT -&gt; slimey.getEvents().trigger(&quot;take_hit&quot;);</span>
+<span class="nc" id="L131">            case TRANSFORM -&gt; slimey.getEvents().trigger(&quot;transform&quot;);</span>
+<span class="nc" id="L132">            default -&gt; logger.debug(&quot;Slimey boy animation {state} not found&quot;);</span>
+        }
+<span class="nc" id="L134">        prevState = state;</span>
+<span class="nc" id="L135">    }</span>
+
+    /**
+     * Find the closest human entity and start moving towards them
+     */
+    private void seekAndDestroy() {
+<span class="nc" id="L141">        lastTimeBounced = gameTime.getTime() - BOUNCE_TIME;</span>
+<span class="nc" id="L142">        changeState(SlimeState.MOVE);</span>
+
+<span class="nc" id="L144">        targetEntity = ServiceLocator.getEntityService().getClosestEntityOfLayer(</span>
+                slimey, PhysicsLayer.HUMANS);
+        Vector2 targetPos;
+<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (targetEntity == null) {</span>
+<span class="nc" id="L148">            targetPos = DEFAULT_POS;</span>
+        } else {
+<span class="nc" id="L150">            targetPos = targetEntity.getPosition();</span>
+        }
+<span class="nc" id="L152">        MovementTask slimeyMovementTask = new MovementTask(targetPos);</span>
+<span class="nc" id="L153">        slimeyMovementTask.create(owner);</span>
+<span class="nc" id="L154">        slimeyMovementTask.start();</span>
+<span class="nc" id="L155">        slimey.getComponent(PhysicsMovementComponent.class).setSpeed(SLIMEY_SPEED);</span>
+<span class="nc" id="L156">    }</span>
+
+    /**
+     * @return if target has been reached or not
+     */
+    private boolean targetFound() {
+<span class="nc bnc" id="L162" title="All 2 branches missed.">        if (targetEntity == null) {</span>
+<span class="nc" id="L163">            return false;</span>
+        }
+<span class="nc bnc" id="L165" title="All 2 branches missed.">        return currentPos.dst(targetEntity.getPosition()) &lt; 1;</span>
+    }
+
+    /**
+     * Applies aoe damage to nearby human entities
+     * @param targets array of human entities to deal damage to
+     */
+    private void applyAoeDamage(Array&lt;Entity&gt; targets, int damage) {
+<span class="nc bnc" id="L173" title="All 2 branches missed.">        for (int i = 0; i &lt; targets.size; i++) {</span>
+<span class="nc" id="L174">            Entity targetEntity = targets.get(i);</span>
+
+<span class="nc" id="L176">            CombatStatsComponent targetCombatStats = targetEntity.</span>
+<span class="nc" id="L177">                    getComponent(CombatStatsComponent.class);</span>
+<span class="nc bnc" id="L178" title="All 2 branches missed.">            if (targetCombatStats != null) {</span>
+<span class="nc" id="L179">                targetCombatStats.hit(damage);</span>
+            }
+        }
+<span class="nc" id="L182">    }</span>
+
+    /**
+     * @return priority of class
+     */
+    @Override
+    public int getPriority() {
+<span class="nc" id="L189">        return PRIORITY;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LevelWaves.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.tasks.waves</a> &gt; <span class="el_source">LevelWaves.java</span></div><h1>LevelWaves.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.tasks.waves;
+
+import com.badlogic.gdx.math.GridPoint2;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.services.GameTime;
+import com.csse3200.game.services.ServiceLocator;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+public class LevelWaves extends Entity {
+<span class="fc" id="L14">    List&lt;WaveClass&gt; waves = new ArrayList&lt;&gt;();</span>
+    private float spawnDelay;
+    private GameTime gameTime;
+    private long startTime;
+<span class="fc" id="L18">    private Random rand = new Random();</span>
+<span class="fc" id="L19">    private int currentRandom = 0;</span>
+<span class="fc" id="L20">    private int previousRandom = 0;</span>
+    private int mobIndex;
+    private int waveIndex;
+    private int numWaves;
+
+    /**
+     * Constructor for the LevelWaves class
+     * @param spawnDelay time to elapse between each wave
+     */
+<span class="fc" id="L29">    public LevelWaves(int spawnDelay) {</span>
+<span class="fc" id="L30">        this.spawnDelay = spawnDelay;</span>
+<span class="fc" id="L31">        this.gameTime = ServiceLocator.getTimeSource();</span>
+<span class="fc" id="L32">        this.startTime = this.gameTime.getTime();</span>
+<span class="fc" id="L33">        this.mobIndex = 0;</span>
+<span class="fc" id="L34">        this.waveIndex = 0;</span>
+<span class="fc" id="L35">        this.numWaves = 0;</span>
+
+<span class="fc" id="L37">        long currentTime = ServiceLocator.getTimeSource().getTime();</span>
+        // Setting the timestamp for when the next mobs will spawn.
+        // Currently, the delay of mobs spawning after wave start.
+<span class="fc" id="L40">        ServiceLocator.getWaveService().setNextWaveTime(currentTime + (spawnDelay * 1000));</span>
+<span class="fc" id="L41">    }</span>
+
+    /**
+     * Add a wave to the level and increment the total number of waves
+     * @param wave to be added
+     */
+    public void addWave(WaveClass wave) {
+<span class="fc" id="L48">        this.numWaves++;</span>
+<span class="fc" id="L49">        this.waves.add(wave);</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Retrieve a wave at an index in the list
+     * @param index wave number to be retireved
+     * @return instance of a wave class
+     */
+    public WaveClass getWave(int index) {
+<span class="nc" id="L58">        return this.waves.get(index);</span>
+    }
+
+    /**
+     * Spawn the wave and all the associated mobs for that wave
+     */
+    public void spawnWave() {
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (gameTime.getTime() &gt;= startTime + spawnDelay * 1000) {</span>
+            do {
+<span class="nc" id="L67">                currentRandom = rand.nextInt(0, ServiceLocator.getMapService().getHeight());</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            } while (currentRandom == previousRandom);</span>
+<span class="nc" id="L69">            ServiceLocator.getWaveService().setNextLane(currentRandom);</span>
+<span class="nc" id="L70">            GridPoint2 randomPos = new GridPoint2(19, currentRandom);</span>
+<span class="nc" id="L71">            Tuple mobStats = waves.get(waveIndex).getMobs().get(mobIndex);</span>
+<span class="nc" id="L72">            this.getEvents().trigger(&quot;spawnWave&quot;, mobStats.mob, randomPos, mobStats.health);</span>
+<span class="nc" id="L73">            startTime = gameTime.getTime();</span>
+<span class="nc" id="L74">            mobIndex++;</span>
+<span class="nc" id="L75">            previousRandom = currentRandom;</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">        } else if (mobIndex == waves.get(waveIndex).getSize()) {</span>
+<span class="nc" id="L77">            this.getEvents().trigger(&quot;waveFinishedSpawning&quot;);</span>
+<span class="nc" id="L78">            mobIndex = 0;</span>
+        }
+<span class="nc" id="L80">    }</span>
+
+    /**
+     * Set the wave index
+     * @param index
+     */
+    public void setWaveIndex(int index) {
+<span class="nc" id="L87">        this.waveIndex = index;</span>
+<span class="nc" id="L88">    }</span>
+
+    /**
+     * Get the total number of waves in this level
+     * @return number of waves in the level
+     */
+    public int getNumWaves() {
+<span class="nc" id="L95">        return this.numWaves;</span>
+    }
+
+    public float getSpawnDelay() {
+<span class="nc" id="L99">        return this.spawnDelay;</span>
+    }
+
+    public long getStartTime() {
+<span class="nc" id="L103">        return this.startTime;</span>
+    }
+
+    /**
+     * Get the current mob index
+     * @return mob index
+     */
+    public int getMobIndex() {
+<span class="nc" id="L111">        return this.mobIndex;</span>
+    }
+
+    /**
+     * Get the current wave index
+     * @return wave index
+     */
+    public int getWaveIndex() {
+<span class="nc" id="L119">        return this.waveIndex;</span>
+    }
+
+    public List&lt;WaveClass&gt; getWaves() {
+<span class="fc" id="L123">      return this.waves;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="fc" id="L128">      String result = &quot;&quot;;</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">      for (WaveClass wave : waves) {</span>
+<span class="fc" id="L130">        result += wave.toString() + &quot;\n&quot;;</span>
+<span class="fc" id="L131">      }</span>
+<span class="fc" id="L132">      return result;</span>
+    }
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

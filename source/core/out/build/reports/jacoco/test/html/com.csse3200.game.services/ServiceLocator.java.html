@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ServiceLocator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.services</a> &gt; <span class="el_source">ServiceLocator.java</span></div><h1>ServiceLocator.java</h1><pre class="source lang-java linenums">package com.csse3200.game.services;
+
+import com.badlogic.gdx.utils.Array;
+import com.csse3200.game.entities.EntityService;
+import com.csse3200.game.input.InputService;
+import com.csse3200.game.physics.PhysicsService;
+import com.csse3200.game.rendering.RenderService;
+import com.csse3200.game.screens.TowerType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * A simplified implementation of the Service Locator pattern:
+ * https://martinfowler.com/articles/injection.html#UsingAServiceLocator
+ *
+ * &lt;p&gt;Allows global access to a few core game services.
+ * Warning: global access is a trap and should be used &lt;i&gt;extremely&lt;/i&gt; sparingly.
+ * Read the wiki for details (https://github.com/UQcsse3200/game-engine/wiki/Service-Locator).
+ */
+public class ServiceLocator {
+<span class="fc" id="L24">  private static final Logger logger = LoggerFactory.getLogger(ServiceLocator.class);</span>
+  private static CurrencyService currencyService;
+  private static EntityService entityService;
+  private static RenderService renderService;
+  private static PhysicsService physicsService;
+  private static GameTime timeSource;
+  private static InputService inputService;
+  private static ResourceService resourceService;
+  private static GameEndService gameEndService;
+  private static WaveService waveService;
+  private static MapService mapService;
+
+<span class="fc" id="L36">  private static Set&lt;TowerType&gt; towerTypes = new HashSet&lt;&gt;();</span>
+
+  public static CurrencyService getCurrencyService() {
+<span class="nc" id="L39">      return currencyService;</span>
+  }
+
+  public static EntityService getEntityService() {
+<span class="fc" id="L43">    return entityService;</span>
+  }
+
+  public static RenderService getRenderService() {
+<span class="fc" id="L47">    return renderService;</span>
+  }
+
+  public static PhysicsService getPhysicsService() {
+<span class="fc" id="L51">    return physicsService;</span>
+  }
+
+  public static GameTime getTimeSource() {
+<span class="fc" id="L55">    return timeSource;</span>
+  }
+
+  public static InputService getInputService() {
+<span class="fc" id="L59">    return inputService;</span>
+  }
+
+  public static ResourceService getResourceService() {
+<span class="fc" id="L63">    return resourceService;</span>
+  }
+
+  public static GameEndService getGameEndService() {
+<span class="nc" id="L67">    return gameEndService;</span>
+  }
+
+<span class="fc" id="L70">  public static WaveService getWaveService() { return waveService; }</span>
+
+<span class="nc" id="L72">  public static MapService getMapService() { return mapService; }</span>
+
+  public static void registerCurrencyService(CurrencyService service) {
+<span class="nc" id="L75">    logger.debug(&quot;Registering currency service {}&quot;, service);</span>
+<span class="nc" id="L76">    currencyService = service;</span>
+<span class="nc" id="L77">  }</span>
+
+  public static void registerEntityService(EntityService service) {
+<span class="fc" id="L80">    logger.debug(&quot;Registering entity service {}&quot;, service);</span>
+<span class="fc" id="L81">    entityService = service;</span>
+<span class="fc" id="L82">  }</span>
+
+  public static void registerRenderService(RenderService service) {
+<span class="fc" id="L85">    logger.debug(&quot;Registering render service {}&quot;, service);</span>
+<span class="fc" id="L86">    renderService = service;</span>
+<span class="fc" id="L87">  }</span>
+
+  public static void registerPhysicsService(PhysicsService service) {
+<span class="fc" id="L90">    logger.debug(&quot;Registering physics service {}&quot;, service);</span>
+<span class="fc" id="L91">    physicsService = service;</span>
+<span class="fc" id="L92">  }</span>
+
+  public static void registerTimeSource(GameTime source) {
+<span class="fc" id="L95">    logger.debug(&quot;Registering time source {}&quot;, source);</span>
+<span class="fc" id="L96">    timeSource = source;</span>
+<span class="fc" id="L97">  }</span>
+
+  public static void registerInputService(InputService source) {
+<span class="fc" id="L100">    logger.debug(&quot;Registering input service {}&quot;, source);</span>
+<span class="fc" id="L101">    inputService = source;</span>
+<span class="fc" id="L102">  }</span>
+
+  public static void registerResourceService(ResourceService source) {
+<span class="fc" id="L105">    logger.debug(&quot;Registering resource service {}&quot;, source);</span>
+<span class="fc" id="L106">    resourceService = source;</span>
+<span class="fc" id="L107">  }</span>
+
+  public static void registerGameEndService(GameEndService source) {
+<span class="nc" id="L110">    logger.debug(&quot;Registering game end service service {}&quot;, source);</span>
+<span class="nc" id="L111">    gameEndService = source;</span>
+<span class="nc" id="L112">  }</span>
+  public static void registerWaveService(WaveService source) {
+<span class="fc" id="L114">    logger.debug(&quot;Registering wave service {}&quot;, source);</span>
+<span class="fc" id="L115">    waveService = source;</span>
+<span class="fc" id="L116">  }</span>
+
+  public static void registerMapService(MapService source) {
+<span class="nc" id="L119">    logger.debug(&quot;Registering wave service {}&quot;, source);</span>
+<span class="nc" id="L120">    mapService = source;</span>
+<span class="nc" id="L121">  }</span>
+
+  public static void setTowerTypes(Set&lt;TowerType&gt; selectedTowers) {
+<span class="nc" id="L124">    towerTypes.clear();</span>
+<span class="nc" id="L125">    towerTypes.addAll(selectedTowers);</span>
+<span class="nc" id="L126">  }</span>
+
+  public static Set&lt;TowerType&gt; getTowerTypes() {
+<span class="nc" id="L129">    return towerTypes;</span>
+  }
+
+  public static void clear() {
+<span class="fc" id="L133">    entityService = null;</span>
+<span class="fc" id="L134">    renderService = null;</span>
+<span class="fc" id="L135">    physicsService = null;</span>
+<span class="fc" id="L136">    timeSource = null;</span>
+<span class="fc" id="L137">    inputService = null;</span>
+<span class="fc" id="L138">    resourceService = null;</span>
+<span class="fc" id="L139">    gameEndService = null;</span>
+<span class="fc" id="L140">    waveService = null;</span>
+<span class="fc" id="L141">    mapService = null;</span>
+<span class="fc" id="L142">  }</span>
+
+<span class="nc" id="L144">  private ServiceLocator() {</span>
+<span class="nc" id="L145">    throw new IllegalStateException(&quot;Instantiating static util class&quot;);</span>
+  }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

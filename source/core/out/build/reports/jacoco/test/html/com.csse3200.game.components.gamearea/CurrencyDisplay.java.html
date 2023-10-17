@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CurrencyDisplay.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.gamearea</a> &gt; <span class="el_source">CurrencyDisplay.java</span></div><h1>CurrencyDisplay.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.gamearea;
+
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ui.UIComponent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+
+/**
+ * A UI component for displaying the currency owned
+ */
+<span class="fc" id="L25">public class CurrencyDisplay extends UIComponent {</span>
+    Table table;
+    private Camera camera;
+    private TextButton scrapsTb;
+    private TextButton crystalsTb;
+    private Sound clickSound;
+
+    /**
+     * Adds actors to stage
+     */
+    @Override
+    public void create() {
+<span class="nc" id="L37">        super.create();</span>
+<span class="nc" id="L38">        clickSound = ServiceLocator.getResourceService().getAsset(&quot;sounds/economy/click.wav&quot;, Sound.class);</span>
+<span class="nc" id="L39">        addActors();</span>
+<span class="nc" id="L40">    }</span>
+
+    /**
+     * Initialises the currency labels
+     * Positions it on the stage using a table
+     */
+    private void addActors() {
+<span class="nc" id="L47">        table = new Table();</span>
+<span class="nc" id="L48">        table.top().left();</span>
+<span class="nc" id="L49">        table.setFillParent(true);</span>
+<span class="nc" id="L50">        table.padTop(140f).padLeft(20f);</span>
+
+<span class="nc" id="L52">        scrapsTb = createButton(&quot;images/economy/scrapBanner.png&quot;,</span>
+<span class="nc" id="L53">                ServiceLocator.getCurrencyService().getScrap().getAmount());</span>
+<span class="nc" id="L54">        crystalsTb = createButton(&quot;images/economy/crystalBanner.png&quot;,</span>
+<span class="nc" id="L55">                ServiceLocator.getCurrencyService().getCrystal().getAmount());</span>
+
+<span class="nc" id="L57">        table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);</span>
+<span class="nc" id="L58">        table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);</span>
+<span class="nc" id="L59">        stage.addActor(table);</span>
+<span class="nc" id="L60">    }</span>
+
+    private TextButton createButton(String imageFilePath, int value) {
+<span class="nc" id="L63">        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(imageFilePath)));</span>
+<span class="nc" id="L64">        TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(</span>
+                drawable, drawable, drawable, new BitmapFont());
+
+        // create button
+<span class="nc" id="L68">        TextButton tb = new TextButton(String.format(&quot;%d&quot;, value), style);</span>
+<span class="nc" id="L69">        tb.setDisabled(true);</span>
+<span class="nc" id="L70">        tb.getLabel().setAlignment(Align.right);</span>
+
+<span class="nc" id="L72">        tb.pad(0, 0, 0, 50);</span>
+<span class="nc" id="L73">        tb.setTransform(true);</span>
+
+<span class="nc" id="L75">        return tb;</span>
+    }
+
+    @Override
+    public void draw(SpriteBatch batch) {
+        // handled by stage
+<span class="nc" id="L81">    }</span>
+
+    /**
+     * Updates the currency (Scraps) value on the UI component
+     */
+    public void updateScrapsStats() {
+<span class="nc" id="L87">        int value = ServiceLocator.getCurrencyService().getScrap().getAmount();</span>
+<span class="nc" id="L88">        CharSequence text = String.format(&quot;%d&quot;, value);</span>
+<span class="nc" id="L89">        scrapsTb.getLabel().setText(text);</span>
+<span class="nc" id="L90">    }</span>
+
+    /**
+     * Updates the currency (Crystals) value on the UI component
+     */
+    public void updateCrystalsStats() {
+<span class="nc" id="L96">        int value = ServiceLocator.getCurrencyService().getCrystal().getAmount();</span>
+<span class="nc" id="L97">        CharSequence text = String.format(&quot;%d&quot;, value);</span>
+<span class="nc" id="L98">        crystalsTb.getLabel().setText(text);</span>
+<span class="nc" id="L99">    }</span>
+
+    /**
+     * A label that appears once currency is gained, to give the player visual feedback
+     * Also plays sound
+     * @param x Screen x coordinate
+     * @param y Screen y coordinate
+     * @param amount value to display on the pop-up
+     * @param offset value to offset the height of the label by
+     */
+    public void currencyPopUp(float x , float y, int amount, int offset) {
+        Label label;
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if (amount &gt; 0) {</span>
+            // play sound and set the volume
+<span class="nc" id="L113">            long soundId = clickSound.play();</span>
+<span class="nc" id="L114">            clickSound.setVolume(soundId, 0.4f);</span>
+<span class="nc" id="L115">            label = new Label(String.format(&quot;+%d&quot;, amount), skin);</span>
+<span class="nc" id="L116">        } else {</span>
+<span class="nc" id="L117">            label = new Label(String.format(&quot;%d&quot;, amount), skin);</span>
+        }
+
+        // remove label after it fades out
+<span class="nc" id="L121">        label.addAction(new SequenceAction(Actions.fadeOut(1.5f), Actions.removeActor()));</span>
+
+        // get stage coordinates from entity coordinates
+<span class="nc" id="L124">        Vector3 entityCoordinates = new Vector3(x, y, 0);</span>
+<span class="nc" id="L125">        Vector3 entityScreenCoordinate = this.camera.project(entityCoordinates);</span>
+<span class="nc" id="L126">        Vector2 stageCoordinates = stage.screenToStageCoordinates(</span>
+                new Vector2(entityScreenCoordinate.x, entityScreenCoordinate.y));
+<span class="nc" id="L128">        stage.getViewport().unproject(stageCoordinates);</span>
+
+<span class="nc" id="L130">        label.setPosition(stageCoordinates.x - label.getWidth()/2, stageCoordinates.y + offset);</span>
+<span class="nc" id="L131">        stage.addActor(label);</span>
+<span class="nc" id="L132">    }</span>
+
+    public void setCamera(Camera camera) {
+<span class="nc" id="L135">        this.camera = camera;</span>
+<span class="nc" id="L136">    }</span>
+
+    @Override
+    public void dispose() {
+<span class="nc" id="L140">        super.dispose();</span>
+<span class="nc" id="L141">        scrapsTb.remove();</span>
+<span class="nc" id="L142">        crystalsTb.remove();</span>
+<span class="nc" id="L143">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

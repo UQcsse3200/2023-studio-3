@@ -1,0 +1,55 @@
+
+basic_projectile.png
+size: 260, 32
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+projectile
+  rotate: false
+  xy: 78, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectileFinal
+  rotate: false
+  xy: 2, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectile
+  rotate: false
+  xy: 116, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectile
+  rotate: false
+  xy: 40, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectileCollide
+  rotate: false
+  xy: 152, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectileCollide
+  rotate: false
+  xy: 188, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1
+projectileCollide
+  rotate: false
+  xy: 224, 2
+  size: 36, 19
+  orig: 36, 19
+  offset: 0, 0
+  index: -1

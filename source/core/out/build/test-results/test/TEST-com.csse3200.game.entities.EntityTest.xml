@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.csse3200.game.entities.EntityTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2023-10-10T07:19:27" hostname="DESKTOP-F4ACIG8" time="0.474">
+  <properties/>
+  <testcase name="shouldNotUpdateIfDisabled()" classname="com.csse3200.game.entities.EntityTest" time="0.086"/>
+  <testcase name="shouldCreateComponents()" classname="com.csse3200.game.entities.EntityTest" time="0.073"/>
+  <testcase name="shouldSetAndGetPosition()" classname="com.csse3200.game.entities.EntityTest" time="0.001"/>
+  <testcase name="shouldEqualWithId()" classname="com.csse3200.game.entities.EntityTest" time="0.005"/>
+  <testcase name="shouldUpdateComponents()" classname="com.csse3200.game.entities.EntityTest" time="0.024"/>
+  <testcase name="shouldSetAndGetScale()" classname="com.csse3200.game.entities.EntityTest" time="0.002"/>
+  <testcase name="shouldDisposeComponents()" classname="com.csse3200.game.entities.EntityTest" time="0.243"/>
+  <testcase name="shouldHaveUniqueId()" classname="com.csse3200.game.entities.EntityTest" time="0.001"/>
+  <testcase name="shouldRejectAfterCreate()" classname="com.csse3200.game.entities.EntityTest" time="0.006"/>
+  <testcase name="shouldGetComponent()" classname="com.csse3200.game.entities.EntityTest" time="0.002"/>
+  <testcase name="shouldRejectSameClassComponents()" classname="com.csse3200.game.entities.EntityTest" time="0.003"/>
+  <testcase name="shouldNotGetMissingComponent()" classname="com.csse3200.game.entities.EntityTest" time="0.001"/>
+  <testcase name="shouldHaveCorrectCenter()" classname="com.csse3200.game.entities.EntityTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Oct 10, 2023 12:49:28 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Adding TestComponent1 to Entity{id=279} after creation is not supported and will be ignored
+Oct 10, 2023 12:49:28 PM com.csse3200.game.entities.Entity addComponent
+SEVERE: Attempted to add multiple components of class TestComponent1 to Entity{id=281}. Only one component of a class can be added to an entity, this will be ignored.
+]]></system-err>
+</testsuite>

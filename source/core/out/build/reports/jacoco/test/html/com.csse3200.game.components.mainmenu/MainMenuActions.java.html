@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainMenuActions.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">core</a> &gt; <a href="index.source.html" class="el_package">com.csse3200.game.components.mainmenu</a> &gt; <span class="el_source">MainMenuActions.java</span></div><h1>MainMenuActions.java</h1><pre class="source lang-java linenums">package com.csse3200.game.components.mainmenu;
+
+import com.csse3200.game.GdxGame;
+import com.csse3200.game.components.Component;
+import com.csse3200.game.screens.HelpScreen;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * This class listens to events relevant to the Main Menu Screen and does something when one of the
+ * events is triggered.
+ */
+public class MainMenuActions extends Component {
+<span class="nc" id="L14">  private static final Logger logger = LoggerFactory.getLogger(MainMenuActions.class);</span>
+  private GdxGame game;
+
+<span class="nc" id="L17">  public MainMenuActions(GdxGame game) {</span>
+<span class="nc" id="L18">    this.game = game;</span>
+<span class="nc" id="L19">  }</span>
+
+  @Override
+  public void create() {
+<span class="nc" id="L23">    entity.getEvents().addListener(&quot;start&quot;, this::onStart);</span>
+<span class="nc" id="L24">    entity.getEvents().addListener(&quot;help&quot;, this::onHelp);</span>
+<span class="nc" id="L25">    entity.getEvents().addListener(&quot;exit&quot;, this::onExit);</span>
+<span class="nc" id="L26">    entity.getEvents().addListener(&quot;settings&quot;, this::onSettings);</span>
+<span class="nc" id="L27">  }</span>
+
+  /**
+   * Swaps to the Main Game screen.
+   */
+  private void onStart() {
+<span class="nc" id="L33">    logger.info(&quot;Start game&quot;);</span>
+<span class="nc" id="L34">    game.setScreen(GdxGame.ScreenType.STORY_SCREEN);</span>
+<span class="nc" id="L35">  }</span>
+
+  private void onHelp() {
+<span class="nc" id="L38">    logger.info(&quot;Help Menu&quot;);</span>
+<span class="nc" id="L39">    game.setScreen(GdxGame.ScreenType.HELP_SCREEN);</span>
+<span class="nc" id="L40">  }</span>
+
+  /**
+   * Exits the game.
+   */
+  private void onExit() {
+<span class="nc" id="L46">    logger.info(&quot;Exit game&quot;);</span>
+<span class="nc" id="L47">    game.exit();</span>
+<span class="nc" id="L48">  }</span>
+
+  /**
+   * Swaps to the Settings screen.
+   */
+  private void onSettings() {
+<span class="nc" id="L54">    logger.info(&quot;Launching settings screen&quot;);</span>
+<span class="nc" id="L55">    game.setScreen(GdxGame.ScreenType.SETTINGS);</span>
+<span class="nc" id="L56">  }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
