@@ -89,7 +89,6 @@ public class MobTask extends DefaultTask implements PriorityTask {
         super.start();
         mob = owner.getEntity();
         animation = mob.getComponent(AnimationRenderComponent.class);
-        mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
         melee = mobType.isMelee();
 
         movementTask = new MovementTask(new Vector2(0f, mob.getPosition().y));
@@ -102,8 +101,10 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if (melee) {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_MOB_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_MOB_SPEED);
         } else {
             mob.getComponent(PhysicsMovementComponent.class).setSpeed(MELEE_RANGE_SPEED);
+            mob.getComponent(PhysicsMovementComponent.class).setNormalSpeed(MELEE_RANGE_SPEED);
         }
     }
 
@@ -115,13 +116,14 @@ public class MobTask extends DefaultTask implements PriorityTask {
 
         if(mob.getCenterPosition().x <= 1) {
           mob.getComponent(CombatStatsComponent.class).setHealth(0);
+          ServiceLocator.getGameEndService().updateEngineerCount();
         }
 
         // death check
         if ((mob.getComponent(CombatStatsComponent.class).getHealth() <= 0 && !deathFlag)) {
             // decrement engineer count
             // ! tests failing because of textbox
-            // ServiceLocator.getGameEndService().updateEngineerCount();
+
             changeState(State.DEATH);
             animate();
             movementTask.stop();
