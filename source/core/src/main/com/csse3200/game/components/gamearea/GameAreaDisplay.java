@@ -26,7 +26,6 @@ public class GameAreaDisplay extends UIComponent {
   public void create() {
     super.create();
     addActors();
-    final Skin skin = new Skin();
   }
 
   public void render(float delta) {
