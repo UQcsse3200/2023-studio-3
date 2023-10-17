@@ -118,8 +118,6 @@ public class StunTowerCombatTask extends DefaultTask implements PriorityTask {
                         towerState = STATE.IDLE;
                     } else {
                         owner.getEntity().getEvents().trigger(ATTACK);
-//                    Entity newProjectile = ProjectileFactory.createFireBall(PhysicsLayer.NPC,
-//                            new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f));
                         Entity newProjectile = ProjectileFactory.createEffectProjectile(PhysicsLayer.NPC,
                                 new Vector2(100, owner.getEntity().getPosition().y), new Vector2(2f, 2f),
                                 ProjectileEffects.STUN, false);

@@ -103,7 +103,6 @@ public class TowerFactory {
     private static final float RICOCHET_TOWER_ANIM_ATTACK_SPEED = 0.12f;
     private static final String PIERCE_TOWER_ALERT_ANIM ="Warning";
     private static final float PIERCE_TOWER_ANIM_ATTACK_SPEED = 0.12f;
-    // private static final int INCOME_INTERVAL = 300;
     private static final int INCOME_TASK_PRIORITY = 1;
     private static final String ECO_ATLAS = "images/economy/econ-tower.atlas";
     private static final String ECO_MOVE = "move1";
@@ -112,6 +111,13 @@ public class TowerFactory {
 
     private static final BaseTowerConfigs configs =
             FileLoader.readClass(BaseTowerConfigs.class, "configs/tower.json");
+
+    /**
+     * Private constructor to hide the implicit public one
+     */
+    private TowerFactory() {
+        // This constructor is empty to prevent instantiation of the class
+    }
 
     /**
      * Creates an income tower that generates scrap
@@ -452,7 +458,7 @@ public class TowerFactory {
         Entity tower = new Entity()
                 .addComponent(new ColliderComponent())
                 .addComponent(new EffectComponent(false))
-                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // TODO: we might have to change the names of the layers
+                .addComponent(new HitboxComponent().setLayer(PhysicsLayer.TOWER)) // might have to change the names of the layers
                 .addComponent(new PhysicsComponent().setBodyType(BodyType.StaticBody))
                 .addComponent(new TowerUpgraderComponent());
 

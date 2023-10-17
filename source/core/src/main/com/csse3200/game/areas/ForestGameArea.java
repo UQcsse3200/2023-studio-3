@@ -287,7 +287,7 @@ public class ForestGameArea extends GameArea {
 
     loadAllAssets();
     loadAssets();
-    logger.debug("selected towers in main game are " + ServiceLocator.getTowerTypes());
+    logger.debug(String.format("selected towers in main game are %s", ServiceLocator.getTowerTypes()));
     displayUI();
     spawnTerrain();
 

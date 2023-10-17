@@ -87,7 +87,7 @@ public class BombshipWanderTask extends DefaultTask implements PriorityTask {
       doBombshipThings();
       startDestroying();;
       currentTask.update();
-    } else if (isDestroyed && animator.isFinished()) {
+    } else if (animator.isFinished()) {
       owner.getEntity().setFlagForDelete(true);
     }
   }

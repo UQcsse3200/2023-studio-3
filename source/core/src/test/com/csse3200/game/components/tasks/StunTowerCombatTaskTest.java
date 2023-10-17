@@ -81,7 +81,7 @@ class StunTowerCombatTaskTest {
      * in DroidCombatTaskTest by Mohamad Dabboussi
      */
     @Test
-    public void testUpdateTowerStateWithTargetNotInRange() {
+    void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createStunTower();
         entity.setPosition(10, 10);
 
