@@ -1,33 +1,15 @@
 package com.csse3200.game.services;
 
-import com.badlogic.gdx.audio.Sound;
-import com.csse3200.game.areas.ForestGameArea;
-import com.csse3200.game.components.maingame.UIElementsDisplay;
-import com.csse3200.game.components.tasks.waves.LevelWaves;
-import com.csse3200.game.components.tasks.waves.WaveTask;
-import com.csse3200.game.currency.Scrap;
 import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.rendering.DebugRenderer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-import com.csse3200.game.entities.EntityService;
-import com.csse3200.game.extensions.GameExtension;
 import com.csse3200.game.physics.PhysicsService;
 import com.csse3200.game.rendering.RenderService;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
-
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(GameExtension.class)
@@ -36,8 +18,6 @@ public class WaveServiceTest {
 
     @BeforeEach
     void setUp() {
-
-        UIElementsDisplay uiElementsDisplay = mock(UIElementsDisplay.class);
         GameTime gameTime = mock(GameTime.class);
         ServiceLocator.registerTimeSource(gameTime);
         ServiceLocator.registerPhysicsService(new PhysicsService());
