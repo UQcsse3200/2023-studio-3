@@ -40,8 +40,8 @@ public class WaveFactory {
   ));
 
   private static final ArrayList<ArrayList<String>> lvl2Structure = new ArrayList<>(Arrays.asList(
-      new ArrayList<>(Arrays.asList("Skeleton"
-      )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
+    new ArrayList<>(Arrays.asList("Skeleton"
+    )), new ArrayList<>(Arrays.asList("Skeleton", "ArcaneArcher"
       )), new ArrayList<>(Arrays.asList("Skeleton", "Wizard"
       )), new ArrayList<>(Arrays.asList("Skeleton", "SplittingNightBorne"
       )), new ArrayList<>(Arrays.asList("Wizard", "SplittingNightBorne"
@@ -130,9 +130,9 @@ public class WaveFactory {
     int bossHealth;
     int minMobs;
     // Base health of the bosses
-    int LVL1_BOSS_BASE_HEALTH = 500;
-    int LVL2_BOSS_BASE_HEALTH = 1000;
-    int LVL3_BOSS_BASE_HEALTH = 2000;
+    final int LVL1_BOSS_BASE_HEALTH = 500;
+    final int LVL2_BOSS_BASE_HEALTH = 1000;
+    final int LVL3_BOSS_BASE_HEALTH = 2000;
 
     switch (chosenLevel) {
       case 2:
@@ -155,7 +155,6 @@ public class WaveFactory {
         break;
     }
 
-//    int totalMobs = 0;
     // Create mxWaves number of waves with mob stats increasing
     int atWave = 1;
     for (ArrayList<String> wave : possibleMobs) {
@@ -171,26 +170,23 @@ public class WaveFactory {
         // Calculate the number of mobs for the wave
         if (leftToSort == 0) {
           num = minMobs - currentMobs;
-          System.out.println(num + " for " + mob + " at wave " + atWave);
         } else {
           num = rand.nextInt(minMobs - currentMobs - (2 * leftToSort) - 2) + 2;
-          System.out.println(num + " for " + mob + " at wave " + atWave);
           currentMobs += num;
         }
 
         // Calculate the health
-        int RANGE_BASE_HEALTH = 60;
+        final int RANGE_BASE_HEALTH = 60;
         int health = RANGE_BASE_HEALTH;
         if (MELEE_MOBS.contains(mob)) {
           // The base health for the different mobs
-          int MELEE_BASE_HEALTH = 80;
+          final int MELEE_BASE_HEALTH = 80;
           health = MELEE_BASE_HEALTH;
         }
         int[] mobStats = {num, health + (atWave * chosenLevel)};
         mobs.put(mob, mobStats);
 
         leftToSort --;
-//        totalMobs += num;
       }
       minMobs ++;
       level.addWave(new WaveClass(mobs));
@@ -200,9 +196,7 @@ public class WaveFactory {
     // Add boss wave
     HashMap<String, int[]> bossMob = new HashMap<>();
     bossMob.put(boss, new int[]{1, bossHealth});
-//    totalMobs ++;
 
-//    ServiceLocator.getWaveService().setTotalMobs(totalMobs);
     level.addWave(new WaveClass(bossMob));
 
 

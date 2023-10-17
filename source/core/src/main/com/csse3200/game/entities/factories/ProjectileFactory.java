@@ -58,11 +58,10 @@ public class ProjectileFactory {
                                 .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-		animator.addAnimation("projectileCollide", START_SPEED, Animation.PlayMode.NORMAL);
 
         projectile
                 .addComponent(animator)
-                .addComponent(new ProjectileAnimationController(targetLayer));
+                .addComponent(new ProjectileAnimationController());
       }
       case BURN -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.BURN, aoe));
@@ -72,11 +71,10 @@ public class ProjectileFactory {
                                 .getAsset("images/projectiles/burn_effect.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-        animator.addAnimation("explosion", 0.1f, Animation.PlayMode.NORMAL);
 
         projectile
                 .addComponent(animator)
-                .addComponent(new BurnEffectProjectileAnimationController(targetLayer));
+                .addComponent(new BurnEffectProjectileAnimationController());
       }
       case SLOW -> {
         projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
@@ -86,11 +84,10 @@ public class ProjectileFactory {
                                 .getAsset("images/projectiles/snow_ball.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
         animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-		animator.addAnimation("collision", START_SPEED, Animation.PlayMode.NORMAL);
 
         projectile
                 .addComponent(animator)
-                .addComponent(new SnowBallProjectileAnimationController(targetLayer));
+                .addComponent(new SnowBallProjectileAnimationController());
         // * TEMPORARY
         // .addComponent(new DeleteOnMapEdgeComponent());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
@@ -104,37 +101,12 @@ public class ProjectileFactory {
                         ServiceLocator.getResourceService()
                                 .getAsset("images/projectiles/stun_effect.atlas", TextureAtlas.class));
         animator.addAnimation(START_ANIM, 0.1f, Animation.PlayMode.LOOP);
-        animator.addAnimation("stun", 0.3f, Animation.PlayMode.LOOP);
 
         projectile
                 .addComponent(animator)
-                .addComponent(new StunEffectProjectileAnimationController(targetLayer));
+                .addComponent(new StunEffectProjectileAnimationController());
       }
     }
-    return projectile;
-  }
-  
-  public static Entity createComboSnowBall(short targetLayer, Vector2 destination, Vector2 speed, boolean aoe) {
-    Entity projectile = createBaseProjectile(targetLayer, destination, speed);
-	projectile.addComponent(new EffectsComponent(targetLayer, 3, ProjectileEffects.SLOW, aoe));
-	
-    AnimationRenderComponent animator =
-            new AnimationRenderComponent(
-						ServiceLocator.getResourceService()
-                                .getAsset("images/projectiles/mobBoss_projectile.atlas", TextureAtlas.class),
-                        ServiceLocator.getResourceService()
-                                .getAsset("images/projectiles/snow_ball.atlas", TextureAtlas.class));
-		animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
-		animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-	animator.addAnimation("collision", START_SPEED, Animation.PlayMode.NORMAL);
-
-    projectile
-            .addComponent(animator)
-            .addComponent(new SnowBallProjectileAnimationController(targetLayer));
-    // * TEMPORARY
-    // .addComponent(new DeleteOnMapEdgeComponent());
-    // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
-
     return projectile;
   }
 
@@ -148,22 +120,6 @@ public class ProjectileFactory {
     fireBall.getComponent(TouchAttackComponent.class).setKnockBack(0f);
 
     return fireBall;
-  }
-  
-  public static Entity createPierceArrow(short targetLayer, Vector2 destination, Vector2 speed) {
-	Entity arrow = createBaseProjectile(targetLayer, destination, speed);
-    AnimationRenderComponent animator =
-            new AnimationRenderComponent(
-                    ServiceLocator.getResourceService()
-                            .getAsset("images/projectiles/arrow.atlas", TextureAtlas.class));
-    animator.addAnimation("arrow", 0.1f, Animation.PlayMode.LOOP);
-    arrow
-            .addComponent(animator)
-            .addComponent(new PierceArrowAnimationController());
-    arrow.getComponent(TouchAttackComponent.class).setDisposeOnHit(false);
-    arrow.getComponent(TouchAttackComponent.class).setKnockBack(0f);
-
-    return arrow;
   }
 
   /**
@@ -205,11 +161,10 @@ public class ProjectileFactory {
                             .getAsset(BASE_PROJECTILE_ATLAS, TextureAtlas.class));
     animator.addAnimation(START_ANIM, START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation(FINAL_ANIM, FINAL_SPEED, Animation.PlayMode.NORMAL);
-	animator.addAnimation("projectileCollide", START_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
             .addComponent(animator)
-            .addComponent(new ProjectileAnimationController(targetLayer));
+            .addComponent(new ProjectileAnimationController());
     // * TEMPORARY
     // .addComponent(new DeleteOnMapEdgeComponent());
     // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
@@ -273,11 +228,10 @@ public class ProjectileFactory {
                             .getAsset("images/projectiles/engineer_projectile.atlas", TextureAtlas.class));
     animator.addAnimation("bullet", START_SPEED, Animation.PlayMode.NORMAL);
     animator.addAnimation("bulletFinal", FINAL_SPEED, Animation.PlayMode.NORMAL);
-    animator.addAnimation("bulletCollide", START_SPEED, Animation.PlayMode.NORMAL);
 
     projectile
         .addComponent(animator)
-        .addComponent(new EngineerBulletsAnimationController(targetLayer));
+        .addComponent(new EngineerBulletsAnimationController());
         // .addComponent(new SelfDestructOnHitComponent(PhysicsLayer.OBSTACLE));
 
     return projectile;
@@ -389,7 +343,7 @@ public class ProjectileFactory {
         // This is the component that allows the projectile to damage a
         // specified target.
         // Original knockback value: 1.5f
-        .addComponent(new TouchAttackComponent(targetLayer, 1.5f, true))
+        .addComponent(new TouchAttackComponent(targetLayer, 0f, true))
         .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
         // *TEMPORARY
         .addComponent(new DeleteOnMapEdgeComponent());

@@ -1,5 +1,6 @@
 package com.csse3200.game.components.gamearea;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,11 +57,17 @@ public class CurrencyDisplay extends UIComponent {
                 ServiceLocator.getCurrencyService().getCrystal().getAmount());
 
         table.add(scrapsTb).width(scrapsTb.getWidth() * 0.5f).height(scrapsTb.getHeight() * 0.5f);
+        table.row();
         table.add(crystalsTb).width(crystalsTb.getWidth() * 0.5f).height(crystalsTb.getHeight() * 0.5f);
         stage.addActor(table);
 
-        scrapsTb.addAction(new SequenceAction(Actions.fadeIn(4f)));
-        crystalsTb.addAction(new SequenceAction(Actions.fadeIn(8f)));
+        scrapsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 205f);
+        scrapsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 205f,
+                1f, Interpolation.fastSlow)));
+
+        crystalsTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 268f);
+        crystalsTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 268f,
+                1f, Interpolation.fastSlow)));
     }
 
     private TextButton createButton(String imageFilePath, int value) {

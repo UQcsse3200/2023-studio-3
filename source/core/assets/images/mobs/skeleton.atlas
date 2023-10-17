@@ -76,7 +76,7 @@ skeleton_attack
   index: -1
 skeleton_attack
   rotate: false
-  xy: 514, 2
+  xy: 578, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
@@ -90,7 +90,7 @@ skeleton_attack
   index: -1
 skeleton_attack
   rotate: false
-  xy: 770, 2
+  xy: 834, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
@@ -98,41 +98,6 @@ skeleton_attack
 skeleton_attack
   rotate: false
   xy: 322, 2
-  size: 62, 48
-  orig: 62, 48
-  offset: 0, 0
-  index: -1
-skeleton_death
-  rotate: false
-  xy: 1026, 2
-  size: 62, 48
-  orig: 62, 48
-  offset: 0, 0
-  index: -1
-skeleton_death
-  rotate: false
-  xy: 66, 52
-  size: 62, 48
-  orig: 62, 48
-  offset: 0, 0
-  index: -1
-skeleton_death
-  rotate: false
-  xy: 834, 52
-  size: 62, 48
-  orig: 62, 48
-  offset: 0, 0
-  index: -1
-skeleton_death
-  rotate: false
-  xy: 1154, 55
-  size: 62, 45
-  orig: 62, 45
-  offset: 0, 0
-  index: -1
-skeleton_death
-  rotate: false
-  xy: 578, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
@@ -195,7 +160,7 @@ skeleton_walk
   index: -1
 skeleton_walk
   rotate: false
-  xy: 514, 52
+  xy: 514, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
@@ -209,7 +174,7 @@ skeleton_walk
   index: -1
 skeleton_walk
   rotate: false
-  xy: 770, 52
+  xy: 770, 2
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
@@ -244,21 +209,21 @@ skeleton_walk
   index: -1
 skeleton_walk
   rotate: false
-  xy: 578, 52
+  xy: 514, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
 skeleton_walk
   rotate: false
-  xy: 130, 2
+  xy: 66, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0
   index: -1
 skeleton_walk
   rotate: false
-  xy: 834, 2
+  xy: 770, 52
   size: 62, 48
   orig: 62, 48
   offset: 0, 0

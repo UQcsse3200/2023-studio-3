@@ -3,13 +3,9 @@ package com.csse3200.game.components.npc;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
 
-import java.security.SecureRandom;
-
 public class NecromancerAnimationController extends Component {
 
     AnimationRenderComponent animator;
-    private SecureRandom rand = new SecureRandom();
-
 
     @Override
     public void create() {
