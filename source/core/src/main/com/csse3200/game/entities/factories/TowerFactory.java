@@ -438,7 +438,6 @@ public class TowerFactory {
                 .addComponent(new CombatStatsComponent(config.health, config.baseAttack))
                 .addComponent((new CostComponent(config.cost)))
                 .addComponent(aiTaskComponent);
-                // ADD ANIMATION COMPONENTS
 
         ricochetTower.setScale(1.5f, 1.5f);
         return ricochetTower;
