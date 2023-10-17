@@ -13,9 +13,15 @@ public class PredefinedWeapons {
     public static final Melee PUNCH = new Melee(3, 1, "air", 1, 1);
     public static final Melee AXE = new Melee(9, 3, "fire", 1, 1);
     public static final Melee KICK = new Melee(2, 1, "earth", 1, 1);
+    public static final Melee sword = new Melee(10, 4, "fire", 1, 1);
+    public static final Melee punch = new Melee(3, 1, "air", 1, 1);
+    public static final Melee axe = new Melee(9, 3, "fire", 1, 1);
+    public static final Melee kick = new Melee(2, 1, "earth", 1, 1);
 
     //TODO import defined projectiles for mobs
     public static final ProjectileConfig FIREBALL = new ProjectileConfig();
     public static final ProjectileConfig FROSTBALL = new ProjectileConfig();
+    public static final ProjectileConfig fireBall = new ProjectileConfig();
+    public static final ProjectileConfig frostBall = new ProjectileConfig();
 
 }

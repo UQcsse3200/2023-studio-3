@@ -1,6 +1,6 @@
 
 engineer_projectile.png
-size: 128, 32
+size: 148, 32
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
@@ -32,4 +32,24 @@ bullet
   orig: 20, 19
   offset: 0, 0
   index: -1
-
+bulletCollide
+  rotate: false
+  xy: 87, 2
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+bulletCollide
+  rotate: false
+  xy: 107, 2
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1
+bulletCollide
+  rotate: false
+  xy: 127, 2
+  size: 20, 19
+  orig: 20, 19
+  offset: 0, 0
+  index: -1

@@ -1,7 +1,9 @@
 package com.csse3200.game.components.npc;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 import java.security.SecureRandom;
 
 /**
@@ -26,6 +28,7 @@ public class XenoAnimationController extends Component {
         entity.getEvents().addListener("shootStart", this::animateShoot);
         entity.getEvents().addListener("dieStart", this::animateDie);
         entity.getEvents().addListener("stop", this::stopAnimation);
+        entity.getEvents().addListener("freeze", this::animateFreeze);
     }
 
     void animateRun() {
@@ -56,4 +59,9 @@ public class XenoAnimationController extends Component {
     void stopAnimation() {
         animator.startAnimation("default");
     }
+	
+	void animateFreeze()
+	{
+		animator.startAnimation("xeno_freeze");
+	}
 }

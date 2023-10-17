@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 
 
 @ExtendWith(GameExtension.class)
-class XenoAnimationControllerTest {
+public class XenoAnimationControllerTest {
 
     private Entity xenoGrunt;
     private final String[] atlas = {"images/mobs/xenoGrunt.atlas"};
@@ -42,29 +42,34 @@ class XenoAnimationControllerTest {
     }
 
     @Test
-    void testAnimateWander() {
+    public void testAnimateWander() {
         xenoGrunt.getEvents().trigger("wanderStart");
         assertEquals("xeno_run", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    void testAnimateHurt() {
+    public void testAnimateHurt() {
         xenoGrunt.getEvents().trigger("runHurt");
         assertEquals("xeno_hurt", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
     @Test
-    void testAnimateMelee1() {
-        //TODO: Add at least one assertion to this test case.
+    public void testAnimateMelee1() {
         xenoGrunt.getEvents().trigger("meleeStart");
         assert(Objects.equals(xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation(), "xeno_melee_1")
                 || Objects.equals(xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation(), "xeno_melee_2"));
     }
 
     @Test
-    void testAnimateDie() {
+    public void testAnimateDie() {
         xenoGrunt.getEvents().trigger("dieStart");
         assertEquals("xeno_die", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
+    }
+
+    @Test
+    public void testAnimateFreeze() {
+        xenoGrunt.getEvents().trigger("freeze");
+        assertEquals("xeno_freeze", xenoGrunt.getComponent(AnimationRenderComponent.class).getCurrentAnimation());
     }
 
 }

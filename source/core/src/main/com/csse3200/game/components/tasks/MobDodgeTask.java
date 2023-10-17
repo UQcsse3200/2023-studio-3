@@ -1,9 +1,11 @@
 package com.csse3200.game.components.tasks;
 
-import com.csse3200.game.components.tasks.MobTask.MobTask;
-import com.csse3200.game.components.tasks.MobTask.MobType;
+import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
+import com.csse3200.game.ai.tasks.AITaskComponent;
+import com.csse3200.game.components.npc.XenoAnimationController;
+import com.csse3200.game.components.tasks.MobTask.*;
 
 /**
  * This task runs the AI that adds a dodge mechanic/functionality for the mobs
@@ -23,15 +25,17 @@ public class MobDodgeTask extends MobTask {
   private long endTime;
 
   // Helps task wait between each interval.
-  private static final int DELAY_INTERVAL = 500;
+  private final int DELAY_INTERVAL = 500;
 
   /**
    * Initialises a mob dodge task with a specified wander range, wait time, and
    * priority level.
    * 
-   * @param mobType Distance in X and Y the entity can move from its position
-   *                    when start() is called.
-   * @param priority Priority level compared to other added tasks.
+   * @param wanderRange Distance in X and Y the entity can move from its position
+   *                    when start() is
+   *                    called.
+   * @param waitTime    How long in seconds to wait between wandering.
+   * @param priority    Priority level compared to other added tasks.
    */
   public MobDodgeTask(MobType mobType, int priority) {
     super(mobType);
@@ -59,13 +63,15 @@ public class MobDodgeTask extends MobTask {
   @Override
   public void update() {
     super.update();
-    if (timeSource.getTime() >= endTime) {
-      owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
-          owner.getEntity().getCenterPosition());
-      
+	if(!owner.getEntity().getComponent(AITaskComponent.class).freezed)
+	{
+		if (timeSource.getTime() >= endTime) {
+		  owner.getEntity().getEvents().trigger("dodgeIncomingEntity",
+			  owner.getEntity().getCenterPosition());
 
-      endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
-    }
+		  endTime = timeSource.getTime() + DELAY_INTERVAL; // update time
+		}
+	}
   }
 
   /**
