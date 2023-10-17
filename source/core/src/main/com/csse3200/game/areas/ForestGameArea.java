@@ -218,19 +218,6 @@ public class ForestGameArea extends GameArea {
   }
 
   /**
-   * Add this method to start the wave spawning timer when the game starts.
-   */
-//  private void startWaveTimer() {
-//    waveTimer = new Timer();
-//    waveTimer.scheduleAtFixedRate(new TimerTask() {
-//      @Override
-//      public void run() {
-//        spawnWave();
-//      }
-//    }, 0, 10000); // 10000 milliseconds = 10 seconds
-//  }
-
-  /**
    * Add this method to stop the wave timer when the game ends or as needed.
    */
   private void stopWaveTimer() {
