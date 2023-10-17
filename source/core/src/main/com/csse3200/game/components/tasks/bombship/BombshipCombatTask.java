@@ -16,8 +16,6 @@ import com.csse3200.game.services.ServiceLocator;
 public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     private static final int INTERVAL = 1; // The time interval for each target scan from the Engineer.
     private static final int PRIORITY = 3; // Default priority of the combat task when mobs are in range.
-    // private static final short TARGET1 = PhysicsLayer.BOSS; // The type of targets that the Engineer will detect.
-    // private static final short TARGET2 = PhysicsLayer.XENO;
 
     // Animation event names for the Engineer's state machine.
     private static final String START = "start";
@@ -30,12 +28,6 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     private PhysicsEngine physics;
     private GameTime timeSource;
     private long endTime;
-/*
-    private long reloadTime;
-    private ArrayList<RaycastHit> hits = new ArrayList<>();
-    private final RaycastHit hit = new RaycastHit();
-    private ArrayList<Vector2> targets = new ArrayList<>();
-*/
 
     /** The Engineer's states. */
     private enum STATE {
@@ -128,28 +120,5 @@ public class BombshipCombatTask extends DefaultTask implements PriorityTask {
     public boolean isEngineerDied() {
         return true;
     }
-
-    /**
-     * Fetches the nearest target from the array of detected target positions created during the last call of
-     * this could be done in the next sprint , the scan doesnt work as of now !
-     * @return a Vector2 position of the nearest mob detected.
-     */
-   /** public Vector2 fetchTarget() {
-        // Initial nearest position for comparison
-        int lowest = 10;
-
-        Vector2 nearest = new Vector2(owner.getEntity().getCenterPosition().x,
-                owner.getEntity().getCenterPosition().y);
-
-        // Find the nearest target from the array of targets
-        for (Vector2 tgt : targets){
-            if (Math.abs(tgt.y - nearest.y) < lowest) {
-                lowest = (int)Math.abs(tgt.y - nearest.y);
-                nearest = tgt;
-            }
-        }
-        return nearest;
-    }
-    */
 }
 

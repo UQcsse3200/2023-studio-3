@@ -1,7 +1,9 @@
 package com.csse3200.game.components.tower;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Listens to triggers phrases and executes the required animations.
@@ -15,8 +17,6 @@ public class StunTowerAnimationController extends Component {
     private static final String IDLE_ANIM = "idle";
     private static final String ATTACK_ANIM = "attack";
     private static final String DEATH_ANIM = "death";
-
-    //further sounds can be added for the tower attacks/movement
 
     private static final String FIRE_SINGLE_SFX = "sounds/towers/ar15_single_shot_far.mp3";
 

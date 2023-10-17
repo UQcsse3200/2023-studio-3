@@ -1,7 +1,9 @@
 package com.csse3200.game.components.tower;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * Listens for events relevant to a weapon tower state.
@@ -19,7 +21,6 @@ public class FireTowerAnimationController extends Component{
     private static final String PREP_ATTACK_ANIM = "prepAttack";
     private static final String ATTACK_ANIM = "attack";
     private static final String DEATH_ANIM = "death";
-    //here we can add the sounds for the implemented animations
 
     private static final String FIRE_SINGLE_SFX = "sounds/towers/Desert-Eagle-Far-Single-Gunshot.mp3";
 
