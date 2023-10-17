@@ -38,7 +38,6 @@ public class TowerUpgraderComponent extends Component {
             case MAXHP -> upgradeTowerMaxHealth( value);
             case FIRERATE -> getEntity().getEvents().trigger("addFireRate", value);
             case REPAIR -> repairTower();
-
         }
     }
 

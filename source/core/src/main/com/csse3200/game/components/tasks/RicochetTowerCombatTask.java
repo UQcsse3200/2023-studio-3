@@ -13,6 +13,8 @@ import com.csse3200.game.rendering.AnimationRenderComponent;
 import com.csse3200.game.services.GameTime;
 import com.csse3200.game.services.ServiceLocator;
 
+import static java.lang.Math.round;
+
 
 /**
  * The RicochetTowerCombatTask runs the AI for the RicochetTower class. The tower scans for mobs and targets in a
@@ -37,6 +39,7 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
     private final Vector2 maxRangePosition = new Vector2();
     private PhysicsEngine physics;
     private GameTime timeSource;
+    private float fireRateInterval;
     private long endTime;
     private final RaycastHit hit = new RaycastHit();
     private boolean shoot = true;
@@ -54,6 +57,7 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
     public RicochetTowerCombatTask(int priority, float maxRange) {
         this.priority = priority;
         this.maxRange = maxRange;
+        this.fireRateInterval = 1;
         physics = ServiceLocator.getPhysicsService().getPhysics();
         timeSource = ServiceLocator.getTimeSource();
     }
@@ -81,7 +85,11 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
     public void update() {
         if (timeSource.getTime() >= endTime) {
             updateTowerState();
-            endTime = timeSource.getTime() + (INTERVAL * 1000);
+            if (towerState == STATE.ATTACK) {
+                endTime = timeSource.getTime() + round(fireRateInterval * 1000);
+            } else {
+                endTime = timeSource.getTime() + (INTERVAL * 1000);
+            }
         }
     }
 
@@ -167,6 +175,8 @@ public class RicochetTowerCombatTask extends DefaultTask implements PriorityTask
      * @return true if targets are detected, false otherwise
      */
     public boolean isTargetVisible() {
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 }

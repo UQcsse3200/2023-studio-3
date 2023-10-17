@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class DroidCombatTaskTest {
+class DroidCombatTaskTest {
     DroidCombatTask droidCombatTask;
 
     @BeforeEach
@@ -35,7 +35,7 @@ public class DroidCombatTaskTest {
     }
 
     @Test
-    public void testStartTriggersWalkEvent() {
+    void testStartTriggersWalkEvent() {
         Entity entity = createDroid();
         EventListener0 walkListener = mock(EventListener0.class);
         // Deploy Droid in the walking state
@@ -45,7 +45,7 @@ public class DroidCombatTaskTest {
     }
 
     @Test
-    public void testUpdateTowerStateWithTargetInRange() {
+    void testUpdateTowerStateWithTargetInRange() {
         Entity entity = createDroid();
         entity.setPosition(10,10);
 
@@ -98,7 +98,7 @@ public class DroidCombatTaskTest {
     }
 
     @Test
-    public void testUpdateTowerStateWithTargetNotInRange() {
+    void testUpdateTowerStateWithTargetNotInRange() {
         Entity entity = createDroid();
         entity.setPosition(10, 10);
 
@@ -123,7 +123,6 @@ public class DroidCombatTaskTest {
         verifyNoInteractions(attackUp);
         assertEquals(DroidCombatTask.STATE.IDLE, droidCombatTask.getState());
     }
-
 
     Entity createDroid() {
         AITaskComponent aiTaskComponent = new AITaskComponent().addTask(droidCombatTask);

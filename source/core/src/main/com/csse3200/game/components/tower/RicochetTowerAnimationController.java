@@ -1,13 +1,19 @@
 package com.csse3200.game.components.tower;
 
+import com.badlogic.gdx.audio.Sound;
 import com.csse3200.game.components.Component;
 import com.csse3200.game.rendering.AnimationRenderComponent;
+import com.csse3200.game.services.ServiceLocator;
 
 /**
  * This class listens to events relevant to DroidTower entity's state and plays the animation when one
  * of the events is triggered.
  */
 public class RicochetTowerAnimationController extends Component {
+    private static final String FIRE_SINGLE_SFX = "sounds/towers/5.56_single_shot.mp3";
+
+    private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
+            FIRE_SINGLE_SFX, Sound.class);
     private AnimationRenderComponent animator;
 
     /**
@@ -30,6 +36,7 @@ public class RicochetTowerAnimationController extends Component {
      */
     void animateAttack() {
         animator.startAnimation("Attack");
+        fireSingleSound.play();
     }
 
 

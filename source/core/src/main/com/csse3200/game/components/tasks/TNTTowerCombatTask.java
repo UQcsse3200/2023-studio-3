@@ -133,7 +133,9 @@ public class TNTTowerCombatTask extends DefaultTask implements PriorityTask {
      */
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     public boolean isReadyToDelete() {

@@ -60,8 +60,8 @@ public class EngineerCountDisplay extends UIComponent {
         stage.addActor(table);
 
         // Animate the engineer count label
-        engineerTb.setPosition(table.getX() - 200, Gdx.graphics.getHeight() - 145);
-        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20, Gdx.graphics.getHeight() - 145,
+        engineerTb.setPosition(table.getX() - 200f, Gdx.graphics.getHeight() - 145f);
+        engineerTb.addAction(new SequenceAction(Actions.moveTo(table.getX() + 20f, Gdx.graphics.getHeight() - 145f,
                 1f, Interpolation.fastSlow)));
     }
 
@@ -69,13 +69,15 @@ public class EngineerCountDisplay extends UIComponent {
      * Updates the engineer count on the UI component
      */
     public void updateCount() {
-        int currentCount = ServiceLocator.getGameEndService().getEngineerCount();
-        String text = String.format("%d", currentCount);
-        engineerTb.getLabel().setText(text);
-        if (currentCount < ServiceLocator.getGameEndService().getThreshold()) {
+        if (engineerTb != null) { // fix for null pointer exception
+            int currentCount = ServiceLocator.getGameEndService().getEngineerCount();
+            String text = String.format("%d", currentCount);
+            engineerTb.getLabel().setText(text);
+            if (currentCount < ServiceLocator.getGameEndService().getThreshold()) {
 //            engineerTb.addAction(Actions.color(Color.RED, 0.5f, Interpolation.swingIn));
-            engineerTb.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(0.5f),
-                    Actions.fadeIn(0.5f))));
+                engineerTb.addAction(Actions.forever(new SequenceAction(Actions.fadeOut(0.5f),
+                        Actions.fadeIn(0.5f))));
+            }
         }
     }
 

@@ -101,18 +101,10 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
         }
 
         switch (towerState) {
-            case IDLE -> {
-                handleIdleState();
-            }
-            case PREP_ATTACK -> {
-                handlePrepAttackState();
-            }
-            case ATTACK -> {
-                handleAttackState();
-            }
-            default -> {     // DEATH
-                handleDeathState();
-            }
+            case IDLE -> handleIdleState();
+            case PREP_ATTACK -> handlePrepAttackState();
+            case ATTACK -> handleAttackState();
+            default -> handleDeathState();     // DEATH
         }
     }
 
@@ -141,40 +133,17 @@ public class FireTowerCombatTask extends DefaultTask  implements PriorityTask {
     }
 
     /**
-     * not currently used.
-     * @return the priority for this task
-     */
-    public int getActivePriority() {
-        return !isTargetVisible() ? 0 : priority;
-    }
-
-    /**
-     * not currently used.
-     * @return
-     */
-    public int getInactivePriority() {
-        return isTargetVisible() ? priority : 0;
-    }
-
-    /**
      * detects targets from the centre of the tower to maxRange in a straight line.
      * @return true if mobs are present and false otherwise.
      */
     public boolean isTargetVisible() {
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     private void changeFireRateInterval(int newInterval) {
         fireRateInterval = 1 / ((float) newInterval / 5);
-    }
-
-    /**
-     * Function for getting the turret's fire rate.
-     *
-     * @return The fireRateInterval variable
-     */
-    public float getFireRateInterval() {
-        return fireRateInterval;
     }
 
     /**

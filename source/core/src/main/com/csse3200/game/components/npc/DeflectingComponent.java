@@ -60,7 +60,7 @@ public class DeflectingComponent extends Component {
 
   @Override
   public void update() {
-    resetHealth();
+    super.update();
   }
 
   /**
@@ -77,8 +77,6 @@ public class DeflectingComponent extends Component {
 
     if (deflectLimitAmount-- <= 0) { // Reached deflect limit amt, return.
       entity.getComponent(this.getClass()).setEnabled(false);
-      // reset health
-      resetHealth();
       return;
     }
 

@@ -112,4 +112,40 @@ class HumanAnimationControllerTest {
         assertEquals("death", engineer.getComponent(AnimationRenderComponent.class).getCurrentAnimation(),
                 "'deathStart' event should trigger 'death' animation'");
     }
+
+    @Test
+    void notSelectedOnStart() {
+        assertFalse(engineer.getComponent(HumanAnimationController.class).isClicked(),
+                "Engineer should not be selected when initialised");
+    }
+
+    @Test
+    void shouldSelectEngineer() {
+        engineer.getComponent(HumanAnimationController.class).setClicked(true);
+        AnimationRenderComponent animator = engineer.getComponent(AnimationRenderComponent.class);
+
+        engineer.getEvents().trigger("idleRight");
+        assertEquals("idle_right_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - idle right");
+
+        engineer.getEvents().trigger("walkLeftStart");
+        assertEquals("walk_left_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - walk left");
+
+        engineer.getEvents().trigger("walkRightStart");
+        assertEquals("walk_right_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - walk right");
+
+        engineer.getEvents().trigger("firingSingleStart");
+        assertEquals("firing_single_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - firing single");
+
+        engineer.getEvents().trigger("hitStart");
+        assertEquals("hit_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - hit");
+
+        engineer.getEvents().trigger("deathStart");
+        assertEquals("death_outline", animator.getCurrentAnimation(),
+                "After selection, outlined animation should be playing - death");
+    }
 }

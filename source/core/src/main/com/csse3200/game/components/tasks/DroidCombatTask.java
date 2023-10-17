@@ -105,27 +105,13 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         }
 
         switch (towerState) {
-            case WALK -> {
-                handleWalkState();
-            }
-            case IDLE -> {
-                handleIdleState();
-            }
-            case SHOOT_DOWN -> {
-                handleShootDownState();
-            }
-            case SHOOT_UP -> {
-                handleShootUpState();
-            }
-            case DOWN -> {
-                handleDownState();
-            }
-            case UP -> {
-                handleUpState();
-            }
-            default -> {        // DIE
-                handleDieState();
-            }
+            case WALK -> handleWalkState();
+            case IDLE -> handleIdleState();
+            case SHOOT_DOWN -> handleShootDownState();
+            case SHOOT_UP -> handleShootUpState();
+            case DOWN -> handleDownState();
+            case UP -> handleUpState();
+            default -> handleDieState();       // DIE
         }
     }
 
@@ -138,6 +124,10 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
         return this.towerState;
     }
 
+    /**
+     * Function for setting the tower's state.
+     * @param state The new state of this tower.
+     */
     public void setState(STATE state) {
         this.towerState = state;
     }
@@ -157,7 +147,9 @@ public class DroidCombatTask extends DefaultTask implements PriorityTask {
      */
     public boolean isTargetVisible() {
         // If there is an obstacle in the path to the max range point, mobs visible.
-        return physics.raycast(towerPosition, maxRangePosition, TARGET, hit);
+        boolean top = physics.raycast(towerPosition.add(0f,0.4f), maxRangePosition.add(0f,0.4f), TARGET, hit);
+        boolean bottom = physics.raycast(towerPosition.sub(0f,0.4f), maxRangePosition.sub(0f,0.4f), TARGET, hit);
+        return top || bottom;
     }
 
     private void changeFireRateInterval(int newInterval) {
