@@ -792,9 +792,9 @@ public class ForestGameArea extends GameArea {
 
   private void spawnBombship() {
     GridPoint2 minPos = new GridPoint2(0, 0);
-    GridPoint2 maxPos = terrain.getMapBounds(0).sub(5, 1);
+    GridPoint2 maxPos = terrain.getMapBounds(0).sub(1,5);
     Entity bombship = BombshipFactory.createBombship();
-    spawnEntityAt(bombship, minPos, true, true);
+    spawnEntityAt(bombship, minPos, true, false);
   }
 
   private void spawnDroidTower() {
