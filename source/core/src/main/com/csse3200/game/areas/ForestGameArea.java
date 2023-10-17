@@ -4,10 +4,6 @@ import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.factories.*;
-import com.badlogic.gdx.audio.Music;
-
-import com.csse3200.game.components.ProjectileEffects;
-
 import com.csse3200.game.utils.math.RandomUtils;
 import com.csse3200.game.services.ResourceService;
 import com.csse3200.game.services.ServiceLocator;
@@ -22,8 +18,6 @@ public class ForestGameArea extends GameArea {
   private static final Logger logger = LoggerFactory.getLogger(ForestGameArea.class);
 
   private Timer waveTimer;
-
-  private static final int NUM_WEAPON_TOWERS = 3;
   private static final GridPoint2 PLAYER_SPAWN = new GridPoint2(2, 4);
   // Temporary spawn point for testing
   private static final float WALL_WIDTH = 0.1f;
@@ -213,8 +207,6 @@ public class ForestGameArea extends GameArea {
   private static final String BACKGROUND_MUSIC = "sounds/background/Sci-Fi1.ogg";
 
   private static final String[] forestMusic = {BACKGROUND_MUSIC};
-  private Entity player;
-  private Entity waves;
 
   /**
    * Initialise this ForestGameArea to use the provided TerrainFactory.
@@ -295,7 +287,7 @@ public class ForestGameArea extends GameArea {
 //    player = spawnPlayer();
 
     logger.info("Creating waves");
-    waves = WaveFactory.createWaves();
+    Entity waves = WaveFactory.createWaves();
     spawnEntity(waves);
     waves.getEvents().addListener("spawnWave", this::spawnMob);
 

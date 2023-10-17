@@ -1,7 +1,6 @@
 package com.csse3200.game.ai.tasks;
 
 import com.csse3200.game.components.Component;
-import com.csse3200.game.components.ComponentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
