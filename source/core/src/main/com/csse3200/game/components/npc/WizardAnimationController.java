@@ -25,8 +25,6 @@ public class WizardAnimationController extends Component {
         entity.getEvents().addListener("mob_walk", this::animateWalk);
         entity.getEvents().addListener("mob_attack", this::animateAttack);
         entity.getEvents().addListener("mob_death", this::animateDeath);
-
-
     }
 
     void animateWalk() {

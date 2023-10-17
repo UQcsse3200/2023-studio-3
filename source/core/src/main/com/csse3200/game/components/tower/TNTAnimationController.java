@@ -11,10 +11,10 @@ import com.csse3200.game.services.ServiceLocator;
  */
 public class TNTAnimationController extends Component {
     private AnimationRenderComponent animator;
-    private static final String EXPLOSION = "sounds/towers/explosion.mp3";
+    private static final String EXPLOSION_PATH = "sounds/towers/explosion.mp3";
 
     private final Sound explosion = ServiceLocator.getResourceService().getAsset(
-            EXPLOSION, Sound.class);
+            EXPLOSION_PATH, Sound.class);
 
     /**
      * Creation call for a TNTAnimationController, fetches the animationRenderComponent that this controller will
