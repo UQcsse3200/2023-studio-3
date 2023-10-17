@@ -12,7 +12,7 @@ public class WarningFactory {
     public static Camera camera;
     public static Entity createWarning(Entity mob) {
         WarningComponent warningComponent = new WarningComponent();
-        warningComponent.config(mob, camera);
+        warningComponent.config(mob);
         return new Entity()
                 .addComponent(new AITaskComponent().addTask(new WarningTask()))
                 .addComponent(warningComponent);

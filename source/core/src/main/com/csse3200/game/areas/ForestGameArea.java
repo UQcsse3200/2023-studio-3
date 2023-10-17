@@ -18,8 +18,6 @@ import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
 import java.util.Timer;
-
-import static com.csse3200.game.entities.factories.WarningFactory.createWarning;
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
@@ -118,7 +116,8 @@ public class ForestGameArea extends GameArea {
           "images/GrassTile/grass_tile_6.png",
           "images/GrassTile/grass_tile_7.png",
           "images/mobboss/iceBaby.png",
-          "images/bombship/bombship.png"
+          "images/bombship/bombship.png",
+          "images/ui/Sprites/UI_Glass_Select_01a1.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
