@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 import java.security.SecureRandom;
 import java.util.Timer;
+
 import static com.csse3200.game.screens.AssetLoader.loadAllAssets;
 
 /** Forest area for the demo game with trees, a player, and some enemies. */
