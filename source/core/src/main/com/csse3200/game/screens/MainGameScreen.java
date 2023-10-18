@@ -219,6 +219,7 @@ public class MainGameScreen extends ScreenAdapter {
       ui.getEvents().trigger("lose");
     }
 
+
     // Check if all waves are completed and the level has been completed
     if (ServiceLocator.getWaveService().isLevelCompleted()) {
       if (selectedLevel == 2) { // Lava level
