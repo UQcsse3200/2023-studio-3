@@ -24,7 +24,8 @@ class HumanAnimationControllerTest {
     private final String[] atlas = {"images/engineers/engineer.atlas"};
     private static final String[] sounds = {
             "sounds/engineers/firing_auto.mp3",
-            "sounds/engineers/firing_single.mp3"
+            "sounds/engineers/DesignedGunshot_Pistol1.ogg",
+            "sounds/engineers/HumanInjured2.ogg"
     };
 
     private final String[] animations = {

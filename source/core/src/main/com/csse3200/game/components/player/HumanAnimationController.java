@@ -45,13 +45,15 @@ public class HumanAnimationController extends Component {
 
     // Sound effects constants
     private static final String FIRE_AUTO_SFX = "sounds/engineers/firing_auto.mp3";
-    private static final String FIRE_SINGLE_SFX = "sounds/engineers/firing_single.mp3";
+    private static final String FIRE_SINGLE_SFX = "sounds/engineers/DesignedGunshot_Pistol1.ogg";
+    private static final String DEATH_SFX = "sounds/engineers/HumanInjured2.ogg";
 
     private AnimationRenderComponent animator;
     private final Sound fireAutoSound = ServiceLocator.getResourceService().getAsset(
             FIRE_AUTO_SFX, Sound.class);
     private final Sound fireSingleSound = ServiceLocator.getResourceService().getAsset(
             FIRE_SINGLE_SFX, Sound.class);
+    private final Sound deathSound = ServiceLocator.getResourceService().getAsset(DEATH_SFX, Sound.class);
 
     private boolean clicked = false;
 
@@ -188,6 +190,7 @@ public class HumanAnimationController extends Component {
         } else {
             animator.startAnimation(DEATH_ANIM);
         }
+        deathSound.play();
     }
 
     /**
