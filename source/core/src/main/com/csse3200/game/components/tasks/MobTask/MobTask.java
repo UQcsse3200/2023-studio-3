@@ -237,22 +237,25 @@ public class MobTask extends DefaultTask implements PriorityTask {
      */
     private boolean enemyDetected() {
         // if there's an entity within x of - 1 of mob
-        Entity targetInFront = ServiceLocator.getEntityService().getEntityAtPosition(
-                mob.getPosition().x - MELEE_ATTACK_RANGE, mob.getPosition().y);
+        Entity targetInFront = ServiceLocator.getEntityService().getEntityAtPositionLayer(
+                mob.getPosition().x, mob.getPosition().y, PhysicsLayer.HUMANS);
+        if (targetInFront == null) {
+            targetInFront = ServiceLocator.getEntityService().getEntityAtPositionLayer(
+                    mob.getPosition().x + 0.2f, mob.getPosition().y, PhysicsLayer.HUMANS);
+        }
+        if (targetInFront == null) {
+            targetInFront = ServiceLocator.getEntityService().getEntityAtPositionLayer(
+                    mob.getPosition().x, mob.getPosition().y + 0.2f, PhysicsLayer.HUMANS);
+        }
+        if (targetInFront == null) {
+            targetInFront = ServiceLocator.getEntityService().getEntityAtPositionLayer(
+                    mob.getPosition().x, mob.getPosition().y - 0.2f, PhysicsLayer.HUMANS);
+        }
         if (targetInFront == null) {
             return false;
         }
-
-        // layer checking
-        HitboxComponent targetHitbox = targetInFront.getComponent(HitboxComponent.class);
-        if (targetHitbox == null) {
-            return false;
-        }
-        if (PhysicsLayer.contains(PhysicsLayer.HUMANS, targetHitbox.getLayer())) {
-            this.target = targetInFront;
-            return true;
-        }
-        return false;
+        target = targetInFront;
+        return true;
     }
 
     /**

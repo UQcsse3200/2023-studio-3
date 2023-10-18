@@ -1,6 +1,9 @@
 package com.csse3200.game.services;
 
+import com.badlogic.gdx.utils.Array;
 import com.csse3200.game.components.maingame.UIElementsDisplay;
+import com.csse3200.game.entities.Entity;
+import com.csse3200.game.physics.PhysicsLayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,6 +63,7 @@ public class WaveService {
      * If enemy count is 0, the game is over.
      */
     public void updateEnemyCount() {
+//        Array<Entity> entities = ServiceLocator.getEntityService().getEntitiesInLayer(PhysicsLayer.NPC);
         enemyCount -= 1;
         remainingLevelEnemyCount -= 1;
         logger.info("{} enemies remaining in wave", getEnemyCount());

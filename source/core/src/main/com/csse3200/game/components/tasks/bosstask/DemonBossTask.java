@@ -335,7 +335,7 @@ public class DemonBossTask extends DefaultTask implements PriorityTask {
      */
     private boolean jumpComplete() {
         if (animation.isFinished() && isJumping) {
-            nearbyEntities = ServiceLocator.getEntityService().getEntitiesInLayer(
+            nearbyEntities = ServiceLocator.getEntityService().getEntitiesInRadiusOfLayer(
                     demon, SMASH_RADIUS, PhysicsLayer.HUMANS);
             applyAoeDamage(nearbyEntities, SMASH_DAMAGE); // do damage upon landing
             isJumping = false;
