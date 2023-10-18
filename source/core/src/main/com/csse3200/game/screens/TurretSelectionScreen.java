@@ -102,8 +102,10 @@ public class TurretSelectionScreen extends ScreenAdapter {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 click.play(0.4f);
+                music.stop();
                 // Handle the "back" action, e.g., return to the previous screen
-                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT); // Replace PREVIOUS_SCREEN with the appropriate screen type
+                game.setScreen(GdxGame.ScreenType.LEVEL_SELECT); // Replace PREVIOU
+                // S_SCREEN with the appropriate screen type
             }
         });
 
@@ -120,6 +122,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
                 for (TowerType t : selectedTurrets) {
                     towers.add(t);
                 }
+                music.stop();
                 ServiceLocator.setTowerTypes(towers);;
                 game.setScreen(GdxGame.ScreenType.LOAD_SCREEN);
             }
@@ -234,7 +237,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
         stage.addActor(table);
         table.setFillParent(true);
         Gdx.input.setInputProcessor(stage);
-
+        logger.info("Playing music");
         music.setVolume(0.4f);
         music.setLooping(true);
         music.play();
@@ -349,6 +352,7 @@ public class TurretSelectionScreen extends ScreenAdapter {
 
     public void unloadSounds() {
         ServiceLocator.getResourceService().unloadAssets(sounds);
+        ServiceLocator.getResourceService().unloadAssets(bgm);
     }
     /**
      * Disposes of the stage
