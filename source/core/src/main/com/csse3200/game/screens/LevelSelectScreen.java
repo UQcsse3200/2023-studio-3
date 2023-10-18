@@ -62,6 +62,9 @@ public class LevelSelectScreen extends ScreenAdapter {
     float timeCounter = 0;
 
     private static final String BG_PATH = "planets/background.png";
+    String[] bgm = {
+            "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
+    };
 
     // Description Box
     private final Label descriptionBox;
@@ -115,9 +118,6 @@ public class LevelSelectScreen extends ScreenAdapter {
         stage.addActor(descriptionTable);
 
         ServiceLocator.registerResourceService(new ResourceService());
-        String[] bgm = {
-                "sounds/background/pre_game/Sci-Fi8Loop_story.ogg"
-        };
         ServiceLocator.getResourceService().loadMusic(bgm);
         ServiceLocator.getResourceService().loadAll();
         music = ServiceLocator.getResourceService().getAsset(bgm[0], Music.class);
@@ -237,7 +237,8 @@ public class LevelSelectScreen extends ScreenAdapter {
     private void loadPlanetLevel(int[] planet) {
         logger.info("Loading level {}", planet[4]);
         GameLevelData.setSelectedLevel(planet[4]);
-        game.setScreen(new TurretSelectionScreen(game));
+        music.stop();
+        game.setScreen(GdxGame.ScreenType.TURRET_SELECTION);
     }
 
     /**
@@ -365,6 +366,7 @@ public class LevelSelectScreen extends ScreenAdapter {
      */
     @Override
     public void dispose() {
+        ServiceLocator.getResourceService().unloadAssets(bgm);
         stage.dispose();
         batch.dispose();
         music.dispose();

@@ -197,6 +197,7 @@ public class StoryScreen extends ScreenAdapter {
     private void next() {
         currentIndex++;
         if (currentIndex >= images.length) {
+            music.stop();
             game.setScreen(new LevelSelectScreen(game, -1));
         }
     }

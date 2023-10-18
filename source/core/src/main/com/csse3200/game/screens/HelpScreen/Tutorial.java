@@ -225,7 +225,7 @@ public class Tutorial extends ScreenAdapter {
                 logger.info("Main game level completed detected, go to win screen");
             } else {
                 // For other levels, go to the "NextLevelScreen"
-                game.setScreen(new NextLevelScreen(game, selectedLevel));
+                game.setScreen(GdxGame.ScreenType.Next_Screen);
                 logger.info("game level completed detected, go to NextLevelScreen");
             }
         }
