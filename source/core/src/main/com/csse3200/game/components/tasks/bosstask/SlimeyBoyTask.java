@@ -90,7 +90,7 @@ public class SlimeyBoyTask extends DefaultTask implements PriorityTask {
             case MOVE -> {
                 if (targetFound()) {
                     // do aoe damage based on how much health slime has left
-                    applyAoeDamage(ServiceLocator.getEntityService().getEntitiesInLayer(
+                    applyAoeDamage(ServiceLocator.getEntityService().getEntitiesInRadiusOfLayer(
                             slimey, MAX_RADIUS, PhysicsLayer.HUMANS), health);
                     changeState(SlimeState.TAKE_HIT);
                 }
