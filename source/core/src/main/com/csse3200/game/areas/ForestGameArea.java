@@ -1,5 +1,6 @@
 package com.csse3200.game.areas;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.GridPoint2;
 import com.badlogic.gdx.math.Vector2;
 import com.csse3200.game.entities.Entity;
@@ -116,7 +117,8 @@ public class ForestGameArea extends GameArea {
           "images/GrassTile/grass_tile_6.png",
           "images/GrassTile/grass_tile_7.png",
           "images/mobboss/iceBaby.png",
-          "images/bombship/bombship.png"
+          "images/bombship/bombship.png",
+          "images/ui/Sprites/UI_Glass_Select_01a1.png"
   };
   private static final String[] forestTextureAtlases = {
           "images/economy/econ-tower.atlas",
@@ -371,7 +373,7 @@ public class ForestGameArea extends GameArea {
       mob.setScale(1.5f, 1.5f);
     }
     spawnEntityAt(mob, randomPos, true, false);
-    
+    flashWarning(mob);
   }
 
 
@@ -442,5 +444,8 @@ public class ForestGameArea extends GameArea {
     this.lastSpawnTime = currSpawnTime;
   }
 
-
+  private void flashWarning(Entity mob) {
+    Entity warning = WarningFactory.createWarning(mob);
+    spawnEntityAt(warning, new GridPoint2(), false, false);
+  }
 }

@@ -19,6 +19,7 @@ import com.csse3200.game.components.maingame.MainGameDisplay;
 import com.csse3200.game.entities.Entity;
 import com.csse3200.game.entities.EntityService;
 import com.csse3200.game.entities.factories.RenderFactory;
+import com.csse3200.game.entities.factories.WarningFactory;
 import com.csse3200.game.input.*;
 import com.csse3200.game.physics.PhysicsEngine;
 import com.csse3200.game.physics.PhysicsService;
@@ -136,6 +137,7 @@ public class MainGameScreen extends ScreenAdapter {
     ServiceLocator.getInputService().register(engineerInputHandler);
     ServiceLocator.getInputService().register(upgradedInputHandler);
     ServiceLocator.getCurrencyService().getDisplay().setCamera(renderer.getCamera().getCamera());
+    WarningFactory.camera = renderer.getCamera().getCamera();
 
     loadAssets();
     createUI();
