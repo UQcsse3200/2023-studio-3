@@ -446,33 +446,6 @@ public class NPCFactory {
     return coat;
   }
 
-  public static Entity createGregRangeMob(int health) {
-    Entity fireWorm = createBaseNPC();
-    ArrayList<Currency> drops = new ArrayList<>();
-
-    AnimationRenderComponent animator =
-            new AnimationRenderComponent(
-                    ServiceLocator.getResourceService().getAsset("images/mobs/fire_worm.atlas", TextureAtlas.class));
-    animator.addAnimation("fire_worm_walk", 0.1f, Animation.PlayMode.LOOP);
-    animator.addAnimation("fire_worm_attack", 0.1f);
-    animator.addAnimation("fire_worm_death", 0.1f);
-    animator.addAnimation(DEFAULT, 0.1f);
-
-    AITaskComponent aiTaskComponent = new AITaskComponent()
-            .addTask(new MobTask(MobType.FIRE_WORM));
-
-    fireWorm
-            .addComponent(new CombatStatsComponent(health, 0, drops))
-            .addComponent(animator)
-            .addComponent(new FireWormAnimationController())
-            .addComponent(aiTaskComponent);
-
-    fireWorm.getComponent(HitboxComponent.class).setAsBoxAligned(new Vector2(.3f, .5f), PhysicsComponent.AlignX.RIGHT, PhysicsComponent.AlignY.CENTER);
-    fireWorm.getComponent(AnimationRenderComponent.class).scaleEntity();
-
-    return fireWorm;
-  }
-
 
   /**
    * Creates a xeno grunt entity.

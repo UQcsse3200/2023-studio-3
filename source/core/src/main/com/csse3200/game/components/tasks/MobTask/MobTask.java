@@ -325,8 +325,5 @@ public class MobTask extends DefaultTask implements PriorityTask {
             currency.setPosition(mob.getPosition().x,mob.getPosition().y);
             ServiceLocator.getEntityService().register(currency);
         }
-
-
-
     }
 }
